@@ -35,6 +35,9 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>
+<%#service:frozen2?%>
+<% > service_cpp/process_frozen2%>
+<%/service:frozen2?%>
 const char* <%service:name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }

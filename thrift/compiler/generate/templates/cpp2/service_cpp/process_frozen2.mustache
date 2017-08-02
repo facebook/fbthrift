@@ -1,0 +1,96 @@
+<%!
+
+  Copyright 2004-present Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#service:functions%><%#function:returnType%>
+
+<%^function:eb%>
+void <%service:name%>AsyncProcessor::_processInThread_frozen2_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+<%^function:oneway?%>
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &<%service:name%>AsyncProcessor::process_frozen2_<%function:name%>, this);
+<%/function:oneway?%>
+<%#function:oneway?%>
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, true, &<%service:name%>AsyncProcessor::process_frozen2_<%function:name%>, this);
+<%/function:oneway?%>
+}
+
+<%/function:eb%>
+void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+<%#function:oneway?%><%#function:eb%>
+  if (!req->isOneway()) {
+    req->sendReply(std::unique_ptr<folly::IOBuf>());
+  }
+<%/function:eb%><%/function:oneway?%>
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<<%service:name%>_<%function:name%>_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "<%service:name%>.frozen2_<%function:name%>", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+<%#function:oneway?%>
+    LOG(ERROR) << ex.what() << " in function noResponse";
+    return;
+  }
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+<%/function:oneway?%>
+<%^function:oneway?%>
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_<%function:name%>";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_<%function:name%>", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_<%function:name%>";
+    }
+  }
+<%^type:resolves_to_complex_return?%>
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+<%/type:resolves_to_complex_return?%>
+<%^function:eb%>
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+<%/function:eb%>
+<%/function:oneway?%>
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+<%#function:args%><%#field:type%>
+<%#type:resolves_to_base_or_enum?%>
+  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::Layout<<% > Type%>>::View>(mapped.get<<%field:index%>>());
+<%/type:resolves_to_base_or_enum?%>
+<%^type:resolves_to_base_or_enum?%>
+  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen<<% > Type%>>>(mapped.get<<%field:index%>>());
+  <%field:name%>_view_ptr->hold(shared_buf_ptr);
+<%/type:resolves_to_base_or_enum?%>
+<%/field:type%><%/function:args%>
+  iface_->frozen2_<%#function:eb%>async_eb<%/function:eb%><%^function:eb%>async_tm<%/function:eb%>_<%function:name%>(std::move(callback)<% > service_tcc/frozen2_get_args_ref%>);
+}
+<%/function:returnType%><%/service:functions%>

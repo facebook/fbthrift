@@ -330,6 +330,485 @@ void ServiceASvNull::mixedMethod(std::string& /*_return*/, std::unique_ptr<std::
 
 void ServiceASvNull::frozen2_mixedMethod(std::string& /*_return*/, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> /*strArg*/, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> /*i32Arg*/, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> /*modArg*/) {}
 
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleAMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_moduleAMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_moduleAMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_moduleAMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto modArg_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen< ::some::ns::ModuleA>>(mapped.get<0>());
+  modArg_view_ptr->hold(shared_buf_ptr);
+  iface_->frozen2_async_tm_moduleAMethod(std::move(callback), std::move(modArg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleBMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_moduleBMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleBMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_moduleBMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_moduleBMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleBMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleBMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto modArg_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen< ::some::ns::ModuleB>>(mapped.get<0>());
+  modArg_view_ptr->hold(shared_buf_ptr);
+  iface_->frozen2_async_tm_moduleBMethod(std::move(callback), std::move(modArg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_i32StrDoubleMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32StrDoubleMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_i32StrDoubleMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_i32StrDoubleMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_i32StrDoubleMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto i32Arg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<int32_t>::View>(mapped.get<0>());
+  auto strArg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<std::string>::View>(mapped.get<1>());
+  auto doubleArg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<double>::View>(mapped.get<2>());
+  iface_->frozen2_async_tm_i32StrDoubleMethod(std::move(callback), std::move(i32Arg_view_ptr), std::move(strArg_view_ptr), std::move(doubleArg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_versioningMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_versioningMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_versioningMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_versioningMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_versioningMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_versioningMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_versioningMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto i32Arg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<int32_t>::View>(mapped.get<0>());
+  auto strArg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<std::string>::View>(mapped.get<1>());
+  auto doubleArg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<double>::View>(mapped.get<2>());
+  iface_->frozen2_async_tm_versioningMethod(std::move(callback), std::move(i32Arg_view_ptr), std::move(strArg_view_ptr), std::move(doubleArg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_retI32Method, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_retI32Method_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retI32Method", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_retI32Method";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_retI32Method", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_retI32Method";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_retI32Method<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  iface_->frozen2_async_tm_retI32Method(std::move(callback));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_retModAMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_retModAMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retModAMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_retModAMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_retModAMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_retModAMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(c), return_retModAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  iface_->frozen2_async_tm_retModAMethod(std::move(callback));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_throwMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_throwMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_throwMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_throwMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_throwMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_throwMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throwMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  iface_->frozen2_async_tm_throwMethod(std::move(callback));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_multiThrowMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_multiThrowMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_multiThrowMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_multiThrowMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_multiThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_multiThrowMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_multiThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  iface_->frozen2_async_tm_multiThrowMethod(std::move(callback));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_i32ThrowMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32ThrowMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_i32ThrowMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_i32ThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_i32ThrowMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto i32Arg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<int32_t>::View>(mapped.get<0>());
+  iface_->frozen2_async_tm_i32ThrowMethod(std::move(callback), std::move(i32Arg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_moduleAThrowMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAThrowMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_moduleAThrowMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_moduleAThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAThrowMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto modArg_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen< ::some::ns::ModuleA>>(mapped.get<0>());
+  modArg_view_ptr->hold(shared_buf_ptr);
+  iface_->frozen2_async_tm_moduleAThrowMethod(std::move(callback), std::move(modArg_view_ptr));
+}
+
+void ServiceAAsyncProcessor::_processInThread_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_mixedMethod, this);
+}
+
+void ServiceAAsyncProcessor::process_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  apache::thrift::frozen::MappedFrozen<ServiceA_mixedMethod_pargs> mapped;
+  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_mixedMethod", ctx));
+  try {
+    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::Frozen2ProtocolWriter prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function frozen2_mixedMethod";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("frozen2_mixedMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function frozen2_mixedMethod";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_mixedMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+
+  std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
+  auto strArg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<std::string>::View>(mapped.get<0>());
+  auto i32Arg_view_ptr = std::make_unique<apache::thrift::frozen::Layout<int32_t>::View>(mapped.get<1>());
+  auto modArg_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen< ::some::ns::ModuleB>>(mapped.get<2>());
+  modArg_view_ptr->hold(shared_buf_ptr);
+  iface_->frozen2_async_tm_mixedMethod(std::move(callback), std::move(strArg_view_ptr), std::move(i32Arg_view_ptr), std::move(modArg_view_ptr));
+}
 const char* ServiceAAsyncProcessor::getServiceName() {
   return "ServiceA";
 }
@@ -389,17 +868,17 @@ const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap& ServiceAAsyncProcessor:
 }
 
 const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap ServiceAAsyncProcessor::frozen2ProcessMap_ {
-  {"moduleAMethod", &ServiceAAsyncProcessor::_processInThread_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"moduleBMethod", &ServiceAAsyncProcessor::_processInThread_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"i32StrDoubleMethod", &ServiceAAsyncProcessor::_processInThread_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"versioningMethod", &ServiceAAsyncProcessor::_processInThread_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"retI32Method", &ServiceAAsyncProcessor::_processInThread_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"retModAMethod", &ServiceAAsyncProcessor::_processInThread_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"throwMethod", &ServiceAAsyncProcessor::_processInThread_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"multiThrowMethod", &ServiceAAsyncProcessor::_processInThread_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"i32ThrowMethod", &ServiceAAsyncProcessor::_processInThread_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"moduleAThrowMethod", &ServiceAAsyncProcessor::_processInThread_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
-  {"mixedMethod", &ServiceAAsyncProcessor::_processInThread_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"moduleAMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_moduleAMethod},
+  {"moduleBMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_moduleBMethod},
+  {"i32StrDoubleMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_i32StrDoubleMethod},
+  {"versioningMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_versioningMethod},
+  {"retI32Method", &ServiceAAsyncProcessor::_processInThread_frozen2_retI32Method},
+  {"retModAMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_retModAMethod},
+  {"throwMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_throwMethod},
+  {"multiThrowMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_multiThrowMethod},
+  {"i32ThrowMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_i32ThrowMethod},
+  {"moduleAThrowMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_moduleAThrowMethod},
+  {"mixedMethod", &ServiceAAsyncProcessor::_processInThread_frozen2_mixedMethod},
 };
 
 }} // some::ns

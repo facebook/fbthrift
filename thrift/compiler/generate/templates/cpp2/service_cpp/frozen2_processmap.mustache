@@ -24,7 +24,7 @@ const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap <%service:name%>
 <%#service:functions?%>
 const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap <%service:name%>AsyncProcessor::frozen2ProcessMap_ {
 <%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"<%function:name%>", &<%service:name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_frozen2_<%function:name%>},
 <%/function:returnType%><%/service:functions%>
 };
 <%/service:functions?%>
