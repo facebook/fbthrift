@@ -35,5 +35,24 @@
   virtual folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%/function:oneway?%>
+<%#service:frozen2?%>
+<%#function:oneway?%>
+  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/frozen2_function_param_list_ptr%>) = 0;
+  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/frozen2_function_param_list_ptr%>) = delete;
+  virtual folly::Future<<% > ServiceType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list_ptr_no_start_comma%>) = 0;
+<%/function:oneway?%>
+<%^function:oneway?%>
+<%^type:resolves_to_complex_return?%>
+  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/frozen2_function_param_list_ptr%>) = 0;
+  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/frozen2_function_param_list_ptr%>) = delete;
+  virtual folly::Future<<% > ServiceType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list_ptr_no_start_comma%>) = 0;
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/frozen2_function_param_list_ptr%>) = 0;
+  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/frozen2_function_param_list_ptr%>) = delete;
+  virtual folly::Future<std::unique_ptr<<% > Type%>>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list_ptr_no_start_comma%>) = 0;
+<%/type:resolves_to_complex_return?%>
+<%/function:oneway?%>
+<%/service:frozen2?%>
 <%/function:returnType%><%/service:functions%>
 };
