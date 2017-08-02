@@ -85,6 +85,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
+  using HasFrozen2 = std::false_type;
  protected:
   NestedContainersSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

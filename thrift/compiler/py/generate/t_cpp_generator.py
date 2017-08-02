@@ -1463,6 +1463,8 @@ class CppGenerator(t_generator.Generator):
             base = base_of(service.extends) if service.extends else "void"
             out('using BaseAsyncProcessor = {};'.format(base))
 
+            out('using HasFrozen2 = std::false_type;')
+
             out().label('protected:')
 
             out('{0}SvIf* iface_;'.format(service.name))

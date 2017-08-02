@@ -114,6 +114,7 @@ class ExtraServiceAsyncProcessor : public  ::some::valid::ns::ParamServiceAsyncP
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor =  ::some::valid::ns::ParamServiceAsyncProcessor;
+  using HasFrozen2 = std::false_type;
  protected:
   ExtraServiceSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

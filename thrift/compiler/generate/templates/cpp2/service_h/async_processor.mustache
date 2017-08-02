@@ -23,6 +23,12 @@
 <%^service:extends%>
   using BaseAsyncProcessor = void;
 <%/service:extends%>
+<%#service:frozen2?%>
+  using HasFrozen2 = std::true_type;
+<%/service:frozen2?%>
+<%^service:frozen2?%>
+  using HasFrozen2 = std::false_type;
+<%/service:frozen2?%>
  protected:
   <%service:name%>SvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

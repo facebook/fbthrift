@@ -86,6 +86,7 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
+  using HasFrozen2 = std::false_type;
  protected:
   MyServiceFastSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

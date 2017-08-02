@@ -64,6 +64,7 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
+  using HasFrozen2 = std::false_type;
  protected:
   MyServicePrioParentSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

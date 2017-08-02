@@ -703,6 +703,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
+  using HasFrozen2 = std::false_type;
  protected:
   service_with_special_namesSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

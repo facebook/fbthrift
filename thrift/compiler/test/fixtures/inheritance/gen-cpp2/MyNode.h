@@ -58,6 +58,7 @@ class MyNodeAsyncProcessor : public  ::cpp2::MyRootAsyncProcessor {
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor =  ::cpp2::MyRootAsyncProcessor;
+  using HasFrozen2 = std::false_type;
  protected:
   MyNodeSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;

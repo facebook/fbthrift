@@ -1260,7 +1260,7 @@ void process_pmap(
 }
 
 template <class Processor, typename... Args>
-inline void process_frozen(
+typename std::enable_if<!Processor::HasFrozen2::value>::type process_frozen(
     Processor*,
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf>,
@@ -1278,14 +1278,13 @@ inline void process_frozen(
 }
 
 template <class Processor>
-inline auto process_frozen(
+typename std::enable_if<Processor::HasFrozen2::value>::type process_frozen(
     Processor* processor,
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
-    concurrency::ThreadManager* tm)
-    -> decltype(processor->getFrozen2ProtocolProcessMap(), void()) {
+    concurrency::ThreadManager* tm) {
   const auto& pmap = processor->getFrozen2ProtocolProcessMap();
   return process_pmap(
       processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
