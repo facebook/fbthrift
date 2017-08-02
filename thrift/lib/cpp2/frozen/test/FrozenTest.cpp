@@ -454,6 +454,21 @@ TEST(Frozen, PaddingLayout) {
   }
 }
 
+TEST(Frozen, Bundled) {
+  using String = Bundled<std::string>;
+  String s("Hello");
+
+  EXPECT_EQ("Hello", s);
+  EXPECT_FALSE(s.empty());
+  EXPECT_EQ(nullptr, s.findFirstOfType<int>());
+
+  s.hold(47);
+  s.hold(11);
+
+  EXPECT_EQ(47, *s.findFirstOfType<int>());
+  EXPECT_EQ(nullptr, s.findFirstOfType<std::string>());
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);

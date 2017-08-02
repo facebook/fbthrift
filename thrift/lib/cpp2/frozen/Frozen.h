@@ -782,6 +782,16 @@ class Bundled : public Base {
     holds_.push_back(std::move(holder));
   }
 
+  template <typename T, class Decayed = typename std::decay<T>::type>
+  Decayed const* findFirstOfType() const {
+    for (auto const& h : holds_) {
+      if (auto p = dynamic_cast<HolderImpl<Decayed> const*>(h.get())) {
+        return &p->t_;
+      }
+    }
+    return nullptr;
+  }
+
  private:
   std::vector<std::unique_ptr<Holder>> holds_;
 };
