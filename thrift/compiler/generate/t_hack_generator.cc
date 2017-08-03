@@ -2216,7 +2216,11 @@ void t_hack_generator::_generate_php_struct_definition(
   out << " {" << endl;
   indent_up();
 
-  indent(out) << "use \\ThriftSerializationTrait;" << endl << endl;
+  if (tstruct->is_union()) {
+    indent(out) << "use \\ThriftUnionSerializationTrait;" << endl << endl;
+  } else {
+    indent(out) << "use \\ThriftSerializationTrait;" << endl << endl;
+  }
 
   if (generateAsTrait && is_exception) {
     indent(out) << "require extends TException;" << endl;

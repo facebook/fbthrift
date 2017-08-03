@@ -21,7 +21,7 @@ enum ComplexUnionEnum: int {
  * ComplexUnion
  */
 class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
-  use \ThriftSerializationTrait;
+  use \ThriftUnionSerializationTrait;
 
   public static array $_TSPEC = array(
     1 => array(
@@ -462,7 +462,7 @@ enum FinalComplexUnionEnum: int {
  * FinalComplexUnion
  */
 class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
-  use \ThriftSerializationTrait;
+  use \ThriftUnionSerializationTrait;
 
   public static array $_TSPEC = array(
     1 => array(

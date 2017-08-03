@@ -882,7 +882,7 @@ enum union1Enum: int {
  * union1
  */
 class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
-  use \ThriftSerializationTrait;
+  use \ThriftUnionSerializationTrait;
 
   public static array $_TSPEC = array(
     1 => array(
@@ -1045,7 +1045,7 @@ enum union2Enum: int {
  * union2
  */
 class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
-  use \ThriftSerializationTrait;
+  use \ThriftUnionSerializationTrait;
 
   public static array $_TSPEC = array(
     1 => array(
