@@ -9,6 +9,9 @@ const list<map<string, i32>> states = [
 const double x = 1.0;
 const double y = 1000000;
 const double z = 1000000000.0;
+const double zeroDoubleValue = 0.0;
+
+const double longDoubleValue = 0.0000259961000990301;
 
 enum EmptyEnum {}
 

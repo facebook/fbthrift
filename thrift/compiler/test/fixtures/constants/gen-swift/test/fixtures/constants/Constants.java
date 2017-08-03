@@ -88,6 +88,8 @@ public final class Constants
         .add()
         .build();
 
+    public static final double longDoubleValue = 0.000026;
+
     public static final int myInt = 1337;
 
     public static final String name = "Mark Zuckerberg";
@@ -147,6 +149,8 @@ public final class Constants
     public static final int zero32 = 0;
 
     public static final long zero64 = 0L;
+
+    public static final double zeroDoubleValue = 0.0;
 
     public static final byte zero_byte = 0;
 

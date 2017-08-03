@@ -21,6 +21,8 @@ var States []map[string]int32
 const X = 1
 const Y = 1000000
 const Z = 1e+09
+const ZeroDoubleValue = 0
+const LongDoubleValue = 2.59961e-05
 var Instagram *Internship
 var KRanges []*Range
 var InternList []*Internship

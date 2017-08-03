@@ -20,6 +20,8 @@
 
 #include <thrift/compiler/generate/t_generator.h>
 
+#include <iomanip>
+
 class mstch_base;
 class mstch_generators;
 
@@ -446,12 +448,9 @@ class mstch_const_value : public mstch_base {
         });
   }
   std::string format_double_string(const double d) {
-    std::string d_str = std::to_string(d);
-    d_str.erase(d_str.find_last_not_of('0') + 1);
-    if (d_str.back() == '.') {
-      d_str.push_back('0');
-    }
-    return d_str;
+    std::ostringstream oss;
+    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
+    return oss.str();
   }
   mstch::node index_plus_one() {
     return std::to_string(index_ + 1);

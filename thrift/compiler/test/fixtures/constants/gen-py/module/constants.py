@@ -37,6 +37,10 @@ y = 1000000
 
 z = 1e+09
 
+zeroDoubleValue = 0
+
+longDoubleValue = 2.59961e-05
+
 instagram = Internship(**{
   "weeks" : 12,
   "title" : "Software Engineer",

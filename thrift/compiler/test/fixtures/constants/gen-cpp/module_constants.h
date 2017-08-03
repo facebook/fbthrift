@@ -25,6 +25,10 @@ struct module_constants {
   static constexpr double y() { return y_; }
   static constexpr double const z_ = 1e+09;
   static constexpr double z() { return z_; }
+  static constexpr double const zeroDoubleValue_ = 0;
+  static constexpr double zeroDoubleValue() { return zeroDoubleValue_; }
+  static constexpr double const longDoubleValue_ = 2.59961e-05;
+  static constexpr double longDoubleValue() { return longDoubleValue_; }
   static Internship const& instagram();
   static std::vector<Range>  const& kRanges();
   static std::vector<Internship>  const& internList();

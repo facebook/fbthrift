@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/include1_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

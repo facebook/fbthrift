@@ -30,7 +30,7 @@ struct module_constants {
 
   static std::vector<std::map<std::string, int32_t>> const& states();
 
-  static constexpr double const x_ = 1.0;
+  static constexpr double const x_ = 1;
 
   static constexpr double x() {
     return x_;
@@ -42,10 +42,22 @@ struct module_constants {
     return y_;
   }
 
-  static constexpr double const z_ = 1000000000.0;
+  static constexpr double const z_ = 1000000000;
 
   static constexpr double z() {
     return z_;
+  }
+
+  static constexpr double const zeroDoubleValue_ = 0;
+
+  static constexpr double zeroDoubleValue() {
+    return zeroDoubleValue_;
+  }
+
+  static constexpr double const longDoubleValue_ = 2.59961000990301e-05;
+
+  static constexpr double longDoubleValue() {
+    return longDoubleValue_;
   }
 
   static  ::cpp2::Internship const& instagram();
@@ -170,7 +182,7 @@ struct module_constants {
     return zero64_;
   }
 
-  static constexpr double const zero_dot_zero_ = 0.0;
+  static constexpr double const zero_dot_zero_ = 0;
 
   static constexpr double zero_dot_zero() {
     return zero_dot_zero_;

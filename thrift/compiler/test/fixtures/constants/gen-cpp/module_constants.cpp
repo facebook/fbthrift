@@ -32,6 +32,8 @@ std::vector<std::map<std::string, int32_t> >  const &module_constants::states() 
 constexpr double const module_constants::x_;
 constexpr double const module_constants::y_;
 constexpr double const module_constants::z_;
+constexpr double const module_constants::zeroDoubleValue_;
+constexpr double const module_constants::longDoubleValue_;
 Internship const &module_constants::instagram() {
   static folly::Indestructible<Internship> const instance{
     Internship(

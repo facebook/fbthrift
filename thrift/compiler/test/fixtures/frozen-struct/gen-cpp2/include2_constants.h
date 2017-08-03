@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/include2_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 namespace some { namespace ns {
 

@@ -90,6 +90,30 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * double zeroDoubleValue
+   */
+  private static ?float $__zeroDoubleValue = null;
+  public static function zeroDoubleValue(): float {
+    if (self::$__zeroDoubleValue == null) {
+      self::$__zeroDoubleValue = 0.0;
+    }
+    return self::$__zeroDoubleValue;
+  }
+
+  /**
+   * Original thrift constant:-
+   * double longDoubleValue
+   */
+  private static ?float $__longDoubleValue = null;
+  public static function longDoubleValue(): float {
+    if (self::$__longDoubleValue == null) {
+      self::$__longDoubleValue = 2.59961e-05;
+    }
+    return self::$__longDoubleValue;
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.Internship instagram
    */
   private static ?Internship $__instagram = null;
@@ -716,6 +740,8 @@ class module_CONSTANTS {
         "x" => 1.0,
         "y" => 1000000.0,
         "z" => 1e+09,
+        "zeroDoubleValue" => 0.0,
+        "longDoubleValue" => 2.59961e-05,
         "instagram" => new Internship(
           12,
           "Software Engineer",

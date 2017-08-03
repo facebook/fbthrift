@@ -14,8 +14,7 @@
 
 
 
-#include "src/gen-cpp2/module_types.h"
-#include "src/gen-cpp2/module_layouts.h"
+#include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;
@@ -25,7 +24,6 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
-  class Frozen2ProtocolReader;
   namespace transport { class THeader; }
 }}
 
@@ -37,69 +35,36 @@ class ServiceASvAsyncIf {
   virtual void async_tm_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) = 0;
   virtual void async_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) = delete;
   virtual folly::Future<folly::Unit> future_moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) = 0;
-  virtual void frozen2_async_tm_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = 0;
-  virtual void frozen2_async_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = 0;
   virtual void async_tm_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleB> modArg) = 0;
   virtual void async_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleB> modArg) = delete;
   virtual folly::Future<folly::Unit> future_moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> modArg) = 0;
-  virtual void frozen2_async_tm_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = 0;
-  virtual void frozen2_async_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = 0;
   virtual void async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = 0;
   virtual void async_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = delete;
   virtual folly::Future<folly::Unit> future_i32StrDoubleMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = 0;
-  virtual void frozen2_async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = 0;
-  virtual void frozen2_async_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = 0;
   virtual void async_tm_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = 0;
   virtual void async_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = delete;
   virtual folly::Future<folly::Unit> future_versioningMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) = 0;
-  virtual void frozen2_async_tm_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = 0;
-  virtual void frozen2_async_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) = 0;
   virtual void async_tm_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
   virtual void async_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
   virtual folly::Future<int32_t> future_retI32Method() = 0;
-  virtual void frozen2_async_tm_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual void frozen2_async_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
-  virtual folly::Future<int32_t> frozen2_future_retI32Method() = 0;
   virtual void async_tm_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) = 0;
   virtual void async_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) = delete;
   virtual folly::Future<std::unique_ptr< ::some::ns::ModuleA>> future_retModAMethod() = 0;
-  virtual void frozen2_async_tm_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) = 0;
-  virtual void frozen2_async_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) = delete;
-  virtual folly::Future<std::unique_ptr< ::some::ns::ModuleA>> frozen2_future_retModAMethod() = 0;
   virtual void async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual void async_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_throwMethod() = 0;
-  virtual void frozen2_async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void frozen2_async_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_throwMethod() = 0;
   virtual void async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual void async_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_multiThrowMethod() = 0;
-  virtual void frozen2_async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void frozen2_async_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_multiThrowMethod() = 0;
   virtual void async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg) = 0;
   virtual void async_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg) = delete;
   virtual folly::Future<folly::Unit> future_i32ThrowMethod(int32_t i32Arg) = 0;
-  virtual void frozen2_async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) = 0;
-  virtual void frozen2_async_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) = 0;
   virtual void async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) = 0;
   virtual void async_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) = delete;
   virtual folly::Future<folly::Unit> future_moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) = 0;
-  virtual void frozen2_async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = 0;
-  virtual void frozen2_async_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = delete;
-  virtual folly::Future<folly::Unit> frozen2_future_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) = 0;
   virtual void async_tm_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) = 0;
   virtual void async_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_mixedMethod(std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) = 0;
-  virtual void frozen2_async_tm_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = 0;
-  virtual void frozen2_async_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = delete;
-  virtual folly::Future<std::unique_ptr<std::string>> frozen2_future_mixedMethod(std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) = 0;
 };
 
 class ServiceAAsyncProcessor;
@@ -111,102 +76,58 @@ class ServiceASvIf : public ServiceASvAsyncIf, public apache::thrift::ServerInte
   virtual void moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/);
   folly::Future<folly::Unit> future_moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) override;
   void async_tm_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) override;
-  virtual void frozen2_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg);
-  folly::Future<folly::Unit> frozen2_future_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
-  void frozen2_async_tm_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
   virtual void moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> /*modArg*/);
   folly::Future<folly::Unit> future_moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> modArg) override;
   void async_tm_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleB> modArg) override;
-  virtual void frozen2_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg);
-  folly::Future<folly::Unit> frozen2_future_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
-  void frozen2_async_tm_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
   virtual void i32StrDoubleMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/);
   folly::Future<folly::Unit> future_i32StrDoubleMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) override;
   void async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) override;
-  virtual void frozen2_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg);
-  folly::Future<folly::Unit> frozen2_future_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
-  void frozen2_async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
   virtual void versioningMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/);
   folly::Future<folly::Unit> future_versioningMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) override;
   void async_tm_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) override;
-  virtual void frozen2_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg);
-  folly::Future<folly::Unit> frozen2_future_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
-  void frozen2_async_tm_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
   virtual int32_t retI32Method();
   folly::Future<int32_t> future_retI32Method() override;
   void async_tm_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
-  virtual int32_t frozen2_retI32Method();
-  folly::Future<int32_t> frozen2_future_retI32Method() override;
-  void frozen2_async_tm_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
   virtual void retModAMethod( ::some::ns::ModuleA& /*_return*/);
   folly::Future<std::unique_ptr< ::some::ns::ModuleA>> future_retModAMethod() override;
   void async_tm_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) override;
-  virtual void frozen2_retModAMethod( ::some::ns::ModuleA& /*_return*/);
-  folly::Future<std::unique_ptr< ::some::ns::ModuleA>> frozen2_future_retModAMethod() override;
-  void frozen2_async_tm_retModAMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>> callback) override;
   virtual void throwMethod();
   folly::Future<folly::Unit> future_throwMethod() override;
   void async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
-  virtual void frozen2_throwMethod();
-  folly::Future<folly::Unit> frozen2_future_throwMethod() override;
-  void frozen2_async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void multiThrowMethod();
   folly::Future<folly::Unit> future_multiThrowMethod() override;
   void async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
-  virtual void frozen2_multiThrowMethod();
-  folly::Future<folly::Unit> frozen2_future_multiThrowMethod() override;
-  void frozen2_async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void i32ThrowMethod(int32_t /*i32Arg*/);
   folly::Future<folly::Unit> future_i32ThrowMethod(int32_t i32Arg) override;
   void async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t i32Arg) override;
-  virtual void frozen2_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg);
-  folly::Future<folly::Unit> frozen2_future_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) override;
-  void frozen2_async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) override;
   virtual void moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/);
   folly::Future<folly::Unit> future_moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) override;
   void async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::ns::ModuleA> modArg) override;
-  virtual void frozen2_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg);
-  folly::Future<folly::Unit> frozen2_future_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
-  void frozen2_async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
   virtual void mixedMethod(std::string& /*_return*/, std::unique_ptr<std::string> /*strArg*/, int32_t /*i32Arg*/, std::unique_ptr< ::some::ns::ModuleB> /*modArg*/);
   folly::Future<std::unique_ptr<std::string>> future_mixedMethod(std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) override;
   void async_tm_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) override;
-  virtual void frozen2_mixedMethod(std::string& /*_return*/, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg);
-  folly::Future<std::unique_ptr<std::string>> frozen2_future_mixedMethod(std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
-  void frozen2_async_tm_mixedMethod(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
 };
 
 class ServiceASvNull : public ServiceASvIf {
  public:
   void moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/) override;
-  void frozen2_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
   void moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> /*modArg*/) override;
-  void frozen2_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
   void i32StrDoubleMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/) override;
-  void frozen2_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
   void versioningMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/) override;
-  void frozen2_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) override;
   int32_t retI32Method() override;
-  int32_t frozen2_retI32Method() override;
   void retModAMethod( ::some::ns::ModuleA& /*_return*/) override;
-  void frozen2_retModAMethod( ::some::ns::ModuleA& /*_return*/) override;
   void throwMethod() override;
-  void frozen2_throwMethod() override;
   void multiThrowMethod() override;
-  void frozen2_multiThrowMethod() override;
   void i32ThrowMethod(int32_t /*i32Arg*/) override;
-  void frozen2_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) override;
   void moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/) override;
-  void frozen2_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) override;
   void mixedMethod(std::string& /*_return*/, std::unique_ptr<std::string> /*strArg*/, int32_t /*i32Arg*/, std::unique_ptr< ::some::ns::ModuleB> /*modArg*/) override;
-  void frozen2_mixedMethod(std::string& /*_return*/, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) override;
 };
 
 class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
-  using HasFrozen2 = std::true_type;
+  using HasFrozen2 = std::false_type;
  protected:
   ServiceASvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -229,19 +150,11 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   static const ServiceAAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
   static const ServiceAAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
- public:
-  using Frozen2ProtocolProcessFunc = ProcessFunc<ServiceAAsyncProcessor, apache::thrift::Frozen2ProtocolReader>;
-  using Frozen2ProtocolProcessMap = ProcessMap<Frozen2ProtocolProcessFunc>;
-  static const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap& getFrozen2ProtocolProcessMap();
- private:
-  static const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap frozen2ProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_moduleAMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -250,8 +163,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_moduleBMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -260,8 +171,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_i32StrDoubleMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -270,8 +179,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_versioningMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -280,8 +187,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_retI32Method(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -290,8 +195,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_retModAMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::ns::ModuleA const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -300,8 +203,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_throwMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -310,8 +211,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_multiThrowMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -320,8 +219,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_i32ThrowMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -330,8 +227,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_moduleAThrowMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -340,8 +235,6 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void _processInThread_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void _processInThread_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  void process_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_mixedMethod(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>

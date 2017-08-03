@@ -66,6 +66,22 @@ class module_CONSTANTS {
     return self::$__z;
   }
 
+  private static $__zeroDoubleValue = null;
+  public static function zeroDoubleValue() {
+    if (self::$__zeroDoubleValue == null) {
+      self::$__zeroDoubleValue = 0;
+    }
+    return self::$__zeroDoubleValue;
+  }
+
+  private static $__longDoubleValue = null;
+  public static function longDoubleValue() {
+    if (self::$__longDoubleValue == null) {
+      self::$__longDoubleValue = 2.59961e-05;
+    }
+    return self::$__longDoubleValue;
+  }
+
   private static $__instagram = null;
   public static function instagram() {
     if (self::$__instagram == null) {
@@ -508,6 +524,8 @@ class module_CONSTANTS {
         "x" => 1,
         "y" => 1000000,
         "z" => 1e+09,
+        "zeroDoubleValue" => 0,
+        "longDoubleValue" => 2.59961e-05,
         "instagram" => new Internship(array(
           "weeks" => 12,
           "title" => "Software Engineer",
