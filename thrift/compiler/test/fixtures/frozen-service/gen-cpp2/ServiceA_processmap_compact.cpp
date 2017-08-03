@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/ServiceA.h"
+#include "src/gen-cpp2/ServiceA.h"
 
-#include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/ServiceA.tcc"
+#include "src/gen-cpp2/ServiceA.tcc"
 
 namespace some { namespace ns {
 
