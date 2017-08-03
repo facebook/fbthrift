@@ -132,10 +132,16 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @property
     def first(self):
+        if not deref(self._cpp_obj).__isset.first:
+            return None
+
         return self._cpp_obj.get().first
 
     @property
     def second(self):
+        if not deref(self._cpp_obj).__isset.second:
+            return None
+
         return self._cpp_obj.get().second.decode('UTF-8')
 
 

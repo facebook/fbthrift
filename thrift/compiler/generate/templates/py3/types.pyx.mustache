@@ -194,18 +194,14 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
     @property
     def {{field:name}}(self):
         {{#field:type}}
+        {{^field:value}}
         {{^field:required?}}{{^field:reference?}}
-        {{! If we're trying to read a field that hasn't been set,
-            and there's no default value provided, and it's a non-base
-            type (ie, a struct or container) treat the implicit default
-            as being None - otherwise, fall through to read the cpp object
-            and get the value/default from there. }}
-        {{^field:value}}{{^type:base?}}
+        {{! If there is no value and not ___isset we can say it's None}}
         if not deref(self._cpp_obj).__isset.{{field:name}}:
             return None
 
-        {{/type:base?}}{{/field:value}}
         {{/field:reference?}}{{/field:required?}}
+        {{/field:value}}
         {{> CythonStructGetter}}
 
         {{/field:type}}
