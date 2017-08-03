@@ -749,6 +749,7 @@ class mstch_function : public mstch_base {
             {"function:exceptions", &mstch_function::exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
+            {"function:eb", &mstch_function::event_based},
         });
   }
   mstch::node name() {
@@ -763,6 +764,14 @@ class mstch_function : public mstch_base {
     return !function_->get_xceptions()->get_members().empty();
   }
   mstch::node arg_list();
+  mstch::node event_based() {
+    auto const* strct = function_->get_annotations();
+    if (strct && strct->annotations_.count("thread") &&
+        strct->annotations_.at("thread") == "eb") {
+      return true;
+    }
+    return false;
+  }
 
  protected:
   t_function const* function_;

@@ -554,30 +554,6 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 };
 
-class mstch_cpp2_function : public mstch_function {
- public:
-  mstch_cpp2_function(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos) {
-    register_methods(
-        this,
-        {
-            {"function:eb", &mstch_cpp2_function::eb},
-        });
-  }
-  mstch::node eb() {
-    auto const* strct = function_->get_annotations();
-    if (strct && strct->annotations_.count("thread") &&
-        strct->annotations_.at("thread") == "eb") {
-      return true;
-    }
-    return false;
-  }
-};
-
 class mstch_cpp2_service : public mstch_service {
  public:
   mstch_cpp2_service(
@@ -901,21 +877,6 @@ class struct_cpp2_generator : public struct_generator {
   }
 };
 
-class function_cpp2_generator : public function_generator {
- public:
-  function_cpp2_generator() = default;
-  virtual ~function_cpp2_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_function const* function,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_function>(
-        function, generators, cache, pos);
-  }
-};
-
 class service_cpp2_generator : public service_generator {
  public:
   service_cpp2_generator() = default;
@@ -988,8 +949,6 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
   generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
   generators_->set_struct_generator(std::make_unique<struct_cpp2_generator>());
-  generators_->set_function_generator(
-      std::make_unique<function_cpp2_generator>());
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
