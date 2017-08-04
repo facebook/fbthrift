@@ -55,6 +55,7 @@ class t_hack_generator : public t_oop_generator {
     shape_unsafe_json_ = option_is_specified(parsed_options, "shape_unsafe_json");
     lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
     arrays_ = option_is_specified(parsed_options, "arrays");
+    generate_legacy_read_write_ = option_is_specified(parsed_options, "generate_legacy_read_write");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -497,6 +498,11 @@ class t_hack_generator : public t_oop_generator {
    * True to use Hack arrays instead of collections
    */
   bool arrays_;
+
+  /**
+   * True to use generate the legacy read and write methods
+   */
+  bool generate_legacy_read_write_;
 };
 
 void t_hack_generator::generate_json_enum(
@@ -2216,10 +2222,12 @@ void t_hack_generator::_generate_php_struct_definition(
   out << " {" << endl;
   indent_up();
 
-  if (tstruct->is_union()) {
-    indent(out) << "use \\ThriftUnionSerializationTrait;" << endl << endl;
-  } else {
-    indent(out) << "use \\ThriftSerializationTrait;" << endl << endl;
+  if (!generate_legacy_read_write_) {
+    if (tstruct->is_union()) {
+      indent(out) << "use \\ThriftUnionSerializationTrait;" << endl << endl;
+    } else {
+      indent(out) << "use \\ThriftSerializationTrait;" << endl << endl;
+    }
   }
 
   if (generateAsTrait && is_exception) {
@@ -2395,8 +2403,10 @@ void t_hack_generator::_generate_php_struct_definition(
   if (shapes_ && !is_exception && !is_result) {
     generate_php_struct_shape_methods(out, tstruct);
   }
-  generate_php_struct_reader(out, tstruct);
-  generate_php_struct_writer(out, tstruct);
+  if (generate_legacy_read_write_) {
+    generate_php_struct_reader(out, tstruct);
+    generate_php_struct_writer(out, tstruct);
+  }
   generate_json_reader(out, tstruct);
   indent_down();
   out <<
@@ -2412,7 +2422,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) << "public function readLegacy(\\TProtocol $input): int {"
+  indent(out) << "public function read(\\TProtocol $input): int {"
               << endl;
   indent_up();
   t_name_generator namer;
@@ -2577,7 +2587,7 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) << "public function writeLegacy(\\TProtocol $output): int {"
+  indent(out) << "public function write(\\TProtocol $output): int {"
               << endl;
   indent_up();
 

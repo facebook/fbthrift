@@ -1,2 +1,2 @@
-hack:shapes=1 src/module.thrift
+hack:shapes=1,generate_legacy_read_write=1 src/module.thrift
 mstch_swift src/module.thrift

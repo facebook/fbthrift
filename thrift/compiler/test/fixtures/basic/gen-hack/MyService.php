@@ -1380,44 +1380,6 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_ping_args');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1434,44 +1396,6 @@ class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyService_ping_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_ping_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -1512,44 +1436,6 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_getRandomData_args');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1572,57 +1458,6 @@ class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishS
 
   public function getName(): string {
     return 'MyService_getRandomData_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 0:
-          if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->success);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_getRandomData_result');
-    if ($this->success !== null) {
-      $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', \TType::STRING, 0);
-      $xfer += $output->writeString($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -1684,57 +1519,6 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == \TType::I64) {
-            $xfer += $input->readI64($this->id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_hasDataById_args');
-    if ($this->id !== null) {
-      $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
-      $xfer += $output->writeI64($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1757,57 +1541,6 @@ class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStr
 
   public function getName(): string {
     return 'MyService_hasDataById_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 0:
-          if ($ftype == \TType::BOOL) {
-            $xfer += $input->readBool($this->success);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_hasDataById_result');
-    if ($this->success !== null) {
-      $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', \TType::BOOL, 0);
-      $xfer += $output->writeBool($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -1869,57 +1602,6 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == \TType::I64) {
-            $xfer += $input->readI64($this->id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_getDataById_args');
-    if ($this->id !== null) {
-      $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
-      $xfer += $output->writeI64($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1942,57 +1624,6 @@ class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStr
 
   public function getName(): string {
     return 'MyService_getDataById_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 0:
-          if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->success);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_getDataById_result');
-    if ($this->success !== null) {
-      $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', \TType::STRING, 0);
-      $xfer += $output->writeString($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -2075,70 +1706,6 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == \TType::I64) {
-            $xfer += $input->readI64($this->id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->data);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_putDataById_args');
-    if ($this->id !== null) {
-      $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
-      $xfer += $output->writeI64($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->data !== null) {
-      $_val1 = $this->data;
-      $xfer += $output->writeFieldBegin('data', \TType::STRING, 2);
-      $xfer += $output->writeString($_val1);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -2155,44 +1722,6 @@ class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStr
 
   public function getName(): string {
     return 'MyService_putDataById_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_putDataById_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -2275,69 +1804,5 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        case 1:
-          if ($ftype == \TType::I64) {
-            $xfer += $input->readI64($this->id);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 2:
-          if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->data);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyService_lobDataById_args');
-    if ($this->id !== null) {
-      $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
-      $xfer += $output->writeI64($_val0);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->data !== null) {
-      $_val1 = $this->data;
-      $xfer += $output->writeFieldBegin('data', \TType::STRING, 2);
-      $xfer += $output->writeString($_val1);
-      $xfer += $output->writeFieldEnd();
-    }
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 

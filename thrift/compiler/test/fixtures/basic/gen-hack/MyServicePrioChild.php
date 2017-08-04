@@ -317,44 +317,6 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioChild_pang_args');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -371,44 +333,6 @@ class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishS
 
   public function getName(): string {
     return 'MyServicePrioChild_pang_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioChild_pang_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }

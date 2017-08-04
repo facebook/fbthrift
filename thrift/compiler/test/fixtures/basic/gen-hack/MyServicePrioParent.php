@@ -542,44 +542,6 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioParent_ping_args');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -596,44 +558,6 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
 
   public function getName(): string {
     return 'MyServicePrioParent_ping_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioParent_ping_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
@@ -674,44 +598,6 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioParent_pong_args');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
-  }
-
 }
 
 class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -728,44 +614,6 @@ class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapish
 
   public function getName(): string {
     return 'MyServicePrioParent_pong_result';
-  }
-
-  public function readLegacy(\TProtocol $input): int {
-    $xfer = 0;
-    $fname = '';
-    $ftype = 0;
-    $fid = 0;
-    $xfer += $input->readStructBegin($fname);
-    while (true)
-    {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == \TType::STOP) {
-        break;
-      }
-      if (!$fid && $fname !== null) {
-        $fid = (int) self::$_TFIELDMAP->get($fname);
-        if ($fid !== 0) {
-          $ftype = self::$_TSPEC[$fid]['type'];
-        }
-      }
-      switch ($fid)
-      {
-        default:
-          $xfer += $input->skip($ftype);
-          break;
-      }
-      $xfer += $input->readFieldEnd();
-    }
-    $xfer += $input->readStructEnd();
-    return $xfer;
-  }
-
-  public function writeLegacy(\TProtocol $output): int {
-    $xfer = 0;
-    $xfer += $output->writeStructBegin('MyServicePrioParent_pong_result');
-    $xfer += $output->writeFieldStop();
-    $xfer += $output->writeStructEnd();
-    return $xfer;
   }
 
 }
