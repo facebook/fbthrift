@@ -826,7 +826,13 @@ void t_hack_generator::close_generator() {
     indent_up();
     f_consts_ << endl;
     if (!lazy_constants_) {
-      indent(f_consts_) << "public static array $__values = array(" << endl;
+      indent(f_consts_) << "public static ";
+      if (strict_) {
+        f_consts_ << "array<string, mixed>";
+      } else {
+        f_consts_ << "array";
+      }
+      f_consts_ << " $__values = array(" << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(f_consts_, ",\n"));
@@ -902,8 +908,13 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
   if (oldenum_) {
     // names
-    indent(f_types_) <<
-      "public static array $__names = array(" << endl;
+    indent(f_types_) << "public static ";
+    if (strict_) {
+      f_types_ << "array<int, string>";
+    } else {
+      f_types_ << "array";
+    }
+    f_types_ << " $__names = array(" << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -913,8 +924,13 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     indent(f_types_) <<
       ");" << endl;
     // values
-    indent(f_types_) <<
-      "public static array $__values = array(" << endl;
+    indent(f_types_) << "public static ";
+    if (strict_) {
+      f_types_ << "array<string, int>";
+    } else {
+      f_types_ << "array";
+    }
+    f_types_ << " $__values = array(" << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -1380,7 +1396,13 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
  */
 void t_hack_generator::generate_php_struct_spec(ofstream& out,
                                                t_struct* tstruct) {
-  indent(out) << "public static array $_TSPEC = array(" << endl;
+  indent(out) << "public static ";
+  if (strict_) {
+    out << "array<int, array<string, mixed>>";
+  } else {
+    out << "array";
+  }
+  out << " $_TSPEC = array(" << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
