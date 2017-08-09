@@ -537,6 +537,10 @@ class union1 : public apache::thrift::TStructType<union1> {
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -875,6 +879,10 @@ class union2 : public apache::thrift::TStructType<union2> {
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -1213,6 +1221,10 @@ class union3 : public apache::thrift::TStructType<union3> {
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -1289,6 +1301,10 @@ class structA : public apache::thrift::TStructType<structA> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class structA;
@@ -1687,6 +1703,10 @@ class unionA : public apache::thrift::TStructType<unionA> {
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -1763,6 +1783,10 @@ class structB : public apache::thrift::TStructType<structB> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class structB;
@@ -2286,6 +2310,10 @@ class structC : public apache::thrift::TStructType<structC> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class structC;
@@ -2419,6 +2447,10 @@ class struct1 : public apache::thrift::TStructType<struct1> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct1;
@@ -2574,6 +2606,10 @@ class struct2 : public apache::thrift::TStructType<struct2> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct2;
@@ -2905,6 +2941,10 @@ class struct3 : public apache::thrift::TStructType<struct3> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct3;
@@ -3009,6 +3049,10 @@ class struct4 : public apache::thrift::TStructType<struct4> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct4;
@@ -3129,6 +3173,10 @@ class struct5 : public apache::thrift::TStructType<struct5> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct5;
@@ -3188,6 +3236,10 @@ class struct_binary : public apache::thrift::TStructType<struct_binary> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct_binary;
@@ -3247,6 +3299,10 @@ class annotated : public apache::thrift::TStructType<annotated> {
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class annotated;
@@ -4926,6 +4982,10 @@ class union_with_special_names : public apache::thrift::TStructType<union_with_s
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -5386,6 +5446,10 @@ class struct_with_special_names : public apache::thrift::TStructType<struct_with
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct_with_special_names;
@@ -5493,6 +5557,10 @@ class struct_with_indirections : public apache::thrift::TStructType<struct_with_
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class struct_with_indirections;

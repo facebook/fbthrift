@@ -46,10 +46,7 @@ uint32_t decorated_struct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -134,34 +131,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "fieldA") {
-        fid = 12;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldB") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldC") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldD") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldE") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldF") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldG") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 12:

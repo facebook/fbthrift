@@ -488,6 +488,9 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
 
   Type type_;
   storage_type value_;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ComplexUnion& a, ComplexUnion& b);
@@ -770,6 +773,9 @@ class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperator
 
   Type type_;
   storage_type value_;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(FinalComplexUnion& a, FinalComplexUnion& b);

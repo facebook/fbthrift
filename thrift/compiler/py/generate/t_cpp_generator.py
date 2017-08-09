@@ -3231,6 +3231,9 @@ class CppGenerator(t_generator.Generator):
             struct('// user defined code (cpp2.methods = ...)')
             struct(self._cpp_annotation(obj, 'methods'))
 
+        struct()
+        struct.label('private:')
+        self._generate_struct_reader_translate_field_name(struct, obj)
         # we're done with the struct definition
         struct.release()
 
@@ -3274,6 +3277,20 @@ class CppGenerator(t_generator.Generator):
     # ======================================================================
     # DESERIALIZATION CODE
     # ======================================================================
+
+    def _generate_struct_reader_translate_field_name(self, scope, obj):
+        with scope.defn(
+            'void {name}('
+            'FOLLY_MAYBE_UNUSED folly::StringPiece _fname, '
+            'FOLLY_MAYBE_UNUSED int16_t& fid, '
+            'FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype)',
+            name='translateFieldName', modifiers='static') as s:
+            with s('if (false)'):
+                pass
+            for field in obj.members:
+                with s('else if (_fname == "{0}")'.format(field.name)):
+                    s('fid = {0};'.format(field.key))
+                    s('_ftype = {0};'.format(self._type_to_enum(field.type)))
 
     def _generate_struct_reader(self, scope, obj,
                                 pointers=False, has_isset=True,
@@ -3356,12 +3373,7 @@ class CppGenerator(t_generator.Generator):
             fields_scope = s
 
         with s1('if (fid == std::numeric_limits<int16_t>::min())'):
-            cond_type = 'if'
-            for field in fields:
-                with s1('{0} (_fname == "{1}")'.format(cond_type, field.name)):
-                    s1('fid = {0};'.format(field.key))
-                    s1('_ftype = {0};'.format(self._type_to_enum(field.type)))
-                    cond_type = 'else if'
+            s1(this + '->translateFieldName(_fname, fid, _ftype);')
 
         # Switch statement on the field we are reading
         s2 = fields_scope('switch (fid)').scope

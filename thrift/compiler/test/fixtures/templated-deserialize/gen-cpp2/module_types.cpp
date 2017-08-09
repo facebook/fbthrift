@@ -60,6 +60,18 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
   return true;
 }
 
+void SmallStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "small_A") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "small_B") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
 void swap(SmallStruct& a, SmallStruct& b) {
   using ::std::swap;
   swap(a.small_A, b.small_A);
@@ -321,6 +333,98 @@ const std::vector< ::cpp2::IndirectionC>& containerStruct::get_fieldP() const& {
 
 std::vector< ::cpp2::IndirectionC> containerStruct::get_fieldP() && {
   return std::move(fieldP);
+}
+
+void containerStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldH") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldI") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "fieldJ") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldK") {
+    fid = 11;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldL") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldM") {
+    fid = 13;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldN") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldO") {
+    fid = 15;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldP") {
+    fid = 16;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldQ") {
+    fid = 17;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "fieldR") {
+    fid = 18;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldS") {
+    fid = 19;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "fieldT") {
+    fid = 20;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "fieldU") {
+    fid = 21;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "fieldX") {
+    fid = 23;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
 }
 
 void swap(containerStruct& a, containerStruct& b) {

@@ -65,18 +65,7 @@ uint32_t Internship::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "weeks") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "title") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "employer") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -201,10 +190,7 @@ uint32_t UnEnumStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "city") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -288,14 +274,7 @@ uint32_t Range::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "min") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "max") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -400,14 +379,7 @@ uint32_t struct1::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "a") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "b") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -506,22 +478,7 @@ uint32_t struct2::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "a") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "b") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "c") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "d") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -655,18 +612,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "a") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "b") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "c") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

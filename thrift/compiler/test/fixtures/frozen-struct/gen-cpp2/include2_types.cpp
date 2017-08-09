@@ -35,6 +35,18 @@ bool IncludedB::operator==(const IncludedB& rhs) const {
   return true;
 }
 
+void IncludedB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "strField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
 void swap(IncludedB& a, IncludedB& b) {
   using ::std::swap;
   swap(a.i32Field, b.i32Field);

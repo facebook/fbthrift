@@ -59,6 +59,26 @@ std::map<std::string, int32_t> ModuleA::get_mapField() && {
   return std::move(mapField);
 }
 
+void ModuleA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "strField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "listField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "mapField") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
 void swap(ModuleA& a, ModuleA& b) {
   using ::std::swap;
   swap(a.i32Field, b.i32Field);
@@ -94,6 +114,14 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
     return false;
   }
   return true;
+}
+
+void ModuleB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
 }
 
 void swap(ModuleB& a, ModuleB& b) {
@@ -134,6 +162,18 @@ bool ExceptionA::operator==(const ExceptionA& rhs) const {
   return true;
 }
 
+void ExceptionA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "msg") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
 void swap(ExceptionA& a, ExceptionA& b) {
   using ::std::swap;
   swap(a.code, b.code);
@@ -171,6 +211,18 @@ bool ExceptionB::operator==(const ExceptionB& rhs) const {
     return false;
   }
   return true;
+}
+
+void ExceptionB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "msg") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 
 void swap(ExceptionB& a, ExceptionB& b) {

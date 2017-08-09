@@ -75,6 +75,17 @@ bool MyStruct::operator == (const MyStruct & rhs) const {
   return true;
 }
 
+void MyStruct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "baz") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+};
+
 uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;

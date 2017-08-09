@@ -72,7 +72,9 @@ uint32_t Empty::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -136,10 +138,7 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "boolField") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -222,38 +221,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "MyBoolField") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "MyIntField") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "MyStringField") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyStringField2") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryField") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryField2") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryField3") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryListField4") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1805,66 +1773,7 @@ uint32_t AnException::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "code") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "req_code") {
-        fid = 101;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "message2") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "req_message") {
-        fid = 102;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "exception_list") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "exception_set") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "exception_map") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "req_exception_map") {
-        fid = 105;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "enum_field") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "enum_container") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "a_struct") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "a_set_struct") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "a_union_list") {
-        fid = 10;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "union_typedef") {
-        fid = 11;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "a_union_typedef_list") {
-        fid = 19;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -2203,18 +2112,7 @@ uint32_t AnotherException::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "code") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "req_code") {
-        fid = 101;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "message") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -2340,186 +2238,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "fieldA") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "req_fieldA") {
-        fid = 101;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "opt_fieldA") {
-        fid = 201;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "fieldB") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "req_fieldB") {
-        fid = 102;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "opt_fieldB") {
-        fid = 202;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldC") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "req_fieldC") {
-        fid = 103;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "opt_fieldC") {
-        fid = 203;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldD") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "fieldE") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "req_fieldE") {
-        fid = 105;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "opt_fieldE") {
-        fid = 205;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "fieldF") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldG") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldH") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldI") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "fieldJ") {
-        fid = 10;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldK") {
-        fid = 11;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldL") {
-        fid = 12;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldM") {
-        fid = 13;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldN") {
-        fid = 14;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldO") {
-        fid = 15;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldP") {
-        fid = 16;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldQ") {
-        fid = 17;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldR") {
-        fid = 18;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "req_fieldR") {
-        fid = 118;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "opt_fieldR") {
-        fid = 218;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldS") {
-        fid = 19;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldT") {
-        fid = 21;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldU") {
-        fid = 22;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldV") {
-        fid = 23;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_fieldV") {
-        fid = 123;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_fieldV") {
-        fid = 223;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "fieldW") {
-        fid = 24;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldX") {
-        fid = 25;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_fieldX") {
-        fid = 125;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_fieldX") {
-        fid = 225;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "fieldY") {
-        fid = 26;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldZ") {
-        fid = 27;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldAA") {
-        fid = 28;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldAB") {
-        fid = 29;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldAC") {
-        fid = 30;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldAD") {
-        fid = 31;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldAE") {
-        fid = 32;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -3435,14 +3154,7 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "MyIncludedInt") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "MyIncludedStruct") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -3550,166 +3262,7 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "no_annotation") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "cpp_unique_ref") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "cpp2_unique_ref") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "container_with_ref") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "req_cpp_unique_ref") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_cpp2_unique_ref") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_container_with_ref") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "opt_cpp_unique_ref") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_cpp2_unique_ref") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_container_with_ref") {
-        fid = 10;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "ref_type_unique") {
-        fid = 11;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "ref_type_shared") {
-        fid = 12;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "ref_type_const") {
-        fid = 13;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "req_ref_type_shared") {
-        fid = 14;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_ref_type_const") {
-        fid = 15;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_ref_type_unique") {
-        fid = 16;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "opt_ref_type_const") {
-        fid = 17;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_ref_type_unique") {
-        fid = 18;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_ref_type_shared") {
-        fid = 19;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "base_type") {
-        fid = 20;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "list_type") {
-        fid = 21;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "set_type") {
-        fid = 22;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "map_type") {
-        fid = 23;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "map_struct_type") {
-        fid = 24;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "iobuf_type") {
-        fid = 25;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "iobuf_ptr") {
-        fid = 26;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "list_i32_template") {
-        fid = 27;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "list_string_template") {
-        fid = 28;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "set_template") {
-        fid = 29;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "map_template") {
-        fid = 30;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "typedef_list_template") {
-        fid = 31;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "typedef_deque_template") {
-        fid = 32;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "typedef_set_template") {
-        fid = 33;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "typedef_map_template") {
-        fid = 34;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "indirection_a") {
-        fid = 35;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "indirection_b") {
-        fid = 36;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "indirection_c") {
-        fid = 37;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "iobuf_type_val") {
-        fid = 38;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "iobuf_ptr_val") {
-        fid = 39;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "struct_struct") {
-        fid = 40;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

@@ -201,6 +201,7 @@ class t_cpp_generator : public t_oop_generator {
                                       const string& key,
                                       const string& value,
                                       const string& prefix_thrift = "");
+  void generate_struct_reader_translate_field_name(std::ofstream& out, t_struct* tstruct);
   void generate_struct_reader        (std::ofstream& out, t_struct* tstruct, bool pointers=false);
   void generate_struct_clear         (std::ofstream& out, t_struct* tstruct, bool pointers=false);
   void generate_struct_writer        (std::ofstream& out, t_struct* tstruct, bool pointers=false);
@@ -1525,6 +1526,7 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
   generate_equal_operator(f_types_impl_, tstruct);
 
   generate_json_reader(f_types_impl_, tstruct);
+  generate_struct_reader_translate_field_name(f_types_impl_, tstruct);
   generate_struct_reader(out, tstruct);
   generate_struct_clear(f_types_impl_, tstruct);
   generate_struct_writer(out, tstruct);
@@ -1942,6 +1944,16 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
       "apache::thrift::protocol::TProtocol* oprot) const;" << endl;
   }
 
+  // should be private; public to support cpp2 compatibility
+  indent(out) <<
+    "static void translateFieldName(" << endl;
+  indent(out) <<
+    "    folly::StringPiece _fname," << endl;
+  indent(out) <<
+    "    int16_t& fid," << endl;
+  indent(out) <<
+    "    apache::thrift::protocol::TType& _ftype);" << endl;
+
   indent_down();
 
   // Declare all fields
@@ -1950,6 +1962,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << "  storage_type value_;" << endl << endl;
   indent(out) << "};" << endl << endl;
 
+  generate_struct_reader_translate_field_name(f_types_impl_, tstruct);
   generate_union_reader(gen_templates_ ? f_types_tcc_ : f_types_impl_, tstruct);
   generate_union_writer(gen_templates_ ? f_types_tcc_ : f_types_impl_, tstruct);
 
@@ -2611,6 +2624,16 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       indent() << "// user defined code (cpp.methods = ...)" << endl <<
       methods->second << endl;
   }
+
+  // should be private; public to support cpp2 compatibility
+  indent(out) <<
+    "static void translateFieldName(" << endl;
+  indent(out) <<
+    "    folly::StringPiece _fname," << endl;
+  indent(out) <<
+    "    int16_t& fid," << endl;
+  indent(out) <<
+    "    apache::thrift::protocol::TType& _ftype);" << endl;
 
   indent_down();
   indent(out) <<
@@ -3392,6 +3415,38 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
     indent_down();
     indent(out) << "}" << endl;
   }
+}
+
+void t_cpp_generator::generate_struct_reader_translate_field_name(
+    ofstream& out, t_struct* tstruct) {
+  indent(out) <<
+    "void " << tstruct->get_name() << "::translateFieldName(" << endl;
+  indent(out) <<
+    "    FOLLY_MAYBE_UNUSED folly::StringPiece _fname," << endl;
+  indent(out) <<
+    "    FOLLY_MAYBE_UNUSED int16_t& fid," << endl;
+  indent(out) <<
+    "    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {" << endl;
+  indent_up();
+  indent(out) <<
+    "if (false) {}" << endl;
+  for (auto field : tstruct->get_members()) {
+    indent(out) <<
+      "else if (_fname == \"" << field->get_name() << "\") {" << endl;
+    indent_up();
+    indent(out) <<
+      "fid = " << field->get_key() << ";" << endl;
+    indent(out) <<
+      "_ftype = " << type_to_enum(field->get_type()) << ";" << endl;
+    indent_down();
+    indent(out) <<
+      "}" << endl;
+  }
+  indent_down();
+  indent(out) <<
+    "};" << endl;
+  indent(out) <<
+    endl;
 }
 
 /**
@@ -4201,6 +4256,7 @@ void t_cpp_generator::generate_service_helpers(t_service* tservice) {
     if (!bootstrap_) {
       generate_struct_reflection(f_service_, ts);
     }
+    generate_struct_reader_translate_field_name(f_service_, ts);
     generate_struct_reader(out, ts);
     generate_struct_writer(out, ts);
     ts->set_name(tservice->get_name() + "_" + (*f_iter)->get_name() + "_pargs");
@@ -4208,6 +4264,7 @@ void t_cpp_generator::generate_service_helpers(t_service* tservice) {
     if (!bootstrap_) {
       generate_struct_reflection(f_service_, ts);
     }
+    generate_struct_reader_translate_field_name(f_service_, ts);
     generate_struct_writer(out, ts, true);
     ts->set_name(name_orig);
 
@@ -6061,6 +6118,7 @@ void t_cpp_generator::generate_function_helpers(t_service* tservice,
   if (!bootstrap_) {
     generate_struct_reflection(f_service_, &result);
   }
+  generate_struct_reader_translate_field_name(f_service_, &result);
   generate_struct_reader(out, &result, true);
   generate_struct_result_writer(out, &result, true);
 

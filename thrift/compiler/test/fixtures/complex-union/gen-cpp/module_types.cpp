@@ -16,6 +16,37 @@
 
 
 
+void ComplexUnion::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intValue") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "stringValue") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "intListValue") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "stringListValue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "typedefValue") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "stringRef") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
+
 uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
   std::string _fname;
@@ -236,6 +267,21 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeStructEnd();
   return xfer;
 }
+
+void FinalComplexUnion::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "thingOne") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "thingTwo") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t FinalComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;

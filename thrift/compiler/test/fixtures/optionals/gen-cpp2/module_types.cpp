@@ -67,6 +67,26 @@ bool Color::operator==(const Color& rhs) const {
   return true;
 }
 
+void Color::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "red") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "green") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "blue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "alpha") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
 void swap(Color& a, Color& b) {
   using ::std::swap;
   swap(a.red, b.red);
@@ -116,6 +136,30 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
     return false;
   }
   return true;
+}
+
+void Vehicle::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "color") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "licensePlate") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "description") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "name") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "hasAC") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
 }
 
 void swap(Vehicle& a, Vehicle& b) {
@@ -188,6 +232,50 @@ bool Person::operator==(const Person& rhs) const {
     return false;
   }
   return true;
+}
+
+void Person::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "name") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "age") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+  else if (_fname == "address") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "favoriteColor") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "friends") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "bestFriend") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "petNames") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "afraidOfAnimal") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "vehicles") {
+    fid = 10;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
 }
 
 void swap(Person& a, Person& b) {

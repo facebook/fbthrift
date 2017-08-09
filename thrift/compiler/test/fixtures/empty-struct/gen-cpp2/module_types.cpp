@@ -26,6 +26,10 @@ bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
 }
 
+void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
 void swap(Empty& a, Empty& b) {
   using ::std::swap;
   (void)a;
@@ -68,6 +72,9 @@ bool Nada::operator==(const Nada& /* rhs */) const {
       return true;
     }
   }
+}
+void Nada::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
 }
 
 void swap(Nada& a, Nada& b) {

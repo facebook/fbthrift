@@ -37,22 +37,7 @@ uint32_t ModuleA::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "i32Field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "strField") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "listField") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "mapField") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -187,10 +172,7 @@ uint32_t ModuleB::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "i32Field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -272,14 +254,7 @@ uint32_t ExceptionA::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "code") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "msg") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -378,14 +353,7 @@ uint32_t ExceptionB::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "code") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "msg") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

@@ -207,6 +207,10 @@ class service_with_special_names_get_args : public apache::thrift::TStructType<s
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_get_args;
@@ -226,6 +230,10 @@ class service_with_special_names_get_pargs : public apache::thrift::TStructType<
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_get_pargs;
@@ -268,6 +276,10 @@ class service_with_special_names_get_presult : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_get_presult;
@@ -303,6 +315,10 @@ class service_with_special_names_getter_args : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_getter_args;
@@ -322,6 +338,10 @@ class service_with_special_names_getter_pargs : public apache::thrift::TStructTy
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_getter_pargs;
@@ -364,6 +384,10 @@ class service_with_special_names_getter_presult : public apache::thrift::TStruct
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_getter_presult;
@@ -399,6 +423,10 @@ class service_with_special_names_lists_args : public apache::thrift::TStructType
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_lists_args;
@@ -418,6 +446,10 @@ class service_with_special_names_lists_pargs : public apache::thrift::TStructTyp
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_lists_pargs;
@@ -460,6 +492,10 @@ class service_with_special_names_lists_presult : public apache::thrift::TStructT
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_lists_presult;
@@ -495,6 +531,10 @@ class service_with_special_names_maps_args : public apache::thrift::TStructType<
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_maps_args;
@@ -514,6 +554,10 @@ class service_with_special_names_maps_pargs : public apache::thrift::TStructType
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_maps_pargs;
@@ -556,6 +600,10 @@ class service_with_special_names_maps_presult : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_maps_presult;
@@ -591,6 +639,10 @@ class service_with_special_names_name_args : public apache::thrift::TStructType<
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_args;
@@ -610,6 +662,10 @@ class service_with_special_names_name_pargs : public apache::thrift::TStructType
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_pargs;
@@ -652,6 +708,10 @@ class service_with_special_names_name_presult : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_presult;
@@ -687,6 +747,10 @@ class service_with_special_names_name_to_value_args : public apache::thrift::TSt
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_to_value_args;
@@ -706,6 +770,10 @@ class service_with_special_names_name_to_value_pargs : public apache::thrift::TS
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_to_value_pargs;
@@ -748,6 +816,10 @@ class service_with_special_names_name_to_value_presult : public apache::thrift::
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_name_to_value_presult;
@@ -783,6 +855,10 @@ class service_with_special_names_names_args : public apache::thrift::TStructType
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_names_args;
@@ -802,6 +878,10 @@ class service_with_special_names_names_pargs : public apache::thrift::TStructTyp
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_names_pargs;
@@ -844,6 +924,10 @@ class service_with_special_names_names_presult : public apache::thrift::TStructT
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_names_presult;
@@ -879,6 +963,10 @@ class service_with_special_names_prefix_tree_args : public apache::thrift::TStru
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_prefix_tree_args;
@@ -898,6 +986,10 @@ class service_with_special_names_prefix_tree_pargs : public apache::thrift::TStr
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_prefix_tree_pargs;
@@ -940,6 +1032,10 @@ class service_with_special_names_prefix_tree_presult : public apache::thrift::TS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_prefix_tree_presult;
@@ -975,6 +1071,10 @@ class service_with_special_names_sets_args : public apache::thrift::TStructType<
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_sets_args;
@@ -994,6 +1094,10 @@ class service_with_special_names_sets_pargs : public apache::thrift::TStructType
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_sets_pargs;
@@ -1036,6 +1140,10 @@ class service_with_special_names_sets_presult : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_sets_presult;
@@ -1071,6 +1179,10 @@ class service_with_special_names_setter_args : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_setter_args;
@@ -1090,6 +1202,10 @@ class service_with_special_names_setter_pargs : public apache::thrift::TStructTy
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_setter_pargs;
@@ -1132,6 +1248,10 @@ class service_with_special_names_setter_presult : public apache::thrift::TStruct
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_setter_presult;
@@ -1167,6 +1287,10 @@ class service_with_special_names_str_args : public apache::thrift::TStructType<s
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_str_args;
@@ -1186,6 +1310,10 @@ class service_with_special_names_str_pargs : public apache::thrift::TStructType<
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_str_pargs;
@@ -1228,6 +1356,10 @@ class service_with_special_names_str_presult : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_str_presult;
@@ -1263,6 +1395,10 @@ class service_with_special_names_strings_args : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_strings_args;
@@ -1282,6 +1418,10 @@ class service_with_special_names_strings_pargs : public apache::thrift::TStructT
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_strings_pargs;
@@ -1324,6 +1464,10 @@ class service_with_special_names_strings_presult : public apache::thrift::TStruc
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_strings_presult;
@@ -1359,6 +1503,10 @@ class service_with_special_names_type_args : public apache::thrift::TStructType<
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_type_args;
@@ -1378,6 +1526,10 @@ class service_with_special_names_type_pargs : public apache::thrift::TStructType
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_type_pargs;
@@ -1420,6 +1572,10 @@ class service_with_special_names_type_presult : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_type_presult;
@@ -1455,6 +1611,10 @@ class service_with_special_names_value_args : public apache::thrift::TStructType
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_args;
@@ -1474,6 +1634,10 @@ class service_with_special_names_value_pargs : public apache::thrift::TStructTyp
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_pargs;
@@ -1516,6 +1680,10 @@ class service_with_special_names_value_presult : public apache::thrift::TStructT
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_presult;
@@ -1551,6 +1719,10 @@ class service_with_special_names_value_to_name_args : public apache::thrift::TSt
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_to_name_args;
@@ -1570,6 +1742,10 @@ class service_with_special_names_value_to_name_pargs : public apache::thrift::TS
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_to_name_pargs;
@@ -1612,6 +1788,10 @@ class service_with_special_names_value_to_name_presult : public apache::thrift::
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_value_to_name_presult;
@@ -1647,6 +1827,10 @@ class service_with_special_names_values_args : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_values_args;
@@ -1666,6 +1850,10 @@ class service_with_special_names_values_pargs : public apache::thrift::TStructTy
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_values_pargs;
@@ -1708,6 +1896,10 @@ class service_with_special_names_values_presult : public apache::thrift::TStruct
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_values_presult;
@@ -1743,6 +1935,10 @@ class service_with_special_names_id_args : public apache::thrift::TStructType<se
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_id_args;
@@ -1762,6 +1958,10 @@ class service_with_special_names_id_pargs : public apache::thrift::TStructType<s
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_id_pargs;
@@ -1804,6 +2004,10 @@ class service_with_special_names_id_presult : public apache::thrift::TStructType
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_id_presult;
@@ -1839,6 +2043,10 @@ class service_with_special_names_ids_args : public apache::thrift::TStructType<s
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_ids_args;
@@ -1858,6 +2066,10 @@ class service_with_special_names_ids_pargs : public apache::thrift::TStructType<
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_ids_pargs;
@@ -1900,6 +2112,10 @@ class service_with_special_names_ids_presult : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_ids_presult;
@@ -1935,6 +2151,10 @@ class service_with_special_names_descriptor_args : public apache::thrift::TStruc
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptor_args;
@@ -1954,6 +2174,10 @@ class service_with_special_names_descriptor_pargs : public apache::thrift::TStru
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptor_pargs;
@@ -1996,6 +2220,10 @@ class service_with_special_names_descriptor_presult : public apache::thrift::TSt
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptor_presult;
@@ -2031,6 +2259,10 @@ class service_with_special_names_descriptors_args : public apache::thrift::TStru
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptors_args;
@@ -2050,6 +2282,10 @@ class service_with_special_names_descriptors_pargs : public apache::thrift::TStr
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptors_pargs;
@@ -2092,6 +2328,10 @@ class service_with_special_names_descriptors_presult : public apache::thrift::TS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_descriptors_presult;
@@ -2127,6 +2367,10 @@ class service_with_special_names_key_args : public apache::thrift::TStructType<s
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_key_args;
@@ -2146,6 +2390,10 @@ class service_with_special_names_key_pargs : public apache::thrift::TStructType<
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_key_pargs;
@@ -2188,6 +2436,10 @@ class service_with_special_names_key_presult : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_key_presult;
@@ -2223,6 +2475,10 @@ class service_with_special_names_keys_args : public apache::thrift::TStructType<
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_keys_args;
@@ -2242,6 +2498,10 @@ class service_with_special_names_keys_pargs : public apache::thrift::TStructType
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_keys_pargs;
@@ -2284,6 +2544,10 @@ class service_with_special_names_keys_presult : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_keys_presult;
@@ -2319,6 +2583,10 @@ class service_with_special_names_annotation_args : public apache::thrift::TStruc
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotation_args;
@@ -2338,6 +2606,10 @@ class service_with_special_names_annotation_pargs : public apache::thrift::TStru
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotation_pargs;
@@ -2380,6 +2652,10 @@ class service_with_special_names_annotation_presult : public apache::thrift::TSt
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotation_presult;
@@ -2415,6 +2691,10 @@ class service_with_special_names_annotations_args : public apache::thrift::TStru
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotations_args;
@@ -2434,6 +2714,10 @@ class service_with_special_names_annotations_pargs : public apache::thrift::TStr
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotations_pargs;
@@ -2476,6 +2760,10 @@ class service_with_special_names_annotations_presult : public apache::thrift::TS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_annotations_presult;
@@ -2511,6 +2799,10 @@ class service_with_special_names_member_args : public apache::thrift::TStructTyp
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_member_args;
@@ -2530,6 +2822,10 @@ class service_with_special_names_member_pargs : public apache::thrift::TStructTy
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_member_pargs;
@@ -2572,6 +2868,10 @@ class service_with_special_names_member_presult : public apache::thrift::TStruct
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_member_presult;
@@ -2607,6 +2907,10 @@ class service_with_special_names_members_args : public apache::thrift::TStructTy
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_members_args;
@@ -2626,6 +2930,10 @@ class service_with_special_names_members_pargs : public apache::thrift::TStructT
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_members_pargs;
@@ -2668,6 +2976,10 @@ class service_with_special_names_members_presult : public apache::thrift::TStruc
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class service_with_special_names_members_presult;

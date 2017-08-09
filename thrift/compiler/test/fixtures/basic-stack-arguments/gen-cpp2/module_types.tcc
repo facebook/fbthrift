@@ -46,14 +46,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "MyIntField") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "MyStringField") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

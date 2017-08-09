@@ -43,6 +43,18 @@ const  ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
   return std::move(MyIncludedField);
 }
 
+void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIncludedField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "MyIncludedInt") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedField, b.MyIncludedField);

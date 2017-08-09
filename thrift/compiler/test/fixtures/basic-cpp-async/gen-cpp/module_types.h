@@ -117,6 +117,10 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   template <class Protocol_>
   uint32_t write(Protocol_* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyStruct;

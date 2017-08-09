@@ -94,6 +94,33 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     }
   }
 }
+void ComplexUnion::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intValue") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "stringValue") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "intListValue") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "stringListValue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "typedefValue") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "stringRef") {
+    fid = 14;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
 
 void swap(ComplexUnion& a, ComplexUnion& b) {
   ComplexUnion temp(std::move(a));
@@ -154,6 +181,17 @@ bool FinalComplexUnion::operator==(const FinalComplexUnion& rhs) const {
     {
       return true;
     }
+  }
+}
+void FinalComplexUnion::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "thingOne") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "thingTwo") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
   }
 }
 

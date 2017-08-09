@@ -16,6 +16,13 @@ void MyServicePrioParent_ping_args::_reflection_register(::apache::thrift::refle
    ::module_reflection_::reflectionInitializer_15158865162347410572(schema);
 }
 
+void MyServicePrioParent_ping_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServicePrioParent_ping_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -67,6 +74,13 @@ void MyServicePrioParent_ping_pargs::_reflection_register(::apache::thrift::refl
    ::module_reflection_::reflectionInitializer_11775803641217596972(schema);
 }
 
+void MyServicePrioParent_ping_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServicePrioParent_ping_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServicePrioParent_ping_pargs");
@@ -79,6 +93,13 @@ const uint64_t MyServicePrioParent_ping_presult::_reflection_id;
 void MyServicePrioParent_ping_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_1987822334736715596(schema);
 }
+
+void MyServicePrioParent_ping_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
 
 uint32_t MyServicePrioParent_ping_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -134,6 +155,13 @@ void MyServicePrioParent_pong_args::_reflection_register(::apache::thrift::refle
    ::module_reflection_::reflectionInitializer_9845490327892903980(schema);
 }
 
+void MyServicePrioParent_pong_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServicePrioParent_pong_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -185,6 +213,13 @@ void MyServicePrioParent_pong_pargs::_reflection_register(::apache::thrift::refl
    ::module_reflection_::reflectionInitializer_17598621816419220940(schema);
 }
 
+void MyServicePrioParent_pong_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServicePrioParent_pong_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServicePrioParent_pong_pargs");
@@ -197,6 +232,13 @@ const uint64_t MyServicePrioParent_pong_presult::_reflection_id;
 void MyServicePrioParent_pong_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_2551766680163974924(schema);
 }
+
+void MyServicePrioParent_pong_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
 
 uint32_t MyServicePrioParent_pong_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 

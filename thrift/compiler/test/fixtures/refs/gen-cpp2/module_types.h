@@ -294,6 +294,9 @@ class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion>
 
   Type type_;
   storage_type value_;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(MyUnion& a, MyUnion& b);
@@ -442,6 +445,9 @@ class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField>
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(MyField& a, MyField& b);
@@ -541,6 +547,9 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(MyStruct& a, MyStruct& b);
@@ -670,6 +679,9 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithUnion& a, StructWithUnion& b);
@@ -771,6 +783,9 @@ class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(RecursiveStruct& a, RecursiveStruct& b);
@@ -922,6 +937,9 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithContainers& a, StructWithContainers& b);
@@ -1023,6 +1041,9 @@ class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOper
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithSharedConst& a, StructWithSharedConst& b);
@@ -1099,6 +1120,9 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(Empty& a, Empty& b);
@@ -1198,6 +1222,9 @@ class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<St
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithRef& a, StructWithRef& b);
@@ -1297,6 +1324,9 @@ class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOp
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithRefTypeUnique& a, StructWithRefTypeUnique& b);
@@ -1398,6 +1428,9 @@ class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOp
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithRefTypeShared& a, StructWithRefTypeShared& b);
@@ -1499,6 +1532,9 @@ class StructWithRefTypeSharedConst : private apache::thrift::detail::st::Compari
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(StructWithRefTypeSharedConst& a, StructWithRefTypeSharedConst& b);

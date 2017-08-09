@@ -36,7 +36,9 @@ uint32_t Banal::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -101,10 +103,7 @@ uint32_t Fiery::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "message") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

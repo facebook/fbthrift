@@ -53,6 +53,21 @@ bool Struct::operator == (const Struct & rhs) const {
   return true;
 }
 
+void Struct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "first") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "second") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
+
 uint32_t Struct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;

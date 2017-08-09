@@ -37,18 +37,7 @@ uint32_t House::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "id") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "houseName") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "houseColors") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -168,14 +157,7 @@ uint32_t Field::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "id") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "fieldType") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

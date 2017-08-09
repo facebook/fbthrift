@@ -168,6 +168,9 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ModuleA& a, ModuleA& b);
@@ -277,6 +280,9 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ModuleB& a, ModuleB& b);
@@ -420,6 +426,9 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
   virtual const char* what() const noexcept {
     return " ::some::ns::ExceptionA";
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ExceptionA& a, ExceptionA& b);
@@ -563,6 +572,9 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
   virtual const char* what() const noexcept {
     return " ::some::ns::ExceptionB";
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ExceptionB& a, ExceptionB& b);

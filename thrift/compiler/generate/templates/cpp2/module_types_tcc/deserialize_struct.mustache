@@ -34,14 +34,9 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {<%!
-    %><%#struct:fields%><%#field:type%>
-      <%^first?%>else <%/first?%>if (_fname == "<%field:name%>") {
-        fid = <%field:key%>;
-        _ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
-      }<%#last?%>
-    <%/last?%><%/field:type%><%/struct:fields%><%!
-    %>}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
 <%#struct:fields%><%#field:type%>
       case <%field:key%>:

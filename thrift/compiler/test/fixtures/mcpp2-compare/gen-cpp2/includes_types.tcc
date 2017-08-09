@@ -46,10 +46,7 @@ uint32_t AStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "FieldA") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

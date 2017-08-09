@@ -26,6 +26,10 @@ bool Banal::operator==(const Banal& /* rhs */) const {
   return true;
 }
 
+void Banal::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
 void swap(Banal& a, Banal& b) {
   using ::std::swap;
   (void)a;
@@ -57,6 +61,14 @@ bool Fiery::operator==(const Fiery& rhs) const {
     return false;
   }
   return true;
+}
+
+void Fiery::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "message") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 
 void swap(Fiery& a, Fiery& b) {

@@ -51,6 +51,17 @@ bool decorated_struct::operator == (const decorated_struct & rhs) const {
   return true;
 }
 
+void decorated_struct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
+
 uint32_t decorated_struct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -154,6 +165,41 @@ bool ContainerStruct::operator == (const ContainerStruct & rhs) const {
     return false;
   return true;
 }
+
+void ContainerStruct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+};
 
 uint32_t ContainerStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 

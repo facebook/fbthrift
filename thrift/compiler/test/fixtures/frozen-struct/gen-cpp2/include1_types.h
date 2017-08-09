@@ -117,6 +117,9 @@ class IncludedA : private apache::thrift::detail::st::ComparisonOperators<Includ
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(IncludedA& a, IncludedA& b);

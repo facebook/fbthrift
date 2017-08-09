@@ -179,6 +179,9 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
   // user defined code (cpp2.methods = ...)
   <%struct:cpp_methods%>
 <%/struct:cpp_methods%>
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(<%struct:name%>& a, <%struct:name%>& b);

@@ -117,6 +117,22 @@ bool Internship::operator==(const Internship& rhs) const {
   return true;
 }
 
+void Internship::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "weeks") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "title") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "employer") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
 void swap(Internship& a, Internship& b) {
   using ::std::swap;
   swap(a.weeks, b.weeks);
@@ -151,6 +167,14 @@ bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
     return false;
   }
   return true;
+}
+
+void UnEnumStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "city") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
 }
 
 void swap(UnEnumStruct& a, UnEnumStruct& b) {
@@ -190,6 +214,18 @@ bool Range::operator==(const Range& rhs) const {
   return true;
 }
 
+void Range::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "min") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "max") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
 void swap(Range& a, Range& b) {
   using ::std::swap;
   swap(a.min, b.min);
@@ -226,6 +262,18 @@ bool struct1::operator==(const struct1& rhs) const {
     return false;
   }
   return true;
+}
+
+void struct1::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 
 void swap(struct1& a, struct1& b) {
@@ -291,6 +339,26 @@ std::vector<int32_t> struct2::get_d() && {
   return std::move(d);
 }
 
+void struct2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "d") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
 void swap(struct2& a, struct2& b) {
   using ::std::swap;
   swap(a.a, b.a);
@@ -342,6 +410,22 @@ const  ::cpp2::struct2& struct3::get_c() const& {
 
  ::cpp2::struct2 struct3::get_c() && {
   return std::move(c);
+}
+
+void struct3::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "c") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
 }
 
 void swap(struct3& a, struct3& b) {
@@ -405,6 +489,17 @@ bool union1::operator==(const union1& rhs) const {
     {
       return true;
     }
+  }
+}
+void union1::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "d") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
   }
 }
 
@@ -485,6 +580,25 @@ bool union2::operator==(const union2& rhs) const {
     {
       return true;
     }
+  }
+}
+void union2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "d") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "s") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "u") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
 

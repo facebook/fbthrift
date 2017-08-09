@@ -16,6 +16,13 @@ void MyServiceFast_ping_args::_reflection_register(::apache::thrift::reflection:
    ::module_reflection_::reflectionInitializer_13297394169545716012(schema);
 }
 
+void MyServiceFast_ping_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServiceFast_ping_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -67,6 +74,13 @@ void MyServiceFast_ping_pargs::_reflection_register(::apache::thrift::reflection
    ::module_reflection_::reflectionInitializer_10013556897733106540(schema);
 }
 
+void MyServiceFast_ping_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServiceFast_ping_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServiceFast_ping_pargs");
@@ -79,6 +93,13 @@ const uint64_t MyServiceFast_ping_presult::_reflection_id;
 void MyServiceFast_ping_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_2896269803413006412(schema);
 }
+
+void MyServiceFast_ping_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
 
 uint32_t MyServiceFast_ping_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -134,6 +155,13 @@ void MyServiceFast_getRandomData_args::_reflection_register(::apache::thrift::re
    ::module_reflection_::reflectionInitializer_7860776305358079468(schema);
 }
 
+void MyServiceFast_getRandomData_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServiceFast_getRandomData_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -185,6 +213,13 @@ void MyServiceFast_getRandomData_pargs::_reflection_register(::apache::thrift::r
    ::module_reflection_::reflectionInitializer_17116623944762865804(schema);
 }
 
+void MyServiceFast_getRandomData_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
 uint32_t MyServiceFast_getRandomData_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServiceFast_getRandomData_pargs");
@@ -197,6 +232,17 @@ const uint64_t MyServiceFast_getRandomData_presult::_reflection_id;
 void MyServiceFast_getRandomData_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_11994669763530285548(schema);
 }
+
+void MyServiceFast_getRandomData_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "success") {
+    fid = 0;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t MyServiceFast_getRandomData_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -265,6 +311,17 @@ void MyServiceFast_hasDataById_args::_reflection_register(::apache::thrift::refl
    ::module_reflection_::reflectionInitializer_16544393981270173068(schema);
 }
 
+void MyServiceFast_hasDataById_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+};
+
 uint32_t MyServiceFast_hasDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -327,6 +384,17 @@ void MyServiceFast_hasDataById_pargs::_reflection_register(::apache::thrift::ref
    ::module_reflection_::reflectionInitializer_6647526459198525900(schema);
 }
 
+void MyServiceFast_hasDataById_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+};
+
 uint32_t MyServiceFast_hasDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServiceFast_hasDataById_pargs");
@@ -342,6 +410,17 @@ const uint64_t MyServiceFast_hasDataById_presult::_reflection_id;
 void MyServiceFast_hasDataById_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_4432778191137181708(schema);
 }
+
+void MyServiceFast_hasDataById_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "success") {
+    fid = 0;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+};
 
 uint32_t MyServiceFast_hasDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -410,6 +489,17 @@ void MyServiceFast_getDataById_args::_reflection_register(::apache::thrift::refl
    ::module_reflection_::reflectionInitializer_7870403311925922956(schema);
 }
 
+void MyServiceFast_getDataById_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+};
+
 uint32_t MyServiceFast_getDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -472,6 +562,17 @@ void MyServiceFast_getDataById_pargs::_reflection_register(::apache::thrift::ref
    ::module_reflection_::reflectionInitializer_1623351238808566124(schema);
 }
 
+void MyServiceFast_getDataById_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+};
+
 uint32_t MyServiceFast_getDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServiceFast_getDataById_pargs");
@@ -487,6 +588,17 @@ const uint64_t MyServiceFast_getDataById_presult::_reflection_id;
 void MyServiceFast_getDataById_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_12937877697079870508(schema);
 }
+
+void MyServiceFast_getDataById_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "success") {
+    fid = 0;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t MyServiceFast_getDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -554,6 +666,21 @@ const uint64_t MyServiceFast_putDataById_args::_reflection_id;
 void MyServiceFast_putDataById_args::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_5240787399467302572(schema);
 }
+
+void MyServiceFast_putDataById_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t MyServiceFast_putDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -628,6 +755,21 @@ void MyServiceFast_putDataById_pargs::_reflection_register(::apache::thrift::ref
    ::module_reflection_::reflectionInitializer_2400771228403367052(schema);
 }
 
+void MyServiceFast_putDataById_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
+
 uint32_t MyServiceFast_putDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyServiceFast_putDataById_pargs");
@@ -646,6 +788,13 @@ const uint64_t MyServiceFast_putDataById_presult::_reflection_id;
 void MyServiceFast_putDataById_presult::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_6473241192987738956(schema);
 }
+
+void MyServiceFast_putDataById_presult::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
 
 uint32_t MyServiceFast_putDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -700,6 +849,21 @@ const uint64_t MyServiceFast_lobDataById_args::_reflection_id;
 void MyServiceFast_lobDataById_args::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_6539614639720993804(schema);
 }
+
+void MyServiceFast_lobDataById_args::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t MyServiceFast_lobDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -773,6 +937,21 @@ const uint64_t MyServiceFast_lobDataById_pargs::_reflection_id;
 void MyServiceFast_lobDataById_pargs::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_12884209126637567500(schema);
 }
+
+void MyServiceFast_lobDataById_pargs::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "id") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
 
 uint32_t MyServiceFast_lobDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;

@@ -190,18 +190,7 @@ uint32_t MyField::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "opt_value") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "value") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "req_value") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -327,18 +316,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "opt_ref") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "ref") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_ref") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -524,18 +502,7 @@ uint32_t StructWithUnion::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "u") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "aDouble") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
-      else if (_fname == "f") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -671,10 +638,7 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "mes") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -763,30 +727,7 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "list_ref") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "set_ref") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "map_ref") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "list_ref_unique") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "set_ref_shared") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "list_ref_shared_const") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1068,18 +1009,7 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "opt_shared_const") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "shared_const") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_shared_const") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1264,7 +1194,9 @@ uint32_t Empty::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -1329,18 +1261,7 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "def_field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_field") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_field") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1527,18 +1448,7 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "def_field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_field") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_field") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1725,18 +1635,7 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "def_field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_field") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_field") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -1923,18 +1822,7 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "def_field") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_field") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_field") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

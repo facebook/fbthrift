@@ -403,6 +403,9 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(Empty& a, Empty& b);
@@ -505,6 +508,9 @@ class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<AS
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ASimpleStruct& a, ASimpleStruct& b);
@@ -792,6 +798,9 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(MyStruct& a, MyStruct& b);
@@ -1060,6 +1069,9 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
 
   Type type_;
   storage_type value_;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(SimpleUnion& a, SimpleUnion& b);
@@ -3100,6 +3112,9 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   storage_type value_;
   // user defined code (cpp2.methods = ...)
   void foo(const std::string& bar) {}
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(ComplexUnion& a, ComplexUnion& b);
@@ -3510,6 +3525,9 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   virtual const char* what() const noexcept {
     return message2.c_str();
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(AnException& a, AnException& b);
@@ -3671,6 +3689,9 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   virtual const char* what() const noexcept {
     return " ::some::valid::ns::AnotherException";
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(AnotherException& a, AnotherException& b);
@@ -4757,6 +4778,9 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t write(Protocol_* prot_) const;
   // user defined code (cpp2.methods = ...)
   void foo(const std::string& bar) {}
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(containerStruct& a, containerStruct& b);
@@ -4880,6 +4904,9 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(MyIncludedStruct& a, MyIncludedStruct& b);
@@ -5648,6 +5675,9 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t write(Protocol_* prot_) const;
   // user defined code (cpp2.methods = ...)
   void foo(const std::string& bar) {}
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(AnnotatedStruct& a, AnnotatedStruct& b);

@@ -100,6 +100,10 @@ class MyServiceFast_ping_args : public apache::thrift::TStructType<MyServiceFast
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_ping_args;
@@ -117,6 +121,10 @@ class MyServiceFast_ping_pargs : public apache::thrift::TStructType<MyServiceFas
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_ping_pargs;
@@ -135,6 +143,10 @@ class MyServiceFast_ping_presult : public apache::thrift::TStructType<MyServiceF
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_ping_presult;
@@ -168,6 +180,10 @@ class MyServiceFast_getRandomData_args : public apache::thrift::TStructType<MySe
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getRandomData_args;
@@ -185,6 +201,10 @@ class MyServiceFast_getRandomData_pargs : public apache::thrift::TStructType<MyS
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getRandomData_pargs;
@@ -225,6 +245,10 @@ class MyServiceFast_getRandomData_presult : public apache::thrift::TStructType<M
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getRandomData_presult;
@@ -280,6 +304,10 @@ class MyServiceFast_hasDataById_args : public apache::thrift::TStructType<MyServ
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_hasDataById_args;
@@ -310,6 +338,10 @@ class MyServiceFast_hasDataById_pargs : public apache::thrift::TStructType<MySer
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_hasDataById_pargs;
@@ -350,6 +382,10 @@ class MyServiceFast_hasDataById_presult : public apache::thrift::TStructType<MyS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_hasDataById_presult;
@@ -405,6 +441,10 @@ class MyServiceFast_getDataById_args : public apache::thrift::TStructType<MyServ
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getDataById_args;
@@ -435,6 +475,10 @@ class MyServiceFast_getDataById_pargs : public apache::thrift::TStructType<MySer
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getDataById_pargs;
@@ -475,6 +519,10 @@ class MyServiceFast_getDataById_presult : public apache::thrift::TStructType<MyS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_getDataById_presult;
@@ -546,6 +594,10 @@ class MyServiceFast_putDataById_args : public apache::thrift::TStructType<MyServ
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_putDataById_args;
@@ -589,6 +641,10 @@ class MyServiceFast_putDataById_pargs : public apache::thrift::TStructType<MySer
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_putDataById_pargs;
@@ -607,6 +663,10 @@ class MyServiceFast_putDataById_presult : public apache::thrift::TStructType<MyS
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_putDataById_presult;
@@ -678,6 +738,10 @@ class MyServiceFast_lobDataById_args : public apache::thrift::TStructType<MyServ
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_lobDataById_args;
@@ -721,6 +785,10 @@ class MyServiceFast_lobDataById_pargs : public apache::thrift::TStructType<MySer
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServiceFast_lobDataById_pargs;

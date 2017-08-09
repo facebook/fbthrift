@@ -51,6 +51,21 @@ bool MyStruct::operator == (const MyStruct & rhs) const {
   return true;
 }
 
+void MyStruct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+};
+
 void MyStruct::__clear() {
   MyIntField = 0;
   MyStringField = "";

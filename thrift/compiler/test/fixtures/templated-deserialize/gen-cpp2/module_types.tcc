@@ -46,14 +46,7 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "small_A") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "small_B") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -152,94 +145,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "fieldA") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "fieldB") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldC") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldD") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "fieldE") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "fieldF") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldG") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldH") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldI") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "fieldJ") {
-        fid = 10;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldK") {
-        fid = 11;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldL") {
-        fid = 12;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "fieldM") {
-        fid = 13;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldN") {
-        fid = 14;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldO") {
-        fid = 15;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldP") {
-        fid = 16;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "fieldQ") {
-        fid = 17;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "fieldR") {
-        fid = 18;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "fieldS") {
-        fid = 19;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "fieldT") {
-        fid = 20;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "fieldU") {
-        fid = 21;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "fieldX") {
-        fid = 23;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

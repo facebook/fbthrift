@@ -47,6 +47,17 @@ void Included::readFromJson(const char* jsonText, const folly::json::serializati
   readFromJson(jsonText, strlen(jsonText), opts);
 }
 
+void Included::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "some_val") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+};
+
 uint32_t Included::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;

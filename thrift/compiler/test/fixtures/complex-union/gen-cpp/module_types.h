@@ -476,6 +476,10 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;
@@ -690,6 +694,10 @@ class FinalComplexUnion : public apache::thrift::TStructType<FinalComplexUnion> 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
  private:
   Type type_;
   storage_type value_;

@@ -59,6 +59,9 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
   virtual const char* what() const noexcept {
     return " ::cpp2::Banal";
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(Banal& a, Banal& b);
@@ -164,6 +167,9 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
   virtual const char* what() const noexcept {
     return " ::cpp2::Fiery";
   }
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
 void swap(Fiery& a, Fiery& b);

@@ -80,6 +80,10 @@ class MyServicePrioChild_pang_args : public apache::thrift::TStructType<MyServic
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServicePrioChild_pang_args;
@@ -97,6 +101,10 @@ class MyServicePrioChild_pang_pargs : public apache::thrift::TStructType<MyServi
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServicePrioChild_pang_pargs;
@@ -115,6 +123,10 @@ class MyServicePrioChild_pang_presult : public apache::thrift::TStructType<MySer
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
 };
 
 class MyServicePrioChild_pang_presult;

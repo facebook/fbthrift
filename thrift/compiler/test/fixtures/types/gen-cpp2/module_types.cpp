@@ -56,6 +56,14 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
   return true;
 }
 
+void decorated_struct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
 void swap(decorated_struct& a, decorated_struct& b) {
   using ::std::swap;
   swap(a.field, b.field);
@@ -171,6 +179,38 @@ const folly::sorted_vector_map<int32_t, std::string>& ContainerStruct::get_field
 
 folly::sorted_vector_map<int32_t, std::string> ContainerStruct::get_fieldG() && {
   return std::move(fieldG);
+}
+
+void ContainerStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
 }
 
 void swap(ContainerStruct& a, ContainerStruct& b) {

@@ -35,7 +35,9 @@ uint32_t service2_methodA_pargs_read(Protocol_* iprot, service2_methodA_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      obj->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -96,7 +98,9 @@ uint32_t service2_methodA_presult_read(Protocol_* iprot, service2_methodA_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      obj->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -158,18 +162,7 @@ uint32_t service2_methodB_pargs_read(Protocol_* iprot, service2_methodB_pargs* o
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "x") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "y") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "z") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -279,7 +272,9 @@ uint32_t service2_methodB_presult_read(Protocol_* iprot, service2_methodB_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      obj->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -340,7 +335,9 @@ uint32_t service2_methodC_pargs_read(Protocol_* iprot, service2_methodC_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      obj->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -402,10 +399,7 @@ uint32_t service2_methodC_presult_read(Protocol_* iprot, service2_methodC_presul
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "success") {
-        fid = 0;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 0:
@@ -491,18 +485,7 @@ uint32_t service2_methodD_pargs_read(Protocol_* iprot, service2_methodD_pargs* o
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "i") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "j") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "k") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -613,10 +596,7 @@ uint32_t service2_methodD_presult_read(Protocol_* iprot, service2_methodD_presul
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "success") {
-        fid = 0;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 0:
@@ -701,7 +681,9 @@ uint32_t service2_methodE_pargs_read(Protocol_* iprot, service2_methodE_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      obj->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {
@@ -763,10 +745,7 @@ uint32_t service2_methodE_presult_read(Protocol_* iprot, service2_methodE_presul
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "success") {
-        fid = 0;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 0:
@@ -852,18 +831,7 @@ uint32_t service2_methodF_pargs_read(Protocol_* iprot, service2_methodF_pargs* o
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "l") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "m") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "n") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -974,10 +942,7 @@ uint32_t service2_methodF_presult_read(Protocol_* iprot, service2_methodF_presul
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "success") {
-        fid = 0;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+      obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 0:
