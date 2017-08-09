@@ -25,10 +25,8 @@
 using namespace ::apache::thrift::frozen;
 using namespace ::test::frozen2;
 
-#define ASSERT_VIEW_EQ(OBJ, MAPPED, NAME)                                     \
-  ASSERT_EQ(                                                                  \
-      ViewHelper<Layout<decltype(MAPPED.NAME())>::View>::thaw(MAPPED.NAME()), \
-      OBJ.NAME)
+#define ASSERT_VIEW_EQ(OBJ, MAPPED, NAME) \
+  ASSERT_EQ(ViewHelper<decltype(MAPPED.NAME())>::thaw(MAPPED.NAME()), OBJ.NAME)
 
 TEST(ViewHelperTest, TestThaw) {
   TestStruct strct;
