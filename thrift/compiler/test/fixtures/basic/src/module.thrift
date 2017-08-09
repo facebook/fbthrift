@@ -8,7 +8,11 @@ enum MyEnum {
 struct MyStruct {
   1: i64 MyIntField,
   2: string MyStringField,
+  # use the type before it is defined. Thrift should be able to handle this
+  3: MyDataItem MyDataField,
 }
+
+struct MyDataItem {}
 
 service MyService {
   void ping()

@@ -1017,9 +1017,9 @@ void MyServiceClient::send_ping()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes1 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes2 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes1);
+  if (ctx) ctx->postWrite(_bytes2);
   return;
 }
 
@@ -1119,9 +1119,9 @@ void MyServiceClient::send_getRandomData()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes2 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes3 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes2);
+  if (ctx) ctx->postWrite(_bytes3);
   return;
 }
 
@@ -1228,9 +1228,9 @@ void MyServiceClient::send_hasDataById(int64_t id)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes3 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes4 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes3);
+  if (ctx) ctx->postWrite(_bytes4);
   return;
 }
 
@@ -1338,9 +1338,9 @@ void MyServiceClient::send_getDataById(int64_t id)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes4 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes5 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes4);
+  if (ctx) ctx->postWrite(_bytes5);
   return;
 }
 
@@ -1448,9 +1448,9 @@ void MyServiceClient::send_putDataById(int64_t id, const std::string& data)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes5 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes6 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes5);
+  if (ctx) ctx->postWrite(_bytes6);
   return;
 }
 
@@ -1551,9 +1551,9 @@ void MyServiceClient::send_lobDataById(int64_t id, const std::string& data)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes6 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes7 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->onewayFlush();
-  if (ctx) ctx->postWrite(_bytes6);
+  if (ctx) ctx->postWrite(_bytes7);
   return;
 }
 

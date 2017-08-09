@@ -6,3 +6,4 @@ hack:server=1,shapes=1 src/module.thrift
 #mstch_cpp2 src/module.thrift
 mstch_swift src/module.thrift
 mstch_py3 src/module.thrift
+json src/module.thrift

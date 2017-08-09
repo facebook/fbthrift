@@ -20,10 +20,12 @@ public final class MyStruct
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField
+        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
+        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
+        this.myDataField = myDataField;
     }
 
     public static class Builder {
@@ -39,17 +41,25 @@ public final class MyStruct
             this.myStringField = myStringField;
             return this;
         }
+        private test.fixtures.basic.MyDataItem myDataField;
+
+        public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
+            this.myDataField = myDataField;
+            return this;
+        }
 
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
             this.myStringField = other.myStringField;
+            this.myDataField = other.myDataField;
         }
 
         public MyStruct build() {
             return new MyStruct (
                 this.myIntField,
-                this.myStringField
+                this.myStringField,
+                this.myDataField
             );
         }
     }
@@ -64,12 +74,18 @@ public final class MyStruct
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
 
+    private final test.fixtures.basic.MyDataItem myDataField;
+
+    @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+    public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
+
     @Override
     public String toString()
     {
         return toStringHelper(this)
             .add("myIntField", myIntField)
             .add("myStringField", myStringField)
+            .add("myDataField", myDataField)
             .toString();
     }
 
@@ -86,14 +102,16 @@ public final class MyStruct
 
         return
             Objects.equals(myIntField, other.myIntField) &&
-            Objects.equals(myStringField, other.myStringField);
+            Objects.equals(myStringField, other.myStringField) &&
+            Objects.equals(myDataField, other.myDataField);
     }
 
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myIntField,
-            myStringField
+            myStringField,
+            myDataField
         });
     }
 }

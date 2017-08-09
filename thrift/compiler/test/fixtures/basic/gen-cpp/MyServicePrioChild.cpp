@@ -190,9 +190,9 @@ void MyServicePrioChildClient::send_pang()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes15 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes16 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes15);
+  if (ctx) ctx->postWrite(_bytes16);
   return;
 }
 

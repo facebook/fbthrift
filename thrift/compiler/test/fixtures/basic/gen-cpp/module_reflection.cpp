@@ -9,6 +9,17 @@
 
  namespace module_reflection_ {
 
+// Reflection initializer for struct module.MyDataItem
+void reflectionInitializer_4790436723586763884(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4790436723586763884U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.MyDataItem";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+void  reflectionInitializer_4790436723586763884(::apache::thrift::reflection::Schema&);  // struct module.MyDataItem
 // Reflection initializer for struct module.MyStruct
 void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 7958971832214294220U;
@@ -31,6 +42,14 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
     f.name = "MyStringField";
     f.order = 1;
   }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 4790436723586763884U;
+    f.name = "MyDataField";
+    f.order = 2;
+  }
+  reflectionInitializer_4790436723586763884(schema);  // struct module.MyDataItem
 }
 
 // Reflection initializer for struct module.MyService_ping_args

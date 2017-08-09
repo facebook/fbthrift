@@ -9,25 +9,40 @@
 namespace apache { namespace thrift { namespace frozen {
 FROZEN_CTOR( ::MyStruct,
   FROZEN_CTOR_FIELD(MyIntField, 1)
-  FROZEN_CTOR_FIELD(MyStringField, 2))
+  FROZEN_CTOR_FIELD(MyStringField, 2)
+  FROZEN_CTOR_FIELD(MyDataField, 3))
 FROZEN_MAXIMIZE( ::MyStruct,
   FROZEN_MAXIMIZE_FIELD(MyIntField)
-  FROZEN_MAXIMIZE_FIELD(MyStringField))
+  FROZEN_MAXIMIZE_FIELD(MyStringField)
+  FROZEN_MAXIMIZE_FIELD(MyDataField))
 FROZEN_LAYOUT( ::MyStruct,
   FROZEN_LAYOUT_FIELD(MyIntField)
-  FROZEN_LAYOUT_FIELD(MyStringField))
+  FROZEN_LAYOUT_FIELD(MyStringField)
+  FROZEN_LAYOUT_FIELD(MyDataField))
 FROZEN_FREEZE( ::MyStruct,
   FROZEN_FREEZE_FIELD(MyIntField)
-  FROZEN_FREEZE_FIELD(MyStringField))
+  FROZEN_FREEZE_FIELD(MyStringField)
+  FROZEN_FREEZE_FIELD(MyDataField))
 FROZEN_THAW( ::MyStruct,
   FROZEN_THAW_FIELD(MyIntField)
-  FROZEN_THAW_FIELD(MyStringField))
+  FROZEN_THAW_FIELD(MyStringField)
+  FROZEN_THAW_FIELD(MyDataField))
 FROZEN_DEBUG( ::MyStruct,
   FROZEN_DEBUG_FIELD(MyIntField)
-  FROZEN_DEBUG_FIELD(MyStringField))
+  FROZEN_DEBUG_FIELD(MyStringField)
+  FROZEN_DEBUG_FIELD(MyDataField))
 FROZEN_CLEAR( ::MyStruct,
   FROZEN_CLEAR_FIELD(MyIntField)
-  FROZEN_CLEAR_FIELD(MyStringField))
+  FROZEN_CLEAR_FIELD(MyStringField)
+  FROZEN_CLEAR_FIELD(MyDataField))
+
+FROZEN_CTOR( ::MyDataItem,)
+FROZEN_MAXIMIZE( ::MyDataItem,)
+FROZEN_LAYOUT( ::MyDataItem,)
+FROZEN_FREEZE( ::MyDataItem,)
+FROZEN_THAW( ::MyDataItem,)
+FROZEN_DEBUG( ::MyDataItem,)
+FROZEN_CLEAR( ::MyDataItem,)
 
 
 }}} // apache::thrift::frozen 

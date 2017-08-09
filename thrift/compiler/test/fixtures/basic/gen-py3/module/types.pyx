@@ -46,23 +46,28 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(
         MyStruct self,
         MyIntField=None,
-        MyStringField=None
+        MyStringField=None,
+        MyDataField=None
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           MyIntField,
           MyStringField,
+          MyDataField,
         ))
 
     def __call__(
         MyStruct self,
         MyIntField=NOTSET,
-        MyStringField=NOTSET
+        MyStringField=NOTSET,
+        MyDataField=NOTSET
     ):
         changes = any((
             MyIntField is not NOTSET,
 
             MyStringField is not NOTSET,
+
+            MyDataField is not NOTSET,
         ))
 
         if not changes:
@@ -73,6 +78,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           self._cpp_obj.get(),
           MyIntField,
           MyStringField,
+          MyDataField,
         ))
         return inst
 
@@ -80,7 +86,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
         object MyIntField,
-        object MyStringField
+        object MyStringField,
+        object MyDataField
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -102,6 +109,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             elif MyStringField is NOTSET:
                 MyStringField = None
 
+            if MyDataField is None:
+                deref(c_inst).MyDataField = _MyStruct_defaults.MyDataField
+                deref(c_inst).__isset.MyDataField = False
+            elif MyDataField is NOTSET:
+                MyDataField = None
+
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
@@ -110,6 +123,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
             deref(c_inst).__isset.MyStringField = True
 
+        if MyDataField is not None:
+            deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
+            deref(c_inst).__isset.MyDataField = True
+
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -117,9 +134,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField
+        yield 'MyDataField', self.MyDataField
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIntField or deref(self._cpp_obj).__isset.MyStringField
+        return deref(self._cpp_obj).__isset.MyIntField or deref(self._cpp_obj).__isset.MyStringField or deref(self._cpp_obj).__isset.MyDataField
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -141,17 +159,27 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         return self._cpp_obj.get().MyStringField.decode('UTF-8')
 
+    @property
+    def MyDataField(self):
+        if not deref(self._cpp_obj).__isset.MyDataField:
+            return None
+
+        if self.__MyDataField is None:
+            self.__MyDataField = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).MyDataField))
+        return self.__MyDataField
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
             self.__hash = hash((
             self.MyIntField,
             self.MyStringField,
+            self.MyDataField,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -193,5 +221,112 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (MyStruct, serialize(self)))
+
+
+cdef cMyDataItem _MyDataItem_defaults = cMyDataItem()
+
+cdef class MyDataItem(thrift.py3.types.Struct):
+
+    def __init__(
+        MyDataItem self
+    ):
+        self._cpp_obj = move(MyDataItem._make_instance(
+          NULL,
+        ))
+
+    def __call__(
+        MyDataItem self
+    ):
+        changes = any((        ))
+
+        if not changes:
+            return self
+
+        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
+        inst._cpp_obj = move(MyDataItem._make_instance(
+          self._cpp_obj.get(),
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyDataItem] _make_instance(
+        cMyDataItem* base_instance
+    ) except *:
+        cdef unique_ptr[cMyDataItem] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyDataItem](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyDataItem]()
+
+        if base_instance:
+            # Convert None's to default value.
+            pass
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        return iter(())
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyDataItem] cpp_obj):
+        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+
+    def __hash__(MyDataItem self):
+        if not self.__hash:
+            self.__hash = hash((
+            type(self)   # Hash the class there are no fields
+            ))
+        return self.__hash
+
+    def __repr__(MyDataItem self):
+        return f'MyDataItem()'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, MyDataItem) and
+                isinstance(other, MyDataItem)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cMyDataItem cself = deref((<MyDataItem>self)._cpp_obj)
+        cdef cMyDataItem cother = deref((<MyDataItem>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(MyDataItem self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cMyDataItem](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cMyDataItem](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cMyDataItem](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(MyDataItem self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cMyDataItem](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cMyDataItem](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cMyDataItem](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyDataItem, serialize(self)))
 
 

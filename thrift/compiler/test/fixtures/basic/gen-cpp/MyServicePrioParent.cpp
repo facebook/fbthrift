@@ -339,9 +339,9 @@ void MyServicePrioParentClient::send_ping()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes13 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes14 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes13);
+  if (ctx) ctx->postWrite(_bytes14);
   return;
 }
 
@@ -441,9 +441,9 @@ void MyServicePrioParentClient::send_pong()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes14 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes15 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes14);
+  if (ctx) ctx->postWrite(_bytes15);
   return;
 }
 

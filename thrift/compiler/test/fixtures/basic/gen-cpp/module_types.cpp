@@ -48,7 +48,8 @@ size_t Freezer< ::MyStruct, void>::extraSizeImpl(
   (void)src;
   return 0
     + extraSize(src.MyIntField)
-    + extraSize(src.MyStringField);
+    + extraSize(src.MyStringField)
+    + extraSize(src.MyDataField);
 }
 
 template<>
@@ -61,6 +62,8 @@ void Freezer< ::MyStruct, void>::freezeImpl(
   dst.__isset.MyIntField = src.__isset.MyIntField;
   freeze(src.MyStringField, dst.MyStringField, buffer);
   dst.__isset.MyStringField = src.__isset.MyStringField;
+  freeze(src.MyDataField, dst.MyDataField, buffer);
+  dst.__isset.MyDataField = src.__isset.MyDataField;
 }
 
 template<>
@@ -71,6 +74,8 @@ void Freezer< ::MyStruct, void>::thawImpl(
   dst.__isset.MyIntField = src.__isset.MyIntField;
   thaw(src.MyStringField, dst.MyStringField);
   dst.__isset.MyStringField = src.__isset.MyStringField;
+  thaw(src.MyDataField, dst.MyDataField);
+  dst.__isset.MyDataField = src.__isset.MyDataField;
 }
 }} // apache::thrift 
 
@@ -84,6 +89,8 @@ bool MyStruct::operator == (const MyStruct & rhs) const {
   if (!(this->MyIntField == rhs.MyIntField))
     return false;
   if (!(this->MyStringField == rhs.MyStringField))
+    return false;
+  if (!(this->MyDataField == rhs.MyDataField))
     return false;
   return true;
 }
@@ -100,6 +107,10 @@ void MyStruct::translateFieldName(
   else if (_fname == "MyStringField") {
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyDataField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
   }
 };
 
@@ -145,6 +156,14 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(_ftype);
         }
         break;
+      case 3:
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->MyDataField.read(iprot);
+          this->__isset.MyDataField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(_ftype);
         break;
@@ -160,6 +179,7 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 void MyStruct::__clear() {
   MyIntField = 0;
   MyStringField = "";
+  MyDataField.__clear();
   __isset.__clear();
 }
 uint32_t MyStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
@@ -170,6 +190,9 @@ uint32_t MyStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("MyStringField", apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString(this->MyStringField);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->MyDataField.write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -182,6 +205,7 @@ void swap(MyStruct &a, MyStruct &b) {
   (void)b;
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
+  swap(a.MyDataField, b.MyDataField);
   swap(a.__isset, b.__isset);
 }
 
@@ -191,6 +215,8 @@ void merge(const MyStruct& from, MyStruct& to) {
   to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
   merge(from.MyStringField, to.MyStringField);
   to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
+  merge(from.MyDataField, to.MyDataField);
+  to.__isset.MyDataField = to.__isset.MyDataField || from.__isset.MyDataField;
 }
 
 void merge(MyStruct&& from, MyStruct& to) {
@@ -199,6 +225,116 @@ void merge(MyStruct&& from, MyStruct& to) {
   to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
   merge(std::move(from.MyStringField), to.MyStringField);
   to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
+  merge(std::move(from.MyDataField), to.MyDataField);
+  to.__isset.MyDataField = to.__isset.MyDataField || from.__isset.MyDataField;
+}
+
+
+namespace apache { namespace thrift {
+template<>
+size_t Freezer< ::MyDataItem, void>::extraSizeImpl(
+    const Freezer< ::MyDataItem, void>::ThawedType& src) {
+  (void)src;
+  return 0;
+}
+
+template<>
+void Freezer< ::MyDataItem, void>::freezeImpl(
+    const Freezer< ::MyDataItem, void>::ThawedType& src,
+    Freezer< ::MyDataItem, void>::FrozenType& dst,
+    byte*& buffer) {
+  (void)buffer;
+}
+
+template<>
+void Freezer< ::MyDataItem, void>::thawImpl(
+    const Freezer< ::MyDataItem, void>::FrozenType& src,
+    Freezer< ::MyDataItem, void>::ThawedType& dst) {
+}
+}} // apache::thrift 
+
+
+const uint64_t MyDataItem::_reflection_id;
+void MyDataItem::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_4790436723586763884(schema);
+}
+
+bool MyDataItem::operator == (const MyDataItem & rhs) const {
+  (void)rhs;
+  return true;
+}
+
+void MyDataItem::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+};
+
+uint32_t MyDataItem::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_4790436723586763884(*schema);
+    iprot->setNextStructType(MyDataItem::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void MyDataItem::__clear() {
+}
+uint32_t MyDataItem::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("MyDataItem");
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(MyDataItem &a, MyDataItem &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+void merge(const MyDataItem& from, MyDataItem& to) {
+  using apache::thrift::merge;
+  (void)from;
+  (void)to;
+}
+
+void merge(MyDataItem&& from, MyDataItem& to) {
+  using apache::thrift::merge;
+  (void)from;
+  (void)to;
 }
 
 

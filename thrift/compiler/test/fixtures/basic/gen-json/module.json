@@ -1,0 +1,252 @@
+{
+  "thrift_module" : "module",
+  "enumerations" : {
+    "MyEnum" : {
+      "lineno" : 3,
+      "constants" : {
+        "MyValue1" : 0,
+        "MyValue2" : 1
+      }
+    }
+  },
+  "structs" : {
+    "MyStruct" : {
+      "lineno" : 8,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "MyIntField" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        },
+        "MyStringField" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        },
+        "MyDataField" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataItem",
+          "required" : true
+        }
+      }
+    },
+    "MyDataItem" : {
+      "lineno" : 15,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      }
+    }
+  },
+  "services" : {
+    "MyService" : {
+      "lineno" : 17,
+      "functions" : {
+        "MyService.ping" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        },
+        "MyService.getRandomData" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        },
+        "MyService.hasDataById" : {
+          "return_type" : {
+            "type_enum" : "BOOL",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyService.getDataById" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyService.putDataById" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyService.lobDataById" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        }
+      }
+    },
+    "MyServiceFast" : {
+      "lineno" : 26,
+      "functions" : {
+        "MyServiceFast.ping" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        },
+        "MyServiceFast.getRandomData" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        },
+        "MyServiceFast.hasDataById" : {
+          "return_type" : {
+            "type_enum" : "BOOL",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyServiceFast.getDataById" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyServiceFast.putDataById" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyServiceFast.lobDataById" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        }
+      }
+    },
+    "MyServiceEmpty" : {
+      "lineno" : 35,
+      "functions" : {
+
+      }
+    },
+    "MyServicePrioParent" : {
+      "lineno" : 38,
+      "functions" : {
+        "MyServicePrioParent.ping" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        },
+        "MyServicePrioParent.pong" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        }
+      }
+    },
+    "MyServicePrioChild" : {
+      "extends" : {
+        "type_enum" : "SERVICE",
+        "spec_args" : "MyServicePrioParent"
+      },
+      "lineno" : 43,
+      "functions" : {
+        "MyServicePrioChild.pang" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
+        }
+      }
+    }
+  }
+}

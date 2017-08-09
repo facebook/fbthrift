@@ -28,11 +28,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
   private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
+  private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
 
   public long MyIntField;
   public String MyStringField;
+  public MyDataItem MyDataField;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
+  public static final int MYDATAFIELD = 3;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
@@ -46,6 +49,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.I64)));
     tmpMetaDataMap.put(MYSTRINGFIELD, new FieldMetaData("MyStringField", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(MYDATAFIELD, new FieldMetaData("MyDataField", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyDataItem.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -58,12 +63,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   public MyStruct(
     long MyIntField,
-    String MyStringField)
+    String MyStringField,
+    MyDataItem MyDataField)
   {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
     this.MyStringField = MyStringField;
+    this.MyDataField = MyDataField;
   }
 
   /**
@@ -75,6 +82,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.MyIntField = TBaseHelper.deepCopy(other.MyIntField);
     if (other.isSetMyStringField()) {
       this.MyStringField = TBaseHelper.deepCopy(other.MyStringField);
+    }
+    if (other.isSetMyDataField()) {
+      this.MyDataField = TBaseHelper.deepCopy(other.MyDataField);
     }
   }
 
@@ -134,6 +144,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public MyDataItem  getMyDataField() {
+    return this.MyDataField;
+  }
+
+  public MyStruct setMyDataField(MyDataItem MyDataField) {
+    this.MyDataField = MyDataField;
+    return this;
+  }
+
+  public void unsetMyDataField() {
+    this.MyDataField = null;
+  }
+
+  // Returns true if field MyDataField is set (has been assigned a value) and false otherwise
+  public boolean isSetMyDataField() {
+    return this.MyDataField != null;
+  }
+
+  public void setMyDataFieldIsSet(boolean value) {
+    if (!value) {
+      this.MyDataField = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -152,6 +186,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case MYDATAFIELD:
+      if (value == null) {
+        unsetMyDataField();
+      } else {
+        setMyDataField((MyDataItem)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -165,6 +207,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case MYSTRINGFIELD:
       return getMyStringField();
 
+    case MYDATAFIELD:
+      return getMyDataField();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -177,6 +222,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetMyIntField();
     case MYSTRINGFIELD:
       return isSetMyStringField();
+    case MYDATAFIELD:
+      return isSetMyDataField();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -212,6 +259,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       if (!(this_present_MyStringField && that_present_MyStringField))
         return false;
       if (!TBaseHelper.equalsNobinary(this.MyStringField, that.MyStringField))
+        return false;
+    }
+
+    boolean this_present_MyDataField = true && this.isSetMyDataField();
+    boolean that_present_MyDataField = true && that.isSetMyDataField();
+    if (this_present_MyDataField || that_present_MyDataField) {
+      if (!(this_present_MyDataField && that_present_MyDataField))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.MyDataField, that.MyDataField))
         return false;
     }
 
@@ -251,6 +307,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetMyDataField()).compareTo(other.isSetMyDataField());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(MyDataField, other.MyDataField);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -280,6 +344,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case MYDATAFIELD:
+          if (field.type == TType.STRUCT) {
+            this.MyDataField = new MyDataItem();
+            this.MyDataField.read(iprot);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
           break;
@@ -303,6 +375,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.MyStringField != null) {
       oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
       oprot.writeString(this.MyStringField);
+      oprot.writeFieldEnd();
+    }
+    if (this.MyDataField != null) {
+      oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
+      this.MyDataField.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -345,6 +422,17 @@ String space = prettyPrint ? " " : "";
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this. getMyStringField(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("MyDataField");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this. getMyDataField() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this. getMyDataField(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

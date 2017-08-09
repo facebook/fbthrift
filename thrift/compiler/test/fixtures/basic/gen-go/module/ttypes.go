@@ -52,9 +52,11 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 // Attributes:
 //  - MyIntField
 //  - MyStringField
+//  - MyDataField
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
+  MyDataField *MyDataItem `thrift:"MyDataField,3" db:"MyDataField" json:"MyDataField"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -69,6 +71,17 @@ func (p *MyStruct) GetMyIntField() int64 {
 func (p *MyStruct) GetMyStringField() string {
   return p.MyStringField
 }
+var MyStruct_MyDataField_DEFAULT MyDataItem
+func (p *MyStruct) GetMyDataField() MyDataItem {
+  if !p.IsSetMyDataField() {
+    return MyStruct_MyDataField_DEFAULT
+  }
+return *p.MyDataField
+}
+func (p *MyStruct) IsSetMyDataField() bool {
+  return p.MyDataField != nil
+}
+
 func (p *MyStruct) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -88,6 +101,10 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -123,11 +140,20 @@ func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
+  p.MyDataField = &MyDataItem{}
+  if err := p.MyDataField.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyDataField), err)
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -155,10 +181,70 @@ func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyDataField", thrift.STRUCT, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:MyDataField: ", p), err) }
+  if err := p.MyDataField.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.MyDataField), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:MyDataField: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
   return fmt.Sprintf("MyStruct(%+v)", *p)
+}
+
+type MyDataItem struct {
+}
+
+func NewMyDataItem() *MyDataItem {
+  return &MyDataItem{}
+}
+
+func (p *MyDataItem) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyDataItem) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("MyDataItem"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyDataItem) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyDataItem(%+v)", *p)
 }
 
