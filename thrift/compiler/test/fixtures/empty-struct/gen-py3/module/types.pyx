@@ -229,6 +229,9 @@ cdef class Nada(thrift.py3.types.Struct):
             needed = serializer.BinaryDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cNada](buf, deref(self._cpp_obj.get()))
+        # force a cache reload since the underlying data's changed
+        self.__type = None
+        self._load_cache()
         return needed
 
     def __reduce__(self):

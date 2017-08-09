@@ -351,6 +351,11 @@ cdef class {{struct:name}}(thrift.py3.types.Struct):
             needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
+        {{#struct:union?}}
+        # force a cache reload since the underlying data's changed
+        self.__type = None
+        self._load_cache()
+        {{/struct:union?}}
         return needed
 
     def __reduce__(self):

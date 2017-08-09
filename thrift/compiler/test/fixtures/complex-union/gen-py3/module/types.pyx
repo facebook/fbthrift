@@ -227,6 +227,9 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
             needed = serializer.BinaryDeserialize[cComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cComplexUnion](buf, deref(self._cpp_obj.get()))
+        # force a cache reload since the underlying data's changed
+        self.__type = None
+        self._load_cache()
         return needed
 
     def __reduce__(self):
@@ -359,6 +362,9 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
             needed = serializer.BinaryDeserialize[cFinalComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cFinalComplexUnion](buf, deref(self._cpp_obj.get()))
+        # force a cache reload since the underlying data's changed
+        self.__type = None
+        self._load_cache()
         return needed
 
     def __reduce__(self):
