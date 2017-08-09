@@ -61,7 +61,12 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
   pass{{/program:services}}{{#program:services}}
   cdef cppclass c{{service:name}}ClientWrapper "{{!
   }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}ClientWrapper"{{!
-  }}{{#service:extends}}({{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients_wrapper.c{{service:name}}ClientWrapper){{/service:extends}}:
+  }}{{#service:extends}}({{!
+    }}{{#service:externalProgram?}}{{!
+    }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+    }}{{service:programName}}.clients_wrapper.{{!
+    }}{{/service:externalProgram?}}c{{service:name}}ClientWrapper{{!
+  }}){{/service:extends}}:
     c{{service:name}}ClientWrapper(
       shared_ptr[c{{service:name}}AsyncClient] async_client)
     {{^service:extends?}}

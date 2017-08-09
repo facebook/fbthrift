@@ -54,7 +54,7 @@ cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "cpp2":
 
     cdef cppclass cMyServicePrioChildSvIf "cpp2::MyServicePrioChildSvIf"(
             cMyServicePrioChildSvAsyncIf,
-            module.services_wrapper.cMyServicePrioParentSvIf,
+            cMyServicePrioParentSvIf,
             cServerInterface):
         pass
 
@@ -87,7 +87,7 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     shared_ptr[cServerInterface] cMyServicePrioParentInterface "cpp2::MyServicePrioParentInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyServicePrioChildWrapper "cpp2::MyServicePrioChildWrapper"(
         cMyServicePrioChildSvIf,
-        module.services_wrapper.cMyServicePrioParentWrapper
+        cMyServicePrioParentWrapper
     ):
         pass
 

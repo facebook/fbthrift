@@ -45,8 +45,10 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
       }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
       }}{{service:name}}SvIf"(
             c{{service:name}}SvAsyncIf,{{#service:extends}}
-            {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-            }}{{service:programName}}.services_wrapper.c{{service:name}}SvIf,{{/service:extends}}
+            {{#service:externalProgram?}}{{!
+              }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+              }}{{service:programName}}.services_wrapper.{{!
+            }}{{/service:externalProgram?}}c{{service:name}}SvIf,{{/service:extends}}
             cServerInterface):
         pass
 
@@ -59,7 +61,10 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/services_wra
     cdef cppclass c{{service:name}}Wrapper "{{!
     }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}Wrapper"(
         c{{service:name}}SvIf{{#service:extends}},
-        {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.services_wrapper.c{{service:name}}Wrapper{{/service:extends}}
+        {{#service:externalProgram?}}{{!
+          }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+          }}{{service:programName}}.services_wrapper.{{!
+        }}{{/service:externalProgram?}}c{{service:name}}Wrapper{{/service:extends}}
     ):
         pass
 

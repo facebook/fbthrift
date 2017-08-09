@@ -27,7 +27,7 @@ cdef extern from "src/gen-cpp2/MyNode.h" namespace "cpp2":
 
     cdef cppclass cMyNodeSvIf "cpp2::MyNodeSvIf"(
             cMyNodeSvAsyncIf,
-            module.services_wrapper.cMyRootSvIf,
+            cMyRootSvIf,
             cServerInterface):
         pass
 
@@ -37,7 +37,7 @@ cdef extern from "src/gen-cpp2/MyLeaf.h" namespace "cpp2":
 
     cdef cppclass cMyLeafSvIf "cpp2::MyLeafSvIf"(
             cMyLeafSvAsyncIf,
-            module.services_wrapper.cMyNodeSvIf,
+            cMyNodeSvIf,
             cServerInterface):
         pass
 
@@ -52,14 +52,14 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     shared_ptr[cServerInterface] cMyRootInterface "cpp2::MyRootInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyNodeWrapper "cpp2::MyNodeWrapper"(
         cMyNodeSvIf,
-        module.services_wrapper.cMyRootWrapper
+        cMyRootWrapper
     ):
         pass
 
     shared_ptr[cServerInterface] cMyNodeInterface "cpp2::MyNodeInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyLeafWrapper "cpp2::MyLeafWrapper"(
         cMyLeafSvIf,
-        module.services_wrapper.cMyNodeWrapper
+        cMyNodeWrapper
     ):
         pass
 

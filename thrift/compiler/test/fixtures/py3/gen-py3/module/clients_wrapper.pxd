@@ -128,14 +128,14 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       vector[module.types.cAnEnum] arg_the_enum,)
 
 
-  cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(module.clients_wrapper.cSimpleServiceClientWrapper):
+  cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(cSimpleServiceClientWrapper):
     cDerivedServiceClientWrapper(
       shared_ptr[cDerivedServiceAsyncClient] async_client)
 
     cFollyFuture[int32_t] get_six()
 
 
-  cdef cppclass cRederivedServiceClientWrapper "py3::simple::RederivedServiceClientWrapper"(module.clients_wrapper.cDerivedServiceClientWrapper):
+  cdef cppclass cRederivedServiceClientWrapper "py3::simple::RederivedServiceClientWrapper"(cDerivedServiceClientWrapper):
     cRederivedServiceClientWrapper(
       shared_ptr[cRederivedServiceAsyncClient] async_client)
 

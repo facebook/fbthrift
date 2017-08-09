@@ -113,7 +113,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cFollyFuture[cFollyUnit] pong()
 
 
-  cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(module.clients_wrapper.cMyServicePrioParentClientWrapper):
+  cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(cMyServicePrioParentClientWrapper):
     cMyServicePrioChildClientWrapper(
       shared_ptr[cMyServicePrioChildAsyncClient] async_client)
 
