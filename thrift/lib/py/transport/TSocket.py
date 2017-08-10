@@ -190,6 +190,10 @@ class TSocketBase(TTransportBase):
             self._setHandleCloseOnExec(handle)
 
     def _setHandleCloseOnExec(self, handle):
+        # Windows doesn't have this module, don't set the handle in this case.
+        if fcntl is None:
+            return
+
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
         if flags < 0:
             raise IOError('Error in retrieving file options')
@@ -398,8 +402,8 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             handle.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self._setHandleCloseOnExec(handle)
 
-            # Always set IPV6_V6ONLY for IPv6 sockets
-            if res[0] == socket.AF_INET6:
+            # Always set IPV6_V6ONLY for IPv6 sockets when not on Windows
+            if res[0] == socket.AF_INET6 and sys.platform != 'win32':
                 handle.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, True)
 
             handle.settimeout(None)
