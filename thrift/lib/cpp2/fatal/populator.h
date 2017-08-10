@@ -84,9 +84,6 @@ using ::apache::thrift::detail::deref;
 using ::apache::thrift::detail::extract_descriptor_fid;
 using ::apache::thrift::detail::is_required_field;
 
-template <field_id_t... Ids>
-using field_id_sequence = fatal::constant_sequence<field_id_t, Ids...>;
-
 } // namespace detail
 
 template <typename TypeClass, typename Type, typename Enable = void>
