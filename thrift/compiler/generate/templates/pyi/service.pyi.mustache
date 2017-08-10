@@ -36,18 +36,22 @@ class Iface{{!
     }}{{#service:extends}}({{!
       }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
       }}{{service:programName}}.services.{{service:name}}Interface{{!
-    }}){{/service:extends}}:  # {{service:name}}{{#service:functions}}
+    }}){{/service:extends}}:{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
+    {{#service:functions}}
     def {{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/FieldType}}{{/field:type}}{{!
     }}{{/function:args}}) -> {{!
-    }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}: ...{{/service:functions}}
+    }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}: ...
+    {{/service:functions}}
 
-class Client(Iface, t.ContextManager):  # {{service:name}}{{#service:functions}}
+class Client(Iface, t.ContextManager):{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
+    {{#service:functions}}
     def send_{{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{!
     }}{{/function:args}}) -> None: ...
     def recv_{{function:name}}(self) -> {{!
-    }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}: ...{{/service:functions}}
+    }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}: ...
+    {{/service:functions}}
 
 class Processor(Iface, Thrift.TProcessor):  # {{service:name}}
     def __init__(self, handler: Iface) -> None:

@@ -52,7 +52,8 @@ class SimpleStruct:
         small_int: t.Optional[int] = ...,
         nice_sized_int: t.Optional[int] = ...,
         big_int: t.Optional[int] = ...,
-        real: t.Optional[float] = ...,
+        coarse_real: t.Optional[float] = ...,
+        precise_real: t.Optional[float] = ...,
         a_str: t.Optional[str] = ...,
         a_bytes: t.Optional[bytes] = ...
     ) -> None:
@@ -61,7 +62,8 @@ class SimpleStruct:
         self.small_int: t.Optional[int]
         self.nice_sized_int: t.Optional[int]
         self.big_int: t.Optional[int]
-        self.real: t.Optional[float]
+        self.coarse_real: t.Optional[float]
+        self.precise_real: t.Optional[float]
         self.a_str: t.Optional[str]
         self.a_bytes: t.Optional[bytes]
 

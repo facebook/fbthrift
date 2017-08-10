@@ -30,7 +30,7 @@ def read_directory_filenames(path):
     return files
 
 def gen_find_recursive_files(path):
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for f in files:
             yield os.path.relpath(os.path.join(root, f), path)
 
@@ -63,7 +63,7 @@ class CompilerTest(unittest.TestCase):
                     print(os.path.join(path1, gen), file=sys.stderr)
                 # Compare that the file contents are equal
                 self.assertMultiLineEqual(geng, genf)
-        except Exception as e:
+        except Exception:
             print(self.MSG, file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
             raise
@@ -126,6 +126,7 @@ class CompilerTest(unittest.TestCase):
             lang = lang.rsplit('_', 1)[0] if "android_lite" in lang else lang
             if "cpp2" not in lang:  # Remove 'mstch' if present expt in cpp2
                 lang = lang.rsplit('_', 1)[1] if "mstch_" in lang else lang
+            lang = 'py' if lang == 'pyi' else lang
 
             gen_code = os.path.join(self.tmp, 'gen-' + lang)
             fixture_code = os.path.join(fixture_dir, 'gen-' + lang)

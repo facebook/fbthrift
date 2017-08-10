@@ -28,8 +28,9 @@ struct SimpleStruct {
   3: i16 small_int
   4: i32 nice_sized_int
   5: i64 big_int
-  6: double real
-  7: string a_str ( yo_dawg="I herd u like annotations" )
+  6: float coarse_real
+  7: double precise_real
+  8: string a_str ( yo_dawg="I herd u like annotations" )
   8000: optional binary a_bytes ( so_I_put="some Thrift annotations here" )
 } ( so_you_can="Thrift annotate"; while_you="type annotate"; empty; some_int=1 )
 
@@ -59,7 +60,8 @@ const SimpleStruct A_STRUCT = {
   "small_int": 6,
   "nice_sized_int": 7,
   "big_int": 8,
-  "real": 9.9,
+  "coarse_real": 8.9,
+  "precise_real": 9.9,
 }
 const AnEnum AN_ENUM_VALUE = AnEnum.FOUR
 const list<string> WORD_LIST = [
@@ -73,7 +75,8 @@ const map<string,SimpleStruct> A_CONST_MAP = {
     "small_int": 61,
     "nice_sized_int": 72,
     "big_int": 83,
-    "real": 99.9,
+    "coarse_real": 93.9,
+    "precise_real": 99.9,
   }
 }
 
@@ -114,3 +117,5 @@ service SharedService {
   set<i32> get_union(1: list<set<i32>> sets)
   set<string> get_keys(1: list<map<string, string>> string_map)
 }
+
+service EmptyService {}
