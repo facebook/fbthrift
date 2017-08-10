@@ -750,6 +750,7 @@ class mstch_function : public mstch_base {
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:eb", &mstch_function::event_based},
+            {"function:priority", &mstch_function::priority},
         });
   }
   mstch::node name() {
@@ -771,6 +772,13 @@ class mstch_function : public mstch_base {
       return true;
     }
     return false;
+  }
+  mstch::node priority() {
+    auto const* strct = function_->get_annotations();
+    if (strct && strct->annotations_.count("priority")) {
+      return strct->annotations_.at("priority");
+    }
+    return std::string("NORMAL");
   }
 
  protected:

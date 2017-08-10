@@ -184,7 +184,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(std::unique_ptr<a
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::_processInThread_throws_function2(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::HIGH);
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ExtraServiceAsyncProcessor::process_throws_function2<ProtocolIn_, ProtocolOut_>, this);
 }
 

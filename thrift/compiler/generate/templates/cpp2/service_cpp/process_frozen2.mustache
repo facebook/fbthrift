@@ -18,7 +18,7 @@
 
 <%^function:eb%>
 void <%service:name%>AsyncProcessor::_processInThread_frozen2_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::<%function:priority%>);
 <%^function:oneway?%>
   processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &<%service:name%>AsyncProcessor::process_frozen2_<%function:name%>, this);
 <%/function:oneway?%>

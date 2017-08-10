@@ -351,7 +351,7 @@ service ExtraService extends ParamService {
   void throws_function()
       throws (1: AnException ex, 2: AnotherException aex) (thread="eb")
   bool throws_function2(1: bool param1)
-      throws (1: AnException ex, 2: AnotherException aex)
+      throws (1: AnException ex, 2: AnotherException aex) (priority = "HIGH")
   map<i32, string> throws_function3(1: bool param1, 3: string param2)
       throws (2: AnException ex, 5: AnotherException aex)
   oneway void oneway_void_ret()
