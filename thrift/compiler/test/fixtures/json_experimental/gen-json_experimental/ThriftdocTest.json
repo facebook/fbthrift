@@ -3,4 +3,43 @@
   "source_path" : "src/ThriftdocTest",
   "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest",
   "wiki_address" : "Thrift.ThrifdocTest",
+  "enumerations" :
+  {
+      "Numberz" : {
+        "constants" : {
+          "ONE" : {
+            "docstring" : "This is how to document a parameter\n",
+            "lineno" : 42,
+            "value" : 1
+          },
+          "TWO" : {
+            "docstring" : "And this is a doc for a parameter that has no specific value assigned\n",
+            "lineno" : 45,
+            "value" : 2
+          },
+          "THREE" : {
+            "docstring" : "",
+            "lineno" : 47,
+            "value" : 3
+          },
+          "FIVE" : {
+            "docstring" : "",
+            "lineno" : 48,
+            "value" : 5
+          },
+          "SIX" : {
+            "docstring" : "",
+            "lineno" : 49,
+            "value" : 6
+          },
+          "EIGHT" : {
+            "docstring" : "",
+            "lineno" : 50,
+            "value" : 8
+          }
+        },
+        "docstring" : "Some doc text goes here.  Wow I am [nesting these] (no more nesting.)\n",
+        "lineno" : 38
+      }
+      }
 }

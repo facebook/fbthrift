@@ -17,6 +17,8 @@
 #include <memory>
 #include <vector>
 
+#include <boost/algorithm/string.hpp>
+
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
@@ -61,6 +63,7 @@ class json_experimental_program : public mstch_program {
              &json_experimental_program::get_wiki_address},
             {"program:normalizedIncludePrefix",
              &json_experimental_program::include_prefix},
+            {"program:enums?", &json_experimental_program::has_enums},
         });
   }
   mstch::node get_py_namespace() {
@@ -79,6 +82,12 @@ class json_experimental_program : public mstch_program {
     }
     return std::string();
   }
+  mstch::node has_enums() {
+    if (!program_->get_enums().empty()) {
+      return true;
+    }
+    return false;
+  }
 };
 
 class program_json_experimental_generator : public program_generator {
@@ -96,10 +105,95 @@ class program_json_experimental_generator : public program_generator {
   }
 };
 
+class json_experimental_enum : public mstch_enum {
+ public:
+  json_experimental_enum(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_enum(enm, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"enum:empty?", &json_experimental_enum::is_empty},
+            {"enum:lineno", &json_experimental_enum::get_lineno},
+            {"enum:docstring", &json_experimental_enum::get_docstring},
+        });
+  }
+  mstch::node is_empty() {
+    return enm_->get_constants().empty();
+  }
+  mstch::node get_lineno() {
+    return enm_->get_lineno();
+  }
+  mstch::node get_docstring() {
+    return enm_->get_doc();
+  }
+};
+
+class enum_json_experimental_generator : public enum_generator {
+ public:
+  enum_json_experimental_generator() = default;
+  virtual ~enum_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<json_experimental_enum>(
+        enm, generators, cache, pos);
+  }
+};
+
+class json_experimental_enum_value : public mstch_enum_value {
+ public:
+  json_experimental_enum_value(
+      t_enum_value const* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_enum_value(enm_value, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"enumValue:lineno", &json_experimental_enum_value::get_lineno},
+            {"enumValue:docstring",
+             &json_experimental_enum_value::get_docstring},
+        });
+  }
+  mstch::node get_lineno() {
+    return enm_value_->get_lineno();
+  }
+  mstch::node get_docstring() {
+    return enm_value_->get_doc();
+  }
+};
+
+class enum_value_json_experimental_generator : public enum_value_generator {
+ public:
+  enum_value_json_experimental_generator() = default;
+  virtual ~enum_value_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_enum_value const* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<json_experimental_enum_value>(
+        enm_value, generators, cache, pos);
+  }
+};
+
 void t_json_experimental_generator::generate_program() {
   // disable mstch escaping
   // TODO(T20509094): proper JSON escaping routine
-  mstch::config::escape = [](const std::string& s) { return s; };
+  mstch::config::escape = [](const std::string& str) -> std::string {
+    std::string str_copy = str;
+    boost::replace_all(str_copy, "\n", "\\n");
+    return str_copy;
+  };
 
   auto const* program = get_program();
   set_mstch_generators();
@@ -113,6 +207,10 @@ void t_json_experimental_generator::generate_program() {
 void t_json_experimental_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_json_experimental_generator>());
+  generators_->set_enum_generator(
+      std::make_unique<enum_json_experimental_generator>());
+  generators_->set_enum_value_generator(
+      std::make_unique<enum_value_json_experimental_generator>());
 }
 } // anonymous namespace
 
