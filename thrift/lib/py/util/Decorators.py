@@ -152,15 +152,26 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 fn_name,
                 server_ctx,
             )
-            args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
-            if asyncio or twisted:
-                return func(self, args, handler_ctx, seqid, oprot, fn_name)
+            try:
+                args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
+            except Exception as e:
+                args = argtype()
+                log.error(
+                    'Exception thrown while reading arguments: `%s`',
+                    str(e),
+                )
+                result = TApplicationException(message=str(e))
+                if not oneway:
+                    self.writeException(oprot, fn_name, seqid, result)
+            else:
+                if asyncio or twisted:
+                    return func(self, args, handler_ctx, seqid, oprot, fn_name)
 
-            set_request_context(self, iprot)
-            result = func(self, args, handler_ctx)
-            if not oneway:
-                self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
-            reset_request_context(self)
+                set_request_context(self, iprot)
+                result = func(self, args, handler_ctx)
+                if not oneway:
+                    self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
+                reset_request_context(self)
 
             _mem_after = _process_method_mem_usage()
             if _mem_after - _mem_before > MEMORY_WARNING_THRESHOLD:
