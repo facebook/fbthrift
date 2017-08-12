@@ -476,6 +476,12 @@ public:
       cfg->sessionContext = extract<std::string>(str(sessionContext));
     }
 
+    object sslVersionAttr = sslConfig.attr("ssl_version");
+    if (!sslVersionAttr.is_none()) {
+      cfg->sslVersion =
+          extract<SSLContext::SSLVersion>(sslConfig.attr("ssl_version"));
+    }
+
     ThriftServer::setSSLConfig(cfg);
 
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
@@ -654,4 +660,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
            folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT)
     .value("NO_VERIFY", folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY)
     ;
+
+  enum_<folly::SSLContext::SSLVersion>("SSLVersion")
+      .value("TLSv1_2", folly::SSLContext::SSLVersion::TLSv1_2);
 }

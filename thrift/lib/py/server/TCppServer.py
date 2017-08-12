@@ -11,7 +11,7 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
 from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
-    SSLPolicy, SSLVerifyPeerEnum, CallbackWrapper, CallTimestamps
+    SSLPolicy, SSLVerifyPeerEnum, SSLVersion, CallbackWrapper, CallTimestamps
 
 from concurrent.futures import Future
 from functools import partial
@@ -155,6 +155,17 @@ class TSSLConfig(object):
         self.ticket_file_path = ''
         self.alpn_protocols = []
         self.session_context = None
+        self.ssl_version = None
+
+    @property
+    def ssl_version(self):
+        return self._ssl_version
+
+    @ssl_version.setter
+    def ssl_version(self, val):
+        if val is not None and not isinstance(val, SSLVersion):
+            raise ValueError("{} is an invalid version".format(val))
+        self._ssl_version = val
 
     @property
     def ssl_policy(self):
