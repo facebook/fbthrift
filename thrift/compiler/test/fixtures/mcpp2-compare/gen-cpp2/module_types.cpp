@@ -1879,7 +1879,6 @@ MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& src) {
   __isset.MyIncludedStruct = src.__isset.MyIncludedStruct;
   if (src.ARefField) ARefField.reset(new  ::some::valid::ns::AStruct(*src.ARefField));
   ARequiredField = src.ARequiredField;
-  __isset.ARequiredField = src.__isset.ARequiredField;
 }
 
 MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
