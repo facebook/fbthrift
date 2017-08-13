@@ -1872,10 +1872,28 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& src) {
+  MyIncludedInt = src.MyIncludedInt;
+  __isset.MyIncludedInt = src.__isset.MyIncludedInt;
+  MyIncludedStruct = src.MyIncludedStruct;
+  __isset.MyIncludedStruct = src.__isset.MyIncludedStruct;
+  if (src.ARefField) ARefField.reset(new  ::some::valid::ns::AStruct(*src.ARefField));
+  ARequiredField = src.ARequiredField;
+  __isset.ARequiredField = src.__isset.ARequiredField;
+}
+
+MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
+  MyIncludedStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 void MyIncludedStruct::__clear() {
   // clear all fields
   MyIncludedInt = 42LL;
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&MyIncludedStruct);
+  if (ARefField) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(ARefField.get());
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&ARequiredField);
   __isset.__clear();
 }
 
@@ -1884,6 +1902,12 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
     return false;
   }
   if (!((MyIncludedStruct == rhs.MyIncludedStruct))) {
+    return false;
+  }
+  if (!(((ARefField && rhs.ARefField && *ARefField == *rhs.ARefField) ||(!ARefField && !rhs.ARefField)))) {
+    return false;
+  }
+  if (!((ARequiredField == rhs.ARequiredField))) {
     return false;
   }
   return true;
@@ -1897,6 +1921,14 @@ const  ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() cons
   return std::move(MyIncludedStruct);
 }
 
+const  ::some::valid::ns::AStruct& MyIncludedStruct::get_ARequiredField() const& {
+  return ARequiredField;
+}
+
+ ::some::valid::ns::AStruct MyIncludedStruct::get_ARequiredField() && {
+  return std::move(ARequiredField);
+}
+
 void MyIncludedStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "MyIncludedInt") {
@@ -1907,12 +1939,22 @@ void MyIncludedStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece 
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
+  else if (_fname == "ARefField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ARequiredField") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
 }
 
 void swap(MyIncludedStruct& a, MyIncludedStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedInt, b.MyIncludedInt);
   swap(a.MyIncludedStruct, b.MyIncludedStruct);
+  swap(a.ARefField, b.ARefField);
+  swap(a.ARequiredField, b.ARequiredField);
   swap(a.__isset, b.__isset);
 }
 

@@ -4830,9 +4830,11 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only
 
-  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg) :
+  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg) :
       MyIncludedInt(std::move(MyIncludedInt__arg)),
-      MyIncludedStruct(std::move(MyIncludedStruct__arg)) {
+      MyIncludedStruct(std::move(MyIncludedStruct__arg)),
+      ARefField(std::move(ARefField__arg)),
+      ARequiredField(std::move(ARequiredField__arg)) {
     __isset.MyIncludedInt = true;
     __isset.MyIncludedStruct = true;
   }
@@ -4850,20 +4852,32 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
     MyIncludedStruct = arg.move();
     __isset.MyIncludedStruct = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyIncludedStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyIncludedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ARefField = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyIncludedStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyIncludedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ARequiredField = arg.move();
+  }
 
   MyIncludedStruct(MyIncludedStruct&&) = default;
-
-  MyIncludedStruct(const MyIncludedStruct&) = default;
+  MyIncludedStruct(const MyIncludedStruct& src);
 
   MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
-
-  MyIncludedStruct& operator=(const MyIncludedStruct&) = default;
+  MyIncludedStruct& operator=(const MyIncludedStruct& src);
   void __clear();
 
   virtual ~MyIncludedStruct() {}
 
    ::a::different::ns::IncludedInt64 MyIncludedInt;
    ::some::valid::ns::AStruct MyIncludedStruct;
+  std::unique_ptr< ::some::valid::ns::AStruct> ARefField;
+   ::some::valid::ns::AStruct ARequiredField;
 
   struct __isset {
     void __clear() {
@@ -4894,6 +4908,14 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
     MyIncludedStruct = std::forward<T_MyIncludedStruct_MyIncludedStruct_struct_setter>(MyIncludedStruct_);
     __isset.MyIncludedStruct = true;
     return MyIncludedStruct;
+  }
+  const  ::some::valid::ns::AStruct& get_ARequiredField() const&;
+   ::some::valid::ns::AStruct get_ARequiredField() &&;
+
+  template <typename T_MyIncludedStruct_ARequiredField_struct_setter>
+   ::some::valid::ns::AStruct& set_ARequiredField(T_MyIncludedStruct_ARequiredField_struct_setter&& ARequiredField_) {
+    ARequiredField = std::forward<T_MyIncludedStruct_ARequiredField_struct_setter>(ARequiredField_);
+    return ARequiredField;
   }
 
   template <class Protocol_>

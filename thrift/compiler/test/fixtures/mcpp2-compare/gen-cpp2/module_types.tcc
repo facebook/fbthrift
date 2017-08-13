@@ -3147,6 +3147,7 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
+  bool isset_ARequiredField = false;
 
   while (true) {
     xfer += iprot->readFieldBegin(_fname, _ftype, fid);
@@ -3177,6 +3178,27 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 3:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          std::unique_ptr< ::some::valid::ns::AStruct> ptr = std::make_unique< ::some::valid::ns::AStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, ptr.get());
+          this->ARefField = std::move(ptr);
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 4:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->ARequiredField);
+          isset_ARequiredField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -3187,6 +3209,9 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
   }
   xfer += iprot->readStructEnd();
 
+  if (!isset_ARequiredField) {
+    TProtocolException::throwMissingRequiredField("ARequiredField", "MyIncludedStruct");
+  }
   return xfer;
 }
 
@@ -3198,6 +3223,16 @@ uint32_t MyIncludedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeI64(this->MyIncludedInt);
   xfer += prot_->serializedFieldSize("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSize(prot_, &this->MyIncludedStruct);
+  xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
+  if (this->ARefField) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSize(prot_, this->ARefField.get());
+  }
+  else {
+    xfer += prot_->serializedStructSize("AStruct");
+    xfer += prot_->serializedSizeStop();
+  }
+  xfer += prot_->serializedFieldSize("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSize(prot_, &this->ARequiredField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3210,6 +3245,16 @@ uint32_t MyIncludedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeI64(this->MyIncludedInt);
   xfer += prot_->serializedFieldSize("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSizeZC(prot_, &this->MyIncludedStruct);
+  xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
+  if (this->ARefField) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSizeZC(prot_, this->ARefField.get());
+  }
+  else {
+    xfer += prot_->serializedStructSize("AStruct");
+    xfer += prot_->serializedSizeStop();
+  }
+  xfer += prot_->serializedFieldSize("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSizeZC(prot_, &this->ARequiredField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3223,6 +3268,19 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::write(prot_, &this->MyIncludedStruct);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("ARefField", apache::thrift::protocol::T_STRUCT, 3);
+  if (this->ARefField) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::write(prot_, this->ARefField.get());
+  }
+  else {
+    xfer += prot_->writeStructBegin("AStruct");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
+  }
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("ARequiredField", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::write(prot_, &this->ARequiredField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

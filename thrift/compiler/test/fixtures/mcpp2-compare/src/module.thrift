@@ -205,6 +205,8 @@ enum MyEnumB {
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
   2: AStruct MyIncludedStruct
+  3: AStruct ARefField (cpp.ref="true")
+  4: required AStruct ARequiredField
 } (cpp2.declare_hash = 1, cpp2.declare_equal_to)
 
 typedef i32 (cpp.type = "CppFakeI32") CppFakeI32
