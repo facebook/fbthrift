@@ -1,0 +1,44 @@
+<%={{ }}=%>
+{{#type:void?}}"void"{{/type:void?}}{{!
+}}{{#type:string?}}"string"{{/type:string?}}{{!
+}}{{#type:binary?}}"binary"{{/type:binary?}}{{!
+}}{{#type:bool?}}"bool"{{/type:bool?}}{{!
+}}{{#type:byte?}}"byte"{{/type:byte?}}{{!
+}}{{#type:i16?}}"i16"{{/type:i16?}}{{!
+}}{{#type:i32?}}"i32"{{/type:i32?}}{{!
+}}{{#type:i64?}}"i64"{{/type:i64?}}{{!
+}}{{#type:double?}}"double"{{/type:double?}}{{!
+}}{{#type:float?}}"float"{{/type:float?}}{{!
+}}{{#type:struct?}}{
+  "type" : "struct",
+  "name" : "{{type:name}}"
+}{{/type:struct?}}{{!
+}}{{#type:enum?}}{
+  "type" : "enum",
+  "name" : "{{type:name}}"
+}{{/type:enum?}}{{!
+}}{{#type:service?}}{
+  "type" : "service",
+  "name" : "{{type:name}}"
+}{{/type:service?}}{{!
+}}{{#type:list?}}{
+  "type" : "list",
+{{#type:listElemType}}
+  "inner_type" : {{> Types}}
+{{/type:listElemType}}
+}{{/type:list?}}{{!
+}}{{#type:set?}}{
+  "type" : "set",
+{{#type:setElemType}}
+  "inner_type" : {{> Types}}
+{{/type:setElemType}}
+}{{/type:set?}}{{!
+}}{{#type:map?}}{
+  "type" : "map",
+{{#type:keyType}}
+  "key_type" : {{> Types}},
+{{/type:keyType}}
+{{#type:valueType}}
+  "value_type" : {{> Types}}
+{{/type:valueType}}
+}{{/type:map?}}

@@ -61,14 +61,10 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "map",
-  "key_type" : {
-  "type" : "string"
-},
+  "key_type" : "string",
   "value_type" : {
   "type" : "list",
-  "inner_type" : {
-  "type" : "i32"
-}
+  "inner_type" : "i32"
 }
 }
           },
@@ -81,17 +77,11 @@
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "map",
-  "key_type" : {
-  "type" : "i32"
-},
+  "key_type" : "i32",
   "value_type" : {
   "type" : "map",
-  "key_type" : {
-  "type" : "string"
-},
-  "value_type" : {
-  "type" : "string"
-}
+  "key_type" : "string",
+  "value_type" : "string"
 }
 }
           }
@@ -110,9 +100,7 @@
             "key" : 1,
             "lineno" : 71,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "string"
-}
+            "type" : "string"
           },
           "byte_thing" : {
             "name" : "byte_thing",
@@ -120,9 +108,7 @@
             "key" : 4,
             "lineno" : 74,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "byte"
-}
+            "type" : "byte"
           },
           "i32_thing" : {
             "name" : "i32_thing",
@@ -130,9 +116,7 @@
             "key" : 9,
             "lineno" : 76,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "i32"
-}
+            "type" : "i32"
           },
           "i64_thing" : {
             "name" : "i64_thing",
@@ -140,9 +124,7 @@
             "key" : 11,
             "lineno" : 77,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "i64"
-}
+            "type" : "i64"
           }
         },
         "is_exception" : false,
@@ -159,9 +141,7 @@
             "key" : 1,
             "lineno" : 90,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "byte"
-}
+            "type" : "byte"
           },
           "struct_thing" : {
             "name" : "struct_thing",
@@ -180,9 +160,7 @@
             "key" : 3,
             "lineno" : 92,
             "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "i32"
-}
+            "type" : "i32"
           }
         },
         "is_exception" : false,
@@ -205,9 +183,7 @@
   "type" : "enum",
   "name" : "Numberz"
 },
-  "value_type" : {
-  "type" : "i64"
-}
+  "value_type" : "i64"
 }
           },
           "xtructs" : {
