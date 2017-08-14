@@ -1,13 +1,20 @@
 <%={{ }}=%>
 {
   "thrift_module" : "{{program:name}}",
-  "source_path" : "{{program:normalizedIncludePrefix}}{{program:name}}",
-  "py_namespace" : "{{program:py_namespace}}",
-  "wiki_address" : "{{program:wiki_address}}",
   {{#program:enums?}}
   "enumerations" :
   {
     {{> enums}}
-  }
+  },
   {{/program:enums?}}
+  {{#program:structs?}}
+  "structs" :
+  {
+    {{> structs}}
+  },
+  {{/program:structs?}}
+  {{! rearrange to avoid trailing comma issue}}
+  "source_path" : "{{program:normalizedIncludePrefix}}{{program:name}}",
+  "py_namespace" : "{{program:py_namespace}}",
+  "wiki_address" : "{{program:wiki_address}}"
 }

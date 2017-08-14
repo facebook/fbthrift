@@ -1,38 +1,42 @@
 {
   "thrift_module" : "ThriftdocTest",
-  "source_path" : "src/ThriftdocTest",
-  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest",
-  "wiki_address" : "Thrift.ThrifdocTest",
   "enumerations" :
   {
       "Numberz" : {
+        "name" : "Numberz",
         "constants" : {
           "ONE" : {
+            "name" : "ONE",
             "docstring" : "This is how to document a parameter\n",
             "lineno" : 42,
             "value" : 1
           },
           "TWO" : {
+            "name" : "TWO",
             "docstring" : "And this is a doc for a parameter that has no specific value assigned\n",
             "lineno" : 45,
             "value" : 2
           },
           "THREE" : {
+            "name" : "THREE",
             "docstring" : "",
             "lineno" : 47,
             "value" : 3
           },
           "FIVE" : {
+            "name" : "FIVE",
             "docstring" : "",
             "lineno" : 48,
             "value" : 5
           },
           "SIX" : {
+            "name" : "SIX",
             "docstring" : "",
             "lineno" : 49,
             "value" : 6
           },
           "EIGHT" : {
+            "name" : "EIGHT",
             "docstring" : "",
             "lineno" : 50,
             "value" : 8
@@ -41,5 +45,219 @@
         "docstring" : "Some doc text goes here.  Wow I am [nesting these] (no more nesting.)\n",
         "lineno" : 38
       }
+      },
+  "structs" :
+  {
+      "DefaultValue" : {
+        "name" : "DefaultValue",
+        "docstring" : "Test JSON \"escaping\" (e.g., forwardslash /, backwardslash \\, tab , newline)\nand some default values\n",
+        "fields" : {
+          "map_two" : {
+            "name" : "map_two",
+            "default_value" : {"\"list\"" : [1,2,3]},
+            "docstring" : "",
+            "key" : 2,
+            "lineno" : 62,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "map",
+  "key_type" : {
+  "type" : "string"
+},
+  "value_type" : {
+  "type" : "list",
+  "inner_type" : {
+  "type" : "i32"
+}
+}
+}
+          },
+          "map_three" : {
+            "name" : "map_three",
+            "default_value" : {"1" : {"\"a\"" : "one"}},
+            "docstring" : "",
+            "key" : 3,
+            "lineno" : 63,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "map",
+  "key_type" : {
+  "type" : "i32"
+},
+  "value_type" : {
+  "type" : "map",
+  "key_type" : {
+  "type" : "string"
+},
+  "value_type" : {
+  "type" : "string"
+}
+}
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 60
+      },
+      "Xtruct" : {
+        "name" : "Xtruct",
+        "docstring" : "And this is where you would document a struct\n",
+        "fields" : {
+          "string_thing" : {
+            "name" : "string_thing",
+            "docstring" : "And the members of a struct\n",
+            "key" : 1,
+            "lineno" : 71,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "string"
+}
+          },
+          "byte_thing" : {
+            "name" : "byte_thing",
+            "docstring" : "doct text goes before a comma\n",
+            "key" : 4,
+            "lineno" : 74,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "byte"
+}
+          },
+          "i32_thing" : {
+            "name" : "i32_thing",
+            "docstring" : "",
+            "key" : 9,
+            "lineno" : 76,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "i32"
+}
+          },
+          "i64_thing" : {
+            "name" : "i64_thing",
+            "docstring" : "",
+            "key" : 11,
+            "lineno" : 77,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "i64"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 67
+      },
+      "Xtruct2" : {
+        "name" : "Xtruct2",
+        "docstring" : "",
+        "fields" : {
+          "byte_thing" : {
+            "name" : "byte_thing",
+            "docstring" : "",
+            "key" : 1,
+            "lineno" : 90,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "byte"
+}
+          },
+          "struct_thing" : {
+            "name" : "struct_thing",
+            "docstring" : "",
+            "key" : 2,
+            "lineno" : 91,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "Xtruct"
+}
+          },
+          "i32_thing" : {
+            "name" : "i32_thing",
+            "docstring" : "",
+            "key" : 3,
+            "lineno" : 92,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "i32"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 88
+      },
+      "Insanity" : {
+        "name" : "Insanity",
+        "docstring" : "Struct insanity\n",
+        "fields" : {
+          "userMap" : {
+            "name" : "userMap",
+            "docstring" : "This is doc for field 1\n",
+            "key" : 1,
+            "lineno" : 100,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "map",
+  "key_type" : {
+  "type" : "enum",
+  "name" : "Numberz"
+},
+  "value_type" : {
+  "type" : "i64"
+}
+}
+          },
+          "xtructs" : {
+            "name" : "xtructs",
+            "docstring" : "And this is doc for field 2\n",
+            "key" : 2,
+            "lineno" : 103,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : {
+  "type" : "struct",
+  "name" : "Xtruct"
+}
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 96
+      },
+      "EmptyStruct" : {
+        "name" : "EmptyStruct",
+        "docstring" : "Doc\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 120
+      },
+      "OneField" : {
+        "name" : "OneField",
+        "docstring" : "",
+        "fields" : {
+          "field" : {
+            "name" : "field",
+            "docstring" : "",
+            "key" : 1,
+            "lineno" : 123,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "EmptyStruct"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 122
       }
+      },
+  "source_path" : "src/ThriftdocTest",
+  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest",
+  "wiki_address" : "Thrift.ThrifdocTest"
 }

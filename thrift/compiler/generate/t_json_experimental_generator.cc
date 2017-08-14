@@ -19,7 +19,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
@@ -64,6 +63,7 @@ class json_experimental_program : public mstch_program {
             {"program:normalizedIncludePrefix",
              &json_experimental_program::include_prefix},
             {"program:enums?", &json_experimental_program::has_enums},
+            {"program:structs?", &json_experimental_program::has_structs},
         });
   }
   mstch::node get_py_namespace() {
@@ -83,10 +83,10 @@ class json_experimental_program : public mstch_program {
     return std::string();
   }
   mstch::node has_enums() {
-    if (!program_->get_enums().empty()) {
-      return true;
-    }
-    return false;
+    return !program_->get_enums().empty();
+  }
+  mstch::node has_structs() {
+    return !program_->get_structs().empty();
   }
 };
 
@@ -186,12 +186,92 @@ class enum_value_json_experimental_generator : public enum_value_generator {
   }
 };
 
+class json_experimental_struct : public mstch_struct {
+ public:
+  json_experimental_struct(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_struct(strct, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"struct:lineno", &json_experimental_struct::get_lineno},
+            {"struct:docstring", &json_experimental_struct::get_docstring},
+        });
+  }
+  mstch::node get_lineno() {
+    return strct_->get_lineno();
+  }
+  mstch::node get_docstring() {
+    return strct_->get_doc();
+  }
+};
+
+class struct_json_experimental_generator : public struct_generator {
+ public:
+  struct_json_experimental_generator() = default;
+  virtual ~struct_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<json_experimental_struct>(
+        strct, generators, cache, pos);
+  }
+};
+
+class json_experimental_field : public mstch_field {
+ public:
+  json_experimental_field(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      int32_t index)
+      : mstch_field(field, generators, cache, pos, index) {
+    register_methods(
+        this,
+        {
+            {"field:lineno", &json_experimental_field::get_lineno},
+            {"field:docstring", &json_experimental_field::get_docstring},
+        });
+  }
+  mstch::node get_lineno() {
+    return field_->get_lineno();
+  }
+  mstch::node get_docstring() {
+    return field_->get_doc();
+  }
+};
+
+class field_json_experimental_generator : public field_generator {
+ public:
+  field_json_experimental_generator() = default;
+  virtual ~field_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const override {
+    return std::make_shared<json_experimental_field>(
+        field, generators, cache, pos, index);
+  }
+};
+
 void t_json_experimental_generator::generate_program() {
   // disable mstch escaping
   // TODO(T20509094): proper JSON escaping routine
   mstch::config::escape = [](const std::string& str) -> std::string {
     std::string str_copy = str;
+    boost::replace_all(str_copy, "\\", "\\\\");
     boost::replace_all(str_copy, "\n", "\\n");
+    boost::replace_all(str_copy, "\"", "\\\"");
+
     return str_copy;
   };
 
@@ -211,6 +291,10 @@ void t_json_experimental_generator::set_mstch_generators() {
       std::make_unique<enum_json_experimental_generator>());
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_json_experimental_generator>());
+  generators_->set_struct_generator(
+      std::make_unique<struct_json_experimental_generator>());
+  generators_->set_field_generator(
+      std::make_unique<field_json_experimental_generator>());
 }
 } // anonymous namespace
 

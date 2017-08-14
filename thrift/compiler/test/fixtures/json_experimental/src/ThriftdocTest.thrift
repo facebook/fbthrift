@@ -53,6 +53,10 @@ enum Numberz
 /** This is how you would do a typedef doc */
 typedef i64 UserId
 
+/**
+  Test JSON "escaping" (e.g., forwardslash /, backwardslash \, tab , newline)
+  and some default values
+*/
 struct DefaultValue {
   // 1: map<map<i32, i32>, i32> map_one = {{1:2} : 1},
   2: map<string, list<i32>> map_two = {"list" : [1, 2, 3]},

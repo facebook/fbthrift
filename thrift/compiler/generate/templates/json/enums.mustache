@@ -1,10 +1,12 @@
 <%={{ }}=%>
 {{#program:enums}}
   "{{enum:name}}" : {
+    "name" : "{{enum:name}}",
     {{^enum:empty?}}
     "constants" : {
       {{#enum:values}}
       "{{enumValue:name}}" : {
+        "name" : "{{enumValue:name}}",
         "docstring" : "{{enumValue:docstring}}",
         "lineno" : {{enumValue:lineno}},
         "value" : {{enumValue:value}}
