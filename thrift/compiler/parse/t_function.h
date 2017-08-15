@@ -53,6 +53,7 @@ class t_function : public t_doc {
         annotations_(annotations),
         oneway_(oneway) {
     xceptions_ = new t_struct(nullptr);
+    client_xceptions_ = nullptr;
 
     if (oneway_) {
       if (returntype_ == nullptr || !returntype_->is_void()) {
@@ -76,12 +77,14 @@ class t_function : public t_doc {
       std::string name,
       t_struct* arglist,
       t_struct* xceptions,
+      t_struct* client_xceptions,
       t_type* annotations = nullptr,
-      bool oneway = false) :
-        returntype_(returntype),
+      bool oneway = false)
+      : returntype_(returntype),
         name_(name),
         arglist_(arglist),
         xceptions_(xceptions),
+        client_xceptions_(client_xceptions),
         annotations_(annotations),
         oneway_(oneway) {
     if (oneway_) {
@@ -91,6 +94,14 @@ class t_function : public t_doc {
 
       if (returntype_ == nullptr || !returntype_->is_void()) {
         throw std::string("Oneway methods must have void return type.");
+      }
+    }
+
+    assert(!client_xceptions);
+    if (client_xceptions_) {
+      if (!arglist_->get_stream_field()) {
+        throw std::string(
+            "`client throws` only valid on client -> server stream methods");
       }
     }
   }
@@ -108,15 +119,35 @@ class t_function : public t_doc {
 
   t_struct* get_xceptions() const { return xceptions_; }
 
+  t_struct* get_client_xceptions() const {
+    return client_xceptions_;
+  }
+
   t_type* get_annotations() const { return annotations_; }
 
   bool is_oneway() const { return oneway_; }
+
+  // are any of the {return type/argument types} a pubsub stream?
+  bool any_streams() const {
+    if (returntype_->is_pubsub_stream()) {
+      return true;
+    }
+    return any_stream_params();
+  }
+
+  bool any_stream_params() const {
+    auto& members = arglist_->get_members();
+    return std::any_of(members.cbegin(), members.cend(), [](auto const& arg) {
+      return arg->get_type()->is_pubsub_stream();
+    });
+  }
 
  private:
   t_type* returntype_;
   std::string name_;
   t_struct* arglist_;
   t_struct* xceptions_;
+  t_struct* client_xceptions_;
   t_type* annotations_;
   bool oneway_;
 };

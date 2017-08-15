@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_STREAM_H
 #define T_STREAM_H
 
@@ -44,6 +45,34 @@ class t_stream : public t_type {
   }
 
   TypeValue get_type_value() const override { return TypeValue::TYPE_STREAM; }
+
+ private:
+  t_type* elem_type_;
+};
+
+class t_pubsub_stream : public t_type {
+ public:
+  explicit t_pubsub_stream(t_type* elem_type) : elem_type_(elem_type) {}
+
+  t_type* get_elem_type() const {
+    return elem_type_;
+  }
+
+  bool is_pubsub_stream() const override {
+    return true;
+  }
+
+  std::string get_full_name() const override {
+    return "stream " + elem_type_->get_full_name();
+  }
+
+  std::string get_impl_full_name() const override {
+    return "stream " + elem_type_->get_impl_full_name();
+  }
+
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_I32;
+  }
 
  private:
   t_type* elem_type_;

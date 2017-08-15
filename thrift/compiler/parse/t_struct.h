@@ -39,12 +39,14 @@ class t_struct : public t_type {
 
   explicit t_struct(t_program* program)
       : t_type(program),
+        stream_field_(nullptr),
         is_xception_(false),
         is_union_(false),
         view_parent_(nullptr) {}
 
   t_struct(t_program* program, const std::string& name)
       : t_type(program, name),
+        stream_field_(nullptr),
         is_xception_(false),
         is_union_(false),
         view_parent_(nullptr) {}
@@ -57,6 +59,25 @@ class t_struct : public t_type {
 
   void set_union(bool is_union) {
     is_union_ = is_union;
+  }
+
+  t_field* get_stream_field() {
+    return stream_field_;
+  }
+  void set_stream_field(t_field* stream_field) {
+    assert(is_paramlist_);
+    assert(!stream_field_);
+    assert(stream_field->get_type()->is_pubsub_stream());
+
+    stream_field_ = stream_field;
+    members_.insert(members_.begin(), stream_field_);
+    members_in_id_order_.insert(members_in_id_order_.begin(), stream_field_);
+  }
+
+  void set_paramlist(bool is_paramlist) {
+    is_paramlist_ = is_paramlist;
+    assert(!is_xception_);
+    assert(!is_union_);
   }
 
   bool append(t_field* elem) {
@@ -167,8 +188,22 @@ class t_struct : public t_type {
 
   members_type members_;
   members_type members_in_id_order_;
+  // only if is_paramlist_
+  // not stored as a normal member, as it's not serialized like a normal
+  // field into the pargs struct
+  t_field* stream_field_;
+
   bool is_xception_;
   bool is_union_;
+  bool is_paramlist_;
 
   const t_struct* view_parent_;
+};
+
+struct t_structpair {
+  t_struct* first;
+  t_struct* second;
+
+  t_structpair() = delete;
+  t_structpair(t_struct* f, t_struct* s) : first(f), second(s) {}
 };

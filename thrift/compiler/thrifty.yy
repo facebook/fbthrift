@@ -901,7 +901,7 @@ Function:
   CaptureDocText Oneway FunctionType tok_identifier '(' ParamList ')' Throws FunctionAnnotations CommaOrSemicolonOptional
     {
       $6->set_name(std::string($4) + "_args");
-      $$ = new t_function($3, $4, $6, $8, $9, $2);
+      $$ = new t_function($3, $4, $6, $8, nullptr /* client exceptions */, $9, $2);
       if ($1 != NULL) {
         $$->set_doc($1);
       }

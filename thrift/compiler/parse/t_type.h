@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2017 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,6 +107,7 @@ class t_type : public t_annotated {
   virtual bool is_set()            const { return false; }
   virtual bool is_map()            const { return false; }
   virtual bool is_stream()         const { return false; }
+  virtual bool is_pubsub_stream()  const { return false; }
   virtual bool is_service()        const { return false; }
   virtual bool is_binary()         const { return false; }
 

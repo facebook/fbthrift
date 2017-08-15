@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/compiler/generate/t_java_generator.h>
 
 #include <sstream>
@@ -2332,10 +2333,12 @@ void t_java_generator::generate_service_client(t_service* tservice) {
       string resultname = (*f_iter)->get_name() + "_result";
 
       t_struct noargs(program_);
-      t_function recv_function((*f_iter)->get_returntype(),
-                               string("recv_") + (*f_iter)->get_name(),
-                               &noargs,
-                               (*f_iter)->get_xceptions());
+      t_function recv_function(
+          (*f_iter)->get_returntype(),
+          string("recv_") + (*f_iter)->get_name(),
+          &noargs,
+          (*f_iter)->get_xceptions(),
+          nullptr /* client exceptions */);
       // Open the recv function
       indent(f_service_) <<
         "public " << function_signature(&recv_function) << endl;
