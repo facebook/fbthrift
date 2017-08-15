@@ -568,11 +568,7 @@ Sequence.register({{type:flat_name}})
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-            }}{{#type:setElemType}}{{!
-            }}{{> types/CythonCppType}}{{!
-            }}{{/type:setElemType}}]{{!
-            }} cself, cother
+        cdef {{> types/CythonCppType}} cself, cother
         cdef cbool retval
         if (isinstance(self, {{type:flat_name}}) and
                 isinstance(other, {{type:flat_name}})):

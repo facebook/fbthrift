@@ -64,9 +64,9 @@ void {{service:name}}ClientWrapper::setPersistentHeader(const std::string& key, 
 
 
 {{#service:functions}}
-folly::Future<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>
+folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}>
 {{service:name}}ClientWrapper::{{function:name}}({{#function:args}}
-    {{#field:type}}{{> CppValueFieldType}}{{/field:type}} arg_{{field:name}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:name}}{{^last?}}, {{/last?}}{{/function:args}}) {
  return async_client->future_{{function:name}}({{#function:args}}
    arg_{{field:name}}{{^last?}},{{/last?}}{{/function:args}}
  );

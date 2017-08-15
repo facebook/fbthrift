@@ -15,8 +15,16 @@
   limitations under the License.
 
 }}{{!
-Assuming type is a container that is a map, output the key and value separated
-by a comma, as required in a c++ header or source file. This is just a
-convenience to make the code a bit easier to read in all the places its called.
-}}{{#type:keyType}}{{> ContainerCppFieldType}}{{/type:keyType}},{{!
-}}{{#type:valueType}}{{>ContainerCppFieldType}}{{/type:valueType}}
+
+Used when a cpp type is passed as an argument - basic types are passed by value,
+and complex types are boxed in `std::unique_ptr`s.
+
+}}{{#type:string?}}std::unique_ptr<{{/type:string?}}{{!
+}}{{#type:binary?}}std::unique_ptr<{{/type:binary?}}{{!
+}}{{#type:struct}}std::unique_ptr<{{/type:struct}}{{!
+}}{{#type:container?}}std::unique_ptr<{{/type:container?}}{{!
+}}{{> types/CppValueType}}{{!
+}}{{#type:string?}}>{{/type:string?}}{{!
+}}{{#type:binary?}}>{{/type:binary?}}{{!
+}}{{#type:struct}}>{{/type:struct}}{{!
+}}{{#type:container?}}>{{/type:container?}}

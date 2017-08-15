@@ -16,10 +16,8 @@
 
 }}{{!
 
-Included in CPP files to define the type of a simple or contained struct.
-For example vector<TYPE> would include this file for type. The difference
-from CppFieldType is that the containers contain types directly, whereas
-argumnts or return types tend to use unique_ptr.
+Included in cpp files to define the type of a simple or contained struct, or
+anywhere else the type is used as a value directly.
 
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
@@ -30,12 +28,26 @@ argumnts or return types tend to use unique_ptr.
 }}{{#type:float?}}float{{/type:float?}}{{!
 }}{{#type:string?}}std::string{{/type:string?}}{{!
 }}{{#type:binary?}}std::string{{/type:binary?}}{{!
+}}{{#type:enum}}{{!
+  }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:name}}{{!
+  }}{{/type:enum}}{{!
 }}{{#type:struct}}{{!
   }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}{{/type:struct}}{{!
-}}{{#type:list?}}std::vector<{{#type:listElemType}}{{> ContainerCppFieldType}}{{/type:listElemType}}>{{/type:list?}}{{!
-}}{{#type:set?}}std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{#type:setElemType}}{{> ContainerCppFieldType}}{{/type:setElemType}}>{{/type:set?}}{{!
-}}{{#type:map?}}std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{#type:keyType}}{{> ContainerCppFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCppFieldType}}{{/type:valueType}}>{{/type:map?}}{{!
-}}{{#type:enum}}{{!
-  }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:name}}{{!
-  }}{{/type:enum}}
+}}{{#type:list?}}{{!
+  }}std::vector<{{!
+  }}{{#type:listElemType}}{{> types/CppValueType}}{{/type:listElemType}}{{!
+  }}>{{!
+}}{{/type:list?}}{{!
+}}{{#type:set?}}{{!
+  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{!
+  }}{{#type:setElemType}}{{> types/CppValueType}}{{/type:setElemType}}{{!
+  }}>{{!
+}}{{/type:set?}}{{!
+}}{{#type:map?}}{{!
+  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{!
+  }}{{#type:keyType}}{{> types/CppValueType}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> types/CppValueType}}{{/type:valueType}}{{!
+  }}>{{!
+}}{{/type:map?}}{{!
+}}{{#type:void?}}folly::Unit{{/type:void?}}
