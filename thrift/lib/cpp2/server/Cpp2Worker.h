@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef CPP2_WORKER_H_
-#define CPP2_WORKER_H_ 1
+#pragma once
 
 #include <folly/io/async/AsyncServerSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <folly/io/async/HHWheelTimer.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/TLSHelper.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
+#include <folly/io/async/HHWheelTimer.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <unordered_set>
 
 #include <wangle/acceptor/ConnectionManager.h>
@@ -219,5 +218,3 @@ class Cpp2Worker
 };
 
 }} // apache::thrift
-
-#endif // #ifndef CPP2_WORKER_H_

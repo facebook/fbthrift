@@ -16,22 +16,20 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
-#include <thrift/lib/cpp2/server/Cpp2Connection.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/SSLRejectingManager.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/concurrency/Util.h>
-#include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
-#include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
-
 #include <iostream>
-
-#include <glog/logging.h>
-
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/portability/Sockets.h>
+#include <glog/logging.h>
+
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/peeking/PeekingManager.h>
+#include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
+#include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
 
 DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
 
@@ -96,16 +94,11 @@ void Cpp2Worker::plaintextConnectionReady(
     const std::string& nextProtocolName,
     wangle::SecureTransportType secureTransportType,
     wangle::TransportInfo& tinfo) {
-  auto asyncSocket =
-    sock->getUnderlyingTransport<folly::AsyncSocket>();
+  auto asyncSocket = sock->getUnderlyingTransport<folly::AsyncSocket>();
   CHECK(asyncSocket) << "Underlying socket is not a AsyncSocket type";
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
-  auto peekingManager = new SSLRejectingManager(
-      this,
-      clientAddr,
-      nextProtocolName,
-      secureTransportType,
-      tinfo);
+  auto peekingManager = new PeekingManager(
+      this, clientAddr, nextProtocolName, secureTransportType, tinfo);
   peekingManager->start(std::move(sock), server_->getObserver());
 }
 

@@ -16,27 +16,36 @@
 
 #pragma once
 
-#include <wangle/acceptor/Acceptor.h>
-#include <wangle/acceptor/SocketPeeker.h>
-#include <wangle/acceptor/ManagedConnection.h>
-#include <thrift/lib/cpp/server/TServerObserver.h>
-#include <thrift/lib/cpp2/server/TLSHelper.h>
-
 #include <folly/io/Cursor.h>
+
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/server/peeking/HTTPHelper.h>
+#include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
+#include <wangle/acceptor/Acceptor.h>
+#include <wangle/acceptor/ManagedConnection.h>
+#include <wangle/acceptor/SocketPeeker.h>
 
 namespace apache { namespace thrift {
 
 /**
- * A manager that rejects SSL connections with an alert. This is
- * useful for cases where clients might send SSL connections on
- * a plaintext port and you need to fail fast to tell clients to
- * go away.
+ * The number of bytes that will be read from the socket.
+ * TLSHelper currently needs the most bytes. Thus, it's cap
+ * it up at the amount that TLSHelper needs.
  */
-class SSLRejectingManager
-    : public wangle::ManagedConnection,
-      public wangle::SocketPeeker::Callback {
+constexpr uint8_t kPeekBytes = 9;
+
+/**
+ * A manager that rejects or accepts connections based on critera
+ * added by helper functions. This is useful for cases where
+ * clients might be sending different types of protocols
+ * over plaintext and it's up to the Acceptor to determine
+ * what kind of protocol they are talking to route to the
+ * appropriate handlers.
+ */
+class PeekingManager : public wangle::ManagedConnection,
+                       public wangle::SocketPeeker::Callback {
  public:
-  SSLRejectingManager(
+  PeekingManager(
       wangle::Acceptor* acceptor,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
@@ -48,19 +57,19 @@ class SSLRejectingManager
         secureTransportType_(secureTransportType),
         tinfo_(std::move(tinfo)) {}
 
-  ~SSLRejectingManager() override = default;
+  ~PeekingManager() override = default;
 
   void start(
-      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::AsyncTransportWrapper::UniquePtr socket,
       std::shared_ptr<apache::thrift::server::TServerObserver> obs) noexcept {
-    socket_ = std::move(sock);
+    socket_ = std::move(socket);
     observer_ = std::move(obs);
     auto underlyingSocket =
         socket_->getUnderlyingTransport<folly::AsyncSocket>();
     CHECK(underlyingSocket) << "Underlying socket is not a AsyncSocket type";
     acceptor_->getConnectionManager()->addConnection(this, true);
     peeker_.reset(
-        new wangle::SocketPeeker(*underlyingSocket, this, kTLSPeekBytes));
+        new wangle::SocketPeeker(*underlyingSocket, this, kPeekBytes));
     peeker_->start();
   }
 
@@ -70,6 +79,12 @@ class SSLRejectingManager
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
 
+    /**
+     * This rejects SSL connections with an alert. It is
+     * useful for cases where clients might send SSL connections on
+     * a plaintext port and you need to fail fast to tell clients to
+     * go away.
+     */
     if (TLSHelper::looksLikeTLS(peekBytes)) {
       LOG(ERROR) << "Received SSL connection on non SSL port";
       sendPlaintextTLSAlert(peekBytes);
@@ -77,15 +92,31 @@ class SSLRejectingManager
         observer_->protocolError();
       }
       dropConnection();
-    } else {
-      acceptor_->connectionReady(
-          std::move(socket_),
-          std::move(clientAddr_),
-          std::move(nextProtocolName_),
-          secureTransportType_,
-          tinfo_);
-      destroy();
+      return;
     }
+
+    /**
+     * This rejects HTTP connections with an alert. It is useful
+     * when clients are trying to talk HTTP but ThriftServer
+     * does not know how to handle them. This fails fast to tell
+     * clients to go away.
+     */
+    if (HTTPHelper::looksLikeHTTP(peekBytes)) {
+      LOG(ERROR) << "You are trying to handle HTTP2";
+      if (observer_) {
+        observer_->protocolError();
+      }
+      dropConnection();
+      return;
+    }
+
+    acceptor_->connectionReady(
+        std::move(socket_),
+        std::move(clientAddr_),
+        std::move(nextProtocolName_),
+        secureTransportType_,
+        tinfo_);
+    destroy();
   }
 
   void sendPlaintextTLSAlert(
