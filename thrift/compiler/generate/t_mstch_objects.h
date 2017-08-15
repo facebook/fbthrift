@@ -411,6 +411,7 @@ class mstch_const_value : public mstch_base {
             {"value:double?", &mstch_const_value::is_double},
             {"value:integer?", &mstch_const_value::is_integer},
             {"value:enum?", &mstch_const_value::is_enum},
+            {"value:enum_value?", &mstch_const_value::has_enum_value},
             {"value:string?", &mstch_const_value::is_string},
             {"value:base?", &mstch_const_value::is_base},
             {"value:map?", &mstch_const_value::is_map},
@@ -466,6 +467,9 @@ class mstch_const_value : public mstch_base {
   }
   mstch::node is_enum() {
     return type_ == cv::CV_INTEGER && const_value_->is_enum();
+  }
+  mstch::node has_enum_value() {
+    return const_value_->get_enum_value() != nullptr;
   }
   mstch::node is_string() {
     return type_ == cv::CV_STRING;

@@ -36,6 +36,8 @@ enum MyEnumA {
   fieldC = 4
 }
 
+const list<MyEnumA> AConstList= [1, 2, 3]
+
 enum AnnotatedEnum {
   FIELDA = 2,
   FIELDB = 4,

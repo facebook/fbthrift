@@ -162,7 +162,7 @@ class t_const_value {
     return is_enum_;
   }
 
-  void set_enum(t_enum* tenum) {
+  void set_enum(t_enum const* tenum) {
     tenum_ = tenum;
   }
 
@@ -170,7 +170,7 @@ class t_const_value {
     return tenum_;
   }
 
-  void set_enum_value(t_enum_value* tenum_val) {
+  void set_enum_value(t_enum_value const* tenum_val) {
     tenum_val_ = tenum_val;
   }
 
@@ -200,6 +200,15 @@ class t_const_value {
         set_values_type(val_type, map_val.second);
       }
     }
+    // Set constant value types as enums when they are declared with integers
+    if (type->is_enum() && !value->is_enum()) {
+      value->set_is_enum();
+      auto enm = dynamic_cast<t_enum const*>(type);
+      value->set_enum(enm);
+      if (enm->find_value(value->get_integer())) {
+        value->set_enum_value(enm->find_value(value->get_integer()));
+      }
+    }
   }
 
  private:
@@ -219,8 +228,8 @@ class t_const_value {
   t_type* type_ = nullptr;
 
   bool is_enum_ = false;
-  t_enum* tenum_ = nullptr;
-  t_enum_value* tenum_val_ = nullptr;
+  t_enum const* tenum_ = nullptr;
+  t_enum_value const* tenum_val_ = nullptr;
 };
 
 #endif

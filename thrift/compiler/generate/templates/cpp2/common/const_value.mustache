@@ -26,4 +26,6 @@ Base Constant Values
 
 %><%#value:string?%>"<%value:stringValue%>"<%/value:string?%><%!
 
-%><%#value:enum?%><% > common/type_namespace_cpp2%><%value:enum_name%>::<%value:enum_value_name%><%/value:enum?%>
+%><%#value:enum?%><%#value:enum_value?%><% > common/type_namespace_cpp2%><%value:enum_name%>::<%value:enum_value_name%><%/value:enum_value?%><%/value:enum?%><%!
+
+%><%#value:enum?%><%^value:enum_value?%>static_cast<<% > common/type_namespace_cpp2%><%value:enum_name%>>(<%value:integerValue%>)<%/value:enum_value?%><%/value:enum?%>

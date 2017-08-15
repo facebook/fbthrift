@@ -72,6 +72,13 @@ std::vector<std::map<std::string, int32_t>> const& module_constants::states() {
   return *instance;
 }
 
+std::vector< ::some::valid::ns::MyEnumA> const& module_constants::AConstList() {
+  static folly::Indestructible<std::vector< ::some::valid::ns::MyEnumA>> const instance(std::initializer_list< ::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldA,
+   ::some::valid::ns::MyEnumA::fieldB,
+  static_cast< ::some::valid::ns::MyEnumA>(3)});
+  return *instance;
+}
+
 constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumA_;
 
 constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumB_;

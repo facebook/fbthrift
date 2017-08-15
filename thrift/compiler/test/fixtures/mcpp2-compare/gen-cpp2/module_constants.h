@@ -76,6 +76,8 @@ struct module_constants {
 
   static std::vector<std::map<std::string, int32_t>> const& states();
 
+  static std::vector< ::some::valid::ns::MyEnumA> const& AConstList();
+
   static constexpr  ::some::valid::ns::MyEnumA const constEnumA_ =  ::some::valid::ns::MyEnumA::fieldB;
 
   static constexpr  ::some::valid::ns::MyEnumA constEnumA() {

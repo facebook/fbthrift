@@ -261,8 +261,8 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
   mstch::map result{
       {"bool?", type == cv::CV_BOOL},
       {"double?", type == cv::CV_DOUBLE},
-      {"integer?", type == cv::CV_INTEGER && !value.is_enum()},
-      {"enum?", type == cv::CV_INTEGER && value.is_enum()},
+      {"integer?", type == cv::CV_INTEGER && !value.get_enum_value()},
+      {"enum?", type == cv::CV_INTEGER && value.get_enum_value()},
       {"string?", type == cv::CV_STRING},
       {"base?",
        type == cv::CV_BOOL || type == cv::CV_DOUBLE || type == cv::CV_INTEGER ||
@@ -291,7 +291,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
       result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:
-      if (value.is_enum()) {
+      if (value.get_enum_value()) {
         result.emplace("enum_name", value.get_enum()->get_name());
         result.emplace("enum_value_name", value.get_enum_value()->get_name());
       }
