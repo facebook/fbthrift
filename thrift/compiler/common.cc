@@ -683,6 +683,10 @@ t_type* common_get_true_type(t_type* type) {
  * Check that all the elements of a throws block are actually exceptions.
  */
 bool validate_throws(t_struct* throws) {
+  if (!throws) {
+    return true;
+  }
+
   const vector<t_field*>& members = throws->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {

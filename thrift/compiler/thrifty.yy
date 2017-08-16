@@ -107,6 +107,7 @@ LinenoStack lineno_stack;
   t_const*       tconst;
   t_const_value* tconstv;
   t_struct*      tstruct;
+  t_structpair*  tstructpair;
   t_service*     tservice;
   t_function*    tfunction;
   t_field*       tfield;
@@ -120,6 +121,7 @@ LinenoStack lineno_stack;
  * Strings identifier
  */
 %token<id>     tok_identifier
+%token<id>     tok_client
 %token<id>     tok_literal
 %token<dtext>  tok_doctext
 %token<id>     tok_st_identifier
@@ -224,6 +226,7 @@ LinenoStack lineno_stack;
 %type<tfieldid>  FieldIdentifier
 %type<ereq>      FieldRequiredness
 %type<ttype>     FieldType
+%type<ttype>     PubsubStreamType
 %type<tconstv>   FieldValue
 %type<tstruct>   FieldList
 
@@ -249,9 +252,13 @@ LinenoStack lineno_stack;
 %type<tservice>  FunctionList
 
 %type<tstruct>   ParamList
+%type<tstruct>   EmptyParamList
+%type<tstruct>   MaybeStreamAndParamList
 %type<tfield>    Param
 
 %type<tstruct>   Throws
+%type<tstruct>   ClientThrows
+%type<tstructpair>   ThrowsThrows
 %type<tservice>  Extends
 %type<tbool>     Oneway
 
@@ -898,16 +905,43 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier '(' ParamList ')' Throws FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText Oneway FunctionType tok_identifier '(' MaybeStreamAndParamList ')' ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
     {
       $6->set_name(std::string($4) + "_args");
-      $$ = new t_function($3, $4, $6, $8, nullptr /* client exceptions */, $9, $2);
+      auto* rettype = $3;
+      auto* arglist = $6;
+      auto* func = new t_function(rettype, $4, arglist, $8->first, $8->second, $9, $2);
+      $$ = func;
+
       if ($1 != NULL) {
         $$->set_doc($1);
       }
       $$->set_lineno(yylineno);
       y_field_val = -1;
     }
+
+
+MaybeStreamAndParamList:
+  PubsubStreamType tok_identifier ',' ParamList
+  {
+    pdebug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
+    t_struct* paramlist = $4;
+    t_field* stream_field = new t_field($1, $2, 0);
+    paramlist->set_stream_field(stream_field);
+    $$ = paramlist;
+  }
+| PubsubStreamType tok_identifier EmptyParamList
+  {
+    pdebug("MaybeStreamAndParamList -> PubsubStreamType tok");
+    t_struct* paramlist = $3;
+    t_field* stream_field = new t_field($1, $2, 0);
+    paramlist->set_stream_field(stream_field);
+    $$ = paramlist;
+  }
+| ParamList
+  {
+    $$ = $1;
+  }
 
 ParamList:
   ParamList Param
@@ -919,10 +953,17 @@ ParamList:
         exit(1);
       }
     }
-|
+| EmptyParamList
     {
-      pdebug("ParamList -> ");
-      $$ = new t_struct(g_program);
+      $$ = $1;
+    }
+
+EmptyParamList:
+    {
+      pdebug("EmptyParamList -> nil");
+      t_struct* paramlist = new t_struct(g_program);
+      paramlist->set_paramlist(true);
+      $$ = paramlist;
     }
 
 Param:
@@ -930,11 +971,6 @@ Param:
     {
       pdebug("Param -> Field");
       $$ = $1;
-      t_type* t = $1->get_type();
-      if (t && t->is_stream()) {
-        yyerror("Arguments of type stream<> are not supported: \"%s %s\"", t->get_full_name().c_str(), $1->get_name().c_str());
-        exit(1);
-      }
     }
 
 Oneway:
@@ -947,19 +983,34 @@ Oneway:
       $$ = false;
     }
 
+ThrowsThrows:
+  Throws ClientThrows
+		{
+			$$ = new t_structpair($1, $2);
+		}
+| Throws
+		{
+			$$ = new t_structpair($1, nullptr);
+		}
+| ClientThrows
+		{
+			$$ = new t_structpair(new t_struct(g_program), $1);
+		}
+|   {
+			$$ = new t_structpair(new t_struct(g_program), nullptr);
+		}
+
 Throws:
   tok_throws '(' FieldList ')'
     {
       pdebug("Throws -> tok_throws ( FieldList )");
       $$ = $3;
-      if (g_parse_mode == PROGRAM && !validate_throws($$)) {
-        yyerror("Throws clause may not contain non-exception types");
-        exit(1);
-      }
     }
-|
+ClientThrows:
+  tok_client '(' FieldList ')'
     {
-      $$ = new t_struct(g_program);
+      pdebug("ClientThrows -> 'client throws' ( FieldList )");
+      $$ = $3;
     }
 
 FieldList:
@@ -1101,7 +1152,12 @@ FieldValue:
     }
 
 FunctionType:
-  FieldType
+  PubsubStreamType
+    {
+      pdebug("FunctionType -> PubsubStreamType");
+      $$ = $1;
+    }
+| FieldType
     {
       pdebug("FunctionType -> FieldType");
       $$ = $1;
@@ -1110,6 +1166,13 @@ FunctionType:
     {
       pdebug("FunctionType -> tok_void");
       $$ = g_type_void;
+    }
+
+PubsubStreamType:
+  tok_stream FieldType
+    {
+      pdebug("PubsubStreamType -> tok_stream FieldType");
+      $$ = new t_pubsub_stream($2);
     }
 
 FieldType:
@@ -1306,6 +1369,7 @@ TypeAnnotations:
     }
 |
     {
+      pdebug("TypeAnnotations -> nil");
       $$ = NULL;
     }
 

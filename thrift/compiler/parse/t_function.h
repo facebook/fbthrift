@@ -119,9 +119,7 @@ class t_function : public t_doc {
 
   t_struct* get_xceptions() const { return xceptions_; }
 
-  t_struct* get_client_xceptions() const {
-    return client_xceptions_;
-  }
+  t_struct* get_client_xceptions() const { return client_xceptions_; }
 
   t_type* get_annotations() const { return annotations_; }
 

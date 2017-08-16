@@ -131,4 +131,11 @@ class enum_values_set_validator : virtual public validator {
       std::string const& enum_value,
       std::string const& enum_name);
 };
+
+class exception_list_is_all_exceptions_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  bool visit(t_service* service) override;
+};
 }}}

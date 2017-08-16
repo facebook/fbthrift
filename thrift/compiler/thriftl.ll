@@ -160,6 +160,12 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "union"              { return tok_union;                }
 "exception"          { return tok_xception;             }
 "extends"            { return tok_extends;              }
+"client throws"      {
+  /* this is a hack; lex doesn't allow whitespace in trailing context,
+   * so match entire "client throws" as a token
+   */
+  return tok_client;
+}
 "throws"             { return tok_throws;               }
 "service"            { return tok_service;              }
 "enum"               { return tok_enum;                 }

@@ -151,6 +151,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<enum_value_names_uniqueness_validator>();
   vs.add<enum_values_uniqueness_validator>();
   vs.add<enum_values_set_validator>();
+  vs.add<exception_list_is_all_exceptions_validator>();
 
   // add more validators here ...
 
@@ -239,5 +240,28 @@ void enum_values_set_validator::validate(t_enum const* const tenum) {
       add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
     }
   }
+}
+
+bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
+  auto check_func = [=](t_function const* func) {
+    if (!validate_throws(func->get_xceptions())) {
+      std::ostringstream ss;
+      ss << "Non-exception type in throws list for method" << func->get_name();
+      add_error(func->get_lineno(), ss.str());
+    }
+    if (!validate_throws(func->get_client_xceptions())) {
+      std::ostringstream ss;
+      ss << "Non-exception type in client throws list for method"
+         << func->get_name();
+      add_error(func->get_lineno(), ss.str());
+    }
+  };
+
+  auto const& funcs = service->get_functions();
+  for (auto const& func : funcs) {
+    check_func(func);
+  }
+
+  return true;
 }
 }}}
