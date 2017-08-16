@@ -62,8 +62,6 @@ class json_experimental_program : public mstch_program {
              &json_experimental_program::get_wiki_address},
             {"program:normalizedIncludePrefix",
              &json_experimental_program::include_prefix},
-            {"program:enums?", &json_experimental_program::has_enums},
-            {"program:structs?", &json_experimental_program::has_structs},
         });
   }
   mstch::node get_py_namespace() {
@@ -81,12 +79,6 @@ class json_experimental_program : public mstch_program {
       return prefix;
     }
     return std::string();
-  }
-  mstch::node has_enums() {
-    return !program_->get_enums().empty();
-  }
-  mstch::node has_structs() {
-    return !program_->get_structs().empty();
   }
 };
 

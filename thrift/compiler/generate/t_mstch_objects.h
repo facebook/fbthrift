@@ -905,6 +905,8 @@ class mstch_program : public mstch_base {
             {"program:services", &mstch_program::services},
             {"program:typedefs", &mstch_program::typedefs},
             {"program:constants", &mstch_program::constants},
+            {"program:enums?", &mstch_program::has_enums},
+            {"program:structs?", &mstch_program::has_structs},
         });
   }
   virtual ~mstch_program() = default;
@@ -922,6 +924,12 @@ class mstch_program : public mstch_base {
   mstch::node services();
   mstch::node typedefs();
   mstch::node constants();
+  mstch::node has_enums() {
+    return !program_->get_enums().empty();
+  }
+  mstch::node has_structs() {
+    return !program_->get_structs().empty();
+  }
 
  protected:
   t_program const* program_;
