@@ -34,6 +34,12 @@ namespace wiki Thrift.ThrifdocTest
 
 # the new unix comment
 
+enum NoDoc
+{
+  NO = 1,
+  DOC = 2
+}
+
 /** Some doc text goes here.  Wow I am [nesting these] (no more nesting.) */
 enum Numberz
 {
@@ -114,7 +120,7 @@ exception Xception2 {
 }
 
 /* C1 */
-/** Doc */
+/**  */
 /* C2 */
 /* C3 */
 struct EmptyStruct {}

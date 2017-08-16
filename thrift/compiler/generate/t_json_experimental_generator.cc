@@ -110,6 +110,7 @@ class json_experimental_enum : public mstch_enum {
         {
             {"enum:empty?", &json_experimental_enum::is_empty},
             {"enum:lineno", &json_experimental_enum::get_lineno},
+            {"enum:docstring?", &json_experimental_enum::has_docstring},
             {"enum:docstring", &json_experimental_enum::get_docstring},
         });
   }
@@ -118,6 +119,9 @@ class json_experimental_enum : public mstch_enum {
   }
   mstch::node get_lineno() {
     return enm_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return enm_->has_doc();
   }
   mstch::node get_docstring() {
     return enm_->get_doc();
@@ -151,12 +155,17 @@ class json_experimental_enum_value : public mstch_enum_value {
         this,
         {
             {"enumValue:lineno", &json_experimental_enum_value::get_lineno},
+            {"enumValue:docstring?",
+             &json_experimental_enum_value::has_docstring},
             {"enumValue:docstring",
              &json_experimental_enum_value::get_docstring},
         });
   }
   mstch::node get_lineno() {
     return enm_value_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return enm_value_->has_doc();
   }
   mstch::node get_docstring() {
     return enm_value_->get_doc();
@@ -190,11 +199,15 @@ class json_experimental_struct : public mstch_struct {
         this,
         {
             {"struct:lineno", &json_experimental_struct::get_lineno},
+            {"struct:docstring?", &json_experimental_struct::has_docstring},
             {"struct:docstring", &json_experimental_struct::get_docstring},
         });
   }
   mstch::node get_lineno() {
     return strct_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return strct_->has_doc();
   }
   mstch::node get_docstring() {
     return strct_->get_doc();
@@ -229,11 +242,15 @@ class json_experimental_field : public mstch_field {
         this,
         {
             {"field:lineno", &json_experimental_field::get_lineno},
+            {"field:docstring?", &json_experimental_field::has_docstring},
             {"field:docstring", &json_experimental_field::get_docstring},
         });
   }
   mstch::node get_lineno() {
     return field_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return field_->has_doc();
   }
   mstch::node get_docstring() {
     return field_->get_doc();

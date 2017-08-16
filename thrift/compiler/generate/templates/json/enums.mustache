@@ -7,14 +7,18 @@
       {{#enum:values}}
       "{{enumValue:name}}" : {
         "name" : "{{enumValue:name}}",
+        {{#enumValue:docstring?}}
         "docstring" : "{{enumValue:docstring}}",
+        {{/enumValue:docstring?}}
         "lineno" : {{enumValue:lineno}},
         "value" : {{enumValue:value}}
       }{{^last?}},{{/last?}}
       {{/enum:values}}
     },
     {{/enum:empty?}}
+    {{#enum:docstring?}}
     "docstring" : "{{enum:docstring}}",
+    {{/enum:docstring?}}
     "lineno" : {{enum:lineno}}
   }{{^last?}},{{/last?}}
 {{/program:enums}}

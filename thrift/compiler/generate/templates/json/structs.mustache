@@ -3,7 +3,9 @@
   {{#struct:plain?}}{{! currently only support structs}}
   "{{struct:name}}" : {
     "name" : "{{struct:name}}",
+    {{#struct:docstring?}}
     "docstring" : "{{struct:docstring}}",
+    {{/struct:docstring?}}
     {{#struct:fields?}}
     "fields" : {
       {{#struct:fields}}
@@ -12,7 +14,9 @@
         {{#field:value}}
         "default_value" : {{> const_value}},
         {{/field:value}}
+        {{#field:docstring?}}
         "docstring" : "{{field:docstring}}",
+        {{/field:docstring?}}
         "key" : {{field:key}},
         "lineno" : {{field:lineno}},
         {{#field:required?}}
