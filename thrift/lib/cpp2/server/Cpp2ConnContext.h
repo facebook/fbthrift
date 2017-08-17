@@ -62,9 +62,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     if (transport) {
       transport->getLocalAddress(&localAddress_);
       peerCert_ = transport->getPeerCert();
-      if (transport->getUnderlyingTransport<async::TAsyncSSLSocket>()) {
-        isTls_ = true;
-      }
+      securityProtocol_ = transport->getSecurityProtocol();
     }
 
     if (clientIdentityHook) {
@@ -121,8 +119,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return client;
   }
 
+  const std::string& getSecurityProtocol() const {
+    return securityProtocol_;
+  }
+
   bool isTls() const {
-    return isTls_;
+    return securityProtocol_ == "TLS";
   }
 
   virtual void* getPeerIdentities() const {
@@ -136,8 +138,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
   std::shared_ptr<X509> peerCert_;
-  bool isTls_{false};
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
+  std::string securityProtocol_;
 };
 
 // Request-specific context
@@ -269,7 +271,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   std::string methodName_;
   int32_t protoSeqId_{0};
   uint32_t messageBeginSize_{0};
-
 };
 
 } }
