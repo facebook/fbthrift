@@ -450,7 +450,7 @@ class mstch_cpp2_struct : public mstch_struct {
           (f->annotations_.count("cpp.ref_type") &&
            f->annotations_.at("cpp.ref_type") == "unique") ||
           (f->annotations_.count("cpp2.ref_type") &&
-           f->annotations_.at("cpp.ref_type") == "unique")) {
+           f->annotations_.at("cpp2.ref_type") == "unique")) {
         return true;
       }
     }

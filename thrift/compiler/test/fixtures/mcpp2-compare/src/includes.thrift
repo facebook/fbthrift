@@ -14,3 +14,7 @@ enum AnEnum {
 struct  AStruct {
  1: i32 FieldA
 }
+
+struct AStructB {
+  1: AStruct FieldA (cpp2.ref_type = "shared_const")
+}

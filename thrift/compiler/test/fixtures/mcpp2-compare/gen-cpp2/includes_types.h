@@ -20,6 +20,7 @@
 namespace a { namespace different { namespace ns {
 
 class AStruct;
+class AStructB;
 
 enum class AnEnum {
   FIELDA = 2,
@@ -165,6 +166,101 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStr
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStruct>::serializedSizeZC(Protocol const* proto,  ::a::different::ns::AStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace a { namespace different { namespace ns {
+
+class AStructB : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
+ public:
+
+  AStructB() {}
+  // FragileConstructor for use in initialization lists only
+
+  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg) :
+      FieldA(std::move(FieldA__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AStructB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AStructB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    FieldA = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+
+  AStructB(AStructB&&) = default;
+
+  AStructB(const AStructB&) = default;
+
+  AStructB& operator=(AStructB&&) = default;
+
+  AStructB& operator=(const AStructB&) = default;
+  void __clear();
+
+  virtual ~AStructB() {}
+
+  std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
+
+  struct __isset {
+    void __clear() {}
+
+  } __isset;
+  bool operator==(const AStructB& rhs) const;
+
+  bool operator < (const AStructB& rhs) const {
+    if (!(FieldA == rhs.FieldA)) {
+      return FieldA < rhs.FieldA;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+};
+
+void swap(AStructB& a, AStructB& b);
+extern template uint32_t AStructB::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AStructB::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AStructB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AStructB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AStructB::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AStructB::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AStructB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AStructB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // a::different::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::a::different::ns::AStructB>::clear( ::a::different::ns::AStructB* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::a::different::ns::AStructB>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::write(Protocol* proto,  ::a::different::ns::AStructB const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::read(Protocol* proto,  ::a::different::ns::AStructB* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::serializedSize(Protocol const* proto,  ::a::different::ns::AStructB const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::serializedSizeZC(Protocol const* proto,  ::a::different::ns::AStructB const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

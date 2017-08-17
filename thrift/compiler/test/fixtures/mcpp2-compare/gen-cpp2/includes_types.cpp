@@ -85,4 +85,46 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace a { namespace different { namespace ns {
 
+void AStructB::__clear() {
+  // clear all fields
+  FieldA.reset();
+  __isset.__clear();
+}
+
+bool AStructB::operator==(const AStructB& rhs) const {
+  if (!(((FieldA && rhs.FieldA && *FieldA == *rhs.FieldA) ||(!FieldA && !rhs.FieldA)))) {
+    return false;
+  }
+  return true;
+}
+
+void AStructB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "FieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+void swap(AStructB& a, AStructB& b) {
+  using ::std::swap;
+  swap(a.FieldA, b.FieldA);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t AStructB::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AStructB::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AStructB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AStructB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AStructB::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AStructB::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AStructB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AStructB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // a::different::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace a { namespace different { namespace ns {
+
 }}} // a::different::ns
