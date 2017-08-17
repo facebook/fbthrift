@@ -154,8 +154,7 @@ int Cpp2Worker::getPendingCount() const {
 void Cpp2Worker::updateSSLStats(
     const folly::AsyncTransportWrapper* sock,
     std::chrono::milliseconds /* acceptLatency */,
-    wangle::SSLErrorEnum error,
-    wangle::SecureTransportType) noexcept {
+    wangle::SSLErrorEnum error) noexcept {
   auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
   if (!socket) {
     return;

@@ -108,9 +108,7 @@ class Cpp2Worker
   void updateSSLStats(
       const folly::AsyncTransportWrapper* sock,
       std::chrono::milliseconds acceptLatency,
-      wangle::SSLErrorEnum error,
-      wangle::SecureTransportType type = wangle::SecureTransportType::TLS)
-    noexcept override;
+      wangle::SSLErrorEnum error) noexcept override;
 
  protected:
   Cpp2Worker(ThriftServer* server,
