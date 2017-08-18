@@ -17,7 +17,6 @@
 
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-
 class decorated_struct;
 class ContainerStruct;
 
@@ -89,7 +88,6 @@ inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
-
 }}}} // apache::thrift::fixtures::types
 namespace std {
 
@@ -115,6 +113,8 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops
 }
 
 }} // apache::thrift
+
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 class decorated_struct : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {

@@ -17,7 +17,6 @@
 
 
 namespace cpp2 {
-
 class MyUnion;
 class MyField;
 class MyStruct;
@@ -39,6 +38,7 @@ enum class TypedEnum : short {
 using _TypedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>;
 extern const _TypedEnum_EnumMapFactory::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
 extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
+
 
 } // cpp2
 namespace std {
@@ -65,6 +65,8 @@ template <> inline constexpr  ::cpp2::TypedEnum TEnumTraits< ::cpp2::TypedEnum>:
 }
 
 }} // apache::thrift
+
+
 namespace cpp2 {
 
 class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {

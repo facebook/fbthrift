@@ -30,9 +30,16 @@
 <% > module_types_h/cpp_includes%>
 
 
+<%#program:enums?%>
 <% > module_types_h/declare_enums%>
-<%#program:structs%><%!
-%><% > common/namespace_cpp2_begin%>
+<%/program:enums?%>
+
+<%#program:indirection?%>
+<% > module_types_h/struct_indirection%>
+<%/program:indirection?%>
+
+<%#program:structs%>
+<% > common/namespace_cpp2_begin%>
 
 
 <%#first?%>

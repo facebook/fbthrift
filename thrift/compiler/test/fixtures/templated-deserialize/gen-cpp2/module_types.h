@@ -17,7 +17,47 @@
 
 
 namespace cpp2 {
+class SmallStruct;
+class containerStruct;
 
+enum class MyEnumA {
+  fieldA = 1,
+  fieldB = 2,
+  fieldC = 4
+};
+
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
+
+
+} // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnumA> {};
+template<> struct equal_to<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnumA> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::cpp2::MyEnumA>;
+template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size;
+template <> const folly::Range<const  ::cpp2::MyEnumA*> TEnumTraits< ::cpp2::MyEnumA>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnumA>::names;
+template <> const char* TEnumTraits< ::cpp2::MyEnumA>::findName( ::cpp2::MyEnumA value);
+template <> bool TEnumTraits< ::cpp2::MyEnumA>::findValue(const char* name,  ::cpp2::MyEnumA* outValue);
+
+template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::min() {
+  return  ::cpp2::MyEnumA::fieldA;
+}
+
+template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::max() {
+  return  ::cpp2::MyEnumA::fieldC;
+}
+
+}} // apache::thrift
+
+namespace cpp2 {
 struct apache_thrift_indirection_module_IndirectionA {
   template <typename T> static auto&& get(T&& x) {
     return std::forward<T>(x).value;
@@ -48,44 +88,8 @@ struct apache_thrift_indirection_module_IndirectionB {
   }
 };
 
-class SmallStruct;
-class containerStruct;
-
-enum class MyEnumA {
-  fieldA = 1,
-  fieldB = 2,
-  fieldC = 4
-};
-
-using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
-extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
-extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 } // cpp2
-namespace std {
-
-template<> struct hash<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnumA> {};
-template<> struct equal_to<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnumA> {};
-
-} // std
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage< ::cpp2::MyEnumA>;
-template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size;
-template <> const folly::Range<const  ::cpp2::MyEnumA*> TEnumTraits< ::cpp2::MyEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnumA>::names;
-template <> const char* TEnumTraits< ::cpp2::MyEnumA>::findName( ::cpp2::MyEnumA value);
-template <> bool TEnumTraits< ::cpp2::MyEnumA>::findValue(const char* name,  ::cpp2::MyEnumA* outValue);
-
-template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::min() {
-  return  ::cpp2::MyEnumA::fieldA;
-}
-
-template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::max() {
-  return  ::cpp2::MyEnumA::fieldC;
-}
-
-}} // apache::thrift
 namespace cpp2 {
 
 typedef Foo IndirectionA;

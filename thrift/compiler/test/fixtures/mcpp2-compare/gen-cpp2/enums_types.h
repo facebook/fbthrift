@@ -17,7 +17,6 @@
 
 
 namespace facebook { namespace ns { namespace qwerty {
-
 class SomeStruct;
 
 enum class AnEnumA {
@@ -27,6 +26,7 @@ enum class AnEnumA {
 using _AnEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumA, AnEnumA>;
 extern const _AnEnumA_EnumMapFactory::ValuesToNamesMapType _AnEnumA_VALUES_TO_NAMES;
 extern const _AnEnumA_EnumMapFactory::NamesToValuesMapType _AnEnumA_NAMES_TO_VALUES;
+
 
 }}} // facebook::ns::qwerty
 namespace std {
@@ -63,6 +63,7 @@ using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB,
 extern const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES;
 extern const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES;
 
+
 }}} // facebook::ns::qwerty
 namespace std {
 
@@ -97,6 +98,7 @@ enum class AnEnumC {
 using _AnEnumC_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumC, AnEnumC>;
 extern const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES;
 extern const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES;
+
 
 }}} // facebook::ns::qwerty
 namespace std {
@@ -133,6 +135,7 @@ using _AnEnumD_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumD,
 extern const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES;
 extern const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES;
 
+
 }}} // facebook::ns::qwerty
 namespace std {
 
@@ -168,6 +171,7 @@ using _AnEnumE_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumE,
 extern const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES;
 extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES;
 
+
 }}} // facebook::ns::qwerty
 namespace std {
 
@@ -193,6 +197,8 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumE TEnumTraits< ::fac
 }
 
 }} // apache::thrift
+
+
 namespace facebook { namespace ns { namespace qwerty {
 
 class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {

@@ -19,7 +19,6 @@
 
 
 namespace some { namespace ns {
-
 class ModuleA;
 class ModuleB;
 
@@ -30,6 +29,7 @@ enum class EnumB {
 using _EnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EnumB, EnumB>;
 extern const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES;
 extern const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES;
+
 
 }} // some::ns
 namespace std {
@@ -56,6 +56,8 @@ template <> inline constexpr  ::some::ns::EnumB TEnumTraits< ::some::ns::EnumB>:
 }
 
 }} // apache::thrift
+
+
 namespace some { namespace ns {
 
 class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {

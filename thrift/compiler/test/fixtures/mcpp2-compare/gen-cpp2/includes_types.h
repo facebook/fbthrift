@@ -18,7 +18,6 @@
 
 
 namespace a { namespace different { namespace ns {
-
 class AStruct;
 class AStructB;
 
@@ -30,6 +29,7 @@ enum class AnEnum {
 using _AnEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnum, AnEnum>;
 extern const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES;
 extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES;
+
 
 }}} // a::different::ns
 namespace std {
@@ -56,6 +56,8 @@ template <> inline constexpr  ::a::different::ns::AnEnum TEnumTraits< ::a::diffe
 }
 
 }} // apache::thrift
+
+
 namespace a { namespace different { namespace ns {
 
 typedef int64_t IncludedInt64;

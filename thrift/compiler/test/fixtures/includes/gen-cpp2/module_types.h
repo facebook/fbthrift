@@ -17,6 +17,8 @@
 
 
 
+
+
 namespace cpp2 {
 
 class MyStruct;

@@ -19,37 +19,6 @@
 
 
 namespace some { namespace valid { namespace ns {
-
-struct apache_thrift_indirection_module_IndirectionA {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).value;
-  }
-
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).value;
-  }
-};
-
-struct apache_thrift_indirection_module_IndirectionC {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).__value();
-  }
-
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).__value();
-  }
-};
-
-struct apache_thrift_indirection_module_IndirectionB {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).value;
-  }
-
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).value;
-  }
-};
-
 class Empty;
 class ASimpleStruct;
 class MyStruct;
@@ -70,6 +39,7 @@ enum class MyEnumA {
 using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
 extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
+
 
 }}} // some::valid::ns
 namespace std {
@@ -164,7 +134,6 @@ inline constexpr AnnotatedEnum operator~(AnnotatedEnum a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
-
 }}} // some::valid::ns
 namespace std {
 
@@ -258,7 +227,6 @@ inline constexpr AnnotatedEnum2 operator~(AnnotatedEnum2 a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
-
 }}} // some::valid::ns
 namespace std {
 
@@ -294,6 +262,7 @@ using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB,
 extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
 extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
 
+
 }}} // some::valid::ns
 namespace std {
 
@@ -319,6 +288,40 @@ template <> inline constexpr  ::some::valid::ns::MyEnumB TEnumTraits< ::some::va
 }
 
 }} // apache::thrift
+
+namespace some { namespace valid { namespace ns {
+struct apache_thrift_indirection_module_IndirectionA {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionC {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).__value();
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).__value();
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionB {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
+
+}}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
 typedef  ::a::different::ns::AStruct AStruct;

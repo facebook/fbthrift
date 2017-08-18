@@ -14,7 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
+%><% > common/namespace_cpp2_begin%>
+
+<%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
 struct apache_thrift_indirection_module_<%typedef:symbolic%> {
   template <typename T> static auto&& get(T&& x) {
     return std::forward<T>(x)<%type:cpp_indirection%>;
@@ -26,3 +28,5 @@ struct apache_thrift_indirection_module_<%typedef:symbolic%> {
 };
 
 <%/type:cpp_indirection%><%/typedef:type%><%/program:typedefs%>
+
+<% > common/namespace_cpp2_end%>

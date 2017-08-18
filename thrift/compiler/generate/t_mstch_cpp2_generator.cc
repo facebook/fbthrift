@@ -816,7 +816,7 @@ class mstch_cpp2_program : public mstch_program {
         return true;
       }
     }
-    return true;
+    return false;
   }
 };
 

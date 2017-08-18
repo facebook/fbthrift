@@ -17,7 +17,6 @@
 
 
 namespace cpp2 {
-
 class Internship;
 class UnEnumStruct;
 class Range;
@@ -32,6 +31,7 @@ enum class EmptyEnum {};
 using _EmptyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEnum>;
 extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
 extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
+
 
 } // cpp2
 namespace std {
@@ -49,6 +49,7 @@ template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::E
 template <> const char* TEnumTraits< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
 template <> bool TEnumTraits< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
 
+
 }} // apache::thrift
 namespace cpp2 {
 
@@ -62,6 +63,7 @@ enum class City {
 using _City_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<City, City>;
 extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
 extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
+
 
 } // cpp2
 namespace std {
@@ -101,6 +103,7 @@ using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company,
 extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
 extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
+
 } // cpp2
 namespace std {
 
@@ -126,6 +129,8 @@ template <> inline constexpr  ::cpp2::Company TEnumTraits< ::cpp2::Company>::max
 }
 
 }} // apache::thrift
+
+
 namespace cpp2 {
 
 class Internship : private apache::thrift::detail::st::ComparisonOperators<Internship> {

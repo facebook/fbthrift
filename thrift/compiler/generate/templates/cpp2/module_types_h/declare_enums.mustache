@@ -17,16 +17,12 @@
 %><%#program:enums%>
 <% > common/namespace_cpp2_begin%>
 
-
 <%#first?%>
-<%#program:indirection?%>
-<% > module_types_h/struct_indirection%>
-<%/program:indirection?%>
 <%#enum:struct_list%>
 class <%struct_name%>;
 <%/enum:struct_list%>
-
 <%/first?%>
+
 enum class <%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!
   %><%#enum:values%><%#first?%>
 <%/first?%><%!
@@ -40,9 +36,8 @@ extern const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_
 
 <%#enum:cpp_declare_bitwise_ops%>
 <% > module_types_h/enum_bitwise_ops%>
-
-
 <%/enum:cpp_declare_bitwise_ops%>
+
 <% > common/namespace_cpp2_end%>
 
 namespace std {
@@ -59,8 +54,8 @@ template <> const folly::Range<const <% > common/namespace_cpp2%><%enum:name%>*>
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::names;
 template <> const char* TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findName(<% > common/namespace_cpp2%><%enum:name%> value);
 template <> bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(const char* name, <% > common/namespace_cpp2%><%enum:name%>* outValue);
-<%^enum:empty?%>
 
+<%^enum:empty?%>
 template <> inline constexpr <% > common/namespace_cpp2%><%enum:name%> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::min() {
   return <% > common/namespace_cpp2%><%enum:name%>::<%enum:min%>;
 }
