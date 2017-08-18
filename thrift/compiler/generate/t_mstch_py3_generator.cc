@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 #include <memory>
 
@@ -54,7 +55,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     void generate_clients(const t_program&);
     boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&);
-    void add_container_types(const t_program&, mstch::map&);
+    void add_per_type_data(const t_program&, mstch::map&);
     void add_cpp_includes(const t_program&, mstch::map&);
     mstch::array get_cpp2_namespace(const t_program&);
     mstch::array get_py3_namespace(const t_program&, const string& tail = "");
@@ -65,7 +66,15 @@ class t_mstch_py3_generator : public t_mstch_generator {
         vector<const t_type*>& container_types,
         std::set<string>& visited_names,
         t_type* type);
+    void load_custom_template(
+        vector<const t_type*>& custom_templates,
+        std::set<string>& visited_names,
+        t_type* type);
     string ref_type(const t_field& field) const;
+    string get_cpp_template(const t_type& type) const;
+    string to_cython_template(const string& cpp_template) const;
+    bool is_default_template(const string& cpp_template, const t_type& type)
+        const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
@@ -96,8 +105,8 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       {"py3Namespaces", py3Namespaces},
       {"includeNamespaces", includeNamespaces},
   };
-  add_container_types(program, result);
   add_cpp_includes(program, result);
+  add_per_type_data(program, result);
   return result;
 }
 
@@ -163,13 +172,68 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
     externalProgram = true;
   }
 
+  string cpp_template = this->get_cpp_template(type);
+  string cython_template = this->to_cython_template(cpp_template);
+
   mstch::map result{
       {"modulePath", modulePath},
       {"externalProgram?", externalProgram},
       {"flat_name", flatten_type_name(type)},
       {"cppNamespaces", cppNamespaces},
+      {"cppTemplate", cpp_template},
+      {"cythonTemplate", cython_template},
   };
   return result;
+}
+
+// This handles is_unordered as a special case
+string t_mstch_py3_generator::get_cpp_template(const t_type& type) const {
+  auto& annotations = type.annotations_;
+
+  auto it = annotations.find("cpp.template");
+  if (it == annotations.end()) {
+    it = annotations.find("cpp2.template");
+  }
+
+  if (it != annotations.end()) {
+    return it->second;
+  } else if (type.is_list()) {
+    return "std::vector";
+  } else if (type.is_set()) {
+    bool unordered = dynamic_cast<const t_set&>(type).is_unordered();
+    return unordered ? "std::unordered_set" : "std::set";
+  } else if (type.is_map()) {
+    bool unordered = dynamic_cast<const t_map&>(type).is_unordered();
+    return unordered ? "std::unordered_map" : "std::map";
+  } else {
+    return "";
+  }
+}
+
+string t_mstch_py3_generator::to_cython_template(
+    const string& cpp_template) const {
+  // handle special built-ins first:
+  if (cpp_template == "std::vector") {
+    return "vector";
+  } else if (cpp_template == "std::set") {
+    return "cset";
+  } else if (cpp_template == "std::map") {
+    return "cmap";
+  }
+
+  // then default handling:
+  string cython_template = cpp_template;
+  boost::algorithm::replace_all(cython_template, "::", "_");
+  return cython_template;
+}
+
+bool t_mstch_py3_generator::is_default_template(
+    const string& cpp_template,
+    const t_type& type) const {
+  return (!type.is_container() && cpp_template == "") ||
+      (type.is_list() && cpp_template == "std::vector") ||
+      (type.is_set() && cpp_template == "std::set") ||
+      (type.is_map() && cpp_template == "std::map");
 }
 
 mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
@@ -310,41 +374,51 @@ mstch::array t_mstch_py3_generator::get_return_types(const t_program& program) {
  * container types, and one "moveContainerTypes" that treats binary and string
  * as one type. Required because in pxd's we can't have duplicate move(string)
  * definitions */
-void t_mstch_py3_generator::add_container_types(
+void t_mstch_py3_generator::add_per_type_data(
     const t_program& program,
     mstch::map& results) {
   vector<const t_type*> container_types;
   vector<const t_type*> move_container_types;
   std::set<string> visited_names;
 
+  vector<const t_type*> custom_templates;
+  std::set<string> visited_templates;
+
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
       for (const auto field : function->get_arglist()->get_members()) {
         auto arg_type = field->get_type();
         load_container_type(container_types, visited_names, arg_type);
+        load_custom_template(custom_templates, visited_templates, arg_type);
       }
       auto return_type = function->get_returntype();
       load_container_type(container_types, visited_names, return_type);
+      load_custom_template(custom_templates, visited_templates, return_type);
     }
   }
   for (const auto object : program.get_objects()) {
     for (const auto field : object->get_members()) {
       auto ref_type = field->get_type();
       load_container_type(container_types, visited_names, ref_type);
+      load_custom_template(custom_templates, visited_templates, ref_type);
     }
   }
   for (const auto constant : program.get_consts()) {
     const auto const_type = constant->get_type();
     load_container_type(container_types, visited_names, const_type);
+    load_custom_template(custom_templates, visited_templates, const_type);
   }
   for (const auto typedef_def : program.get_typedefs()) {
     const auto typedef_type = typedef_def->get_type();
     load_container_type(container_types, visited_names, typedef_type);
+    load_custom_template(custom_templates, visited_templates, typedef_type);
   }
 
   results.emplace("containerTypes", dump_elems(container_types));
+  results.emplace("customTemplates", dump_elems(custom_templates));
 
-  // create second set that treats strings and binaries the same
+  // create second set of container types that treats strings and binaries
+  // the same
   visited_names.clear();
 
   for (const auto type : container_types) {
@@ -405,25 +479,61 @@ void t_mstch_py3_generator::load_container_type(
   container_types.push_back(type);
 }
 
+void t_mstch_py3_generator::load_custom_template(
+    vector<const t_type*>& custom_templates,
+    std::set<string>& visited_names,
+    t_type* orig_type) {
+  auto type = &resolve_typedef(*orig_type);
+
+  string cpp_template = this->get_cpp_template(*type);
+  if (!this->is_default_template(cpp_template, *type) &&
+      !visited_names.count(cpp_template)) {
+    custom_templates.push_back(type);
+    visited_names.insert(cpp_template);
+  }
+
+  // if this type happens to be a container, we need to check out its
+  // component types:
+  if (type->is_list()) {
+    const auto elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
+    load_custom_template(custom_templates, visited_names, elem_type);
+  } else if (type->is_set()) {
+    const auto elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
+    load_custom_template(custom_templates, visited_names, elem_type);
+  } else if (type->is_map()) {
+    const auto map_type = dynamic_cast<const t_map*>(type);
+    const auto key_type = map_type->get_key_type();
+    const auto value_type = map_type->get_val_type();
+    load_custom_template(custom_templates, visited_names, key_type);
+    load_custom_template(custom_templates, visited_names, value_type);
+  }
+}
+
 std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
   auto& type = resolve_typedef(orig_type);
 
+  string cpp_template = this->get_cpp_template(type);
+  string custom_prefix = "";
+  if (!this->is_default_template(cpp_template, type)) {
+    custom_prefix = this->to_cython_template(cpp_template) + "__";
+  }
+
   if (type.is_list()) {
-    return "List__" +
+    return custom_prefix + "List__" +
         flatten_type_name(*dynamic_cast<const t_list&>(type).get_elem_type());
   } else if (type.is_set()) {
-    return "Set__" +
+    return custom_prefix + "Set__" +
         flatten_type_name(*dynamic_cast<const t_set&>(type).get_elem_type());
   } else if (type.is_map()) {
     return (
-        "Map__" +
+        custom_prefix + "Map__" +
         flatten_type_name(*dynamic_cast<const t_map&>(type).get_key_type()) +
         "_" +
         flatten_type_name(*dynamic_cast<const t_map&>(type).get_val_type()));
   } else if (type.is_binary()) {
-      return "binary";
+    return custom_prefix + "binary";
   } else {
-    return type.get_name();
+    return custom_prefix + type.get_name();
   }
 }
 

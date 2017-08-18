@@ -18,6 +18,171 @@ from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
 
+cdef extern from * nogil:
+    cdef cppclass std_list "std::list"[T]:
+        ctypedef T value_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        std_list() except +
+        std_list(std_list&) except +
+
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass std_deque "std::deque"[T]:
+        ctypedef T value_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        std_deque() except +
+        std_deque(std_deque&) except +
+
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_fbvector "folly::fbvector"[T]:
+        ctypedef T value_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_fbvector() except +
+        folly_fbvector(folly_fbvector&) except +
+
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_small_vector "folly::small_vector"[T]:
+        ctypedef T value_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_small_vector() except +
+        folly_small_vector(folly_small_vector&) except +
+
+        void push_back(T&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_sorted_vector_set "folly::sorted_vector_set"[T]:
+        ctypedef T value_type
+
+        cppclass iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            T& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_sorted_vector_set() except +
+        folly_sorted_vector_set(folly_sorted_vector_set&) except +
+
+        iterator insert(iterator, const T&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_sorted_vector_map "folly::sorted_vector_map"[T, U]:
+        ctypedef T key_type
+        ctypedef U mapped_type
+
+        cppclass iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_sorted_vector_map() except +
+        folly_sorted_vector_map(folly_sorted_vector_map&) except +
+
+        cpair[iterator, bint] insert(cpair[T, U]) except +
+        iterator find(const T&)
+        size_t count(const T&)
+        size_t size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass chas_bitwise_ops "apache::thrift::fixtures::types::has_bitwise_ops":
@@ -61,12 +226,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cContainerStruct(const cContainerStruct&) except +
         bint operator==(cContainerStruct&)
         vector[int32_t] fieldA
-        vector[int32_t] fieldB
-        vector[int32_t] fieldC
-        vector[int32_t] fieldD
-        vector[int32_t] fieldE
-        cset[int32_t] fieldF
-        cmap[int32_t,string] fieldG
+        std_list[int32_t] fieldB
+        std_deque[int32_t] fieldC
+        folly_fbvector[int32_t] fieldD
+        folly_small_vector[int32_t] fieldE
+        folly_sorted_vector_set[int32_t] fieldF
+        folly_sorted_vector_map[int32_t,string] fieldG
         cContainerStruct__isset __isset
 
 
@@ -107,12 +272,12 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cContainerStruct] _cpp_obj
     cdef List__i32 __fieldA
-    cdef List__i32 __fieldB
-    cdef List__i32 __fieldC
-    cdef List__i32 __fieldD
-    cdef List__i32 __fieldE
-    cdef Set__i32 __fieldF
-    cdef Map__i32_string __fieldG
+    cdef std_list__List__i32 __fieldB
+    cdef std_deque__List__i32 __fieldC
+    cdef folly_fbvector__List__i32 __fieldD
+    cdef folly_small_vector__List__i32 __fieldE
+    cdef folly_sorted_vector_set__Set__i32 __fieldF
+    cdef folly_sorted_vector_map__Map__i32_string __fieldG
 
     @staticmethod
     cdef unique_ptr[cContainerStruct] _make_instance(
@@ -139,35 +304,87 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
-cdef class Set__i32:
+cdef class std_list__List__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[int32_t]] _cpp_obj
+    cdef shared_ptr[std_list[int32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cset[int32_t]])
+    cdef create(shared_ptr[std_list[int32_t]])
     @staticmethod
-    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *
+    cdef unique_ptr[std_list[int32_t]] _make_instance(object items) except *
 
-cdef class Map__i32_string:
+cdef class std_deque__List__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[int32_t,string]] _cpp_obj
+    cdef shared_ptr[std_deque[int32_t]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[int32_t,string]])
+    cdef create(shared_ptr[std_deque[int32_t]])
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *
+    cdef unique_ptr[std_deque[int32_t]] _make_instance(object items) except *
+
+cdef class folly_fbvector__List__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_fbvector[int32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_fbvector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[folly_fbvector[int32_t]] _make_instance(object items) except *
+
+cdef class folly_small_vector__List__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_small_vector[int32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_small_vector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[folly_small_vector[int32_t]] _make_instance(object items) except *
+
+cdef class folly_sorted_vector_set__Set__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_sorted_vector_set[int32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_set[int32_t]])
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_set[int32_t]] _make_instance(object items) except *
+
+cdef class folly_sorted_vector_map__Map__i32_string:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_map[int32_t,string]])
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
-    cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
-    cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
-    cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
-    cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[std_list[int32_t]] move(unique_ptr[std_list[int32_t]])
+    cdef unique_ptr[std_list[int32_t]] move_unique "std::move"(unique_ptr[std_list[int32_t]])
+    cdef shared_ptr[std_deque[int32_t]] move(unique_ptr[std_deque[int32_t]])
+    cdef unique_ptr[std_deque[int32_t]] move_unique "std::move"(unique_ptr[std_deque[int32_t]])
+    cdef shared_ptr[folly_fbvector[int32_t]] move(unique_ptr[folly_fbvector[int32_t]])
+    cdef unique_ptr[folly_fbvector[int32_t]] move_unique "std::move"(unique_ptr[folly_fbvector[int32_t]])
+    cdef shared_ptr[folly_small_vector[int32_t]] move(unique_ptr[folly_small_vector[int32_t]])
+    cdef unique_ptr[folly_small_vector[int32_t]] move_unique "std::move"(unique_ptr[folly_small_vector[int32_t]])
+    cdef shared_ptr[folly_sorted_vector_set[int32_t]] move(unique_ptr[folly_sorted_vector_set[int32_t]])
+    cdef unique_ptr[folly_sorted_vector_set[int32_t]] move_unique "std::move"(unique_ptr[folly_sorted_vector_set[int32_t]])
+    cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] move(unique_ptr[folly_sorted_vector_map[int32_t,string]])
+    cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int32_t,string]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
 
-    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_list[int32_t]])
 
-    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[const std_deque[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_deque[int32_t]])
+
+    cdef shared_ptr[const folly_fbvector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_fbvector[int32_t]])
+
+    cdef shared_ptr[const folly_small_vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_small_vector[int32_t]])
+
+    cdef shared_ptr[const folly_sorted_vector_set[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_set[int32_t]])
+
+    cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
 

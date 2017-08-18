@@ -41,13 +41,13 @@ in the client or server source rather than the type definition source.
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
   }}c{{struct:name}}{{!
 }}{{/type:struct}}{{!
-}}{{#type:list?}}vector[{{!
+}}{{#type:list?}}{{type:cythonTemplate}}[{{!
   }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
 }}]{{/type:list?}}{{!
-}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
+}}{{#type:set?}}{{type:cythonTemplate}}[{{!
   }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
 }}]{{/type:set?}}{{!
-}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
+}}{{#type:map?}}{{type:cythonTemplate}}[{{!
   }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
 }}]{{/type:map?}}{{!

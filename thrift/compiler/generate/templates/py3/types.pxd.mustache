@@ -43,7 +43,10 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 {{#program:cppIncludes}}
 cdef extern from "{{path}}":
   pass
-{{/program:cppIncludes}}
+{{/program:cppIncludes}}{{!
+}}{{#program:customTemplates}}
+{{> CustomTemplate}}
+{{/program:customTemplates}}
 
 {{#program:enums}}
 {{#first?}}

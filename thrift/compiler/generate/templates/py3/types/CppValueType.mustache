@@ -35,17 +35,17 @@ anywhere else the type is used as a value directly.
   }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}{{/type:struct}}{{!
 }}{{#type:list?}}{{!
-  }}std::vector<{{!
+  }}{{type:cppTemplate}}<{{!
   }}{{#type:listElemType}}{{> types/CppValueType}}{{/type:listElemType}}{{!
   }}>{{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
-  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{!
+  }}{{type:cppTemplate}}<{{!
   }}{{#type:setElemType}}{{> types/CppValueType}}{{/type:setElemType}}{{!
   }}>{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
-  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{!
+  }}{{type:cppTemplate}}<{{!
   }}{{#type:keyType}}{{> types/CppValueType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> types/CppValueType}}{{/type:valueType}}{{!
   }}>{{!

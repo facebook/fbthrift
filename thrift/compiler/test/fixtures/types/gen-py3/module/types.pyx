@@ -311,27 +311,27 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.fieldA = True
 
         if fieldB is not None:
-            deref(c_inst).fieldB = <vector[int32_t]>deref(List__i32(fieldB)._cpp_obj)
+            deref(c_inst).fieldB = <std_list[int32_t]>deref(std_list__List__i32(fieldB)._cpp_obj)
             deref(c_inst).__isset.fieldB = True
 
         if fieldC is not None:
-            deref(c_inst).fieldC = <vector[int32_t]>deref(List__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC = <std_deque[int32_t]>deref(std_deque__List__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
 
         if fieldD is not None:
-            deref(c_inst).fieldD = <vector[int32_t]>deref(List__i32(fieldD)._cpp_obj)
+            deref(c_inst).fieldD = <folly_fbvector[int32_t]>deref(folly_fbvector__List__i32(fieldD)._cpp_obj)
             deref(c_inst).__isset.fieldD = True
 
         if fieldE is not None:
-            deref(c_inst).fieldE = <vector[int32_t]>deref(List__i32(fieldE)._cpp_obj)
+            deref(c_inst).fieldE = <folly_small_vector[int32_t]>deref(folly_small_vector__List__i32(fieldE)._cpp_obj)
             deref(c_inst).__isset.fieldE = True
 
         if fieldF is not None:
-            deref(c_inst).fieldF = <cset[int32_t]>deref(Set__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF = <folly_sorted_vector_set[int32_t]>deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj)
             deref(c_inst).__isset.fieldF = True
 
         if fieldG is not None:
-            deref(c_inst).fieldG = <cmap[int32_t,string]>deref(Map__i32_string(fieldG)._cpp_obj)
+            deref(c_inst).fieldG = <folly_sorted_vector_map[int32_t,string]>deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj)
             deref(c_inst).__isset.fieldG = True
 
         # in C++ you don't have to call move(), but this doesn't translate
@@ -371,7 +371,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldB is None:
-            self.__fieldB = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldB))
+            self.__fieldB = std_list__List__i32.create(make_shared[std_list[int32_t]](deref(self._cpp_obj).fieldB))
         return self.__fieldB
 
     @property
@@ -380,7 +380,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldC is None:
-            self.__fieldC = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldC))
+            self.__fieldC = std_deque__List__i32.create(make_shared[std_deque[int32_t]](deref(self._cpp_obj).fieldC))
         return self.__fieldC
 
     @property
@@ -389,7 +389,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldD is None:
-            self.__fieldD = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldD))
+            self.__fieldD = folly_fbvector__List__i32.create(make_shared[folly_fbvector[int32_t]](deref(self._cpp_obj).fieldD))
         return self.__fieldD
 
     @property
@@ -398,7 +398,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldE is None:
-            self.__fieldE = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldE))
+            self.__fieldE = folly_small_vector__List__i32.create(make_shared[folly_small_vector[int32_t]](deref(self._cpp_obj).fieldE))
         return self.__fieldE
 
     @property
@@ -407,7 +407,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldF is None:
-            self.__fieldF = Set__i32.create(make_shared[cset[int32_t]](deref(self._cpp_obj).fieldF))
+            self.__fieldF = folly_sorted_vector_set__Set__i32.create(make_shared[folly_sorted_vector_set[int32_t]](deref(self._cpp_obj).fieldF))
         return self.__fieldF
 
     @property
@@ -416,7 +416,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldG is None:
-            self.__fieldG = Map__i32_string.create(make_shared[cmap[int32_t,string]](deref(self._cpp_obj).fieldG))
+            self.__fieldG = folly_sorted_vector_map__Map__i32_string.create(make_shared[folly_sorted_vector_map[int32_t,string]](deref(self._cpp_obj).fieldG))
         return self.__fieldG
 
 
@@ -627,22 +627,618 @@ cdef class List__i32:
 
 Sequence.register(List__i32)
 
-cdef class Set__i32:
+cdef class std_list__List__i32:
     def __init__(self, items=None):
-        if isinstance(items, Set__i32):
-            self._cpp_obj = (<Set__i32> items)._cpp_obj
+        if isinstance(items, std_list__List__i32):
+            self._cpp_obj = (<std_list__List__i32> items)._cpp_obj
         else:
-            self._cpp_obj = move(Set__i32._make_instance(items))
+            self._cpp_obj = move(std_list__List__i32._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[cset[int32_t]] c_items):
-        inst = <Set__i32>Set__i32.__new__(Set__i32)
+    cdef create(shared_ptr[std_list[int32_t]] c_items):
+        inst = <std_list__List__i32>std_list__List__i32.__new__(std_list__List__i32)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
-        cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
+    cdef unique_ptr[std_list[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[std_list[int32_t]] c_inst = make_unique[std_list[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[std_list[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[std_list[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return std_list__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef int32_t citem = item
+        cdef std_list[int32_t] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef std_list[int32_t] vec = deref(
+            self._cpp_obj.get())
+        cdef std_list[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef int32_t citem = item
+        cdef std_list[int32_t] vec = deref(self._cpp_obj.get())
+        cdef std_list[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef int32_t citem = item
+        cdef std_list[int32_t] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(std_list__List__i32)
+
+cdef class std_deque__List__i32:
+    def __init__(self, items=None):
+        if isinstance(items, std_deque__List__i32):
+            self._cpp_obj = (<std_deque__List__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(std_deque__List__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[std_deque[int32_t]] c_items):
+        inst = <std_deque__List__i32>std_deque__List__i32.__new__(std_deque__List__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[std_deque[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[std_deque[int32_t]] c_inst = make_unique[std_deque[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[std_deque[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[std_deque[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return std_deque__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef int32_t citem = item
+        cdef std_deque[int32_t] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef std_deque[int32_t] vec = deref(
+            self._cpp_obj.get())
+        cdef std_deque[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef int32_t citem = item
+        cdef std_deque[int32_t] vec = deref(self._cpp_obj.get())
+        cdef std_deque[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef int32_t citem = item
+        cdef std_deque[int32_t] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(std_deque__List__i32)
+
+cdef class folly_fbvector__List__i32:
+    def __init__(self, items=None):
+        if isinstance(items, folly_fbvector__List__i32):
+            self._cpp_obj = (<folly_fbvector__List__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(folly_fbvector__List__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[folly_fbvector[int32_t]] c_items):
+        inst = <folly_fbvector__List__i32>folly_fbvector__List__i32.__new__(folly_fbvector__List__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[folly_fbvector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[folly_fbvector[int32_t]] c_inst = make_unique[folly_fbvector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[folly_fbvector[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[folly_fbvector[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return folly_fbvector__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef int32_t citem = item
+        cdef folly_fbvector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef folly_fbvector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        cdef folly_fbvector[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef int32_t citem = item
+        cdef folly_fbvector[int32_t] vec = deref(self._cpp_obj.get())
+        cdef folly_fbvector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef int32_t citem = item
+        cdef folly_fbvector[int32_t] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(folly_fbvector__List__i32)
+
+cdef class folly_small_vector__List__i32:
+    def __init__(self, items=None):
+        if isinstance(items, folly_small_vector__List__i32):
+            self._cpp_obj = (<folly_small_vector__List__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(folly_small_vector__List__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[folly_small_vector[int32_t]] c_items):
+        inst = <folly_small_vector__List__i32>folly_small_vector__List__i32.__new__(folly_small_vector__List__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[folly_small_vector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[folly_small_vector[int32_t]] c_inst = make_unique[folly_small_vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[folly_small_vector[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[folly_small_vector[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return folly_small_vector__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef int32_t citem = item
+        cdef folly_small_vector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef folly_small_vector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        cdef folly_small_vector[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef int32_t citem = item
+        cdef folly_small_vector[int32_t] vec = deref(self._cpp_obj.get())
+        cdef folly_small_vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef int32_t citem = item
+        cdef folly_small_vector[int32_t] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(folly_small_vector__List__i32)
+
+cdef class folly_sorted_vector_set__Set__i32:
+    def __init__(self, items=None):
+        if isinstance(items, folly_sorted_vector_set__Set__i32):
+            self._cpp_obj = (<folly_sorted_vector_set__Set__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(folly_sorted_vector_set__Set__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_set[int32_t]] c_items):
+        inst = <folly_sorted_vector_set__Set__i32>folly_sorted_vector_set__Set__i32.__new__(folly_sorted_vector_set__Set__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_set[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[folly_sorted_vector_set[int32_t]] c_inst = make_unique[folly_sorted_vector_set[int32_t]]()
         if items:
             for item in items:
                 deref(c_inst).insert(item)
@@ -669,12 +1265,12 @@ cdef class Set__i32:
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef cset[int32_t] cself, cother
+        cdef folly_sorted_vector_set[int32_t] cself, cother
         cdef cbool retval
-        if (isinstance(self, Set__i32) and
-                isinstance(other, Set__i32)):
-            cself = deref((<Set__i32> self)._cpp_obj)
-            cother = deref((<Set__i32> other)._cpp_obj)
+        if (isinstance(self, folly_sorted_vector_set__Set__i32) and
+                isinstance(other, folly_sorted_vector_set__Set__i32)):
+            cself = deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj)
+            cother = deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -733,60 +1329,60 @@ cdef class Set__i32:
         return self.__hash
 
     def __and__(self, other):
-        if not isinstance(self, Set__i32):
-            self = Set__i32(self)
-        if not isinstance(other, Set__i32):
-            other = Set__i32(other)
+        if not isinstance(self, folly_sorted_vector_set__Set__i32):
+            self = folly_sorted_vector_set__Set__i32(self)
+        if not isinstance(other, folly_sorted_vector_set__Set__i32):
+            other = folly_sorted_vector_set__Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._cpp_obj):
-            if deref((<Set__i32> other)._cpp_obj).count(citem) > 0:
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
+            make_shared[folly_sorted_vector_set[int32_t]]()
+        for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(shretval)
 
     def __sub__(self, other):
-        if not isinstance(self, Set__i32):
-            self = Set__i32(self)
-        if not isinstance(other, Set__i32):
-            other = Set__i32(other)
+        if not isinstance(self, folly_sorted_vector_set__Set__i32):
+            self = folly_sorted_vector_set__Set__i32(self)
+        if not isinstance(other, folly_sorted_vector_set__Set__i32):
+            other = folly_sorted_vector_set__Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._cpp_obj):
-            if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
+            make_shared[folly_sorted_vector_set[int32_t]]()
+        for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(shretval)
 
     def __or__(self, other):
-        if not isinstance(self, Set__i32):
-            self = Set__i32(self)
-        if not isinstance(other, Set__i32):
-            other = Set__i32(other)
+        if not isinstance(self, folly_sorted_vector_set__Set__i32):
+            self = folly_sorted_vector_set__Set__i32(self)
+        if not isinstance(other, folly_sorted_vector_set__Set__i32):
+            other = folly_sorted_vector_set__Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._cpp_obj):
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
+            make_shared[folly_sorted_vector_set[int32_t]]()
+        for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__i32> other)._cpp_obj):
+        for citem in deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(shretval)
 
     def __xor__(self, other):
-        if not isinstance(self, Set__i32):
-            self = Set__i32(self)
-        if not isinstance(other, Set__i32):
-            other = Set__i32(other)
+        if not isinstance(self, folly_sorted_vector_set__Set__i32):
+            self = folly_sorted_vector_set__Set__i32(self)
+        if not isinstance(other, folly_sorted_vector_set__Set__i32):
+            other = folly_sorted_vector_set__Set__i32(other)
 
-        cdef shared_ptr[cset[int32_t]] shretval = \
-            make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._cpp_obj):
-            if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
+            make_shared[folly_sorted_vector_set[int32_t]]()
+        for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__i32> other)._cpp_obj):
-            if deref((<Set__i32> self)._cpp_obj).count(citem) == 0:
+        for citem in deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj):
+            if deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(shretval)
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -810,24 +1406,24 @@ cdef class Set__i32:
         return self >= other
 
 
-Set.register(Set__i32)
+Set.register(folly_sorted_vector_set__Set__i32)
 
-cdef class Map__i32_string:
+cdef class folly_sorted_vector_map__Map__i32_string:
     def __init__(self, items=None):
-        if isinstance(items, Map__i32_string):
-            self._cpp_obj = (<Map__i32_string> items)._cpp_obj
+        if isinstance(items, folly_sorted_vector_map__Map__i32_string):
+            self._cpp_obj = (<folly_sorted_vector_map__Map__i32_string> items)._cpp_obj
         else:
-            self._cpp_obj = move(Map__i32_string._make_instance(items))
+            self._cpp_obj = move(folly_sorted_vector_map__Map__i32_string._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[int32_t,string]] c_items):
-        inst = <Map__i32_string>Map__i32_string.__new__(Map__i32_string)
+    cdef create(shared_ptr[folly_sorted_vector_map[int32_t,string]] c_items):
+        inst = <folly_sorted_vector_map__Map__i32_string>folly_sorted_vector_map__Map__i32_string.__new__(folly_sorted_vector_map__Map__i32_string)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *:
-        cdef unique_ptr[cmap[int32_t,string]] c_inst = make_unique[cmap[int32_t,string]]()
+    cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *:
+        cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] c_inst = make_unique[folly_sorted_vector_map[int32_t,string]]()
         if items:
             for key, item in items.items():
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
@@ -837,7 +1433,7 @@ cdef class Map__i32_string:
         if not self:
             raise KeyError(f'{key}')
         cdef int32_t ckey = key
-        cdef cmap[int32_t,string].iterator iter = deref(
+        cdef folly_sorted_vector_map[int32_t,string].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
@@ -892,7 +1488,7 @@ cdef class Map__i32_string:
         if not self:
             return default
         cdef int32_t ckey = key
-        cdef cmap[int32_t,string].iterator iter = \
+        cdef folly_sorted_vector_map[int32_t,string].iterator iter = \
             deref(self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             return default
@@ -923,5 +1519,5 @@ cdef class Map__i32_string:
 
 
 
-Mapping.register(Map__i32_string)
+Mapping.register(folly_sorted_vector_map__Map__i32_string)
 
