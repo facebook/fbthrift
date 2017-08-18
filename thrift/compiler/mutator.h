@@ -30,6 +30,9 @@ class mutator : virtual public visitor {
 
   bool visit(t_program* program) override;
 
+  t_type* resolve_type(t_type* field);
+  void traverse_field(t_type* long_type, t_const_value* value);
+
  private:
   template <typename T, typename... Args>
   friend std::unique_ptr<T> make_mutator(Args&&...);
@@ -39,6 +42,39 @@ template <typename T, typename... Args>
 std::unique_ptr<T> make_mutator(Args&&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
+
+
+template <typename T, typename... Args>
+void run_mutator(t_program* program, Args&&... args) {
+  make_mutator<T>(std::forward<Args>(args)...)->traverse(program);
+}
+
+class field_type_to_const_value : virtual public mutator {
+ public:
+  using mutator::visit;
+
+  /**
+   * This matches the type of fields to their const values
+   */
+  bool visit(t_field* field) override;
+
+ private:
+  void match_type_with_const_value(t_field* tfield);
+};
+
+class const_type_to_const_value : virtual public mutator {
+ public:
+  using mutator::visit;
+
+  /**
+   * This matches the type of consts to their const values
+   */
+  bool visit(t_const* tconst) override;
+
+ private:
+  void match_type_with_const_value(t_const* tconst);
+};
+
 }
 }
 }

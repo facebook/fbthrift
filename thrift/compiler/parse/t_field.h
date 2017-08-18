@@ -73,7 +73,6 @@ class t_field : public t_doc {
    * t_field setters
    */
   void set_value(t_const_value* value) {
-    t_const_value::set_values_type(type_, value);
     value_ = value;
   }
 
@@ -89,6 +88,8 @@ class t_field : public t_doc {
   int32_t get_key() const { return key_; }
 
   const t_const_value* get_value() const { return value_; }
+
+  t_const_value* get_value() { return value_; }
 
   e_req get_req() const { return req_; }
 

@@ -34,6 +34,18 @@ bool visitor::visit(t_enum* const /* tenum */) {
   return true;
 }
 
+bool visitor::visit(t_struct* const /* tstruct */) {
+  return true;
+}
+
+bool visitor::visit(t_field* const /* tfield */) {
+  return true;
+}
+
+bool visitor::visit(t_const* const /* tconst */) {
+  return true;
+}
+
 void visitor::visit_and_recurse(t_program* const program) {
   if (visit(program)) {
     recurse(program);
@@ -52,12 +64,36 @@ void visitor::visit_and_recurse(t_enum* const tenum) {
   }
 }
 
+void visitor::visit_and_recurse(t_struct* const tstruct) {
+  if (visit(tstruct)) {
+    recurse(tstruct);
+  }
+}
+
+void visitor::visit_and_recurse(t_field* const tfield) {
+  if (visit(tfield)) {
+    recurse(tfield);
+  }
+}
+
+void visitor::visit_and_recurse(t_const* const tconst) {
+  if (visit(tconst)) {
+    recurse(tconst);
+  }
+}
+
 void visitor::recurse(t_program* const program) {
   for (auto* const service : program->get_services()) {
     visit_and_recurse(service);
   }
   for (auto* const tenum : program->get_enums()) {
     visit_and_recurse(tenum);
+  }
+  for (auto* tstruct : program->get_structs()) {
+    visit_and_recurse(tstruct);
+  }
+  for (auto* tconst : program->get_consts()) {
+    visit_and_recurse(tconst);
   }
 }
 
@@ -66,6 +102,20 @@ void visitor::recurse(t_service* const /* service */) {
 }
 
 void visitor::recurse(t_enum* const /* tenum */) {
+  // partial implementation - that's the end of the line for now
+}
+
+void visitor::recurse(t_struct* const tstruct) {
+  for (auto* tfield : tstruct->get_members()) {
+    visit_and_recurse(tfield);
+  }
+}
+
+void visitor::recurse(t_field* const /* tfield */) {
+  // partial implementation - that's the end of the line for now
+}
+
+void visitor::recurse(t_const* const /* tconst */) {
   // partial implementation - that's the end of the line for now
 }
 
@@ -82,6 +132,18 @@ void interleaved_visitor::visit_and_recurse(t_service* const service) {
 
 void interleaved_visitor::visit_and_recurse(t_enum* const tenum) {
   visit_and_recurse_gen(tenum);
+}
+
+void interleaved_visitor::visit_and_recurse(t_struct* const tstruct) {
+  visit_and_recurse_gen(tstruct);
+}
+
+void interleaved_visitor::visit_and_recurse(t_field* const tfield) {
+  visit_and_recurse_gen(tfield);
+}
+
+void interleaved_visitor::visit_and_recurse(t_const* const tconst) {
+  visit_and_recurse_gen(tconst);
 }
 
 template <typename Visitee>

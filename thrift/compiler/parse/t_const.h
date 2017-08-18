@@ -47,7 +47,6 @@ class t_const : public t_doc {
         program_(program), type_(type), name_(name), value_(value) {
     if (value) {
       value->set_owner(this);
-      t_const_value::set_values_type(type, value);
     }
   }
 

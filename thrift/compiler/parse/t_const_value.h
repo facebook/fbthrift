@@ -21,10 +21,6 @@
 #include <thrift/compiler/parse/t_const.h>
 #include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_enum_value.h>
-#include <thrift/compiler/parse/t_list.h>
-#include <thrift/compiler/parse/t_map.h>
-#include <thrift/compiler/parse/t_set.h>
-#include <thrift/compiler/parse/t_type.h>
 #include <utility>
 #include <vector>
 
@@ -178,41 +174,7 @@ class t_const_value {
     return tenum_val_;
   }
 
-  static void set_values_type(t_type* type, t_const_value* value) {
-    value->set_ttype(type);
-    if (type->is_list()) {
-      auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
-      for (auto list_val : value->get_list()) {
-        set_values_type(elem_type, list_val);
-      }
-    }
-    if (type->is_set()) {
-      auto* elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
-      for (auto set_val : value->get_list()) {
-        set_values_type(elem_type, set_val);
-      }
-    }
-    if (type->is_map()) {
-      auto* key_type = dynamic_cast<const t_map*>(type)->get_key_type();
-      auto* val_type = dynamic_cast<const t_map*>(type)->get_val_type();
-      for (auto map_val : value->get_map()) {
-        set_values_type(key_type, map_val.first);
-        set_values_type(val_type, map_val.second);
-      }
-    }
-    // Set constant value types as enums when they are declared with integers
-    if (type->is_enum() && !value->is_enum()) {
-      value->set_is_enum();
-      auto enm = dynamic_cast<t_enum const*>(type);
-      value->set_enum(enm);
-      if (enm->find_value(value->get_integer())) {
-        value->set_enum_value(enm->find_value(value->get_integer()));
-      }
-    }
-  }
-
  private:
-
   // Use a vector of pairs to store the contents of the map so that we
   // preserve thrift-file ordering when generating per-language source.
   std::vector<std::pair<t_const_value*, t_const_value*>> mapVal_;
