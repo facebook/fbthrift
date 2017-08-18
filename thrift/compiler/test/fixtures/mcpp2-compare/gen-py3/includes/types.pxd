@@ -18,6 +18,8 @@ from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
 
+cdef extern from "folly/sorted_vector_types.h":
+  pass
 
 cdef extern from "src/gen-cpp2/includes_types.h" namespace "a::different::ns":
     cdef cppclass cAnEnum "a::different::ns::AnEnum":

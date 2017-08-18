@@ -40,6 +40,10 @@ cimport thrift.py3.types
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 {{/program:includeNamespaces}}
 
+{{#program:cppIncludes}}
+cdef extern from "{{path}}":
+  pass
+{{/program:cppIncludes}}
 
 {{#program:enums}}
 {{#first?}}

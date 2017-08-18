@@ -55,6 +55,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&);
     void add_container_types(const t_program&, mstch::map&);
+    void add_cpp_includes(const t_program&, mstch::map&);
     mstch::array get_cpp2_namespace(const t_program&);
     mstch::array get_py3_namespace(const t_program&, const string& tail = "");
     std::string flatten_type_name(const t_type&);
@@ -96,6 +97,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       {"includeNamespaces", includeNamespaces},
   };
   add_container_types(program, result);
+  add_cpp_includes(program, result);
   return result;
 }
 
@@ -356,6 +358,20 @@ void t_mstch_py3_generator::add_container_types(
     move_container_types.push_back(type);
   }
   results.emplace("moveContainerTypes", dump_elems(move_container_types));
+}
+
+void t_mstch_py3_generator::add_cpp_includes(
+    const t_program& program,
+    mstch::map& results) {
+  mstch::array a{};
+  for (auto const& include : program.get_cpp_includes()) {
+    mstch::map cpp_include;
+    cpp_include.emplace(
+        "system?", include.at(0) == '<' ? std::to_string(0) : "");
+    cpp_include.emplace("path", std::string(include));
+    a.push_back(cpp_include);
+  }
+  results.emplace("cppIncludes", a);
 }
 
 void t_mstch_py3_generator::load_container_type(
