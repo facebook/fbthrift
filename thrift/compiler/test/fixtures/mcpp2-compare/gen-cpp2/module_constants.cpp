@@ -79,6 +79,14 @@ std::vector< ::some::valid::ns::MyEnumA> const& module_constants::AConstList() {
   return *instance;
 }
 
+constexpr int32_t const module_constants::AnIntegerEnum2_;
+
+std::vector<int32_t> const& module_constants::AnIntegerEnum2() {
+  static folly::Indestructible<std::vector<int32_t>> const instance(std::initializer_list<int32_t>{2,
+  1});
+  return *instance;
+}
+
 constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumA_;
 
 constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumB_;

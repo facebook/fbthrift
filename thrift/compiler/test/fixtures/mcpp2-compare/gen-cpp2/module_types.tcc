@@ -305,6 +305,17 @@ uint32_t MyStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 9:
+      {
+        if (_ftype == apache::thrift::protocol::T_MAP) {
+          this->MyMapEnumAndInt = std::map< ::some::valid::ns::MyEnumA, std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::read(*iprot, this->MyMapEnumAndInt);
+          this->__isset.MyMapEnumAndInt = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -343,6 +354,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeBinary(this->MyBinaryField3);
   xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
+  xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -369,6 +382,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeZCBinary(this->MyBinaryField3);
   xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
+  xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -402,6 +417,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::write(*prot_, this->MyBinaryListField4);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::write(*prot_, this->MyMapEnumAndInt);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

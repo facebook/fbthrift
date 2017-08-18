@@ -562,10 +562,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct() :
       MyBoolField(0),
       MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")) {}
+      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::some::valid::ns::MyEnumA, std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
+  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
+  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
   // FragileConstructor for use in initialization lists only
 
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg) :
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg, std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt__arg) :
       MyBoolField(std::move(MyBoolField__arg)),
       MyIntField(std::move(MyIntField__arg)),
       MyStringField(std::move(MyStringField__arg)),
@@ -573,7 +576,8 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyBinaryField(std::move(MyBinaryField__arg)),
       MyBinaryField2(std::move(MyBinaryField2__arg)),
       MyBinaryField3(std::move(MyBinaryField3__arg)),
-      MyBinaryListField4(std::move(MyBinaryListField4__arg)) {
+      MyBinaryListField4(std::move(MyBinaryListField4__arg)),
+      MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
     __isset.MyBoolField = true;
     __isset.MyIntField = true;
     __isset.MyStringField = true;
@@ -581,6 +585,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     __isset.MyBinaryField = true;
     __isset.MyBinaryField2 = true;
     __isset.MyBinaryListField4 = true;
+    __isset.MyMapEnumAndInt = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -637,6 +642,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     MyBinaryListField4 = arg.move();
     __isset.MyBinaryListField4 = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyMapEnumAndInt = arg.move();
+    __isset.MyMapEnumAndInt = true;
+  }
 
   MyStruct(MyStruct&& other) noexcept :
       MyBoolField(std::move(other.MyBoolField)),
@@ -647,6 +659,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyBinaryField2(std::move(other.MyBinaryField2)),
       MyBinaryField3(std::move(other.MyBinaryField3)),
       MyBinaryListField4(std::move(other.MyBinaryListField4)),
+      MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
       __isset(other.__isset) {}
 
   MyStruct(const MyStruct&) = default;
@@ -666,6 +679,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::string MyBinaryField2;
   std::string MyBinaryField3;
   std::vector<std::string> MyBinaryListField4;
+  std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt;
 
   struct __isset {
     void __clear() {
@@ -676,6 +690,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyBinaryField = false;
       MyBinaryField2 = false;
       MyBinaryListField4 = false;
+      MyMapEnumAndInt = false;
     }
 
     bool MyBoolField = false;
@@ -685,6 +700,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     bool MyBinaryField = false;
     bool MyBinaryField2 = false;
     bool MyBinaryListField4 = false;
+    bool MyMapEnumAndInt = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
@@ -791,6 +807,15 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     MyBinaryListField4 = std::forward<T_MyStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
     __isset.MyBinaryListField4 = true;
     return MyBinaryListField4;
+  }
+  const std::map< ::some::valid::ns::MyEnumA, std::string>& get_MyMapEnumAndInt() const&;
+  std::map< ::some::valid::ns::MyEnumA, std::string> get_MyMapEnumAndInt() &&;
+
+  template <typename T_MyStruct_MyMapEnumAndInt_struct_setter>
+  std::map< ::some::valid::ns::MyEnumA, std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
+    MyMapEnumAndInt = std::forward<T_MyStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
+    __isset.MyMapEnumAndInt = true;
+    return MyMapEnumAndInt;
   }
 
   template <class Protocol_>

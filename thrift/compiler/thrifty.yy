@@ -703,7 +703,15 @@ ConstValue:
         constant = g_scope_cache->get_constant(g_program->get_name() + "." + $1);
       }
       if (constant != nullptr) {
-        $$ = constant->get_value();
+        t_const_value* const_value = constant->get_value();
+        // CV_INTEGER can be ints or enums. Since we mutate const values,
+        // this creates a copy of the t_const_value in case we need
+        // to mutate it to assume a int or an enum value.
+        if (const_value->get_type() ==
+            t_const_value::t_const_value_type::CV_INTEGER) {
+          const_value = new t_const_value(const_value->get_integer());
+        }
+        $$ = const_value;
       } else {
         if (g_parse_mode == PROGRAM) {
           pwarning(1, "Constant strings should be quoted: %s", $1);

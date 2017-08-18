@@ -78,6 +78,14 @@ struct module_constants {
 
   static std::vector< ::some::valid::ns::MyEnumA> const& AConstList();
 
+  static constexpr int32_t const AnIntegerEnum2_ = 2;
+
+  static constexpr int32_t AnIntegerEnum2() {
+    return AnIntegerEnum2_;
+  }
+
+  static std::vector<int32_t> const& AnIntegerEnum2();
+
   static constexpr  ::some::valid::ns::MyEnumA const constEnumA_ =  ::some::valid::ns::MyEnumA::fieldB;
 
   static constexpr  ::some::valid::ns::MyEnumA constEnumA() {

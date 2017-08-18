@@ -203,6 +203,7 @@ void MyStruct::__clear() {
   MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   MyBinaryListField4.clear();
+  MyMapEnumAndInt.clear();
   __isset.__clear();
 }
 
@@ -234,6 +235,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!((MyBinaryListField4 == rhs.MyBinaryListField4))) {
     return false;
   }
+  if (!((MyMapEnumAndInt == rhs.MyMapEnumAndInt))) {
+    return false;
+  }
   return true;
 }
 
@@ -243,6 +247,14 @@ const std::vector<std::string>& MyStruct::get_MyBinaryListField4() const& {
 
 std::vector<std::string> MyStruct::get_MyBinaryListField4() && {
   return std::move(MyBinaryListField4);
+}
+
+const std::map< ::some::valid::ns::MyEnumA, std::string>& MyStruct::get_MyMapEnumAndInt() const& {
+  return MyMapEnumAndInt;
+}
+
+std::map< ::some::valid::ns::MyEnumA, std::string> MyStruct::get_MyMapEnumAndInt() && {
+  return std::move(MyMapEnumAndInt);
 }
 
 void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -279,6 +291,10 @@ void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, 
     fid = 8;
     _ftype = apache::thrift::protocol::T_LIST;
   }
+  else if (_fname == "MyMapEnumAndInt") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
 }
 
 void swap(MyStruct& a, MyStruct& b) {
@@ -291,6 +307,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyBinaryField2, b.MyBinaryField2);
   swap(a.MyBinaryField3, b.MyBinaryField3);
   swap(a.MyBinaryListField4, b.MyBinaryListField4);
+  swap(a.MyMapEnumAndInt, b.MyMapEnumAndInt);
   swap(a.__isset, b.__isset);
 }
 

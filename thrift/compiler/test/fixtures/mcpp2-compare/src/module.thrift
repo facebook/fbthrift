@@ -38,6 +38,10 @@ enum MyEnumA {
 
 const list<MyEnumA> AConstList= [1, 2, 3]
 
+const i32 AnIntegerEnum2 = MyEnumA.fieldB
+
+const list<i32> AnIntegerEnum2 = [MyEnumA.fieldB, MyEnumA.fieldA]
+
 enum AnnotatedEnum {
   FIELDA = 2,
   FIELDB = 4,
@@ -71,6 +75,11 @@ struct MyStruct {
   6: optional binary MyBinaryField2
   7: required binary MyBinaryField3
   8: list<binary> MyBinaryListField4
+  9: map<MyEnumA, string> MyMapEnumAndInt = {
+    1: "fieldA",
+    4: "fieldC",
+    9: "nothing",
+  }
 } (cpp.noexcept_move_ctor)
 
 union SimpleUnion {
