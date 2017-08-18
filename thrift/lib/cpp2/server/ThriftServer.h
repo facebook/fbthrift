@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/concurrent/IOThreadPoolExecutor.h>
@@ -196,6 +197,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   SecurityKillSwitchPoller securityKillSwitchPoller_;
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
+
+  std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
@@ -793,6 +796,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   // server side duplex
   bool isDuplex() {
     return isDuplex_;
+  }
+
+  std::vector<std::unique_ptr<TransportRoutingHandler>> const&
+  getRoutingHandlers() const {
+    return routingHandlers_;
+  }
+
+  void addRoutingHandler(
+      std::unique_ptr<TransportRoutingHandler> routingHandler) {
+    routingHandlers_.push_back(std::move(routingHandler));
   }
 
   void setDuplex(bool duplex) {

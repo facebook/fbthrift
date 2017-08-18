@@ -175,7 +175,8 @@ thrift2include_server_HEADERS = \
 	server/ThriftServer.h \
 	server/peeking/PeekingManager.h \
 	server/peeking/TLSHelper.h \
-	server/peeking/HTTPHelper.h
+	server/peeking/HTTPHelper.h \
+	transport/core/TransportRoutingHandler.h
 
 thrift2include_utildir = $(thrift2includedir)/util
 
