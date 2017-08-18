@@ -9,23 +9,155 @@ import socket
 import ssl
 import traceback
 import sys
+import logging
 
 # workaround for a python bug.  see http://bugs.python.org/issue8484
 import hashlib
+
+
+def _detect_legacy_ssl():
+    """
+    Checks whether or not we have the newer Python >= 2.7.9,3.2+ attributes
+    necessary to properly configure TLS settings
+    """
+    required_attributes = [
+        'SSLContext',
+        'OP_NO_SSLv2',
+        'OP_NO_SSLv3',
+        'OP_NO_TLSv1',
+    ]
+    return not all(hasattr(ssl, attr) for attr in required_attributes)
+
+
+_is_legacy_ssl = _detect_legacy_ssl()
+
+
+def _best_possible_default_version():
+    global _is_legacy_ssl
+    if _is_legacy_ssl:
+        # Python < 2.7.9 does not expose OP_NO_SSLv2 and OP_NO_SSLv3. Depending
+        # on what version of OpenSSL Python is linked against, SSLv23 *may*
+        # be able to connect to TLS 1.2, but since we can't disable SSLv2
+        # and SSLv3, we might as well default to TLS 1.0.
+        return ssl.PROTOCOL_TLSv1
+
+    # Newer versions of Python (>= 3.6.0) introduced PROTOCOL_TLS, which is
+    # recommended against PROTOCOL_SSLv23, even though at this time they are
+    # aliases for one another.
+    return next(
+        getattr(ssl, p)
+        for p in ['PROTOCOL_TLS', 'PROTOCOL_SSLv23']
+        if hasattr(ssl, p)
+    )
+
+
+if _is_legacy_ssl:
+    _has_warned = False
+
+    def _warn_if_legacy():
+        global _has_warned
+        if not _has_warned:
+            logging.warn(
+                'You are using an old version of Python (< 2.7.9) that is '
+                'limited to an old version of TLS (1.0) with known security '
+                'vulnerabilities. '
+            )
+            _has_warned = True
+
+    def _warn_if_insecure_version_specified(version):
+        pass
+
+    def _get_ssl_socket(socket, ssl_version, cert_reqs=ssl.CERT_NONE,
+                        ca_certs=None, keyfile=None, certfile=None, **kwargs):
+        return ssl.SSLSocket(
+            socket,
+            ssl_version=ssl_version,
+            cert_reqs=cert_reqs,
+            ca_certs=ca_certs,
+            keyfile=keyfile,
+            certfile=certfile,
+        )
+else:
+    def _warn_if_legacy():
+        pass
+
+    def _warn_if_insecure_version_specified(version):
+        if version is None:
+            return
+
+        blacklist = [ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_SSLv3, ssl.PROTOCOL_TLSv1]
+
+        if hasattr(ssl, 'PROTOCOL_TLSv1_1'):
+            blacklist.append(ssl.PROTOCOL_TLSv1_1)
+
+        if version in blacklist:
+            logging.warn(
+                'You are constructing TSSLSocket and intentionally specifying '
+                'a weak, vulnerable ssl_version on a platform that has secure '
+                'versions available! Leave ssl_version unspecified and we will '
+                'automatically choose a suitable, secure version for you.'
+            )
+
+    def _get_ssl_socket(socket, ssl_version, cert_reqs=ssl.CERT_NONE,
+                        ca_certs=None, keyfile=None, certfile=None,
+                        disable_weaker_versions=True):
+        ctx = ssl.SSLContext(ssl_version)
+        if certfile is not None:
+            ctx.load_cert_chain(
+                certfile=certfile,
+                keyfile=keyfile,
+            )
+
+        if ca_certs is not None:
+            ctx.load_verify_locations(
+                cafile=ca_certs,
+            )
+
+        ctx.options |= ssl.OP_NO_SSLv2
+        ctx.options |= ssl.OP_NO_SSLv3
+
+        if disable_weaker_versions:
+            ctx.options |= ssl.OP_NO_TLSv1
+
+            # Python 2.7.9+ has this symbol, Python 3 only gets this at 3.4
+            if hasattr(ssl, 'OP_NO_TLSv1_1'):
+                ctx.options |= ssl.OP_NO_TLSv1_1
+
+        return ctx.wrap_socket(socket)
+
 
 class TSSLSocket(TSocket):
     """Socket implementation that communicates over an SSL/TLS encrypted
     channel."""
     def __init__(self, host='localhost', port=9090, unix_socket=None,
-                 ssl_version=ssl.PROTOCOL_TLSv1,
+                 ssl_version=None,
                  cert_reqs=ssl.CERT_NONE,
                  ca_certs=None,
                  verify_name=False,
                  keyfile=None,
-                 certfile=None):
+                 certfile=None,
+                 allow_weak_ssl_versions=False):
         """Initialize a TSSLSocket.
 
-        @param ssl_version(int)  protocol version. see ssl module.
+        @param ssl_version(int)  protocol version. see ssl module. If none is
+                                 specified, we will default to the most
+                                 reasonably secure and compatible configuration
+                                 if possible.
+
+                                 For Python versions >= 2.7.9, we will default
+                                 to at least TLS 1.1.
+
+                                 For Python versions < 2.7.9, we can only
+                                 default to TLS 1.0, which is the best that
+                                 Python guarantees to offers at this version.
+                                 If you specify ssl.PROTOCOL_SSLv23, and
+                                 the OpenSSL linked with Python is new enough,
+                                 it is possible for a TLS 1.2 connection be
+                                 established; however, there is no way in
+                                 < Python 2.7.9 to explicitly disable SSLv2
+                                 and SSLv3. For that reason, we default to
+                                 TLS 1.0.
+
         @param cert_reqs(int)    whether to verify peer certificate. see ssl
                                  module.
         @param ca_certs(str)     filename containing trusted root certs.
@@ -36,6 +168,10 @@ class TSSLSocket(TSocket):
         @param keyfile           filename containing the client's private key
         @param certfile          filename containing the client's cert and
                                  optionally the private key
+
+        @param allow_weak_ssl_versions(bool) By default, we try to disable older
+                                             protocol versions. Only set this
+                                             if you know what you are doing.
         """
         TSocket.__init__(self, host, port, unix_socket)
         self.cert_reqs = cert_reqs
@@ -44,16 +180,29 @@ class TSSLSocket(TSocket):
         self.verify_name = verify_name
         self.client_keyfile = keyfile
         self.client_certfile = certfile
+        self.allow_weak_ssl_versions = allow_weak_ssl_versions
+        _warn_if_legacy()
+        _warn_if_insecure_version_specified(ssl_version)
 
     def open(self):
         TSocket.open(self)
         try:
-            sslh = ssl.SSLSocket(self.handle,
-                                 ssl_version=self.ssl_version,
-                                 cert_reqs=self.cert_reqs,
-                                 ca_certs=self.ca_certs,
-                                 keyfile=self.client_keyfile,
-                                 certfile=self.client_certfile)
+            ssl_version = (
+                self.ssl_version
+                if self.ssl_version is not None
+                else _best_possible_default_version()
+            )
+
+            sslh = _get_ssl_socket(
+                self.handle,
+                ssl_version=ssl_version,
+                cert_reqs=self.cert_reqs,
+                ca_certs=self.ca_certs,
+                keyfile=self.client_keyfile,
+                certfile=self.client_certfile,
+                disable_weaker_versions=not self.allow_weak_ssl_versions,
+            )
+
             if self.verify_name:
                 # validate the peer certificate commonName against the
                 # hostname (or given name) that we were expecting.
