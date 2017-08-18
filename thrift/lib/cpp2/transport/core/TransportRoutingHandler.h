@@ -19,14 +19,14 @@
 #include <vector>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
-#include <wangle/acceptor/Acceptor.h>
+#include <wangle/acceptor/ConnectionManager.h>
 #include <wangle/acceptor/TransportInfo.h>
 
 namespace apache {
 namespace thrift {
 
 /*
- * This interface is used by ThriftServer to route the
+ * An interface used by ThriftServer to route the
  * socket to different Transports.
  */
 class TransportRoutingHandler {
@@ -35,12 +35,27 @@ class TransportRoutingHandler {
   virtual ~TransportRoutingHandler() = default;
   TransportRoutingHandler(const TransportRoutingHandler&) = delete;
 
+  /*
+   * Performs a check on the first bytes read from the wire
+   * and determines if this protocol is supported by this routing handler
+   */
   virtual bool canAcceptConnection(const std::vector<uint8_t>& bytes) = 0;
+
+  /*
+   * Sets the ConnectionManager that will be used to route the socket
+   */
+  virtual void setConnectionManager(
+      wangle::ConnectionManager* connectionManager) = 0;
+
+  /*
+   * Creates the correct session to route the socket to the appropriate
+   * protocol handler
+   */
   virtual void handleConnection(
-    folly::AsyncTransportWrapper::UniquePtr sock,
-    folly::SocketAddress* peerAddress,
-    wangle::TransportInfo const& tinfo,
-    wangle::Acceptor* acceptor) = 0;
+      folly::AsyncTransportWrapper::UniquePtr sock,
+      folly::SocketAddress* peerAddress,
+      wangle::TransportInfo const& tinfo) = 0;
+
 };
 
 } // namspace thrift
