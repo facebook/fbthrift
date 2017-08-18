@@ -206,7 +206,6 @@ class Cpp2Worker
 
   wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
       const std::vector<uint8_t>& bytes,
-      wangle::Acceptor* acceptor,
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo) override;
