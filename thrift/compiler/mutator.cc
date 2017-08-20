@@ -73,10 +73,10 @@ bool mutator::visit(t_program* const /* program */) {
 }
 
 t_type* mutator::resolve_type(t_type* type) {
-  if (!type->is_typedef()) {
-    return type;
+  while (type->is_typedef()) {
+    type = dynamic_cast<t_typedef*>(type)->get_type();
   }
-  return resolve_type(dynamic_cast<t_typedef*>(type)->get_type());
+  return type;
 }
 
 void mutator::traverse_field(
