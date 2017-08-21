@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_CONCURRENCY_MUTEX_H_
 #define THRIFT_CONCURRENCY_MUTEX_H_ 1
 
@@ -239,27 +238,6 @@ class RWGuard : boost::noncopyable {
  private:
   const ReadWriteMutex* rw_mutex_ = nullptr;
 };
-
-
-// A little hack to prevent someone from trying to do "Guard(m);"
-
-#define Guard(m) [&]() { \
-  static_assert(false, \
-    "\"Guard(m);\" is invalid because the temporary Guard object is " \
-    "destroyed at the end of the line, releasing the lock. " \
-    "Replace it with \"Guard g(m);\"" \
-  ); \
-  return (m); \
-}()
-
-#define RWGuard(m) [&]() { \
-  static_assert(false, \
-    "\"RWGuard(m);\" is invalid because the temporary RWGuard object is " \
-    "destroyed at the end of the line, releasing the lock. " \
-    "Replace it with \"RWGuard g(m);\"" \
-  ); \
-  return (m); \
-}()
 
 }}} // apache::thrift::concurrency
 
