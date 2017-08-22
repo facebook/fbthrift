@@ -428,16 +428,6 @@ class HandlerCallbackBase {
   }
 
  protected:
-  static folly::exception_wrapper wrap_eptr(std::exception_ptr eptr) {
-    try {
-      std::rethrow_exception(eptr);
-    } catch (std::exception& e) {
-      return folly::exception_wrapper(std::current_exception(), e);
-    } catch (...) {
-      return folly::exception_wrapper(std::current_exception());
-    }
-  }
-
   // HACK(tudorb): Call this to set up forwarding to the event base and
   // thread manager of the other callback.  Use when you want to create
   // callback wrappers that forward to another callback (and do some
@@ -460,7 +450,7 @@ class HandlerCallbackBase {
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
-    doExceptionWrapped(wrap_eptr(ex));
+    doExceptionWrapped(folly::exception_wrapper::from_exception_ptr(ex));
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew) {
