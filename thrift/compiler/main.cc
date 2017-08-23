@@ -113,7 +113,72 @@ bool record_genfiles = false;
   exit(1);
 }
 
+static void preprocess_generator_strings(std::string& options) {
+  // Use cpp2 python generator if:
+  if (options.find("mstch_cpp2") != std::string::npos &&
+      (options.find("json") != std::string::npos ||
+       options.find("future") != std::string::npos ||
+       options.find("py_generator") != std::string::npos ||
+       options.find("optionals") != std::string::npos ||
+       options.find("stack_arguments") != std::string::npos ||
+       options.find("fatal") != std::string::npos ||
+       options.find("reflection") != std::string::npos ||
+       options.find("compatibility") != std::string::npos ||
+       options.find("implicit_templates") != std::string::npos ||
+       options.find("separate_processmap") != std::string::npos ||
+       options.find("process_in_event_base") != std::string::npos ||
+       options.find("terse_writes") != std::string::npos ||
+       options.find("modulemap") != std::string::npos)) {
+    options = options.replace(0, 6, "");
+  }
+}
 
+static bool python_generator(
+    std::string& options,
+    const std::string& user_python_compiler,
+    char** argv) {
+  // Attempt to call the new python compiler if we can find it
+  string path = argv[0];
+  size_t last = path.find_last_of("/");
+  if (last != string::npos) {
+    ifstream ifile;
+    auto dirname = path.substr(0, last + 1);
+    std::string pycompiler;
+    std::vector<std::string> pycompilers;
+    if (!user_python_compiler.empty()) {
+      pycompilers.push_back(user_python_compiler);
+    }
+    pycompilers.insert(
+      pycompilers.end(),
+      {
+        dirname + "py/thrift.lpar",
+        dirname + "../py/thrift.lpar",
+        dirname + "py/thrift.par",
+        dirname + "../py/thrift.par",
+        dirname + "py/thrift.xar",
+        dirname + "../py/thrift.xar",
+        dirname + "py/thrift.pex",
+        dirname + "../py/thrift.pex",
+      });
+    for (const auto& comp : pycompilers) {
+      pycompiler = comp;
+      ifile.open(pycompiler.c_str());
+      if (ifile) break;
+    }
+    int ret = 0;
+    if (ifile) {
+      ret = execv(pycompiler.c_str(), argv);
+    }
+    if (!ifile || ret < 0) {
+      pwarning(
+        1,
+        "Unable to get a generator for \"%s\" ret: %d.\n",
+        options.c_str(),
+        ret);
+    }
+  }
+  return true;
+}
 
 /**
  * Generate code
@@ -158,69 +223,14 @@ static bool generate(
     }
 
     for (auto options : generator_strings) {
-      // Use cpp2 python generator if:
-      if (options.find("mstch_cpp2") != std::string::npos &&
-          (options.find("json") != std::string::npos ||
-           options.find("future") != std::string::npos ||
-           options.find("py_generator") != std::string::npos ||
-           options.find("optionals") != std::string::npos ||
-           options.find("stack_arguments") != std::string::npos ||
-           options.find("fatal") != std::string::npos ||
-           options.find("reflection") != std::string::npos ||
-           options.find("compatibility") != std::string::npos ||
-           options.find("implicit_templates") != std::string::npos ||
-           options.find("separate_processmap") != std::string::npos ||
-           options.find("process_in_event_base") != std::string::npos ||
-           options.find("terse_writes") != std::string::npos ||
-           options.find("modulemap") != std::string::npos)) {
-        options = options.replace(0, 6, "");
-      }
+      preprocess_generator_strings(options);
 
       t_generator* generator =
           t_generator_registry::get_generator(program, options);
 
 #     ifndef _WIN32
       if (!apache::thrift::compiler::isWindows() && generator == nullptr) {
-        // Attempt to call the new python compiler if we can find it
-        string path = argv[0];
-        size_t last = path.find_last_of("/");
-        if (last != string::npos) {
-          ifstream ifile;
-          auto dirname = path.substr(0, last + 1);
-          std::string pycompiler;
-          std::vector<std::string> pycompilers;
-          if (!user_python_compiler.empty()) {
-            pycompilers.push_back(user_python_compiler);
-          }
-          pycompilers.insert(
-              pycompilers.end(),
-              {
-                  dirname + "py/thrift.lpar",
-                  dirname + "../py/thrift.lpar",
-                  dirname + "py/thrift.par",
-                  dirname + "../py/thrift.par",
-                  dirname + "py/thrift.xar",
-                  dirname + "../py/thrift.xar",
-                  dirname + "py/thrift.pex",
-                  dirname + "../py/thrift.pex",
-              });
-          for (const auto& comp : pycompilers) {
-            pycompiler = comp;
-            ifile.open(pycompiler.c_str());
-            if (ifile) break;
-          }
-          int ret = 0;
-          if (ifile) {
-            ret = execv(pycompiler.c_str(), argv);
-          }
-          if (!ifile || ret < 0) {
-            pwarning(
-                1,
-                "Unable to get a generator for \"%s\" ret: %d.\n",
-                options.c_str(),
-                ret);
-          }
-        }
+        python_generator(options, user_python_compiler, argv);
       } else {
         pverbose("Generating \"%s\"\n", options.c_str());
         generator->generate_program();
