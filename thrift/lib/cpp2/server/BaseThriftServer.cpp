@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
 #include <folly/Conv.h>
@@ -23,9 +22,10 @@
 #include <folly/ScopeGuard.h>
 #include <folly/portability/Sockets.h>
 
+#include <fcntl.h>
 #include <iostream>
 #include <random>
-#include <fcntl.h>
+#include <thread>
 
 namespace apache {
 namespace thrift {
@@ -37,8 +37,8 @@ using namespace apache::thrift::async;
 using namespace std;
 using std::shared_ptr;
 
-const int BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
-    sysconf(_SC_NPROCESSORS_ONLN);
+const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
+    std::thread::hardware_concurrency();
 
 const std::chrono::milliseconds BaseThriftServer::DEFAULT_TASK_EXPIRE_TIME =
     std::chrono::milliseconds(5000);

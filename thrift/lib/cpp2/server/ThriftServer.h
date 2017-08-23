@@ -91,7 +91,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     folly::EventBase*)> saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
-  int nSaslPoolThreads_ = 0;
+  size_t nSaslPoolThreads_ = 0;
   std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
   std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_ =
@@ -251,6 +251,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
   }
+
+  size_t getNumSaslThreadsToRun() const;
 
   /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.
@@ -519,7 +521,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * Sets the number of threads to use for SASL negotiation if it has been
    * enabled.
    */
-  void setNSaslPoolThreads(int nSaslPoolThreads) {
+  void setNSaslPoolThreads(size_t nSaslPoolThreads) {
     CHECK(configMutable());
     nSaslPoolThreads_ = nSaslPoolThreads;
   }
@@ -528,7 +530,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * Sets the number of threads to use for SASL negotiation if it has been
    * enabled.
    */
-  int getNSaslPoolThreads() {
+  size_t getNSaslPoolThreads() {
     return nSaslPoolThreads_;
   }
 

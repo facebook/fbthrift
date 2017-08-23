@@ -66,7 +66,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
 class BaseThriftServer : public apache::thrift::server::TServer {
  protected:
   //! Default number of worker threads (should be # of processor cores).
-  static const int T_ASYNC_DEFAULT_WORKER_THREADS;
+  static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
 
   static const uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 0xffffffff;
 
@@ -92,11 +92,11 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   int port_ = -1;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
-  int nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
+  size_t nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
 
   //! Number of sync pool threads (may be set) (should be set to expected
   //  sync load)
-  int nPoolThreads_ = 0;
+  size_t nPoolThreads_ = 0;
 
   /**
    * The thread manager used for sync calls.
@@ -451,7 +451,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @param number of IO worker threads
    */
-  void setNumIOWorkerThreads(int numIOWorkerThreads) {
+  void setNumIOWorkerThreads(size_t numIOWorkerThreads) {
     CHECK(configMutable());
     nWorkers_ = numIOWorkerThreads;
   }
@@ -462,7 +462,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @param number of IO worker threads
    */
-  inline void setNWorkerThreads(int nWorkers) {
+  inline void setNWorkerThreads(size_t nWorkers) {
     setNumIOWorkerThreads(nWorkers);
   }
 
@@ -471,7 +471,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of IO worker threads
    */
-  int getNumIOWorkerThreads() { return nWorkers_; }
+  size_t getNumIOWorkerThreads() {
+    return nWorkers_;
+  }
 
   /**
    * DEPRECATED: Get the number of IO worker threads
@@ -479,7 +481,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of IO worker threads
    */
-  inline int getNWorkerThreads() { return getNumIOWorkerThreads(); }
+  inline size_t getNWorkerThreads() {
+    return getNumIOWorkerThreads();
+  }
 
   /**
    * Set the number of CPU (pool) threads.
@@ -487,7 +491,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @param number of CPU (pool) threads
    */
-  void setNumCPUWorkerThreads(int numCPUWorkerThreads) {
+  void setNumCPUWorkerThreads(size_t numCPUWorkerThreads) {
     CHECK(configMutable());
     CHECK(!threadManager_);
 
@@ -501,7 +505,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @param number of CPU (pool) threads
    */
-  inline void setNPoolThreads(int nPoolThreads) {
+  inline void setNPoolThreads(size_t nPoolThreads) {
     setNumCPUWorkerThreads(nPoolThreads);
   }
 
@@ -510,7 +514,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of CPU (pool) threads
    */
-  int getNumCPUWorkerThreads() { return nPoolThreads_; }
+  size_t getNumCPUWorkerThreads() {
+    return nPoolThreads_;
+  }
 
   /**
    * DEPRECATED: Get the number of CPU (pool) threads
@@ -518,7 +524,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of CPU (pool) threads
    */
-  inline int getNPoolThreads() { return getNumCPUWorkerThreads(); }
+  inline size_t getNPoolThreads() {
+    return getNumCPUWorkerThreads();
+  }
 
   /**
    * Codel queuing timeout - limit queueing time before overload

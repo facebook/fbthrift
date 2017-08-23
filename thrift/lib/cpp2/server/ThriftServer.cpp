@@ -238,6 +238,12 @@ void ThriftServer::touchRequestTimestamp() noexcept {
   }
 }
 
+size_t ThriftServer::getNumSaslThreadsToRun() const {
+  return nSaslPoolThreads_ > 0
+      ? nSaslPoolThreads_
+      : (nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_);
+}
+
 void ThriftServer::setup() {
   DCHECK_NOTNULL(cpp2Pfac_.get());
   DCHECK_GT(nWorkers_, 0);
@@ -289,9 +295,7 @@ void ThriftServer::setup() {
 
     if (saslPolicy_ == "required" || saslPolicy_ == "permitted") {
       if (!saslThreadManager_) {
-        auto numThreads = nSaslPoolThreads_ > 0
-                              ? nSaslPoolThreads_
-                              : (nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_);
+        auto numThreads = getNumSaslThreadsToRun();
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
             numThreads,
             0, /* pendingTaskCountMax -- no limit */

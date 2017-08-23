@@ -887,3 +887,15 @@ TEST(ThriftServer, ClientIdentityHook) {
   client.sync_sendResponse(response, 64);
   EXPECT_TRUE(flag);
 }
+
+TEST(ThriftServer, SaslThreadCount) {
+  auto server = std::make_shared<ThriftServer>();
+  server->setNumIOWorkerThreads(10);
+  EXPECT_EQ(server->getNumSaslThreadsToRun(), 10);
+
+  server->setNumCPUWorkerThreads(20);
+  EXPECT_EQ(server->getNumSaslThreadsToRun(), 20);
+
+  server->setNSaslPoolThreads(30);
+  EXPECT_EQ(server->getNumSaslThreadsToRun(), 30);
+}
