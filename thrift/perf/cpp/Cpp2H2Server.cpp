@@ -27,7 +27,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
 
-#include <thrift/facebook/lib/cpp2/experimental/http2/server/H2ThriftServer.h>
+#include <thrift/lib/cpp2/transport/http2/server/H2ThriftServer.h>
 #include "common/init/Init.h"
 #include "common/services/cpp/ServiceFramework.h"
 

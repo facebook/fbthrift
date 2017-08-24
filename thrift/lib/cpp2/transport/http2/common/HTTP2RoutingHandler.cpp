@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/http2/HTTP2RoutingHandler.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
 #include <proxygen/lib/http/session/HTTPDefaultSessionCodecFactory.h>
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
