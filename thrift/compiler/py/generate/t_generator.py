@@ -84,6 +84,9 @@ class Generator(object):
         self.init_generator()
         # Generate them all by passing each object to self._generate
         program = self.program
+        if self._flag('only_reflection'):
+          self._generate_fatal(program)
+          return
         for item in program.objects:
             self._gen_forward_declaration(item)
         for item in chain(program.enums, program.typedefs, \

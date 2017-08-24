@@ -105,6 +105,7 @@ class CppGenerator(t_generator.Generator):
         'optionals': "produce folly::Optional<...> for optional members",
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
+        'only_reflection': 'Only generate static reflection metadata',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
         'modulemap': 'Generate clang modulemap',
     }
@@ -5777,6 +5778,10 @@ class CppGenerator(t_generator.Generator):
                 raise
 
         self._const_scope = None
+
+        # Only generate reflection files
+        if self.flag_only_reflection:
+            return;
 
         # open files and instantiate outputs for types
         context = self._make_context(name + '_types', tcc=True,
