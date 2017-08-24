@@ -136,9 +136,9 @@ static void preprocess_generator_strings(std::string& options) {
 static bool python_generator(
     std::string& options,
     const std::string& user_python_compiler,
-    char** argv) {
+    std::vector<std::string>& arguments) {
   // Attempt to call the new python compiler if we can find it
-  string path = argv[0];
+  string path = arguments[0];
   size_t last = path.find_last_of("/");
   if (last != string::npos) {
     ifstream ifile;
@@ -167,7 +167,18 @@ static bool python_generator(
     }
     int ret = 0;
     if (ifile) {
-      ret = execv(pycompiler.c_str(), argv);
+      // Convert arguments to argv
+      std::vector<char*> argv(arguments.size() + 1);
+      for (size_t i = 0; i < arguments.size(); ++i) {
+        if (arguments[i][0] == '-' &&
+            arguments[i] != "-I" &&
+            arguments[i] != "-o") {
+          arguments[i].insert(0, "-");
+        }
+        argv[i] = const_cast<char *>(arguments[i].c_str());
+      }
+      argv[arguments.size()] = nullptr;
+      ret = execv(pycompiler.c_str(), argv.data());
     }
     if (!ifile || ret < 0) {
       pwarning(
@@ -188,7 +199,7 @@ static bool generate(
     vector<string>& generator_strings,
     std::set<std::string>& already_generated,
     const std::string& user_python_compiler,
-    char** argv) {
+    std::vector<std::string>& arguments) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
     const vector<t_program*>& includes = program->get_includes();
@@ -206,7 +217,7 @@ static bool generate(
               generator_strings,
               already_generated,
               user_python_compiler,
-              argv)) {
+              arguments)) {
         return false;
       } else {
         already_generated.insert(include->get_path());
@@ -230,7 +241,7 @@ static bool generate(
 
 #     ifndef _WIN32
       if (!apache::thrift::compiler::isWindows() && generator == nullptr) {
-        python_generator(options, user_python_compiler, argv);
+        python_generator(options, user_python_compiler, arguments);
       } else {
         pverbose("Generating \"%s\"\n", options.c_str());
         generator->generate_program();
@@ -260,9 +271,9 @@ static bool generate(
  * not that many languages, but the cool ones that we care about.
  */
 int main(int argc, char** argv) {
-  int i;
   std::string out_path;
   bool out_path_is_absolute = false;
+  std::vector<std::string> arguments(argv, argv + argc);
 
   // Setup time string
   time_t now = time(nullptr);
@@ -275,196 +286,196 @@ int main(int argc, char** argv) {
   }
 
   std::string user_python_compiler;
-  vector<string> generator_strings;
+  vector<std::string> generator_strings;
 
   // Set the current path to a dummy value to make warning messages clearer.
   g_curpath = "arguments";
 
   // Hacky parameter handling... I didn't feel like using a library sorry!
-  for (i = 1; i < argc-1; i++) {
-    char* arg;
-    char* saveptr;
-    arg = strtok_r(argv[i], " ", &saveptr);
+  size_t i;
+  for (i = 1; i < arguments.size() - 1; ++i) {
 
-    while (arg != nullptr) {
-      // Treat double dashes as single dashes
-      if (arg[0] == '-' && arg[1] == '-') {
-        ++arg;
-      }
+    // Treat double dashes as single dashes
+    if (arguments[i][0] == '-' && arguments[i][1] == '-') {
+      arguments[i] = arguments[i].replace(0, 1, "");
+    }
 
-      if (strcmp(arg, "-debug") == 0) {
-        g_debug = 1;
-      } else if (strcmp(arg, "-nowarn") == 0) {
-        g_warn = 0;
-      } else if (strcmp(arg, "-strict") == 0) {
-        g_strict = 255;
-        g_warn = 2;
-      } else if (strcmp(arg, "-v") == 0 || strcmp(arg, "-verbose") == 0 ) {
-        g_verbose = 1;
-      } else if (strcmp(arg, "-r") == 0 || strcmp(arg, "-recurse") == 0 ) {
-        gen_recurse = true;
-      } else if (strcmp(arg, "-allow-neg-keys") == 0) {
-        g_allow_neg_field_keys = true;
-      } else if (strcmp(arg, "-allow-neg-enum-vals") == 0) {
-        g_allow_neg_enum_vals = true;
-      } else if (strcmp(arg, "-allow-64bit-consts") == 0) {
-        g_allow_64bit_consts = true;
-      } else if (strcmp(arg, "-record-genfiles") == 0) {
-        record_genfiles = true;
-        if (i + 1 == argc - 1) {
-          fprintf(
-              stderr,
-              "!!! Missing genfile file specification between %s and '%s'\n",
-              arg,
-              argv[i + 1]);
-          usage();
-        }
-        arg = argv[++i];
-        genfile_file.open(arg);
-      } else if (strcmp(arg, "-gen") == 0) {
-        if (i + 1 == argc - 1) {
-          fprintf(
-              stderr,
-              "!!! Missing generator specification between %s and '%s'\n",
-              arg,
-              argv[i + 1]);
-          usage();
-        }
-        arg = argv[++i];
-        generator_strings.push_back(arg);
-      } else if (strcmp(arg, "-dense") == 0) {
-        gen_dense = true;
-      } else if (strcmp(arg, "-cpp") == 0) {
-        gen_cpp = true;
-      } else if (strcmp(arg, "-javabean") == 0) {
-        gen_javabean = true;
-      } else if (strcmp(arg, "-java") == 0) {
-        gen_java = true;
-      } else if (strcmp(arg, "-php") == 0) {
-        gen_php = true;
-      } else if (strcmp(arg, "-phpi") == 0) {
-        gen_phpi = true;
-      } else if (strcmp(arg, "-phps") == 0) {
-        gen_php = true;
-        gen_phps = true;
-      } else if (strcmp(arg, "-phpl") == 0) {
-        gen_php = true;
-        gen_phps = false;
-      } else if (strcmp(arg, "-phpa") == 0) {
-        gen_php = true;
-        gen_phps = false;
-        gen_phpa = true;
-      } else if (strcmp(arg, "-phpo") == 0) {
-        gen_php = true;
-        gen_phpo = true;
-      } else if (strcmp(arg, "-rest") == 0) {
-        gen_rest = true;
-      } else if (strcmp(arg, "-py") == 0) {
-        gen_py = true;
-      } else if (strcmp(arg, "-pyns") == 0) {
-        gen_py = true;
-        gen_py_newstyle = true;
-      } else if (strcmp(arg, "-rb") == 0) {
-        gen_rb = true;
-      } else if (strcmp(arg, "-perl") == 0) {
-        gen_perl = true;
-      } else if (strcmp(arg, "-erl") == 0) {
-        gen_erl = true;
-      } else if (strcmp(arg, "-ocaml") == 0) {
-        gen_ocaml = true;
-      } else if (strcmp(arg, "-hs") == 0) {
-        gen_hs = true;
-      } else if (strcmp(arg, "-cocoa") == 0) {
-        gen_cocoa = true;
-      } else if (strcmp(arg, "-st") == 0) {
-        gen_st = true;
-      } else if (strcmp(arg, "-csharp") == 0) {
-        gen_csharp = true;
-      } else if (strcmp(arg, "-cpp_use_include_prefix") == 0) {
-        g_cpp_use_include_prefix = true;
-      } else if (strcmp(arg, "-I") == 0) {
-        if (i + 1 == argc - 1) {
-          fprintf(
-              stderr,
-              "!!! Missing Include directory between %s and '%s'\n",
-              arg,
-              argv[i + 1]);
-          usage();
-        }
-        // An argument of "-I\ asdf" is invalid and has unknown results
-        arg = argv[++i];
-        g_incl_searchpath.push_back(arg);
-      } else if (strcmp(arg, "-templates") == 0) {
-        if (i + 1 == argc - 1) {
-          fprintf(stderr, "-templates: missing template directory");
-          usage();
-        }
-        arg = argv[++i];
-        g_template_dir = arg;
-
-      } else if (strcmp(arg, "-o") == 0 || (strcmp(arg, "-out") == 0)) {
-        out_path_is_absolute = (strcmp(arg, "-out") == 0) ? true : false;
-        if (i + 1 == argc - 1) {
-          fprintf(
-              stderr,
-              "-o: missing output directory between %s and '%s'\n",
-              arg,
-              argv[i + 1]);
-          usage();
-        }
-        arg = argv[++i];
-        out_path = arg;
-
-        // Strip out trailing \ on a Windows path
-        if (apache::thrift::compiler::isWindows()) {
-          int last = out_path.length() - 1;
-          if (out_path[last] == '\\') {
-            out_path.erase(last);
-          }
-        }
-
-        struct stat sb;
-        if (out_path_is_absolute) {
-          // Invoker specified `-out blah`. We are supposed to output directly
-          // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
-          // just like how for `-o blah` we make `o/gen-java`
-          if (stat(out_path.c_str(), &sb) < 0
-              && errno == ENOENT
-              && make_dir(out_path.c_str()) < 0) {
-            fprintf(stderr, "Output directory %s is unusable: mkdir: %s\n", out_path.c_str(), strerror(errno));
-            return -1;
-          }
-        }
-        if (stat(out_path.c_str(), &sb) < 0) {
-          fprintf(stderr, "Output directory %s is unusable: %s\n", out_path.c_str(), strerror(errno));
-          return -1;
-        }
-#       ifndef _WIN32
-        if (!S_ISDIR(sb.st_mode)) {
-          fprintf(stderr, "Output directory %s exists but is not a directory\n", out_path.c_str());
-          return -1;
-        }
-#       endif
-      } else if (strcmp(arg, "-python-compiler") == 0) {
-        if (i + 1 == argc - 1) {
-          fprintf(
-              stderr,
-              "No path was given for the python compiler between "
-              "%s and '%s'\n",
-              arg,
-              argv[i + 1]);
-          usage();
-        }
-        arg = argv[++i];
-        user_python_compiler = arg;
-        break;
-      } else {
-        fprintf(stderr, "!!! Unrecognized option: %s\n", arg);
+    if (arguments[i] == "-debug") {
+      g_debug = 1;
+    } else if (arguments[i] == "-nowarn") {
+      g_warn = 0;
+    } else if (arguments[i] == "-strict") {
+      g_strict = 255;
+      g_warn = 2;
+    } else if (arguments[i] == "-v" || arguments[i] == "-verbose" ) {
+      g_verbose = 1;
+    } else if (arguments[i] == "-r" || arguments[i] == "-recurse" ) {
+      gen_recurse = true;
+    } else if (arguments[i] == "-allow-neg-keys") {
+      g_allow_neg_field_keys = true;
+    } else if (arguments[i] == "-allow-neg-enum-vals") {
+      g_allow_neg_enum_vals = true;
+    } else if (arguments[i] == "-allow-64bit-consts") {
+      g_allow_64bit_consts = true;
+    } else if (arguments[i] == "-record-genfiles") {
+      record_genfiles = true;
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(
+            stderr,
+            "!!! Missing genfile file specification between %s and '%s'\n",
+            arguments[i].c_str(),
+            arguments[i + 1].c_str());
         usage();
       }
+      genfile_file.open(arguments[++i]);
+    } else if (arguments[i] == "-gen") {
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(
+            stderr,
+            "!!! Missing generator specification between %s and '%s'\n",
+            arguments[i].c_str(),
+            arguments[i + 1].c_str());
+        usage();
+      }
+      generator_strings.push_back(arguments[++i]);
+    } else if (arguments[i] == "-dense") {
+      gen_dense = true;
+    } else if (arguments[i] == "-cpp") {
+      gen_cpp = true;
+    } else if (arguments[i] == "-javabean") {
+      gen_javabean = true;
+    } else if (arguments[i] == "-java") {
+      gen_java = true;
+    } else if (arguments[i] == "-php") {
+      gen_php = true;
+    } else if (arguments[i] == "-phpi") {
+      gen_phpi = true;
+    } else if (arguments[i] == "-phps") {
+      gen_php = true;
+      gen_phps = true;
+    } else if (arguments[i] == "-phpl") {
+      gen_php = true;
+      gen_phps = false;
+    } else if (arguments[i] == "-phpa") {
+      gen_php = true;
+      gen_phps = false;
+      gen_phpa = true;
+    } else if (arguments[i] == "-phpo") {
+      gen_php = true;
+      gen_phpo = true;
+    } else if (arguments[i] == "-rest") {
+      gen_rest = true;
+    } else if (arguments[i] == "-py") {
+      gen_py = true;
+    } else if (arguments[i] == "-pyns") {
+      gen_py = true;
+      gen_py_newstyle = true;
+    } else if (arguments[i] == "-rb") {
+      gen_rb = true;
+    } else if (arguments[i] == "-perl") {
+      gen_perl = true;
+    } else if (arguments[i] == "-erl") {
+      gen_erl = true;
+    } else if (arguments[i] == "-ocaml") {
+      gen_ocaml = true;
+    } else if (arguments[i] == "-hs") {
+      gen_hs = true;
+    } else if (arguments[i] == "-cocoa") {
+      gen_cocoa = true;
+    } else if (arguments[i] == "-st") {
+      gen_st = true;
+    } else if (arguments[i] == "-csharp") {
+      gen_csharp = true;
+    } else if (arguments[i] == "-cpp_use_include_prefix") {
+      g_cpp_use_include_prefix = true;
+    } else if (arguments[i] == "-I") {
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(
+            stderr,
+            "!!! Missing Include directory between %s and '%s'\n",
+            arguments[i].c_str(),
+            arguments[i + 1].c_str());
+        usage();
+      }
+      // An argument of "-I\ asdf" is invalid and has unknown results
+      g_incl_searchpath.push_back(arguments[++i]);
+      continue;
+    } else if (arguments[i] == "-templates") {
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(stderr, "-templates: missing template directory");
+        usage();
+      }
+      g_template_dir = arguments[++i];
+      continue;
+    } else if (arguments[i] == "-o" || (arguments[i] == "-out")) {
+      out_path_is_absolute = (arguments[i] == "-out") ? true : false;
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(
+            stderr,
+            "-o: missing output directory between %s and '%s'\n",
+            arguments[i].c_str(),
+            arguments[i + 1].c_str());
+        usage();
+      }
+      out_path = arguments[++i];
 
-      // Tokenize more
-      arg = strtok_r(nullptr, " ", &saveptr);
+      // Strip out trailing \ on a Windows path
+      if (apache::thrift::compiler::isWindows()) {
+        int last = out_path.length() - 1;
+        if (out_path[last] == '\\') {
+          out_path.erase(last);
+        }
+      }
+
+      struct stat sb;
+      if (out_path_is_absolute) {
+        // Invoker specified `-out blah`. We are supposed to output directly
+        // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
+        // just like how for `-o blah` we make `o/gen-java`
+        if (stat(out_path.c_str(), &sb) < 0
+            && errno == ENOENT
+            && make_dir(out_path.c_str()) < 0) {
+          fprintf(
+              stderr,
+              "Output directory %s is unusable: mkdir: %s\n",
+              out_path.c_str(),
+              strerror(errno));
+          return -1;
+        }
+      }
+      if (stat(out_path.c_str(), &sb) < 0) {
+        fprintf(
+            stderr,
+            "Output directory %s is unusable: %s\n",
+            out_path.c_str(),
+            strerror(errno));
+        return -1;
+      }
+#       ifndef _WIN32
+      if (!S_ISDIR(sb.st_mode)) {
+        fprintf(
+            stderr,
+            "Output directory %s exists but is not a directory\n",
+            out_path.c_str());
+        return -1;
+      }
+#       endif
+      continue;
+    } else if (arguments[i] == "-python-compiler") {
+      if (i + 1 == arguments.size() - 1) {
+        fprintf(
+            stderr,
+            "No path was given for the python compiler between "
+            "%s and '%s'\n",
+            arguments[i].c_str(),
+            arguments[i + 1].c_str());
+        usage();
+      }
+      user_python_compiler = arguments[++i];
+      continue;
+    } else {
+      fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
+      usage();
     }
   }
 
@@ -548,12 +559,12 @@ int main(int argc, char** argv) {
   }
 
   // Real-pathify it
-  if (argv[i] == nullptr) {
+  if (arguments.size() < i) {
     fprintf(stderr, "!!! Missing file name\n");
     usage();
   }
 
-  std::string input_file = compute_absolute_path(argv[i]);
+  std::string input_file = compute_absolute_path(arguments[i]);
 
   // Instance of the global parse tree
   t_program* program = new t_program(input_file);
@@ -563,7 +574,7 @@ int main(int argc, char** argv) {
 
   // Compute the cpp include prefix.
   // infer this from the filename passed in
-  string input_filename = argv[i];
+  string input_filename = arguments[i];
   string include_prefix;
 
   string::size_type last_slash = string::npos;
@@ -621,7 +632,7 @@ int main(int argc, char** argv) {
         generator_strings,
         already_generated,
         user_python_compiler,
-        argv);
+        arguments);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;
