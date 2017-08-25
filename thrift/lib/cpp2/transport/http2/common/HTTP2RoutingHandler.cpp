@@ -59,16 +59,16 @@ void HTTP2RoutingHandler::handleConnection(
   // Create the SimpleController
   auto ipConfig = proxygen::HTTPServer::IPConfig(
       *peerAddress, proxygen::HTTPServer::Protocol::HTTP2);
-  auto acceptorConfig = proxygen::HTTPServerAcceptor::makeConfig(
-      ipConfig, *options_);
-  serverAcceptor_ = proxygen::HTTPServerAcceptor::make(
-      acceptorConfig, *options_);
+  auto acceptorConfig =
+      proxygen::HTTPServerAcceptor::makeConfig(ipConfig, *options_);
+  serverAcceptor_ =
+      proxygen::HTTPServerAcceptor::make(acceptorConfig, *options_);
   controller_.reset(new proxygen::SimpleController(serverAcceptor_.get()));
 
   // Get the HTTP2 Codec
   auto codecFactory = proxygen::HTTPDefaultSessionCodecFactory(acceptorConfig);
-  auto h2codec = codecFactory.getCodec(
-      "h2", proxygen::TransportDirection::DOWNSTREAM);
+  auto h2codec =
+      codecFactory.getCodec("h2", proxygen::TransportDirection::DOWNSTREAM);
 
   // Obtain the proper routing address
   folly::SocketAddress localAddress;
@@ -82,16 +82,16 @@ void HTTP2RoutingHandler::handleConnection(
 
   // Create the DownstreamSession
   auto sessionInfoCb =
-    std::make_unique<proxygen::HTTPSession::EmptyInfoCallback>();
+      std::make_unique<proxygen::HTTPSession::EmptyInfoCallback>();
   auto* session = new proxygen::HTTPDownstreamSession(
-    proxygen::WheelTimerInstance(std::chrono::milliseconds(5)),
-    std::move(sock),
-    localAddress,
-    *peerAddress,
-    controller_.get(),
-    std::move(h2codec),
-    tinfo,
-    sessionInfoCb.get());
+      proxygen::WheelTimerInstance(std::chrono::milliseconds(5)),
+      std::move(sock),
+      localAddress,
+      *peerAddress,
+      controller_.get(),
+      std::move(h2codec),
+      tinfo,
+      sessionInfoCb.get());
   if (acceptorConfig.maxConcurrentIncomingStreams) {
     session->setMaxConcurrentIncomingStreams(
         acceptorConfig.maxConcurrentIncomingStreams);
@@ -101,9 +101,10 @@ void HTTP2RoutingHandler::handleConnection(
   session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
 
   // Set flow control parameters.
-  session->setFlowControl(acceptorConfig.initialReceiveWindow,
-                          acceptorConfig.receiveStreamWindowSize,
-                          acceptorConfig.receiveSessionWindowSize);
+  session->setFlowControl(
+      acceptorConfig.initialReceiveWindow,
+      acceptorConfig.receiveStreamWindowSize,
+      acceptorConfig.receiveSessionWindowSize);
   if (acceptorConfig.writeBufferLimit > 0) {
     session->setWriteBufferLimit(acceptorConfig.writeBufferLimit);
   }

@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
-#include <iostream>
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/portability/Sockets.h>
@@ -33,7 +32,8 @@
 
 DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
@@ -50,7 +50,7 @@ void Cpp2Worker::onNewConnection(
   auto observer = server_->getObserver();
   if (server_->maxConnections_ > 0 &&
       (getConnectionManager()->getNumConnections() >=
-       server_->maxConnections_ / server_->nWorkers_) ) {
+       server_->maxConnections_ / server_->nWorkers_)) {
     if (observer) {
       observer->connDropped();
       observer->connRejected();
@@ -81,8 +81,8 @@ std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
     folly::AsyncTransportWrapper::UniquePtr sock) {
   TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
   CHECK(tsock);
-  auto asyncSocket = std::shared_ptr<TAsyncSocket>(
-    tsock, TAsyncSocket::Destructor());
+  auto asyncSocket =
+      std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
   asyncSocket->setIsAccepted(true);
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
   return asyncSocket;
@@ -104,7 +104,6 @@ void Cpp2Worker::plaintextConnectionReady(
 
 void Cpp2Worker::useExistingChannel(
     const std::shared_ptr<HeaderServerChannel>& serverChannel) {
-
   folly::SocketAddress address;
 
   auto conn = std::make_shared<Cpp2Connection>(
@@ -137,10 +136,10 @@ int Cpp2Worker::computePendingCount() {
       pendingCount_ = 0;
       Acceptor::getConnectionManager()->iterateConns(
           [&](wangle::ManagedConnection* connection) {
-        if ((static_cast<Cpp2Connection*>(connection))->pending()) {
-          pendingCount_++;
-        }
-      });
+            if ((static_cast<Cpp2Connection*>(connection))->pending()) {
+              pendingCount_++;
+            }
+          });
     }
   }
 
@@ -179,24 +178,24 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     std::chrono::steady_clock::time_point /* acceptTime */,
     wangle::TransportInfo&) {
   switch (getSSLPolicy()) {
-  case SSLPolicy::DISABLED:
-    return wangle::AcceptorHandshakeHelper::UniquePtr(
-        new wangle::UnencryptedAcceptorHandshakeHelper());
-
-  default:
-  case SSLPolicy::PERMITTED:
-    if (TLSHelper::looksLikeTLS(bytes)) {
-      // Returning null causes the higher layer to default to SSL.
-      return nullptr;
-    } else {
+    case SSLPolicy::DISABLED:
       return wangle::AcceptorHandshakeHelper::UniquePtr(
           new wangle::UnencryptedAcceptorHandshakeHelper());
-    }
 
-  case SSLPolicy::REQUIRED:
-    return nullptr;
+    default:
+    case SSLPolicy::PERMITTED:
+      if (TLSHelper::looksLikeTLS(bytes)) {
+        // Returning null causes the higher layer to default to SSL.
+        return nullptr;
+      } else {
+        return wangle::AcceptorHandshakeHelper::UniquePtr(
+            new wangle::UnencryptedAcceptorHandshakeHelper());
+      }
 
+    case SSLPolicy::REQUIRED:
+      return nullptr;
   }
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

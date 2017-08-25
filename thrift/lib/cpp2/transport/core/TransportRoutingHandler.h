@@ -17,6 +17,7 @@
 #pragma once
 
 #include <vector>
+
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <wangle/acceptor/ConnectionManager.h>
@@ -55,7 +56,6 @@ class TransportRoutingHandler {
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       wangle::TransportInfo const& tinfo) = 0;
-
 };
 
 } // namspace thrift
