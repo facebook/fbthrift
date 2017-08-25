@@ -553,7 +553,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * Sets an explicit AsyncProcessorFactory
    *
    */
-  void setProcessorFactory(std::shared_ptr<AsyncProcessorFactory> pFac) {
+  virtual void setProcessorFactory(
+      std::shared_ptr<AsyncProcessorFactory> pFac) {
     CHECK(configMutable());
     cpp2Pfac_ = pFac;
   }

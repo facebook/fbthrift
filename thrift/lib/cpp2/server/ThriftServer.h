@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
@@ -198,6 +199,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   SecurityKillSwitchPoller securityKillSwitchPoller_;
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
+  std::unique_ptr<ThriftProcessor> thriftProcessor_;
   std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
 
   friend class Cpp2Connection;
@@ -818,6 +820,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     isDuplex_ = duplex;
   }
 
+  /**
+   * Returns a reference to the processor that is used by custom transports
+   */
+  apache::thrift::ThriftProcessor* getThriftProcessor() {
+    assert(thriftProcessor_);
+    return thriftProcessor_.get();
+  }
+
   const std::vector<std::shared_ptr<folly::AsyncServerSocket>> getSockets()
       const {
     std::vector<std::shared_ptr<folly::AsyncServerSocket>> serverSockets;
@@ -827,6 +837,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer
           std::dynamic_pointer_cast<folly::AsyncServerSocket>(socket));
     }
     return serverSockets;
+  }
+
+  /**
+   * Sets an explicit AsyncProcessorFactory and sets the ThriftProcessor
+   * to use for custom transports
+   */
+  virtual void setProcessorFactory(
+      std::shared_ptr<AsyncProcessorFactory> pFac) override {
+    CHECK(configMutable());
+    BaseThriftServer::setProcessorFactory(pFac);
+    thriftProcessor_.reset(new ThriftProcessor(getCpp2Processor()));
   }
 };
 

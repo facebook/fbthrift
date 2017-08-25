@@ -40,7 +40,8 @@ TEST_F(ThriftProcessorTestFixture, SendAndReceiveSumTwoNumbers) {
   threadManager->start();
 
   // Set up processor.
-  ThriftProcessor processor(std::move(cpp2Processor), threadManager.get());
+  ThriftProcessor processor(std::move(cpp2Processor));
+  processor.setThreadManager(threadManager.get());
 
   // Schedule the calls to the processor in the event base so that the
   // event loop is running for the entirety of the test.

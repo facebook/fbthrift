@@ -42,9 +42,9 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  ThriftProcessor(
-      std::unique_ptr<AsyncProcessor> cpp2Processor,
-      apache::thrift::concurrency::ThreadManager* tm);
+  ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor)
+      : cpp2Processor_(std::move(cpp2Processor)) {}
+
   virtual ~ThriftProcessor() = default;
 
   ThriftProcessor(const ThriftProcessor&) = delete;
@@ -69,6 +69,12 @@ class ThriftProcessor {
   // once this method has been called, and the call back will be
   // ignored if it does.
   virtual void cancel(uint32_t seqId, ThriftChannelIf* channel) noexcept;
+
+  // Called from the server initialization code if there's an update
+  // to the thread manager used to manage the server
+  void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
+    tm_ = tm;
+  }
 
  private:
   // Object of the generated AsyncProcessor subclass.

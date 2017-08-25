@@ -84,8 +84,8 @@ void RSThriftServer::setup() {
   CHECK(cpp2Pfac_);
   initializeThreadManager();
 
-  thrift_ = std::make_unique<ThriftProcessor>(
-      cpp2Pfac_->getProcessor(), threadManager_.get());
+  thrift_ = std::make_unique<ThriftProcessor>(cpp2Pfac_->getProcessor());
+  thrift_->setThreadManager(threadManager_.get());
 
   if (port_ == -1) {
     auto addr = getAddress();

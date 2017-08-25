@@ -27,11 +27,6 @@ using std::string;
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
-ThriftProcessor::ThriftProcessor(
-    std::unique_ptr<AsyncProcessor> cpp2Processor,
-    ThreadManager* tm)
-    : cpp2Processor_(std::move(cpp2Processor)), tm_(tm) {}
-
 void ThriftProcessor::onThriftRequest(
     std::unique_ptr<FunctionInfo> functionInfo,
     std::unique_ptr<map<string, string>> headers,

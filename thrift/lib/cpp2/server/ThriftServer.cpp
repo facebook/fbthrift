@@ -363,6 +363,9 @@ void ThriftServer::setup() {
         }
       }
     });
+    if (thriftProcessor_) {
+      thriftProcessor_->setThreadManager(threadManager_.get());
+    }
 
     if (!serverChannel_) {
 
