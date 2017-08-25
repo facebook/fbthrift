@@ -65,8 +65,8 @@ typedef i64 UserId
 */
 struct DefaultValue {
   // 1: map<map<i32, i32>, i32> map_one = {{1:2} : 1},
-  2: map<string, list<i32>> map_two = {"list" : [1, 2, 3]},
-  3: map<i32, map<string, string>> map_three = {1 : {"a" : "one"}}
+  2: map<string, list<i32>> map_two = {"list1" : [1, 2, 3], "list2" : [4,5,6]},
+  3: map<i32, map<string, string>> map_three = {1 : {"a" : "one"}},
 }
 
 /** And this is where you would document a struct */
@@ -74,7 +74,7 @@ struct Xtruct
 {
 
   /** And the members of a struct */
-  1:  string string_thing
+  1:  string string_thing = "",
 
   /** doct text goes before a comma */
   4:  byte   byte_thing,

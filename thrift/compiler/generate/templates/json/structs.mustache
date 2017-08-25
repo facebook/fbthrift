@@ -1,6 +1,5 @@
 <%={{ }}=%>
 {{#program:structs}}
-  {{#struct:plain?}}{{! currently only support structs}}
   "{{struct:name}}" : {
     "name" : "{{struct:name}}",
     {{#struct:docstring?}}
@@ -33,9 +32,18 @@
       {{/struct:fields}}
     },
     {{/struct:fields?}}
+    {{#struct:plain?}}
     "is_exception" : false,
     "is_union" : false,
+    {{/struct:plain?}}
+    {{#struct:exception?}}
+    "is_exception" : true,
+    "is_union" : false,
+    {{/struct:exception?}}
+    {{#struct:union?}}
+    "is_exception" : false,
+    "is_union" : true,
+    {{/struct:union?}}
     "lineno" : {{struct:lineno}}
   }{{^last?}},{{/last?}}
-  {{/struct:plain?}}
 {{/program:structs}}

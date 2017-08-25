@@ -66,7 +66,7 @@
         "fields" : {
           "map_two" : {
             "name" : "map_two",
-            "default_value" : {"\"list\"" : [1,2,3]},
+            "default_value" : {"\"list1\"" : [1,2,3],"\"list2\"" : [4,5,6]},
             "key" : 2,
             "lineno" : 68,
             "required" : "opt-in-req-out",
@@ -106,6 +106,7 @@
         "fields" : {
           "string_thing" : {
             "name" : "string_thing",
+            "default_value" : "",
             "docstring" : "And the members of a struct\n",
             "key" : 1,
             "lineno" : 77,
@@ -208,6 +209,53 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 102
+      },
+      "Xception" : {
+        "name" : "Xception",
+        "fields" : {
+          "errorCode" : {
+            "name" : "errorCode",
+            "key" : 1,
+            "lineno" : 113,
+            "required" : "opt-in-req-out",
+            "type" : "i32"
+          },
+          "message" : {
+            "name" : "message",
+            "key" : 2,
+            "lineno" : 114,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : true,
+        "is_union" : false,
+        "lineno" : 112
+      },
+      "Xception2" : {
+        "name" : "Xception2",
+        "fields" : {
+          "errorCode" : {
+            "name" : "errorCode",
+            "key" : 1,
+            "lineno" : 118,
+            "required" : "opt-in-req-out",
+            "type" : "i32"
+          },
+          "struct_thing" : {
+            "name" : "struct_thing",
+            "key" : 2,
+            "lineno" : 119,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "Xtruct"
+}
+          }
+        },
+        "is_exception" : true,
+        "is_union" : false,
+        "lineno" : 117
       },
       "EmptyStruct" : {
         "name" : "EmptyStruct",
