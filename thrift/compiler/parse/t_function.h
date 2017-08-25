@@ -97,7 +97,6 @@ class t_function : public t_doc {
       }
     }
 
-    assert(!client_xceptions);
     if (client_xceptions_) {
       if (!arglist_->get_stream_field()) {
         throw std::string(
