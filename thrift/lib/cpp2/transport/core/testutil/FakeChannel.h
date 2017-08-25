@@ -66,6 +66,7 @@ class FakeChannel : public ThriftChannelIf {
     return evb_;
   }
 
+/*
   void setInput(uint32_t, SubscriberRef) noexcept override {
     LOG(FATAL) << "setInput() unused in this fake object.";
   }
@@ -73,6 +74,7 @@ class FakeChannel : public ThriftChannelIf {
   SubscriberRef getOutput(uint32_t) noexcept override {
     LOG(FATAL) << "getOutput() unused in this fake object.";
   }
+*/
 
   std::map<std::string, std::string>* getHeaders() {
     return headers_.get();
