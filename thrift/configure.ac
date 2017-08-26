@@ -306,7 +306,7 @@ if test "$have_cpp" = "yes" ; then
 # mingw toolchain used to build "Thrift Compiler for Windows"
 # does not support libcrypto, so we just check if we building the cpp library
 AC_CHECK_LIB(crypto,
-    BN_init,
+    BN_new,
     [AC_CHECK_LIB(ssl,
         SSL_ctrl,
         [LIBS="-lssl -lcrypto $LIBS"],
