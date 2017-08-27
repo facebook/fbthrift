@@ -98,7 +98,13 @@ void Cpp2Worker::plaintextConnectionReady(
   CHECK(asyncSocket) << "Underlying socket is not a AsyncSocket type";
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
   auto peekingManager = new PeekingManager(
-      this, clientAddr, nextProtocolName, secureTransportType, tinfo);
+      this,
+      clientAddr,
+      nextProtocolName,
+      secureTransportType,
+      tinfo,
+      server_->getRoutingHandlers(),
+      server_->getNumIOWorkerThreads());
   peekingManager->start(std::move(sock), server_->getObserver());
 }
 

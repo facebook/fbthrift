@@ -200,7 +200,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
-  std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
+  std::vector<TransportRoutingHandler*> routingHandlers_;
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
@@ -802,14 +802,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     return isDuplex_;
   }
 
-  std::vector<std::unique_ptr<TransportRoutingHandler>> const&
-  getRoutingHandlers() const {
-    return routingHandlers_;
+  std::vector<TransportRoutingHandler*> const* getRoutingHandlers() const {
+    return &routingHandlers_;
   }
 
-  void addRoutingHandler(
-      std::unique_ptr<TransportRoutingHandler> routingHandler) {
-    routingHandlers_.push_back(std::move(routingHandler));
+  void addRoutingHandler(TransportRoutingHandler* routingHandler) {
+    routingHandlers_.push_back(routingHandler);
   }
 
   void setDuplex(bool duplex) {

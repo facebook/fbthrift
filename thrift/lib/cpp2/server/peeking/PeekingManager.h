@@ -19,7 +19,6 @@
 #include <folly/io/Cursor.h>
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
-#include <thrift/lib/cpp2/server/peeking/HTTPHelper.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <wangle/acceptor/Acceptor.h>
 #include <wangle/acceptor/ManagedConnection.h>
@@ -50,12 +49,16 @@ class PeekingManager : public wangle::ManagedConnection,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,
-      wangle::TransportInfo tinfo)
+      wangle::TransportInfo tinfo,
+      std::vector<TransportRoutingHandler*> const* handlers,
+      int kIOWorkerThreads)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
         nextProtocolName_(nextProtocolName),
         secureTransportType_(secureTransportType),
-        tinfo_(std::move(tinfo)) {}
+        tinfo_(std::move(tinfo)),
+        handlers_(handlers),
+        kIOWorkerThreads_(kIOWorkerThreads) {}
 
   ~PeekingManager() override = default;
 
@@ -96,18 +99,21 @@ class PeekingManager : public wangle::ManagedConnection,
     }
 
     /**
-     * This rejects HTTP connections with an alert. It is useful
-     * when clients are trying to talk HTTP but ThriftServer
-     * does not know how to handle them. This fails fast to tell
-     * clients to go away.
+     * Route the socket to a handler if the handler determines that it
+     * is able to handle the connection by peeking in the first few bytes.
      */
-    if (HTTPHelper::looksLikeHTTP(peekBytes)) {
-      LOG(ERROR) << "You are trying to handle HTTP2";
-      if (observer_) {
-        observer_->protocolError();
+    for (auto& handler : *handlers_) {
+      if (handler->canAcceptConnection(peekBytes)) {
+        handler->setConnectionManager(acceptor_->getConnectionManager());
+        handler->handleConnection(std::move(socket_), &clientAddr_, tinfo_);
+        if (observer_) {
+          observer_->connAccepted();
+          observer_->activeConnections(
+              acceptor_->getConnectionManager()->getNumConnections() *
+              kIOWorkerThreads_);
+        }
+        return;
       }
-      dropConnection();
-      return;
     }
 
     acceptor_->connectionReady(
@@ -167,5 +173,7 @@ class PeekingManager : public wangle::ManagedConnection,
   std::string nextProtocolName_;
   wangle::SecureTransportType secureTransportType_;
   wangle::TransportInfo tinfo_;
+  std::vector<TransportRoutingHandler*> const* handlers_;
+  int kIOWorkerThreads_;
 };
 }}

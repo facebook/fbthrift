@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-#pragma once
-
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
 #include <proxygen/lib/http/session/HTTPDefaultSessionCodecFactory.h>
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
-#include <proxygen/lib/http/session/HTTPSession.h>
 
 namespace apache {
 namespace thrift {
@@ -80,9 +77,10 @@ void HTTP2RoutingHandler::handleConnection(
   }
   VLOG(4) << "Created new session for peer " << *peerAddress;
 
+  // Set an empty InfoCallback
+  sessionInfoCb_.reset(new proxygen::HTTPSession::EmptyInfoCallback());
+
   // Create the DownstreamSession
-  auto sessionInfoCb =
-      std::make_unique<proxygen::HTTPSession::EmptyInfoCallback>();
   auto* session = new proxygen::HTTPDownstreamSession(
       proxygen::WheelTimerInstance(std::chrono::milliseconds(5)),
       std::move(sock),
@@ -91,7 +89,7 @@ void HTTP2RoutingHandler::handleConnection(
       controller_.get(),
       std::move(h2codec),
       tinfo,
-      sessionInfoCb.get());
+      sessionInfoCb_.get());
   if (acceptorConfig.maxConcurrentIncomingStreams) {
     session->setMaxConcurrentIncomingStreams(
         acceptorConfig.maxConcurrentIncomingStreams);

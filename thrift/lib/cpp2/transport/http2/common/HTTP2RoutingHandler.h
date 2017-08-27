@@ -20,6 +20,7 @@
 
 #include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <proxygen/lib/http/session/HTTPSession.h>
 #include <proxygen/lib/http/session/SimpleController.h>
 
 namespace apache {
@@ -31,7 +32,9 @@ namespace thrift {
  */
 class HTTP2RoutingHandler : public TransportRoutingHandler {
  public:
-  HTTP2RoutingHandler() = default;
+  explicit HTTP2RoutingHandler(
+      std::unique_ptr<proxygen::HTTPServerOptions> options)
+      : options_(std::move(options)) {}
   virtual ~HTTP2RoutingHandler() = default;
   HTTP2RoutingHandler(const HTTP2RoutingHandler&) = delete;
 
@@ -47,10 +50,22 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   }
 
  private:
+  // ConnectionManager is the object that handles the Server Acceptors.
+  // This object is set within the Acceptor once it's determined that this
+  // is the appropriate handler to handle the client code.
   wangle::ConnectionManager* connectionManager_;
+
+  // HTTPServerOptions are set outside out HTTP2RoutingHandler.
+  // Since one of the internal members of this class is a unique_ptr
+  // we need to set this object as a unique_ptr as well in order to properly
+  // move it into the class.
   std::unique_ptr<proxygen::HTTPServerOptions> options_;
+
+  // All of these objects are used by Proxygen.
+  // We set them as unique_ptrs to own them and avoid going out of scope.
   std::unique_ptr<proxygen::SimpleController> controller_;
   std::unique_ptr<proxygen::HTTPServerAcceptor> serverAcceptor_;
+  std::unique_ptr<proxygen::HTTPSession::EmptyInfoCallback> sessionInfoCb_;
 };
 
 } // namspace thrift
