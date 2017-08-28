@@ -822,7 +822,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * Returns a reference to the processor that is used by custom transports
    */
   apache::thrift::ThriftProcessor* getThriftProcessor() {
-    assert(thriftProcessor_);
     return thriftProcessor_.get();
   }
 
