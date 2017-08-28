@@ -58,7 +58,7 @@ folly::sorted_vector_set<int32_t> getRandomFollySet() {
 folly::sorted_vector_map<int32_t, std::string> getRandomFollyMap() {
   folly::sorted_vector_map<int32_t, std::string> m;
   for (int i = 0; i < kNumOfInserts; ++i) {
-    m[std::move(i)] = std::to_string(i);
+    m[i] = std::to_string(i);
   }
   return m;
 }
