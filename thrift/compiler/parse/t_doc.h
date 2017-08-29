@@ -15,6 +15,8 @@
  */
 #pragma once
 
+#include <string>
+
 /**
  * class t_doc
  *
