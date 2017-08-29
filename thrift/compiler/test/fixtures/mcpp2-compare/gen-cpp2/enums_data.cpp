@@ -19,8 +19,8 @@ namespace apache { namespace thrift {
 namespace facebook { namespace ns { namespace qwerty {
 
 constexpr const std::size_t _AnEnumBEnumDataStorage::size;
-constexpr const std::array<AnEnumB, 1> _AnEnumBEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 1> _AnEnumBEnumDataStorage::names;
+constexpr const std::array<AnEnumB, 2> _AnEnumBEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 2> _AnEnumBEnumDataStorage::names;
 
 }}} // facebook::ns::qwerty
 namespace apache { namespace thrift {

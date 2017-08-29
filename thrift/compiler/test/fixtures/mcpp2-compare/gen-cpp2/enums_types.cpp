@@ -52,7 +52,7 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size = 1;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size = 2;
 template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumB*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::values = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::values);
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::names = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::names);
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName( ::facebook::ns::qwerty::AnEnumB value) {

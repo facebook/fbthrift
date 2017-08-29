@@ -120,6 +120,10 @@ void mutator::traverse_field(
       value->set_enum_value(enm->find_value(value->get_integer()));
     }
   }
+  // Remove enum_value if type is a base_type to use the integer instead
+  if (type->is_base_type() && value->is_enum()) {
+    value->set_enum_value(nullptr);
+  }
 }
 
 /**

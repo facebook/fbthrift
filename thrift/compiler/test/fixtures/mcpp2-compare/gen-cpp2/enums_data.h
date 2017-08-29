@@ -38,11 +38,13 @@ namespace facebook { namespace ns { namespace qwerty {
 
 struct _AnEnumBEnumDataStorage {
   using type = AnEnumB;
-  static constexpr const std::size_t size = 1;
-  static constexpr const std::array<AnEnumB, 1> values = {{
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<AnEnumB, 2> values = {{
+    AnEnumB::FIELDA,
     AnEnumB::FIELDB,
   }};
-  static constexpr const std::array<folly::StringPiece, 1> names = {{
+  static constexpr const std::array<folly::StringPiece, 2> names = {{
+    "FIELDA",
     "FIELDB",
   }};
 };

@@ -59,7 +59,10 @@ std::vector<Range>  const &module_constants::kRanges() {
 std::vector<Internship>  const &module_constants::internList() {
   static folly::Indestructible<std::vector<Internship> > const instance{
     std::vector<Internship> {
-      Internship(module_constants::instagram()),
+      Internship(
+        ::apache::thrift::detail::wrap_argument<1>(12),
+        ::apache::thrift::detail::wrap_argument<2>("Software Engineer"),
+        ::apache::thrift::detail::wrap_argument<3>(Company::INSTAGRAM)),
       Internship(
         ::apache::thrift::detail::wrap_argument<1>(10),
         ::apache::thrift::detail::wrap_argument<2>("Sales Intern"),

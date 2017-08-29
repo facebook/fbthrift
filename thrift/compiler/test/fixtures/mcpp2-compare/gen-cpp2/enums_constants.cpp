@@ -20,4 +20,16 @@ std::map< ::facebook::ns::qwerty::AnEnumC, std::string> const& enums_constants::
   return *instance;
 }
 
+std::map< ::facebook::ns::qwerty::AnEnumA, std::set< ::facebook::ns::qwerty::AnEnumB>> const& enums_constants::ConstantMap1() {
+  static folly::Indestructible<std::map< ::facebook::ns::qwerty::AnEnumA, std::set< ::facebook::ns::qwerty::AnEnumB>>> const instance(std::initializer_list<std::pair<const  ::facebook::ns::qwerty::AnEnumA, std::set< ::facebook::ns::qwerty::AnEnumB>>>{{ ::facebook::ns::qwerty::AnEnumA::FIELDA, std::initializer_list< ::facebook::ns::qwerty::AnEnumB>{ ::facebook::ns::qwerty::AnEnumB::FIELDA,
+   ::facebook::ns::qwerty::AnEnumB::FIELDB}}});
+  return *instance;
+}
+
+std::map< ::facebook::ns::qwerty::AnEnumC, std::map<int16_t, std::set<int16_t>>> const& enums_constants::ConstantMap2() {
+  static folly::Indestructible<std::map< ::facebook::ns::qwerty::AnEnumC, std::map<int16_t, std::set<int16_t>>>> const instance(std::initializer_list<std::pair<const  ::facebook::ns::qwerty::AnEnumC, std::map<int16_t, std::set<int16_t>>>>{{ ::facebook::ns::qwerty::AnEnumC::FIELDC, std::initializer_list<std::pair<const int16_t, std::set<int16_t>>>{{0, std::initializer_list<int16_t>{0,
+  2}}}}});
+  return *instance;
+}
+
 }}} // facebook::ns::qwerty

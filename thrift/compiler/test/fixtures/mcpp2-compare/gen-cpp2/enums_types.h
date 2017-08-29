@@ -56,7 +56,8 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumA TEnumTraits< ::fac
 namespace facebook { namespace ns { namespace qwerty {
 
 enum class AnEnumB {
-  FIELDB = 0
+  FIELDA = 0,
+  FIELDB = 2
 };
 
 using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB, AnEnumB>;
@@ -81,7 +82,7 @@ template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName(
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumB* outValue);
 
 template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::min() {
-  return  ::facebook::ns::qwerty::AnEnumB::FIELDB;
+  return  ::facebook::ns::qwerty::AnEnumB::FIELDA;
 }
 
 template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::max() {

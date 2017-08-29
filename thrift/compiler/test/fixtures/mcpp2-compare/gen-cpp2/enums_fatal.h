@@ -20,10 +20,12 @@ namespace thrift_fatal_impl_detail {
 struct facebook_ns_qwerty_enums__unique_strings_list {
   using SomeStruct = ::fatal::sequence<char, 'S', 'o', 'm', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
   using FIELDA = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'A'>;
+  using ConstantMap2 = ::fatal::sequence<char, 'C', 'o', 'n', 's', 't', 'a', 'n', 't', 'M', 'a', 'p', '2'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
   using MapEnumString = ::fatal::sequence<char, 'M', 'a', 'p', 'E', 'n', 'u', 'm', 'S', 't', 'r', 'i', 'n', 'g'>;
   using MapStringEnum = ::fatal::sequence<char, 'M', 'a', 'p', 'S', 't', 'r', 'i', 'n', 'g', 'E', 'n', 'u', 'm'>;
   using AnEnumB = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'B'>;
+  using ConstantMap1 = ::fatal::sequence<char, 'C', 'o', 'n', 's', 't', 'a', 'n', 't', 'M', 'a', 'p', '1'>;
   using FIELDB = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'B'>;
   using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
   using FIELDC = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'C'>;
@@ -60,6 +62,8 @@ class enums_tags {
   struct facebook_ns_qwerty_enums__unique_constants_list {
     using MapStringEnum = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapStringEnum;
     using MapEnumString = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapEnumString;
+    using ConstantMap1 = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap1;
+    using ConstantMap2 = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap2;
   };
 
   struct facebook_ns_qwerty_enums__unique_services_list {
@@ -103,7 +107,9 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   // constants
   ::fatal::list<
     thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapStringEnum,
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapEnumString
+    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapEnumString,
+    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap1,
+    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap2
   >,
   // services
   ::fatal::list<

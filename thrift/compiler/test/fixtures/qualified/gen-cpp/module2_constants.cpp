@@ -14,8 +14,12 @@ namespace MODULE2 {
 Struct const &module2_constants::c2() {
   static folly::Indestructible<Struct> const instance{
     Struct(
-      ::apache::thrift::detail::wrap_argument<1>( ::MODULE0::Struct( ::MODULE0::module0_constants::c0())),
-      ::apache::thrift::detail::wrap_argument<2>( ::MODULE1::Struct( ::MODULE1::module1_constants::c1())))
+      ::apache::thrift::detail::wrap_argument<1>( ::MODULE0::Struct(
+          ::apache::thrift::detail::wrap_argument<1>(101),
+          ::apache::thrift::detail::wrap_argument<2>("module0_str"))),
+      ::apache::thrift::detail::wrap_argument<2>( ::MODULE1::Struct(
+          ::apache::thrift::detail::wrap_argument<1>(201),
+          ::apache::thrift::detail::wrap_argument<2>("module1_str"))))
   };
   return *instance;
 }

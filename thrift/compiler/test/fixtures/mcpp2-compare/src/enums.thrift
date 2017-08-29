@@ -5,7 +5,8 @@ enum AnEnumA {
 }
 
 enum AnEnumB {
-  FIELDB = 0;
+  FIELDA = 0;
+  FIELDB = 2;
 }
 
 enum AnEnumC {
@@ -31,4 +32,16 @@ enum AnEnumE {
 
 struct SomeStruct {
   1: i32 fieldA
+}
+
+
+const map<AnEnumA, set<AnEnumB>> ConstantMap1 = {
+  AnEnumA.FIELDA: [
+    AnEnumB.FIELDA,
+    AnEnumB.FIELDB,
+  ]
+}
+
+const map<AnEnumC, map<i16, set<i16>>> ConstantMap2 = {
+  AnEnumC.FIELDC : ConstantMap1,
 }

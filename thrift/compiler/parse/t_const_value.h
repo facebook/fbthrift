@@ -52,7 +52,36 @@ class t_const_value {
     set_string(val);
   }
 
-  t_const_value(const t_const_value&) = default;
+  t_const_value(const t_const_value& cv) {
+    switch (cv.get_type()) {
+      case CV_BOOL:
+        set_bool(cv.get_bool());
+        break;
+      case CV_INTEGER:
+        set_integer(cv.get_integer());
+        break;
+      case CV_DOUBLE:
+        set_double(cv.get_double());
+        break;
+      case CV_STRING:
+        set_string(cv.get_string());
+        break;
+      case CV_MAP:
+        set_map();
+        for (auto& map_elem : cv.get_map()) {
+          add_map(
+              new t_const_value(*map_elem.first),
+              new t_const_value(*map_elem.second));
+        }
+        break;
+      case CV_LIST:
+        set_list();
+        for (auto* lst_elem : cv.get_list()) {
+          add_list(new t_const_value(*lst_elem));
+        }
+        break;
+    }
+  }
 
   void set_string(std::string val) {
     valType_ = CV_STRING;

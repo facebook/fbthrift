@@ -81,7 +81,21 @@ struct AnEnumB_enum_traits {
   using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumB;
 
   struct AnEnumB__struct_unique_strings_list {
+    using FIELDA = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDA;
     using FIELDB = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDB;
+  };
+
+  struct AnEnumB__struct_enum_members_FIELDA {
+    using name = AnEnumB__struct_unique_strings_list::FIELDA;
+    using value = std::integral_constant<type, type::FIELDA>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct AnEnumB__struct_enum_members_FIELDB {
@@ -98,12 +112,14 @@ struct AnEnumB_enum_traits {
   };
 
   struct AnEnumB__struct_enum_members {
+    using FIELDA = AnEnumB__struct_enum_members_FIELDA;
     using FIELDB = AnEnumB__struct_enum_members_FIELDB;
   };
 
   using member = AnEnumB__struct_enum_members;
 
   using fields = ::fatal::list<
+      member::FIELDA,
       member::FIELDB
   >;
 
@@ -117,6 +133,7 @@ struct AnEnumB_enum_traits {
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
+      case type::FIELDA: return "FIELDA";
       case type::FIELDB: return "FIELDB";
       default: return fallback;
     }
