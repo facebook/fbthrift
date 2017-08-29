@@ -50,8 +50,7 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
       apache::thrift::MessageChannel::SendCallback* /* cb */ = nullptr) {
     VLOG(3) << "sendErrorWrapped";
     subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
-    subscriber_->onError(
-        std::make_exception_ptr(std::runtime_error(std::move(exCode))));
+    subscriber_->onError(std::runtime_error(std::move(exCode)));
   }
 
   folly::EventBase* getEventBase() noexcept override {

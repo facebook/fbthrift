@@ -58,22 +58,13 @@ uint32_t RSRequestChannel::sendRequest(
         ));
   };
 
-  auto err = [cb_, ctx_](std::exception_ptr ex) mutable {
-    try {
-      if (ex) {
-        std::rethrow_exception(ex);
-      } else {
-        throw std::runtime_error("unknown error");
-      }
-    } catch (std::exception& e) {
-      VLOG(3) << "Error: " << e.what();
-      folly::exception_wrapper ew(e);
-      cb_->replyReceived(ClientReceiveState(
-          ew,
-          std::move(ctx_),
-          false // isSecurityActive_
-          ));
-    }
+  auto err = [cb_, ctx_](folly::exception_wrapper ew) mutable {
+    VLOG(3) << "Error: " << ew.what();
+    cb_->replyReceived(ClientReceiveState(
+        std::move(ew),
+        std::move(ctx_),
+        false // isSecurityActive_
+        ));
   };
 
   auto singleObserver = yarpl::single::SingleObservers::create<Payload>(
