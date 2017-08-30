@@ -31,13 +31,18 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
       const std::string& /*option_string*/);
 
   void generate_program() override;
+  static std::string get_cpp2_namespace(t_program const* program);
+  static mstch::array get_namespace_array(t_program const* program);
+  static mstch::node cpp_includes(t_program const* program);
+  static mstch::node include_prefix(
+      t_program const* program,
+      std::string& include_prefix);
 
  private:
   void set_mstch_generators();
   void generate_constants(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
-  std::string get_cpp2_namespace(t_program const* program);
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -232,33 +237,8 @@ class mstch_cpp2_type : public mstch_type {
     }
     return false;
   }
-  mstch::array get_namespace_array(t_program const* program) {
-    std::vector<std::string> v;
-
-    auto ns = program->get_namespace("cpp2");
-    if (ns != "") {
-      v = split_namespace(ns);
-    } else {
-      ns = program->get_namespace("cpp");
-      if (ns != "") {
-        v = split_namespace(ns);
-      }
-      v.push_back("cpp2");
-    }
-    mstch::array a;
-    for (auto it = v.begin(); it != v.end(); ++it) {
-      mstch::map m;
-      m.emplace("namespace:name", *it);
-      a.push_back(m);
-    }
-    for (auto itr = a.begin(); itr != a.end(); ++itr) {
-      boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
-      boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
-    }
-    return a;
-  }
   mstch::node namespace_cpp2() {
-    return get_namespace_array(type_->get_program());
+    return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
   }
 };
 
@@ -576,43 +556,18 @@ class mstch_cpp2_service : public mstch_service {
             {"service:frozen2?", &mstch_cpp2_service::frozen2},
         });
   }
-  mstch::array get_namespace_array(t_program const* program) {
-    std::vector<std::string> v;
-
-    auto ns = program->get_namespace("cpp2");
-    if (ns != "") {
-      v = split_namespace(ns);
-    } else {
-      ns = program->get_namespace("cpp");
-      if (ns != "") {
-        v = split_namespace(ns);
-      }
-      v.push_back("cpp2");
-    }
-    mstch::array a;
-    for (auto it = v.begin(); it != v.end(); ++it) {
-      mstch::map m;
-      m.emplace("namespace:name", *it);
-      a.push_back(m);
-    }
-    for (auto itr = a.begin(); itr != a.end(); ++itr) {
-      boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
-      boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
-    }
-    return a;
+  virtual std::string get_service_namespace(t_program const* program) override {
+    return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
   mstch::node program_name() {
     return service_->get_program()->get_name();
   }
+  mstch::node cpp_includes() {
+    return t_mstch_cpp2_generator::cpp_includes(service_->get_program());
+  }
   mstch::node include_prefix() {
-    auto prefix = service_->get_program()->get_include_prefix();
-    if (!prefix.empty()) {
-      if (prefix[0] == '/') {
-        return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
-      }
-      return prefix + "gen-cpp2/";
-    }
-    return std::string();
+    return t_mstch_cpp2_generator::include_prefix(
+        service_->get_program(), cache_->parsed_options_["include_prefix"]);
   }
   mstch::node thrift_includes() {
     mstch::array a{};
@@ -629,7 +584,7 @@ class mstch_cpp2_service : public mstch_service {
     return a;
   }
   mstch::node namespace_cpp2() {
-    return get_namespace_array(service_->get_program());
+    return t_mstch_cpp2_generator::get_namespace_array(service_->get_program());
   }
   mstch::node oneway_functions() {
     std::vector<t_function const*> oneway_functions;
@@ -651,17 +606,6 @@ class mstch_cpp2_service : public mstch_service {
       }
     }
     return false;
-  }
-  mstch::node cpp_includes() {
-    mstch::array a{};
-    for (auto const& include : service_->get_program()->get_cpp_includes()) {
-      mstch::map cpp_include;
-      cpp_include.emplace(
-          "system?", include.at(0) == '<' ? std::to_string(0) : "");
-      cpp_include.emplace("path", std::string(include));
-      a.push_back(cpp_include);
-    }
-    return a;
   }
   mstch::node frozen2() {
     return cache_->parsed_options_.count("frozen2") != 0;
@@ -729,64 +673,19 @@ class mstch_cpp2_program : public mstch_program {
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
         });
   }
-  virtual std::string get_program_namespace() override {
-    auto ns = program_->get_namespace("cpp2");
-    if (ns.empty()) {
-      ns = program_->get_namespace("cpp");
-      if (ns.empty()) {
-        ns = "cpp2";
-      }
-    }
-    return ns;
+  virtual std::string get_program_namespace(t_program const* program) override {
+    return t_mstch_cpp2_generator::get_cpp2_namespace(program);
   }
-  mstch::array get_namespace_array() {
-    std::vector<std::string> v;
 
-    auto ns = program_->get_namespace("cpp2");
-    if (ns != "") {
-      v = split_namespace(ns);
-    } else {
-      ns = program_->get_namespace("cpp");
-      if (ns != "") {
-        v = split_namespace(ns);
-      }
-      v.push_back("cpp2");
-    }
-    mstch::array a;
-    for (auto it = v.begin(); it != v.end(); ++it) {
-      mstch::map m;
-      m.emplace("namespace:name", *it);
-      a.push_back(m);
-    }
-    for (auto itr = a.begin(); itr != a.end(); ++itr) {
-      boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
-      boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
-    }
-    return a;
+  mstch::node namespace_cpp2() {
+    return t_mstch_cpp2_generator::get_namespace_array(program_);
   }
   mstch::node cpp_includes() {
-    mstch::array a{};
-    for (auto const& include : program_->get_cpp_includes()) {
-      mstch::map cpp_include;
-      cpp_include.emplace(
-          "system?", include.at(0) == '<' ? std::to_string(0) : "");
-      cpp_include.emplace("path", std::string(include));
-      a.push_back(cpp_include);
-    }
-    return a;
-  }
-  mstch::node namespace_cpp2() {
-    return get_namespace_array();
+    return t_mstch_cpp2_generator::cpp_includes(program_);
   }
   mstch::node include_prefix() {
-    auto prefix = program_->get_include_prefix();
-    if (!prefix.empty()) {
-      if (prefix[0] == '/') {
-        return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
-      }
-      return prefix + "gen-cpp2/";
-    }
-    return std::string();
+    return t_mstch_cpp2_generator::include_prefix(
+        program_, cache_->parsed_options_["include_prefix"]);
   }
   mstch::node has_enums() {
     return !program_->get_enums().empty();
@@ -797,7 +696,8 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a{};
     for (auto const* program : program_->get_includes()) {
-      std::string program_id = program->get_name() + get_program_namespace();
+      std::string program_id =
+          program->get_name() + get_program_namespace(program_);
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
             generators_->program_generator_->generate(
@@ -1041,6 +941,58 @@ std::string t_mstch_cpp2_generator::get_cpp2_namespace(
     }
   }
   return ns;
+}
+
+mstch::array t_mstch_cpp2_generator::get_namespace_array(
+    t_program const* program) {
+  std::vector<std::string> v;
+
+  auto ns = program->get_namespace("cpp2");
+  if (!ns.empty()) {
+    v = split_namespace(ns);
+  } else {
+    ns = program->get_namespace("cpp");
+    if (!ns.empty()) {
+      v = split_namespace(ns);
+    }
+    v.push_back("cpp2");
+  }
+  mstch::array a;
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    mstch::map m;
+    m.emplace("namespace:name", *it);
+    a.push_back(m);
+  }
+  for (auto itr = a.begin(); itr != a.end(); ++itr) {
+    boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
+    boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
+  }
+  return a;
+}
+
+mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
+  mstch::array a{};
+  for (auto const& include : program->get_cpp_includes()) {
+    mstch::map cpp_include;
+    cpp_include.emplace(
+        "system?", include.at(0) == '<' ? std::to_string(0) : "");
+    cpp_include.emplace("path", std::string(include));
+    a.push_back(cpp_include);
+  }
+  return a;
+}
+
+mstch::node t_mstch_cpp2_generator::include_prefix(
+    t_program const* program,
+    std::string& include_prefix) {
+  auto prefix = program->get_include_prefix();
+  if (prefix.empty()) {
+    return prefix;
+  }
+  if (prefix[0] == '/') {
+    return include_prefix + "/gen-cpp2/";
+  }
+  return prefix + "gen-cpp2/";
 }
 }
 

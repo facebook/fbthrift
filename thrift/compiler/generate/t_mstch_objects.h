@@ -808,20 +808,21 @@ class mstch_service : public mstch_base {
         });
   }
   virtual ~mstch_service() = default;
-  mstch::node name() {
-    return service_->get_name();
-  }
-  mstch::node functions();
-  mstch::node has_functions() {
-    return !service_->get_functions().empty();
-  }
   virtual std::string get_service_namespace(t_program const*) {
     return "";
   }
-  mstch::node extends();
+
+  mstch::node name() {
+    return service_->get_name();
+  }
+  mstch::node has_functions() {
+    return !service_->get_functions().empty();
+  }
   mstch::node has_extends() {
     return service_->get_extends() != nullptr;
   }
+  mstch::node functions();
+  mstch::node extends();
 
  protected:
   t_service const* service_;
@@ -910,26 +911,28 @@ class mstch_program : public mstch_base {
         });
   }
   virtual ~mstch_program() = default;
-  virtual std::string get_program_namespace() {
+  virtual std::string get_program_namespace(t_program const*) {
     return "";
   }
+
   mstch::node name() {
     return program_->get_name();
   }
   mstch::node include_prefix() {
     return program_->get_include_prefix();
   }
-  mstch::node structs();
-  mstch::node enums();
-  mstch::node services();
-  mstch::node typedefs();
-  mstch::node constants();
   mstch::node has_enums() {
     return !program_->get_enums().empty();
   }
   mstch::node has_structs() {
     return !program_->get_structs().empty();
   }
+
+  mstch::node structs();
+  mstch::node enums();
+  mstch::node services();
+  mstch::node typedefs();
+  mstch::node constants();
 
  protected:
   t_program const* program_;

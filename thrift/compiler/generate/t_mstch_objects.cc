@@ -430,7 +430,7 @@ mstch::node mstch_const::value() {
 }
 
 mstch::node mstch_program::structs() {
-  std::string id = program_->get_name() + get_program_namespace();
+  std::string id = program_->get_name() + get_program_namespace(program_);
   return generate_elements_cached(
       program_->get_objects(),
       generators_->struct_generator_.get(),
@@ -441,7 +441,7 @@ mstch::node mstch_program::structs() {
 }
 
 mstch::node mstch_program::enums() {
-  std::string id = program_->get_name() + get_program_namespace();
+  std::string id = program_->get_name() + get_program_namespace(program_);
   return generate_elements_cached(
       program_->get_enums(),
       generators_->enum_generator_.get(),
@@ -452,7 +452,7 @@ mstch::node mstch_program::enums() {
 }
 
 mstch::node mstch_program::services() {
-  std::string id = program_->get_name() + get_program_namespace();
+  std::string id = program_->get_name() + get_program_namespace(program_);
   return generate_elements_cached(
       program_->get_services(),
       generators_->service_generator_.get(),
