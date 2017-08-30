@@ -15,7 +15,6 @@
   limitations under the License.
 
 %>folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>) {
-<%/type:resolves_to_complex_return?%>
   ::apache::thrift::RpcOptions rpcOptions;
   return future_<%function:name%>(rpcOptions<% > service_common/param_list%>);
 }
