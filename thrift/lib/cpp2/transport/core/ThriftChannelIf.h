@@ -20,7 +20,7 @@
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
 #include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
-//#include <yarpl/flowable/Subscriber.h>
+// #include <yarpl/flowable/Subscriber.h>
 #include <map>
 #include <memory>
 #include <string>
@@ -73,8 +73,10 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // @see <a
   // href="https://github.com/reactive-streams/reactive-streams-jvm/blob/v1.0.0/README.md#2-subscriber-code">Reactive
   // streams' Subscriber specification</a>
-  //using SubscriberRef = yarpl::Reference<
-  //    yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
+  // using SubscriberRef = yarpl::Reference<
+  //     yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
+
+  using SubscriberRef = std::nullptr_t;
 
   ThriftChannelIf() {}
 
@@ -141,11 +143,11 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
 
   // Caller provides a Subscriber to the Channel, meaning that, any data, that
   // is received, to be forwarded to the given subscriber.
-  // virtual void setInput(uint32_t seqId, SubscriberRef sink) noexcept = 0;
+  virtual void setInput(uint32_t seqId, SubscriberRef sink) noexcept = 0;
 
   // Channel provides a Subscriber object to the caller. Caller can use this
   // object to send data to the receiving side.
-  // virtual SubscriberRef getOutput(uint32_t seqId) noexcept = 0;
+  virtual SubscriberRef getOutput(uint32_t seqId) noexcept = 0;
 };
 
 } // namespace thrift

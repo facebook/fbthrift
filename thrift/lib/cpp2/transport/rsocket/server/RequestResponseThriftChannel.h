@@ -74,7 +74,6 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
     LOG(FATAL) << "cancel() not yet implemented";
   }
 
-  /*
   void setInput(uint32_t, SubscriberRef) noexcept override {
     LOG(FATAL) << "RequestResponse should not support streaming.";
   }
@@ -82,7 +81,6 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
   SubscriberRef getOutput(uint32_t) noexcept override {
     LOG(FATAL) << "RequestResponse should not support streaming.";
   }
-  */
 
  private:
   folly::EventBase* evb_;

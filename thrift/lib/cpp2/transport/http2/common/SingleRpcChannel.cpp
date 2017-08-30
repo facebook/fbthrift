@@ -133,7 +133,6 @@ folly::EventBase* SingleRpcChannel::getEventBase() noexcept {
   return evb_;
 }
 
-/*
 void SingleRpcChannel::setInput(uint32_t, SubscriberRef) noexcept {
   LOG(FATAL) << "Streaming not supported.";
 }
@@ -141,7 +140,6 @@ void SingleRpcChannel::setInput(uint32_t, SubscriberRef) noexcept {
 ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(uint32_t) noexcept {
   LOG(FATAL) << "Streaming not supported.";
 }
-*/
 
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {

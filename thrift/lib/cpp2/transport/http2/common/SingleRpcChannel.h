@@ -46,9 +46,9 @@ class SingleRpcChannel : public H2ChannelIf {
 
   folly::EventBase* getEventBase() noexcept override;
 
-  // void setInput(uint32_t seqId, SubscriberRef sink) noexcept override;
+  void setInput(uint32_t seqId, SubscriberRef sink) noexcept override;
 
-  // SubscriberRef getOutput(uint32_t seqId) noexcept override;
+  SubscriberRef getOutput(uint32_t seqId) noexcept override;
 
   void onH2StreamBegin(
       std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
