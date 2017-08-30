@@ -54,6 +54,7 @@ if(lib_only OR build_all)
   find_package(Folly REQUIRED)
   find_package(Glog REQUIRED)
   find_package(Zstd REQUIRED)
+  find_package(Wangle REQUIRED)
   include_directories(
     ${FOLLY_INCLUDE_DIRS}
     ${GLOG_INCLUDE_DIRS}
