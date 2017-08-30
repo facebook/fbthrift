@@ -284,7 +284,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   server/ThriftServer.cpp \
 			   server/peeking/TLSHelper.cpp \
 				 server/peeking/HTTPHelper.cpp \
-				 server/transport/core/ThriftProcessor.cpp \
+				 transport/core/ThriftProcessor.cpp \
 			   util/ScopedServerInterfaceThread.cpp \
 			   ../cpp/EventHandlerBase.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
