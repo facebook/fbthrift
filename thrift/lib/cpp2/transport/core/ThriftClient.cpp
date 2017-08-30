@@ -16,11 +16,13 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 
+#include <folly/Baton.h>
 #include <glog/logging.h>
 #include <proxygen/lib/utils/Base64.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <chrono>
 
 namespace apache {
 namespace thrift {
@@ -34,16 +36,94 @@ using folly::EventBase;
 using folly::IOBuf;
 using folly::RequestContext;
 
+// TODO: Should we have a timeout for our replies?
+static constexpr std::chrono::seconds kTimeOutForRPCCall{5};
+
+namespace {
+class WaitableRequestCallback final : public RequestCallback {
+ public:
+  WaitableRequestCallback(
+      std::unique_ptr<RequestCallback> cb,
+      folly::Baton<>& baton)
+      : cb_(std::move(cb)), baton_(baton) {}
+
+  void requestSent() override {
+    cb_->requestSent();
+  }
+
+  void replyReceived(ClientReceiveState&& rs) override {
+    cb_->replyReceived(std::move(rs));
+    baton_.post();
+  }
+
+  void requestError(ClientReceiveState&& rs) override {
+    assert(rs.isException());
+    cb_->requestError(std::move(rs));
+    baton_.post();
+  }
+
+ private:
+  std::unique_ptr<RequestCallback> cb_;
+  folly::Baton<>& baton_;
+};
+}
+
 ThriftClient::ThriftClient(
     std::shared_ptr<ClientConnectionIf> connection,
     folly::EventBase* evb)
-    : connection_(connection), evb_(evb) {}
+    : connection_(connection),
+      clientEvb_(evb),
+      connEvb_(connection->getEventBase()) {}
 
 ThriftClient::ThriftClient(std::shared_ptr<ClientConnectionIf> connection)
     : ThriftClient(connection, connection->getEventBase()) {}
 
 void ThriftClient::setProtocolId(uint16_t protocolId) {
   protocolId_ = protocolId;
+}
+
+uint32_t ThriftClient::sendRequestSync(
+    RpcOptions& options,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<apache::thrift::transport::THeader> header) {
+  folly::Baton<> baton;
+  int result = 0;
+  DCHECK(!connEvb_->inRunningEventBaseThread());
+
+  // Execute on the IO thread for synchronous calls
+  connEvb_->runInEventBaseThread([
+    this,
+    &baton,
+    &result,
+    options,
+    cb = std::move(cb),
+    ctx = std::move(ctx),
+    buf = std::move(buf),
+    header = std::move(header)
+  ]() mutable {
+    DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
+    bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
+    auto scb = std::make_unique<WaitableRequestCallback>(std::move(cb), baton);
+    if (oneway) {
+      result = sendOnewayRequest(
+          options,
+          std::move(scb),
+          std::move(ctx),
+          std::move(buf),
+          std::move(header));
+    } else {
+      result = sendRequest(
+          options,
+          std::move(scb),
+          std::move(ctx),
+          std::move(buf),
+          std::move(header));
+    }
+  });
+  CHECK(baton.timed_wait(kTimeOutForRPCCall));
+  return result;
 }
 
 uint32_t ThriftClient::sendRequest(
@@ -88,7 +168,9 @@ uint32_t ThriftClient::sendRequestHelper(
   // handle timeouts and various error cases.  Will deal with that
   // as a followup change.
 
-  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(
+      clientEvb_->isInEventBaseThread() ||
+      (clientEvb_ != connEvb_ && connEvb_->isInEventBaseThread()));
   DestructorGuard dg(this);
 
   std::shared_ptr<ThriftChannelIf> channel = connection_->getChannel();
@@ -112,7 +194,11 @@ uint32_t ThriftClient::sendRequestHelper(
   std::unique_ptr<ThriftClientCallback> callback;
   if (!oneway) {
     callback = std::make_unique<ThriftClientCallback>(
-        evb_, std::move(cb), std::move(ctx), isSecurityActive(), protocolId_);
+        clientEvb_,
+        std::move(cb),
+        std::move(ctx),
+        isSecurityActive(),
+        protocolId_);
   }
   channel->sendThriftRequest(
       std::move(finfo),
@@ -177,7 +263,7 @@ std::unique_ptr<map<string, string>> ThriftClient::buildHeaderMap(
 }
 
 EventBase* ThriftClient::getEventBase() const {
-  return evb_;
+  return clientEvb_;
 }
 
 uint16_t ThriftClient::getProtocolId() {

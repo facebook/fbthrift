@@ -40,8 +40,13 @@ ThriftClientCallback::ThriftClientCallback(
 
 void ThriftClientCallback::onThriftResponse(
     std::unique_ptr<map<string, string>> /*headers*/,
-    std::unique_ptr<IOBuf> /*payload*/) noexcept {
-  // TBD
+    std::unique_ptr<IOBuf> payload) noexcept {
+  cb_->replyReceived(ClientReceiveState(
+      protoId_,
+      std::move(payload),
+      nullptr,
+      std::move(ctx_), // move is ok as this method will be called only once
+      /* _isSecurityActive = */ false));
 }
 
 void ThriftClientCallback::cancel() noexcept {

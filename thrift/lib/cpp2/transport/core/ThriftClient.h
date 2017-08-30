@@ -97,6 +97,13 @@ class ThriftClient : public ClientChannel {
 
   // begin RequestChannel methods
 
+  uint32_t sendRequestSync(
+      RpcOptions&,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>) override;
+
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
       std::unique_ptr<RequestCallback> cb,
@@ -140,7 +147,8 @@ class ThriftClient : public ClientChannel {
 
  private:
   std::shared_ptr<ClientConnectionIf> connection_;
-  folly::EventBase* evb_;
+  folly::EventBase* clientEvb_;
+  folly::EventBase* connEvb_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
 
   // Destructor is private because this class inherits from
