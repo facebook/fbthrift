@@ -20,9 +20,13 @@
 package thrift
 
 import (
+	"errors"
 	"log"
 	"runtime/debug"
 )
+
+// ErrServerClosed is returned by the Serve methods after a call to Stop
+var ErrServerClosed = errors.New("thrift: Server closed")
 
 // Simple, non-concurrent server for testing.
 type TSimpleServer struct {
@@ -124,7 +128,7 @@ func (p *TSimpleServer) AcceptLoop() error {
 		if err != nil {
 			select {
 			case <-p.quit:
-				return nil
+				return ErrServerClosed
 			default:
 			}
 			return err
@@ -144,8 +148,7 @@ func (p *TSimpleServer) Serve() error {
 	if err != nil {
 		return err
 	}
-	p.AcceptLoop()
-	return nil
+	return p.AcceptLoop()
 }
 
 func (p *TSimpleServer) Stop() error {
