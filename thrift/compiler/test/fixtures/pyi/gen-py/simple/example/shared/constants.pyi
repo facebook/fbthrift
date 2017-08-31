@@ -6,6 +6,7 @@
 #
 import typing as t
 
+import simple.dependent.ttypes
 from simple.example.shared.ttypes import *
 
 A_BOOL: bool

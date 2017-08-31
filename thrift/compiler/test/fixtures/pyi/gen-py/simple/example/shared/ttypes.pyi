@@ -9,6 +9,8 @@ import typing as t
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
+import simple.dependent.ttypes
+
 UTF8STRINGS: bool
 
 class AnEnum:
@@ -90,7 +92,8 @@ class ComplexStruct:
         values: t.Optional[t.List[int]] = ...,
         structs: t.Optional[t.List[SimpleStruct]] = ...,
         amap: t.Optional[t.Dict[str, str]] = ...,
-        aset: t.Optional[t.Set[str]] = ...
+        aset: t.Optional[t.Set[str]] = ...,
+        item: t.Optional[simple.dependent.ttypes.Item] = ...
     ) -> None:
         self.structOne: t.Optional[SimpleStruct]
         self.structTwo: t.Optional[SimpleStruct]
@@ -101,6 +104,7 @@ class ComplexStruct:
         self.structs: t.Optional[t.List[SimpleStruct]]
         self.amap: t.Optional[t.Dict[str, str]]
         self.aset: t.Optional[t.Set[str]]
+        self.item: t.Optional[simple.dependent.ttypes.Item]
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...

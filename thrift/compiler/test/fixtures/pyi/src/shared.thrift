@@ -8,6 +8,7 @@ namespace py simple.example
 namespace py.asyncio simple.example_asyncio
 namespace py3 simple.example
 
+include 'dependent.thrift'
 
 enum AnEnum {
   ONE = 1,
@@ -44,6 +45,7 @@ struct ComplexStruct {
   7: ListOfSimpleStructs structs
   8: map<string, string> amap
   9: set<string> aset
+  10: dependent.Item item
 }
 
 const bool A_BOOL = true
