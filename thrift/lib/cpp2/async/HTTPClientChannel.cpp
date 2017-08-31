@@ -386,12 +386,7 @@ void HTTPClientChannel::HTTPTransactionCallback::messageSent() {
 
 void HTTPClientChannel::HTTPTransactionCallback::messageSendError(
     folly::exception_wrapper&& ex) {
-  if (cb_) {
-    folly::RequestContextScopeGuard rctx(cb_->context_);
-    cb_->requestError(ClientReceiveState(
-        std::move(ex), std::move(ctx_), isSecurityActive_));
-    cb_ = nullptr;
-  }
+  requestError(std::move(ex));
 }
 
 void HTTPClientChannel::HTTPTransactionCallback::requestError(
@@ -440,16 +435,17 @@ void HTTPClientChannel::HTTPTransactionCallback::onTrailers(
 }
 
 void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
-  if (!body_) {
-    requestError(folly::make_exception_wrapper<transport::TTransportException>(
-        folly::sformat(
-            "Empty HTTP response, {}",
-            (msg_ ? folly::to<std::string>(
-                        msg_->getStatusCode(), ", ", msg_->getStatusMessage())
-                  : "Empty Header"))));
-    return;
-  }
-  if (cb_) {
+  if (!oneway_ && cb_) {
+    if (!body_) {
+      requestError(folly::make_exception_wrapper<
+                   transport::TTransportException>(folly::sformat(
+          "Empty HTTP response, {}",
+          (msg_ ? folly::to<std::string>(
+                      msg_->getStatusCode(), ", ", msg_->getStatusMessage())
+                : "Empty Header"))));
+      return;
+    }
+
     auto header = std::make_unique<transport::THeader>();
     header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
     apache::thrift::transport::THeader::StringToStringMap readHeaders;
