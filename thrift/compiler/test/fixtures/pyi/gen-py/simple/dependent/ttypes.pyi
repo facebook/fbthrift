@@ -14,7 +14,7 @@ UTF8STRINGS: bool
 
 class Item:
 
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 

@@ -77,7 +77,7 @@ class Processor(Iface, Thrift.TProcessor):  # {{service:name}}
 {{#service:functions}}
 
 class {{function:name}}_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -102,7 +102,7 @@ class {{function:name}}_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class {{function:name}}_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 

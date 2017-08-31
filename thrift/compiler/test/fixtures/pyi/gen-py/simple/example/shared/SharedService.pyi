@@ -165,7 +165,7 @@ class Processor(Iface, Thrift.TProcessor):  # SharedService
     def onewayMethods(self) -> t.Tuple[t.Callable]: ...
 
 class get_five_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -182,7 +182,7 @@ class get_five_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_five_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -197,7 +197,7 @@ class get_five_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class add_five_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -215,7 +215,7 @@ class add_five_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class add_five_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -230,7 +230,7 @@ class add_five_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class do_nothing_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -247,7 +247,7 @@ class do_nothing_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class do_nothing_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -262,7 +262,7 @@ class do_nothing_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class concat_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -282,7 +282,7 @@ class concat_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class concat_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -297,7 +297,7 @@ class concat_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_value_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -315,7 +315,7 @@ class get_value_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_value_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -330,7 +330,7 @@ class get_value_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class negate_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -348,7 +348,7 @@ class negate_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class negate_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -363,7 +363,7 @@ class negate_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class tiny_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -381,7 +381,7 @@ class tiny_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class tiny_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -396,7 +396,7 @@ class tiny_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class small_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -414,7 +414,7 @@ class small_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class small_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -429,7 +429,7 @@ class small_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class big_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -447,7 +447,7 @@ class big_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class big_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -462,7 +462,7 @@ class big_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class two_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -480,7 +480,7 @@ class two_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class two_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -495,7 +495,7 @@ class two_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class expected_exception_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -512,7 +512,7 @@ class expected_exception_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class expected_exception_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -527,7 +527,7 @@ class expected_exception_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class unexpected_exception_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -544,7 +544,7 @@ class unexpected_exception_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class unexpected_exception_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -559,7 +559,7 @@ class unexpected_exception_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i16_list_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -577,7 +577,7 @@ class sum_i16_list_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i16_list_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -592,7 +592,7 @@ class sum_i16_list_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i32_list_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -610,7 +610,7 @@ class sum_i32_list_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i32_list_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -625,7 +625,7 @@ class sum_i32_list_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i64_list_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -643,7 +643,7 @@ class sum_i64_list_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_i64_list_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -658,7 +658,7 @@ class sum_i64_list_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class concat_many_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -676,7 +676,7 @@ class concat_many_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class concat_many_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -691,7 +691,7 @@ class concat_many_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class count_structs_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -709,7 +709,7 @@ class count_structs_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class count_structs_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -724,7 +724,7 @@ class count_structs_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_set_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -742,7 +742,7 @@ class sum_set_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_set_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -757,7 +757,7 @@ class sum_set_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class contains_word_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -777,7 +777,7 @@ class contains_word_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class contains_word_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -792,7 +792,7 @@ class contains_word_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_map_value_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -812,7 +812,7 @@ class get_map_value_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_map_value_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -827,7 +827,7 @@ class get_map_value_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class map_length_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -845,7 +845,7 @@ class map_length_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class map_length_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -860,7 +860,7 @@ class map_length_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_map_values_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -878,7 +878,7 @@ class sum_map_values_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class sum_map_values_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -893,7 +893,7 @@ class sum_map_values_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class complex_sum_i32_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -911,7 +911,7 @@ class complex_sum_i32_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class complex_sum_i32_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -926,7 +926,7 @@ class complex_sum_i32_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class repeat_name_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -944,7 +944,7 @@ class repeat_name_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class repeat_name_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -959,7 +959,7 @@ class repeat_name_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_struct_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -976,7 +976,7 @@ class get_struct_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_struct_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -991,7 +991,7 @@ class get_struct_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class fib_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1009,7 +1009,7 @@ class fib_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class fib_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1024,7 +1024,7 @@ class fib_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class unique_words_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1042,7 +1042,7 @@ class unique_words_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class unique_words_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1057,7 +1057,7 @@ class unique_words_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class words_count_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1075,7 +1075,7 @@ class words_count_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class words_count_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1090,7 +1090,7 @@ class words_count_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class set_enum_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1108,7 +1108,7 @@ class set_enum_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class set_enum_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1123,7 +1123,7 @@ class set_enum_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_the_answer_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1140,7 +1140,7 @@ class get_the_answer_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_the_answer_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1155,7 +1155,7 @@ class get_the_answer_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class all_letters_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1172,7 +1172,7 @@ class all_letters_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class all_letters_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1187,7 +1187,7 @@ class all_letters_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class nested_map_argument_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1205,7 +1205,7 @@ class nested_map_argument_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class nested_map_argument_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1220,7 +1220,7 @@ class nested_map_argument_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class make_sentence_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1238,7 +1238,7 @@ class make_sentence_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class make_sentence_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1253,7 +1253,7 @@ class make_sentence_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_union_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1271,7 +1271,7 @@ class get_union_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_union_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1286,7 +1286,7 @@ class get_union_result:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_keys_args:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -1304,7 +1304,7 @@ class get_keys_args:
     def __ne__(self, other: t.Any) -> bool: ...
 
 class get_keys_result:
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 

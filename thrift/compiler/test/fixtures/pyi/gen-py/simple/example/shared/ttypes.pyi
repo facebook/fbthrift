@@ -24,7 +24,7 @@ class AnEnum:
 
 class SimpleException(Thrift.TException):
 
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -43,7 +43,7 @@ class SimpleException(Thrift.TException):
 
 class SimpleStruct:
 
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
@@ -78,7 +78,7 @@ class SimpleStruct:
 
 class ComplexStruct:
 
-    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Optional[bool], t.Optional[int], int]]]
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
