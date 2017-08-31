@@ -4,14 +4,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/gen-cpp2)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gen-cpp2)
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BINARY ${THRIFT_HOME}/thrift/compiler/thrift-compiler)
+set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
 add_custom_command(
   OUTPUT gen-cpp2/Sasl_constants.h gen-cpp2/Sasl_types.h gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types_custom_protocol.h gen-cpp2/Sasl_constants.cpp gen-cpp2/Sasl_data.cpp gen-cpp2/Sasl_types.cpp gen-cpp2/Sasl_types.tcc gen-cpp2/SaslAuthService_client.cpp gen-cpp2/SaslAuthService.cpp gen-cpp2/SaslAuthService_custom_protocol.h gen-cpp2/SaslAuthService.h gen-cpp2/SaslAuthService_processmap_binary.cpp gen-cpp2/SaslAuthService_processmap_compact.cpp gen-cpp2/SaslAuthService.tcc
-
   COMMAND ${THRIFT_BINARY}
-  ARGS --gen mstch_cpp2:include_prefix=${THRIFT_HOME}/thrift/lib/cpp2 --templates ${THRIFT_TEMPLATES_DIR} ${LIB_CPP2_HOME}/Sasl.thrift
+  ARGS --gen mstch_cpp2:include_prefix=${THRIFT_BUILD}/thrift/lib/cpp2 --templates ${THRIFT_TEMPLATES_DIR} ${LIB_CPP2_HOME}/Sasl.thrift
+  DEPENDS thrift-compiler
   COMMENT "Generating Sasl files"
 )
 add_custom_target(
@@ -93,7 +93,7 @@ add_dependencies(
 target_link_libraries(
   async-cpp2
 
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
   ${WANGLE_LIBRARIES}
 )
 
@@ -131,7 +131,7 @@ add_dependencies(
 target_link_libraries(
   frozen-cpp2
 
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
 )
 
 add_library(
@@ -172,12 +172,13 @@ add_library(
 add_dependencies(
   protocol-cpp2
 
+  lib-thrift
   thrift-cpp
 )
 target_link_libraries(
   protocol-cpp2
 
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
   ${WANGLE_LIBRARIES}
 )
 
@@ -203,7 +204,7 @@ target_link_libraries(
   security-cpp2
 
   ${WANGLE_LIBRARIES}
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
   ${OPENSSL_LIBRARIES}
 )
 
@@ -250,7 +251,7 @@ target_link_libraries(
 
   transport-cpp2
   ${WANGLE_LIBRARIES}
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
 )
 
 add_library(
@@ -266,7 +267,7 @@ add_library(
 target_link_libraries(
   util-cpp2
 
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
 )
 
 add_library(

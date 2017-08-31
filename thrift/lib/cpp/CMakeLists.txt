@@ -207,6 +207,6 @@ target_link_libraries(
   concurrency
   protocol
   transport
-  ${FOLLY_LIBRARIES}
+  ${FOLLY_LIBRARY}
   ${GLOG_LIBRARIES}
 )

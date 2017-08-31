@@ -14,6 +14,7 @@ set(CMAKE_INSTALL_PREFIX ${THRIFT_BUILD} CACHE PATH "current dir build" FORCE)
 
 # Add root dir so qualified includes work. E.g. #include "thrift/compiler/$x.h"
 include_directories(${THRIFT_HOME})
+include_directories(${THRIFT_BUILD})
 
 # Set directory of the Find$x.cmake files to properly include dependencies
 set(CMAKE_MODULE_PATH "${THRIFT_HOME}/thrift/cmake" ${CMAKE_MODULE_PATH})
@@ -56,7 +57,7 @@ if(lib_only OR build_all)
   find_package(Zstd REQUIRED)
   find_package(Wangle REQUIRED)
   include_directories(
-    ${FOLLY_INCLUDE_DIRS}
+    ${FOLLY_INCLUDE_DIR}
     ${GLOG_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
