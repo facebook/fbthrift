@@ -40,7 +40,12 @@ const char* <%service:name%>AsyncClient::getServiceName() {
 <% > service_client_cpp/oneway_sync_functions%>
 <%/function:oneway?%>
 <%^function:oneway?%>
+<%#type:stream?%>
+<% > service_client_cpp/stream_async_functions%>
+<%/type:stream?%>
+<%^type:stream?%>
 <% > service_client_cpp/sync_functions%>
+<%/type:stream?%>
 <%/function:oneway?%>
 
 
@@ -48,7 +53,12 @@ const char* <%service:name%>AsyncClient::getServiceName() {
 <% > service_client_cpp/oneway_future_functions%>
 <%/function:oneway?%>
 <%^function:oneway?%>
+<%^function:returns_stream?%>
 <% > service_client_cpp/future_functions%>
+<%/function:returns_stream?%>
+<%#function:returns_stream?%>
+/* function <%function:name%> didn't have future_functions rendered */
+<%/function:returns_stream?%>
 <%/function:oneway?%>
 
 

@@ -25,9 +25,17 @@
 <%/function:oneway?%>
 <%^function:oneway?%>
 <%^type:resolves_to_complex_return?%>
+<%^type:stream?%>
   virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = 0;
   virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = delete;
   virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) = 0;
+<%/type:stream?%>
+<%#type:stream?%>
+<%#type:streamElemType%>
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = delete;
+<%/type:streamElemType%>
+<%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/function_param_list_ptr%>) = 0;

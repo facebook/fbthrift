@@ -29,6 +29,7 @@ void MyLeafSvIf::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_do_leaf(); });
 }
 
+
 void MyLeafSvNull::do_leaf() {}
 
 const char* MyLeafAsyncProcessor::getServiceName() {

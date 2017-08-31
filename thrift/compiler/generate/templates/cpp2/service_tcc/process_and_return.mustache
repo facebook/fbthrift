@@ -26,7 +26,6 @@ void <%service:name%>AsyncProcessor::_processInThread_<%function:name%>(std::uni
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, true, &<%service:name%>AsyncProcessor::process_<%function:name%><ProtocolIn_, ProtocolOut_>, this);
 <%/function:oneway?%>
 }
-
 <%/function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -39,7 +38,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   <%service:name%>_<%function:name%>_pargs args;
-<%#function:args%><%#field:type%>
+<%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
   <% > Type%> uarg_<%field:name%>{0};
@@ -53,7 +52,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   std::unique_ptr<<% > Type%>> uarg_<%field:name%>(new <% > Type%>());
   args.get<<%field:index%>>().value = uarg_<%field:name%>.get();
 <%/type:resolves_to_complex_return?%>
-<%/field:type%><%/function:args%>
+<%/field:type%><%/function:args_without_streams%>
   std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
@@ -83,7 +82,33 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     }
   }
 <%^type:resolves_to_complex_return?%>
+<%^function:returns_stream?%>
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+<%/function:returns_stream?%>
+<%#function:returns_stream?%>
+<%#type:streamElemType%>
+  auto callback = std::make_unique<apache::thrift::PubsubHandlerCallback<<% > Type%>>>(std::move(req), std::move(c), ctx->getProtoSeqId(), eb, tm, ctx);
+<%/type:streamElemType%>
+<%/function:returns_stream?%>
+<%#function:takes_stream?%>
+  using stream_elem_type = <%#type:streamElemType%><% > Type %><%/type:streamElemType%>;
+  // TODO: this can likely be moved into an external, not generated helper
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
+  // TODO: hook up inbound stream somehow
+  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
+  assert(false && "not implemented yet");
+  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
+  /*
+    = inbound_stream->map([](folly::IOBufQueue buf) {
+        stream_elem_type stream_elem;
+        // TODO: do this in a worker thread?
+        ProtocolIn_ prot;
+        prot.setInput(&buf);
+        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
+        return stream_elem;
+    });
+  */
+<%/function:takes_stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -110,7 +135,12 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32
   ProtocolOut_ prot;
   <%service:name%>_<%function:name%>_presult result;
 <%^type:void?%>
+<%^type:stream?%>
   result.get<0>().value = const_cast<<% > Type%>*>(&_return);
+<%/type:stream?%>
+<%#type:stream?%>
+  (void) _return; // TODO: this gets serialized in PubsubHandlerCallback
+<%/type:stream?%>
   result.setIsSet(0, true);
 <%/type:void?%>
   return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);

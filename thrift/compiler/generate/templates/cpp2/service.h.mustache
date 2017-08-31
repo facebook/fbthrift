@@ -26,7 +26,13 @@
 
 <%#service:thrift_includes%>
 #include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
-<%/service:thrift_includes%>
+<%/service:thrift_includes%><%!
+
+%><%#service:any_streams?%>
+
+#include <yarpl/Flowable.h>
+
+<%/service:any_streams?%>
 
 <%#service:cpp_includes%>
 <%#system?%>#include <%path%><%/system?%><%!

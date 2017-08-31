@@ -16,16 +16,16 @@ const char* PubSubStreamingServiceAsyncClient::getServiceName() {
   return "PubSubStreamingService";
 }
 
-void PubSubStreamingServiceAsyncClient::server(std::unique_ptr<apache::thrift::RequestCallback> callback,  foo) {
+void PubSubStreamingServiceAsyncClient::server(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   serverImpl(false, rpcOptions, std::move(callback), foo);
 }
 
-void PubSubStreamingServiceAsyncClient::server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo) {
+void PubSubStreamingServiceAsyncClient::server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   serverImpl(false, rpcOptions, std::move(callback), foo);
 }
 
-void PubSubStreamingServiceAsyncClient::serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo) {
+void PubSubStreamingServiceAsyncClient::serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -46,12 +46,12 @@ void PubSubStreamingServiceAsyncClient::serverImpl(bool useSync, apache::thrift:
   }
 }
 
-void PubSubStreamingServiceAsyncClient::sync_server( foo) {
+void PubSubStreamingServiceAsyncClient::sync_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_server(rpcOptions, foo);
 }
 
-void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::RpcOptions& rpcOptions,  foo) {
+void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   apache::thrift::ClientReceiveState _returnState;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
   serverImpl(true, rpcOptions, std::move(callback), foo);
@@ -67,12 +67,12 @@ void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::RpcOptions& 
   recv_server(_returnState);
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server( foo) {
+folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_server(rpcOptions, foo);
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apache::thrift::RpcOptions& rpcOptions,  foo) {
+folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_server, channel_);
@@ -80,7 +80,7 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apac
   return _future;
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_server(apache::thrift::RpcOptions& rpcOptions,  foo) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_server, channel_);
@@ -88,7 +88,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void PubSubStreamingServiceAsyncClient::server(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback,  foo) {
+void PubSubStreamingServiceAsyncClient::server(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   server(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 

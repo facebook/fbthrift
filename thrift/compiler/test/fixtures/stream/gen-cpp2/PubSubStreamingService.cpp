@@ -17,17 +17,18 @@ std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getP
   return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
 }
 
-void PubSubStreamingServiceSvIf::server( /*foo*/) {
+void PubSubStreamingServiceSvIf::server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("server");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_server( foo) {
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   return apache::thrift::detail::si::future([&] { return server(foo); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  foo) {
+void PubSubStreamingServiceSvIf::async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_server(foo); });
 }
+
 
 int32_t PubSubStreamingServiceSvIf::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
@@ -41,6 +42,7 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_returnstream(i32_from, i32_to); });
 }
 
+
 void PubSubStreamingServiceSvIf::takesstream(int32_t /*instream*/, int32_t /*other_param*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("takesstream");
 }
@@ -53,7 +55,8 @@ void PubSubStreamingServiceSvIf::async_tm_takesstream(std::unique_ptr<apache::th
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_takesstream(instream, other_param); });
 }
 
-void PubSubStreamingServiceSvNull::server( /*foo*/) {}
+
+void PubSubStreamingServiceSvNull::server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/) {}
 
 int32_t PubSubStreamingServiceSvNull::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
   return 0;

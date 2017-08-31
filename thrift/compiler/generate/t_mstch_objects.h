@@ -550,6 +550,7 @@ class mstch_type : public mstch_base {
             {"type:enum", &mstch_type::get_enum},
             {"type:listElemType", &mstch_type::get_list_type},
             {"type:setElemType", &mstch_type::get_set_type},
+            {"type:streamElemType", &mstch_type::get_stream_elem_type},
             {"type:keyType", &mstch_type::get_key_type},
             {"type:valueType", &mstch_type::get_value_type},
             {"type:typedefType", &mstch_type::get_typedef_type},
@@ -596,7 +597,7 @@ class mstch_type : public mstch_base {
     return resolved_type_->is_enum();
   }
   mstch::node is_stream() {
-    return resolved_type_->is_stream();
+    return resolved_type_->is_pubsub_stream();
   }
   mstch::node is_service() {
     return resolved_type_->is_service();
@@ -629,6 +630,7 @@ class mstch_type : public mstch_base {
   mstch::node get_key_type();
   mstch::node get_value_type();
   mstch::node get_typedef_type();
+  mstch::node get_stream_elem_type();
 
  protected:
   t_type const* type_;
@@ -755,6 +757,11 @@ class mstch_function : public mstch_base {
             {"function:args", &mstch_function::arg_list},
             {"function:eb", &mstch_function::event_based},
             {"function:priority", &mstch_function::priority},
+            {"function:args_without_streams",
+             &mstch_function::arg_list_without_streams},
+            {"function:any_streams?", &mstch_function::any_streams},
+            {"function:returns_stream?", &mstch_function::returns_stream},
+            {"function:takes_stream?", &mstch_function::takes_stream},
         });
   }
   mstch::node name() {
@@ -785,6 +792,11 @@ class mstch_function : public mstch_base {
     return std::string("NORMAL");
   }
 
+  mstch::node arg_list_without_streams();
+  mstch::node any_streams();
+  mstch::node returns_stream();
+  mstch::node takes_stream();
+
  protected:
   t_function const* function_;
 };
@@ -805,6 +817,7 @@ class mstch_service : public mstch_base {
             {"service:functions?", &mstch_service::has_functions},
             {"service:extends", &mstch_service::extends},
             {"service:extends?", &mstch_service::has_extends},
+            {"service:any_streams?", &mstch_service::any_streams},
         });
   }
   virtual ~mstch_service() = default;
@@ -823,6 +836,13 @@ class mstch_service : public mstch_base {
   }
   mstch::node functions();
   mstch::node extends();
+
+  mstch::node any_streams() {
+    auto& funcs = service_->get_functions();
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
+      return func->any_streams();
+    });
+  }
 
  protected:
   t_service const* service_;

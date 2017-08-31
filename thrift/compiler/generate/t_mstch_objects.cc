@@ -219,6 +219,17 @@ mstch::node mstch_type::get_typedef_type() {
   return mstch::node();
 }
 
+mstch::node mstch_type::get_stream_elem_type() {
+  if (type_->is_pubsub_stream()) {
+    return generators_->type_generator_->generate(
+        dynamic_cast<const t_pubsub_stream*>(type_)->get_elem_type(),
+        generators_,
+        cache_,
+        pos_);
+  }
+  return mstch::node();
+}
+
 mstch::node mstch_field::value() {
   if (field_->get_value()) {
     return generators_->const_value_generator_->generate(
@@ -382,12 +393,41 @@ mstch::node mstch_function::exceptions() {
       cache_);
 }
 
+mstch::node mstch_function::arg_list_without_streams() {
+  auto args = function_->get_arglist();
+  auto members = args->get_members();
+  if (function_->any_stream_params()) {
+    members.erase(members.begin());
+  }
+
+  return generate_elements(
+      members, generators_->field_generator_.get(), generators_, cache_);
+}
+
 mstch::node mstch_function::arg_list() {
   return generate_elements(
       function_->get_arglist()->get_members(),
       generators_->field_generator_.get(),
       generators_,
       cache_);
+}
+
+mstch::node mstch_function::any_streams() {
+  return function_->any_streams();
+}
+
+mstch::node mstch_function::takes_stream() {
+  auto* stream_field = function_->get_arglist()->get_stream_field();
+  if (stream_field) {
+    return generators_->type_generator_->generate(
+        stream_field->get_type(), generators_, cache_, pos_);
+  } else {
+    return mstch::node();
+  }
+}
+
+mstch::node mstch_function::returns_stream() {
+  return function_->get_returntype()->is_pubsub_stream();
 }
 
 mstch::node mstch_service::functions() {

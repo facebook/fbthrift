@@ -30,6 +30,7 @@ void ServiceASvIf::async_tm_moduleAMethod(std::unique_ptr<apache::thrift::Handle
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_moduleAMethod(std::move(modArg)); });
 }
 
+
 void ServiceASvIf::frozen2_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   return moduleAMethod(std::make_unique< ::some::ns::ModuleA>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View>::thaw(*modArg)));
 }
@@ -37,7 +38,6 @@ void ServiceASvIf::frozen2_moduleAMethod(std::unique_ptr<::apache::thrift::froze
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_moduleAMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   return apache::thrift::detail::si::future([&] { return frozen2_moduleAMethod(std::move(modArg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_moduleAMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_moduleAMethod(std::move(modArg)); });
 }
@@ -54,6 +54,7 @@ void ServiceASvIf::async_tm_moduleBMethod(std::unique_ptr<apache::thrift::Handle
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_moduleBMethod(std::move(modArg)); });
 }
 
+
 void ServiceASvIf::frozen2_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) {
   return moduleBMethod(std::make_unique< ::some::ns::ModuleB>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View>::thaw(*modArg)));
 }
@@ -61,7 +62,6 @@ void ServiceASvIf::frozen2_moduleBMethod(std::unique_ptr<::apache::thrift::froze
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_moduleBMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) {
   return apache::thrift::detail::si::future([&] { return frozen2_moduleBMethod(std::move(modArg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_moduleBMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleB>::View> modArg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_moduleBMethod(std::move(modArg)); });
 }
@@ -78,6 +78,7 @@ void ServiceASvIf::async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::H
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i32StrDoubleMethod(i32Arg, std::move(strArg), doubleArg); });
 }
 
+
 void ServiceASvIf::frozen2_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   return i32StrDoubleMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
 }
@@ -85,7 +86,6 @@ void ServiceASvIf::frozen2_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   return apache::thrift::detail::si::future([&] { return frozen2_i32StrDoubleMethod(std::move(i32Arg), std::move(strArg), std::move(doubleArg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_i32StrDoubleMethod(std::move(i32Arg), std::move(strArg), std::move(doubleArg)); });
 }
@@ -102,6 +102,7 @@ void ServiceASvIf::async_tm_versioningMethod(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_versioningMethod(i32Arg, std::move(strArg), doubleArg); });
 }
 
+
 void ServiceASvIf::frozen2_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   return versioningMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
 }
@@ -109,7 +110,6 @@ void ServiceASvIf::frozen2_versioningMethod(std::unique_ptr<::apache::thrift::fr
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   return apache::thrift::detail::si::future([&] { return frozen2_versioningMethod(std::move(i32Arg), std::move(strArg), std::move(doubleArg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_versioningMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_versioningMethod(std::move(i32Arg), std::move(strArg), std::move(doubleArg)); });
 }
@@ -126,6 +126,7 @@ void ServiceASvIf::async_tm_retI32Method(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_retI32Method(); });
 }
 
+
 int32_t ServiceASvIf::frozen2_retI32Method() {
   return retI32Method();
 }
@@ -133,7 +134,6 @@ int32_t ServiceASvIf::frozen2_retI32Method() {
 folly::Future<int32_t> ServiceASvIf::frozen2_future_retI32Method() {
   return apache::thrift::detail::si::future([&] { return frozen2_retI32Method(); });
 }
-
 void ServiceASvIf::frozen2_async_tm_retI32Method(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_retI32Method(); });
 }
@@ -174,6 +174,7 @@ void ServiceASvIf::async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerC
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_throwMethod(); });
 }
 
+
 void ServiceASvIf::frozen2_throwMethod() {
   return throwMethod();
 }
@@ -181,7 +182,6 @@ void ServiceASvIf::frozen2_throwMethod() {
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_throwMethod() {
   return apache::thrift::detail::si::future([&] { return frozen2_throwMethod(); });
 }
-
 void ServiceASvIf::frozen2_async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_throwMethod(); });
 }
@@ -198,6 +198,7 @@ void ServiceASvIf::async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_multiThrowMethod(); });
 }
 
+
 void ServiceASvIf::frozen2_multiThrowMethod() {
   return multiThrowMethod();
 }
@@ -205,7 +206,6 @@ void ServiceASvIf::frozen2_multiThrowMethod() {
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_multiThrowMethod() {
   return apache::thrift::detail::si::future([&] { return frozen2_multiThrowMethod(); });
 }
-
 void ServiceASvIf::frozen2_async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_multiThrowMethod(); });
 }
@@ -222,6 +222,7 @@ void ServiceASvIf::async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::Handl
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i32ThrowMethod(i32Arg); });
 }
 
+
 void ServiceASvIf::frozen2_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) {
   return i32ThrowMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg));
 }
@@ -229,7 +230,6 @@ void ServiceASvIf::frozen2_i32ThrowMethod(std::unique_ptr<::apache::thrift::froz
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) {
   return apache::thrift::detail::si::future([&] { return frozen2_i32ThrowMethod(std::move(i32Arg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_i32ThrowMethod(std::move(i32Arg)); });
 }
@@ -246,6 +246,7 @@ void ServiceASvIf::async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::H
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_moduleAThrowMethod(std::move(modArg)); });
 }
 
+
 void ServiceASvIf::frozen2_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   return moduleAThrowMethod(std::make_unique< ::some::ns::ModuleA>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View>::thaw(*modArg)));
 }
@@ -253,7 +254,6 @@ void ServiceASvIf::frozen2_moduleAThrowMethod(std::unique_ptr<::apache::thrift::
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_moduleAThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   return apache::thrift::detail::si::future([&] { return frozen2_moduleAThrowMethod(std::move(modArg)); });
 }
-
 void ServiceASvIf::frozen2_async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::apache::thrift::frozen::Layout< ::some::ns::ModuleA>::View> modArg) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return frozen2_future_moduleAThrowMethod(std::move(modArg)); });
 }

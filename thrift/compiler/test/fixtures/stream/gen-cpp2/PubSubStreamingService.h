@@ -13,6 +13,9 @@
 #include <folly/futures/Future.h>
 
 
+#include <yarpl/Flowable.h>
+
+
 
 #include "src/gen-cpp2/module_types.h"
 
@@ -32,9 +35,9 @@ namespace cpp2 {
 class PubSubStreamingServiceSvAsyncIf {
  public:
   virtual ~PubSubStreamingServiceSvAsyncIf() {}
-  virtual void async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  foo) = 0;
-  virtual void async_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  foo) = delete;
-  virtual folly::Future<folly::Unit> future_server( foo) = 0;
+  virtual void async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
+  virtual void async_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = delete;
+  virtual folly::Future<folly::Unit> future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) = 0;
   virtual void async_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) = delete;
   virtual folly::Future<int32_t> future_returnstream(int32_t i32_from, int32_t i32_to) = 0;
@@ -49,9 +52,9 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
  public:
   typedef PubSubStreamingServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual void server( /*foo*/);
-  folly::Future<folly::Unit> future_server( foo) override;
-  void async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  foo) override;
+  virtual void server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/);
+  folly::Future<folly::Unit> future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) override;
+  void async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) override;
   virtual int32_t returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
   folly::Future<int32_t> future_returnstream(int32_t i32_from, int32_t i32_to) override;
   void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) override;
@@ -62,7 +65,7 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
 
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
  public:
-  void server( /*foo*/) override;
+  void server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/) override;
   int32_t returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) override;
   void takesstream(int32_t /*instream*/, int32_t /*other_param*/) override;
 };
@@ -145,24 +148,24 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::TClientBase {
   apache::thrift::HeaderChannel*  getHeaderChannel() {
     return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
-  virtual void server(std::unique_ptr<apache::thrift::RequestCallback> callback,  foo);
-  virtual void server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo);
+  virtual void server(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual void server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
  private:
-  virtual void serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo);
+  virtual void serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
  public:
-  virtual void sync_server( foo);
-  virtual void sync_server(apache::thrift::RpcOptions& rpcOptions,  foo);
-  virtual folly::Future<folly::Unit> future_server( foo);
-  virtual folly::Future<folly::Unit> future_server(apache::thrift::RpcOptions& rpcOptions,  foo);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_server(apache::thrift::RpcOptions& rpcOptions,  foo);
-  virtual void server(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback,  foo);
+  virtual void sync_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual void sync_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual folly::Future<folly::Unit> future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual folly::Future<folly::Unit> future_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_server(apache::thrift::RpcOptions& rpcOptions, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
+  virtual void server(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   static folly::exception_wrapper recv_wrapped_server(::apache::thrift::ClientReceiveState& state);
   static void recv_server(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
   virtual void recv_instance_server(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_server(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo);
+  void serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

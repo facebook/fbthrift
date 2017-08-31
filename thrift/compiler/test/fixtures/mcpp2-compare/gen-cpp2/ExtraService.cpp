@@ -29,6 +29,7 @@ void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_simple_function(); });
 }
 
+
 void ExtraServiceSvIf::throws_function() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function");
 }
@@ -41,6 +42,7 @@ void ExtraServiceSvIf::async_eb_throws_function(std::unique_ptr<apache::thrift::
   apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_throws_function(); });
 }
 
+
 bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function2");
 }
@@ -52,6 +54,7 @@ folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool param1) {
 void ExtraServiceSvIf::async_tm_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_throws_function2(param1); });
 }
+
 
 void ExtraServiceSvIf::throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function3");
@@ -77,6 +80,7 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_oneway_void_ret(); });
 }
 
+
 void ExtraServiceSvIf::oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_i32_i32_i32_i32_i32_param");
 }
@@ -88,6 +92,7 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_i32_i32_i32_
 void ExtraServiceSvIf::async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
 }
+
 
 void ExtraServiceSvIf::oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_map_setlist_param");
@@ -101,6 +106,7 @@ void ExtraServiceSvIf::async_eb_oneway_void_ret_map_setlist_param(std::unique_pt
   apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, param1 = std::move(param1), param2 = std::move(param2)]() mutable { return future_oneway_void_ret_map_setlist_param(std::move(param1), std::move(param2)); });
 }
 
+
 void ExtraServiceSvIf::oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_struct_param");
 }
@@ -113,6 +119,7 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret_struct_param(std::unique_ptr<apa
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_oneway_void_ret_struct_param(std::move(param1)); });
 }
 
+
 void ExtraServiceSvIf::oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_listunion_param");
 }
@@ -124,6 +131,7 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_listunion_pa
 void ExtraServiceSvIf::async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) {
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_oneway_void_ret_listunion_param(std::move(param1)); });
 }
+
 
 bool ExtraServiceSvNull::simple_function() {
   return 0;

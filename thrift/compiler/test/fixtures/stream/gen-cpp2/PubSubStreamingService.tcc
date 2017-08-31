@@ -17,7 +17,7 @@
 
 namespace cpp2 {
 
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<0, apache::thrift::protocol::, *>> PubSubStreamingService_server_pargs;
+typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_server_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::FooEx>> PubSubStreamingService_server_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_I32, int32_t*>> PubSubStreamingService_returnstream_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>> PubSubStreamingService_returnstream_presult;
@@ -28,15 +28,12 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_server(std::unique_p
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &PubSubStreamingServiceAsyncProcessor::process_server<ProtocolIn_, ProtocolOut_>, this);
 }
-
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_server_pargs args;
-   uarg_foo{0};
-  args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
@@ -59,12 +56,29 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_server<ProtocolIn_,ProtocolOut_>, throw_wrapped_server<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  using stream_elem_type = int32_t;
+  // TODO: this can likely be moved into an external, not generated helper
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
+  // TODO: hook up inbound stream somehow
+  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
+  assert(false && "not implemented yet");
+  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
+  /*
+    = inbound_stream->map([](folly::IOBufQueue buf) {
+        stream_elem_type stream_elem;
+        // TODO: do this in a worker thread?
+        ProtocolIn_ prot;
+        prot.setInput(&buf);
+        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
+        return stream_elem;
+    });
+  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_server(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_server(std::move(callback), typed_flowable);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -112,7 +126,6 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream(std::un
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &PubSubStreamingServiceAsyncProcessor::process_returnstream<ProtocolIn_, ProtocolOut_>, this);
 }
-
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
@@ -190,7 +203,6 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_takesstream(std::uni
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &PubSubStreamingServiceAsyncProcessor::process_takesstream<ProtocolIn_, ProtocolOut_>, this);
 }
-
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
@@ -262,14 +274,35 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_takesstream(std::unique
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  foo) {
+void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", connectionContext_.get());
   PubSubStreamingService_server_pargs args;
-  args.get<0>().value = &foo;
+  // channel generates a stream going to the server
+  assert(false && "not implemented yet");
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+    = foo->map([](int32_t /* elem */) {
+      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+      return queue;
+    });
+  /*
+    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
+		foo->map([](int32_t elem) {
+      Protocol_ map_prot;
+			using Result = int32_t;
+			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
+			map_prot.setOutput(&queue, bufSize);
+			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
+			return queue;
+		});
+  */
+  // TODO: hook up the outgoing stream of IOBufQueue
+  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
+  (void) untyped_flowable;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "server", writer, sizer, false, useSync);

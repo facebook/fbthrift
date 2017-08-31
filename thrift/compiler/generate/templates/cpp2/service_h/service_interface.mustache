@@ -21,6 +21,7 @@
 <%#service:functions%><%#function:returnType%>
 <%^type:resolves_to_complex_return?%>
   virtual <% > Type%> <%function:name%>(<% > service_common/commented_out_function_param_list_ptr_no_start_comma%>);
+<%^type:stream?%>
   folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) override;
 <%#function:oneway?%>
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/function_param_list_ptr%>) override;
@@ -28,6 +29,7 @@
 <%^function:oneway?%>
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) override;
 <%/function:oneway?%>
+<%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   virtual void <%function:name%>(<% > Type%>& /*_return*/<% > service_common/commented_out_function_param_list_ptr%>);

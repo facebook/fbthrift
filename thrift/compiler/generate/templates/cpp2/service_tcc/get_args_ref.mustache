@@ -14,11 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:args%><%#field:type%><%!
+%><%#function:takes_stream?%><%!
+  %>, typed_flowable<%!
+%><%/function:takes_stream?%><%!
+%><%#function:args_without_streams%><%#field:type%><%!
 %><%#type:resolves_to_complex_return?%><%!
   %>, std::move(uarg_<%field:name%>)<%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %>, args.get<<%field:index%>>().ref()<%!
 %><%/type:resolves_to_complex_return?%><%!
-%><%/field:type%><%/function:args%>
+%><%/field:type%><%/function:args_without_streams%>

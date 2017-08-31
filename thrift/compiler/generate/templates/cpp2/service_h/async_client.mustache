@@ -45,19 +45,29 @@
   virtual void <%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
  public:
 <%^type:resolves_to_complex_return?%>
+<%^type:stream?%>
   virtual <% > Type%> sync_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
   virtual <% > Type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+<%/type:stream?%>
+<%#type:stream?%>
+  virtual <% > Type%> <%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
+  virtual <% > Type%> <%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+<%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   virtual void sync_<%function:name%>(<% > Type%>& _return<% > service_common/function_param_list_const%>);
   virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return<% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
+<%^type:stream?%>
   virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
   virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
   virtual folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
 <%/function:oneway?%>
+<%/type:stream?%>
+<%^function:returns_stream?%>
   virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<% > service_common/function_param_list_const%>);
+<%/function:returns_stream?%>
 <%#type:void?%>
 <%^function:oneway?%>
   static folly::exception_wrapper recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);

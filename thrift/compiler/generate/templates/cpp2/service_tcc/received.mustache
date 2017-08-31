@@ -23,14 +23,38 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", connectionContext_.get());
   <%service:name%>_<%function:name%>_pargs args;
-<%#function:args%><%#field:type%>
+<%#function:args%><%#field:type%><%#type:stream?%><%#type:streamElemType%>
+  // channel generates a stream going to the server
+  assert(false && "not implemented yet");
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+    = <%field:name%>->map([](<% > Type %> /* elem */) {
+      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+      return queue;
+    });
+  /*
+    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
+		<%field:name%>->map([](<% > Type %> elem) {
+      Protocol_ map_prot;
+			using Result = <% > Type %>;
+			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
+			map_prot.setOutput(&queue, bufSize);
+			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
+			return queue;
+		});
+  */
+  // TODO: hook up the outgoing stream of IOBufQueue
+  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
+  (void) untyped_flowable;
+<%/type:streamElemType%><%/type:stream?%><%/field:type%><%/function:args%>
+<%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = &<%field:name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = const_cast<<% > Type%>*>(&<%field:name%>);
 <%/type:resolves_to_complex_return?%>
-<%/field:type%><%/function:args%>
+<%/field:type%><%/function:args_without_streams%>
 <%^service:frozen2?%>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -53,8 +77,15 @@ template <typename Protocol_>
 <%#type:void?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
+<%#type:stream?%>
+// returning a stream should probably be closer to returning a void or a future; for now this'll just be a stub
+// folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& /*_return*/, ::apache::thrift::ClientReceiveState& state) {
+<%/type:stream?%>
 <%^type:void?%>
+<%^type:stream?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+<%/type:stream?%>
 <%/type:void?%>
   if (state.isException()) {
     return std::move(state.exception());
@@ -98,9 +129,14 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     <%service:name%>_<%function:name%>_presult result;
+<%#type:stream?%>
+  assert(false); // we're a stream
+<%/type:stream?%>
+<%^type:stream?%>
 <%^type:void?%>
     result.get<0>().value = &_return;
 <%/type:void?%>
+<%/type:stream?%>
 <%^service:frozen2?%>
     result.read(prot);
 <%/service:frozen2?%>

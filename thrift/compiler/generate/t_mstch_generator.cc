@@ -17,9 +17,10 @@
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
 
+#include <algorithm>
 #include <fstream>
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 

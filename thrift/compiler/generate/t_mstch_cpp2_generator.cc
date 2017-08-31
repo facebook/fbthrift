@@ -190,6 +190,9 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_container() || resolved_type_->is_enum();
   }
   mstch::node resolves_to_complex_return() {
+    if (resolved_type_->is_pubsub_stream()) {
+      return false;
+    }
     return resolved_type_->is_container() || resolved_type_->is_string() ||
         resolved_type_->is_struct() || resolved_type_->is_xception();
   }
