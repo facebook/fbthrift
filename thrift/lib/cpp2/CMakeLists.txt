@@ -20,7 +20,7 @@ add_custom_target(
 )
 
 add_library(
-  async-cpp2
+  thriftasync
 
   async/AsyncProcessor.h
   async/ChannelCallbacks.h
@@ -85,20 +85,20 @@ add_library(
   gen-cpp2/SaslAuthService.tcc
 )
 add_dependencies(
-  async-cpp2
+  thriftasync
 
-  thrift-cpp
+  thriftcpp
   lib-sasl
 )
 target_link_libraries(
-  async-cpp2
+  thriftasync
 
   ${FOLLY_LIBRARY}
   ${WANGLE_LIBRARIES}
 )
 
 add_library(
-  frozen-cpp2
+  thriftfrozen
 
   frozen/Frozen.h
   frozen/FrozenAssociative-inl.h
@@ -124,18 +124,18 @@ add_library(
   frozen/schema/MemorySchema.cpp
 )
 add_dependencies(
-  frozen-cpp2
+  thriftfrozen
 
   lib-thrift
 )
 target_link_libraries(
-  frozen-cpp2
+  thriftfrozen
 
   ${FOLLY_LIBRARY}
 )
 
 add_library(
-  protocol-cpp2
+  thriftprotocol
 
   protocol/BinaryProtocol.h
   protocol/BinaryProtocol.tcc
@@ -170,20 +170,20 @@ add_library(
   protocol/VirtualProtocol.cpp
 )
 add_dependencies(
-  protocol-cpp2
+  thriftprotocol
 
   lib-thrift
-  thrift-cpp
+  thriftcpp
 )
 target_link_libraries(
-  protocol-cpp2
+  thriftprotocol
 
   ${FOLLY_LIBRARY}
   ${WANGLE_LIBRARIES}
 )
 
 add_library(
-  security-cpp2
+  thriftsecurity
 
   security/KerberosSASLHandshakeClient.h
   security/KerberosSASLHandshakeServer.h
@@ -201,7 +201,7 @@ add_library(
   security/SecurityKillSwitchPoller.cpp
 )
 target_link_libraries(
-  security-cpp2
+  thriftsecurity
 
   ${WANGLE_LIBRARIES}
   ${FOLLY_LIBRARY}
@@ -209,7 +209,7 @@ target_link_libraries(
 )
 
 add_library(
-  transport-cpp2
+  thrifttransport
 
   transport/core/ThriftProcessor.h
   transport/core/TransportRoutingHandler.h
@@ -219,14 +219,14 @@ add_library(
   transport/core/ThriftProcessor.cpp
 )
 target_link_libraries(
-  transport-cpp2
+  thrifttransport
 
-  thrift-cpp
-  async-cpp2
+  thriftcpp
+  thriftasync
 )
 
 add_library(
-  server-cpp2
+  thriftserver
 
   server/BaseThriftServer.h
   server/Cpp2ConnContext.h
@@ -247,15 +247,15 @@ add_library(
   server/peeking/TLSHelper.cpp
 )
 target_link_libraries(
-  server-cpp2
+  thriftserver
 
-  transport-cpp2
+  thrifttransport
   ${WANGLE_LIBRARIES}
   ${FOLLY_LIBRARY}
 )
 
 add_library(
-  util-cpp2
+  thriftutil
 
   util/Frozen2ViewHelpers.h
   util/MapCopy.h
@@ -265,7 +265,7 @@ add_library(
   util/ScopedServerInterfaceThread.cpp
 )
 target_link_libraries(
-  util-cpp2
+  thriftutil
 
   ${FOLLY_LIBRARY}
 )
@@ -290,12 +290,12 @@ add_library(
 target_link_libraries(
   thriftcpp2
 
-  thrift-cpp
-  async-cpp2
-  frozen-cpp2
-  protocol-cpp2
-  security-cpp2
-  transport-cpp2
-  server-cpp2
-  util-cpp2
+  thriftcpp
+  thriftasync
+  thriftfrozen
+  thriftprotocol
+  thriftsecurity
+  thrifttransport
+  thriftserver
+  thriftutil
 )

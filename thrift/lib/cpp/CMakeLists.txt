@@ -183,7 +183,7 @@ add_library(
 )
 
 add_library(
-  thrift-cpp
+  thriftcpp
 
   DistinctTable.h
   EventHandlerBase.h
@@ -201,7 +201,7 @@ add_library(
   VirtualProfiling.cpp
 )
 target_link_libraries(
-  thrift-cpp
+  thriftcpp
 
   async
   concurrency

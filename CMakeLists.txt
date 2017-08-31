@@ -53,12 +53,10 @@ endif(compiler_only OR build_all)
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
   find_package(Folly REQUIRED)
-  find_package(Glog REQUIRED)
   find_package(Zstd REQUIRED)
   find_package(Wangle REQUIRED)
   include_directories(
     ${FOLLY_INCLUDE_DIR}
-    ${GLOG_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
 endif(lib_only OR build_all)
@@ -67,9 +65,11 @@ endif(lib_only OR build_all)
 # To run tests: `make test`
 if(enable_tests)
   find_package(PythonInterp REQUIRED)
+  find_package(Glog REQUIRED)
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)
   include_directories(
+    ${GLOG_INCLUDE_DIRS}
     ${GTEST_INCLUDE_DIRS}
     ${GMOCK_INCLUDE_DIRS}
   )
