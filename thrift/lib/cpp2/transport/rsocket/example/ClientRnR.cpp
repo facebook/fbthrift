@@ -15,9 +15,9 @@
  */
 
 #include <folly/init/init.h>
-#include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSRequestChannel.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
 #include "thrift/lib/cpp2/transport/http2/example/if/gen-cpp2/ChatRoomService.h"
 
 using namespace apache::thrift;
@@ -29,20 +29,17 @@ DEFINE_int32(port, 7777, "Port for the ChatRoomService");
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
-  folly::EventBase eventBase;
+  folly::ScopedEventBaseThread ioThread("ClientRnR::ioThread");
+  folly::ScopedEventBaseThread workerThread("ClientRnR::workerThread");
 
   try {
-    // Create a client to the service
-    std::shared_ptr<ThriftClient> thriftClient;
-
-    // TODO: This code needs to be refactored for the new ThriftClient
-    // implementation.
-    // auto thriftClient = std::make_shared<ThriftClient>();
-
     folly::SocketAddress address;
     address.setFromHostPort(FLAGS_host, FLAGS_port);
-    auto channel =
-        std::make_unique<RSRequestChannel>(thriftClient, address, &eventBase);
+
+    auto connection =
+        std::make_shared<RSClientConnection>(*ioThread.getEventBase(), address);
+    auto channel = ThriftClient::Ptr(
+        new ThriftClient(connection, workerThread.getEventBase()));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
 
     auto client =
@@ -53,6 +50,9 @@ int main(int argc, char** argv) {
     sendRequest.message = "Tutorial!";
     sendRequest.sender = getenv("USER");
     client->sync_sendMessage(sendRequest);
+
+    auto future = client->future_sendMessage(sendRequest);
+    future.wait();
 
     // Get all the messages
     ChatRoomServiceGetMessagesRequest getRequest;
