@@ -39,6 +39,7 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   HTTP2RoutingHandler(const HTTP2RoutingHandler&) = delete;
 
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
+  bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,

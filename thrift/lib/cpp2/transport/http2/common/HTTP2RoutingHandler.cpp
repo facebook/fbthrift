@@ -49,6 +49,15 @@ bool HTTP2RoutingHandler::canAcceptConnection(
   return false;
 }
 
+bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
+    const std::string& protocolName) {
+  static constexpr folly::StringPiece kHTTP2ProtocolName = "h2";
+  static constexpr folly::StringPiece kHTTPProtocolName = "http";
+  return (
+      kHTTP2ProtocolName.equals(protocolName, folly::AsciiCaseInsensitive()) ||
+      kHTTPProtocolName.equals(protocolName, folly::AsciiCaseInsensitive()));
+}
+
 void HTTP2RoutingHandler::handleConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress* peerAddress,
