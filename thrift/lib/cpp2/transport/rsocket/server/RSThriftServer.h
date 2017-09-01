@@ -41,6 +41,8 @@ class RSThriftServer : public BaseThriftServer {
 
   uint64_t getNumDroppedConnections() const override;
 
+  int getPort();
+
  private:
   void setup();
 

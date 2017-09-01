@@ -25,12 +25,22 @@ namespace testservice {
 class TestServiceMock : public TestServiceSvIf {
  public:
   MOCK_METHOD2(sumTwoNumbers_, int32_t(int32_t, int32_t));
+  MOCK_METHOD1(add_, int32_t(int32_t));
 
   int32_t sumTwoNumbers(int32_t x, int32_t y) override {
-    LOG(INFO) << "sumTwoNumbers";
     sumTwoNumbers_(x, y); // just inform that this function is called
     return x + y;
   }
+
+  int32_t add(int32_t x) override {
+    add_(x);
+    sum += x;
+    return sum;
+  }
+
+  void throwExpectedException(int32_t x) override;
+
+  void throwUnexpectedException(int32_t x) override;
 
  public:
   // Send the two integers to be serialized for 'sumTwoNumbers'
@@ -39,6 +49,9 @@ class TestServiceMock : public TestServiceSvIf {
 
   // Receive the deserialized integer that results from 'sumTwoNumbers'
   static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);
+
+ protected:
+  int32_t sum = 0;
 };
 
 } // namespace testservice

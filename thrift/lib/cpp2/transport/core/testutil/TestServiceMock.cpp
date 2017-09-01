@@ -62,5 +62,15 @@ int32_t TestServiceMock::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   return result;
 }
 
+void TestServiceMock::throwExpectedException(int32_t) {
+  TestServiceException exception;
+  exception.message = "mock_service_method_exception";
+  throw exception;
+}
+
+void TestServiceMock::throwUnexpectedException(int32_t) {
+  throw std::runtime_error("mock_runtime_error");
+}
+
 } // namespace testservice
 } // namespace testutil

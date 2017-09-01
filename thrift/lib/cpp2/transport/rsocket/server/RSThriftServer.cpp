@@ -56,6 +56,11 @@ void RSThriftServer::serve() {
     return std::make_shared<RSResponder>(thrift_.get(), evb_);
   });
 
+  // Bound port
+  auto optPort = server_->listeningPort();
+  ASSERT(optPort.hasValue());
+  port_ = (int)optPort.value();
+
   VLOG(1) << "RSThriftServer::serve";
 }
 
@@ -137,6 +142,10 @@ void RSThriftServer::initializeThreadManager() {
       }
     }
   });
+}
+
+int RSThriftServer::getPort() {
+  return port_;
 }
 
 } // namespace thrift

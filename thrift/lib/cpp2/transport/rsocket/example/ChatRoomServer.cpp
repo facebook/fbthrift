@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <folly/futures/Future.h>
 #include <folly/init/init.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -34,7 +33,7 @@ int main(int argc, char** argv) {
   auto cpp2PFac = std::make_shared<
       ThriftServerAsyncProcessorFactory<ChatRoomServiceHandler>>(handler);
 
-  auto server = std::make_shared<RSThriftServer>();
+  auto server = std::make_unique<RSThriftServer>();
   server->setPort(FLAGS_port);
   server->setProcessorFactory(cpp2PFac);
 
