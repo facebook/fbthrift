@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
-#include <chrono>
 
 namespace apache {
 namespace thrift {
@@ -36,10 +35,13 @@ using folly::EventBase;
 using folly::IOBuf;
 using folly::RequestContext;
 
-// TODO: Should we have a timeout for our replies?
-static constexpr std::chrono::seconds kTimeOutForRPCCall{5};
-
 namespace {
+
+/**
+ * Used as the callback for sendRequestSync.  It delegates to the
+ * wrapped callback and posts on the baton object to allow the
+ * synchronous call to continue.
+ */
 class WaitableRequestCallback final : public RequestCallback {
  public:
   WaitableRequestCallback(
@@ -57,7 +59,7 @@ class WaitableRequestCallback final : public RequestCallback {
   }
 
   void requestError(ClientReceiveState&& rs) override {
-    assert(rs.isException());
+    DCHECK(rs.isException());
     cb_->requestError(std::move(rs));
     baton_.post();
   }
@@ -66,14 +68,13 @@ class WaitableRequestCallback final : public RequestCallback {
   std::unique_ptr<RequestCallback> cb_;
   folly::Baton<>& baton_;
 };
-}
+
+} // namespace
 
 ThriftClient::ThriftClient(
     std::shared_ptr<ClientConnectionIf> connection,
-    folly::EventBase* evb)
-    : connection_(connection),
-      clientEvb_(evb),
-      connEvb_(connection->getEventBase()) {}
+    folly::EventBase* callbackEvb)
+    : connection_(connection), callbackEvb_(callbackEvb) {}
 
 ThriftClient::ThriftClient(std::shared_ptr<ClientConnectionIf> connection)
     : ThriftClient(connection, connection->getEventBase()) {}
@@ -83,46 +84,42 @@ void ThriftClient::setProtocolId(uint16_t protocolId) {
 }
 
 uint32_t ThriftClient::sendRequestSync(
-    RpcOptions& options,
+    RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
+    std::unique_ptr<ContextStack> ctx,
+    std::unique_ptr<IOBuf> buf,
+    std::shared_ptr<THeader> header) {
+  // Synchronous calls may be made from any thread except the one used
+  // by the underlying connection.  That thread is used to handle the
+  // callback and to release this thread that will be waiting on
+  // "baton".
+  EventBase* connectionEvb = connection_->getEventBase();
+  DCHECK(!connectionEvb->inRunningEventBaseThread());
   folly::Baton<> baton;
-  int result = 0;
-  DCHECK(!connEvb_->inRunningEventBaseThread());
-
-  // Execute on the IO thread for synchronous calls
-  connEvb_->runInEventBaseThread([
-    this,
-    &baton,
-    &result,
-    options,
-    cb = std::move(cb),
-    ctx = std::move(ctx),
-    buf = std::move(buf),
-    header = std::move(header)
-  ]() mutable {
-    DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
-    bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
-    auto scb = std::make_unique<WaitableRequestCallback>(std::move(cb), baton);
-    if (oneway) {
-      result = sendOnewayRequest(
-          options,
-          std::move(scb),
-          std::move(ctx),
-          std::move(buf),
-          std::move(header));
-    } else {
-      result = sendRequest(
-          options,
-          std::move(scb),
-          std::move(ctx),
-          std::move(buf),
-          std::move(header));
-    }
-  });
-  CHECK(baton.timed_wait(kTimeOutForRPCCall));
+  DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
+  bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
+  auto scb = std::make_unique<WaitableRequestCallback>(std::move(cb), baton);
+  int result;
+  if (oneway) {
+    result = sendRequestHelper(
+        rpcOptions,
+        true,
+        std::move(scb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header),
+        connectionEvb);
+  } else {
+    result = sendRequestHelper(
+        rpcOptions,
+        false,
+        std::move(scb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header),
+        connectionEvb);
+  }
+  baton.wait();
   return result;
 }
 
@@ -138,7 +135,8 @@ uint32_t ThriftClient::sendRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      callbackEvb_);
 }
 
 uint32_t ThriftClient::sendOnewayRequest(
@@ -153,7 +151,8 @@ uint32_t ThriftClient::sendOnewayRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      callbackEvb_);
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
@@ -163,14 +162,12 @@ uint32_t ThriftClient::sendRequestHelper(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    EventBase* callbackEvb) {
   // TODO: Copied from HTTPClientChannel, but have not copied code to
   // handle timeouts and various error cases.  Will deal with that
   // as a followup change.
 
-  DCHECK(
-      clientEvb_->isInEventBaseThread() ||
-      (clientEvb_ != connEvb_ && connEvb_->isInEventBaseThread()));
   DestructorGuard dg(this);
 
   std::shared_ptr<ThriftChannelIf> channel = connection_->getChannel();
@@ -194,7 +191,7 @@ uint32_t ThriftClient::sendRequestHelper(
   std::unique_ptr<ThriftClientCallback> callback;
   if (!oneway) {
     callback = std::make_unique<ThriftClientCallback>(
-        clientEvb_,
+        callbackEvb,
         std::move(cb),
         std::move(ctx),
         isSecurityActive(),
@@ -263,7 +260,7 @@ std::unique_ptr<map<string, string>> ThriftClient::buildHeaderMap(
 }
 
 EventBase* ThriftClient::getEventBase() const {
-  return clientEvb_;
+  return callbackEvb_;
 }
 
 uint16_t ThriftClient::getProtocolId() {

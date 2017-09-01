@@ -117,7 +117,7 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   //
   // Calls to the channel must be scheduled "this->getEventBase()".
   // Callbacks to "callback" must be scheduled on
-  // "client->getEventBase()".
+  // "callback->getEventBase()".
   //
   // "callback" must not be destroyed until it has received the call
   // back to "onThriftResponse()" or "cancel()".

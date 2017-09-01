@@ -38,11 +38,12 @@ namespace thrift {
  * Thrift layer and this layer.  A separate call to "getChannel()"
  * must be made for each RPC.
  *
- * "ClientConnectionIf" objects operate on an event base that is
- * supplied when an object is constructed.  This is the event base on
- * which callbacks from the networking layer take place.  This is also
- * the event base on which calls to "ThriftChannelIf" objects must be
- * made from ThriftClient objects.
+ * "ClientConnectionIf" objects operate on an event base that must be
+ * supplied when an object is constructed - see comments on each
+ * subclass for more details.  The event base loop must be running.
+ * This is the event base on which callbacks from the networking layer
+ * take place.  This is also the event base on which calls to
+ * "ThriftChannelIf" objects must be made from ThriftClient objects.
  *
  * Multiple "ClientConnectionIf" objects may be present at the same
  * time, each will manage a separate network connection and are

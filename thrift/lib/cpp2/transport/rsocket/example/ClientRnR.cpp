@@ -32,15 +32,12 @@ DECLARE_string(transport);
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
-  folly::ScopedEventBaseThread workerThread("ClientRnR::workerThread");
-
   FLAGS_transport = "rsocket";
 
   try {
     auto mgr = ConnectionManager::getInstance();
     auto connection = mgr->getConnection(FLAGS_host, FLAGS_port);
-    auto channel = ThriftClient::Ptr(
-        new ThriftClient(connection, workerThread.getEventBase()));
+    auto channel = ThriftClient::Ptr(new ThriftClient(connection));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
 
     auto client =
