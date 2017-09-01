@@ -69,95 +69,123 @@ States = []map[string]int32{
     "San Diego": 3211000,
     "Sacramento": 479600,
     "SF": 837400,
-  },   map[string]int32{
+  },
+  map[string]int32{
     "New York": 8406000,
     "Albany": 98400,
-  }, }
+  },
+}
 
 Instagram = &Internship{
   Weeks: 12,
   Title: "Software Engineer",
-  Employer:   3,}
+  Employer:   3,
+}
 
 KRanges = []*Range{
   &Range{
     Min: 1,
-    Max: 2,},   &Range{
+    Max: 2,
+  },
+  &Range{
     Min: 5,
-    Max: 6,}, }
+    Max: 6,
+  },
+}
 
 InternList = []*Internship{
   &Internship{
     Weeks: 12,
     Title: "Software Engineer",
-    Employer:     3,},   &Internship{
+    Employer:     3,
+  },
+  &Internship{
     Weeks: 10,
     Title: "Sales Intern",
-    Employer:     0,}, }
+    Employer:     0,
+  },
+}
 
-Pod_0 = &Struct1{}
+Pod_0 = &Struct1{
+}
 
 Pod_1 = &Struct1{
   A: 10,
-  B: "foo",}
+  B: "foo",
+}
 
 Pod_2 = &Struct2{
   A: 98,
   B: "gaz",
-  v1 := &Struct1{
+  C: &Struct1{
     A: 12,
-    B: "bar",}
-  Pod_2.C = v1
-  v3 := []int32{
-    11,     22,     33,   }
-  Pod_2.D = v3}
+    B: "bar",
+  },
+  D: []int32{
+    11,
+    22,
+    33,
+  },
+}
 
 Pod_3 = &Struct3{
   A: "abc",
   B: 456,
-  v5 := &Struct2{
+  C: &Struct2{
     A: 888,
-    v7 := &Struct1{
-      B: "gaz",}
-    v5.C = v7
-    v9 := []int32{
-      1,       2,       3,     }
-    v5.D = v9}
-  Pod_3.C = v5}
+    C: &Struct1{
+      B: "gaz",
+    },
+    D: []int32{
+      1,
+      2,
+      3,
+    },
+  },
+}
 
 U_1_1 = &Union1{
-  I: 97,}
+  I: 97,
+}
 
 U_1_2 = &Union1{
-  D: 5.6,}
+  D: 5.6,
+}
 
-U_1_3 = &Union1{}
+U_1_3 = &Union1{
+}
 
 U_2_1 = &Union2{
-  I: 51,}
+  I: 51,
+}
 
 U_2_2 = &Union2{
-  D: 6.7,}
+  D: 6.7,
+}
 
 U_2_3 = &Union2{
-  v11 := &Struct1{
+  S: &Struct1{
     A: 8,
-    B: "abacabb",}
-  U_2_3.S = v11}
+    B: "abacabb",
+  },
+}
 
 U_2_4 = &Union2{
-  v13 := &Union1{
-    I: 43,}
-  U_2_4.U = v13}
+  U: &Union1{
+    I: 43,
+  },
+}
 
 U_2_5 = &Union2{
-  v15 := &Union1{
-    D: 9.8,}
-  U_2_5.U = v15}
+  U: &Union1{
+    D: 9.8,
+  },
+}
 
 U_2_6 = &Union2{
-  v17 := &Union1{}
-  U_2_6.U = v17}
+  U: &Union1{
+  },
+}
 
 Char2ascii = map[string]int32{
   "'": 39,
@@ -167,7 +195,23 @@ Char2ascii = map[string]int32{
 }
 
 EscapedStrings = []string{
-  "\\x61",   "\\xab",   "\\x6a",   "\\xa6",   "\\x61yyy",   "\\xabyyy",   "\\x6ayyy",   "\\xa6yyy",   "zzz\\x61",   "zzz\\xab",   "zzz\\x6a",   "zzz\\xa6",   "zzz\\x61yyy",   "zzz\\xabyyy",   "zzz\\x6ayyy",   "zzz\\xa6yyy", }
+  "\\x61",
+  "\\xab",
+  "\\x6a",
+  "\\xa6",
+  "\\x61yyy",
+  "\\xabyyy",
+  "\\x6ayyy",
+  "\\xa6yyy",
+  "zzz\\x61",
+  "zzz\\xab",
+  "zzz\\x6a",
+  "zzz\\xa6",
+  "zzz\\x61yyy",
+  "zzz\\xabyyy",
+  "zzz\\x6ayyy",
+  "zzz\\xa6yyy",
+}
 
 EmptyIntList = []int32{
 }

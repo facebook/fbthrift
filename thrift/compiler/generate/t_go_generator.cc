@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /*
  * This file is programmatically sanitized for style:
  * astyle --style=1tbs -f -p -H -j -U t_go_generator.cc
@@ -991,6 +992,7 @@ string t_go_generator::render_const_value(
   } else if (type->is_struct() || type->is_xception()) {
     out << "&" << publicize(type_name(type)) << "{";
     indent_up();
+    out << endl;
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
@@ -1009,21 +1011,13 @@ string t_go_generator::render_const_value(
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
 
-      if (field_type->is_base_type() || field_type->is_enum()) {
-        out << endl << indent() << publicize(v_iter->first->get_string()) << ": "
-            << render_const_value(field_type, v_iter->second, name) << ",";
-      } else {
-        string k(tmp("k"));
-        string v(tmp("v"));
-        out << endl << indent() << v << " := " << render_const_value(field_type, v_iter->second, v)
-            << endl << indent() << name << "." << publicize(v_iter->first->get_string()) << " = "
-            << v;
-      }
+      out << indent() << publicize(v_iter->first->get_string()) << ": "
+          << render_const_value(field_type, v_iter->second, name) << ","
+          << endl;
     }
-
-    out << "}";
-
     indent_down();
+    out << indent() << "}";
+
   } else if (type->is_map()) {
     t_type* ktype = ((t_map*)type)->get_key_type();
     t_type* vtype = ((t_map*)type)->get_val_type();
@@ -1047,7 +1041,8 @@ string t_go_generator::render_const_value(
     vector<t_const_value*>::const_iterator v_iter;
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      out << indent() << render_const_value(etype, *v_iter, name) << ", ";
+      out << indent() << render_const_value(etype, *v_iter, name) << ","
+          << endl;
     }
 
     indent_down();

@@ -724,13 +724,13 @@ func (p *Struct2)  ReadField4(iprot thrift.TProtocol) error {
   tSlice := make([]int32, 0, size)
   p.D =  tSlice
   for i := 0; i < size; i ++ {
-var _elem18 int32
+var _elem0 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem18 = v
+    _elem0 = v
 }
-    p.D = append(p.D, _elem18)
+    p.D = append(p.D, _elem0)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
