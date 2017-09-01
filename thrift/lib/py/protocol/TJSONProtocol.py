@@ -161,6 +161,8 @@ class TJSONProtocolBase(TProtocolBase):
 
     def popContext(self):
         self.contextStack.pop()
+        if self.contextStack:
+            self.context = self.contextStack[-1]
 
     def writeJSONString(self, string):
         # Python 3 JSON will not serialize bytes
