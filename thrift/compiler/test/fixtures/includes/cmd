@@ -8,4 +8,5 @@ mstch_cpp2 src/service.thrift
 mstch_cpp2 src/module.thrift
 mstch_cpp2 src/includes.thrift
 go src/service.thrift
+go src/matching_names.thrift
 mstch_py3 src/service.thrift
