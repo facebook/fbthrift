@@ -24,14 +24,15 @@
 #include <wangle/acceptor/ManagedConnection.h>
 #include <wangle/acceptor/SocketPeeker.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * The number of bytes that will be read from the socket.
  * TLSHelper currently needs the most bytes. Thus, it's cap
  * it up at the amount that TLSHelper needs.
  */
-constexpr uint8_t kPeekBytes = 9;
+constexpr uint8_t kPeekBytes = 13;
 
 /**
  * A manager that rejects or accepts connections based on critera
@@ -76,8 +77,7 @@ class PeekingManager : public wangle::ManagedConnection,
     peeker_->start();
   }
 
-  void peekSuccess(
-      std::vector<uint8_t> peekBytes) noexcept override {
+  void peekSuccess(std::vector<uint8_t> peekBytes) noexcept override {
     folly::DelayedDestruction::DestructorGuard dg(this);
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
@@ -125,8 +125,7 @@ class PeekingManager : public wangle::ManagedConnection,
     destroy();
   }
 
-  void sendPlaintextTLSAlert(
-      const std::vector<uint8_t>& peekBytes) {
+  void sendPlaintextTLSAlert(const std::vector<uint8_t>& peekBytes) {
     uint8_t major = peekBytes[1];
     uint8_t minor = peekBytes[2];
     auto alert = TLSHelper::getPlaintextAlert(
@@ -176,4 +175,5 @@ class PeekingManager : public wangle::ManagedConnection,
   std::vector<TransportRoutingHandler*> const* handlers_;
   int kIOWorkerThreads_;
 };
-}}
+}
+}
