@@ -49,8 +49,6 @@ class ConnectionManager {
       uint16_t port);
 
  private:
-  static const uint32_t kNumClientConnections;
-
   struct Connections {
     // The connections for a specific server.  There will be
     // "numClientConnections_" entries in this vector.

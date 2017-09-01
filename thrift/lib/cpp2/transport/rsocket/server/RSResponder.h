@@ -30,7 +30,7 @@ namespace thrift {
 
 class RSResponder : public rsocket::RSocketResponder {
  public:
-  explicit RSResponder(ThriftProcessor* processor);
+  RSResponder(ThriftProcessor* processor, folly::EventBase* evb);
 
   virtual ~RSResponder() = default;
 

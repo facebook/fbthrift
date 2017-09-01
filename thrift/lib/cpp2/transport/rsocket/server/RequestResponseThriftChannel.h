@@ -17,8 +17,8 @@
 #pragma once
 
 #include <rsocket/rsocket.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <yarpl/Single.h>
 
 namespace apache {
@@ -38,12 +38,15 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
       std::unique_ptr<std::map<std::string, std::string>>,
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
     // TODO encoding & sending headers - metadata of Payload?
+    CHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
+
     VLOG(3) << "sendThriftResponse";
     subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
     subscriber_->onSuccess(std::move(buf));
     subscriber_ = nullptr;
   }
 
+  // TODO - this methods isn't get called even for error case!
   void sendErrorWrapped(
       folly::exception_wrapper /* ex */,
       std::string exCode,

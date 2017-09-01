@@ -20,9 +20,10 @@
 #include <folly/Singleton.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
 
 DEFINE_int32(
     num_client_connections,
@@ -50,7 +51,7 @@ std::shared_ptr<ConnectionManager> ConnectionManager::getInstance() {
 }
 
 ConnectionManager::ConnectionManager() {
-  for (uint32_t i = 0; i < FLAGS_num_client_connections; ++i) {
+  for (int32_t i = 0; i < FLAGS_num_client_connections; ++i) {
     threads_.push_back(std::make_unique<folly::ScopedEventBaseThread>());
   }
 }
@@ -71,20 +72,28 @@ std::shared_ptr<ClientConnectionIf> ConnectionManager::getConnection(
         (candidates.current + 1) % FLAGS_num_client_connections;
     std::shared_ptr<ClientConnectionIf>& connection = candidates.clients[index];
     if (connection == nullptr) {
-      TAsyncTransport::UniquePtr transport(
-          new TAsyncSocket(threads_[index]->getEventBase(), addr, port));
       if (FLAGS_transport == "rsocket") {
-        LOG(FATAL) << "RSocket not yet supported.";
-      } else if (FLAGS_transport == "http1") {
-        connection = H2ClientConnection::newHTTP1xConnection(
-            std::move(transport), addr, "/");
+        // TODO Make RSClientConnection accept TAsyncSocket
+        folly::SocketAddress address;
+        address.setFromHostPort(addr, port);
+
+        connection = std::make_unique<RSClientConnection>(
+            *threads_[index]->getEventBase(), address);
       } else {
-        if (FLAGS_transport != "http2") {
-          LOG(ERROR) << "Unknown transport " << FLAGS_transport
-                     << ".  Will use http2.";
+        TAsyncTransport::UniquePtr transport(
+            new TAsyncSocket(threads_[index]->getEventBase(), addr, port));
+
+        if (FLAGS_transport == "http1") {
+          connection = H2ClientConnection::newHTTP1xConnection(
+              std::move(transport), addr, "/");
+        } else {
+          if (FLAGS_transport != "http2") {
+            LOG(ERROR) << "Unknown transport " << FLAGS_transport
+                       << ".  Will use http2.";
+          }
+          connection =
+              H2ClientConnection::newHTTP2Connection(std::move(transport));
         }
-        connection =
-            H2ClientConnection::newHTTP2Connection(std::move(transport));
       }
     }
     return connection;

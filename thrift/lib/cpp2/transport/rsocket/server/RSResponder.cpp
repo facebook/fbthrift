@@ -20,10 +20,8 @@
 namespace apache {
 namespace thrift {
 
-RSResponder::RSResponder(ThriftProcessor* processor) : processor_(processor) {
-  evb_ = folly::EventBaseManager::get()->getExistingEventBase();
-  CHECK(evb_);
-}
+RSResponder::RSResponder(ThriftProcessor* processor, folly::EventBase* evb)
+    : processor_(processor), evb_(evb) {}
 
 yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
 RSResponder::handleRequestResponse(

@@ -50,8 +50,11 @@ void RSThriftServer::serve() {
   // Don't allow any more configs to be modified.
   configMutable_ = false;
 
-  server_->start(
-      [this](auto&) { return std::make_shared<RSResponder>(thrift_.get()); });
+  server_->start([this](auto&) {
+    auto evb_ = folly::EventBaseManager::get()->getExistingEventBase();
+    CHECK(evb_);
+    return std::make_shared<RSResponder>(thrift_.get(), evb_);
+  });
 
   VLOG(1) << "RSThriftServer::serve";
 }

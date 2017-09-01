@@ -17,7 +17,7 @@
 #include <folly/init/init.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
+#include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 #include "thrift/lib/cpp2/transport/http2/example/if/gen-cpp2/ChatRoomService.h"
 
 using namespace apache::thrift;
@@ -26,18 +26,19 @@ using namespace facebook::tutorials::thrift::chatroomservice;
 DEFINE_string(host, "localhost", "host to connect to");
 DEFINE_int32(port, 7777, "Port for the ChatRoomService");
 
+// ConnectionManager depends on this flag.
+DECLARE_string(transport);
+
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
-  folly::ScopedEventBaseThread ioThread("ClientRnR::ioThread");
   folly::ScopedEventBaseThread workerThread("ClientRnR::workerThread");
 
-  try {
-    folly::SocketAddress address;
-    address.setFromHostPort(FLAGS_host, FLAGS_port);
+  FLAGS_transport = "rsocket";
 
-    auto connection =
-        std::make_shared<RSClientConnection>(*ioThread.getEventBase(), address);
+  try {
+    auto mgr = ConnectionManager::getInstance();
+    auto connection = mgr->getConnection(FLAGS_host, FLAGS_port);
     auto channel = ThriftClient::Ptr(
         new ThriftClient(connection, workerThread.getEventBase()));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
