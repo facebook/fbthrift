@@ -18,13 +18,13 @@
 
 #include <folly/io/IOBuf.h>
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <map>
 #include <memory>
 #include <string>
@@ -42,7 +42,7 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor)
+  explicit ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor)
       : cpp2Processor_(std::move(cpp2Processor)) {}
 
   virtual ~ThriftProcessor() = default;

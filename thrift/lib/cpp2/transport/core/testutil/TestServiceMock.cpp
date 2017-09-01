@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/core/testutil/ThriftProcessorTestFixture.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <string>
 
-namespace apache {
-namespace thrift {
+namespace testutil {
+namespace testservice {
 
-folly::IOBufQueue ThriftProcessorTestFixture::serializeSumTwoNumbers(
+folly::IOBufQueue TestServiceMock::serializeSumTwoNumbers(
     int32_t x,
-    int32_t y) const {
+    int32_t y,
+    bool wrongMethodName) {
   std::string methodName = "sumTwoNumbers";
-  cpp2::TestService_sumTwoNumbers_pargs args;
+  if (wrongMethodName) {
+    methodName = "wrongMethodName";
+  }
+  TestService_sumTwoNumbers_pargs args;
   args.get<0>().value = &x;
   args.get<1>().value = &y;
 
@@ -41,8 +45,7 @@ folly::IOBufQueue ThriftProcessorTestFixture::serializeSumTwoNumbers(
   return queue;
 }
 
-int32_t ThriftProcessorTestFixture::deserializeSumTwoNumbers(
-    folly::IOBuf* buf) const {
+int32_t TestServiceMock::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   auto reader = std::make_unique<apache::thrift::CompactProtocolReader>();
   int32_t result;
   std::string fname;
@@ -51,7 +54,7 @@ int32_t ThriftProcessorTestFixture::deserializeSumTwoNumbers(
 
   reader->setInput(buf);
   reader->readMessageBegin(fname, mtype, protoSeqId);
-  cpp2::TestService_sumTwoNumbers_presult args;
+  TestService_sumTwoNumbers_presult args;
   args.get<0>().value = &result;
   args.read(reader.get());
   reader->readMessageEnd();
@@ -59,5 +62,5 @@ int32_t ThriftProcessorTestFixture::deserializeSumTwoNumbers(
   return result;
 }
 
-} // namespace thrift
-} // namespace apache
+} // namespace testservice
+} // namespace testutil

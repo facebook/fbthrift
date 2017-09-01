@@ -16,43 +16,30 @@
 
 #pragma once
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <folly/io/async/EventBase.h>
-#include <gtest/gtest.h>
-#include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
-#include <memory>
+#include <gmock/gmock.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 
-namespace apache {
-namespace thrift {
+namespace testutil {
+namespace testservice {
 
-class MyServiceImpl : public cpp2::TestServiceSvIf {
+class TestServiceMock : public TestServiceSvIf {
+ public:
+  MOCK_METHOD2(sumTwoNumbers_, int32_t(int32_t, int32_t));
+
   int32_t sumTwoNumbers(int32_t x, int32_t y) override {
+    LOG(INFO) << "sumTwoNumbers";
+    sumTwoNumbers_(x, y); // just inform that this function is called
     return x + y;
   }
-};
 
-class ThriftProcessorTestFixture : public testing::Test {
  public:
-  // Sets up for a test.
-  ThriftProcessorTestFixture() {
-    fakeChannel_ = std::make_shared<FakeChannel>(&eventBase_);
-  }
-
-  // Tears down after the test.
-  ~ThriftProcessorTestFixture() override = default;
-
   // Send the two integers to be serialized for 'sumTwoNumbers'
-  folly::IOBufQueue serializeSumTwoNumbers(int32_t x, int32_t y) const;
+  static folly::IOBufQueue
+  serializeSumTwoNumbers(int32_t x, int32_t y, bool wrongMethodName = false);
 
   // Receive the deserialized integer that results from 'sumTwoNumbers'
-  int32_t deserializeSumTwoNumbers(folly::IOBuf* buf) const;
-
- protected:
-  folly::EventBase eventBase_;
-  std::shared_ptr<FakeChannel> fakeChannel_;
+  static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);
 };
 
-} // namespace thrift
-} // namespace apache
+} // namespace testservice
+} // namespace testutil

@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ThriftProcessorTestFixture.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
+#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
 namespace apache {
 namespace thrift {
 
-TEST_F(ThriftProcessorTestFixture, SendAndReceiveSumTwoNumbers) {
+using namespace testing;
+using namespace testutil::testservice;
+
+TEST(ThriftProcessorTest, SendAndReceiveSumTwoNumbers) {
   int32_t x = 5;
   int32_t y = 10;
   int32_t expected_result = x + y;
 
   // Set up Async Processor
-  MyServiceImpl service;
+  StrictMock<TestServiceMock> service;
+  EXPECT_CALL(service, sumTwoNumbers_(x, y));
   std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor =
       service.getProcessor();
 
@@ -46,11 +51,15 @@ TEST_F(ThriftProcessorTestFixture, SendAndReceiveSumTwoNumbers) {
   // Schedule the calls to the processor in the event base so that the
   // event loop is running for the entirety of the test.
 
-  auto request = serializeSumTwoNumbers(x, y);
+  auto request = TestServiceMock::serializeSumTwoNumbers(x, y);
 
-  eventBase_.runInEventBaseThread([&]() mutable {
+  folly::EventBase eventBase;
+  std::shared_ptr<FakeChannel> fakeChannel =
+      std::make_shared<FakeChannel>(&eventBase);
+
+  eventBase.runInEventBaseThread([&]() mutable {
     auto headers = std::make_unique<std::map<std::string, std::string>>();
-    auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel_);
+    auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel);
     auto finfo = std::make_unique<FunctionInfo>();
     finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
     finfo->seqId = 0;
@@ -62,13 +71,14 @@ TEST_F(ThriftProcessorTestFixture, SendAndReceiveSumTwoNumbers) {
   // Start the event loop before calling into the channel and leave it
   // running for the entirety of the test.  The loop exits after
   // FakeChannel::sendThriftResponse() is called.
-  eventBase_.loop();
+  eventBase.loop();
 
   // The RPC has completed.
   threadManager->join();
 
   // Receive Response and compare result
-  auto result = deserializeSumTwoNumbers(fakeChannel_->getPayloadBuf());
+  auto result =
+      TestServiceMock::deserializeSumTwoNumbers(fakeChannel->getPayloadBuf());
   EXPECT_EQ(result, expected_result);
 }
 
