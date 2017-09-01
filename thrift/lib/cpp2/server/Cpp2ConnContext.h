@@ -144,14 +144,14 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
 // Request-specific context
 class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
-
  public:
-  explicit Cpp2RequestContext(Cpp2ConnContext* ctx,
-                              apache::thrift::transport::THeader* header = nullptr)
-      : ctx_(ctx)
-      , requestData_(nullptr, no_op_destructor)
-      , header_(header)
-      , startedProcessing_(false) {}
+  explicit Cpp2RequestContext(
+      Cpp2ConnContext* ctx,
+      apache::thrift::transport::THeader* header = nullptr)
+      : ctx_(ctx),
+        requestData_(nullptr, no_op_destructor),
+        header_(header),
+        startedProcessing_(false) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
     ctx_= ctx;
@@ -235,6 +235,16 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     requestTimeout_ = requestTimeout;
   }
 
+  void setProcessingStartTime(
+      std::chrono::time_point<std::chrono::steady_clock> processingStartTime) {
+    processingStartTime_ = processingStartTime;
+  }
+
+  std::chrono::time_point<std::chrono::steady_clock> getProcessingStartTime()
+      const {
+    return processingStartTime_;
+  }
+
   void setMethodName(std::string methodName) {
     methodName_ = std::move(methodName);
   }
@@ -268,6 +278,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   apache::thrift::transport::THeader* header_;
   bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
+  std::chrono::steady_clock::time_point processingStartTime_;
   std::string methodName_;
   int32_t protoSeqId_{0};
   uint32_t messageBeginSize_{0};
