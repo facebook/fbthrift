@@ -91,6 +91,10 @@ public class TMemoryBuffer extends TTransport {
   // Position to read next byte from
   private int pos_;
 
+  public byte[] getBuffer() {
+    return arr_.get();
+  }
+
   public int length() {
     return arr_.len();
   }

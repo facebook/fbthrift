@@ -22,6 +22,7 @@ package com.facebook.thrift.protocol;
 import java.util.Map;
 import java.io.UnsupportedEncodingException;
 import com.facebook.thrift.TException;
+import com.facebook.thrift.transport.TMemoryInputTransport;
 import com.facebook.thrift.transport.TTransport;
 
 /**
@@ -85,7 +86,25 @@ public class TBinaryProtocol extends TProtocol {
     strictWrite_ = strictWrite;
   }
 
+  public void writeMessageBegin() throws TException {
+    if (strictWrite_) {
+      int version = VERSION_1;
+      writeI32(version);
+    }
+  }
+
   public void writeMessageBegin(TMessage message) throws TException {
+    if (message == null) {
+      // Writing data.
+      if (strictWrite_) {
+        int version = VERSION_1 | TMessageType.DATA;
+        writeI32(version);
+      } else {
+        throw new TException("Can write data only in strict mode");
+      }
+      return;
+    }
+
     if (strictWrite_) {
       int version = VERSION_1 | message.type;
       writeI32(version);
@@ -210,6 +229,11 @@ public class TBinaryProtocol extends TProtocol {
       if (version != VERSION_1) {
         throw new TProtocolException(TProtocolException.BAD_VERSION, "Bad version in readMessageBegin");
       }
+      byte type = (byte)(size & 0x000000ff);
+      if (type == TMessageType.DATA) {
+        // Data payload.
+        return null;
+      }
       return new TMessage(readString(), (byte)(size & 0x000000ff), readI32());
     } else {
       if (strictRead_) {
@@ -289,7 +313,7 @@ public class TBinaryProtocol extends TProtocol {
   }
 
   private byte[] i32rd = new byte[4];
-  public int readI32() throws TException {
+  public int readI32() throws TException{
     byte[] buf = i32rd;
     int off = 0;
 

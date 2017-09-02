@@ -24,6 +24,7 @@ import java.util.Map;
 import java.io.UnsupportedEncodingException;
 import com.facebook.thrift.ShortStack;
 import com.facebook.thrift.TException;
+import com.facebook.thrift.transport.TMemoryInputTransport;
 import com.facebook.thrift.transport.TTransport;
 
 /**
@@ -142,6 +143,11 @@ public final class TCompactProtocol extends TProtocol {
    * protocol version so we can migrate forwards in the future if need be.
    */
   public void writeMessageBegin(TMessage message) throws TException {
+    if (message == null) {
+      writeByteDirect(PROTOCOL_ID);
+      writeByteDirect((VERSION & VERSION_MASK) | ((TMessageType.DATA << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
+      return;
+    }
     writeByteDirect(PROTOCOL_ID);
     writeByteDirect((VERSION & VERSION_MASK) | ((message.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
     writeVarint32(message.seqid);
@@ -474,6 +480,10 @@ public final class TCompactProtocol extends TProtocol {
       throw new TProtocolException("Expected version " + VERSION + " but got " + version_);
     }
     byte type = (byte)((versionAndType >> TYPE_SHIFT_AMOUNT) & 0x03);
+    if (type == TMessageType.DATA) {
+      // Data payload.
+      return null;
+    }
     int seqid = readVarint32();
     String messageName = readString();
     return new TMessage(messageName, type, seqid);
