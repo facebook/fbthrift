@@ -10,7 +10,7 @@ namespace py apache.thrift.dynamic
 
 cpp_include "thrift/lib/thrift/SerializableDynamic.h"
 
-union DynamicType {
+union Dynamic {
   1: bool boolean;
   2: i64 integer;
   3: double doubl;
@@ -19,5 +19,4 @@ union DynamicType {
   6: map<string, Dynamic> object;
 }
 
-typedef DynamicType
-  (cpp.type = "::apache::thrift::SerializableDynamic") Dynamic
+typedef Dynamic (cpp.type = "::apache::thrift::SerializableDynamic") DynamicType

@@ -1,9 +1,9 @@
 include "thrift/lib/thrift/dynamic.thrift"
 
 struct Container {
-  1: dynamic.Dynamic data
+  1: dynamic.DynamicType data
 }
 
 service DynamicTestService {
-  dynamic.Dynamic echo(1: dynamic.Dynamic input);
+  dynamic.DynamicType echo(1: dynamic.DynamicType input);
 }
