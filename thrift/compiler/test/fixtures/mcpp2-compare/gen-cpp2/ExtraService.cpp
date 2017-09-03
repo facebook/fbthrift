@@ -5,14 +5,13 @@
  *  @generated
  */
 #include "src/gen-cpp2/ExtraService.h"
-
 #include "src/gen-cpp2/ExtraService.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace some { namespace valid { namespace ns {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace some { namespace valid { namespace ns {
 std::unique_ptr<apache::thrift::AsyncProcessor> ExtraServiceSvIf::getProcessor() {
   return std::make_unique<ExtraServiceAsyncProcessor>(this);
 }

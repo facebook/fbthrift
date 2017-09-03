@@ -5,16 +5,12 @@
  *  @generated
  */
 #include "src/gen-cpp2/service_types.h"
-
 #include "src/gen-cpp2/service_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
 #include "src/gen-cpp2/service_data.h"
-
-
 
 namespace cpp2 {
 

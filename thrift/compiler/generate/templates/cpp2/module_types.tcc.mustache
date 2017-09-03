@@ -14,21 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
+%><% > Autogen%>
 #pragma once
 
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
-#include <thrift/lib/cpp/TApplicationException.h>
+#include "<%program:include_prefix%><%program:name%>_types.h"
+
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
-
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+
 <% > module_types_tcc/declare_enums%>
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>

@@ -5,14 +5,13 @@
  *  @generated
  */
 #include "src/gen-cpp2/ParamService.h"
-
 #include "src/gen-cpp2/ParamService.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace some { namespace valid { namespace ns {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace some { namespace valid { namespace ns {
 std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor() {
   return std::make_unique<ParamServiceAsyncProcessor>(this);
 }

@@ -5,14 +5,13 @@
  *  @generated
  */
 #include "src/gen-cpp2/MyNode.h"
-
 #include "src/gen-cpp2/MyNode.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> MyNodeSvIf::getProcessor() {
   return std::make_unique<MyNodeAsyncProcessor>(this);
 }

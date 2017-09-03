@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/enums_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "enums_types.h"
+
 namespace facebook { namespace ns { namespace qwerty {
 
 struct enums_constants {

@@ -14,16 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
+%><% > Autogen%>
 #pragma once
 
 #include <array>
 #include <cstddef>
-
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
+#include "<%program:include_prefix%><%program:name%>_types.h"
 
 <%#program:enums%>
 <% > common/namespace_cpp2_begin%>

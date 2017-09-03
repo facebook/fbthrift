@@ -14,38 +14,30 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
+%><% > Autogen%>
 #pragma once
 
-#include <thrift/lib/cpp2/ServiceIncludes.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
-
-<%#service:thrift_includes%>
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
-<%/service:thrift_includes%><%!
-
-%><%#service:any_streams?%>
-
-#include <yarpl/Flowable.h>
-
-<%/service:any_streams?%>
-
-<%#service:cpp_includes%>
-<%#system?%>#include <%path%><%/system?%><%!
-%><%^system?%>#include "<%path%>"<%/system?%>
-<%/service:cpp_includes%>
-<%#service:extends%>
-#include "<%service:programIncludePrefix%><%service:name%>.h"
-<%/service:extends%>
-
-#include "<%service:programIncludePrefix%><%service:programName%>_types.h"
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include "<%service:include_prefix%><%service:program_name%>_types.h"
 <%#service:frozen2?%>
-#include "<%service:programIncludePrefix%><%service:programName%>_layouts.h"
+#include "<%service:include_prefix%><%service:program_name%>_layouts.h"
 <%/service:frozen2?%>
+<%#service:extends%>
+#include "<%service:include_prefix%><%service:name%>.h"
+<%/service:extends%>
+<%#service:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_types.h"
+<%/service:thrift_includes%>
+<%#service:cpp_includes%>
+#include <%cpp_include%>
+<%/service:cpp_includes%>
+<%#service:any_streams?%>
+#include <yarpl/Flowable.h>
+<%/service:any_streams?%>
 
 namespace folly {
   class IOBuf;

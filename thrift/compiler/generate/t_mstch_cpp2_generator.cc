@@ -548,9 +548,8 @@ class mstch_cpp2_service : public mstch_service {
     register_methods(
         this,
         {
-            {"service:programName", &mstch_cpp2_service::program_name},
-            {"service:programIncludePrefix",
-             &mstch_cpp2_service::include_prefix},
+            {"service:program_name", &mstch_cpp2_service::program_name},
+            {"service:include_prefix", &mstch_cpp2_service::include_prefix},
             {"service:thrift_includes", &mstch_cpp2_service::thrift_includes},
             {"service:namespace_cpp2", &mstch_cpp2_service::namespace_cpp2},
             {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
@@ -667,8 +666,7 @@ class mstch_cpp2_program : public mstch_program {
         {
             {"program:cpp_includes", &mstch_cpp2_program::cpp_includes},
             {"program:namespace_cpp2", &mstch_cpp2_program::namespace_cpp2},
-            {"program:normalizedIncludePrefix",
-             &mstch_cpp2_program::include_prefix},
+            {"program:include_prefix", &mstch_cpp2_program::include_prefix},
             {"program:enums?", &mstch_cpp2_program::has_enums},
             {"program:typedefs?", &mstch_cpp2_program::has_typedefs},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
@@ -975,11 +973,12 @@ mstch::array t_mstch_cpp2_generator::get_namespace_array(
 
 mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
   mstch::array a{};
-  for (auto const& include : program->get_cpp_includes()) {
+  for (auto include : program->get_cpp_includes()) {
     mstch::map cpp_include;
-    cpp_include.emplace(
-        "system?", include.at(0) == '<' ? std::to_string(0) : "");
-    cpp_include.emplace("path", std::string(include));
+    if (include.at(0) != '<') {
+      include = "\"" + include + "\"";
+    }
+    cpp_include.emplace("cpp_include", std::string(include));
     a.push_back(cpp_include);
   }
   return a;

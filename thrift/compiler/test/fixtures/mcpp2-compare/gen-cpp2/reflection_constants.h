@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/reflection_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "reflection_types.h"
+
 namespace cpp2 {
 
 struct reflection_constants {

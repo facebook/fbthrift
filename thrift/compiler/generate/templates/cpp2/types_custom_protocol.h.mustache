@@ -18,7 +18,6 @@
 <% > Autogen%>
 #pragma once
 
-
 /**
  * This header file includes the tcc files of the corresponding header file
  * and the header files of its dependent types. Include this header file
@@ -26,12 +25,11 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "<%service:programIncludePrefix%><%service:name%>.tcc"
-
-#include "<%service:programIncludePrefix%><%service:programName%>_types_custom_protocol.h"
-<%#service:thrift_includes%>
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types_custom_protocol.h"
-<%/service:thrift_includes%>
+#include "<%service:include_prefix%><%service:name%>.tcc"
+#include "<%service:include_prefix%><%service:program_name%>_types_custom_protocol.h"
 <%#service:extends%>
-#include "<%service:programIncludePrefix%><%service:name%>_custom_protocol.h"
+#include "<%service:include_prefix%><%service:name%>_custom_protocol.h"
 <%/service:extends%>
+<%#service:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_types_custom_protocol.h"
+<%/service:thrift_includes%>

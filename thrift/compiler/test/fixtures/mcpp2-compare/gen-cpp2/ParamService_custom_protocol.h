@@ -6,7 +6,6 @@
  */
 #pragma once
 
-
 /**
  * This header file includes the tcc files of the corresponding header file
  * and the header files of its dependent types. Include this header file
@@ -15,6 +14,5 @@
  */
 
 #include "src/gen-cpp2/ParamService.tcc"
-
 #include "src/gen-cpp2/module_types_custom_protocol.h"
 #include "includes_types_custom_protocol.h"

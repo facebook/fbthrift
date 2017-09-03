@@ -5,16 +5,12 @@
  *  @generated
  */
 #include "src/gen-cpp2/include1_types.h"
-
 #include "src/gen-cpp2/include1_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
 #include "src/gen-cpp2/include1_data.h"
-
-
 
 namespace some { namespace ns {
 

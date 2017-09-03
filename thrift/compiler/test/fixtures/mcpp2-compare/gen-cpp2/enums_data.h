@@ -8,7 +8,6 @@
 
 #include <array>
 #include <cstddef>
-
 #include <thrift/lib/cpp/Thrift.h>
 
 #include "src/gen-cpp2/enums_types.h"

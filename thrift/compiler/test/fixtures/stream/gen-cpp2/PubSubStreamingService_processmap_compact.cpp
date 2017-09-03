@@ -4,12 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "src/gen-cpp2/PubSubStreamingService.h"
 
+#include "src/gen-cpp2/PubSubStreamingService.h"
 #include "src/gen-cpp2/PubSubStreamingService.tcc"
 
 namespace cpp2 {
-
 } // cpp2
 namespace apache { namespace thrift {
 

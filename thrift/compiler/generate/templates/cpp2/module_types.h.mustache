@@ -14,21 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
+%><% > Autogen%>
 #pragma once
 
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
 
-<% > module_types_h/includes%>
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
-
-<% > module_types_h/cpp_includes%>
-
+<%#program:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_types.h"
+<%/program:thrift_includes%>
+<%#program:cpp_includes%>
+#include <%cpp_include%>
+<%/program:cpp_includes%>
 
 <%#program:enums?%>
 <% > module_types_h/declare_enums%>

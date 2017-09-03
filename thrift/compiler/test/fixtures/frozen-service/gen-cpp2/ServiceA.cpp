@@ -5,15 +5,14 @@
  *  @generated
  */
 #include "src/gen-cpp2/ServiceA.h"
-
 #include "src/gen-cpp2/ServiceA.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
-namespace some { namespace ns {
 
+namespace some { namespace ns {
 std::unique_ptr<apache::thrift::AsyncProcessor> ServiceASvIf::getProcessor() {
   return std::make_unique<ServiceAAsyncProcessor>(this);
 }

@@ -5,16 +5,12 @@
  *  @generated
  */
 #include "src/gen-cpp2/module_types.h"
-
 #include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
 #include "src/gen-cpp2/module_data.h"
-
-
 
 namespace cpp2 {
 

@@ -6,16 +6,14 @@
  */
 #pragma once
 
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
-
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 #include "folly/sorted_vector_types.h"
-
 
 namespace a { namespace different { namespace ns {
 class AStruct;

@@ -14,19 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
-
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types.tcc"
+%><% > Autogen%>
+#include "<%program:include_prefix%><%program:name%>_types.h"
+#include "<%program:include_prefix%><%program:name%>_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "<%program:normalizedIncludePrefix%><%program:name%>_data.h"
-
-
+#include "<%program:include_prefix%><%program:name%>_data.h"
 
 <% > module_types_cpp/declare_enums%>
 <%#program:structs%><%!

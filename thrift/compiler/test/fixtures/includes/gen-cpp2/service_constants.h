@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/service_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "service_types.h"
+
 namespace cpp2 {
 
 struct service_constants {

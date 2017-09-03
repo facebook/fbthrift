@@ -5,14 +5,13 @@
  *  @generated
  */
 #include "src/gen-cpp2/ReturnService.h"
-
 #include "src/gen-cpp2/ReturnService.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace some { namespace valid { namespace ns {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace some { namespace valid { namespace ns {
 std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor() {
   return std::make_unique<ReturnServiceAsyncProcessor>(this);
 }

@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/include1_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "include1_types.h"
+
 namespace some { namespace ns {
 
 struct include1_constants {

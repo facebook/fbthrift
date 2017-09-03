@@ -5,16 +5,12 @@
  *  @generated
  */
 #include "src/gen-cpp2/reflection_types.h"
-
 #include "src/gen-cpp2/reflection_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
 #include "src/gen-cpp2/reflection_data.h"
-
-
 
 namespace cpp2 {
 

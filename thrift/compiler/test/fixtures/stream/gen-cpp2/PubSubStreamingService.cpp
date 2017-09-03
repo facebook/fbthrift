@@ -5,14 +5,13 @@
  *  @generated
  */
 #include "src/gen-cpp2/PubSubStreamingService.h"
-
 #include "src/gen-cpp2/PubSubStreamingService.tcc"
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
   return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
 }
