@@ -51,6 +51,16 @@ uint32_t Included::read(Protocol_* iprot) {
         }
         break;
       }
+      case 2:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::read(iprot, &this->MyTransitiveField);
+          this->__isset.MyTransitiveField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -70,6 +80,8 @@ uint32_t Included::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Included");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
   xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::serializedSize(prot_, &this->MyTransitiveField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -80,6 +92,8 @@ uint32_t Included::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("Included");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
   xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::serializedSizeZC(prot_, &this->MyTransitiveField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -90,6 +104,9 @@ uint32_t Included::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("Included");
   xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
   xfer += prot_->writeI64(this->MyIntField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::write(prot_, &this->MyTransitiveField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

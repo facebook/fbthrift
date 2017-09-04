@@ -53,6 +53,16 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       }
       case 2:
       {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::read(iprot, &this->MyOtherIncludedField);
+          this->__isset.MyOtherIncludedField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 3:
+      {
         if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->MyIncludedInt);
           this->__isset.MyIncludedInt = true;
@@ -80,7 +90,9 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIncludedField", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::serializedSize(prot_, &this->MyIncludedField);
-  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 2);
+  xfer += prot_->serializedFieldSize("MyOtherIncludedField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::serializedSize(prot_, &this->MyOtherIncludedField);
+  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 3);
   xfer += prot_->serializedSizeI64(this->MyIncludedInt);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -92,7 +104,9 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIncludedField", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::serializedSizeZC(prot_, &this->MyIncludedField);
-  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 2);
+  xfer += prot_->serializedFieldSize("MyOtherIncludedField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::serializedSizeZC(prot_, &this->MyOtherIncludedField);
+  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 3);
   xfer += prot_->serializedSizeI64(this->MyIncludedInt);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -105,7 +119,10 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("MyIncludedField", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::write(prot_, &this->MyIncludedField);
   xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("MyIncludedInt", apache::thrift::protocol::T_I64, 2);
+  xfer += prot_->writeFieldBegin("MyOtherIncludedField", apache::thrift::protocol::T_STRUCT, 2);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::write(prot_, &this->MyOtherIncludedField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyIncludedInt", apache::thrift::protocol::T_I64, 3);
   xfer += prot_->writeI64(this->MyIncludedInt);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();

@@ -29,6 +29,8 @@ from folly.executor cimport get_executor
 
 cimport includes.types
 import includes.types
+import transitive.types
+cimport transitive.types
 
 import asyncio
 import functools

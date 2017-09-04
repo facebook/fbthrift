@@ -19,9 +19,11 @@ public final class Included
 {
     @ThriftConstructor
     public Included(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField
+        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
+        @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE) final test.fixtures.includes.transitive.Foo myTransitiveField
     ) {
         this.myIntField = myIntField;
+        this.myTransitiveField = myTransitiveField;
     }
 
     public static class Builder {
@@ -31,15 +33,23 @@ public final class Included
             this.myIntField = myIntField;
             return this;
         }
+        private test.fixtures.includes.transitive.Foo myTransitiveField;
+
+        public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
+            this.myTransitiveField = myTransitiveField;
+            return this;
+        }
 
         public Builder() { }
         public Builder(Included other) {
             this.myIntField = other.myIntField;
+            this.myTransitiveField = other.myTransitiveField;
         }
 
         public Included build() {
             return new Included (
-                this.myIntField
+                this.myIntField,
+                this.myTransitiveField
             );
         }
     }
@@ -49,11 +59,17 @@ public final class Included
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
+    private final test.fixtures.includes.transitive.Foo myTransitiveField;
+
+    @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+    public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
+
     @Override
     public String toString()
     {
         return toStringHelper(this)
             .add("myIntField", myIntField)
+            .add("myTransitiveField", myTransitiveField)
             .toString();
     }
 
@@ -69,13 +85,15 @@ public final class Included
         Included other = (Included)o;
 
         return
-            Objects.equals(myIntField, other.myIntField);
+            Objects.equals(myIntField, other.myIntField) &&
+            Objects.equals(myTransitiveField, other.myTransitiveField);
     }
 
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
-            myIntField
+            myIntField,
+            myTransitiveField
         });
     }
 }

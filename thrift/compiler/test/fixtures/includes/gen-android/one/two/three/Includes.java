@@ -19,5 +19,7 @@ public class Includes {
 
   public static final ThriftProperty<Long> Included_MyIntField =
       new ThriftProperty<Long>("MyIntField", TType.I64, (short) 1);
+  public static final ThriftProperty<TransitiveLogger> Included_MyTransitiveField =
+      new ThriftProperty<TransitiveLogger>("MyTransitiveField", TType.STRUCT, (short) 2);
   
 }

@@ -39,21 +39,26 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(
         MyStruct self,
         MyIncludedField=None,
+        MyOtherIncludedField=None,
         MyIncludedInt=None
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           MyIncludedField,
+          MyOtherIncludedField,
           MyIncludedInt,
         ))
 
     def __call__(
         MyStruct self,
         MyIncludedField=NOTSET,
+        MyOtherIncludedField=NOTSET,
         MyIncludedInt=NOTSET
     ):
         changes = any((
             MyIncludedField is not NOTSET,
+
+            MyOtherIncludedField is not NOTSET,
 
             MyIncludedInt is not NOTSET,
         ))
@@ -65,6 +70,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
           MyIncludedField,
+          MyOtherIncludedField,
           MyIncludedInt,
         ))
         return inst
@@ -73,6 +79,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
         object MyIncludedField,
+        object MyOtherIncludedField,
         object MyIncludedInt
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
@@ -89,6 +96,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             elif MyIncludedField is NOTSET:
                 MyIncludedField = None
 
+            if MyOtherIncludedField is None:
+                deref(c_inst).MyOtherIncludedField = _MyStruct_defaults.MyOtherIncludedField
+                deref(c_inst).__isset.MyOtherIncludedField = False
+            elif MyOtherIncludedField is NOTSET:
+                MyOtherIncludedField = None
+
             if MyIncludedInt is None:
                 deref(c_inst).MyIncludedInt = _MyStruct_defaults.MyIncludedInt
                 deref(c_inst).__isset.MyIncludedInt = False
@@ -98,6 +111,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyIncludedField is not None:
             deref(c_inst).MyIncludedField = deref((<includes.types.Included?> MyIncludedField)._cpp_obj)
             deref(c_inst).__isset.MyIncludedField = True
+
+        if MyOtherIncludedField is not None:
+            deref(c_inst).MyOtherIncludedField = deref((<includes.types.Included?> MyOtherIncludedField)._cpp_obj)
+            deref(c_inst).__isset.MyOtherIncludedField = True
 
         if MyIncludedInt is not None:
             deref(c_inst).MyIncludedInt = MyIncludedInt
@@ -109,10 +126,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'MyIncludedField', self.MyIncludedField
+        yield 'MyOtherIncludedField', self.MyOtherIncludedField
         yield 'MyIncludedInt', self.MyIncludedInt
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIncludedField or deref(self._cpp_obj).__isset.MyIncludedInt
+        return deref(self._cpp_obj).__isset.MyIncludedField or deref(self._cpp_obj).__isset.MyOtherIncludedField or deref(self._cpp_obj).__isset.MyIncludedInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -122,12 +140,18 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIncludedField(self):
-        if not deref(self._cpp_obj).__isset.MyIncludedField:
-            return None
-
         if self.__MyIncludedField is None:
             self.__MyIncludedField = includes.types.Included.create(make_shared[includes.types.cIncluded](deref(self._cpp_obj).MyIncludedField))
         return self.__MyIncludedField
+
+    @property
+    def MyOtherIncludedField(self):
+        if not deref(self._cpp_obj).__isset.MyOtherIncludedField:
+            return None
+
+        if self.__MyOtherIncludedField is None:
+            self.__MyOtherIncludedField = includes.types.Included.create(make_shared[includes.types.cIncluded](deref(self._cpp_obj).MyOtherIncludedField))
+        return self.__MyOtherIncludedField
 
     @property
     def MyIncludedInt(self):
@@ -138,12 +162,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not self.__hash:
             self.__hash = hash((
             self.MyIncludedField,
+            self.MyOtherIncludedField,
             self.MyIncludedInt,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
+        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyOtherIncludedField={repr(self.MyOtherIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

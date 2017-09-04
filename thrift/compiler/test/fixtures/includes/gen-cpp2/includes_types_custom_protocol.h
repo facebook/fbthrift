@@ -16,3 +16,4 @@
 
 #include "src/gen-cpp2/includes_types.tcc"
 
+#include "transitive_types_custom_protocol.h"

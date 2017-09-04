@@ -15,6 +15,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
+cimport transitive.types
 
 
 
@@ -26,12 +27,14 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
     cdef cppclass cIncluded__isset "cpp2::Included::__isset":
         bint MyIntField
+        bint MyTransitiveField
 
     cdef cppclass cIncluded "cpp2::Included":
         cIncluded() except +
         cIncluded(const cIncluded&) except +
         bint operator==(cIncluded&)
         int64_t MyIntField
+        transitive.types.cFoo MyTransitiveField
         cIncluded__isset __isset
 
 
@@ -50,11 +53,13 @@ cdef class Included(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cIncluded] _cpp_obj
+    cdef transitive.types.Foo __MyTransitiveField
 
     @staticmethod
     cdef unique_ptr[cIncluded] _make_instance(
         cIncluded* base_instance,
-        object MyIntField
+        object MyIntField,
+        object MyTransitiveField
     ) except *
 
     @staticmethod
@@ -64,4 +69,5 @@ cdef class Included(thrift.py3.types.Struct):
 
 
 cdef extern from "gen-cpp2/includes_constants.h" namespace "cpp2":
+    cdef cIncluded cExampleIncluded "cpp2::includes_constants::ExampleIncluded"()
     cdef int64_t cIncludedConstant "cpp2::includes_constants::IncludedConstant"

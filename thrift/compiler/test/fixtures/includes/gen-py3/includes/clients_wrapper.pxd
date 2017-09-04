@@ -18,6 +18,7 @@ from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport includes.types
 
+cimport transitive.types
 
 cdef extern from "gen-py3/includes/clients_wrapper.h" namespace "cpp2":
   pass

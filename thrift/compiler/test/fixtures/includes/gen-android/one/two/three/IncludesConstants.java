@@ -12,6 +12,13 @@ import com.facebook.thrift.lite.protocol.*;
 
 
 public class IncludesConstants {
+  public static final IncludesLogger ExampleIncluded = new IncludesLogger(Includes.EventType.Included);
+  static {
+    ExampleIncluded.addProperty(Includes.Included_MyIntField, 2L);
+    TransitiveLogger tmp0 = new TransitiveLogger(Transitive.EventType.Foo);
+    tmp0.addProperty(Transitive.Foo_a, 2L);
+    ExampleIncluded.addProperty(Includes.Included_MyTransitiveField, tmp0);
+  }
   public static final long IncludedConstant = 42L;
 
 }

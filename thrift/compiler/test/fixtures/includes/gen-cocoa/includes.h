@@ -19,27 +19,33 @@
 #import <thrift/TObjective-C.h>
 #import <thrift/TBase.h>
 #import <thrift/TBaseStruct.h>
+#import "transitive.h"
 
 typedef int64_t IncludedInt64;
 
 @interface Included : TBaseStruct <TBase, NSCoding> {
   int64_t __thrift_MyIntField;
+  Foo * __thrift_MyTransitiveField;
 
   BOOL __thrift_MyIntField_set;
+  BOOL __thrift_MyTransitiveField_set;
 }
 
 @property (nonatomic) int64_t MyIntField;
+@property (nonatomic, retain) Foo * MyTransitiveField;
 
 - (id) init;
-- (id) initWithMyIntField: (int64_t) MyIntField;
+- (id) initWithMyIntField: (int64_t) MyIntField MyTransitiveField: (Foo *) MyTransitiveField;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
 
 - (BOOL) MyIntFieldIsSet;
+- (BOOL) MyTransitiveFieldIsSet;
 @end
 
 @interface includesConstants : TBaseStruct {
 }
++ (Included *) ExampleIncluded;
 + (int64_t) IncludedConstant;
 @end

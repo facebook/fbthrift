@@ -27,6 +27,7 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
         bint MyIncludedField
+        bint MyOtherIncludedField
         bint MyIncludedInt
 
     cdef cppclass cMyStruct "cpp2::MyStruct":
@@ -34,6 +35,7 @@ cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
         includes.types.cIncluded MyIncludedField
+        includes.types.cIncluded MyOtherIncludedField
         int64_t MyIncludedInt
         cMyStruct__isset __isset
 
@@ -54,11 +56,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef includes.types.Included __MyIncludedField
+    cdef includes.types.Included __MyOtherIncludedField
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
         object MyIncludedField,
+        object MyOtherIncludedField,
         object MyIncludedInt
     ) except *
 

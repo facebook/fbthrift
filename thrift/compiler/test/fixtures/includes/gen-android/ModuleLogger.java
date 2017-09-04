@@ -44,6 +44,12 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         }
       
+        if (mMap.containsKey(Module.MyStruct_MyOtherIncludedField) && mMap.get(Module.MyStruct_MyOtherIncludedField) != null) {
+          writeFieldBegin(oprot, Module.MyStruct_MyOtherIncludedField);
+          ((one.two.three.IncludesLogger) mMap.get(Module.MyStruct_MyOtherIncludedField)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
         if (mMap.containsKey(Module.MyStruct_MyIncludedInt) && mMap.get(Module.MyStruct_MyIncludedInt) != null) {
           writeFieldBegin(oprot, Module.MyStruct_MyIncludedInt);
           oprot.writeI64((long) mMap.get(Module.MyStruct_MyIncludedInt));

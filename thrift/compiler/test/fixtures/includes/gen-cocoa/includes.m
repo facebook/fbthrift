@@ -19,13 +19,26 @@
 #import <thrift/TObjective-C.h>
 #import <thrift/TBase.h>
 #import <thrift/TBaseStruct.h>
+#import "transitive.h"
 
 #import "includes.h"
 
+static Included * ExampleIncluded;
 static int64_t IncludedConstant = 42;
 
 @implementation includesConstants
 + (void) initialize {
+  ExampleIncluded = [[Included alloc] init];
+  [ExampleIncluded setMyIntField:2];
+  Foo * tmp0 = [[[Foo alloc] init] autorelease_stub];
+  [tmp0 setA:2];
+
+  [ExampleIncluded setMyTransitiveField:tmp0];
+
+;
+}
++ (Included *) ExampleIncluded{
+  return ExampleIncluded;
 }
 + (int64_t) IncludedConstant{
   return IncludedConstant;
@@ -39,14 +52,19 @@ static int64_t IncludedConstant = 42;
   self = [super init];
   self.MyIntField = 0;
 
+  self.MyTransitiveField = [[[Foo alloc] init] autorelease_stub];
+  [self.MyTransitiveField setA:2];
+
   return self;
 }
 
-- (id) initWithMyIntField: (int64_t) MyIntField
+- (id) initWithMyIntField: (int64_t) MyIntField MyTransitiveField: (Foo *) MyTransitiveField
 {
   self = [super init];
   __thrift_MyIntField = MyIntField;
   __thrift_MyIntField_set = YES;
+  __thrift_MyTransitiveField = MyTransitiveField;
+  __thrift_MyTransitiveField_set = YES;
   return self;
 }
 
@@ -58,6 +76,11 @@ static int64_t IncludedConstant = 42;
     __thrift_MyIntField = [decoder decodeInt64ForKey: @"MyIntField"];
     __thrift_MyIntField_set = YES;
   }
+  if ([decoder containsValueForKey: @"MyTransitiveField"])
+  {
+    __thrift_MyTransitiveField = [[decoder decodeObjectForKey: @"MyTransitiveField"] retain_stub];
+    __thrift_MyTransitiveField_set = YES;
+  }
   return self;
 }
 
@@ -66,6 +89,10 @@ static int64_t IncludedConstant = 42;
   if (__thrift_MyIntField_set)
   {
     [encoder encodeInt64: __thrift_MyIntField forKey: @"MyIntField"];
+  }
+  if (__thrift_MyTransitiveField_set)
+  {
+    [encoder encodeObject: __thrift_MyTransitiveField forKey: @"MyTransitiveField"];
   }
 }
 
@@ -85,6 +112,25 @@ static int64_t IncludedConstant = 42;
 
 - (void) unsetMyIntField {
   __thrift_MyIntField_set = NO;
+}
+
+- (Foo *) MyTransitiveField {
+  return __thrift_MyTransitiveField;
+}
+
+- (void) setMyTransitiveField: (Foo *) MyTransitiveField {
+  [self throwExceptionIfImmutable];
+  __thrift_MyTransitiveField = MyTransitiveField;
+  __thrift_MyTransitiveField_set = YES;
+}
+
+- (BOOL) MyTransitiveFieldIsSet {
+  return __thrift_MyTransitiveField_set;
+}
+
+- (void) unsetMyTransitiveField {
+  __thrift_MyTransitiveField = nil;
+  __thrift_MyTransitiveField_set = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -110,6 +156,16 @@ static int64_t IncludedConstant = 42;
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 2:
+        if (fieldType == TType_STRUCT) {
+          Foo *fieldValue = [[Foo alloc] init];
+          [fieldValue read: inProtocol];
+          [self setMyTransitiveField: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -125,6 +181,13 @@ static int64_t IncludedConstant = 42;
     [outProtocol writeFieldBeginWithName: @"MyIntField" type: TType_I64 fieldID: 1];
     [outProtocol writeI64: __thrift_MyIntField];
     [outProtocol writeFieldEnd];
+  }
+  if (__thrift_MyTransitiveField_set) {
+    if (__thrift_MyTransitiveField != nil) {
+      [outProtocol writeFieldBeginWithName: @"MyTransitiveField" type: TType_STRUCT fieldID: 2];
+      [__thrift_MyTransitiveField write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
   }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
@@ -142,12 +205,18 @@ static int64_t IncludedConstant = 42;
   NSMutableDictionary *ret = [NSMutableDictionary dictionary];
   ret[@"__thrift_struct_name"] = @"Included";
   ret[@"MyIntField"] = @(__thrift_MyIntField);
+  if (__thrift_MyTransitiveField) {
+    ret[@"MyTransitiveField"] = [__thrift_MyTransitiveField toDict];
+  }
   return [ret copy];
 }
 
 - (BOOL) makeImmutable {
   const BOOL wasImmutable = [self isImmutable];
   if (!wasImmutable) {
+    if (__thrift_MyTransitiveField && ![__thrift_MyTransitiveField isImmutable]) {
+      [__thrift_MyTransitiveField makeImmutable];
+    }
     [super makeImmutable];
   }
   return YES;
@@ -157,6 +226,10 @@ static int64_t IncludedConstant = 42;
   Included *newCopy = [[[self class] alloc] init];;
   newCopy->__thrift_MyIntField = self->__thrift_MyIntField;
   newCopy->__thrift_MyIntField_set = self->__thrift_MyIntField_set;
+  if (__thrift_MyTransitiveField) {
+    newCopy->__thrift_MyTransitiveField = [self->__thrift_MyTransitiveField mutableCopyWithZone:zone];
+  }
+  newCopy->__thrift_MyTransitiveField_set = self->__thrift_MyTransitiveField_set;
   return newCopy;
 }
 

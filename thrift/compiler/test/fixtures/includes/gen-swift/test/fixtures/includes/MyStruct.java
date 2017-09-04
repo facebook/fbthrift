@@ -20,9 +20,11 @@ public final class MyStruct
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
-        @ThriftField(value=2, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
+        @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myOtherIncludedField,
+        @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
     ) {
         this.myIncludedField = myIncludedField;
+        this.myOtherIncludedField = myOtherIncludedField;
         this.myIncludedInt = myIncludedInt;
     }
 
@@ -31,6 +33,12 @@ public final class MyStruct
 
         public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
+            return this;
+        }
+        private test.fixtures.includes.includes.Included myOtherIncludedField;
+
+        public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
+            this.myOtherIncludedField = myOtherIncludedField;
             return this;
         }
         private long myIncludedInt;
@@ -43,12 +51,14 @@ public final class MyStruct
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIncludedField = other.myIncludedField;
+            this.myOtherIncludedField = other.myOtherIncludedField;
             this.myIncludedInt = other.myIncludedInt;
         }
 
         public MyStruct build() {
             return new MyStruct (
                 this.myIncludedField,
+                this.myOtherIncludedField,
                 this.myIncludedInt
             );
         }
@@ -59,9 +69,14 @@ public final class MyStruct
     @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
 
+    private final test.fixtures.includes.includes.Included myOtherIncludedField;
+
+    @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+    public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
+
     private final long myIncludedInt;
 
-    @ThriftField(value=2, name="MyIncludedInt", requiredness=Requiredness.NONE)
+    @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
 
     @Override
@@ -69,6 +84,7 @@ public final class MyStruct
     {
         return toStringHelper(this)
             .add("myIncludedField", myIncludedField)
+            .add("myOtherIncludedField", myOtherIncludedField)
             .add("myIncludedInt", myIncludedInt)
             .toString();
     }
@@ -86,6 +102,7 @@ public final class MyStruct
 
         return
             Objects.equals(myIncludedField, other.myIncludedField) &&
+            Objects.equals(myOtherIncludedField, other.myOtherIncludedField) &&
             Objects.equals(myIncludedInt, other.myIncludedInt);
     }
 
@@ -93,6 +110,7 @@ public final class MyStruct
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myIncludedField,
+            myOtherIncludedField,
             myIncludedInt
         });
     }

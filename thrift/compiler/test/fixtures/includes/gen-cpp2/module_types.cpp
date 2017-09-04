@@ -17,12 +17,16 @@ namespace cpp2 {
 void MyStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);
+  ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyOtherIncludedField);
   MyIncludedInt = 42LL;
   __isset.__clear();
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!((MyIncludedField == rhs.MyIncludedField))) {
+    return false;
+  }
+  if (!((MyOtherIncludedField == rhs.MyOtherIncludedField))) {
     return false;
   }
   if (!((MyIncludedInt == rhs.MyIncludedInt))) {
@@ -39,14 +43,26 @@ const  ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
   return std::move(MyIncludedField);
 }
 
+const  ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
+  return MyOtherIncludedField;
+}
+
+ ::cpp2::Included MyStruct::get_MyOtherIncludedField() && {
+  return std::move(MyOtherIncludedField);
+}
+
 void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "MyIncludedField") {
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-  else if (_fname == "MyIncludedInt") {
+  else if (_fname == "MyOtherIncludedField") {
     fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "MyIncludedInt") {
+    fid = 3;
     _ftype = apache::thrift::protocol::T_I64;
   }
 }
@@ -54,6 +70,7 @@ void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedField, b.MyIncludedField);
+  swap(a.MyOtherIncludedField, b.MyOtherIncludedField);
   swap(a.MyIncludedInt, b.MyIncludedInt);
   swap(a.__isset, b.__isset);
 }

@@ -17,6 +17,7 @@ namespace cpp2 {
 void Included::__clear() {
   // clear all fields
   MyIntField = 0LL;
+  ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::clear(&MyTransitiveField);
   __isset.__clear();
 }
 
@@ -24,7 +25,18 @@ bool Included::operator==(const Included& rhs) const {
   if (!((MyIntField == rhs.MyIntField))) {
     return false;
   }
+  if (!((MyTransitiveField == rhs.MyTransitiveField))) {
+    return false;
+  }
   return true;
+}
+
+const  ::cpp2::Foo& Included::get_MyTransitiveField() const& {
+  return MyTransitiveField;
+}
+
+ ::cpp2::Foo Included::get_MyTransitiveField() && {
+  return std::move(MyTransitiveField);
 }
 
 void Included::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -33,11 +45,16 @@ void Included::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, 
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
+  else if (_fname == "MyTransitiveField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
 }
 
 void swap(Included& a, Included& b) {
   using ::std::swap;
   swap(a.MyIntField, b.MyIntField);
+  swap(a.MyTransitiveField, b.MyTransitiveField);
   swap(a.__isset, b.__isset);
 }
 

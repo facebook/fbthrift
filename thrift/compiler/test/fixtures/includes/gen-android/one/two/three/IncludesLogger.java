@@ -44,6 +44,12 @@ public class IncludesLogger {
           oprot.writeFieldEnd();
         }
       
+        if (mMap.containsKey(Includes.Included_MyTransitiveField) && mMap.get(Includes.Included_MyTransitiveField) != null) {
+          writeFieldBegin(oprot, Includes.Included_MyTransitiveField);
+          ((TransitiveLogger) mMap.get(Includes.Included_MyTransitiveField)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         break;

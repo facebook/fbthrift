@@ -47,30 +47,37 @@ import qualified Thrift.Types as Types
 import qualified Thrift.Serializable as Serializable
 import qualified Thrift.Arbitraries as Arbitraries
 
+import qualified Transitive_Types as Transitive_Types
+
 
 type IncludedInt64 = Int.Int64
 
 data Included = Included
   { included_MyIntField :: Int.Int64
+  , included_MyTransitiveField :: Transitive_Types.Foo
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Included where
   encode = encode_Included
   decode = decode_Included
 instance Hashable.Hashable Included where
-  hashWithSalt salt record = salt   `Hashable.hashWithSalt` included_MyIntField record  
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` included_MyIntField record   `Hashable.hashWithSalt` included_MyTransitiveField record  
 instance DeepSeq.NFData Included where
   rnf _record0 =
     DeepSeq.rnf (included_MyIntField _record0) `seq`
+    DeepSeq.rnf (included_MyTransitiveField _record0) `seq`
     ()
 instance Arbitrary.Arbitrary Included where 
   arbitrary = Monad.liftM Included (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
   shrink obj | obj == default_Included = []
              | otherwise = Maybe.catMaybes
     [ if obj == default_Included{included_MyIntField = included_MyIntField obj} then Nothing else Just $ default_Included{included_MyIntField = included_MyIntField obj}
+    , if obj == default_Included{included_MyTransitiveField = included_MyTransitiveField obj} then Nothing else Just $ default_Included{included_MyTransitiveField = included_MyTransitiveField obj}
     ]
 from_Included :: Included -> Types.ThriftVal
 from_Included record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("MyIntField",Types.TI64 _v3))) $ included_MyIntField record
+  , (\_v3 -> Just (2, ("MyTransitiveField",Transitive_Types.from_Foo _v3))) $ included_MyTransitiveField record
   ]
 write_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Included -> IO ()
 write_Included oprot record = Thrift.writeVal oprot $ from_Included record
@@ -78,7 +85,8 @@ encode_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Included ->
 encode_Included oprot record = Thrift.serializeVal oprot $ from_Included record
 to_Included :: Types.ThriftVal -> Included
 to_Included (Types.TStruct fields) = Included{
-  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
+  included_MyTransitiveField = maybe (included_MyTransitiveField default_Included) (\(_,_val5) -> (case _val5 of {Types.TStruct _val7 -> (Transitive_Types.to_Foo (Types.TStruct _val7)); _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Included _ = error "not a struct"
 read_Included :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Included
@@ -86,7 +94,8 @@ read_Included iprot = to_Included <$> Thrift.readVal iprot (Types.T_STRUCT typem
 decode_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Included
 decode_Included iprot bs = to_Included $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Included) bs
 typemap_Included :: Types.TypeMap
-typemap_Included = Map.fromList [("MyIntField",(1,Types.T_I64))]
+typemap_Included = Map.fromList [("MyIntField",(1,Types.T_I64)),("MyTransitiveField",(2,(Types.T_STRUCT Transitive_Types.typemap_Foo)))]
 default_Included :: Included
 default_Included = Included{
-  included_MyIntField = 0}
+  included_MyIntField = 0,
+  included_MyTransitiveField = Transitive_Types.default_Foo{Transitive_Types.foo_a = 2}}

@@ -47,8 +47,13 @@ import qualified Thrift.Types as Types
 import qualified Thrift.Serializable as Serializable
 import qualified Thrift.Arbitraries as Arbitraries
 
+import qualified Transitive_Types as Transitive_Types
+
 
 import qualified Includes_Types
+exampleIncluded :: Includes_Types.Included
+exampleIncluded = Includes_Types.default_Included{Includes_Types.included_MyIntField = 2, Includes_Types.included_MyTransitiveField = Transitive_Types.default_Foo{Transitive_Types.foo_a = 2}}
+
 includedConstant :: Int.Int64
 includedConstant = 42
 

@@ -30,6 +30,8 @@ import traceback
 
 cimport includes.types
 import includes.types
+cimport transitive.types
+import transitive.types
 
 
 

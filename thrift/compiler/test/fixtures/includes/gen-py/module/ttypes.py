@@ -35,6 +35,7 @@ class MyStruct:
   """
   Attributes:
    - MyIncludedField
+   - MyOtherIncludedField
    - MyIncludedInt
   """
 
@@ -67,6 +68,12 @@ class MyStruct:
         else:
           iprot.skip(ftype)
       elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.MyOtherIncludedField = includes.ttypes.Included()
+          self.MyOtherIncludedField.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
         if ftype == TType.I64:
           self.MyIncludedInt = iprot.readI64()
         else:
@@ -92,8 +99,12 @@ class MyStruct:
       oprot.writeFieldBegin('MyIncludedField', TType.STRUCT, 1)
       self.MyIncludedField.write(oprot)
       oprot.writeFieldEnd()
+    if self.MyOtherIncludedField != None:
+      oprot.writeFieldBegin('MyOtherIncludedField', TType.STRUCT, 2)
+      self.MyOtherIncludedField.write(oprot)
+      oprot.writeFieldEnd()
     if self.MyIncludedInt != None:
-      oprot.writeFieldBegin('MyIncludedInt', TType.I64, 2)
+      oprot.writeFieldBegin('MyIncludedInt', TType.I64, 3)
       oprot.writeI64(self.MyIncludedInt)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -105,6 +116,9 @@ class MyStruct:
     value = pprint.pformat(self.MyIncludedField, indent=0)
     value = padding.join(value.splitlines(True))
     L.append('    MyIncludedField=%s' % (value))
+    value = pprint.pformat(self.MyOtherIncludedField, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    MyOtherIncludedField=%s' % (value))
     value = pprint.pformat(self.MyIncludedInt, indent=0)
     value = padding.join(value.splitlines(True))
     L.append('    MyIncludedInt=%s' % (value))
@@ -126,8 +140,14 @@ class MyStruct:
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'MyIncludedField', [includes.ttypes.Included, includes.ttypes.Included.thrift_spec, False], None, 2, ), # 1
-  (2, TType.I64, 'MyIncludedInt', None, 42, 2, ), # 2
+  (1, TType.STRUCT, 'MyIncludedField', [includes.ttypes.Included, includes.ttypes.Included.thrift_spec, False], includes.ttypes.Included(**{
+    "MyIntField" : 2,
+    "MyTransitiveField" : transitive.ttypes.Foo(**{
+      "a" : 2,
+    }),
+  }), 2, ), # 1
+  (2, TType.STRUCT, 'MyOtherIncludedField', [includes.ttypes.Included, includes.ttypes.Included.thrift_spec, False], None, 2, ), # 2
+  (3, TType.I64, 'MyIncludedInt', None, 42, 2, ), # 3
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -135,9 +155,17 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, MyIncludedField=None, MyIncludedInt=MyStruct.thrift_spec[2][4],):
+def MyStruct__init__(self, MyIncludedField=MyStruct.thrift_spec[1][4], MyOtherIncludedField=None, MyIncludedInt=MyStruct.thrift_spec[3][4],):
+  if MyIncludedField is self.thrift_spec[1][4]:
+    MyIncludedField = includes.ttypes.Included(**{
+    "MyIntField" : 2,
+    "MyTransitiveField" : transitive.ttypes.Foo(**{
+      "a" : 2,
+    }),
+  })
   self.MyIncludedField = MyIncludedField
-  if MyIncludedInt is self.thrift_spec[2][4]:
+  self.MyOtherIncludedField = MyOtherIncludedField
+  if MyIncludedInt is self.thrift_spec[3][4]:
     MyIncludedInt = 42
   self.MyIncludedInt = MyIncludedInt
 

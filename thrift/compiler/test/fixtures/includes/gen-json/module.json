@@ -9,6 +9,12 @@
         "MyIncludedField" : {
           "type_enum" : "STRUCT",
           "spec_args" : "includes.Included",
+          "required" : true,
+          "default_value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } }
+        },
+        "MyOtherIncludedField" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "includes.Included",
           "required" : true
         },
         "MyIncludedInt" : {

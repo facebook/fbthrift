@@ -34,16 +34,25 @@
 - (instancetype) init
 {
   self = [super init];
+  self.MyIncludedField = [[[Included alloc] init] autorelease_stub];
+  [self.MyIncludedField setMyIntField:2];
+  Foo * tmp0 = [[[Foo alloc] init] autorelease_stub];
+  [tmp0 setA:2];
+
+  [self.MyIncludedField setMyTransitiveField:tmp0];
+
   self.MyIncludedInt = 42;
 
   return self;
 }
 
-- (id) initWithMyIncludedField: (Included *) MyIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt
+- (id) initWithMyIncludedField: (Included *) MyIncludedField MyOtherIncludedField: (Included *) MyOtherIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt
 {
   self = [super init];
   __thrift_MyIncludedField = MyIncludedField;
   __thrift_MyIncludedField_set = YES;
+  __thrift_MyOtherIncludedField = MyOtherIncludedField;
+  __thrift_MyOtherIncludedField_set = YES;
   __thrift_MyIncludedInt = MyIncludedInt;
   __thrift_MyIncludedInt_set = YES;
   return self;
@@ -56,6 +65,11 @@
   {
     __thrift_MyIncludedField = [[decoder decodeObjectForKey: @"MyIncludedField"] retain_stub];
     __thrift_MyIncludedField_set = YES;
+  }
+  if ([decoder containsValueForKey: @"MyOtherIncludedField"])
+  {
+    __thrift_MyOtherIncludedField = [[decoder decodeObjectForKey: @"MyOtherIncludedField"] retain_stub];
+    __thrift_MyOtherIncludedField_set = YES;
   }
   if ([decoder containsValueForKey: @"MyIncludedInt"])
   {
@@ -70,6 +84,10 @@
   if (__thrift_MyIncludedField_set)
   {
     [encoder encodeObject: __thrift_MyIncludedField forKey: @"MyIncludedField"];
+  }
+  if (__thrift_MyOtherIncludedField_set)
+  {
+    [encoder encodeObject: __thrift_MyOtherIncludedField forKey: @"MyOtherIncludedField"];
   }
   if (__thrift_MyIncludedInt_set)
   {
@@ -94,6 +112,25 @@
 - (void) unsetMyIncludedField {
   __thrift_MyIncludedField = nil;
   __thrift_MyIncludedField_set = NO;
+}
+
+- (Included *) MyOtherIncludedField {
+  return __thrift_MyOtherIncludedField;
+}
+
+- (void) setMyOtherIncludedField: (Included *) MyOtherIncludedField {
+  [self throwExceptionIfImmutable];
+  __thrift_MyOtherIncludedField = MyOtherIncludedField;
+  __thrift_MyOtherIncludedField_set = YES;
+}
+
+- (BOOL) MyOtherIncludedFieldIsSet {
+  return __thrift_MyOtherIncludedField_set;
+}
+
+- (void) unsetMyOtherIncludedField {
+  __thrift_MyOtherIncludedField = nil;
+  __thrift_MyOtherIncludedField_set = NO;
 }
 
 - (int64_t) MyIncludedInt {
@@ -140,6 +177,16 @@
         }
         break;
       case 2:
+        if (fieldType == TType_STRUCT) {
+          Included *fieldValue = [[Included alloc] init];
+          [fieldValue read: inProtocol];
+          [self setMyOtherIncludedField: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setMyIncludedInt: fieldValue];
@@ -165,8 +212,15 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__thrift_MyOtherIncludedField_set) {
+    if (__thrift_MyOtherIncludedField != nil) {
+      [outProtocol writeFieldBeginWithName: @"MyOtherIncludedField" type: TType_STRUCT fieldID: 2];
+      [__thrift_MyOtherIncludedField write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   if (__thrift_MyIncludedInt_set) {
-    [outProtocol writeFieldBeginWithName: @"MyIncludedInt" type: TType_I64 fieldID: 2];
+    [outProtocol writeFieldBeginWithName: @"MyIncludedInt" type: TType_I64 fieldID: 3];
     [outProtocol writeI64: __thrift_MyIncludedInt];
     [outProtocol writeFieldEnd];
   }
@@ -188,6 +242,9 @@
   if (__thrift_MyIncludedField) {
     ret[@"MyIncludedField"] = [__thrift_MyIncludedField toDict];
   }
+  if (__thrift_MyOtherIncludedField) {
+    ret[@"MyOtherIncludedField"] = [__thrift_MyOtherIncludedField toDict];
+  }
   ret[@"MyIncludedInt"] = @(__thrift_MyIncludedInt);
   return [ret copy];
 }
@@ -197,6 +254,9 @@
   if (!wasImmutable) {
     if (__thrift_MyIncludedField && ![__thrift_MyIncludedField isImmutable]) {
       [__thrift_MyIncludedField makeImmutable];
+    }
+    if (__thrift_MyOtherIncludedField && ![__thrift_MyOtherIncludedField isImmutable]) {
+      [__thrift_MyOtherIncludedField makeImmutable];
     }
     [super makeImmutable];
   }
@@ -209,6 +269,10 @@
     newCopy->__thrift_MyIncludedField = [self->__thrift_MyIncludedField mutableCopyWithZone:zone];
   }
   newCopy->__thrift_MyIncludedField_set = self->__thrift_MyIncludedField_set;
+  if (__thrift_MyOtherIncludedField) {
+    newCopy->__thrift_MyOtherIncludedField = [self->__thrift_MyOtherIncludedField mutableCopyWithZone:zone];
+  }
+  newCopy->__thrift_MyOtherIncludedField_set = self->__thrift_MyOtherIncludedField_set;
   newCopy->__thrift_MyIncludedInt = self->__thrift_MyIncludedInt;
   newCopy->__thrift_MyIncludedInt_set = self->__thrift_MyIncludedInt_set;
   return newCopy;

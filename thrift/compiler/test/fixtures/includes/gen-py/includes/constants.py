@@ -12,8 +12,17 @@ from thrift.Thrift import *
 from thrift.protocol.TProtocol import TProtocolException
 
 
+import transitive.ttypes
+
 
 from .ttypes import *
+
+ExampleIncluded = Included(**{
+  "MyIntField" : 2,
+  "MyTransitiveField" : transitive.ttypes.Foo(**{
+    "a" : 2,
+  }),
+})
 
 IncludedConstant = 42
 

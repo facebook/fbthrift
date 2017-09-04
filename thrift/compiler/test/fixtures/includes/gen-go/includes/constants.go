@@ -8,6 +8,8 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	transitive0 "transitive"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -15,8 +17,17 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
+var _ = transitive0.GoUnusedProtection__
+var ExampleIncluded *Included
 const IncludedConstant = 42
 
 func init() {
+ExampleIncluded = &Included{
+  MyIntField: 2,
+  MyTransitiveField: &transitive0.Foo{
+    A: 2,
+  },
+}
+
 }
 

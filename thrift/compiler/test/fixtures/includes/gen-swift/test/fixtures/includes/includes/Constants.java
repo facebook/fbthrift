@@ -16,5 +16,7 @@ public final class Constants
     private Constants() {
     }
 
+    public static final test.fixtures.includes.includes.Included ExampleIncluded = ;
+
     public static final long IncludedConstant = 42L;
 }

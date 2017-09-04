@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
+#include "transitive_types.h"
 
 
 
@@ -25,12 +26,15 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
  public:
 
   Included() :
-      MyIntField(0LL) {}
+      MyIntField(0LL),
+      MyTransitiveField( ::cpp2::Foo(::apache::thrift::detail::wrap_argument<1>(2LL))) {}
   // FragileConstructor for use in initialization lists only
 
-  Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg) :
-      MyIntField(std::move(MyIntField__arg)) {
+  Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
+      MyIntField(std::move(MyIntField__arg)),
+      MyTransitiveField(std::move(MyTransitiveField__arg)) {
     __isset.MyIntField = true;
+    __isset.MyTransitiveField = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Included(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -38,6 +42,13 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
   {
     MyIntField = arg.move();
     __isset.MyIntField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Included(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Included(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyTransitiveField = arg.move();
+    __isset.MyTransitiveField = true;
   }
 
   Included(Included&&) = default;
@@ -52,19 +63,25 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
   virtual ~Included() {}
 
   int64_t MyIntField;
+   ::cpp2::Foo MyTransitiveField;
 
   struct __isset {
     void __clear() {
       MyIntField = false;
+      MyTransitiveField = false;
     }
 
     bool MyIntField = false;
+    bool MyTransitiveField = false;
   } __isset;
   bool operator==(const Included& rhs) const;
 
   bool operator < (const Included& rhs) const {
     if (!(MyIntField == rhs.MyIntField)) {
       return MyIntField < rhs.MyIntField;
+    }
+    if (!(MyTransitiveField == rhs.MyTransitiveField)) {
+      return MyTransitiveField < rhs.MyTransitiveField;
     }
     (void)rhs;
     return false;
@@ -78,6 +95,15 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
     return MyIntField;
+  }
+  const  ::cpp2::Foo& get_MyTransitiveField() const&;
+   ::cpp2::Foo get_MyTransitiveField() &&;
+
+  template <typename T_Included_MyTransitiveField_struct_setter>
+   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
+    MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
+    __isset.MyTransitiveField = true;
+    return MyTransitiveField;
   }
 
   template <class Protocol_>

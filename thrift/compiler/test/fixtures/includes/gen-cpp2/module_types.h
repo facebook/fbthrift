@@ -25,13 +25,16 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
  public:
 
   MyStruct() :
+      MyIncludedField( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>( ::cpp2::Foo(::apache::thrift::detail::wrap_argument<1>(2LL))))),
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only
 
-  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
+  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
       MyIncludedField(std::move(MyIncludedField__arg)),
+      MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
       MyIncludedInt(std::move(MyIncludedInt__arg)) {
     __isset.MyIncludedField = true;
+    __isset.MyOtherIncludedField = true;
     __isset.MyIncludedInt = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -43,6 +46,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyOtherIncludedField = arg.move();
+    __isset.MyOtherIncludedField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyIncludedInt = arg.move();
@@ -61,15 +71,18 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   virtual ~MyStruct() {}
 
    ::cpp2::Included MyIncludedField;
+   ::cpp2::Included MyOtherIncludedField;
    ::cpp2::IncludedInt64 MyIncludedInt;
 
   struct __isset {
     void __clear() {
       MyIncludedField = false;
+      MyOtherIncludedField = false;
       MyIncludedInt = false;
     }
 
     bool MyIncludedField = false;
+    bool MyOtherIncludedField = false;
     bool MyIncludedInt = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
@@ -82,6 +95,15 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
     __isset.MyIncludedField = true;
     return MyIncludedField;
+  }
+  const  ::cpp2::Included& get_MyOtherIncludedField() const&;
+   ::cpp2::Included get_MyOtherIncludedField() &&;
+
+  template <typename T_MyStruct_MyOtherIncludedField_struct_setter>
+   ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
+    MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
+    __isset.MyOtherIncludedField = true;
+    return MyOtherIncludedField;
   }
 
    ::cpp2::IncludedInt64 get_MyIncludedInt() const {
