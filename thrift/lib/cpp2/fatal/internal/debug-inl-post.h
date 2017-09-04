@@ -277,6 +277,7 @@ struct debug_equals_impl<type_class::variant> {
   ) {
     using namespace fatal;
     using traits = variant_traits<T>;
+    using descriptors = typename traits::descriptors;
 
     if (traits::get_id(lhs) != traits::get_id(rhs)) {
       callback(
@@ -290,10 +291,7 @@ struct debug_equals_impl<type_class::variant> {
 
     bool result = true;
 
-    sorted_search<
-      sort<typename traits::descriptors, less, get_type::id>,
-      get_type::id::apply
-    >(lhs.getType(), [&](auto indexed) {
+    scalar_search<descriptors, get_type::id>(lhs.getType(), [&](auto indexed) {
       using descriptor = decltype(fatal::tag_type(indexed));
 
       assert(descriptor::id::value == traits::get_id(lhs));

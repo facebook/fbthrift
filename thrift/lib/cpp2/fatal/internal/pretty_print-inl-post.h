@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,11 +131,9 @@ struct pretty_print_impl<type_class::variant> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     using namespace fatal;
+    using descriptors = typename variant_traits<T>::descriptors;
     out << "<variant>{";
-    sorted_search<
-      sort<typename variant_traits<T>::descriptors, less, get_type::id>,
-      get_type::id::apply
-    >(what.getType(), [&](auto indexed) {
+    scalar_search<descriptors, get_type::id>(what.getType(), [&](auto indexed) {
       using descriptor = decltype(fatal::tag_type(indexed));
       auto scope = out.start_scope();
       scope.newline();
