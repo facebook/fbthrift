@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"includes"
+	includes0 "includes"
 
 )
 
@@ -17,15 +17,15 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
-var _ = includes.GoUnusedProtection__
+var _ = includes0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 // Attributes:
 //  - MyIncludedField
 //  - MyIncludedInt
 type MyStruct struct {
-  MyIncludedField *includes.Included `thrift:"MyIncludedField,1" db:"MyIncludedField" json:"MyIncludedField"`
-  MyIncludedInt includes.IncludedInt64 `thrift:"MyIncludedInt,2" db:"MyIncludedInt" json:"MyIncludedInt"`
+  MyIncludedField *includes0.Included `thrift:"MyIncludedField,1" db:"MyIncludedField" json:"MyIncludedField"`
+  MyIncludedInt includes0.IncludedInt64 `thrift:"MyIncludedInt,2" db:"MyIncludedInt" json:"MyIncludedInt"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -34,15 +34,15 @@ MyIncludedInt: 42,
 }
 }
 
-var MyStruct_MyIncludedField_DEFAULT *includes.Included
-func (p *MyStruct) GetMyIncludedField() *includes.Included {
+var MyStruct_MyIncludedField_DEFAULT *includes0.Included
+func (p *MyStruct) GetMyIncludedField() *includes0.Included {
   if !p.IsSetMyIncludedField() {
     return MyStruct_MyIncludedField_DEFAULT
   }
 return p.MyIncludedField
 }
 
-func (p *MyStruct) GetMyIncludedInt() includes.IncludedInt64 {
+func (p *MyStruct) GetMyIncludedInt() includes0.IncludedInt64 {
   return p.MyIncludedInt
 }
 func (p *MyStruct) IsSetMyIncludedField() bool {
@@ -86,7 +86,7 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
-  p.MyIncludedField = &includes.Included{}
+  p.MyIncludedField = &includes0.Included{}
   if err := p.MyIncludedField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyIncludedField), err)
   }
@@ -97,7 +97,7 @@ func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
-  temp := includes.IncludedInt64(v)
+  temp := includes0.IncludedInt64(v)
   p.MyIncludedInt = temp
 }
   return nil

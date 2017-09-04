@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"IncludesAlso"
+	IncludesAlso0 "IncludesAlso"
 
 )
 
@@ -17,21 +17,21 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
-var _ = IncludesAlso.GoUnusedProtection__
+var _ = IncludesAlso0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 // Attributes:
 //  - Also
 type IncludesAlso struct {
-  Also *IncludesAlso.Also `thrift:"also,1" db:"also" json:"also"`
+  Also *IncludesAlso0.Also `thrift:"also,1" db:"also" json:"also"`
 }
 
 func NewIncludesAlso() *IncludesAlso {
   return &IncludesAlso{}
 }
 
-var IncludesAlso_Also_DEFAULT *IncludesAlso.Also
-func (p *IncludesAlso) GetAlso() *IncludesAlso.Also {
+var IncludesAlso_Also_DEFAULT *IncludesAlso0.Also
+func (p *IncludesAlso) GetAlso() *IncludesAlso0.Also {
   if !p.IsSetAlso() {
     return IncludesAlso_Also_DEFAULT
   }
@@ -74,7 +74,7 @@ func (p *IncludesAlso) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *IncludesAlso)  ReadField1(iprot thrift.TProtocol) error {
-  p.Also = &IncludesAlso.Also{}
+  p.Also = &IncludesAlso0.Also{}
   if err := p.Also.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Also), err)
   }

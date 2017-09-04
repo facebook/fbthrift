@@ -26,9 +26,10 @@
  * guide for ensuring uniformity and readability.
  */
 
-#include <string>
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <stdlib.h>
@@ -286,6 +287,7 @@ private:
 
   std::string package_name_;
   std::string package_dir_;
+  unordered_map<std::string, std::string> package_identifiers;
 
   std::set<std::string> commonInitialisms;
 
@@ -735,17 +737,26 @@ string t_go_generator::render_includes() {
 
   for (size_t i = 0; i < includes.size(); ++i) {
     string go_module = get_real_go_module(includes[i]);
+    string go_path = go_module;
     size_t found = 0;
     for (size_t j = 0; j < go_module.size(); j++) {
       // Import statement uses slashes ('/') in namespace
       if (go_module[j] == '.') {
-        go_module[j] = '/';
+        go_path[j] = '/';
         found = j + 1;
       }
     }
 
-    result += "\t\"" + gen_package_prefix_ + go_module + "\"\n";
-    unused_prot += "var _ = " + go_module.substr(found) + ".GoUnusedProtection__\n";
+    auto it = package_identifiers.find(go_module);
+    if (it == package_identifiers.end()) {
+      auto value = tmp(go_module.substr(found));
+      it = package_identifiers.emplace(go_module, std::move(value)).first;
+    }
+    auto const& package_identifier = it->second;
+
+    result += "\t" + package_identifier + " \"" + gen_package_prefix_ +
+        go_path + "\"\n";
+    unused_prot += "var _ = " + package_identifier + ".GoUnusedProtection__\n";
   }
 
   if (includes.size() > 0) {
@@ -3376,12 +3387,7 @@ string t_go_generator::type_name(t_type* ttype) {
 
   if (program != nullptr && program != program_) {
     string module(get_real_go_module(program));
-    // for namespaced includes, only keep part after dot.
-    size_t dot = module.rfind('.');
-    if (dot != string::npos) {
-      module = module.substr(dot + 1);
-    }
-    return module + "." + ttype->get_name();
+    return package_identifiers[module] + "." + ttype->get_name();
   }
 
   return ttype->get_name();

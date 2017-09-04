@@ -8,8 +8,8 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"module"
-	"includes"
+	module0 "module"
+	includes1 "includes"
 
 )
 
@@ -18,7 +18,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
-var _ = module.GoUnusedProtection__
-var _ = includes.GoUnusedProtection__
+var _ = module0.GoUnusedProtection__
+var _ = includes1.GoUnusedProtection__
 var GoUnusedProtection__ int;
 

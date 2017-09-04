@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"includes"
+	includes0 "includes"
 
 )
 
@@ -17,7 +17,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
-var _ = includes.GoUnusedProtection__
+var _ = includes0.GoUnusedProtection__
 
 func init() {
 }

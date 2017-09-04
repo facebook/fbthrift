@@ -8,8 +8,8 @@ import (
 	"bytes"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"module"
-	"includes"
+	module0 "module"
+	includes1 "includes"
 
 )
 
@@ -18,8 +18,8 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
-var _ = module.GoUnusedProtection__
-var _ = includes.GoUnusedProtection__
+var _ = module0.GoUnusedProtection__
+var _ = includes1.GoUnusedProtection__
 type MyService interface {  //This is a service-level docblock
 
   // This is a function-level docblock
@@ -27,11 +27,11 @@ type MyService interface {  //This is a service-level docblock
   // Parameters:
   //  - S
   //  - I
-  Query(s *module.MyStruct, i *includes.Included) (err error)
+  Query(s *module0.MyStruct, i *includes1.Included) (err error)
   // Parameters:
   //  - S
   //  - I: arg doc
-  HasArgDocs(s *module.MyStruct, i *includes.Included) (err error)
+  HasArgDocs(s *module0.MyStruct, i *includes1.Included) (err error)
 }
 
 //This is a service-level docblock
@@ -66,12 +66,12 @@ func NewMyServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, opr
 // Parameters:
 //  - S
 //  - I
-func (p *MyServiceClient) Query(s *module.MyStruct, i *includes.Included) (err error) {
+func (p *MyServiceClient) Query(s *module0.MyStruct, i *includes1.Included) (err error) {
   if err = p.sendQuery(s, i); err != nil { return }
   return p.recvQuery()
 }
 
-func (p *MyServiceClient) sendQuery(s *module.MyStruct, i *includes.Included)(err error) {
+func (p *MyServiceClient) sendQuery(s *module0.MyStruct, i *includes1.Included)(err error) {
   oprot := p.OutputProtocol
   if oprot == nil {
     oprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -114,16 +114,16 @@ func (p *MyServiceClient) recvQuery() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error1 error
-    error1, err = error0.Read(iprot)
+    error2 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error3 error
+    error3, err = error2.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error1
+    err = error3
     return
   }
   if mTypeId != thrift.REPLY {
@@ -143,12 +143,12 @@ func (p *MyServiceClient) recvQuery() (err error) {
 // Parameters:
 //  - S
 //  - I: arg doc
-func (p *MyServiceClient) HasArgDocs(s *module.MyStruct, i *includes.Included) (err error) {
+func (p *MyServiceClient) HasArgDocs(s *module0.MyStruct, i *includes1.Included) (err error) {
   if err = p.sendHasArgDocs(s, i); err != nil { return }
   return p.recvHasArgDocs()
 }
 
-func (p *MyServiceClient) sendHasArgDocs(s *module.MyStruct, i *includes.Included)(err error) {
+func (p *MyServiceClient) sendHasArgDocs(s *module0.MyStruct, i *includes1.Included)(err error) {
   oprot := p.OutputProtocol
   if oprot == nil {
     oprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -191,16 +191,16 @@ func (p *MyServiceClient) recvHasArgDocs() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error2 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error3 error
-    error3, err = error2.Read(iprot)
+    error4 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error5 error
+    error5, err = error4.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error3
+    err = error5
     return
   }
   if mTypeId != thrift.REPLY {
@@ -238,10 +238,10 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
 
-  self4 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self4.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
-  self4.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
-return self4
+  self6 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self6.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
+  self6.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
+return self6
 }
 
 func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -252,12 +252,12 @@ func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success boo
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x5 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x7 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x5.Write(oprot)
+  x7.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x5
+  return false, x7
 
 }
 
@@ -358,23 +358,23 @@ func (p *myServiceProcessorHasArgDocs) Process(seqId int32, iprot, oprot thrift.
 //  - S
 //  - I
 type MyServiceQueryArgs struct {
-  S *module.MyStruct `thrift:"s,1" db:"s" json:"s"`
-  I *includes.Included `thrift:"i,2" db:"i" json:"i"`
+  S *module0.MyStruct `thrift:"s,1" db:"s" json:"s"`
+  I *includes1.Included `thrift:"i,2" db:"i" json:"i"`
 }
 
 func NewMyServiceQueryArgs() *MyServiceQueryArgs {
   return &MyServiceQueryArgs{}
 }
 
-var MyServiceQueryArgs_S_DEFAULT *module.MyStruct
-func (p *MyServiceQueryArgs) GetS() *module.MyStruct {
+var MyServiceQueryArgs_S_DEFAULT *module0.MyStruct
+func (p *MyServiceQueryArgs) GetS() *module0.MyStruct {
   if !p.IsSetS() {
     return MyServiceQueryArgs_S_DEFAULT
   }
 return p.S
 }
-var MyServiceQueryArgs_I_DEFAULT *includes.Included
-func (p *MyServiceQueryArgs) GetI() *includes.Included {
+var MyServiceQueryArgs_I_DEFAULT *includes1.Included
+func (p *MyServiceQueryArgs) GetI() *includes1.Included {
   if !p.IsSetI() {
     return MyServiceQueryArgs_I_DEFAULT
   }
@@ -425,7 +425,7 @@ func (p *MyServiceQueryArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceQueryArgs)  ReadField1(iprot thrift.TProtocol) error {
-  p.S = &module.MyStruct{
+  p.S = &module0.MyStruct{
   MyIncludedInt: 42,
 }
   if err := p.S.Read(iprot); err != nil {
@@ -435,7 +435,7 @@ func (p *MyServiceQueryArgs)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceQueryArgs)  ReadField2(iprot thrift.TProtocol) error {
-  p.I = &includes.Included{}
+  p.I = &includes1.Included{}
   if err := p.I.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I), err)
   }
@@ -536,23 +536,23 @@ func (p *MyServiceQueryResult) String() string {
 //  - S
 //  - I: arg doc
 type MyServiceHasArgDocsArgs struct {
-  S *module.MyStruct `thrift:"s,1" db:"s" json:"s"`
-  I *includes.Included `thrift:"i,2" db:"i" json:"i"`
+  S *module0.MyStruct `thrift:"s,1" db:"s" json:"s"`
+  I *includes1.Included `thrift:"i,2" db:"i" json:"i"`
 }
 
 func NewMyServiceHasArgDocsArgs() *MyServiceHasArgDocsArgs {
   return &MyServiceHasArgDocsArgs{}
 }
 
-var MyServiceHasArgDocsArgs_S_DEFAULT *module.MyStruct
-func (p *MyServiceHasArgDocsArgs) GetS() *module.MyStruct {
+var MyServiceHasArgDocsArgs_S_DEFAULT *module0.MyStruct
+func (p *MyServiceHasArgDocsArgs) GetS() *module0.MyStruct {
   if !p.IsSetS() {
     return MyServiceHasArgDocsArgs_S_DEFAULT
   }
 return p.S
 }
-var MyServiceHasArgDocsArgs_I_DEFAULT *includes.Included
-func (p *MyServiceHasArgDocsArgs) GetI() *includes.Included {
+var MyServiceHasArgDocsArgs_I_DEFAULT *includes1.Included
+func (p *MyServiceHasArgDocsArgs) GetI() *includes1.Included {
   if !p.IsSetI() {
     return MyServiceHasArgDocsArgs_I_DEFAULT
   }
@@ -603,7 +603,7 @@ func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceHasArgDocsArgs)  ReadField1(iprot thrift.TProtocol) error {
-  p.S = &module.MyStruct{
+  p.S = &module0.MyStruct{
   MyIncludedInt: 42,
 }
   if err := p.S.Read(iprot); err != nil {
@@ -613,7 +613,7 @@ func (p *MyServiceHasArgDocsArgs)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceHasArgDocsArgs)  ReadField2(iprot thrift.TProtocol) error {
-  p.I = &includes.Included{}
+  p.I = &includes1.Included{}
   if err := p.I.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I), err)
   }
