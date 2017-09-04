@@ -819,7 +819,7 @@ func (p *RaiserDoRaiseResult) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *RaiserDoRaiseResult)  ReadField1(iprot thrift.TProtocol) error {
-  p.B = &Banal{}
+  p.B = NewBanal()
   if err := p.B.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.B), err)
   }
@@ -827,7 +827,7 @@ func (p *RaiserDoRaiseResult)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *RaiserDoRaiseResult)  ReadField2(iprot thrift.TProtocol) error {
-  p.F = &Fiery{}
+  p.F = NewFiery()
   if err := p.F.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.F), err)
   }
@@ -1166,7 +1166,7 @@ func (p *RaiserGet500Result)  ReadField0(iprot thrift.TProtocol) error {
 }
 
 func (p *RaiserGet500Result)  ReadField1(iprot thrift.TProtocol) error {
-  p.F = &Fiery{}
+  p.F = NewFiery()
   if err := p.F.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.F), err)
   }
@@ -1174,7 +1174,7 @@ func (p *RaiserGet500Result)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *RaiserGet500Result)  ReadField2(iprot thrift.TProtocol) error {
-  p.B = &Banal{}
+  p.B = NewBanal()
   if err := p.B.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.B), err)
   }

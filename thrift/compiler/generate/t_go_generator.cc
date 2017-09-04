@@ -2864,8 +2864,14 @@ void t_go_generator::generate_deserialize_struct(ofstream& out,
                                                  string prefix) {
   string eq(declare ? " := " : " = ");
 
-  out << indent() << prefix << eq << (pointer_field ? "&" : "");
-  generate_go_struct_initializer(out, tstruct);
+  out << indent() << prefix << eq << (pointer_field ? "" : "*");
+
+  const t_program* program = tstruct->get_program();
+  if (program != nullptr && program != program_) {
+    out << package_identifiers[get_real_go_module(program)] << ".";
+  }
+  out << "New" << publicize(tstruct->get_name()) << "()" << endl;
+
   out << indent() << "if err := " << prefix << ".Read(iprot); err != nil {" << endl;
   out << indent() << "  return thrift.PrependError(fmt.Sprintf(\"%T error reading struct: \", "
       << prefix << "), err)" << endl;

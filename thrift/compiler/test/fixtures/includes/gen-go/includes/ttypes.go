@@ -99,9 +99,7 @@ func (p *Included)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *Included)  ReadField2(iprot thrift.TProtocol) error {
-  p.MyTransitiveField = &transitive0.Foo{
-  A: 2,
-}
+  p.MyTransitiveField = transitive0.NewFoo()
   if err := p.MyTransitiveField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyTransitiveField), err)
   }

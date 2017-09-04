@@ -349,7 +349,7 @@ func (p *Vehicle) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *Vehicle)  ReadField1(iprot thrift.TProtocol) error {
-  p.Color = &Color{}
+  p.Color = NewColor()
   if err := p.Color.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Color), err)
   }
@@ -697,7 +697,7 @@ func (p *Person)  ReadField4(iprot thrift.TProtocol) error {
 }
 
 func (p *Person)  ReadField5(iprot thrift.TProtocol) error {
-  p.FavoriteColor = &Color{}
+  p.FavoriteColor = NewColor()
   if err := p.FavoriteColor.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.FavoriteColor), err)
   }
@@ -783,7 +783,7 @@ func (p *Person)  ReadField10(iprot thrift.TProtocol) error {
   tSlice := make([]*Vehicle, 0, size)
   p.Vehicles =  tSlice
   for i := 0; i < size; i ++ {
-    _elem3 := &Vehicle{}
+    _elem3 := NewVehicle()
     if err := _elem3.Read(iprot); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem3), err)
     }

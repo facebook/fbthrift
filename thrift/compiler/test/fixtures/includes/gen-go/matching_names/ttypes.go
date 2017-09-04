@@ -74,7 +74,7 @@ func (p *IncludesAlso) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *IncludesAlso)  ReadField1(iprot thrift.TProtocol) error {
-  p.Also = &IncludesAlso0.Also{}
+  p.Also = IncludesAlso0.NewAlso()
   if err := p.Also.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Also), err)
   }

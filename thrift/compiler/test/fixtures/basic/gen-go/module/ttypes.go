@@ -141,7 +141,7 @@ func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
-  p.MyDataField = &MyDataItem{}
+  p.MyDataField = NewMyDataItem()
   if err := p.MyDataField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyDataField), err)
   }

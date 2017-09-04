@@ -425,9 +425,7 @@ func (p *MyServiceQueryArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceQueryArgs)  ReadField1(iprot thrift.TProtocol) error {
-  p.S = &module0.MyStruct{
-  MyIncludedInt: 42,
-}
+  p.S = module0.NewMyStruct()
   if err := p.S.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
   }
@@ -435,7 +433,7 @@ func (p *MyServiceQueryArgs)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceQueryArgs)  ReadField2(iprot thrift.TProtocol) error {
-  p.I = &includes1.Included{}
+  p.I = includes1.NewIncluded()
   if err := p.I.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I), err)
   }
@@ -603,9 +601,7 @@ func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceHasArgDocsArgs)  ReadField1(iprot thrift.TProtocol) error {
-  p.S = &module0.MyStruct{
-  MyIncludedInt: 42,
-}
+  p.S = module0.NewMyStruct()
   if err := p.S.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
   }
@@ -613,7 +609,7 @@ func (p *MyServiceHasArgDocsArgs)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MyServiceHasArgDocsArgs)  ReadField2(iprot thrift.TProtocol) error {
-  p.I = &includes1.Included{}
+  p.I = includes1.NewIncluded()
   if err := p.I.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I), err)
   }

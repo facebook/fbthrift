@@ -108,7 +108,7 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
-  p.MyIncludedField = &includes0.Included{}
+  p.MyIncludedField = includes0.NewIncluded()
   if err := p.MyIncludedField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyIncludedField), err)
   }
@@ -116,7 +116,7 @@ func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
-  p.MyOtherIncludedField = &includes0.Included{}
+  p.MyOtherIncludedField = includes0.NewIncluded()
   if err := p.MyOtherIncludedField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyOtherIncludedField), err)
   }

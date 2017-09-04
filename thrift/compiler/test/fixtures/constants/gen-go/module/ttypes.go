@@ -705,11 +705,7 @@ func (p *Struct2)  ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *Struct2)  ReadField3(iprot thrift.TProtocol) error {
-  p.C = &Struct1{
-  A: 1234567,
-
-  B: "<uninitialized>",
-}
+  p.C = NewStruct1()
   if err := p.C.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.C), err)
   }
@@ -900,7 +896,7 @@ func (p *Struct3)  ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *Struct3)  ReadField3(iprot thrift.TProtocol) error {
-  p.C = &Struct2{}
+  p.C = NewStruct2()
   if err := p.C.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.C), err)
   }
@@ -1245,11 +1241,7 @@ func (p *Union2)  ReadField2(iprot thrift.TProtocol) error {
 }
 
 func (p *Union2)  ReadField3(iprot thrift.TProtocol) error {
-  p.S = &Struct1{
-  A: 1234567,
-
-  B: "<uninitialized>",
-}
+  p.S = NewStruct1()
   if err := p.S.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
   }
@@ -1257,7 +1249,7 @@ func (p *Union2)  ReadField3(iprot thrift.TProtocol) error {
 }
 
 func (p *Union2)  ReadField4(iprot thrift.TProtocol) error {
-  p.U = &Union1{}
+  p.U = NewUnion1()
   if err := p.U.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.U), err)
   }
