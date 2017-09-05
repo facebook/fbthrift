@@ -61,18 +61,6 @@ class ThriftProcessor;
  */
 class H2ChannelIf : public ThriftChannelIf {
  public:
-  // Constructor for server side that uses a ResponseHandler object
-  // to write to the HTTP/2 stream.
-  H2ChannelIf(ThriftProcessor* processor, proxygen::ResponseHandler* toHttp2)
-      : processor_(processor),
-        responseHandler_(toHttp2),
-        httpTransaction_(nullptr) {}
-
-  // Constructor for client side that uses a HTTPTransaction object
-  // to write to the HTTP/2 stream.
-  explicit H2ChannelIf(proxygen::HTTPTransaction* toHttp2)
-      : responseHandler_(nullptr), httpTransaction_(toHttp2) {}
-
   virtual ~H2ChannelIf() = default;
 
   // Called from Proxygen at the beginning of the stream.
@@ -99,9 +87,27 @@ class H2ChannelIf : public ThriftChannelIf {
   }
 
  protected:
-  // The thrift processor used to execute RPCs (server side only).
-  // Owned by H2ThriftServer.
-  ThriftProcessor* processor_;
+  // Constructor for server side that uses a ResponseHandler object
+  // to write to the HTTP/2 stream.
+  explicit H2ChannelIf(proxygen::ResponseHandler* toHttp2)
+      : responseHandler_(toHttp2), httpTransaction_(nullptr) {}
+
+  // Constructor for client side that uses a HTTPTransaction object
+  // to write to the HTTP/2 stream.
+  explicit H2ChannelIf(proxygen::HTTPTransaction* toHttp2)
+      : responseHandler_(nullptr), httpTransaction_(toHttp2) {}
+
+  // Encodes Thrift headers to be HTTP compliant.
+  void encodeHeaders(
+      const std::map<std::string, std::string>& source,
+      proxygen::HTTPMessage& dest) noexcept;
+
+  // Decodes previously encoded HTTP compliant headers into Thrift
+  // headers.
+  void decodeHeaders(
+      const proxygen::HTTPMessage& source,
+      std::map<std::string, std::string>& dest) noexcept;
+
   // Used to write messages to HTTP/2 on the server side.
   // Owned by H2RequestHandler.  Should not be used after
   // setStreamClosed() has been called.

@@ -28,6 +28,8 @@ class RSClientThriftChannel : public ThriftChannelIf {
   explicit RSClientThriftChannel(
       std::shared_ptr<rsocket::RSocketRequester> rsRequester);
 
+  bool supportsHeaders() const noexcept override;
+
   void sendThriftRequest(
       std::unique_ptr<FunctionInfo> functionInfo,
       std::unique_ptr<std::map<std::string, std::string>> headers,

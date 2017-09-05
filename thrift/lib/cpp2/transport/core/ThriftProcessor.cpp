@@ -32,7 +32,6 @@ void ThriftProcessor::onThriftRequest(
     std::unique_ptr<map<string, string>> headers,
     std::unique_ptr<IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel) noexcept {
-  DCHECK(functionInfo->kind == SINGLE_REQUEST_SINGLE_RESPONSE);
   DCHECK(headers);
   DCHECK(payload);
   DCHECK(channel);

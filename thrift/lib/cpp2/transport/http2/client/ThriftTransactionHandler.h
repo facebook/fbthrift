@@ -22,20 +22,16 @@
 namespace apache {
 namespace thrift {
 
-class H2TransactionCallback
-    : public proxygen::HTTPTransactionHandler,
-      public proxygen::HTTPTransaction::TransportCallback {
+class ThriftTransactionHandler : public proxygen::HTTPTransactionHandler {
  public:
-  H2TransactionCallback() = default;
+  ThriftTransactionHandler() = default;
 
-  ~H2TransactionCallback() override;
+  ~ThriftTransactionHandler() override;
 
-  H2TransactionCallback(const H2TransactionCallback&) = delete;
-  H2TransactionCallback& operator=(const H2TransactionCallback&) = delete;
+  ThriftTransactionHandler(const ThriftTransactionHandler&) = delete;
+  ThriftTransactionHandler& operator=(const ThriftTransactionHandler&) = delete;
 
   void setChannel(std::shared_ptr<H2ChannelIf> channel);
-
-  // proxygen::HTTPTransactionHandler methods
 
   void setTransaction(proxygen::HTTPTransaction* txn) noexcept override;
 
@@ -80,29 +76,6 @@ class H2TransactionCallback
 
   void onPushedTransaction(
       proxygen::HTTPTransaction* /*txn*/) noexcept override {}
-
-  // end proxygen::HTTPTransactionHandler methods
-
-  // proxygen::HTTPTransaction::TransportCallback methods
-
-  // most of the methods in TransportCallback is not interesting to us,
-  // thus, we don't have to handle them, except the one that notifies the
-  // fact the request is sent.
-
-  void firstHeaderByteFlushed() noexcept override {}
-  void firstByteFlushed() noexcept override {}
-
-  void lastByteFlushed() noexcept override;
-
-  void lastByteAcked(std::chrono::milliseconds /*latency*/) noexcept override {}
-  void headerBytesGenerated(
-      proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-  void headerBytesReceived(
-      const proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-  void bodyBytesGenerated(size_t /*nbytes*/) noexcept override {}
-  void bodyBytesReceived(size_t /*size*/) noexcept override {}
-
-  // end proxygen::HTTPTransaction::TransportCallback methods
 
  private:
   std::shared_ptr<H2ChannelIf> channel_;

@@ -24,6 +24,7 @@ namespace thrift {
 using std::map;
 using std::string;
 using folly::EventBase;
+using folly::exception_wrapper;
 using folly::IOBuf;
 
 ThriftClientCallback::ThriftClientCallback(
@@ -39,18 +40,31 @@ ThriftClientCallback::ThriftClientCallback(
       protoId_(protoId) {}
 
 void ThriftClientCallback::onThriftResponse(
-    std::unique_ptr<map<string, string>> /*headers*/,
+    std::unique_ptr<map<string, string>> headers,
     std::unique_ptr<IOBuf> payload) noexcept {
-  cb_->replyReceived(ClientReceiveState(
-      protoId_,
-      std::move(payload),
-      nullptr,
-      std::move(ctx_), // move is ok as this method will be called only once
-      /* _isSecurityActive = */ false));
+  if (cb_) {
+    auto tHeader = std::make_unique<transport::THeader>();
+    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+    if (headers) {
+      tHeader->setReadHeaders(std::move(*headers));
+    }
+    cb_->replyReceived(ClientReceiveState(
+        protoId_,
+        std::move(payload),
+        std::move(tHeader),
+        std::move(ctx_),
+        isSecurityActive_));
+    cb_ = nullptr;
+  }
 }
 
-void ThriftClientCallback::cancel() noexcept {
-  // TBD
+void ThriftClientCallback::cancel(exception_wrapper ex) noexcept {
+  if (cb_) {
+    folly::RequestContextScopeGuard rctx(cb_->context_);
+    cb_->requestError(
+        ClientReceiveState(std::move(ex), std::move(ctx_), isSecurityActive_));
+    cb_ = nullptr;
+  }
 }
 
 EventBase* ThriftClientCallback::getEventBase() const {

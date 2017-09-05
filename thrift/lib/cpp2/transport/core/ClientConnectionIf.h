@@ -60,7 +60,8 @@ class ClientConnectionIf {
   ClientConnectionIf& operator=(const ClientConnectionIf&) = delete;
 
   // Returns a channel object for use on a single RPC.  This can be
-  // called from any thread.
+  // called from any thread.  Throws TTransportException if a channel
+  // object cannot be returned.
   virtual std::shared_ptr<ThriftChannelIf> getChannel() = 0;
 
   // Sets the maximum pending outgoing requests allowed on this

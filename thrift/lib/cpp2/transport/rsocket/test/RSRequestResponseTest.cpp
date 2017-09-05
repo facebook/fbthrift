@@ -118,14 +118,14 @@ TEST_F(RSRequestResponseTest, RequestResponse_Simple) {
   });
 }
 
-TEST_F(RSRequestResponseTest, RequestResponse_ExceptedException) {
+TEST_F(RSRequestResponseTest, RequestResponse_ExpectedException) {
   EXPECT_THROW(
       connectToServer(
           [&](auto client) { client->sync_throwExpectedException(1); }),
       TestServiceException);
 }
 
-TEST_F(RSRequestResponseTest, RequestResponse_UnexceptedException) {
+TEST_F(RSRequestResponseTest, RequestResponse_UnexpectedException) {
   EXPECT_THROW(
       connectToServer(
           [&](auto client) { client->sync_throwUnexpectedException(2); }),

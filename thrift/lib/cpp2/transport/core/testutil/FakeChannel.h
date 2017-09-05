@@ -35,6 +35,10 @@ class FakeChannel : public ThriftChannelIf {
       : evb_(evb), keepAliveToken_(evb_->getKeepAliveToken()) {}
   ~FakeChannel() override = default;
 
+  bool supportsHeaders() const noexcept override {
+    return true;
+  }
+
   void sendThriftResponse(
       uint32_t /*seqId*/,
       std::unique_ptr<std::map<std::string, std::string>> headers,

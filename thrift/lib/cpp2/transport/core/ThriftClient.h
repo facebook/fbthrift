@@ -113,11 +113,16 @@ class ThriftClient : public ClientChannel {
 
   // end RequestChannel methods
 
-  // Following methods are delegated to the connection object.  Given
-  // that connection objects may be shared by multiple ThriftClient
-  // objects, calls to these methods will affect all these objects.
-
   // begin ClientChannel methods
+
+  // These methods are delegated to the connection object.  Given that
+  // connection objects may be shared by multiple ThriftClient
+  // objects, calls to these methods will affect all these
+  // ThriftClient objects.  Therefore, these methods should only be
+  // called by frameworks that manage all the ThriftClient objects.
+  //
+  // TODO: Refactor this to be cleaner.
+
   apache::thrift::async::TAsyncTransport* getTransport() override;
   bool good() override;
   SaturationStatus getSaturationStatus() override;
@@ -129,6 +134,7 @@ class ThriftClient : public ClientChannel {
   void setTimeout(uint32_t ms) override;
   void closeNow() override;
   CLIENT_TYPE getClientType() override;
+
   // end ClientChannel methods
 
  private:
@@ -149,14 +155,9 @@ class ThriftClient : public ClientChannel {
       std::shared_ptr<apache::thrift::transport::THeader> header,
       folly::EventBase* callbackEvb);
 
-  void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
-
-  void setHeaders(
-      std::map<std::string, std::string>& dstHeaders,
-      const apache::thrift::transport::THeader::StringToStringMap& srcHeaders);
-
-  std::unique_ptr<std::map<std::string, std::string>> buildHeaderMap(
-      apache::thrift::transport::THeader* header);
+  std::unique_ptr<std::map<std::string, std::string>> buildHeaders(
+      apache::thrift::transport::THeader* header,
+      RpcOptions& rpcOptions);
 };
 
 } // namespace thrift

@@ -17,30 +17,39 @@
 
 #include <folly/io/async/EventBaseManager.h>
 #include <glog/logging.h>
+#include <proxygen/lib/http/HTTPHeaders.h>
+#include <proxygen/lib/http/HTTPMethod.h>
+#include <proxygen/lib/utils/Base64.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
-
-// NOTE: Implementation currently only supports SINGLE_REQUEST_SINGLE_RESPONSE.
 
 namespace apache {
 namespace thrift {
 
+using apache::thrift::transport::TTransportException;
 using std::map;
 using std::string;
 using folly::EventBaseManager;
 using folly::IOBuf;
+using proxygen::HTTPHeaderCode;
 using proxygen::HTTPMessage;
+using proxygen::HTTPMethod;
 using proxygen::HTTPTransaction;
 using proxygen::ResponseHandler;
 
 SingleRpcChannel::SingleRpcChannel(
-    ThriftProcessor* processor,
-    ResponseHandler* toHttp2)
-    : H2ChannelIf(processor, toHttp2) {
+    ResponseHandler* toHttp2,
+    ThriftProcessor* processor)
+    : H2ChannelIf(toHttp2), processor_(processor) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
-SingleRpcChannel::SingleRpcChannel(HTTPTransaction* toHttp2)
-    : H2ChannelIf(toHttp2) {
+SingleRpcChannel::SingleRpcChannel(
+    HTTPTransaction* toHttp2,
+    const string& httpHost,
+    const string& httpUrl)
+    : H2ChannelIf(toHttp2), httpHost_(httpHost), httpUrl_(httpUrl) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -57,20 +66,21 @@ SingleRpcChannel::~SingleRpcChannel() {
   }
 }
 
+bool SingleRpcChannel::supportsHeaders() const noexcept {
+  return true;
+}
+
 void SingleRpcChannel::sendThriftResponse(
     uint32_t seqId,
-    std::unique_ptr<std::map<std::string, std::string>> headers,
-    std::unique_ptr<folly::IOBuf> payload) noexcept {
+    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(seqId == 0);
   DCHECK(evb_->isInEventBaseThread());
   if (responseHandler_) {
-    std::unique_ptr<HTTPMessage> msg = std::make_unique<HTTPMessage>();
-    msg->setStatusCode(200);
-    auto& msgHeaders = msg->getHeaders();
-    for (auto it = headers->begin(); it != headers->end(); ++it) {
-      msgHeaders.rawSet(it->first, it->second);
-    }
-    responseHandler_->sendHeaders(*msg);
+    HTTPMessage msg;
+    msg.setStatusCode(200);
+    encodeHeaders(std::move(*headers), msg);
+    responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
     responseHandler_->sendEOM();
   }
@@ -82,47 +92,43 @@ void SingleRpcChannel::cancel(uint32_t /*seqId*/) noexcept {
 }
 
 void SingleRpcChannel::sendThriftRequest(
-    std::unique_ptr<FunctionInfo> /*functionInfo*/,
-    std::unique_ptr<std::map<std::string, std::string>> /*headers*/,
-    std::unique_ptr<folly::IOBuf> /*payload*/,
-    std::unique_ptr<ThriftClientCallback> /*callback*/) noexcept {
-  LOG(FATAL) << "Client side not yet implemented.";
-
-  /* TODO: snippet copied from HTTPClientChannel - reorganize
-  proxygen::HTTPMessage msg;
-  msg.setMethod(proxygen::HTTPMethod::POST);
-  msg.setURL(httpUrl_);
-  msg.setHTTPVersion(1, 1);
-  msg.setIsChunked(false);
-  auto& headers = msg.getHeaders();
-  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
-  headers.set(
-      proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
-      "application/x-thrift");
-
-  switch (protocolId_) {
-    case protocol::T_BINARY_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "binary");
-      break;
-    case protocol::T_COMPACT_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "compact");
-      break;
-    case protocol::T_JSON_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "json");
-      break;
-    case protocol::T_SIMPLE_JSON_PROTOCOL:
-      headers.set(
-          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-          "simplejson");
-      break;
-    default:
-      // Do nothing
-      break;
+    std::unique_ptr<FunctionInfo> functionInfo,
+    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<IOBuf> payload,
+    std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(functionInfo);
+  DCHECK(payload);
+  if (functionInfo->kind == SINGLE_REQUEST_SINGLE_RESPONSE ||
+      functionInfo->kind == STREAMING_REQUEST_SINGLE_RESPONSE) {
+    DCHECK(callback);
+    callback_ = std::move(callback);
   }
-  */
+  if (!httpTransaction_) {
+    LOG(ERROR) << "Network error before call initiation";
+    if (callback_) {
+      TTransportException ex(
+          TTransportException::NETWORK_ERROR,
+          "Network error before call initiation");
+      callback_->cancel(
+          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+    }
+    return;
+  }
+  HTTPMessage msg;
+  msg.setMethod(HTTPMethod::POST);
+  msg.setURL(httpUrl_);
+  if (!httpHost_.empty()) {
+    auto& msgHeaders = msg.getHeaders();
+    msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
+  }
+  // TODO: We've left out a few header settings when copying from
+  // HTTPClientChannel.  Verify that this is OK.
+  encodeHeaders(std::move(*headers), msg);
+  httpTransaction_->sendHeaders(msg);
+  httpTransaction_->sendBody(std::move(payload));
+  httpTransaction_->sendEOM();
+  receivedThriftRPC_ = true;
 }
 
 void SingleRpcChannel::cancel(ThriftClientCallback* /*callback*/) noexcept {
@@ -144,10 +150,7 @@ ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(uint32_t) noexcept {
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
   headers_ = std::make_unique<map<string, string>>();
-  auto copyHeaders = [&](const string& key, const string& val) {
-    headers_->insert(make_pair(key, val));
-  };
-  headers->getHeaders().forEach(copyHeaders);
+  decodeHeaders(*headers, *headers_);
 }
 
 void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
@@ -158,17 +161,61 @@ void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
   }
 }
 
+bool SingleRpcChannel::isOneWay() noexcept {
+  // TODO: currently hardwired to false.
+  return false;
+}
+
 void SingleRpcChannel::onH2StreamEnd() noexcept {
   receivedH2Stream_ = true;
-  auto finfo = std::make_unique<FunctionInfo>();
-  finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
-  finfo->seqId = 0;
-  // "name" and "protocol" fields of "finfo" are not used right now.
-  processor_->onThriftRequest(
-      std::move(finfo),
-      std::move(headers_),
-      std::move(contents_),
-      shared_from_this());
+  if (!contents_) {
+    contents_ = IOBuf::createCombined(0);
+  }
+  if (processor_) {
+    // Server side
+    bool oneway = isOneWay();
+    auto finfo = std::make_unique<FunctionInfo>();
+    if (oneway) {
+      finfo->kind = SINGLE_REQUEST_NO_RESPONSE;
+    } else {
+      finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
+    }
+    finfo->seqId = 0;
+    // "name" and "protocol" fields of "finfo" are not used right now.
+    processor_->onThriftRequest(
+        std::move(finfo),
+        std::move(headers_),
+        std::move(contents_),
+        shared_from_this());
+    if (oneway) {
+      // Send a dummy response since we need to do this with HTTP2.
+      auto headers = std::make_unique<map<string, string>>();
+      auto payload = IOBuf::createCombined(0);
+      sendThriftResponse(0, std::move(headers), std::move(payload));
+      receivedThriftRPC_ = true;
+    }
+  } else {
+    // Client side
+    DCHECK(httpTransaction_);
+    if (callback_) {
+      callback_->onThriftResponse(std::move(headers_), std::move(contents_));
+      // Set to nullptr to indicate that callback has been processed.
+      callback_ = nullptr;
+    }
+  }
+}
+
+void SingleRpcChannel::onH2StreamClosed() noexcept {
+  if (callback_) {
+    // Stream died before callback happened.
+    LOG(ERROR) << "Network error before call completion";
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Network error before call completion");
+    callback_->cancel(
+        folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+  }
+  H2ChannelIf::onH2StreamClosed();
 }
 
 } // namespace thrift

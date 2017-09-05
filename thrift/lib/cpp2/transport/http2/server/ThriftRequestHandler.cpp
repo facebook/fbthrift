@@ -47,7 +47,7 @@ ThriftRequestHandler::~ThriftRequestHandler() {}
 
 void ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  channel_ = std::make_shared<SingleRpcChannel>(processor_, downstream_);
+  channel_ = std::make_shared<SingleRpcChannel>(downstream_, processor_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 

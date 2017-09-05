@@ -33,8 +33,6 @@ class RSRoutingHandler : public TransportRoutingHandler {
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
-  virtual bool canAcceptEncryptedConnection(
-      const std::string& protocolName) override;
   void handleConnection(
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,

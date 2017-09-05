@@ -85,10 +85,14 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   ThriftChannelIf(const ThriftChannelIf&) = delete;
   ThriftChannelIf& operator=(const ThriftChannelIf&) = delete;
 
+  // Returns true if this channel supports headers.  If the channel
+  // does not support headers, they will be ignored.
+  virtual bool supportsHeaders() const noexcept = 0;
+
   // Called on the server at the end of a single response RPC.  This
-  // is not called for streaming response RPCs.  "seqId" is used to
-  // match the request that this channel object sent to
-  // ThriftProcessor.
+  // is not called for streaming response and no response RPCs.
+  // "seqId" is used to match the request that this channel object
+  // sent to ThriftProcessor.
   //
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
@@ -113,7 +117,8 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
 
   // Called from the client to initiate an RPC with a server.
   // "callback" is used to call back with the response for single
-  // (non-streaming) responses.
+  // response RPCs.  "callback" is not used for streaming response and
+  // no response RPCs.
   //
   // Calls to the channel must be scheduled "this->getEventBase()".
   // Callbacks to "callback" must be scheduled on
@@ -121,6 +126,9 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   //
   // "callback" must not be destroyed until it has received the call
   // back to "onThriftResponse()" or "cancel()".
+  //
+  // TODO: We should replace functionInfo and headers with a
+  // RpcOptions parameter afer merging FunctionInfo with RpcOptions.
   virtual void sendThriftRequest(
       std::unique_ptr<FunctionInfo> functionInfo,
       std::unique_ptr<std::map<std::string, std::string>> headers,

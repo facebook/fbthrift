@@ -24,6 +24,10 @@ RSClientThriftChannel::RSClientThriftChannel(
     std::shared_ptr<RSocketRequester> rsRequester)
     : rsRequester_(std::move(rsRequester)) {}
 
+bool RSClientThriftChannel::supportsHeaders() const noexcept {
+  return true;
+}
+
 void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<FunctionInfo> functionInfo,
     std::unique_ptr<std::map<std::string, std::string>> headers,

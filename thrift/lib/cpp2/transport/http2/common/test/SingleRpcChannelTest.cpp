@@ -39,7 +39,7 @@ TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
   unordered_map<string, string>* outputHeaders;
   string outputPayload;
   std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(&processor, responseHandler_.get());
+      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
   sendAndReceiveStream(
       channel,
       inputHeaders,

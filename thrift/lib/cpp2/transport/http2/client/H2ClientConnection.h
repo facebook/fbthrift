@@ -28,16 +28,35 @@ namespace thrift {
 
 /**
  * HTTP/2 implementation of ClientConnectionIf.
+ *
+ * Static methods are provided to create HTTP1 or HTTP2 connections.
+ * These methods optionally take a host and url parameter.  Some
+ * servers will only work with specific values for these.  If these
+ * parameters are not set, the implementation will use the most
+ * efficient possible setting for these values.
+ *
+ * Host and url values can only be specified at connection creation
+ * time - i.e., you cannot use different values (for url) for
+ * different RPCs.
+ *
+ * This class maintains a nested Proxygen connection
+ * (HTTPUpstreamSession).  If the Proxygen connection dies, we do not
+ * attempt to recreate it, instead we pass this error to the callers.
+ * In the future, we may change this (for now callers have to create a
+ * new H2ClientConnection object and discard the old one).
  */
-class H2ClientConnection : public ClientConnectionIf {
+class H2ClientConnection : public ClientConnectionIf,
+                           public proxygen::HTTPSession::InfoCallback {
  public:
   static std::unique_ptr<ClientConnectionIf> newHTTP1xConnection(
       async::TAsyncTransport::UniquePtr transport,
-      const std::string& httpHost,
-      const std::string& httpUrl);
+      const std::string& httpHost = "",
+      const std::string& httpUrl = "/");
 
   static std::unique_ptr<ClientConnectionIf> newHTTP2Connection(
-      async::TAsyncTransport::UniquePtr transport);
+      async::TAsyncTransport::UniquePtr transport,
+      const std::string& httpHost = "",
+      const std::string& httpUrl = "/");
 
   virtual ~H2ClientConnection() override;
 
@@ -60,11 +79,37 @@ class H2ClientConnection : public ClientConnectionIf {
   void closeNow() override;
   CLIENT_TYPE getClientType() override;
 
-  // TODO: HTTPClientChannel subclasses InfoCallback::onDestroy and
-  // its implementation closes itself after calling the CloseCallback.
-  // With H2ClientConnection, we could have multiple ThriftClient's
-  // active and therefore, we need to perform the equivalent actions
-  // from H2TransactionCallback.
+  // begin HTTPSession::InfoCallback methods
+
+  void onDestroy(const proxygen::HTTPSession&) override;
+
+  // Remaining methods have trivial implementations
+  void onCreate(const proxygen::HTTPSession&) override {}
+  void onIngressError(const proxygen::HTTPSession&, proxygen::ProxygenError)
+      override {}
+  void onIngressEOF() override {}
+  void onRead(const proxygen::HTTPSession&, size_t) override {}
+  void onWrite(const proxygen::HTTPSession&, size_t) override {}
+  void onRequestBegin(const proxygen::HTTPSession&) override {}
+  void onRequestEnd(const proxygen::HTTPSession&, uint32_t) override {}
+  void onActivateConnection(const proxygen::HTTPSession&) override {}
+  void onDeactivateConnection(const proxygen::HTTPSession&) override {}
+  void onIngressMessage(
+      const proxygen::HTTPSession&,
+      const proxygen::HTTPMessage&) override {}
+  void onIngressLimitExceeded(const proxygen::HTTPSession&) override {}
+  void onIngressPaused(const proxygen::HTTPSession&) override {}
+  void onTransactionDetached(const proxygen::HTTPSession&) override {}
+  void onPingReplySent(int64_t) override {}
+  void onPingReplyReceived() override {}
+  void onSettingsOutgoingStreamsFull(const proxygen::HTTPSession&) override {}
+  void onSettingsOutgoingStreamsNotFull(const proxygen::HTTPSession&) override {
+  }
+  void onFlowControlWindowClosed(const proxygen::HTTPSession&) override {}
+  void onEgressBuffered(const proxygen::HTTPSession&) override {}
+  void onEgressBufferCleared(const proxygen::HTTPSession&) override {}
+
+  // end HTTPSession::InfoCallback methods
 
  private:
   static const std::chrono::milliseconds kDefaultTransactionTimeout;

@@ -33,6 +33,10 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
           subscriber)
       : evb_(evb), subscriber_(subscriber) {}
 
+  bool supportsHeaders() const noexcept override {
+    return true;
+  }
+
   void sendThriftResponse(
       uint32_t,
       std::unique_ptr<std::map<std::string, std::string>>,

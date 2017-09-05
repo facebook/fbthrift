@@ -73,10 +73,6 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
   return setupOrResumeFrame && rsocketVersion;
 }
 
-bool RSRoutingHandler::canAcceptEncryptedConnection(const std::string&) {
-  return false;
-}
-
 void RSRoutingHandler::handleConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress*,

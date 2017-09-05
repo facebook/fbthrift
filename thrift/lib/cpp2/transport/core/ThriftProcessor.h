@@ -58,6 +58,9 @@ class ThriftProcessor {
   // "channel" is used to call back with the response for single
   // (non-streaming) responses, and to manage stream objects for RPCs
   // with streaming.
+  //
+  // TODO: We should replace functionInfo and headers with a
+  // RpcOptions parameter afer merging FunctionInfo with RpcOptions.
   virtual void onThriftRequest(
       std::unique_ptr<FunctionInfo> functionInfo,
       std::unique_ptr<std::map<std::string, std::string>> headers,

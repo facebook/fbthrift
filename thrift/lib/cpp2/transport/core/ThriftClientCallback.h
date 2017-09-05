@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
@@ -60,7 +61,7 @@ class ThriftClientCallback {
   //
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
-  void cancel() noexcept;
+  void cancel(folly::exception_wrapper ex) noexcept;
 
   // Returns the event base on which calls to "onThriftResponse()"
   // and "cancel()" must be scheduled.

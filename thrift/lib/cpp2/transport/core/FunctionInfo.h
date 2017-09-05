@@ -23,6 +23,9 @@
 namespace apache {
 namespace thrift {
 
+// TODO: We should merge this with RpcOptions and have a clean way of
+// specifying persistent options and headers.
+
 using FunctionName = std::string;
 
 enum FunctionKind {

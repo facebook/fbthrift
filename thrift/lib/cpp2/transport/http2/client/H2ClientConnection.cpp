@@ -21,7 +21,8 @@
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
 #include <proxygen/lib/utils/WheelTimerInstance.h>
-#include <thrift/lib/cpp2/transport/http2/client/H2TransactionCallback.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <wangle/acceptor/TransportInfo.h>
 
@@ -29,8 +30,10 @@ namespace apache {
 namespace thrift {
 
 using apache::thrift::async::TAsyncTransport;
+using apache::thrift::transport::TTransportException;
 using std::string;
 using folly::EventBase;
+using proxygen::HTTPSession;
 using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
 
@@ -51,11 +54,16 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP1xConnection(
 }
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
-    TAsyncTransport::UniquePtr transport) {
-  return std::unique_ptr<H2ClientConnection>(new H2ClientConnection(
+    TAsyncTransport::UniquePtr transport,
+    const string& httpHost,
+    const string& httpUrl) {
+  std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(
       std::move(transport),
       std::make_unique<proxygen::HTTP2Codec>(
           proxygen::TransportDirection::UPSTREAM)));
+  connection->httpHost_ = httpHost;
+  connection->httpUrl_ = httpUrl;
+  return connection;
 }
 
 H2ClientConnection::H2ClientConnection(
@@ -72,7 +80,7 @@ H2ClientConnection::H2ClientConnection(
       peerAddress,
       std::move(codec),
       wangle::TransportInfo(),
-      nullptr);
+      this);
 }
 
 H2ClientConnection::~H2ClientConnection() {
@@ -81,20 +89,24 @@ H2ClientConnection::~H2ClientConnection() {
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
   if (!httpSession_) {
-    // TODO: deal with this case later.
-    return std::shared_ptr<ThriftChannelIf>();
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "HTTPSession is not open");
   }
-  // Question for JiaJie: Why does this self-destruct?  In your code,
-  // how does txn get destroyed?
-  auto httpCallback = new H2TransactionCallback();
-  auto txn = httpSession_->newTransaction(httpCallback);
+  // This object destroys itself when done.
+  auto handler = new ThriftTransactionHandler();
+  auto txn = httpSession_->newTransaction(handler);
   if (!txn) {
-    // TODO: deal with this case later.
-    return std::shared_ptr<ThriftChannelIf>();
+    TTransportException ex(
+        TTransportException::NOT_OPEN,
+        "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    delete handler;
+    throw ex;
   }
   // TODO: do timeout setting.
-  auto channel = std::make_shared<SingleRpcChannel>(txn);
-  httpCallback->setChannel(channel);
+  auto channel = std::make_shared<SingleRpcChannel>(txn, httpHost_, httpUrl_);
+  handler->setChannel(channel);
   return channel;
 }
 
@@ -175,6 +187,10 @@ void H2ClientConnection::closeNow() {
 
 CLIENT_TYPE H2ClientConnection::getClientType() {
   return THRIFT_HTTP_CLIENT_TYPE;
+}
+
+void H2ClientConnection::onDestroy(const HTTPSession& /*session*/) {
+  httpSession_ = nullptr;
 }
 
 } // namespace thrift

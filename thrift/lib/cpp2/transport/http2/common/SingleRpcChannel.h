@@ -24,10 +24,17 @@ namespace thrift {
 class SingleRpcChannel : public H2ChannelIf {
  public:
   SingleRpcChannel(
-      ThriftProcessor* processor,
-      proxygen::ResponseHandler* toHttp2);
-  explicit SingleRpcChannel(proxygen::HTTPTransaction* toHttp2);
+      proxygen::ResponseHandler* toHttp2,
+      ThriftProcessor* processor);
+
+  SingleRpcChannel(
+      proxygen::HTTPTransaction* toHttp2,
+      const std::string& httpHost,
+      const std::string& httpUrl);
+
   ~SingleRpcChannel() override;
+
+  bool supportsHeaders() const noexcept override;
 
   void sendThriftResponse(
       uint32_t seqId,
@@ -57,7 +64,22 @@ class SingleRpcChannel : public H2ChannelIf {
 
   void onH2StreamEnd() noexcept override;
 
+  void onH2StreamClosed() noexcept override;
+
  private:
+  // TODO: Temporary method until we add envelope to payload.
+  bool isOneWay() noexcept;
+
+  // The thrift processor used to execute RPCs (server side only).
+  // Owned by H2ThriftServer.
+  ThriftProcessor* processor_;
+
+  // Header information for RPCs (client side only).
+  std::string httpHost_;
+  std::string httpUrl_;
+  // Callback for client side.
+  std::unique_ptr<ThriftClientCallback> callback_;
+
   std::unique_ptr<std::map<std::string, std::string>> headers_;
   std::unique_ptr<folly::IOBuf> contents_;
   bool receivedH2Stream_{false};
