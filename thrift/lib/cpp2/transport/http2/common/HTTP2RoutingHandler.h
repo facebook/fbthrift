@@ -16,12 +16,8 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
-
-#include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
-#include <proxygen/lib/http/session/HTTPSession.h>
-#include <proxygen/lib/http/session/SimpleController.h>
+#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
 namespace apache {
 namespace thrift {
@@ -61,12 +57,6 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   // we need to set this object as a unique_ptr as well in order to properly
   // move it into the class.
   std::unique_ptr<proxygen::HTTPServerOptions> options_;
-
-  // All of these objects are used by Proxygen.
-  // We set them as unique_ptrs to own them and avoid going out of scope.
-  std::unique_ptr<proxygen::SimpleController> controller_;
-  std::unique_ptr<proxygen::HTTPServerAcceptor> serverAcceptor_;
-  std::unique_ptr<proxygen::HTTPSession::EmptyInfoCallback> sessionInfoCb_;
 };
 
 } // namspace thrift
