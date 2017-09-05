@@ -1,4 +1,6 @@
 /*
+ * Copyright 2012-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -107,6 +109,9 @@ struct Serializer {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
     // Okay to share any external buffers, as we'll copy them to *out
     // immediately afterwards.
+    if (!out->empty()) {
+      queue.append(out->data(), out->size());
+    }
     serialize(obj, &queue, SHARE_EXTERNAL_BUFFER);
     *out = queue.move()->moveToFbString();
   }
