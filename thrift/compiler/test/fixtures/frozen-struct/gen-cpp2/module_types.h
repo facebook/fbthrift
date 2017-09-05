@@ -16,9 +16,8 @@
 #include "include1_types.h"
 #include "include2_types.h"
 
+// BEGIN declare_enums
 namespace some { namespace ns {
-class ModuleA;
-class ModuleB;
 
 enum class EnumB {
   EMPTY = 1
@@ -29,14 +28,19 @@ extern const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES;
 extern const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES;
 
 
+
 }} // some::ns
 namespace std {
+
 
 template<> struct hash<typename  ::some::ns::EnumB> : public apache::thrift::detail::enum_hash<typename  ::some::ns::EnumB> {};
 template<> struct equal_to<typename  ::some::ns::EnumB> : public apache::thrift::detail::enum_equal_to<typename  ::some::ns::EnumB> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::some::ns::EnumB>;
 template <> const std::size_t TEnumTraits< ::some::ns::EnumB>::size;
@@ -53,11 +57,24 @@ template <> inline constexpr  ::some::ns::EnumB TEnumTraits< ::some::ns::EnumB>:
   return  ::some::ns::EnumB::EMPTY;
 }
 
+
 }} // apache::thrift
 
 
-namespace some { namespace ns {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace some { namespace ns {
+class ModuleA;
+class ModuleB;
+}} // some::ns
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+namespace some { namespace ns {
 class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
  public:
 
@@ -295,7 +312,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ModuleA>::se
 
 }} // apache::thrift
 namespace some { namespace ns {
-
 class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
  public:
 
@@ -432,6 +448,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ModuleB>::se
 }
 
 }} // apache::thrift
-namespace some { namespace ns {
-
-}} // some::ns

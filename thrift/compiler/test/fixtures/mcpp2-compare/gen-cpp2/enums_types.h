@@ -14,8 +14,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 namespace facebook { namespace ns { namespace qwerty {
-class SomeStruct;
 
 enum class AnEnumA {
   FIELDA = 0
@@ -26,14 +26,76 @@ extern const _AnEnumA_EnumMapFactory::ValuesToNamesMapType _AnEnumA_VALUES_TO_NA
 extern const _AnEnumA_EnumMapFactory::NamesToValuesMapType _AnEnumA_NAMES_TO_VALUES;
 
 
+
+enum class AnEnumB {
+  FIELDA = 0,
+  FIELDB = 2
+};
+
+using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB, AnEnumB>;
+extern const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES;
+extern const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES;
+
+
+
+enum class AnEnumC {
+  FIELDC = 0
+};
+
+using _AnEnumC_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumC, AnEnumC>;
+extern const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES;
+extern const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES;
+
+
+
+enum class AnEnumD {
+  FIELDD = 0
+};
+
+using _AnEnumD_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumD, AnEnumD>;
+extern const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES;
+extern const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES;
+
+
+
+enum class AnEnumE {
+  FIELDA = 0
+};
+
+using _AnEnumE_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumE, AnEnumE>;
+extern const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES;
+extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES;
+
+
+
 }}} // facebook::ns::qwerty
 namespace std {
+
 
 template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumA> {};
 template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumA> {};
 
+
+template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumB> {};
+template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumB> {};
+
+
+template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumC> {};
+template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumC> {};
+
+
+template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumD> {};
+template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumD> {};
+
+
+template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumE> {};
+template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumE> {};
+
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumA>;
 template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::size;
@@ -50,27 +112,6 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumA TEnumTraits< ::fac
   return  ::facebook::ns::qwerty::AnEnumA::FIELDA;
 }
 
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-enum class AnEnumB {
-  FIELDA = 0,
-  FIELDB = 2
-};
-
-using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB, AnEnumB>;
-extern const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES;
-extern const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES;
-
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumB> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumB> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumB>;
 template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size;
@@ -87,26 +128,6 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::fac
   return  ::facebook::ns::qwerty::AnEnumB::FIELDB;
 }
 
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-enum class AnEnumC {
-  FIELDC = 0
-};
-
-using _AnEnumC_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumC, AnEnumC>;
-extern const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES;
-extern const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES;
-
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumC> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumC> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumC>;
 template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::size;
@@ -123,26 +144,6 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumC TEnumTraits< ::fac
   return  ::facebook::ns::qwerty::AnEnumC::FIELDC;
 }
 
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-enum class AnEnumD {
-  FIELDD = 0
-};
-
-using _AnEnumD_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumD, AnEnumD>;
-extern const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES;
-extern const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES;
-
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumD> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumD> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumD>;
 template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::size;
@@ -159,26 +160,6 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumD TEnumTraits< ::fac
   return  ::facebook::ns::qwerty::AnEnumD::FIELDD;
 }
 
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-enum class AnEnumE {
-  FIELDA = 0
-};
-
-using _AnEnumE_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumE, AnEnumE>;
-extern const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES;
-extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES;
-
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumE> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumE> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumE>;
 template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::size;
@@ -195,11 +176,23 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumE TEnumTraits< ::fac
   return  ::facebook::ns::qwerty::AnEnumE::FIELDA;
 }
 
+
 }} // apache::thrift
 
 
-namespace facebook { namespace ns { namespace qwerty {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace facebook { namespace ns { namespace qwerty {
+class SomeStruct;
+}}} // facebook::ns::qwerty
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
  public:
 
@@ -310,6 +303,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::facebook::ns::qwerty::
 }
 
 }} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty

@@ -14,14 +14,25 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class ComplexUnion;
 class FinalComplexUnion;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+namespace cpp2 {
 typedef std::map<int16_t, std::string> containerTypedef;
 
+} // cpp2
+// END typedefs
+namespace cpp2 {
 class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
   enum Type {
@@ -532,7 +543,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::s
 
 }} // apache::thrift
 namespace cpp2 {
-
 class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperators<FinalComplexUnion> {
  public:
   enum Type {
@@ -816,6 +826,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FinalComplexUnio
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

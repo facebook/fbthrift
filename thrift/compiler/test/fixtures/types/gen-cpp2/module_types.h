@@ -14,9 +14,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class decorated_struct;
-class ContainerStruct;
 
 enum class has_bitwise_ops {
   none = 0,
@@ -86,14 +85,19 @@ inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
+
 }}}} // apache::thrift::fixtures::types
 namespace std {
+
 
 template<> struct hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
 template<> struct equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
 template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
@@ -110,11 +114,24 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops
   return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
 }
 
+
 }} // apache::thrift
 
 
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class decorated_struct;
+class ContainerStruct;
+}}}} // apache::thrift::fixtures::types
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {
  public:
 
@@ -240,7 +257,6 @@ template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorate
 
 } // std
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-
 class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
  public:
 
@@ -468,6 +484,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 }} // apache::thrift
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
-}}}} // apache::thrift::fixtures::types

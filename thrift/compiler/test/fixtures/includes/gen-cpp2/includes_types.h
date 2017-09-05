@@ -15,13 +15,24 @@
 
 #include "transitive_types.h"
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class Included;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+namespace cpp2 {
 typedef int64_t IncludedInt64;
 
+} // cpp2
+// END typedefs
+namespace cpp2 {
 class Included : private apache::thrift::detail::st::ComparisonOperators<Included> {
  public:
 
@@ -157,6 +168,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::seria
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

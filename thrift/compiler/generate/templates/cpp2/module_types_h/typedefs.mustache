@@ -14,10 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#program:typedefs%><%#typedef:type%>
-<%^typedef:is_same_type%><%^type:cpp_type%>
-<% > module_types_h/typedef_recursive_forward_declare%>
-<%/type:cpp_type%><%/typedef:is_same_type%>
-typedef <%#type:cpp_type%><%type:cpp_type%><%/type:cpp_type%><%^type:cpp_type%><% > Type%><%/type:cpp_type%> <%typedef:symbolic%>;
+%>// BEGIN typedefs
+<%#program:typedefs?%>
+<% > common/namespace_cpp2_begin%>
 
+<%#program:typedefs%><%#typedef:type%>
+typedef <%#type:cpp_type%><%type:cpp_type%><%/type:cpp_type%><%^type:cpp_type%><% > Type%><%/type:cpp_type%> <%typedef:symbolic%>;
 <%/typedef:type%><%/program:typedefs%>
+
+<% > common/namespace_cpp2_end%>
+<%/program:typedefs?%>
+
+// END typedefs

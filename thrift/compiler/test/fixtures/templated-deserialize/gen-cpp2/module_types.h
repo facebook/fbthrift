@@ -14,9 +14,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 namespace cpp2 {
-class SmallStruct;
-class containerStruct;
 
 enum class MyEnumA {
   fieldA = 1,
@@ -29,14 +28,19 @@ extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NA
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 
+
 } // cpp2
 namespace std {
+
 
 template<> struct hash<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnumA> {};
 template<> struct equal_to<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnumA> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::cpp2::MyEnumA>;
 template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size;
@@ -53,8 +57,12 @@ template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::max
   return  ::cpp2::MyEnumA::fieldC;
 }
 
+
 }} // apache::thrift
 
+
+// END declare_enums
+// BEGIN struct_indirection
 namespace cpp2 {
 struct apache_thrift_indirection_module_IndirectionA {
   template <typename T> static auto&& get(T&& x) {
@@ -88,14 +96,22 @@ struct apache_thrift_indirection_module_IndirectionB {
 
 
 } // cpp2
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
+class SmallStruct;
+class containerStruct;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+namespace cpp2 {
 typedef Foo IndirectionA;
-
 typedef Baz IndirectionC;
-
 typedef Bar IndirectionB;
 
+} // cpp2
+// END typedefs
+namespace cpp2 {
 class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
  public:
 
@@ -233,7 +249,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::SmallStruct>::se
 
 }} // apache::thrift
 namespace cpp2 {
-
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
@@ -741,6 +756,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::containerStruct>
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

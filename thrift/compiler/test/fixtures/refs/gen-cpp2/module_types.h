@@ -14,19 +14,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 namespace cpp2 {
-class MyUnion;
-class MyField;
-class MyStruct;
-class StructWithUnion;
-class RecursiveStruct;
-class StructWithContainers;
-class StructWithSharedConst;
-class Empty;
-class StructWithRef;
-class StructWithRefTypeUnique;
-class StructWithRefTypeShared;
-class StructWithRefTypeSharedConst;
 
 enum class TypedEnum : short {
   VAL1 = 0,
@@ -38,14 +27,19 @@ extern const _TypedEnum_EnumMapFactory::ValuesToNamesMapType _TypedEnum_VALUES_T
 extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
 
 
+
 } // cpp2
 namespace std {
+
 
 template<> struct hash<typename  ::cpp2::TypedEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::TypedEnum> {};
 template<> struct equal_to<typename  ::cpp2::TypedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::TypedEnum> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::cpp2::TypedEnum>;
 template <> const std::size_t TEnumTraits< ::cpp2::TypedEnum>::size;
@@ -62,11 +56,34 @@ template <> inline constexpr  ::cpp2::TypedEnum TEnumTraits< ::cpp2::TypedEnum>:
   return  ::cpp2::TypedEnum::VAL2;
 }
 
+
 }} // apache::thrift
 
 
-namespace cpp2 {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace cpp2 {
+class MyUnion;
+class MyField;
+class MyStruct;
+class StructWithUnion;
+class RecursiveStruct;
+class StructWithContainers;
+class StructWithSharedConst;
+class Empty;
+class StructWithRef;
+class StructWithRefTypeUnique;
+class StructWithRefTypeShared;
+class StructWithRefTypeSharedConst;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+namespace cpp2 {
 class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
  public:
   enum Type {
@@ -338,7 +355,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyUnion>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-
 class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField> {
  public:
 
@@ -489,7 +505,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyField>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-
 class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
@@ -591,7 +606,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::seria
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
  public:
 
@@ -723,7 +737,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithUnion>
 
 }} // apache::thrift
 namespace cpp2 {
-
 class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
  public:
 
@@ -827,7 +840,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithContainers : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
  public:
 
@@ -981,7 +993,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithContai
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
  public:
 
@@ -1085,7 +1096,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithShared
 
 }} // apache::thrift
 namespace cpp2 {
-
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
@@ -1164,7 +1174,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Empty>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
  public:
 
@@ -1266,7 +1275,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRef>::
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
  public:
 
@@ -1368,7 +1376,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
  public:
 
@@ -1472,7 +1479,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 
 }} // apache::thrift
 namespace cpp2 {
-
 class StructWithRefTypeSharedConst : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
  public:
 
@@ -1575,6 +1581,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

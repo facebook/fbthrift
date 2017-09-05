@@ -31,30 +31,17 @@
 #include <%cpp_include%>
 <%/program:cpp_includes%>
 
-<%#program:enums?%>
 <% > module_types_h/declare_enums%>
-<%/program:enums?%>
 
-<%#program:indirection?%>
 <% > module_types_h/struct_indirection%>
-<%/program:indirection?%>
+
+<% > module_types_h/forward_declare%>
+
+<% > module_types_h/typedefs%>
 
 <%#program:structs%>
 <% > common/namespace_cpp2_begin%>
 
-
-<%#first?%>
-<%^program:enums?%>
-<%#struct:struct_list%>
-class <%struct_name%>;
-<%/struct:struct_list%>
-<%^program:typedefs?%>
-
-<%/program:typedefs?%><%/program:enums?%>
-<%#program:typedefs?%>
-<% > module_types_h/typedef_initialize%>
-<%/program:typedefs?%>
-<%/first?%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
 <%#struct:union?%>
@@ -246,10 +233,3 @@ template<> struct equal_to<typename <% > common/namespace_cpp2%><%struct:name%>>
 } // std
 <%/struct:cpp_declare_hash%>
 <%/program:structs%>
-<% > common/namespace_cpp2_begin%>
-
-<%^program:structs%>
-<% > module_types_h/typedef_initialize%>
-<%/program:structs%>
-
-<% > common/namespace_cpp2_end%>

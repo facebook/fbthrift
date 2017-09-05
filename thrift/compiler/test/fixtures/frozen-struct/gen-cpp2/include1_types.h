@@ -14,12 +14,21 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace some { namespace ns {
-
 class IncludedA;
+}} // some::ns
+// END forward_declare
+// BEGIN typedefs
 
+// END typedefs
+namespace some { namespace ns {
 class IncludedA : private apache::thrift::detail::st::ComparisonOperators<IncludedA> {
  public:
 
@@ -160,6 +169,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::IncludedA>::
 }
 
 }} // apache::thrift
-namespace some { namespace ns {
-
-}} // some::ns

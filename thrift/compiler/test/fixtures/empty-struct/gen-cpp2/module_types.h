@@ -14,13 +14,22 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class Empty;
 class Nada;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
 
+// END typedefs
+namespace cpp2 {
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
@@ -99,7 +108,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Empty>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-
 class Nada : private apache::thrift::detail::st::ComparisonOperators<Nada> {
  public:
   enum Type {
@@ -248,6 +256,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Nada>::serialize
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

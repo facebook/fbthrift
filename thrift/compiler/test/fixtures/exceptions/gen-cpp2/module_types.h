@@ -14,13 +14,22 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class Banal;
 class Fiery;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
 
+// END typedefs
+namespace cpp2 {
 class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
  public:
 
@@ -103,7 +112,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Banal>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-
 class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
  public:
 
@@ -210,6 +218,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::serializ
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

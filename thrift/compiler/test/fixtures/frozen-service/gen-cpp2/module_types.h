@@ -14,15 +14,24 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace some { namespace ns {
-
 class ModuleA;
 class ModuleB;
 class ExceptionA;
 class ExceptionB;
+}} // some::ns
+// END forward_declare
+// BEGIN typedefs
 
+// END typedefs
+namespace some { namespace ns {
 class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
  public:
 
@@ -212,7 +221,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ModuleA>::se
 
 }} // apache::thrift
 namespace some { namespace ns {
-
 class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
  public:
 
@@ -324,7 +332,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ModuleB>::se
 
 }} // apache::thrift
 namespace some { namespace ns {
-
 class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<ExceptionA>, public apache::thrift::TException {
  public:
 
@@ -470,7 +477,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ExceptionA>:
 
 }} // apache::thrift
 namespace some { namespace ns {
-
 class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<ExceptionB>, public apache::thrift::TException {
  public:
 
@@ -615,6 +621,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ExceptionB>:
 }
 
 }} // apache::thrift
-namespace some { namespace ns {
-
-}} // some::ns

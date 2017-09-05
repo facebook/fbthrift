@@ -16,17 +16,8 @@
 #include "includes_types.h"
 #include <folly/small_vector.h>
 
+// BEGIN declare_enums
 namespace some { namespace valid { namespace ns {
-class Empty;
-class ASimpleStruct;
-class MyStruct;
-class SimpleUnion;
-class ComplexUnion;
-class AnException;
-class AnotherException;
-class containerStruct;
-class MyIncludedStruct;
-class AnnotatedStruct;
 
 enum class MyEnumA {
   fieldA = 1,
@@ -39,32 +30,6 @@ extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NA
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 
-}}} // some::valid::ns
-namespace std {
-
-template<> struct hash<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumA> {};
-template<> struct equal_to<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumA> {};
-
-} // std
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names;
-template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value);
-template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue);
-
-template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::min() {
-  return  ::some::valid::ns::MyEnumA::fieldA;
-}
-
-template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::max() {
-  return  ::some::valid::ns::MyEnumA::fieldC;
-}
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
 
 enum class AnnotatedEnum : std::uint32_t {
   FIELDA = 2,
@@ -132,32 +97,6 @@ inline constexpr AnnotatedEnum operator~(AnnotatedEnum a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
-}}} // some::valid::ns
-namespace std {
-
-template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum> {};
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum> {};
-
-} // std
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names;
-template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value);
-template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue);
-
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::min() {
-  return  ::some::valid::ns::AnnotatedEnum::FIELDA;
-}
-
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::max() {
-  return  ::some::valid::ns::AnnotatedEnum::FIELDC;
-}
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
 
 enum class AnnotatedEnum2 : short {
   FIELDA = 2,
@@ -225,14 +164,73 @@ inline constexpr AnnotatedEnum2 operator~(AnnotatedEnum2 a) {
   using U = std::underlying_type_t<E>;
   return static_cast<E>(~static_cast<U>(a));
 }
+
+enum class MyEnumB {
+  AField = 0
+};
+
+using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB, MyEnumB>;
+extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
+extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
+
+
+
 }}} // some::valid::ns
 namespace std {
+
+
+template<> struct hash<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumA> {};
+template<> struct equal_to<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumA> {};
+
+
+template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum> {};
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum> {};
+
 
 template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum2> {};
 template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum2> {};
 
+
+template<> struct hash<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumB> {};
+template<> struct equal_to<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumB> {};
+
+
 } // std
+
 namespace apache { namespace thrift {
+
+
+template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
+template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size;
+template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names;
+template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value);
+template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue);
+
+template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::min() {
+  return  ::some::valid::ns::MyEnumA::fieldA;
+}
+
+template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::max() {
+  return  ::some::valid::ns::MyEnumA::fieldC;
+}
+
+
+template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
+template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
+template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names;
+template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value);
+template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue);
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::min() {
+  return  ::some::valid::ns::AnnotatedEnum::FIELDA;
+}
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::max() {
+  return  ::some::valid::ns::AnnotatedEnum::FIELDC;
+}
+
 
 template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2>;
 template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size;
@@ -249,26 +247,6 @@ template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::s
   return  ::some::valid::ns::AnnotatedEnum2::FIELDC;
 }
 
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
-enum class MyEnumB {
-  AField = 0
-};
-
-using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB, MyEnumB>;
-extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
-extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
-
-
-}}} // some::valid::ns
-namespace std {
-
-template<> struct hash<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumB> {};
-template<> struct equal_to<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumB> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB>;
 template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumB>::size;
@@ -285,8 +263,12 @@ template <> inline constexpr  ::some::valid::ns::MyEnumB TEnumTraits< ::some::va
   return  ::some::valid::ns::MyEnumB::AField;
 }
 
+
 }} // apache::thrift
 
+
+// END declare_enums
+// BEGIN struct_indirection
 namespace some { namespace valid { namespace ns {
 struct apache_thrift_indirection_module_IndirectionA {
   template <typename T> static auto&& get(T&& x) {
@@ -320,56 +302,49 @@ struct apache_thrift_indirection_module_IndirectionB {
 
 
 }}} // some::valid::ns
+// END struct_indirection
+// BEGIN forward_declare
 namespace some { namespace valid { namespace ns {
-
-typedef  ::a::different::ns::AStruct AStruct;
-
-typedef int32_t simpleTypeDef;
-
-typedef std::map<int16_t, std::string> containerTypeDef;
-
-typedef std::vector<std::map<int16_t, std::string>> complexContainerTypeDef;
-
-class SimpleUnion;
-typedef std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
-
-class MyStruct;
-typedef std::vector< ::some::valid::ns::MyStruct> structTypeDef;
-
 class Empty;
+class ASimpleStruct;
 class MyStruct;
+class SimpleUnion;
+class ComplexUnion;
+class AnException;
+class AnotherException;
+class containerStruct;
+class MyIncludedStruct;
+class AnnotatedStruct;
+}}} // some::valid::ns
+// END forward_declare
+// BEGIN typedefs
+namespace some { namespace valid { namespace ns {
+typedef  ::a::different::ns::AStruct AStruct;
+typedef int32_t simpleTypeDef;
+typedef std::map<int16_t, std::string> containerTypeDef;
+typedef std::vector<std::map<int16_t, std::string>> complexContainerTypeDef;
+typedef std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
+typedef std::vector< ::some::valid::ns::MyStruct> structTypeDef;
 typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
-
 typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
-
 typedef Foo IndirectionA;
-
 typedef Baz IndirectionC;
-
 typedef Bar IndirectionB;
-
 typedef CppFakeI32 CppFakeI32;
-
 typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
-
 typedef folly::sorted_vector_set<std::string> SortedVectorSetString;
-
 typedef FakeMap FakeMap;
-
 typedef std::unordered_map<std::string, containerStruct> UnorderedMapStruct;
-
 typedef std::list<int32_t> std_list;
-
 typedef std::deque<std::string> std_deque;
-
 typedef folly::sorted_vector_set<std::string> folly_set;
-
 typedef folly::sorted_vector_map<int64_t, std::string> folly_map;
-
 typedef folly::IOBuf IOBuf;
-
 typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
+}}} // some::valid::ns
+// END typedefs
+namespace some { namespace valid { namespace ns {
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
@@ -448,7 +423,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
  public:
 
@@ -553,7 +527,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimp
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
@@ -868,7 +841,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStr
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
  public:
   enum Type {
@@ -1139,7 +1111,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Simpl
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
   enum Type {
@@ -3182,7 +3153,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Compl
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
  public:
 
@@ -3595,7 +3565,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnExc
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
  public:
 
@@ -3759,7 +3728,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Anoth
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
@@ -4848,7 +4816,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::conta
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-
 class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
  public:
 
@@ -5006,7 +4973,6 @@ template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
 
 } // std
 namespace some { namespace valid { namespace ns {
-
 class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
 
@@ -5776,6 +5742,3 @@ template<> struct equal_to<typename  ::some::valid::ns::AnnotatedStruct> {
 };
 
 } // std
-namespace some { namespace valid { namespace ns {
-
-}}} // some::valid::ns

@@ -14,15 +14,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 
+// BEGIN declare_enums
 namespace cpp2 {
-class Internship;
-class UnEnumStruct;
-class Range;
-class struct1;
-class struct2;
-class struct3;
-class union1;
-class union2;
 
 enum class EmptyEnum {};
 
@@ -31,25 +24,6 @@ extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_T
 extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
 
-} // cpp2
-namespace std {
-
-template<> struct hash<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::EmptyEnum> {};
-template<> struct equal_to<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::EmptyEnum> {};
-
-} // std
-namespace apache { namespace thrift {
-
-template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
-template <> const std::size_t TEnumTraits< ::cpp2::EmptyEnum>::size;
-template <> const folly::Range<const  ::cpp2::EmptyEnum*> TEnumTraits< ::cpp2::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::EmptyEnum>::names;
-template <> const char* TEnumTraits< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
-template <> bool TEnumTraits< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
-
-
-}} // apache::thrift
-namespace cpp2 {
 
 enum class City {
   NYC = 0,
@@ -63,14 +37,49 @@ extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
 extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 
+
+enum class Company {
+  FACEBOOK = 0,
+  WHATSAPP = 1,
+  OCULUS = 2,
+  INSTAGRAM = 3
+};
+
+using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company, Company>;
+extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
+
+
+
 } // cpp2
 namespace std {
+
+
+template<> struct hash<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::EmptyEnum> {};
+template<> struct equal_to<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::EmptyEnum> {};
+
 
 template<> struct hash<typename  ::cpp2::City> : public apache::thrift::detail::enum_hash<typename  ::cpp2::City> {};
 template<> struct equal_to<typename  ::cpp2::City> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::City> {};
 
+
+template<> struct hash<typename  ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Company> {};
+template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Company> {};
+
+
 } // std
+
 namespace apache { namespace thrift {
+
+
+template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
+template <> const std::size_t TEnumTraits< ::cpp2::EmptyEnum>::size;
+template <> const folly::Range<const  ::cpp2::EmptyEnum*> TEnumTraits< ::cpp2::EmptyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::EmptyEnum>::names;
+template <> const char* TEnumTraits< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
+template <> bool TEnumTraits< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
+
+
 
 template <> struct TEnumDataStorage< ::cpp2::City>;
 template <> const std::size_t TEnumTraits< ::cpp2::City>::size;
@@ -87,29 +96,6 @@ template <> inline constexpr  ::cpp2::City TEnumTraits< ::cpp2::City>::max() {
   return  ::cpp2::City::LON;
 }
 
-}} // apache::thrift
-namespace cpp2 {
-
-enum class Company {
-  FACEBOOK = 0,
-  WHATSAPP = 1,
-  OCULUS = 2,
-  INSTAGRAM = 3
-};
-
-using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company, Company>;
-extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
-extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
-
-
-} // cpp2
-namespace std {
-
-template<> struct hash<typename  ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Company> {};
-template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Company> {};
-
-} // std
-namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::Company>;
 template <> const std::size_t TEnumTraits< ::cpp2::Company>::size;
@@ -126,11 +112,30 @@ template <> inline constexpr  ::cpp2::Company TEnumTraits< ::cpp2::Company>::max
   return  ::cpp2::Company::INSTAGRAM;
 }
 
+
 }} // apache::thrift
 
 
-namespace cpp2 {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace cpp2 {
+class Internship;
+class UnEnumStruct;
+class Range;
+class struct1;
+class struct2;
+class struct3;
+class union1;
+class union2;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+namespace cpp2 {
 class Internship : private apache::thrift::detail::st::ComparisonOperators<Internship> {
  public:
 
@@ -285,7 +290,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::ser
 
 }} // apache::thrift
 namespace cpp2 {
-
 class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
  public:
 
@@ -397,7 +401,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::s
 
 }} // apache::thrift
 namespace cpp2 {
-
 class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
  public:
 
@@ -518,7 +521,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-
 class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
 
@@ -661,7 +663,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-
 class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
 
@@ -851,7 +852,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-
 class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
 
@@ -1017,7 +1017,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-
 class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
   enum Type {
@@ -1275,7 +1274,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::seriali
 
 }} // apache::thrift
 namespace cpp2 {
-
 class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
   enum Type {
@@ -1668,6 +1666,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union2>::seriali
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

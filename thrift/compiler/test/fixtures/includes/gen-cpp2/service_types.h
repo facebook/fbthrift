@@ -16,8 +16,15 @@
 #include "module_types.h"
 #include "includes_types.h"
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
-namespace cpp2 {
+// END struct_indirection
+// BEGIN forward_declare
 
-} // cpp2
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs

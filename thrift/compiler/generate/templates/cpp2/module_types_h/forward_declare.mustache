@@ -14,24 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>// BEGIN struct_indirection
-<%#program:indirection?%>
+%>// BEGIN forward_declare
+<%#program:structs?%>
 <% > common/namespace_cpp2_begin%>
 
-<%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
-struct apache_thrift_indirection_module_<%typedef:symbolic%> {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x)<%type:cpp_indirection%>;
-  }
-
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x)<%type:cpp_indirection%>;
-  }
-};
-
-<%/type:cpp_indirection%><%/typedef:type%><%/program:typedefs%>
-
+<%#program:structs%>
+class <%struct:name%>;
+<%/program:structs%>
 <% > common/namespace_cpp2_end%>
-<%/program:indirection?%>
+<%/program:structs?%>
 
-// END struct_indirection
+// END forward_declare

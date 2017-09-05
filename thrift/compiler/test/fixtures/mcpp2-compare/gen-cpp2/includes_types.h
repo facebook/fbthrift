@@ -15,9 +15,8 @@
 
 #include "folly/sorted_vector_types.h"
 
+// BEGIN declare_enums
 namespace a { namespace different { namespace ns {
-class AStruct;
-class AStructB;
 
 enum class AnEnum {
   FIELDA = 2,
@@ -29,14 +28,19 @@ extern const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAME
 extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES;
 
 
+
 }}} // a::different::ns
 namespace std {
+
 
 template<> struct hash<typename  ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_hash<typename  ::a::different::ns::AnEnum> {};
 template<> struct equal_to<typename  ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_equal_to<typename  ::a::different::ns::AnEnum> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::a::different::ns::AnEnum>;
 template <> const std::size_t TEnumTraits< ::a::different::ns::AnEnum>::size;
@@ -53,13 +57,27 @@ template <> inline constexpr  ::a::different::ns::AnEnum TEnumTraits< ::a::diffe
   return  ::a::different::ns::AnEnum::FIELDB;
 }
 
+
 }} // apache::thrift
 
 
-namespace a { namespace different { namespace ns {
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
+namespace a { namespace different { namespace ns {
+class AStruct;
+class AStructB;
+}}} // a::different::ns
+// END forward_declare
+// BEGIN typedefs
+namespace a { namespace different { namespace ns {
 typedef int64_t IncludedInt64;
 
+}}} // a::different::ns
+// END typedefs
+namespace a { namespace different { namespace ns {
 class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
  public:
 
@@ -171,7 +189,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStr
 
 }} // apache::thrift
 namespace a { namespace different { namespace ns {
-
 class AStructB : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
  public:
 
@@ -265,6 +282,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStr
 }
 
 }} // apache::thrift
-namespace a { namespace different { namespace ns {
-
-}}} // a::different::ns
