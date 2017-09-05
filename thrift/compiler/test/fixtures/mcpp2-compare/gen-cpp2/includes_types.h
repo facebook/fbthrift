@@ -159,6 +159,10 @@ extern template uint32_t AStruct::read<>(apache::thrift::CompactProtocolReader*)
 extern template uint32_t AStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t AStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t AStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t AStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // a::different::ns
 namespace apache { namespace thrift {
@@ -253,6 +257,10 @@ extern template uint32_t AStructB::read<>(apache::thrift::CompactProtocolReader*
 extern template uint32_t AStructB::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t AStructB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t AStructB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AStructB::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t AStructB::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // a::different::ns
 namespace apache { namespace thrift {

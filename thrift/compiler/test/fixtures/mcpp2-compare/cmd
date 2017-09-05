@@ -1,5 +1,5 @@
-mstch_cpp2 src/module.thrift
-mstch_cpp2 src/includes.thrift
-mstch_cpp2:reflection src/enums.thrift
-mstch_cpp2:reflection src/reflection.thrift
+mstch_cpp2:json src/module.thrift
+mstch_cpp2:json src/includes.thrift
+mstch_cpp2:json,reflection src/enums.thrift
+mstch_cpp2:json,reflection src/reflection.thrift
 mstch_py3 src/includes.thrift

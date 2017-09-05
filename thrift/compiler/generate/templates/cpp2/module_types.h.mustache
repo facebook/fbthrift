@@ -188,6 +188,12 @@ extern template uint32_t <%struct:name%>::read<>(apache::thrift::CompactProtocol
 extern template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+<%#program:json?%>
+extern template uint32_t <%struct:name%>::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t <%struct:name%>::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+<%/program:json?%>
 
 <% > common/namespace_cpp2_end%>
 

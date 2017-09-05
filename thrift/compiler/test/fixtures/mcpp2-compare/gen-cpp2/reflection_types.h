@@ -110,6 +110,10 @@ extern template uint32_t ReflectionStruct::read<>(apache::thrift::CompactProtoco
 extern template uint32_t ReflectionStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ReflectionStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t ReflectionStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

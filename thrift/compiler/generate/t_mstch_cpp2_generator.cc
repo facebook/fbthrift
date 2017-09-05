@@ -672,6 +672,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
+            {"program:json?", &mstch_cpp2_program::json},
         });
   }
   virtual std::string get_program_namespace(t_program const* program) override {
@@ -718,6 +719,9 @@ class mstch_cpp2_program : public mstch_program {
       }
     }
     return false;
+  }
+  mstch::node json() {
+    return cache_->parsed_options_.count("json") != 0;
   }
 };
 

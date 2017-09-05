@@ -174,6 +174,10 @@ template uint32_t SomeStruct::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t SomeStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SomeStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t SomeStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t SomeStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // facebook::ns::qwerty
 namespace apache { namespace thrift {

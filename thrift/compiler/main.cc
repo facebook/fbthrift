@@ -126,8 +126,7 @@ static void preprocess_cpp2_generator_strings(
 
   // Use cpp2 python generator if mstch_cpp2 and any of these flags are present
   if (gen_string.find("mstch_cpp2") != std::string::npos &&
-      (gen_string.find("json") != std::string::npos ||
-       gen_string.find("future") != std::string::npos ||
+      (gen_string.find("future") != std::string::npos ||
        gen_string.find("py_generator") != std::string::npos ||
        gen_string.find("optionals") != std::string::npos ||
        gen_string.find("stack_arguments") != std::string::npos ||
