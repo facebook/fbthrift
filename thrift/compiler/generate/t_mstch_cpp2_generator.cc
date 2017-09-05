@@ -698,7 +698,7 @@ class mstch_cpp2_program : public mstch_program {
     mstch::array a{};
     for (auto const* program : program_->get_includes()) {
       std::string program_id =
-          program->get_name() + get_program_namespace(program_);
+          program->get_name() + get_program_namespace(program);
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
             generators_->program_generator_->generate(
