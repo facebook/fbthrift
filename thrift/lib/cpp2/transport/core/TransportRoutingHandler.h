@@ -43,6 +43,13 @@ class TransportRoutingHandler {
   virtual bool canAcceptConnection(const std::vector<uint8_t>& bytes) = 0;
 
   /*
+   * Determines if the protocol indicated by the protocol name is supported by
+   * this routing handler.
+   */
+  virtual bool canAcceptEncryptedConnection(
+      const std::string& protocolName) = 0;
+
+  /*
    * Sets the ConnectionManager that will be used to route the socket
    */
   virtual void setConnectionManager(

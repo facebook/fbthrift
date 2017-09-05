@@ -44,9 +44,9 @@ using apache::thrift::concurrency::Util;
 void Cpp2Worker::onNewConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     const folly::SocketAddress* addr,
-    const std::string& /* nextProtocolName */,
+    const std::string& nextProtocolName,
     wangle::SecureTransportType,
-    const wangle::TransportInfo&) {
+    const wangle::TransportInfo& tinfo) {
   auto observer = server_->getObserver();
   if (server_->maxConnections_ > 0 &&
       (getConnectionManager()->getNumConnections() >=
@@ -56,6 +56,26 @@ void Cpp2Worker::onNewConnection(
       observer->connRejected();
     }
     return;
+  }
+
+  // Check if this is an encypted connection to perform required transport
+  // routing based on the application protocol.
+  // TODO: (karthiksk) T21334731 We ideally should make connectionReady method
+  // of Acceptor virtual to make it the single place for enforcing routing
+  // decisions.
+  if (!nextProtocolName.empty()) {
+    for (auto& routingHandler : *server_->getRoutingHandlers()) {
+      if (routingHandler->canAcceptEncryptedConnection(nextProtocolName)) {
+        VLOG(4) << "Cpp2Worker: Routing encrypted connection for protocol "
+                << nextProtocolName;
+        routingHandler->setConnectionManager(getConnectionManager());
+        // TODO: (karthiksk) T21334789 Eliminate const_cast by making
+        // handleConnection take const folly::SocketAddress* as parameter.
+        routingHandler->handleConnection(
+            std::move(sock), const_cast<folly::SocketAddress*>(addr), tinfo);
+        return;
+      }
+    }
   }
 
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()->getFd();
