@@ -32,7 +32,7 @@ using namespace apache::thrift;
 using namespace facebook::tutorials::thrift::chatroomservice;
 using proxygen::RequestHandlerChain;
 
-std::unique_ptr<apache::thrift::HTTP2RoutingHandler> getHTTP2RoutingHandler(
+std::unique_ptr<apache::thrift::HTTP2RoutingHandler> createHTTP2RoutingHandler(
     std::shared_ptr<ThriftServer> server) {
   auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
   h2_options->threads = static_cast<size_t>(server->getNumIOWorkerThreads());
@@ -75,8 +75,7 @@ int main(int argc, char** argv) {
     server->setSSLConfig(sslConfig);
   }
 
-  auto http2_transport_handler = getHTTP2RoutingHandler(server);
-  server->addRoutingHandler(http2_transport_handler.get());
+  server->addRoutingHandler(createHTTP2RoutingHandler(server));
 
   LOG(INFO) << "ChatRoomService running on port: " << FLAGS_port;
 

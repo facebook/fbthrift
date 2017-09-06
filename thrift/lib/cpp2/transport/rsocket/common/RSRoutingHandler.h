@@ -32,12 +32,16 @@ class RSRoutingHandler : public TransportRoutingHandler {
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
+  bool canAcceptEncryptedConnection(const std::string&) override {
+    return false;
+  }
+
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
   void handleConnection(
+      wangle::ConnectionManager*,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       wangle::TransportInfo const& tinfo) override;
-  void setConnectionManager(wangle::ConnectionManager*) override {}
 
  private:
   std::shared_ptr<ThriftServer> thriftServer_;

@@ -68,11 +68,13 @@ void Cpp2Worker::onNewConnection(
       if (routingHandler->canAcceptEncryptedConnection(nextProtocolName)) {
         VLOG(4) << "Cpp2Worker: Routing encrypted connection for protocol "
                 << nextProtocolName;
-        routingHandler->setConnectionManager(getConnectionManager());
         // TODO: (karthiksk) T21334789 Eliminate const_cast by making
         // handleConnection take const folly::SocketAddress* as parameter.
         routingHandler->handleConnection(
-            std::move(sock), const_cast<folly::SocketAddress*>(addr), tinfo);
+            getConnectionManager(),
+            std::move(sock),
+            const_cast<folly::SocketAddress*>(addr),
+            tinfo);
         return;
       }
     }

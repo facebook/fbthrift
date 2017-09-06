@@ -50,16 +50,11 @@ class TransportRoutingHandler {
       const std::string& protocolName) = 0;
 
   /*
-   * Sets the ConnectionManager that will be used to route the socket
-   */
-  virtual void setConnectionManager(
-      wangle::ConnectionManager* connectionManager) = 0;
-
-  /*
    * Creates the correct session to route the socket to the appropriate
    * protocol handler
    */
   virtual void handleConnection(
+      wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       wangle::TransportInfo const& tinfo) = 0;

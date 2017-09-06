@@ -146,6 +146,7 @@ bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
 }
 
 void HTTP2RoutingHandler::handleConnection(
+    wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress* peerAddress,
     wangle::TransportInfo const& tinfo) {
@@ -156,7 +157,7 @@ void HTTP2RoutingHandler::handleConnection(
   auto session = sessionManager->CreateSession(
       options_.get(), std::move(sock), peerAddress, tinfo);
   // Route the connection.
-  connectionManager_->addConnection(session);
+  connectionManager->addConnection(session);
   sessionManager.release();
   session->startNow();
 }

@@ -51,7 +51,7 @@ class PeekingManager : public wangle::ManagedConnection,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo tinfo,
-      std::vector<TransportRoutingHandler*> const* handlers,
+      std::vector<std::unique_ptr<TransportRoutingHandler>> const* handlers,
       int kIOWorkerThreads)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
@@ -102,10 +102,13 @@ class PeekingManager : public wangle::ManagedConnection,
      * Route the socket to a handler if the handler determines that it
      * is able to handle the connection by peeking in the first few bytes.
      */
-    for (auto& handler : *handlers_) {
+    for (auto const& handler : *handlers_) {
       if (handler->canAcceptConnection(peekBytes)) {
-        handler->setConnectionManager(acceptor_->getConnectionManager());
-        handler->handleConnection(std::move(socket_), &clientAddr_, tinfo_);
+        handler->handleConnection(
+            acceptor_->getConnectionManager(),
+            std::move(socket_),
+            &clientAddr_,
+            tinfo_);
         if (observer_) {
           observer_->connAccepted();
           observer_->activeConnections(
@@ -172,7 +175,7 @@ class PeekingManager : public wangle::ManagedConnection,
   std::string nextProtocolName_;
   wangle::SecureTransportType secureTransportType_;
   wangle::TransportInfo tinfo_;
-  std::vector<TransportRoutingHandler*> const* handlers_;
+  std::vector<std::unique_ptr<TransportRoutingHandler>> const* handlers_;
   int kIOWorkerThreads_;
 };
 }

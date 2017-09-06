@@ -37,21 +37,12 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
+      wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
       wangle::TransportInfo const& tinfo) override;
 
-  void setConnectionManager(
-      wangle::ConnectionManager* connectionManager) override {
-    connectionManager_ = connectionManager;
-  }
-
  private:
-  // ConnectionManager is the object that handles the Server Acceptors.
-  // This object is set within the Acceptor once it's determined that this
-  // is the appropriate handler to handle the client code.
-  wangle::ConnectionManager* connectionManager_;
-
   // HTTPServerOptions are set outside out HTTP2RoutingHandler.
   // Since one of the internal members of this class is a unique_ptr
   // we need to set this object as a unique_ptr as well in order to properly

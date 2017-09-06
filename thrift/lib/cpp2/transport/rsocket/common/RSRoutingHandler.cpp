@@ -74,6 +74,7 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
 }
 
 void RSRoutingHandler::handleConnection(
+    wangle::ConnectionManager*,
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress*,
     wangle::TransportInfo const&) {

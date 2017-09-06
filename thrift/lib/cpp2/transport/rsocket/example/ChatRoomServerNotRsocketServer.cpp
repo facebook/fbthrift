@@ -27,11 +27,6 @@ DEFINE_int32(port, 7777, "Port for the thrift server");
 using namespace apache::thrift;
 using namespace facebook::tutorials::thrift::chatroomservice;
 
-std::unique_ptr<apache::thrift::RSRoutingHandler> getRSRoutingHandler(
-    std::shared_ptr<ThriftServer> thriftServer) {
-  return std::make_unique<apache::thrift::RSRoutingHandler>(thriftServer);
-}
-
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
@@ -43,9 +38,8 @@ int main(int argc, char** argv) {
   server->setPort(FLAGS_port);
   server->setProcessorFactory(cpp2PFac);
 
-  auto rs_transport_handler = getRSRoutingHandler(server);
-
-  server->addRoutingHandler(rs_transport_handler.get());
+  server->addRoutingHandler(
+      std::make_unique<apache::thrift::RSRoutingHandler>(server));
 
   LOG(INFO) << "ChatRoomService running on port: " << FLAGS_port;
 
