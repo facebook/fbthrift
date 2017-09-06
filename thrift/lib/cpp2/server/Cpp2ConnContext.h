@@ -235,6 +235,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     requestTimeout_ = requestTimeout;
   }
 
+  bool isProcessingStartTimeSet() const {
+    return processingStartTime_.hasValue();
+  }
+
   void setProcessingStartTime(
       std::chrono::time_point<std::chrono::steady_clock> processingStartTime) {
     processingStartTime_ = processingStartTime;
@@ -242,7 +246,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   std::chrono::time_point<std::chrono::steady_clock> getProcessingStartTime()
       const {
-    return processingStartTime_;
+    return processingStartTime_.value();
   }
 
   void setMethodName(std::string methodName) {
@@ -278,7 +282,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   apache::thrift::transport::THeader* header_;
   bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
-  std::chrono::steady_clock::time_point processingStartTime_;
+  folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
   std::string methodName_;
   int32_t protoSeqId_{0};
   uint32_t messageBeginSize_{0};
