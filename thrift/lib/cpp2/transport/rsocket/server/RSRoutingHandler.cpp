@@ -43,6 +43,7 @@ RSRoutingHandler::RSRoutingHandler(
 RSRoutingHandler::~RSRoutingHandler() {
   if (rsocketServer_) {
     rsocketServer_->shutdownAndWait();
+    rsocketServer_.reset();
   }
 }
 

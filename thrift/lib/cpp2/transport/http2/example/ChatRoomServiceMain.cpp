@@ -79,7 +79,11 @@ int main(int argc, char** argv) {
 
   LOG(INFO) << "ChatRoomService running on port: " << FLAGS_port;
 
-  server->serve();
+  server->setup();
+
+  getchar();
+
+  server->cleanUp();
 
   return 0;
 }
