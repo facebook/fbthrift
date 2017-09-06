@@ -1,22 +1,38 @@
 # Set the cpp2 directory
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/gen-cpp2)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gen-cpp2)
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
+set(SASL_HEADERS
+  gen-cpp2/SaslAuthService.h
+  gen-cpp2/SaslAuthService.tcc
+  gen-cpp2/SaslAuthService_custom_protocol.h
+  gen-cpp2/Sasl_constants.h
+  gen-cpp2/Sasl_data.h
+  gen-cpp2/Sasl_types.h
+  gen-cpp2/Sasl_types.tcc
+  gen-cpp2/Sasl_types_custom_protocol.h
+)
+set(SASL_SOURCES
+  gen-cpp2/SaslAuthService.cpp
+  gen-cpp2/SaslAuthService_client.cpp
+  gen-cpp2/SaslAuthService_processmap_binary.cpp
+  gen-cpp2/SaslAuthService_processmap_compact.cpp
+  gen-cpp2/Sasl_constants.cpp
+  gen-cpp2/Sasl_data.cpp
+  gen-cpp2/Sasl_types.cpp
+)
+
 add_custom_command(
-  OUTPUT gen-cpp2/Sasl_constants.h gen-cpp2/Sasl_types.h gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types_custom_protocol.h gen-cpp2/Sasl_constants.cpp gen-cpp2/Sasl_data.cpp gen-cpp2/Sasl_types.cpp gen-cpp2/Sasl_types.tcc gen-cpp2/SaslAuthService_client.cpp gen-cpp2/SaslAuthService.cpp gen-cpp2/SaslAuthService_custom_protocol.h gen-cpp2/SaslAuthService.h gen-cpp2/SaslAuthService_processmap_binary.cpp gen-cpp2/SaslAuthService_processmap_compact.cpp gen-cpp2/SaslAuthService.tcc
+  OUTPUT ${SASL_HEADERS} ${SASL_SOURCES}
   COMMAND ${THRIFT_BINARY}
-  ARGS --gen mstch_cpp2:include_prefix=${THRIFT_BUILD}/thrift/lib/cpp2 --templates ${THRIFT_TEMPLATES_DIR} ${LIB_CPP2_HOME}/Sasl.thrift
+  ARGS --gen mstch_cpp2:include_prefix=${LIB_CPP2_HOME} --templates ${THRIFT_TEMPLATES_DIR} -o ${LIB_CPP2_HOME} ${LIB_CPP2_HOME}/Sasl.thrift
   DEPENDS thrift-compiler
   COMMENT "Generating Sasl files"
 )
 add_custom_target(
   lib-sasl ALL
-  DEPENDS gen-cpp2/Sasl_constants.h gen-cpp2/Sasl_types.h gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types_custom_protocol.h gen-cpp2/Sasl_constants.cpp gen-cpp2/Sasl_data.cpp gen-cpp2/Sasl_types.cpp gen-cpp2/Sasl_types.tcc gen-cpp2/SaslAuthService_client.cpp gen-cpp2/SaslAuthService.cpp gen-cpp2/SaslAuthService_custom_protocol.h gen-cpp2/SaslAuthService.h gen-cpp2/SaslAuthService_processmap_binary.cpp gen-cpp2/SaslAuthService_processmap_compact.cpp gen-cpp2/SaslAuthService.tcc
+  DEPENDS ${SASL_HEADERS} ${SASL_SOURCES}
 )
 
 add_library(
@@ -67,22 +83,6 @@ add_library(
   async/SaslNegotiationHandler.cpp
   async/StubSaslClient.cpp
   async/StubSaslServer.cpp
-
-  gen-cpp2/Sasl_constants.h
-  gen-cpp2/Sasl_types.h
-  gen-cpp2/Sasl_data.h
-  gen-cpp2/Sasl_types_custom_protocol.h
-  gen-cpp2/Sasl_constants.cpp
-  gen-cpp2/Sasl_data.cpp
-  gen-cpp2/Sasl_types.cpp
-  gen-cpp2/Sasl_types.tcc
-  gen-cpp2/SaslAuthService_client.cpp
-  gen-cpp2/SaslAuthService.cpp
-  gen-cpp2/SaslAuthService_custom_protocol.h
-  gen-cpp2/SaslAuthService.h
-  gen-cpp2/SaslAuthService_processmap_binary.cpp
-  gen-cpp2/SaslAuthService_processmap_compact.cpp
-  gen-cpp2/SaslAuthService.tcc
 )
 add_dependencies(
   thriftasync
@@ -97,90 +97,90 @@ target_link_libraries(
   ${WANGLE_LIBRARIES}
 )
 
-add_library(
-  thriftfrozen
+ add_library(
+   thriftfrozen
 
-  frozen/Frozen.h
-  frozen/FrozenAssociative-inl.h
-  frozen/FrozenBool-inl.h
-  frozen/FrozenEnum-inl.h
-  frozen/FrozenHashTable-inl.h
-  frozen/FrozenIntegral-inl.h
-  frozen/FrozenMacros.h
-  frozen/FrozenOptional-inl.h
-  frozen/FrozenOrderedTable-inl.h
-  frozen/FrozenPair-inl.h
-  frozen/FrozenRange-inl.h
-  frozen/FrozenString-inl.h
-  frozen/FrozenTestUtil.h
-  frozen/FrozenTrivial-inl.h
-  frozen/FrozenUtil.h
-  frozen/HintTypes.h
-  frozen/Traits.h
-  frozen/VectorAssociative.h
-  frozen/schema/MemorySchema.h
+   frozen/Frozen.h
+   frozen/FrozenAssociative-inl.h
+   frozen/FrozenBool-inl.h
+   frozen/FrozenEnum-inl.h
+   frozen/FrozenHashTable-inl.h
+   frozen/FrozenIntegral-inl.h
+   frozen/FrozenMacros.h
+   frozen/FrozenOptional-inl.h
+   frozen/FrozenOrderedTable-inl.h
+   frozen/FrozenPair-inl.h
+   frozen/FrozenRange-inl.h
+   frozen/FrozenString-inl.h
+   frozen/FrozenTestUtil.h
+   frozen/FrozenTrivial-inl.h
+   frozen/FrozenUtil.h
+   frozen/HintTypes.h
+   frozen/Traits.h
+   frozen/VectorAssociative.h
+   frozen/schema/MemorySchema.h
 
-  frozen/FrozenUtil.cpp
-  frozen/schema/MemorySchema.cpp
-)
-add_dependencies(
-  thriftfrozen
+   frozen/FrozenUtil.cpp
+   frozen/schema/MemorySchema.cpp
+ )
+ add_dependencies(
+   thriftfrozen
 
-  lib-thrift
-)
-target_link_libraries(
-  thriftfrozen
+   lib-thrift
+ )
+ target_link_libraries(
+   thriftfrozen
 
-  ${FOLLY_LIBRARY}
-)
+   ${FOLLY_LIBRARY}
+ )
 
-add_library(
-  thriftprotocol
+ add_library(
+   thriftprotocol
 
-  protocol/BinaryProtocol.h
-  protocol/BinaryProtocol.tcc
-  protocol/CompactProtocol.h
-  protocol/CompactProtocol.tcc
-  protocol/CompactV1Protocol.h
-  protocol/CompactV1Protocol.tcc
-  protocol/DebugProtocol.h
-  protocol/Frozen2Protocol.h
-  protocol/Frozen2Protocol.tcc
-  protocol/JSONProtocolCommon.h
-  protocol/JSONProtocolCommon.tcc
-  protocol/JSONProtocol.h
-  protocol/JSONProtocol.tcc
-  protocol/MessageSerializer.h
-  protocol/Protocol.h
-  protocol/ProtocolReaderWithRefill.h
-  protocol/Serializer.h
-  protocol/SimpleJSONProtocol.h
-  protocol/SimpleJSONProtocol.tcc
-  protocol/VirtualProtocol.h
+   protocol/BinaryProtocol.h
+   protocol/BinaryProtocol.tcc
+   protocol/CompactProtocol.h
+   protocol/CompactProtocol.tcc
+   protocol/CompactV1Protocol.h
+   protocol/CompactV1Protocol.tcc
+   protocol/DebugProtocol.h
+   protocol/Frozen2Protocol.h
+   protocol/Frozen2Protocol.tcc
+   protocol/JSONProtocolCommon.h
+   protocol/JSONProtocolCommon.tcc
+   protocol/JSONProtocol.h
+   protocol/JSONProtocol.tcc
+   protocol/MessageSerializer.h
+   protocol/Protocol.h
+   protocol/ProtocolReaderWithRefill.h
+   protocol/Serializer.h
+   protocol/SimpleJSONProtocol.h
+   protocol/SimpleJSONProtocol.tcc
+   protocol/VirtualProtocol.h
 
-  protocol/BinaryProtocol.cpp
-  protocol/CompactProtocol.cpp
-  protocol/CompactV1Protocol.cpp
-  protocol/DebugProtocol.cpp
-  protocol/Frozen2Protocol.cpp
-  protocol/JSONProtocolCommon.cpp
-  protocol/JSONProtocol.cpp
-  protocol/Serializer.cpp
-  protocol/SimpleJSONProtocol.cpp
-  protocol/VirtualProtocol.cpp
-)
-add_dependencies(
-  thriftprotocol
+   protocol/BinaryProtocol.cpp
+   protocol/CompactProtocol.cpp
+   protocol/CompactV1Protocol.cpp
+   protocol/DebugProtocol.cpp
+   protocol/Frozen2Protocol.cpp
+   protocol/JSONProtocolCommon.cpp
+   protocol/JSONProtocol.cpp
+   protocol/Serializer.cpp
+   protocol/SimpleJSONProtocol.cpp
+   protocol/VirtualProtocol.cpp
+ )
+ add_dependencies(
+   thriftprotocol
 
-  lib-thrift
-  thriftcpp
-)
-target_link_libraries(
-  thriftprotocol
+   lib-thrift
+   thriftcpp
+ )
+ target_link_libraries(
+   thriftprotocol
 
-  ${FOLLY_LIBRARY}
-  ${WANGLE_LIBRARIES}
-)
+   ${FOLLY_LIBRARY}
+   ${WANGLE_LIBRARIES}
+ )
 
 add_library(
   thriftsecurity
