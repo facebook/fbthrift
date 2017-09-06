@@ -87,7 +87,7 @@ add_library(
 add_dependencies(
   thriftasync
 
-  thriftcpp
+  thrift
   lib-sasl
 )
 target_link_libraries(
@@ -98,7 +98,7 @@ target_link_libraries(
 )
 
  add_library(
-   thriftfrozen
+   thriftfrozen2
 
    frozen/Frozen.h
    frozen/FrozenAssociative-inl.h
@@ -124,12 +124,12 @@ target_link_libraries(
    frozen/schema/MemorySchema.cpp
  )
  add_dependencies(
-   thriftfrozen
+   thriftfrozen2
 
    lib-thrift
  )
  target_link_libraries(
-   thriftfrozen
+   thriftfrozen2
 
    ${FOLLY_LIBRARY}
  )
@@ -173,7 +173,7 @@ target_link_libraries(
    thriftprotocol
 
    lib-thrift
-   thriftcpp
+   thrift
  )
  target_link_libraries(
    thriftprotocol
@@ -221,7 +221,7 @@ add_library(
 target_link_libraries(
   thrifttransport
 
-  thriftcpp
+  thrift
   thriftasync
 )
 
@@ -290,9 +290,9 @@ add_library(
 target_link_libraries(
   thriftcpp2
 
-  thriftcpp
+  thrift
   thriftasync
-  thriftfrozen
+  thriftfrozen2
   thriftprotocol
   thriftsecurity
   thrifttransport
