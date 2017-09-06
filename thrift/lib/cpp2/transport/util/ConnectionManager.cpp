@@ -80,6 +80,7 @@ std::shared_ptr<ClientConnectionIf> ConnectionManager::getConnection(
         connection = std::make_unique<RSClientConnection>(
             *threads_[index]->getEventBase(), address);
       } else {
+        // TODO T21621068: The next line crashes.
         TAsyncTransport::UniquePtr transport(
             new TAsyncSocket(threads_[index]->getEventBase(), addr, port));
 
