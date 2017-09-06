@@ -264,6 +264,11 @@ add_library(
 
   util/ScopedServerInterfaceThread.cpp
 )
+add_dependencies(
+  thriftutil
+
+  thriftfrozen2
+)
 target_link_libraries(
   thriftutil
 
