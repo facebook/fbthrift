@@ -1,6 +1,6 @@
 # Set the lib directory
 set(LIB_THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
+set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
 # Generate reflection files
@@ -21,7 +21,7 @@ add_custom_command(
   OUTPUT ${REFLECTION_HEADERS} ${REFLECTION_SOURCES}
   COMMAND ${THRIFT_BINARY}
   ARGS --gen cpp:templates,cob_style -r -o ${LIB_THRIFT_HOME} ${LIB_THRIFT_HOME}/reflection.thrift
-  DEPENDS thrift-compiler
+  DEPENDS thrift1
   COMMENT "Generating reflection files"
 )
 
@@ -43,7 +43,7 @@ add_custom_command(
   OUTPUT ${FROZEN_HEADERS} ${FROZEN_SOURCES}
   COMMAND ${THRIFT_BINARY}
   ARGS --gen cpp:templates -r -o ${LIB_THRIFT_HOME} ${LIB_THRIFT_HOME}/frozen.thrift
-  DEPENDS thrift-compiler
+  DEPENDS thrift1
   COMMENT "Generating frozen files"
 )
 
@@ -65,7 +65,7 @@ add_custom_command(
   OUTPUT ${FROZEN2_HEADERS} ${FROZEN2_SOURCES}
   COMMAND ${THRIFT_BINARY}
   ARGS --gen mstch_cpp2 --templates ${THRIFT_TEMPLATES_DIR} -o ${LIB_THRIFT_HOME} ${LIB_THRIFT_HOME}/frozen.thrift
-  DEPENDS thrift-compiler
+  DEPENDS thrift1
   COMMENT "Generating frozen2 files"
 )
 

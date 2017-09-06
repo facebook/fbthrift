@@ -146,7 +146,7 @@ make test
 
 ## Installing
 
-This will create a `thrift-compiler` binary file inside the build directory.
+This will create a `thrift1` binary file inside the build directory.
 
 ### Linux or MacOSX
 ```
@@ -163,11 +163,11 @@ msbuild .\INSTALL.vcxproj
 
 ### Linux or MacOSX
 ```
-./thrift-compiler --help
+./thrift1 --help
 ```
 
 ### Windows (MSVC)
 ```
 # Using PowerShell
-thrift-compiler.exe --help
+thrift1.exe --help
 ```

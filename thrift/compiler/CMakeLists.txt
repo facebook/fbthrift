@@ -78,14 +78,14 @@ ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # Create the thrift compiler binary
 add_executable(
-  thrift-compiler
+  thrift1
 
   main.cc
   ${BISON_ThriftParser_OUTPUTS}
   ${FLEX_ThriftScanner_OUTPUTS}
 )
 target_link_libraries(
-  thrift-compiler
+  thrift1
 
   parse_lib
   thrift_base
@@ -94,21 +94,21 @@ target_link_libraries(
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(MSVC)
   set_target_properties(
-    thrift-compiler
+    thrift1
 
     PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:generate_lib"
   )
 endif(MSVC)
 # Add the parser definition for global variables between lex, parse, main
 target_compile_definitions(
-  thrift-compiler
+  thrift1
 
   PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
 
 # Set the binary destination
 install(
-  TARGETS thrift-compiler
+  TARGETS thrift1
   DESTINATION .
 )
 

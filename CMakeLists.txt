@@ -47,7 +47,7 @@ if(compiler_only OR build_all)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
   include_directories(${MSTCH_INCLUDE_DIRS})
-  set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
+  set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
 endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib

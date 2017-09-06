@@ -1,6 +1,6 @@
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
+set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
 set(SASL_HEADERS
@@ -27,7 +27,7 @@ add_custom_command(
   OUTPUT ${SASL_HEADERS} ${SASL_SOURCES}
   COMMAND ${THRIFT_BINARY}
   ARGS --gen mstch_cpp2:include_prefix=${LIB_CPP2_HOME} --templates ${THRIFT_TEMPLATES_DIR} -o ${LIB_CPP2_HOME} ${LIB_CPP2_HOME}/Sasl.thrift
-  DEPENDS thrift-compiler
+  DEPENDS thrift1
   COMMENT "Generating Sasl files"
 )
 add_custom_target(
