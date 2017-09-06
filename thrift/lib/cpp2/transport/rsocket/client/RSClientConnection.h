@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <rsocket/rsocket.h>
+#include <rsocket/RSocket.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 

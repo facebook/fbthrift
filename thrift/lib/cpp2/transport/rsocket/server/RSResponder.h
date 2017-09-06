@@ -17,11 +17,11 @@
 
 #include <folly/io/async/EventBaseManager.h>
 #include <rsocket/Payload.h>
-#include <rsocket/rsocket.h>
+#include <rsocket/RSocket.h>
 #include <yarpl/Observable.h>
-#include <yarpl/Observable/ObservableOperator.h>
 #include <yarpl/Single.h>
 #include <yarpl/flowable/Flowables.h>
+#include <yarpl/observable/ObservableOperator.h>
 
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 

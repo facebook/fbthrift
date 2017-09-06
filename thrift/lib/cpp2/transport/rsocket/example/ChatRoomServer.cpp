@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include <folly/init/init.h>
+#include <folly/init/Init.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/example/ChatRoomService.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSThriftServer.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 DEFINE_int32(port, 7777, "Port for the thrift server");
 
 using namespace apache::thrift;
-using namespace rsocket;
 using namespace facebook::tutorials::thrift::chatroomservice;
 
 int main(int argc, char** argv) {
@@ -33,9 +33,13 @@ int main(int argc, char** argv) {
   auto cpp2PFac = std::make_shared<
       ThriftServerAsyncProcessorFactory<ChatRoomServiceHandler>>(handler);
 
-  auto server = std::make_unique<RSThriftServer>();
+  auto server = std::make_shared<ThriftServer>();
+
   server->setPort(FLAGS_port);
   server->setProcessorFactory(cpp2PFac);
+
+  server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
+      server->getThriftProcessor()));
 
   LOG(INFO) << "ChatRoomService running on port: " << FLAGS_port;
 

@@ -17,8 +17,7 @@
 #pragma once
 
 #include <rsocket/RSocketServer.h>
-#include <rsocket/framing/FrameTransport.h>
-#include <rsocket/rsocket.h>
+#include <rsocket/RSocketServiceHandler.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
@@ -27,8 +26,8 @@ namespace thrift {
 
 class RSRoutingHandler : public TransportRoutingHandler {
  public:
-  explicit RSRoutingHandler(std::shared_ptr<ThriftServer> thriftServer);
-  virtual ~RSRoutingHandler() = default;
+  explicit RSRoutingHandler(apache::thrift::ThriftProcessor* thriftProcessor);
+  virtual ~RSRoutingHandler();
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
@@ -44,7 +43,11 @@ class RSRoutingHandler : public TransportRoutingHandler {
       wangle::TransportInfo const& tinfo) override;
 
  private:
-  std::shared_ptr<ThriftServer> thriftServer_;
+  // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
+  // as input, but it does not use it at all. We should get rid of it.
+  folly::EventBase dummyEventBase_;
+
+  std::shared_ptr<rsocket::RSocketServiceHandler> serviceHandler_;
   std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
   ThriftProcessor* thriftProcessor_;
 };

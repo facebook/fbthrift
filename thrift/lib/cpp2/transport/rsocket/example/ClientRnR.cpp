@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <folly/init/init.h>
+#include <folly/init/Init.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>

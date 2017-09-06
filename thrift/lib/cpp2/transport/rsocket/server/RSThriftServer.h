@@ -17,7 +17,7 @@
 
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
-#include <rsocket/rsocket.h>
+#include <rsocket/RSocket.h>
 #include <memory>
 
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
