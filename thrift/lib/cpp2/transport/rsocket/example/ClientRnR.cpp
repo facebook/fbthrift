@@ -34,33 +34,47 @@ int main(int argc, char** argv) {
 
   FLAGS_transport = "rsocket";
 
+  const int clientCount = 10;
+
   try {
     auto mgr = ConnectionManager::getInstance();
-    auto connection = mgr->getConnection(FLAGS_host, FLAGS_port);
-    auto channel = ThriftClient::Ptr(new ThriftClient(connection));
-    channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
 
-    auto client =
-        std::make_unique<ChatRoomServiceAsyncClient>(std::move(channel));
+    std::vector<std::unique_ptr<ChatRoomServiceAsyncClient>> clients;
+
+    for (int i = 0; i < clientCount; ++i) {
+      auto connection = mgr->getConnection(FLAGS_host, FLAGS_port);
+      auto channel = ThriftClient::Ptr(new ThriftClient(connection));
+      channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+
+      clients.emplace_back(
+          std::make_unique<ChatRoomServiceAsyncClient>(std::move(channel)));
+    }
 
     // Send a message
     ChatRoomServiceSendMessageRequest sendRequest;
     sendRequest.message = "Tutorial!";
     sendRequest.sender = getenv("USER");
-    client->sync_sendMessage(sendRequest);
+    for (auto& client : clients) {
+      client->sync_sendMessage(sendRequest);
+    }
 
-    auto future = client->future_sendMessage(sendRequest);
-    future.wait();
+    std::vector<folly::Future<folly::Unit>> futures;
+    for (auto& client : clients) {
+      futures.emplace_back(client->future_sendMessage(sendRequest));
+    }
+    folly::collectAll(futures);
 
     // Get all the messages
     ChatRoomServiceGetMessagesRequest getRequest;
     ChatRoomServiceGetMessagesResponse response;
-    client->sync_getMessages(response, getRequest);
+    for (auto& client : clients) {
+      client->sync_getMessages(response, getRequest);
 
-    // Print all the messages so far
-    for (auto& messagesList : response.messages) {
-      LOG(INFO) << "Message: " << messagesList.message
-                << " Sender: " << messagesList.sender;
+      // Print all the messages so far
+      for (auto& messagesList : response.messages) {
+        LOG(INFO) << "Message: " << messagesList.message
+                  << " Sender: " << messagesList.sender;
+      }
     }
   } catch (apache::thrift::transport::TTransportException& ex) {
     LOG(ERROR) << "Request failed: " << ex.what();
