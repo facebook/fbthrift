@@ -27,15 +27,15 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
   yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
-    = <%field:name%>->map([](<% > Type %> /* elem */) {
+    = <%field:name%>->map([](<% > types/type %> /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
     });
   /*
     // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		<%field:name%>->map([](<% > Type %> elem) {
+		<%field:name%>->map([](<% > types/type %> elem) {
       Protocol_ map_prot;
-			using Result = <% > Type %>;
+			using Result = <% > types/type %>;
 			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
 			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
 			map_prot.setOutput(&queue, bufSize);
@@ -52,7 +52,7 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   args.get<<%field:index%>>().value = &<%field:name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  args.get<<%field:index%>>().value = const_cast<<% > Type%>*>(&<%field:name%>);
+  args.get<<%field:index%>>().value = const_cast<<% > types/type%>*>(&<%field:name%>);
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%>
 <%^service:frozen2?%>
@@ -80,11 +80,11 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 <%#type:stream?%>
 // returning a stream should probably be closer to returning a void or a future; for now this'll just be a stub
 // folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& /*_return*/, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& /*_return*/, ::apache::thrift::ClientReceiveState& state) {
 <%/type:stream?%>
 <%^type:void?%>
 <%^type:stream?%>
-folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:stream?%>
 <%/type:void?%>
   if (state.isException()) {
@@ -174,17 +174,17 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 
 template <typename Protocol_>
 <%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
+<% > types/type%> <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
 <%#type:void?%>
   auto ew = recv_wrapped_<%function:name%>T(prot, state);
 <%/type:void?%>
 <%^type:void?%>
-  <% > Type%> _return;
+  <% > types/type%> _return;
   auto ew = recv_wrapped_<%function:name%>T(prot, _return, state);
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+void <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_<%function:name%>T(prot, _return, state);
 <%/type:resolves_to_complex_return?%>
   if (ew) {

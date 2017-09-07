@@ -16,17 +16,17 @@
 
 %><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%><%#field:cpp_ref?%>
 
-<% > RefType%>& <%struct:name%>::set_<%field:name%>(<% > Type%> const &t) {
+<% > types/ref_type%>& <%struct:name%>::set_<%field:name%>(<% > types/type%> const &t) {
   __clear();
   type_ = Type::<%field:name%>;
-  ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(t));
+  ::new (std::addressof(value_.<%field:name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(t));
   return value_.<%field:name%>;
 }
 
-<% > RefType%>& <%struct:name%>::set_<%field:name%>(<% > Type%>&& t) {
+<% > types/ref_type%>& <%struct:name%>::set_<%field:name%>(<% > types/type%>&& t) {
   __clear();
   type_ = Type::<%field:name%>;
-  ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(std::move(t)));
+  ::new (std::addressof(value_.<%field:name%>)) <% > types/ref_type%>(new <% > types/ref_type%>::element_type(std::move(t)));
   return value_.<%field:name%>;
 }
 <%/field:cpp_ref?%><%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%>

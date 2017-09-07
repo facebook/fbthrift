@@ -14,5 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:void?%>folly::Unit<%/type:void?%><%!
-%><%^type:void?%><% > Type%><%/type:void?%>
+%><%#field:cpp_ref_unique?%>std::unique_ptr<<%/field:cpp_ref_unique?%><%!
+%><%#field:cpp_ref_shared?%>std::shared_ptr<<%/field:cpp_ref_shared?%><%!
+%><%#field:cpp_ref_shared_const?%>std::shared_ptr<const <%/field:cpp_ref_shared_const?%><%!
+%><% > types/type%><%!
+%><%#field:cpp_ref?%>><%/field:cpp_ref?%>

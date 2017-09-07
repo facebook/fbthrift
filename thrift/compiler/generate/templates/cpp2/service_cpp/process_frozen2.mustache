@@ -67,10 +67,10 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
     }
   }
 <%^type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%^function:eb%>
   if (!callback->isRequestActive()) {
@@ -84,10 +84,10 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
   std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
 <%#function:args%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
-  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::Layout<<% > Type%>>::View>(mapped.get<<%field:index%>>());
+  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::Layout<<% > types/type%>>::View>(mapped.get<<%field:index%>>());
 <%/type:resolves_to_base_or_enum?%>
 <%^type:resolves_to_base_or_enum?%>
-  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen<<% > Type%>>>(mapped.get<<%field:index%>>());
+  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen<<% > types/type%>>>(mapped.get<<%field:index%>>());
   <%field:name%>_view_ptr->hold(shared_buf_ptr);
 <%/type:resolves_to_base_or_enum?%>
 <%/field:type%><%/function:args%>

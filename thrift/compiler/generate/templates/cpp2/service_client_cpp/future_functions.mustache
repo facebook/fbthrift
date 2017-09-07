@@ -14,23 +14,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(<% > service_common/function_param_list_const%>) {
+%>folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%function:name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
 
-folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  folly::Promise<<% > ServiceType%>> _promise;
+folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+  folly::Promise<<% > types/service_type%>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<<% > ServiceType%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<<% > types/service_type%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
   <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return _future;
 }
 
-folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> <%service:name%>AsyncClient::header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  folly::Promise<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<<% > types/service_type%>, std::unique_ptr<apache::thrift::transport::THeader>>> <%service:name%>AsyncClient::header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+  folly::Promise<std::pair<<% > types/service_type%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<<% > ServiceType%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<<% > types/service_type%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
   <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return _future;
 }

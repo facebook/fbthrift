@@ -17,12 +17,12 @@
 %><%#service:functions%><%#function:returnType%>
 
 <%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>SvIf::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
+<% > types/type%> <%service:name%>SvIf::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
 <%^function:returns_stream?%>
-folly::Future<<% > ServiceType%>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list%>) {
+folly::Future<<% > types/service_type%>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list%>) {
   return apache::thrift::detail::si::future([&] { return <%function:name%>(<% > service_common/param_list_move%>); });
 }
 
@@ -32,7 +32,7 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 }
 <%/function:oneway?%>
 <%^function:oneway?%>
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
   apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:name%>(<% > service_common/param_list_move%>); });
 }
 <%/function:oneway?%>
@@ -40,29 +40,29 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+void <%service:name%>SvIf::<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
 <%^function:returns_stream?%>
-folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list%>) {
-  return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { <%function:name%>(_return<%function:comma%><% > service_common/param_list_move%>); });
+folly::Future<std::unique_ptr<<% > types/type%>>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list%>) {
+  return apache::thrift::detail::si::future_returning_uptr([&](<% > types/type%>& _return) { <%function:name%>(_return<%function:comma%><% > service_common/param_list_move%>); });
 }
 <%/function:returns_stream?%>
 
-void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) {
   apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:name%>(<% > service_common/param_list_move%>); });
 }
 <%/type:resolves_to_complex_return?%>
 <%#service:frozen2?%>
 
 <%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>SvIf::frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
+<% > types/type%> <%service:name%>SvIf::frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
   return <%function:name%>(<% > service_common/frozen2_param_list_thaw%>);
 }
 
 <%^function:returns_stream?%>
-folly::Future<<% > ServiceType%>> <%service:name%>SvIf::frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
+folly::Future<<% > types/service_type%>> <%service:name%>SvIf::frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
   return apache::thrift::detail::si::future([&] { return frozen2_<%function:name%>(<% > service_common/frozen2_param_list_move%>); });
 }
 <%/function:returns_stream?%>
@@ -72,23 +72,23 @@ void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^fu
 }
 <%/function:oneway?%>
 <%^function:oneway?%>
-void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) {
+void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) {
   apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/frozen2_param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return frozen2_future_<%function:name%>(<% > service_common/frozen2_param_list_move%>); });
 }
 <%/function:oneway?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>SvIf::frozen2_<%function:name%>(<% > Type%>& _return<%function:comma%><% > service_common/frozen2_function_param_list%>) {
+void <%service:name%>SvIf::frozen2_<%function:name%>(<% > types/type%>& _return<%function:comma%><% > service_common/frozen2_function_param_list%>) {
   return <%function:name%>(_return<%function:comma%><% > service_common/frozen2_param_list_thaw%>);
 }
 
 <%^function:returns_stream?%>
-folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
-  return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { frozen2_<%function:name%>(_return<%function:comma%><% > service_common/frozen2_param_list_move%>); });
+folly::Future<std::unique_ptr<<% > types/type%>>> <%service:name%>SvIf::frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) {
+  return apache::thrift::detail::si::future_returning_uptr([&](<% > types/type%>& _return) { frozen2_<%function:name%>(_return<%function:comma%><% > service_common/frozen2_param_list_move%>); });
 }
 <%/function:returns_stream?%>
 
-void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) {
+void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) {
   apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<%function:comma%><% > service_common/frozen2_param_list_move_assignment%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return frozen2_future_<%function:name%>(<% > service_common/frozen2_param_list_move%>); });
 }
 <%/type:resolves_to_complex_return?%>

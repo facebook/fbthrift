@@ -20,7 +20,7 @@
   <%field:name%> = src.<%field:name%>;
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_unique?%>
-  if (src.<%field:name%>) <%field:name%>.reset(new <% > Type%>(*src.<%field:name%>));
+  if (src.<%field:name%>) <%field:name%>.reset(new <% > types/type%>(*src.<%field:name%>));
 <%/field:cpp_ref_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
   __isset.<%field:name%> = src.__isset.<%field:name%>;

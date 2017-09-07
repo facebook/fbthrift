@@ -41,15 +41,15 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
 <%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
-  <% > Type%> uarg_<%field:name%>{0};
+  <% > types/type%> uarg_<%field:name%>{0};
 <%/type:enum?%>
 <%#type:enum?%>
-  <% > Type%> uarg_<%field:name%>{static_cast<<% > Type%>>(0)};
+  <% > types/type%> uarg_<%field:name%>{static_cast<<% > types/type%>>(0)};
 <%/type:enum?%>
   args.get<<%field:index%>>().value = &uarg_<%field:name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  std::unique_ptr<<% > Type%>> uarg_<%field:name%>(new <% > Type%>());
+  std::unique_ptr<<% > types/type%>> uarg_<%field:name%>(new <% > types/type%>());
   args.get<<%field:index%>>().value = uarg_<%field:name%>.get();
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%>
@@ -83,15 +83,15 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   }
 <%^type:resolves_to_complex_return?%>
 <%^function:returns_stream?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/function:returns_stream?%>
 <%#function:returns_stream?%>
 <%#type:streamElemType%>
-  auto callback = std::make_unique<apache::thrift::PubsubHandlerCallback<<% > Type%>>>(std::move(req), std::move(c), ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::PubsubHandlerCallback<<% > types/type%>>>(std::move(req), std::move(c), ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:streamElemType%>
 <%/function:returns_stream?%>
 <%#function:takes_stream?%>
-  using stream_elem_type = <%#type:streamElemType%><% > Type %><%/type:streamElemType%>;
+  using stream_elem_type = <%#type:streamElemType%><% > types/type %><%/type:streamElemType%>;
   // TODO: this can likely be moved into an external, not generated helper
   yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
   // TODO: hook up inbound stream somehow
@@ -111,7 +111,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
 <%/function:takes_stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%^function:eb%>
   if (!callback->isRequestActive()) {
@@ -130,13 +130,13 @@ template <class ProtocolIn_, class ProtocolOut_>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
 <%/type:void?%>
 <%^type:void?%>
-folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > Type%> const& _return) {
+folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
 <%/type:void?%>
   ProtocolOut_ prot;
   <%service:name%>_<%function:name%>_presult result;
 <%^type:void?%>
 <%^type:stream?%>
-  result.get<0>().value = const_cast<<% > Type%>*>(&_return);
+  result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
 <%/type:stream?%>
 <%#type:stream?%>
   (void) _return; // TODO: this gets serialized in PubsubHandlerCallback

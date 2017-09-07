@@ -16,21 +16,21 @@
 
 %><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
 <%#field:optional?%><%^field:cpp_ref?%>
-const <% > Type%>* <%struct:name%>::get_<%field:name%>() const& {
+const <% > types/type%>* <%struct:name%>::get_<%field:name%>() const& {
   return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
 }
 
-<% > Type%>* <%struct:name%>::get_<%field:name%>() & {
+<% > types/type%>* <%struct:name%>::get_<%field:name%>() & {
   return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
 }
 
 <%/field:cpp_ref?%><%/field:optional?%>
 <%^field:optional?%><%^field:cpp_ref?%>
-const <% > Type%>& <%struct:name%>::get_<%field:name%>() const& {
+const <% > types/type%>& <%struct:name%>::get_<%field:name%>() const& {
   return <%field:name%>;
 }
 
-<% > Type%> <%struct:name%>::get_<%field:name%>() && {
+<% > types/type%> <%struct:name%>::get_<%field:name%>() && {
   return std::move(<%field:name%>);
 }
 

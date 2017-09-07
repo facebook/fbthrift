@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
-  <% > RefType%> const & get_<%field:name%>() const {
+  <% > types/ref_type%> const & get_<%field:name%>() const {
     assert(type_ == Type::<%field:name%>);
     return value_.<%field:name%>;
   }

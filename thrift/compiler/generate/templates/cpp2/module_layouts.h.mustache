@@ -28,11 +28,11 @@ namespace apache { namespace thrift { namespace frozen {
 <%#program:structs%>
 FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_FIELD<% > common/field_suffix%>(<%field:name%>, <%field:key%>, <%#field:type%><% > Type%><%/field:type%>)<%!
+  FROZEN_FIELD<% > common/field_suffix%>(<%field:name%>, <%field:key%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
 %><%/struct:fields%>
   FROZEN_VIEW(<%!
 %><%#struct:fields%>
-    FROZEN_VIEW_FIELD<% > common/field_suffix%>(<%field:name%>, <%#field:type%><% > Type%><%/field:type%>)<%!
+    FROZEN_VIEW_FIELD<% > common/field_suffix%>(<%field:name%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
 %><%/struct:fields%>)
   FROZEN_SAVE_INLINE(<%!
 %><%#struct:fields%>

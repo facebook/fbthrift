@@ -46,23 +46,23 @@
  public:
 <%^type:resolves_to_complex_return?%>
 <%^type:stream?%>
-  virtual <% > Type%> sync_<%function:name%>(<% > service_common/function_param_list_const%>);
-  virtual <% > Type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual <% > types/type%> sync_<%function:name%>(<% > service_common/function_param_list_const%>);
+  virtual <% > types/type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:stream?%>
 <%#type:stream?%>
-  virtual <% > Type%> <%function:name%>(<% > service_common/function_param_list_const%>);
-  virtual <% > Type%> <%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual <% > types/type%> <%function:name%>(<% > service_common/function_param_list_const%>);
+  virtual <% > types/type%> <%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void sync_<%function:name%>(<% > Type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
-  virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual void sync_<%function:name%>(<% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
 <%^type:stream?%>
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_const%>);
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list_const%>);
+  virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
-  virtual folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual folly::Future<std::pair<<% > types/service_type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:oneway?%>
 <%/type:stream?%>
 <%^function:returns_stream?%>
@@ -87,30 +87,30 @@
 <%/type:void?%>
 <%^type:void?%>
 <%^function:oneway?%>
-  static folly::exception_wrapper recv_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%^type:resolves_to_complex_return?%>
-  static <% > Type%> recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  static <% > types/type%> recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual <% > Type%> recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  virtual <% > types/type%> recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  static void recv_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
-  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/function:oneway?%>
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
   template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
 <%^type:resolves_to_complex_return?%>
-  static <% > Type%> recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  static <% > types/type%> recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  static void recv_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
 <%/function:oneway?%>
 <%/type:void?%>

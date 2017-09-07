@@ -20,37 +20,37 @@
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 <%#service:functions%><%#function:returnType%>
 <%^type:resolves_to_complex_return?%>
-  virtual <% > Type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>);
+  virtual <% > types/type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>);
 <%^type:stream?%>
-  folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list%>) override;
+  folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list%>) override;
 <%#function:oneway?%>
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) override;
 <%/function:oneway?%>
 <%^function:oneway?%>
-  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
+  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
 <%/function:oneway?%>
 <%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void <%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>);
-  folly::Future<<% > UniquePtrType%>> future_<%function:name%>(<% > service_common/function_param_list%>) override;
-  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > UniquePtrType%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
+  virtual void <%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>);
+  folly::Future<<% > types/unique_ptr_type%>> future_<%function:name%>(<% > service_common/function_param_list%>) override;
+  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#service:frozen2?%>
 <%^type:resolves_to_complex_return?%>
-  virtual <% > Type%> frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>);
-  folly::Future<<% > ServiceType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
+  virtual <% > types/type%> frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>);
+  folly::Future<<% > types/service_type%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
 <%#function:oneway?%>
   void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/function:oneway?%>
 <%^function:oneway?%>
-  void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
+  void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/function:oneway?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void frozen2_<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list%>);
-  folly::Future<<% > UniquePtrType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
-  void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > UniquePtrType%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
+  virtual void frozen2_<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list%>);
+  folly::Future<<% > types/unique_ptr_type%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
+  void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/service:frozen2?%>
 <%/function:returnType%><%/service:functions%>

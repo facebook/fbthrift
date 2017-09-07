@@ -21,44 +21,44 @@
 <%#function:oneway?%>
   virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
   virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
+  virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
 <%/function:oneway?%>
 <%^function:oneway?%>
 <%^type:resolves_to_complex_return?%>
 <%^type:stream?%>
-  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
-  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
+  virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
 <%/type:stream?%>
 <%#type:stream?%>
 <%#type:streamElemType%>
-  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
-  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::PubsubHandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
 <%/type:streamElemType%>
 <%/type:stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
-  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
-  virtual folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/function_param_list%>) = delete;
+  virtual folly::Future<std::unique_ptr<<% > types/type%>>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%/function:oneway?%>
 <%#service:frozen2?%>
 <%#function:oneway?%>
   virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = 0;
   virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = delete;
-  virtual folly::Future<<% > ServiceType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
+  virtual folly::Future<<% > types/service_type%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
 <%/function:oneway?%>
 <%^function:oneway?%>
 <%^type:resolves_to_complex_return?%>
-  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = 0;
-  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = delete;
-  virtual folly::Future<<% > ServiceType%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
+  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = 0;
+  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = delete;
+  virtual folly::Future<<% > types/service_type%>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = 0;
-  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = delete;
-  virtual folly::Future<std::unique_ptr<<% > Type%>>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
+  virtual void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = 0;
+  virtual void frozen2_async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > types/type%>>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) = delete;
+  virtual folly::Future<std::unique_ptr<<% > types/type%>>> frozen2_future_<%function:name%>(<% > service_common/frozen2_function_param_list%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%/function:oneway?%>
 <%/service:frozen2?%>

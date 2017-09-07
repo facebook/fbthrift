@@ -79,7 +79,7 @@
   static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
-  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > Type%> const& _return);
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);

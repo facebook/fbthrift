@@ -14,13 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(<% > service_common/function_param_list_const%>) {
+%>folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%function:name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
 
-folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  folly::Promise<<% > ServiceType%>> _promise;
+folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+  folly::Promise<<% > types/service_type%>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
   <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);

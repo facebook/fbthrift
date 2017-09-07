@@ -18,7 +18,7 @@
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
 <%^type:void?%>
-folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
   if (state.isException()) {
     return std::move(state.exception());

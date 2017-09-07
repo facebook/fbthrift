@@ -19,23 +19,23 @@
 
 <%^type:string_or_binary?%>
 <%#field:optional?%>
-  const <% > Type%>* get_<%field:name%>() const& {
+  const <% > types/type%>* get_<%field:name%>() const& {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
   }
 
-  <% > Type%>* get_<%field:name%>() & {
+  <% > types/type%>* get_<%field:name%>() & {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
   }
-  <% > Type%>* get_<%field:name%>() && = delete;
+  <% > types/type%>* get_<%field:name%>() && = delete;
 
 <%/field:optional?%>
 <%^field:optional?%>
-  <% > Type%> get_<%field:name%>() const {
+  <% > types/type%> get_<%field:name%>() const {
     return <%field:name%>;
   }
 
 <%/field:optional?%>
-  <% > Type%>& set_<%field:name%>(<% > Type%> <%field:name%>_) {
+  <% > types/type%>& set_<%field:name%>(<% > types/type%> <%field:name%>_) {
     <%field:name%> = <%field:name%>_;
 <%^field:required?%>
     __isset.<%field:name%> = true;
@@ -45,27 +45,27 @@
 <%/type:string_or_binary?%>
 <%#type:string_or_binary?%>
 <%#field:optional?%>
-  const <% > Type%>* get_<%field:name%>() const& {
+  const <% > types/type%>* get_<%field:name%>() const& {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
   }
 
-  <% > Type%>* get_<%field:name%>() & {
+  <% > types/type%>* get_<%field:name%>() & {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
   }
-  <% > Type%>* get_<%field:name%>() && = delete;
+  <% > types/type%>* get_<%field:name%>() && = delete;
 <%/field:optional?%>
 <%^field:optional?%>
-  const <% > Type%>& get_<%field:name%>() const& {
+  const <% > types/type%>& get_<%field:name%>() const& {
     return <%field:name%>;
   }
 
-  <% > Type%> get_<%field:name%>() && {
+  <% > types/type%> get_<%field:name%>() && {
     return std::move(<%field:name%>);
   }
 <%/field:optional?%>
 
   template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
-  <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
+  <% > types/type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
     <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
 <%^field:required?%>
     __isset.<%field:name%> = true;
@@ -76,17 +76,17 @@
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container_or_struct?%>
 <%#field:optional?%>
-  const <% > Type%>* get_<%field:name%>() const&;
-  <% > Type%>* get_<%field:name%>() &;
-  <% > Type%>* get_<%field:name%>() && = delete;
+  const <% > types/type%>* get_<%field:name%>() const&;
+  <% > types/type%>* get_<%field:name%>() &;
+  <% > types/type%>* get_<%field:name%>() && = delete;
 <%/field:optional?%>
 <%^field:optional?%>
-  const <% > Type%>& get_<%field:name%>() const&;
-  <% > Type%> get_<%field:name%>() &&;
+  const <% > types/type%>& get_<%field:name%>() const&;
+  <% > types/type%> get_<%field:name%>() &&;
 <%/field:optional?%>
 
   template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
-  <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
+  <% > types/type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
     <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
 <%^field:required?%>
     __isset.<%field:name%> = true;

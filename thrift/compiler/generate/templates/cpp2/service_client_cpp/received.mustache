@@ -15,17 +15,17 @@
   limitations under the License.
 
 %><%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>AsyncClient::recv_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
+<% > types/type%> <%service:name%>AsyncClient::recv_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
 <%#type:void?%>
   auto ew = recv_wrapped_<%function:name%>(state);
 <%/type:void?%>
 <%^type:void?%>
-  <% > Type%> _return;
+  <% > types/type%> _return;
   auto ew = recv_wrapped_<%function:name%>(_return, state);
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::recv_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+void <%service:name%>AsyncClient::recv_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_<%function:name%>(_return, state);
 <%/type:resolves_to_complex_return?%>
   if (ew) {
