@@ -28,7 +28,6 @@ void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doBland(); });
 }
 
-
 void RaiserSvIf::doRaise() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doRaise");
 }
@@ -40,7 +39,6 @@ folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
 void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doRaise(); });
 }
-
 
 void RaiserSvIf::get200(std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get200");

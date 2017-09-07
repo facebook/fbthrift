@@ -28,7 +28,6 @@ void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::Hand
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapList(std::move(foo)); });
 }
 
-
 void NestedContainersSvIf::mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapSet");
 }
@@ -40,7 +39,6 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<s
 void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapSet(std::move(foo)); });
 }
-
 
 void NestedContainersSvIf::listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listMap");
@@ -54,7 +52,6 @@ void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::Hand
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listMap(std::move(foo)); });
 }
 
-
 void NestedContainersSvIf::listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listSet");
 }
@@ -67,7 +64,6 @@ void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::Hand
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listSet(std::move(foo)); });
 }
 
-
 void NestedContainersSvIf::turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("turtles");
 }
@@ -79,7 +75,6 @@ folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<
 void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_turtles(std::move(foo)); });
 }
-
 
 void NestedContainersSvNull::mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) {}
 

@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:args%><%#field:type%><%!
-  %><%^first?%>, <%/first?%><% > types/unique_ptr_const_type%> <%field:name%><%!
-%><%/field:type%><%/function:args%>
+%><%#type:resolves_to_complex_return?%><%!
+%><%#type:stack_arguments?%><%!
+  %>const <% > types/type%>&<%!
+%><%/type:stack_arguments?%><%!
+%><%^type:stack_arguments?%><%!
+  %>std::unique_ptr<<% > types/type%>><%!
+%><%/type:stack_arguments?%><%!
+%><%/type:resolves_to_complex_return?%><%!
+%><%^type:resolves_to_complex_return?%><%!
+  %><% > types/type%><%!
+%><%/type:resolves_to_complex_return?%>

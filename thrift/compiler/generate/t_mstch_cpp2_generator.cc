@@ -161,6 +161,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
+            {"type:stack_arguments?", &mstch_cpp2_type::stack_arguments},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -242,6 +243,9 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node namespace_cpp2() {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
+  }
+  mstch::node stack_arguments() {
+    return cache_->parsed_options_.count("stack_arguments") != 0;
   }
 };
 

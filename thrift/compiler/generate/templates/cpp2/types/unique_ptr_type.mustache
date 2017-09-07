@@ -15,7 +15,12 @@
   limitations under the License.
 
 %><%#type:resolves_to_complex_return?%><%!
+%><%#type:stack_arguments?%><%!
+  %><% > types/type%><%!
+%><%/type:stack_arguments?%><%!
+%><%^type:stack_arguments?%><%!
   %>std::unique_ptr<<% > types/type%>><%!
+%><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %><% > types/type%><%!

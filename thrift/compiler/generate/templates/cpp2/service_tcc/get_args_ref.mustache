@@ -19,7 +19,12 @@
 %><%/function:takes_stream?%><%!
 %><%#function:args_without_streams%><%#field:type%><%!
 %><%#type:resolves_to_complex_return?%><%!
+%><%^type:stack_arguments?%><%!
   %>, std::move(uarg_<%field:name%>)<%!
+%><%/type:stack_arguments?%><%!
+%><%#type:stack_arguments?%><%!
+  %>, args.get<<%field:index%>>().ref()<%!
+%><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %>, args.get<<%field:index%>>().ref()<%!

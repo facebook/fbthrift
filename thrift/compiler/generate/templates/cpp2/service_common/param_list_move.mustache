@@ -17,7 +17,12 @@
 %><%#function:args%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
+%><%#type:stack_arguments?%><%!
+  %><%field:name%><%!
+%><%/type:stack_arguments?%><%!
+%><%^type:stack_arguments?%><%!
   %>std::move(<%field:name%>)<%!
+%><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %><%field:name%><%!
