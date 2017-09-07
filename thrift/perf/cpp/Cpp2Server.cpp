@@ -18,16 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <iostream>
 #include <signal.h>
+#include <iostream>
 
 #include <folly/Random.h>
 #include <folly/String.h>
 #include <folly/ssl/Init.h>
 
-#include <thrift/perf/cpp/AsyncLoadHandler2.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/perf/cpp/AsyncLoadHandler2.h>
 
 #include "common/init/Init.h"
 #include "common/services/cpp/ServiceFramework.h"
@@ -40,14 +40,29 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::concurrency;
 
-DEFINE_bool(enable_service_framework, false,
-            "Run ServiceFramework to track service stats");
+DEFINE_bool(
+    enable_service_framework,
+    false,
+    "Run ServiceFramework to track service stats");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_int64(num_threads, 4, "number of worker threads");
 DEFINE_int64(num_queue_threads, 4, "number of task queue threads");
+DEFINE_int64(
+    num_ssl_handshake_threads,
+    0,
+    "number of ssl handshake threads. Default is 0, which indicates no "
+    "additional threads will be spawned to handle SSL handshakes; "
+    "handshakes will instead be performed in the acceptor thread");
 DEFINE_int32(max_conn_pool_size, 0, "maximum size of idle connection pool");
 DEFINE_int32(idle_timeout, 0, "idle timeout (in milliseconds)");
 DEFINE_int32(task_timeout, 0, "task timeout (in milliseconds)");
+DEFINE_int32(
+    handshake_timeout,
+    0,
+    "SSL handshake timeout (in milliseconds). "
+    "Default is 0, which is to not set a granular timeout for SSL handshakes. "
+    "Connections that stall during handshakes may still be timed out "
+    "with --idle_timeout");
 DEFINE_int32(max_connections, 0, "max active connections");
 DEFINE_int32(max_requests, 0, "max active requests");
 DEFINE_string(cert, "", "server SSL certificate file");
@@ -66,6 +81,10 @@ void setTunables(ThriftServer* server) {
   }
   if (FLAGS_task_timeout > 0) {
     server->setTaskExpireTime(std::chrono::milliseconds(FLAGS_task_timeout));
+  }
+  if (FLAGS_handshake_timeout > 0) {
+    server->setSSLHandshakeTimeout(
+        std::chrono::milliseconds(FLAGS_handshake_timeout));
   }
 }
 
@@ -111,6 +130,7 @@ int main(int argc, char* argv[]) {
   server->setPort(FLAGS_port);
   server->setNumIOWorkerThreads(FLAGS_num_threads);
   server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
+  server->setNumSSLHandshakeWorkerThreads(FLAGS_num_ssl_handshake_threads);
   server->setMaxConnections(FLAGS_max_connections);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
@@ -133,8 +153,8 @@ int main(int argc, char* argv[]) {
     wangle::TLSTicketKeySeeds seeds;
     for (auto* seed : {&seeds.oldSeeds, &seeds.currentSeeds, &seeds.newSeeds}) {
       auto randomData = folly::Random::secureRandom<uint64_t>();
-      auto asHex = folly::hexlify(
-        folly::ByteRange((const unsigned char*) &randomData, sizeof(uint64_t)));
+      auto asHex = folly::hexlify(folly::ByteRange(
+          (const unsigned char*)&randomData, sizeof(uint64_t)));
       seed->push_back(std::move(asHex));
     }
     server->setTicketSeeds(std::move(seeds));
