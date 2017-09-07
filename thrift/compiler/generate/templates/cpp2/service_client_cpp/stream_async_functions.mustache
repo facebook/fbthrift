@@ -15,16 +15,16 @@
   limitations under the License.
 
 %>
-<% > Type%> <%service:name%>AsyncClient::<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>) {
+<% > Type%> <%service:name%>AsyncClient::<%function:name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return <%function:name%>(rpcOptions<% > service_common/param_list%>);
+  return <%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
 
-<% > Type%> <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>) {
+<% > Type%> <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   apache::thrift::ClientReceiveState _returnState;
   // _returnState.setChannel(getChannel());
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
-  <%function:name%>Impl(true, rpcOptions, std::move(callback)<% > service_common/param_list%>);
+  <%function:name%>Impl(true, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

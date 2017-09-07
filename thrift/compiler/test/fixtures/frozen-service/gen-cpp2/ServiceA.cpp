@@ -79,7 +79,7 @@ void ServiceASvIf::async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::H
 
 
 void ServiceASvIf::frozen2_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
-  return i32StrDoubleMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
+  return i32StrDoubleMethod(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
 }
 
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_i32StrDoubleMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
@@ -103,7 +103,7 @@ void ServiceASvIf::async_tm_versioningMethod(std::unique_ptr<apache::thrift::Han
 
 
 void ServiceASvIf::frozen2_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
-  return versioningMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
+  return versioningMethod(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg), std::make_unique<std::string>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<std::string>::View>::thaw(*strArg)), apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<double>::View>::thaw(*doubleArg));
 }
 
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_versioningMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg, std::unique_ptr<::apache::thrift::frozen::Layout<std::string>::View> strArg, std::unique_ptr<::apache::thrift::frozen::Layout<double>::View> doubleArg) {
@@ -223,7 +223,7 @@ void ServiceASvIf::async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::Handl
 
 
 void ServiceASvIf::frozen2_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) {
-  return i32ThrowMethod(apache::thrift::frozen::ViewHelper<::apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg));
+  return i32ThrowMethod(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<int32_t>::View>::thaw(*i32Arg));
 }
 
 folly::Future<folly::Unit> ServiceASvIf::frozen2_future_i32ThrowMethod(std::unique_ptr<::apache::thrift::frozen::Layout<int32_t>::View> i32Arg) {

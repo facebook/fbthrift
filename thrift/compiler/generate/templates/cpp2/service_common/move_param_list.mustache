@@ -16,9 +16,9 @@
 
 %><%#function:args%><%#field:type%><%!
 %><%#type:resolves_to_complex_return?%><%!
-%>, std::move(<%field:name%>)<%!
+  %><%^first?%>, <%/first?%>std::move(<%field:name%>)<%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %>, <%field:name%><%!
+  %><%^first?%>, <%/first?%><%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

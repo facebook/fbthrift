@@ -15,11 +15,11 @@
   limitations under the License.
 
 %><%#function:args%><%#field:type%><%!
-%>, <%!
+  %><%^first?%>, <%/first?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-%>apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<<% > Type%>>::View>::thaw(*<%field:name%>)<%!
+  %>apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<<% > Type%>>::View>::thaw(*<%field:name%>)<%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-%>std::make_unique<<% > Type%>>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<<% > Type%>>::View>::thaw(*<%field:name%>))<%!
+  %>std::make_unique<<% > Type%>>(apache::thrift::frozen::ViewHelper<apache::thrift::frozen::Layout<<% > Type%>>::View>::thaw(*<%field:name%>))<%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

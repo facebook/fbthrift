@@ -15,5 +15,5 @@
   limitations under the License.
 
 %><%#function:args%><%!
-%>, <%field:name%> = std::move(<%field:name%>)<%!
+  %><%^first?%>, <%/first?%><%field:name%> = std::move(<%field:name%>)<%!
 %><%/function:args%>

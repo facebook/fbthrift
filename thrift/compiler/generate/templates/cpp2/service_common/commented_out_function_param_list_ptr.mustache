@@ -15,10 +15,5 @@
   limitations under the License.
 
 %><%#function:args%><%#field:type%><%!
-%><%#type:resolves_to_complex_return?%><%!
-  %>, std::unique_ptr<<% > Type%>> /*<%field:name%>*/<%!
-%><%/type:resolves_to_complex_return?%><%!
-%><%^type:resolves_to_complex_return?%><%!
-  %>, <% > Type%> /*<%field:name%>*/<%!
-%><%/type:resolves_to_complex_return?%><%!
+  %><%^first?%>, <%/first?%><% > UniquePtrType%> /*<%field:name%>*/<%!
 %><%/field:type%><%/function:args%>

@@ -755,6 +755,7 @@ class mstch_function : public mstch_base {
             {"function:exceptions", &mstch_function::exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
+            {"function:comma", &mstch_function::has_args},
             {"function:eb", &mstch_function::event_based},
             {"function:priority", &mstch_function::priority},
             {"function:args_without_streams",
@@ -770,12 +771,15 @@ class mstch_function : public mstch_base {
   mstch::node oneway() {
     return function_->is_oneway();
   }
-  mstch::node return_type();
-  mstch::node exceptions();
   mstch::node has_exceptions() {
     return !function_->get_xceptions()->get_members().empty();
   }
-  mstch::node arg_list();
+  mstch::node has_args() {
+    if (!function_->get_arglist()->get_members().empty()) {
+      return std::string(", ");
+    }
+    return std::string();
+  }
   mstch::node event_based() {
     auto const* strct = function_->get_annotations();
     if (strct && strct->annotations_.count("thread") &&
@@ -792,6 +796,9 @@ class mstch_function : public mstch_base {
     return std::string("NORMAL");
   }
 
+  mstch::node return_type();
+  mstch::node exceptions();
+  mstch::node arg_list();
   mstch::node arg_list_without_streams();
   mstch::node any_streams();
   mstch::node returns_stream();

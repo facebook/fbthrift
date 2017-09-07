@@ -17,10 +17,10 @@
 %><%#service:functions%><%#function:returnType%><%^function:eb%>
 <%^type:resolves_to_complex_return?%>
 <%#type:void?%>
-void <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr_no_start_comma%>) {}
+void <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr%>) {}
 <%/type:void?%>
 <%^type:void?%>
-<% > Type%> <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr_no_start_comma%>) {
+<% > Type%> <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr%>) {
 <%#type:enum?%>
   return (<% > Type%>)0;
 <%/type:enum?%>
@@ -31,16 +31,16 @@ void <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>SvNull::<%function:name%>(<% > Type%>& /*_return*/<% > service_common/commented_out_function_param_list_ptr%>) {}
+void <%service:name%>SvNull::<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/commented_out_function_param_list_ptr%>) {}
 <%/type:resolves_to_complex_return?%>
 
 <%#service:frozen2?%>
 <%^type:resolves_to_complex_return?%>
 <%#type:void?%>
-void <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/frozen2_commented_out_function_param_list_ptr_no_start_comma%>) {}
+void <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/frozen2_commented_out_function_param_list_ptr%>) {}
 <%/type:void?%>
 <%^type:void?%>
-<% > Type%> <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/frozen2_commented_out_function_param_list_ptr_no_start_comma%>) {
+<% > Type%> <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/frozen2_commented_out_function_param_list_ptr%>) {
 <%#type:enum?%>
   return (<% > Type%>)0;
 <%/type:enum?%>
@@ -51,7 +51,7 @@ void <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/froze
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>SvNull::frozen2_<%function:name%>(<% > Type%>& /*_return*/<% > service_common/frozen2_commented_out_function_param_list_ptr%>) {}
+void <%service:name%>SvNull::frozen2_<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/frozen2_commented_out_function_param_list_ptr%>) {}
 <%/type:resolves_to_complex_return?%>
 
 <%/service:frozen2?%>

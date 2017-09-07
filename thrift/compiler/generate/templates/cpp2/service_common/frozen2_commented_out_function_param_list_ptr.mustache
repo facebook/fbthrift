@@ -15,5 +15,5 @@
   limitations under the License.
 
 %><%#function:args%><%#field:type%><%!
-%>, std::unique_ptr<::apache::thrift::frozen::Layout<<% > Type%>>::View> /*<%field:name%>*/<%!
+  %><%^first?%>, <%/first?%>std::unique_ptr<::apache::thrift::frozen::Layout<<% > Type%>>::View> /*<%field:name%>*/<%!
 %><%/field:type%><%/function:args%>
