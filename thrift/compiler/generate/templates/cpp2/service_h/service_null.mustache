@@ -18,17 +18,17 @@
  public:
 <%#service:functions%><%#function:returnType%><%^function:eb%>
 <%^type:resolves_to_complex_return?%>
-  <% > Type%> <%function:name%>(<% > service_common/commented_out_function_param_list_ptr%>) override;
+  <% > Type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  void <%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/commented_out_function_param_list_ptr%>) override;
+  void <%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#service:frozen2?%>
 <%^type:resolves_to_complex_return?%>
-  <% > Type%> frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list_ptr%>) override;
+  <% > Type%> frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  void frozen2_<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list_ptr%>) override;
+  void frozen2_<%function:name%>(<% > Type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/service:frozen2?%>
 <%/function:eb%><%/function:returnType%><%/service:functions%>

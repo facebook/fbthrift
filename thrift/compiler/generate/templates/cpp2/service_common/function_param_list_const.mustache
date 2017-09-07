@@ -15,10 +15,11 @@
   limitations under the License.
 
 %><%#function:args%><%#field:type%><%!
+  %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-  %><%^first?%>, <%/first?%>const <% > Type%>& <%field:name%><%!
+  %>const <% > Type%>& <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %><%^first?%>, <%/first?%><% > Type%> <%field:name%><%!
+  %><% > Type%> <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>
