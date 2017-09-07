@@ -140,6 +140,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_ =
       std::make_shared<wangle::IOThreadPoolExecutor>(0);
 
+  //! Separate thread pool for handling SSL handshakes.
+  std::shared_ptr<wangle::IOThreadPoolExecutor> sslHandshakePool_ =
+      std::make_shared<wangle::IOThreadPoolExecutor>(
+          0,
+          std::make_shared<wangle::NamedThreadFactory>("SSLHandshakePool"));
+
   /**
    * The speed for adjusting connection accept rate.
    * 0 for disabling auto adjusting connection accept rate.
@@ -255,6 +261,38 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   }
 
   size_t getNumSaslThreadsToRun() const;
+
+  /**
+   * Set the thread pool used to handle TLS handshakes. Note that the pool's
+   * thread factory will be overridden - if you'd like to use your own, set it
+   * afterwards via ThriftServer::setSSLHandshakeThreadFactory(). If the given
+   * thread pool has one or more allocated threads, the number of workers will
+   * be set to this number. Use ThriftServer::setNumSSLHandshakeWorkerThreads()
+   * to set it afterwards if you want to change the number of workers.
+   *
+   * @param the new thread pool
+   */
+  void setSSLHandshakeThreadPool(
+      std::shared_ptr<wangle::IOThreadPoolExecutor> sslHandshakePool) {
+    CHECK(configMutable());
+    sslHandshakePool_ = sslHandshakePool;
+
+    if (sslHandshakePool_->numThreads() > 0) {
+      nSSLHandshakeWorkers_ = sslHandshakePool_->numThreads();
+    }
+  }
+
+  /**
+   * Set the thread factory that will be used to create the server's SSL
+   * handshake threads.
+   *
+   * @param the new thread factory
+   */
+  void setSSLHandshakeThreadFactory(
+      std::shared_ptr<wangle::NamedThreadFactory> threadFactory) {
+    CHECK(configMutable());
+    sslHandshakePool_->setThreadFactory(threadFactory);
+  }
 
   /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.

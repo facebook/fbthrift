@@ -386,6 +386,10 @@ void ThriftServer::setup() {
             std::make_shared<wangle::NamedThreadFactory>("Acceptor Thread"));
       }
 
+      // Resize the SSL handshake pool
+      VLOG(1) << "Using " << nSSLHandshakeWorkers_ << " SSL handshake threads";
+      sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers_);
+
       ServerBootstrap::childHandler(
           acceptorFactory_ ? acceptorFactory_
                            : std::make_shared<ThriftAcceptorFactory>(this));
@@ -537,6 +541,7 @@ void ThriftServer::stopWorkers() {
   DCHECK(!duplexWorker_);
   ServerBootstrap::stop();
   ServerBootstrap::join();
+  sslHandshakePool_->join();
   configMutable_ = true;
 }
 

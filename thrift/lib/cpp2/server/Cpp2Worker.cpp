@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/PeekingManager.h>
+#include <wangle/acceptor/EvbHandshakeHelper.h>
 #include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
 #include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
 
@@ -206,26 +207,28 @@ void Cpp2Worker::updateSSLStats(
 
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     const std::vector<uint8_t>& bytes,
-    const folly::SocketAddress& /* clientAddr */,
-    std::chrono::steady_clock::time_point /* acceptTime */,
-    wangle::TransportInfo&) {
-  switch (getSSLPolicy()) {
-    case SSLPolicy::DISABLED:
-      return wangle::AcceptorHandshakeHelper::UniquePtr(
-          new wangle::UnencryptedAcceptorHandshakeHelper());
+    const folly::SocketAddress& clientAddr,
+    std::chrono::steady_clock::time_point acceptTime,
+    wangle::TransportInfo& ti) {
+  auto sslPolicy = getSSLPolicy();
+  auto performSSL = (sslPolicy == SSLPolicy::REQUIRED) ||
+      (sslPolicy != SSLPolicy::DISABLED && TLSHelper::looksLikeTLS(bytes));
 
-    default:
-    case SSLPolicy::PERMITTED:
-      if (TLSHelper::looksLikeTLS(bytes)) {
-        // Returning null causes the higher layer to default to SSL.
-        return nullptr;
-      } else {
-        return wangle::AcceptorHandshakeHelper::UniquePtr(
-            new wangle::UnencryptedAcceptorHandshakeHelper());
-      }
+  if (!performSSL) {
+    return wangle::AcceptorHandshakeHelper::UniquePtr(
+        new wangle::UnencryptedAcceptorHandshakeHelper());
+  }
 
-    case SSLPolicy::REQUIRED:
-      return nullptr;
+  wangle::AcceptorHandshakeHelper::UniquePtr sslAcceptor(
+      new wangle::SSLAcceptorHandshakeHelper(clientAddr, acceptTime, ti));
+
+  // If we have a nonzero dedicated ssl handshake pool, offload the SSL
+  // handshakes with EvbHandshakeHelper.
+  if (server_->sslHandshakePool_->numThreads() > 0) {
+    return wangle::EvbHandshakeHelper::UniquePtr(new wangle::EvbHandshakeHelper(
+        std::move(sslAcceptor), server_->sslHandshakePool_->getEventBase()));
+  } else {
+    return sslAcceptor;
   }
 }
 

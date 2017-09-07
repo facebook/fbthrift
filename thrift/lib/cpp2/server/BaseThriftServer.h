@@ -94,6 +94,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   size_t nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
 
+  //! Number of SSL handshake worker threads (may be set)
+  size_t nSSLHandshakeWorkers_ = 0;
+
   //! Number of sync pool threads (may be set) (should be set to expected
   //  sync load)
   size_t nPoolThreads_ = 0;
@@ -526,6 +529,21 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   inline size_t getNPoolThreads() {
     return getNumCPUWorkerThreads();
+  }
+
+  /**
+   * Set the number of SSL handshake worker threads.
+   */
+  void setNumSSLHandshakeWorkerThreads(size_t nSSLHandshakeThreads) {
+    CHECK(configMutable());
+    nSSLHandshakeWorkers_ = nSSLHandshakeThreads;
+  }
+
+  /**
+   * Get the number of threads used to perform SSL handshakes
+   */
+  size_t getNumSSLHandshakeWorkerThreads() const {
+    return nSSLHandshakeWorkers_;
   }
 
   /**
