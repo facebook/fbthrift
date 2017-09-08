@@ -207,16 +207,26 @@ uint32_t ThriftClient::sendRequestHelper(
         isSecurityActive(),
         protocolId_);
   }
-  channel->sendThriftRequest(
-      std::move(finfo),
-      std::move(headers),
-      std::move(buf),
-      std::move(callback));
-  if (oneway) {
-    // TODO: We only invoke requestSent for oneway calls.  I don't think it
-    // use used for any other kind of call.  Verify.
-    cb->requestSent();
-  }
+  connection_->getEventBase()->runInEventBaseThread([
+    evbChannel = channel,
+    evbFinfo = std::move(finfo),
+    evbHeaders = std::move(headers),
+    evbBuf = std::move(buf),
+    evbCallback = std::move(callback),
+    oneway,
+    evbCb = std::move(cb)
+  ]() mutable {
+    evbChannel->sendThriftRequest(
+        std::move(evbFinfo),
+        std::move(evbHeaders),
+        std::move(evbBuf),
+        std::move(evbCallback));
+    if (oneway) {
+      // TODO: We only invoke requestSent for oneway calls.  I don't think it
+      // use used for any other kind of call.  Verify.
+      evbCb->requestSent();
+    }
+  });
   return 0;
 }
 

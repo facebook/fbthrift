@@ -85,6 +85,8 @@ class SingleRpcChannel : public H2ChannelIf {
   bool receivedH2Stream_{false};
   bool receivedThriftRPC_{false};
   // Only used for checks.
+  // TODO: delete this and get the event base from the underlying connection.
+  // Because the event base on the connection could change.
   folly::EventBase* evb_;
 };
 

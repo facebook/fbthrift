@@ -38,7 +38,7 @@ namespace thrift {
 
 using namespace testing;
 
-DEFINE_string(host, "localhost", "host to connect to");
+DEFINE_string(host, "::1", "host to connect to");
 
 using namespace apache::thrift;
 using namespace rsocket;

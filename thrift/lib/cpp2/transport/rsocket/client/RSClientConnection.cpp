@@ -15,13 +15,25 @@
  */
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h"
 
+#include <folly/io/async/EventBase.h>
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 
 namespace apache {
 namespace thrift {
 
 using namespace rsocket;
+
+RSClientConnection::RSClientConnection(
+    folly::AsyncSocket::UniquePtr socket,
+    folly::EventBase* evb)
+    : evb_(*evb) {
+  rsClient_ = RSocket::createClientFromConnection(
+      TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
+      *evb);
+  rsRequester_ = rsClient_->getRequester();
+}
 
 RSClientConnection::RSClientConnection(
     folly::EventBase& evb,
@@ -51,7 +63,8 @@ apache::thrift::async::TAsyncTransport* RSClientConnection::getTransport() {
 }
 
 bool RSClientConnection::good() {
-  LOG(FATAL) << "not implemented";
+  // TODO: Temporary implementation.
+  return true;
 }
 
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {

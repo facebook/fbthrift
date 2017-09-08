@@ -25,9 +25,10 @@ namespace thrift {
 
 class RSClientConnection : public ClientConnectionIf {
  public:
-  explicit RSClientConnection(
-      folly::EventBase& evb,
-      folly::SocketAddress address);
+  RSClientConnection(
+      folly::AsyncSocket::UniquePtr socket,
+      folly::EventBase* evb);
+  RSClientConnection(folly::EventBase& evb, folly::SocketAddress address);
 
   std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;

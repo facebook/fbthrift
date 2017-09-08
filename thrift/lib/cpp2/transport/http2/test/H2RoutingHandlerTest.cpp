@@ -16,10 +16,12 @@
 
 #include <thrift/lib/cpp2/transport/core/testutil/RoutingHandlerTest.h>
 
+#include <gflags/gflags.h>
+
+DECLARE_int32(num_client_connections);
+
 namespace apache {
 namespace thrift {
-
-// TODO T21621068: Open these tests when the bug in ConnectionManager is fixed.
 
 class H2RoutingHandlerTest : public testing::Test {
  public:
@@ -37,6 +39,7 @@ TEST_F(H2RoutingHandlerTest, RequestResponse_Simple) {
 }
 
 TEST_F(H2RoutingHandlerTest, RequestResponse_MultipleClients) {
+  // FLAGS_num_client_connections = 10;
   // routingHandlerTest_->TestRequestResponse_MultipleClients();
 }
 

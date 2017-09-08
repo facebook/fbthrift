@@ -16,30 +16,26 @@
 
 #pragma once
 
+#include <folly/Synchronized.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <stdint.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
-#include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
-#include <atomic>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace apache {
 namespace thrift {
 
 /**
- * Manages a pool of "ClientConnectionIf" objects, each one on its own
- * event base (thread) and offers them for use in a round-robin
- * fashion.
+ * A connection thread that handles connections to servers - one
+ * connection per server.
  */
-class ConnectionManager {
+class ConnectionThread : public folly::ScopedEventBaseThread {
  public:
-  // Returns a singleton instance of this factory.
-  static std::shared_ptr<ConnectionManager> getInstance();
-
-  ConnectionManager();
-
-  ~ConnectionManager() = default;
+  ConnectionThread() = default;
+  ~ConnectionThread();
 
   // Returns a connection that may be used to talk to a server at
   // "addr:port".
@@ -48,8 +44,15 @@ class ConnectionManager {
       uint16_t port);
 
  private:
-  std::vector<std::unique_ptr<ConnectionThread>> threads_;
-  std::atomic_int nextThreadToUse_;
+  // Creates a new connection on the provided event base if necessary.
+  void maybeCreateConnection(
+      const std::string& serverKey,
+      const std::string& addr,
+      uint16_t port);
+
+  folly::Synchronized<
+      std::unordered_map<std::string, std::shared_ptr<ClientConnectionIf>>>
+      connections_;
 };
 
 } // namespace thrift

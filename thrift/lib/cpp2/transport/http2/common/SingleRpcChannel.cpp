@@ -20,6 +20,7 @@
 #include <proxygen/lib/http/HTTPHeaders.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/utils/Base64.h>
+#include <proxygen/lib/utils/Logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -36,6 +37,7 @@ using proxygen::HTTPHeaderCode;
 using proxygen::HTTPMessage;
 using proxygen::HTTPMethod;
 using proxygen::HTTPTransaction;
+using proxygen::IOBufPrinter;
 using proxygen::ResponseHandler;
 
 SingleRpcChannel::SingleRpcChannel(
@@ -49,7 +51,10 @@ SingleRpcChannel::SingleRpcChannel(
     HTTPTransaction* toHttp2,
     const string& httpHost,
     const string& httpUrl)
-    : H2ChannelIf(toHttp2), httpHost_(httpHost), httpUrl_(httpUrl) {
+    : H2ChannelIf(toHttp2),
+      processor_(nullptr),
+      httpHost_(httpHost),
+      httpUrl_(httpUrl) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -76,6 +81,8 @@ void SingleRpcChannel::sendThriftResponse(
     std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(seqId == 0);
   DCHECK(evb_->isInEventBaseThread());
+  VLOG(2) << "sendThriftResponse:" << std::endl
+          << IOBufPrinter::printHexFolly(payload.get(), true);
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
@@ -99,6 +106,8 @@ void SingleRpcChannel::sendThriftRequest(
   DCHECK(evb_->isInEventBaseThread());
   DCHECK(functionInfo);
   DCHECK(payload);
+  VLOG(2) << "sendThriftRequest:" << std::endl
+          << IOBufPrinter::printHexFolly(payload.get(), true);
   if (functionInfo->kind == SINGLE_REQUEST_SINGLE_RESPONSE ||
       functionInfo->kind == STREAMING_REQUEST_SINGLE_RESPONSE) {
     DCHECK(callback);
@@ -107,11 +116,14 @@ void SingleRpcChannel::sendThriftRequest(
   if (!httpTransaction_) {
     LOG(ERROR) << "Network error before call initiation";
     if (callback_) {
-      TTransportException ex(
-          TTransportException::NETWORK_ERROR,
-          "Network error before call initiation");
-      callback_->cancel(
-          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+      auto evb = callback_->getEventBase();
+      evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
+        TTransportException ex(
+            TTransportException::NETWORK_ERROR,
+            "Network error before call initiation");
+        evbCallback->cancel(
+            folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+      });
     }
     return;
   }
@@ -198,9 +210,15 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
     // Client side
     DCHECK(httpTransaction_);
     if (callback_) {
-      callback_->onThriftResponse(std::move(headers_), std::move(contents_));
-      // Set to nullptr to indicate that callback has been processed.
-      callback_ = nullptr;
+      auto evb = callback_->getEventBase();
+      evb->runInEventBaseThread([
+        evbCallback = std::move(callback_),
+        evbHeaders = std::move(headers_),
+        evbContents = std::move(contents_)
+      ]() mutable {
+        evbCallback->onThriftResponse(
+            std::move(evbHeaders), std::move(evbContents));
+      });
     }
   }
 }
@@ -209,11 +227,14 @@ void SingleRpcChannel::onH2StreamClosed() noexcept {
   if (callback_) {
     // Stream died before callback happened.
     LOG(ERROR) << "Network error before call completion";
-    TTransportException ex(
-        TTransportException::NETWORK_ERROR,
-        "Network error before call completion");
-    callback_->cancel(
-        folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+    auto evb = callback_->getEventBase();
+    evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
+      TTransportException ex(
+          TTransportException::NETWORK_ERROR,
+          "Network error before call completion");
+      evbCallback->cancel(
+          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+    });
   }
   H2ChannelIf::onH2StreamClosed();
 }

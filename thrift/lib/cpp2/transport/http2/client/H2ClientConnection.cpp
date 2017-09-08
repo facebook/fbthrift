@@ -20,6 +20,7 @@
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
+#include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
@@ -34,6 +35,7 @@ using apache::thrift::transport::TTransportException;
 using std::string;
 using folly::EventBase;
 using proxygen::HTTPSession;
+using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
 
@@ -92,20 +94,27 @@ std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
     throw TTransportException(
         TTransportException::NOT_OPEN, "HTTPSession is not open");
   }
-  // This object destroys itself when done.
-  auto handler = new ThriftTransactionHandler();
-  auto txn = httpSession_->newTransaction(handler);
+  ThriftTransactionHandler* handler = nullptr;
+  HTTPTransaction* txn = nullptr;
+  std::shared_ptr<H2ChannelIf> channel;
+  evb_->runInEventBaseThreadAndWait([&]() {
+    // These objects destroy themselves when done.
+    handler = new ThriftTransactionHandler();
+    txn = httpSession_->newTransaction(handler);
+    if (txn) {
+      channel = std::make_shared<SingleRpcChannel>(txn, httpHost_, httpUrl_);
+    } else {
+      delete handler;
+    }
+  });
   if (!txn) {
     TTransportException ex(
         TTransportException::NOT_OPEN,
         "Too many active requests on connection");
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    delete handler;
     throw ex;
   }
-  // TODO: do timeout setting.
-  auto channel = std::make_shared<SingleRpcChannel>(txn, httpHost_, httpUrl_);
   handler->setChannel(channel);
   return channel;
 }
