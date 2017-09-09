@@ -77,6 +77,8 @@ typedef int64_t IncludedInt64;
 
 }}} // a::different::ns
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace a { namespace different { namespace ns {
 class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
  public:

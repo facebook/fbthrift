@@ -115,9 +115,3 @@ uint32_t IncludedB::write(Protocol_* prot_) const {
 }
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace ns {
-
-}} // some::ns

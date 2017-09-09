@@ -107,12 +107,6 @@ uint32_t decorated_struct::write(Protocol_* prot_) const {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 template <class Protocol_>
@@ -299,11 +293,5 @@ uint32_t ContainerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 }}}} // apache::thrift::fixtures::types

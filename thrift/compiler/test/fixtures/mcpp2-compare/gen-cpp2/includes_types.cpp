@@ -80,9 +80,6 @@ template uint32_t AStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace a { namespace different { namespace ns {
 
 void AStructB::__clear() {
@@ -124,11 +121,5 @@ template uint32_t AStructB::read<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t AStructB::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t AStructB::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AStructB::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
-}}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace a { namespace different { namespace ns {
 
 }}} // a::different::ns

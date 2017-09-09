@@ -180,9 +180,3 @@ template uint32_t SomeStruct::serializedSize<>(apache::thrift::SimpleJSONProtoco
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty

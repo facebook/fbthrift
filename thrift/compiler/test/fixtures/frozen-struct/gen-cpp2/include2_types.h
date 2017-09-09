@@ -28,6 +28,8 @@ class IncludedB;
 // BEGIN typedefs
 
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace some { namespace ns {
 class IncludedB : private apache::thrift::detail::st::ComparisonOperators<IncludedB> {
  public:

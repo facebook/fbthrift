@@ -60,9 +60,3 @@ template uint32_t IncludedB::serializedSize<>(apache::thrift::CompactProtocolWri
 template uint32_t IncludedB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace ns {
-
-}} // some::ns

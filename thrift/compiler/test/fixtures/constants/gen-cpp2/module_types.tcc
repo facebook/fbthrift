@@ -169,9 +169,6 @@ uint32_t Internship::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -251,9 +248,6 @@ uint32_t UnEnumStruct::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -358,9 +352,6 @@ uint32_t Range::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -457,9 +448,6 @@ uint32_t struct1::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -591,9 +579,6 @@ uint32_t struct2::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -707,9 +692,6 @@ uint32_t struct3::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -850,9 +832,6 @@ uint32_t union1::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1057,11 +1036,5 @@ uint32_t union2::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

@@ -134,9 +134,6 @@ template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocol
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void FinalComplexUnion::__clear() {
@@ -205,11 +202,5 @@ template uint32_t FinalComplexUnion::read<>(apache::thrift::CompactProtocolReade
 template uint32_t FinalComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t FinalComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t FinalComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

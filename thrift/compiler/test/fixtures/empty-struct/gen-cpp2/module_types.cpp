@@ -42,9 +42,6 @@ template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void Nada::__clear() {
@@ -87,11 +84,5 @@ template uint32_t Nada::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Nada::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Nada::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

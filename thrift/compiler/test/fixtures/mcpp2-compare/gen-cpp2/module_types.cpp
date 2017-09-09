@@ -146,9 +146,6 @@ template uint32_t Empty::serializedSize<>(apache::thrift::SimpleJSONProtocolWrit
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void ASimpleStruct::__clear() {
@@ -192,9 +189,6 @@ template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::SimpleJSONProt
 template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void MyStruct::__clear() {
@@ -329,9 +323,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolW
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void SimpleUnion::__clear() {
@@ -406,9 +397,6 @@ template uint32_t SimpleUnion::serializedSize<>(apache::thrift::SimpleJSONProtoc
 template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void ComplexUnion::__clear() {
@@ -901,9 +889,6 @@ template uint32_t ComplexUnion::serializedSize<>(apache::thrift::SimpleJSONProto
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void AnException::__clear() {
@@ -1153,9 +1138,6 @@ template uint32_t AnException::serializedSize<>(apache::thrift::SimpleJSONProtoc
 template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void AnotherException::__clear() {
@@ -1217,9 +1199,6 @@ template uint32_t AnotherException::serializedSize<>(apache::thrift::SimpleJSONP
 template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 void containerStruct::__clear() {
@@ -1912,9 +1891,6 @@ template uint32_t containerStruct::serializedSize<>(apache::thrift::SimpleJSONPr
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& src) {
@@ -2016,12 +1992,6 @@ template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::SimpleJSONP
 template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
 namespace some { namespace valid { namespace ns {
 
 void AnnotatedStruct::__clear() {
@@ -2542,14 +2512,5 @@ template uint32_t AnnotatedStruct::read<>(apache::thrift::SimpleJSONProtocolRead
 template uint32_t AnnotatedStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
-namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns

@@ -81,9 +81,6 @@ uint32_t Empty::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -155,11 +152,5 @@ uint32_t Nada::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

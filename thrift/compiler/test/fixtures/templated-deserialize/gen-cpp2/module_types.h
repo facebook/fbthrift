@@ -111,6 +111,8 @@ typedef Bar IndirectionB;
 
 } // cpp2
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace cpp2 {
 class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
  public:

@@ -42,9 +42,3 @@ template uint32_t FooEx::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t FooEx::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

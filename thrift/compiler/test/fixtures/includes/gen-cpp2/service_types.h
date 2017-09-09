@@ -28,3 +28,5 @@
 // BEGIN typedefs
 
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to

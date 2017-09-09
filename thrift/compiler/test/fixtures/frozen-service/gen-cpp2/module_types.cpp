@@ -94,9 +94,6 @@ template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 
 void ModuleB::__clear() {
@@ -136,9 +133,6 @@ template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 
 void ExceptionA::__clear() {
@@ -187,9 +181,6 @@ template uint32_t ExceptionA::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t ExceptionA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 
 void ExceptionB::__clear() {
@@ -236,11 +227,5 @@ template uint32_t ExceptionB::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ExceptionB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ExceptionB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ExceptionB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace ns {
 
 }} // some::ns

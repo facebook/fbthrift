@@ -1,0 +1,48 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>// BEGIN hash_and_equal_to
+<%#program:cpp_declare_hash?%>
+namespace std {
+<%#program:structs%>
+<%#struct:cpp_declare_hash%>
+
+template<> struct hash<typename <% > common/namespace_cpp2%><%struct:name%>> {
+  size_t operator()(const <% > common/namespace_cpp2%><%struct:name%>&) const;
+};
+<%#struct:cpp_declare_equal_to%>
+template<> struct equal_to<typename <% > common/namespace_cpp2%><%struct:name%>> {
+  bool operator()(const <% > common/namespace_cpp2%><%struct:name%>&,const <% > common/namespace_cpp2%><%struct:name%>&) const;
+};
+<%/struct:cpp_declare_equal_to%>
+<%/struct:cpp_declare_hash%>
+<%/program:structs%>
+<%#program:typedefs%><%#typedef:type%>
+<%#type:cpp_declare_hash%>
+
+template<> struct hash<typename <% > common/namespace_cpp2%><%typedef:symbolic%>> {
+  size_t operator()(const <% > common/namespace_cpp2%><%typedef:symbolic%>&) const;
+};
+<%#type:cpp_declare_equal_to%>
+template<> struct equal_to<typename <% > common/namespace_cpp2%><%typedef:symbolic%>> {
+  bool operator()(const <% > common/namespace_cpp2%><%typedef:symbolic%>&,const <% > common/namespace_cpp2%><%typedef:symbolic%>&) const;
+};
+<%/type:cpp_declare_equal_to%>
+<%/type:cpp_declare_hash%>
+<%/typedef:type%><%/program:typedefs%>
+} // std
+<%/program:cpp_declare_hash?%>
+// END hash_and_equal_to

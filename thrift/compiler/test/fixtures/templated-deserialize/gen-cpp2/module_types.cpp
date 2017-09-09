@@ -85,9 +85,6 @@ template uint32_t SmallStruct::serializedSize<>(apache::thrift::CompactProtocolW
 template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 containerStruct::containerStruct(const containerStruct& src) {
@@ -458,11 +455,5 @@ template uint32_t containerStruct::read<>(apache::thrift::CompactProtocolReader*
 template uint32_t containerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t containerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

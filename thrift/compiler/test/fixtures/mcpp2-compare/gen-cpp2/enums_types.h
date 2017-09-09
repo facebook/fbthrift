@@ -192,6 +192,8 @@ class SomeStruct;
 // BEGIN typedefs
 
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
  public:

@@ -194,9 +194,6 @@ uint32_t ModuleA::write(Protocol_* prot_) const {
 }
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 
 template <class Protocol_>
@@ -291,11 +288,5 @@ uint32_t ModuleB::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-}} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace ns {
 
 }} // some::ns

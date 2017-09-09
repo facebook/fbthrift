@@ -19,6 +19,3 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-namespace cpp2 {
-
-} // cpp2

@@ -118,9 +118,6 @@ uint32_t Empty::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -200,9 +197,6 @@ uint32_t ASimpleStruct::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -430,9 +424,6 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -573,9 +564,6 @@ uint32_t SimpleUnion::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template<typename... T, typename > std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(T&&... t) {
@@ -1768,9 +1756,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -2109,9 +2094,6 @@ uint32_t AnException::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -2229,9 +2211,6 @@ uint32_t AnotherException::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -3152,9 +3131,6 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -3309,12 +3285,6 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
@@ -4489,14 +4459,5 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
-namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns

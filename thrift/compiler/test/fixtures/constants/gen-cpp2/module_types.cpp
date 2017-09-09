@@ -147,9 +147,6 @@ template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void UnEnumStruct::__clear() {
@@ -189,9 +186,6 @@ template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocol
 template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void Range::__clear() {
@@ -238,9 +232,6 @@ template uint32_t Range::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void struct1::__clear() {
@@ -289,9 +280,6 @@ template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void struct2::__clear() {
@@ -374,9 +362,6 @@ template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void struct3::__clear() {
@@ -442,9 +427,6 @@ template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void union1::__clear() {
@@ -515,9 +497,6 @@ template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void union2::__clear() {
@@ -612,11 +591,5 @@ template uint32_t union2::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

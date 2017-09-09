@@ -153,9 +153,6 @@ template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 
 void ModuleB::__clear() {
@@ -202,11 +199,5 @@ template uint32_t ModuleB::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace ns {
 
 }} // some::ns

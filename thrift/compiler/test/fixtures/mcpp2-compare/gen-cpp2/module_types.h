@@ -330,6 +330,7 @@ typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef
 typedef Foo IndirectionA;
 typedef Baz IndirectionC;
 typedef Bar IndirectionB;
+typedef std::map< ::some::valid::ns::MyEnumA, std::string> HashedTypedef;
 typedef CppFakeI32 CppFakeI32;
 typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
 typedef folly::sorted_vector_set<std::string> SortedVectorSetString;
@@ -344,6 +345,31 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
 }}} // some::valid::ns
 // END typedefs
+// BEGIN hash_and_equal_to
+namespace std {
+
+template<> struct hash<typename  ::some::valid::ns::MyIncludedStruct> {
+  size_t operator()(const  ::some::valid::ns::MyIncludedStruct&) const;
+};
+template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
+  bool operator()(const  ::some::valid::ns::MyIncludedStruct&,const  ::some::valid::ns::MyIncludedStruct&) const;
+};
+
+template<> struct hash<typename  ::some::valid::ns::AnnotatedStruct> {
+  size_t operator()(const  ::some::valid::ns::AnnotatedStruct&) const;
+};
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatedStruct> {
+  bool operator()(const  ::some::valid::ns::AnnotatedStruct&,const  ::some::valid::ns::AnnotatedStruct&) const;
+};
+
+template<> struct hash<typename  ::some::valid::ns::HashedTypedef> {
+  size_t operator()(const  ::some::valid::ns::HashedTypedef&) const;
+};
+template<> struct equal_to<typename  ::some::valid::ns::HashedTypedef> {
+  bool operator()(const  ::some::valid::ns::HashedTypedef&,const  ::some::valid::ns::HashedTypedef&) const;
+};
+} // std
+// END hash_and_equal_to
 namespace some { namespace valid { namespace ns {
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
@@ -4998,16 +5024,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyInc
 }
 
 }} // apache::thrift
-namespace std {
-
-template<> struct hash<typename  ::some::valid::ns::MyIncludedStruct> {
-  size_t operator()(const  ::some::valid::ns::MyIncludedStruct&) const;
-};
-template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
-  bool operator()(const  ::some::valid::ns::MyIncludedStruct&,const  ::some::valid::ns::MyIncludedStruct&) const;
-};
-
-} // std
 namespace some { namespace valid { namespace ns {
 class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
@@ -5772,13 +5788,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Annot
 }
 
 }} // apache::thrift
-namespace std {
-
-template<> struct hash<typename  ::some::valid::ns::AnnotatedStruct> {
-  size_t operator()(const  ::some::valid::ns::AnnotatedStruct&) const;
-};
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatedStruct> {
-  bool operator()(const  ::some::valid::ns::AnnotatedStruct&,const  ::some::valid::ns::AnnotatedStruct&) const;
-};
-
-} // std

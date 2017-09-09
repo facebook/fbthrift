@@ -162,6 +162,9 @@ class mstch_cpp2_type : public mstch_type {
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
             {"type:stack_arguments?", &mstch_cpp2_type::stack_arguments},
+            {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
+            {"type:cpp_declare_equal_to",
+             &mstch_cpp2_type::cpp_declare_equal_to},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -233,6 +236,14 @@ class mstch_cpp2_type : public mstch_type {
       return resolved_type_->annotations_.at("cpp2.indirection");
     }
     return std::string();
+  }
+  mstch::node cpp_declare_hash() {
+    return resolved_type_->annotations_.count("cpp.declare_hash") ||
+        resolved_type_->annotations_.count("cpp2.declare_hash");
+  }
+  mstch::node cpp_declare_equal_to() {
+    return resolved_type_->annotations_.count("cpp.declare_equal_to") ||
+        resolved_type_->annotations_.count("cpp2.declare_equal_to");
   }
   mstch::node is_non_empty_struct() {
     if (resolved_type_->is_struct() || resolved_type_->is_xception()) {
@@ -452,40 +463,22 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::string();
   }
   mstch::node cpp_declare_hash() {
-    if (strct_->annotations_.count("cpp.declare_hash")) {
-      return true;
-    } else if (strct_->annotations_.count("cpp2.declare_hash")) {
-      return true;
-    }
-    return false;
+    return strct_->annotations_.count("cpp.declare_hash") ||
+        strct_->annotations_.count("cpp2.declare_hash");
   }
   mstch::node cpp_declare_equal_to() {
-    if (strct_->annotations_.count("cpp.declare_equal_to")) {
-      return true;
-    } else if (strct_->annotations_.count("cpp2.declare_equal_to")) {
-      return true;
-    }
-    return false;
+    return strct_->annotations_.count("cpp.declare_equal_to") ||
+        strct_->annotations_.count("cpp2.declare_equal_to");
   }
   mstch::node cpp_noncopyable() {
-    if (strct_->annotations_.count("cpp2.noncopyable")) {
-      return true;
-    }
-    return false;
+    return bool(strct_->annotations_.count("cpp2.noncopyable"));
   }
   mstch::node cpp_noexcept_move_ctor() {
-    if (strct_->annotations_.count("cpp.noexcept_move_ctor")) {
-      return true;
-    } else if (strct_->annotations_.count("cpp2.noexcept_move_ctor")) {
-      return true;
-    }
-    return false;
+    return strct_->annotations_.count("cpp.noexcept_move_ctor") ||
+        strct_->annotations_.count("cpp2.noexcept_move_ctor");
   }
   mstch::node cpp_final() {
-    if (strct_->annotations_.count("final")) {
-      return true;
-    }
-    return false;
+    return bool(strct_->annotations_.count("final"));
   }
   mstch::node message() {
     if (strct_->annotations_.count("message")) {
@@ -504,8 +497,8 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_non_req_fields() {
     return std::any_of(
-        std::begin(strct_->get_members()),
-        std::end(strct_->get_members()),
+        strct_->get_members().begin(),
+        strct_->get_members().end(),
         [](const auto* field) {
           return field->get_req() != t_field::e_req::T_REQUIRED;
         });
@@ -673,6 +666,8 @@ class mstch_cpp2_program : public mstch_program {
             {"program:include_prefix", &mstch_cpp2_program::include_prefix},
             {"program:enums?", &mstch_cpp2_program::has_enums},
             {"program:typedefs?", &mstch_cpp2_program::has_typedefs},
+            {"program:cpp_declare_hash?",
+             &mstch_cpp2_program::cpp_declare_hash},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
@@ -698,6 +693,23 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node has_typedefs() {
     return !program_->get_typedefs().empty();
+  }
+  mstch::node cpp_declare_hash() {
+    bool cpp_declare_in_structs = std::any_of(
+        program_->get_structs().begin(),
+        program_->get_structs().end(),
+        [](const auto* strct) {
+          return strct->annotations_.count("cpp.declare_hash") ||
+            strct->annotations_.count("cpp2.declare_hash");
+        });
+    bool cpp_declare_in_typedefs = std::any_of(
+        program_->get_typedefs().begin(),
+        program_->get_typedefs().end(),
+        [](const auto* typedf) {
+          return typedf->get_type()->annotations_.count("cpp.declare_hash") ||
+            typedf->get_type()->annotations_.count("cpp2.declare_hash");
+        });
+    return cpp_declare_in_structs || cpp_declare_in_typedefs;
   }
   mstch::node thrift_includes() {
     mstch::array a{};

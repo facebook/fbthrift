@@ -32,6 +32,8 @@ typedef std::map<int16_t, std::string> containerTypedef;
 
 } // cpp2
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace cpp2 {
 class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:

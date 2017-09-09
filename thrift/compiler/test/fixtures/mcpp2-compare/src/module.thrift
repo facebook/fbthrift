@@ -157,6 +157,8 @@ exception AnotherException {
 typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
 typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
 typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
+typedef map<MyEnumA, string>
+  (cpp.declare_hash, cpp.declare_equal_to) HashedTypedef
 
 struct containerStruct {
   1: bool fieldA

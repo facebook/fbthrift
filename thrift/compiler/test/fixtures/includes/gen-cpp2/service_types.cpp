@@ -12,6 +12,3 @@
 
 #include "src/gen-cpp2/service_data.h"
 
-namespace cpp2 {
-
-} // cpp2

@@ -32,6 +32,8 @@ typedef int64_t IncludedInt64;
 
 } // cpp2
 // END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace cpp2 {
 class Included : private apache::thrift::detail::st::ComparisonOperators<Included> {
  public:

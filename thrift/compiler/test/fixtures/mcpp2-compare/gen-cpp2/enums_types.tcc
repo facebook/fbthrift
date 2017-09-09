@@ -144,9 +144,3 @@ uint32_t SomeStruct::write(Protocol_* prot_) const {
 }
 
 }}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace facebook { namespace ns { namespace qwerty {
-
-}}} // facebook::ns::qwerty

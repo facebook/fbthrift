@@ -108,9 +108,6 @@ uint32_t AStruct::write(Protocol_* prot_) const {
 }
 
 }}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
@@ -208,11 +205,5 @@ uint32_t AStructB::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-}}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace a { namespace different { namespace ns {
 
 }}} // a::different::ns

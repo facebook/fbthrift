@@ -42,9 +42,6 @@ template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void Fiery::__clear() {
@@ -80,11 +77,5 @@ template uint32_t Fiery::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

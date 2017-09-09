@@ -131,6 +131,17 @@ class ContainerStruct;
 // BEGIN typedefs
 
 // END typedefs
+// BEGIN hash_and_equal_to
+namespace std {
+
+template<> struct hash<typename  ::apache::thrift::fixtures::types::decorated_struct> {
+  size_t operator()(const  ::apache::thrift::fixtures::types::decorated_struct&) const;
+};
+template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorated_struct> {
+  bool operator()(const  ::apache::thrift::fixtures::types::decorated_struct&,const  ::apache::thrift::fixtures::types::decorated_struct&) const;
+};
+} // std
+// END hash_and_equal_to
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {
  public:
@@ -246,16 +257,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 }} // apache::thrift
-namespace std {
-
-template<> struct hash<typename  ::apache::thrift::fixtures::types::decorated_struct> {
-  size_t operator()(const  ::apache::thrift::fixtures::types::decorated_struct&) const;
-};
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorated_struct> {
-  bool operator()(const  ::apache::thrift::fixtures::types::decorated_struct&,const  ::apache::thrift::fixtures::types::decorated_struct&) const;
-};
-
-} // std
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
  public:

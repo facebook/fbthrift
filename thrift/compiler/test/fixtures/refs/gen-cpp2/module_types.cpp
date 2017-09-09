@@ -107,9 +107,6 @@ template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void MyField::__clear() {
@@ -170,9 +167,6 @@ template uint32_t MyField::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 MyStruct::MyStruct(const MyStruct& src) {
@@ -242,9 +236,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 StructWithUnion::StructWithUnion(const StructWithUnion& src) {
@@ -324,9 +315,6 @@ template uint32_t StructWithUnion::serializedSize<>(apache::thrift::CompactProto
 template uint32_t StructWithUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void RecursiveStruct::__clear() {
@@ -377,9 +365,6 @@ template uint32_t RecursiveStruct::serializedSize<>(apache::thrift::CompactProto
 template uint32_t RecursiveStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 StructWithContainers::StructWithContainers(const StructWithContainers& src) {
@@ -479,9 +464,6 @@ template uint32_t StructWithContainers::serializedSize<>(apache::thrift::Compact
 template uint32_t StructWithContainers::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void StructWithSharedConst::__clear() {
@@ -539,9 +521,6 @@ template uint32_t StructWithSharedConst::serializedSize<>(apache::thrift::Compac
 template uint32_t StructWithSharedConst::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void Empty::__clear() {
@@ -572,9 +551,6 @@ template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 StructWithRef::StructWithRef(const StructWithRef& src) {
@@ -641,9 +617,6 @@ template uint32_t StructWithRef::serializedSize<>(apache::thrift::CompactProtoco
 template uint32_t StructWithRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& src) {
@@ -710,9 +683,6 @@ template uint32_t StructWithRefTypeUnique::serializedSize<>(apache::thrift::Comp
 template uint32_t StructWithRefTypeUnique::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void StructWithRefTypeShared::__clear() {
@@ -767,9 +737,6 @@ template uint32_t StructWithRefTypeShared::serializedSize<>(apache::thrift::Comp
 template uint32_t StructWithRefTypeShared::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 void StructWithRefTypeSharedConst::__clear() {
@@ -822,11 +789,5 @@ template uint32_t StructWithRefTypeSharedConst::read<>(apache::thrift::CompactPr
 template uint32_t StructWithRefTypeSharedConst::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

@@ -132,9 +132,3 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

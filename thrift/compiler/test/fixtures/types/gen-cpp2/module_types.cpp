@@ -76,12 +76,6 @@ template uint32_t decorated_struct::serializedSize<>(apache::thrift::CompactProt
 template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace std {
-
-} // std
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 void ContainerStruct::__clear() {
@@ -229,11 +223,5 @@ template uint32_t ContainerStruct::read<>(apache::thrift::CompactProtocolReader*
 template uint32_t ContainerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 }}}} // apache::thrift::fixtures::types

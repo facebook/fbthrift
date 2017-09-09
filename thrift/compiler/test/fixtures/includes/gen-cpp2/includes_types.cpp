@@ -68,9 +68,3 @@ template uint32_t Included::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t Included::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

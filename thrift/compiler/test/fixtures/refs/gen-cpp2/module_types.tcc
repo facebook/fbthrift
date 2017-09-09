@@ -168,9 +168,6 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -294,9 +291,6 @@ uint32_t MyField::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -481,9 +475,6 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -617,9 +608,6 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -706,9 +694,6 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -987,9 +972,6 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1174,9 +1156,6 @@ uint32_t StructWithSharedConst::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1239,9 +1218,6 @@ uint32_t Empty::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1426,9 +1402,6 @@ uint32_t StructWithRef::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1613,9 +1586,6 @@ uint32_t StructWithRefTypeUnique::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1800,9 +1770,6 @@ uint32_t StructWithRefTypeShared::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
@@ -1985,11 +1952,5 @@ uint32_t StructWithRefTypeSharedConst::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2
