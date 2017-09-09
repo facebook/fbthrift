@@ -35,20 +35,20 @@ class RSRoutingHandlerTest : public testing::Test {
 };
 
 TEST_F(RSRoutingHandlerTest, RequestResponse_Simple) {
-  // routingHandlerTest_->TestRequestResponse_Simple();
+  routingHandlerTest_->TestRequestResponse_Simple();
 }
 
 TEST_F(RSRoutingHandlerTest, RequestResponse_MultipleClients) {
   // FLAGS_num_client_connections = 10;
-  // routingHandlerTest_->TestRequestResponse_MultipleClients();
+  routingHandlerTest_->TestRequestResponse_MultipleClients();
 }
 
 TEST_F(RSRoutingHandlerTest, RequestResponse_ExpectedException) {
-  // routingHandlerTest_->TestRequestResponse_ExpectedException();
+  routingHandlerTest_->TestRequestResponse_ExpectedException();
 }
 
 TEST_F(RSRoutingHandlerTest, RequestResponse_UnexpectedException) {
-  // routingHandlerTest_->TestRequestResponse_UnexpectedException();
+  routingHandlerTest_->TestRequestResponse_UnexpectedException();
 }
 }
 }

@@ -488,10 +488,14 @@ void ThriftServer::serve() {
 
 void ThriftServer::cleanUp() {
   DCHECK(!serverChannel_);
+
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
   serveEventBase_ = nullptr;
   stopListening();
+
+  // Get rid of the handlers.
+  routingHandlers_.clear();
 
   if (stopWorkersOnStopListening_) {
     // Wait on the i/o worker threads to actually stop
