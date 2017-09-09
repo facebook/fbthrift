@@ -4,12 +4,16 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#pragma once
 
-#include "src/gen-cpp2/ExtraService.h"
-#include "src/gen-cpp2/ExtraService.tcc"
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "extra_services_types.h"
 
 namespace extra { namespace svc {
-}} // extra::svc
-namespace apache { namespace thrift {
 
-}} // apache::thrift
+struct extra_services_constants {
+
+};
+
+}} // extra::svc

@@ -8,8 +8,8 @@
 #include "src/gen-cpp2/ExtraService.h"
 #include "src/gen-cpp2/ExtraService.tcc"
 
-namespace some { namespace valid { namespace ns {
-}}} // some::valid::ns
+namespace extra { namespace svc {
+}} // extra::svc
 namespace apache { namespace thrift {
 
 }} // apache::thrift

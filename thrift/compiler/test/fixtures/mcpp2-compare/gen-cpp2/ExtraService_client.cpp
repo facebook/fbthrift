@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-namespace some { namespace valid { namespace ns {
+namespace extra { namespace svc {
 const char* ExtraServiceAsyncClient::getServiceName() {
   return "ExtraService";
 }
@@ -774,7 +774,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<vo
   oneway_void_ret_listunion_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
-}}} // some::valid::ns
+}} // extra::svc
 namespace apache { namespace thrift {
 
 }} // apache::thrift

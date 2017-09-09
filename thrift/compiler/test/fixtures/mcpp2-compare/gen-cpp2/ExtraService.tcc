@@ -16,7 +16,7 @@
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
-namespace some { namespace valid { namespace ns {
+namespace extra { namespace svc {
 typedef apache::thrift::ThriftPresult<false> ExtraService_simple_function_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>> ExtraService_simple_function_presult;
 typedef apache::thrift::ThriftPresult<false> ExtraService_throws_function_pargs;
@@ -930,7 +930,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, 
   connectionContext_->setRequestHeader(nullptr);
 }
 
-}}} // some::valid::ns
+}} // extra::svc
 namespace apache { namespace thrift {
 
 }} // apache::thrift

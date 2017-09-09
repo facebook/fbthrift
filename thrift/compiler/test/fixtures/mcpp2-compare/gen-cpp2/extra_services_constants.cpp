@@ -5,11 +5,10 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/ExtraService.h"
-#include "src/gen-cpp2/ExtraService.tcc"
+#include "src/gen-cpp2/extra_services_constants.h"
+
+#include <folly/Indestructible.h>
 
 namespace extra { namespace svc {
-}} // extra::svc
-namespace apache { namespace thrift {
 
-}} // apache::thrift
+}} // extra::svc

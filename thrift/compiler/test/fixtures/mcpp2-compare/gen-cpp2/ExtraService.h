@@ -11,10 +11,9 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "src/gen-cpp2/module_types.h"
-#include "src/gen-cpp2/ParamService.h"
-#include "includes_types.h"
-#include <folly/small_vector.h>
+#include "src/gen-cpp2/extra_services_types.h"
+#include "ParamService.h"
+#include "module_types.h"
 
 namespace folly {
   class IOBuf;
@@ -27,7 +26,7 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace some { namespace valid { namespace ns {
+namespace extra { namespace svc {
 
 class ExtraServiceSvAsyncIf {
  public:
@@ -350,7 +349,7 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
   void oneway_void_ret_listunion_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
 };
 
-}}} // some::valid::ns
+}} // extra::svc
 namespace apache { namespace thrift {
 
 }} // apache::thrift

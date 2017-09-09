@@ -6,6 +6,7 @@
  */
 #pragma once
 
+
 /**
  * This header file includes the tcc files of the corresponding header file
  * and the header files of its dependent types. Include this header file
@@ -13,7 +14,6 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "src/gen-cpp2/ExtraService.tcc"
-#include "src/gen-cpp2/extra_services_types_custom_protocol.h"
-#include "ParamService_custom_protocol.h"
+#include "src/gen-cpp2/extra_services_types.tcc"
+
 #include "module_types_custom_protocol.h"

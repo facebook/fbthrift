@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-namespace some { namespace valid { namespace ns {
+namespace extra { namespace svc {
 std::unique_ptr<apache::thrift::AsyncProcessor> ExtraServiceSvIf::getProcessor() {
   return std::make_unique<ExtraServiceAsyncProcessor>(this);
 }
@@ -198,7 +198,7 @@ const ExtraServiceAsyncProcessor::CompactProtocolProcessMap ExtraServiceAsyncPro
   {"oneway_void_ret_listunion_param", &ExtraServiceAsyncProcessor::_processInThread_oneway_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
-}}} // some::valid::ns
+}} // extra::svc
 namespace apache { namespace thrift {
 
 }} // apache::thrift
