@@ -18,7 +18,7 @@ void containerStruct2::__clear() {
   // clear all fields
   fieldA = 0;
   req_fieldA = 0;
-  opt_fieldA.clear();
+  opt_fieldA = 0;
   fieldB.clear();
   req_fieldB.clear();
   opt_fieldB.clear();
@@ -28,7 +28,8 @@ void containerStruct2::__clear() {
   fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE.clear();
+  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  __isset.__clear();
 }
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
@@ -38,7 +39,10 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!((req_fieldA == rhs.req_fieldA))) {
     return false;
   }
-  if (!((opt_fieldA == rhs.opt_fieldA))) {
+  if (__isset.opt_fieldA != rhs.__isset.opt_fieldA) {
+    return false;
+  }
+  else if (__isset.opt_fieldA && !((opt_fieldA == rhs.opt_fieldA))) {
     return false;
   }
   if (!((fieldB == rhs.fieldB))) {
@@ -47,7 +51,10 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!((req_fieldB == rhs.req_fieldB))) {
     return false;
   }
-  if (!((opt_fieldB == rhs.opt_fieldB))) {
+  if (__isset.opt_fieldB != rhs.__isset.opt_fieldB) {
+    return false;
+  }
+  else if (__isset.opt_fieldB && !((opt_fieldB == rhs.opt_fieldB))) {
     return false;
   }
   if (!((fieldC == rhs.fieldC))) {
@@ -56,7 +63,10 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!((req_fieldC == rhs.req_fieldC))) {
     return false;
   }
-  if (!((opt_fieldC == rhs.opt_fieldC))) {
+  if (__isset.opt_fieldC != rhs.__isset.opt_fieldC) {
+    return false;
+  }
+  else if (__isset.opt_fieldC && !((opt_fieldC == rhs.opt_fieldC))) {
     return false;
   }
   if (!((fieldD == rhs.fieldD))) {
@@ -68,10 +78,61 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   if (!((req_fieldE == rhs.req_fieldE))) {
     return false;
   }
-  if (!((opt_fieldE == rhs.opt_fieldE))) {
+  if (__isset.opt_fieldE != rhs.__isset.opt_fieldE) {
+    return false;
+  }
+  else if (__isset.opt_fieldE && !((opt_fieldE == rhs.opt_fieldE))) {
     return false;
   }
   return true;
+}
+
+const std::map<std::string, bool>& containerStruct2::get_fieldB() const& {
+  return fieldB;
+}
+
+std::map<std::string, bool> containerStruct2::get_fieldB() && {
+  return std::move(fieldB);
+}
+
+const std::map<std::string, bool>& containerStruct2::get_req_fieldB() const& {
+  return req_fieldB;
+}
+
+std::map<std::string, bool> containerStruct2::get_req_fieldB() && {
+  return std::move(req_fieldB);
+}
+
+const std::map<std::string, bool>* containerStruct2::get_opt_fieldB() const& {
+  return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
+}
+
+std::map<std::string, bool>* containerStruct2::get_opt_fieldB() & {
+  return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
+}
+
+const std::set<int32_t>& containerStruct2::get_fieldC() const& {
+  return fieldC;
+}
+
+std::set<int32_t> containerStruct2::get_fieldC() && {
+  return std::move(fieldC);
+}
+
+const std::set<int32_t>& containerStruct2::get_req_fieldC() const& {
+  return req_fieldC;
+}
+
+std::set<int32_t> containerStruct2::get_req_fieldC() && {
+  return std::move(req_fieldC);
+}
+
+const std::set<int32_t>* containerStruct2::get_opt_fieldC() const& {
+  return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
+}
+
+std::set<int32_t>* containerStruct2::get_opt_fieldC() & {
+  return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
 }
 
 void containerStruct2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -145,6 +206,7 @@ void swap(containerStruct2& a, containerStruct2& b) {
   swap(a.fieldE, b.fieldE);
   swap(a.req_fieldE, b.req_fieldE);
   swap(a.opt_fieldE, b.opt_fieldE);
+  swap(a.__isset, b.__isset);
 }
 
 template uint32_t containerStruct2::read<>(apache::thrift::BinaryProtocolReader*);

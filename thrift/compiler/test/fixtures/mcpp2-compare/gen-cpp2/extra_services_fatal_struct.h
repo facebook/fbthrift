@@ -285,7 +285,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldA>,
     containerStruct2,
-    false
+    true
   >;
   using fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldB,
@@ -321,7 +321,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldB>,
     containerStruct2,
-    false
+    true
   >;
   using fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldC,
@@ -357,7 +357,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldC>,
     containerStruct2,
-    false
+    true
   >;
   using fieldD = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldD,
@@ -405,7 +405,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldE>,
     containerStruct2,
-    false
+    true
   >;
 };
 
