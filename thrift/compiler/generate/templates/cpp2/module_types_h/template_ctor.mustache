@@ -31,8 +31,8 @@
 <%^field:cpp_ref?%>
     <%field:name%> = arg.move();
 <%/field:cpp_ref?%>
-<%^field:required?%><%^field:cpp_ref?%>
+<%^field:required?%><%^field:cpp_ref?%><%#field:type%><%^type:optionals?%>
     __isset.<%field:name%> = true;
-<%/field:cpp_ref?%><%/field:required?%>
+<%/type:optionals?%><%/field:type%><%/field:cpp_ref?%><%/field:required?%>
   }
 <%/struct:fields%>

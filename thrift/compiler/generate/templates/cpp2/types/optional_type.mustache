@@ -14,27 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%#field:type%>
-  <% > types/optional_type%> <%field:name%>;
-<%/field:type%><%/struct:fields%>
-<%^struct:optionals?%>
-<%#struct:non_req_fields?%>
-
-  struct __isset {
-<%#struct:isset_fields?%>
-    void __clear() {
-<%#struct:isset_fields%>
-      <%field:name%> = false;
-<%/struct:isset_fields%>
-    }
-<%/struct:isset_fields?%>
-<%^struct:isset_fields?%>
-    void __clear() {}
-<%/struct:isset_fields?%>
-
-<%#struct:isset_fields%>
-    bool <%field:name%> = false;
-<%/struct:isset_fields%>
-  } __isset;
-<%/struct:non_req_fields?%>
-<%/struct:optionals?%>
+%><%#type:optionals?%><%#field:optional?%><%!
+  %>folly::Optional<<%!
+%><%/field:optional?%><%/type:optionals?%><%!
+  %><% > types/ref_type%><%!
+%><%#type:optionals?%><%#field:optional?%><%!
+  %>><%!
+%><%/field:optional?%><%/type:optionals?%>

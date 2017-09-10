@@ -165,6 +165,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
+            {"type:optionals?", &mstch_cpp2_type::optionals},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -258,6 +259,9 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node stack_arguments() {
     return cache_->parsed_options_.count("stack_arguments") != 0;
   }
+  mstch::node optionals() {
+    return cache_->parsed_options_.count("optionals") != 0;
+  }
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -278,6 +282,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
+            {"field:optionals?", &mstch_cpp2_field::optionals},
         });
   }
   mstch::node cpp_ref() {
@@ -312,6 +317,10 @@ class mstch_cpp2_field : public mstch_field {
     }
     return mstch::node();
   }
+  mstch::node optionals() {
+    return field_->get_req() == t_field::e_req::T_OPTIONAL &&
+        cache_->parsed_options_.count("optionals");
+  }
 };
 
 class mstch_cpp2_struct : public mstch_struct {
@@ -345,6 +354,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:non_req_fields?", &mstch_cpp2_struct::has_non_req_fields},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
+            {"struct:optionals?", &mstch_cpp2_struct::optionals},
         });
   }
   mstch::node getters_setters() {
@@ -532,6 +542,9 @@ class mstch_cpp2_struct : public mstch_struct {
     return generate_elements(
         fields, generators_->field_generator_.get(), generators_, cache_);
   }
+  mstch::node optionals() {
+    return cache_->parsed_options_.count("optionals") != 0;
+  }
 };
 
 class mstch_cpp2_service : public mstch_service {
@@ -672,6 +685,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
+            {"program:optionals?", &mstch_cpp2_program::optionals},
         });
   }
   virtual std::string get_program_namespace(t_program const* program) override {
@@ -738,6 +752,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node json() {
     return cache_->parsed_options_.count("json") != 0;
+  }
+  mstch::node optionals() {
+    return cache_->parsed_options_.count("optionals") != 0;
   }
 };
 

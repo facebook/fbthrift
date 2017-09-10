@@ -17,6 +17,10 @@
 %>void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
+<%#field:optionals?%>
+  <%field:name%>.clear();
+<%/field:optionals?%>
+<%^field:optionals?%>
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
 <%^type:enum?%>
@@ -60,8 +64,9 @@
   <%field:name%>.reset();
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>
+<%/field:optionals?%>
 <%/field:type%><%/struct:fields%>
-<%#struct:non_req_fields?%>
+<%^struct:optionals?%><%#struct:non_req_fields?%>
   __isset.__clear();
-<%/struct:non_req_fields?%>
+<%/struct:non_req_fields?%><%/struct:optionals?%>
 }

@@ -27,7 +27,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
   }
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-<%#field:optional?%>
+<%#field:optional?%><%^field:optionals?%>
   if (__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
     return false;
   }
@@ -41,7 +41,12 @@ bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
     return false;
   }
 <%/type:binary?%>
-<%/field:optional?%>
+<%/field:optionals?%><%/field:optional?%>
+<%#field:optionals?%>
+  if (!((<%field:name%> == rhs.<%field:name%>))) {
+    return false;
+  }
+<%/field:optionals?%>
 <%^field:optional?%>
 <%#type:binary?%>
   if (!(apache::thrift::StringTraits<<%#type:cpp_typedef_type%><%type:cpp_typedef_type%><%/type:cpp_typedef_type%><%^type:cpp_typedef_type%>std::string<%/type:cpp_typedef_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
