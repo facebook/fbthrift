@@ -308,13 +308,13 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function throws_function3";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<int32_t, std::string>>>>(std::move(req), std::move(c), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>>(std::move(req), std::move(c), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), std::move(uarg_param2));
+  iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -446,7 +446,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
-  iface_->async_eb_oneway_void_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
+  iface_->async_eb_oneway_void_ret_map_setlist_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -472,7 +472,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
-  iface_->async_tm_oneway_void_ret_struct_param(std::move(callback), std::move(uarg_param1));
+  iface_->async_tm_oneway_void_ret_struct_param(std::move(callback), args.get<0>().ref());
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -498,7 +498,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
-  iface_->async_tm_oneway_void_ret_listunion_param(std::move(callback), std::move(uarg_param1));
+  iface_->async_tm_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
 }
 
 template <typename Protocol_>

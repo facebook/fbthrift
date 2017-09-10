@@ -129,7 +129,6 @@ static void preprocess_cpp2_generator_strings(
       (gen_string.find("future") != std::string::npos ||
        gen_string.find("py_generator") != std::string::npos ||
        gen_string.find("optionals") != std::string::npos ||
-       gen_string.find("stack_arguments") != std::string::npos ||
        gen_string.find("fatal") != std::string::npos ||
        gen_string.find("compatibility") != std::string::npos ||
        gen_string.find("implicit_templates") != std::string::npos ||
