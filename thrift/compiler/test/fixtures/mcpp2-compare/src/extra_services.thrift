@@ -2,6 +2,22 @@ include "module.thrift"
 
 namespace cpp2 extra.svc
 
+struct containerStruct2 {
+  1: bool fieldA
+  101: required bool req_fieldA
+  201: optional bool opt_fieldA
+  2: map<string, bool> fieldB
+  102: required map<string, bool> req_fieldB
+  202: optional map<string, bool> opt_fieldB
+  3: set<i32> fieldC = [1, 2, 3, 4]
+  103: required set<i32> req_fieldC = [1, 2, 3, 4]
+  203: optional set<i32> opt_fieldC = [1, 2, 3, 4]
+  4: string fieldD
+  5: string fieldE = "somestring"
+  105: required string req_fieldE = "somestring"
+  205: optional string opt_fieldE = "somestring"
+}
+
 service ExtraService extends module.ParamService {
   bool simple_function()
   void throws_function()

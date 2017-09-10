@@ -18,24 +18,38 @@ namespace extra { namespace svc {
 namespace thrift_fatal_impl_detail {
 
 struct extra_svc_extra_services__unique_strings_list {
-  using ExtraService = ::fatal::sequence<char, 'E', 'x', 't', 'r', 'a', 'S', 'e', 'r', 'v', 'i', 'c', 'e'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
-  using oneway_void_ret_listunion_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'l', 'i', 's', 't', 'u', 'n', 'i', 'o', 'n', '_', 'p', 'a', 'r', 'a', 'm'>;
-  using simple_function = ::fatal::sequence<char, 's', 'i', 'm', 'p', 'l', 'e', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n'>;
-  using oneway_void_ret_map_setlist_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'm', 'a', 'p', '_', 's', 'e', 't', 'l', 'i', 's', 't', '_', 'p', 'a', 'r', 'a', 'm'>;
-  using throws_function2 = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n', '2'>;
-  using throws_function3 = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n', '3'>;
-  using oneway_void_ret_i32_i32_i32_i32_i32_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'p', 'a', 'r', 'a', 'm'>;
-  using oneway_void_ret = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't'>;
-  using param5 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '5'>;
-  using extra_services = ::fatal::sequence<char, 'e', 'x', 't', 'r', 'a', '_', 's', 'e', 'r', 'v', 'i', 'c', 'e', 's'>;
-  using param3 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '3'>;
+  using fieldB = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'B'>;
   using throws_function = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n'>;
-  using param1 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '1'>;
-  using param4 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '4'>;
   using oneway_void_ret_struct_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 's', 't', 'r', 'u', 'c', 't', '_', 'p', 'a', 'r', 'a', 'm'>;
   using extra__svc = ::fatal::sequence<char, 'e', 'x', 't', 'r', 'a', ':', ':', 's', 'v', 'c'>;
+  using oneway_void_ret_listunion_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'l', 'i', 's', 't', 'u', 'n', 'i', 'o', 'n', '_', 'p', 'a', 'r', 'a', 'm'>;
+  using fieldD = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'D'>;
+  using param3 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '3'>;
+  using req_fieldB = ::fatal::sequence<char, 'r', 'e', 'q', '_', 'f', 'i', 'e', 'l', 'd', 'B'>;
+  using ExtraService = ::fatal::sequence<char, 'E', 'x', 't', 'r', 'a', 'S', 'e', 'r', 'v', 'i', 'c', 'e'>;
+  using oneway_void_ret_map_setlist_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'm', 'a', 'p', '_', 's', 'e', 't', 'l', 'i', 's', 't', '_', 'p', 'a', 'r', 'a', 'm'>;
+  using simple_function = ::fatal::sequence<char, 's', 'i', 'm', 'p', 'l', 'e', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n'>;
+  using oneway_void_ret_i32_i32_i32_i32_i32_param = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'i', '3', '2', '_', 'p', 'a', 'r', 'a', 'm'>;
+  using oneway_void_ret = ::fatal::sequence<char, 'o', 'n', 'e', 'w', 'a', 'y', '_', 'v', 'o', 'i', 'd', '_', 'r', 'e', 't'>;
+  using extra_services = ::fatal::sequence<char, 'e', 'x', 't', 'r', 'a', '_', 's', 'e', 'r', 'v', 'i', 'c', 'e', 's'>;
+  using req_fieldE = ::fatal::sequence<char, 'r', 'e', 'q', '_', 'f', 'i', 'e', 'l', 'd', 'E'>;
+  using fieldC = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'C'>;
+  using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
+  using req_fieldA = ::fatal::sequence<char, 'r', 'e', 'q', '_', 'f', 'i', 'e', 'l', 'd', 'A'>;
+  using req_fieldC = ::fatal::sequence<char, 'r', 'e', 'q', '_', 'f', 'i', 'e', 'l', 'd', 'C'>;
+  using fieldE = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'E'>;
+  using throws_function2 = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n', '2'>;
+  using throws_function3 = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n', '3'>;
+  using param5 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '5'>;
+  using param4 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '4'>;
+  using containerStruct2 = ::fatal::sequence<char, 'c', 'o', 'n', 't', 'a', 'i', 'n', 'e', 'r', 'S', 't', 'r', 'u', 'c', 't', '2'>;
   using param2 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '2'>;
+  using param1 = ::fatal::sequence<char, 'p', 'a', 'r', 'a', 'm', '1'>;
+  using opt_fieldE = ::fatal::sequence<char, 'o', 'p', 't', '_', 'f', 'i', 'e', 'l', 'd', 'E'>;
+  using opt_fieldA = ::fatal::sequence<char, 'o', 'p', 't', '_', 'f', 'i', 'e', 'l', 'd', 'A'>;
+  using opt_fieldB = ::fatal::sequence<char, 'o', 'p', 't', '_', 'f', 'i', 'e', 'l', 'd', 'B'>;
+  using opt_fieldC = ::fatal::sequence<char, 'o', 'p', 't', '_', 'f', 'i', 'e', 'l', 'd', 'C'>;
 };
 
 } // thrift_fatal_impl_detail
@@ -51,6 +65,7 @@ class extra_services_tags {
   };
 
   struct extra_svc_extra_services__unique_structs_list {
+    using containerStruct2 = thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::containerStruct2;
   };
 
   struct extra_svc_extra_services__unique_constants_list {
@@ -88,6 +103,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   >,
   // structs
   ::fatal::list<
+    ::fatal::pair<containerStruct2, thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::containerStruct2>
   >,
   // constants
   ::fatal::list<

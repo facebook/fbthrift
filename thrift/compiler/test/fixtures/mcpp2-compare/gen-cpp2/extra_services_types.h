@@ -22,10 +22,403 @@
 
 // END struct_indirection
 // BEGIN forward_declare
-
+namespace extra { namespace svc {
+class containerStruct2;
+}} // extra::svc
 // END forward_declare
 // BEGIN typedefs
 
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+namespace extra { namespace svc {
+class containerStruct2 : private apache::thrift::detail::st::ComparisonOperators<containerStruct2> {
+ public:
+
+  containerStruct2() :
+      fieldA(0),
+      req_fieldA(0),
+      opt_fieldA(0),
+      fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
+      req_fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
+      opt_fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
+      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
+  // FragileConstructor for use in initialization lists only
+
+  containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg) :
+      fieldA(std::move(fieldA__arg)),
+      req_fieldA(std::move(req_fieldA__arg)),
+      opt_fieldA(std::move(opt_fieldA__arg)),
+      fieldB(std::move(fieldB__arg)),
+      req_fieldB(std::move(req_fieldB__arg)),
+      opt_fieldB(std::move(opt_fieldB__arg)),
+      fieldC(std::move(fieldC__arg)),
+      req_fieldC(std::move(req_fieldC__arg)),
+      opt_fieldC(std::move(opt_fieldC__arg)),
+      fieldD(std::move(fieldD__arg)),
+      fieldE(std::move(fieldE__arg)),
+      req_fieldE(std::move(req_fieldE__arg)),
+      opt_fieldE(std::move(opt_fieldE__arg)) {
+    __isset.fieldA = true;
+    __isset.opt_fieldA = true;
+    __isset.fieldB = true;
+    __isset.opt_fieldB = true;
+    __isset.fieldC = true;
+    __isset.opt_fieldC = true;
+    __isset.fieldD = true;
+    __isset.fieldE = true;
+    __isset.opt_fieldE = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldA = arg.move();
+    __isset.fieldA = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<101, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_fieldA = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<201, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldA = arg.move();
+    __isset.opt_fieldA = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldB = arg.move();
+    __isset.fieldB = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<102, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_fieldB = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<202, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldB = arg.move();
+    __isset.opt_fieldB = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldC = arg.move();
+    __isset.fieldC = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<103, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_fieldC = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<203, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldC = arg.move();
+    __isset.opt_fieldC = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldD = arg.move();
+    __isset.fieldD = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldE = arg.move();
+    __isset.fieldE = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<105, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_fieldE = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct2(::apache::thrift::detail::argument_wrapper<205, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldE = arg.move();
+    __isset.opt_fieldE = true;
+  }
+
+  containerStruct2(containerStruct2&&) = default;
+
+  containerStruct2(const containerStruct2&) = default;
+
+  containerStruct2& operator=(containerStruct2&&) = default;
+
+  containerStruct2& operator=(const containerStruct2&) = default;
+  void __clear();
+
+  virtual ~containerStruct2() {}
+
+  bool fieldA;
+  bool req_fieldA;
+  bool opt_fieldA;
+  std::map<std::string, bool> fieldB;
+  std::map<std::string, bool> req_fieldB;
+  std::map<std::string, bool> opt_fieldB;
+  std::set<int32_t> fieldC;
+  std::set<int32_t> req_fieldC;
+  std::set<int32_t> opt_fieldC;
+  std::string fieldD;
+  std::string fieldE;
+  std::string req_fieldE;
+  std::string opt_fieldE;
+
+  struct __isset {
+    void __clear() {
+      fieldA = false;
+      opt_fieldA = false;
+      fieldB = false;
+      opt_fieldB = false;
+      fieldC = false;
+      opt_fieldC = false;
+      fieldD = false;
+      fieldE = false;
+      opt_fieldE = false;
+    }
+
+    bool fieldA = false;
+    bool opt_fieldA = false;
+    bool fieldB = false;
+    bool opt_fieldB = false;
+    bool fieldC = false;
+    bool opt_fieldC = false;
+    bool fieldD = false;
+    bool fieldE = false;
+    bool opt_fieldE = false;
+  } __isset;
+  bool operator==(const containerStruct2& rhs) const;
+  bool operator < (const containerStruct2& rhs) const;
+
+  bool get_fieldA() const {
+    return fieldA;
+  }
+
+  bool& set_fieldA(bool fieldA_) {
+    fieldA = fieldA_;
+    __isset.fieldA = true;
+    return fieldA;
+  }
+
+  bool get_req_fieldA() const {
+    return req_fieldA;
+  }
+
+  bool& set_req_fieldA(bool req_fieldA_) {
+    req_fieldA = req_fieldA_;
+    return req_fieldA;
+  }
+
+  const bool* get_opt_fieldA() const& {
+    return __isset.opt_fieldA ? std::addressof(opt_fieldA) : nullptr;
+  }
+
+  bool* get_opt_fieldA() & {
+    return __isset.opt_fieldA ? std::addressof(opt_fieldA) : nullptr;
+  }
+  bool* get_opt_fieldA() && = delete;
+
+  bool& set_opt_fieldA(bool opt_fieldA_) {
+    opt_fieldA = opt_fieldA_;
+    __isset.opt_fieldA = true;
+    return opt_fieldA;
+  }
+  const std::map<std::string, bool>& get_fieldB() const&;
+  std::map<std::string, bool> get_fieldB() &&;
+
+  template <typename T_containerStruct2_fieldB_struct_setter>
+  std::map<std::string, bool>& set_fieldB(T_containerStruct2_fieldB_struct_setter&& fieldB_) {
+    fieldB = std::forward<T_containerStruct2_fieldB_struct_setter>(fieldB_);
+    __isset.fieldB = true;
+    return fieldB;
+  }
+  const std::map<std::string, bool>& get_req_fieldB() const&;
+  std::map<std::string, bool> get_req_fieldB() &&;
+
+  template <typename T_containerStruct2_req_fieldB_struct_setter>
+  std::map<std::string, bool>& set_req_fieldB(T_containerStruct2_req_fieldB_struct_setter&& req_fieldB_) {
+    req_fieldB = std::forward<T_containerStruct2_req_fieldB_struct_setter>(req_fieldB_);
+    return req_fieldB;
+  }
+  const std::map<std::string, bool>* get_opt_fieldB() const&;
+  std::map<std::string, bool>* get_opt_fieldB() &;
+  std::map<std::string, bool>* get_opt_fieldB() && = delete;
+
+  template <typename T_containerStruct2_opt_fieldB_struct_setter>
+  std::map<std::string, bool>& set_opt_fieldB(T_containerStruct2_opt_fieldB_struct_setter&& opt_fieldB_) {
+    opt_fieldB = std::forward<T_containerStruct2_opt_fieldB_struct_setter>(opt_fieldB_);
+    __isset.opt_fieldB = true;
+    return opt_fieldB;
+  }
+  const std::set<int32_t>& get_fieldC() const&;
+  std::set<int32_t> get_fieldC() &&;
+
+  template <typename T_containerStruct2_fieldC_struct_setter>
+  std::set<int32_t>& set_fieldC(T_containerStruct2_fieldC_struct_setter&& fieldC_) {
+    fieldC = std::forward<T_containerStruct2_fieldC_struct_setter>(fieldC_);
+    __isset.fieldC = true;
+    return fieldC;
+  }
+  const std::set<int32_t>& get_req_fieldC() const&;
+  std::set<int32_t> get_req_fieldC() &&;
+
+  template <typename T_containerStruct2_req_fieldC_struct_setter>
+  std::set<int32_t>& set_req_fieldC(T_containerStruct2_req_fieldC_struct_setter&& req_fieldC_) {
+    req_fieldC = std::forward<T_containerStruct2_req_fieldC_struct_setter>(req_fieldC_);
+    return req_fieldC;
+  }
+  const std::set<int32_t>* get_opt_fieldC() const&;
+  std::set<int32_t>* get_opt_fieldC() &;
+  std::set<int32_t>* get_opt_fieldC() && = delete;
+
+  template <typename T_containerStruct2_opt_fieldC_struct_setter>
+  std::set<int32_t>& set_opt_fieldC(T_containerStruct2_opt_fieldC_struct_setter&& opt_fieldC_) {
+    opt_fieldC = std::forward<T_containerStruct2_opt_fieldC_struct_setter>(opt_fieldC_);
+    __isset.opt_fieldC = true;
+    return opt_fieldC;
+  }
+
+  const std::string& get_fieldD() const& {
+    return fieldD;
+  }
+
+  std::string get_fieldD() && {
+    return std::move(fieldD);
+  }
+
+  template <typename T_containerStruct2_fieldD_struct_setter>
+  std::string& set_fieldD(T_containerStruct2_fieldD_struct_setter&& fieldD_) {
+    fieldD = std::forward<T_containerStruct2_fieldD_struct_setter>(fieldD_);
+    __isset.fieldD = true;
+    return fieldD;
+  }
+
+  const std::string& get_fieldE() const& {
+    return fieldE;
+  }
+
+  std::string get_fieldE() && {
+    return std::move(fieldE);
+  }
+
+  template <typename T_containerStruct2_fieldE_struct_setter>
+  std::string& set_fieldE(T_containerStruct2_fieldE_struct_setter&& fieldE_) {
+    fieldE = std::forward<T_containerStruct2_fieldE_struct_setter>(fieldE_);
+    __isset.fieldE = true;
+    return fieldE;
+  }
+
+  const std::string& get_req_fieldE() const& {
+    return req_fieldE;
+  }
+
+  std::string get_req_fieldE() && {
+    return std::move(req_fieldE);
+  }
+
+  template <typename T_containerStruct2_req_fieldE_struct_setter>
+  std::string& set_req_fieldE(T_containerStruct2_req_fieldE_struct_setter&& req_fieldE_) {
+    req_fieldE = std::forward<T_containerStruct2_req_fieldE_struct_setter>(req_fieldE_);
+    return req_fieldE;
+  }
+
+  const std::string* get_opt_fieldE() const& {
+    return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
+  }
+
+  std::string* get_opt_fieldE() & {
+    return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
+  }
+  std::string* get_opt_fieldE() && = delete;
+
+  template <typename T_containerStruct2_opt_fieldE_struct_setter>
+  std::string& set_opt_fieldE(T_containerStruct2_opt_fieldE_struct_setter&& opt_fieldE_) {
+    opt_fieldE = std::forward<T_containerStruct2_opt_fieldE_struct_setter>(opt_fieldE_);
+    __isset.opt_fieldE = true;
+    return opt_fieldE;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+};
+
+void swap(containerStruct2& a, containerStruct2& b);
+extern template uint32_t containerStruct2::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t containerStruct2::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t containerStruct2::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}} // extra::svc
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::extra::svc::containerStruct2>::clear( ::extra::svc::containerStruct2* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::extra::svc::containerStruct2>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::write(Protocol* proto,  ::extra::svc::containerStruct2 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::read(Protocol* proto,  ::extra::svc::containerStruct2* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::serializedSize(Protocol const* proto,  ::extra::svc::containerStruct2 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::serializedSizeZC(Protocol const* proto,  ::extra::svc::containerStruct2 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
