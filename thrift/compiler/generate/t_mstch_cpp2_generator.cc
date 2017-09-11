@@ -393,8 +393,13 @@ class mstch_cpp2_struct : public mstch_struct {
     // Get all non empty containers
     // Get all enums
     // Get all containers with references
+    // Remove all optional fields when optionals flag is enabled
     std::vector<t_field const*> filtered_fields;
     for (auto const* field : strct_->get_members()) {
+      if (field->get_req() == t_field::e_req::T_OPTIONAL &&
+          cache_->parsed_options_.count("optionals")) {
+        continue;
+      }
       const t_type* type = resolve_typedef(field->get_type());
       if ((type->is_base_type() && !type->is_string()) ||
           (type->is_string() && field->get_value() != nullptr) ||
