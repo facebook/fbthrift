@@ -1,6 +1,5 @@
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
 set(SASL_HEADERS
@@ -181,6 +180,7 @@ target_link_libraries(
    ${FOLLY_LIBRARY}
    ${WANGLE_LIBRARIES}
  )
+install(TARGETS thriftprotocol DESTINATION lib)
 
 add_library(
   thriftsecurity
@@ -304,3 +304,19 @@ target_link_libraries(
   thriftserver
   thriftutil
 )
+install(TARGETS thriftcpp2 DESTINATION lib)
+
+set(THRIFT2_HEADER_DIRS
+  async
+  frozen
+  gen-cpp2
+  protocol
+  security
+  server
+  transport
+  util
+)
+foreach(dir ${THRIFT2_HEADER_DIRS})
+  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp2
+          FILES_MATCHING PATTERN "*.h")
+endforeach()

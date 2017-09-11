@@ -32,6 +32,7 @@ target_link_libraries(
   parse_lib
   ${Boost_LIBRARIES}
 )
+install(TARGETS thrift_base DESTINATION lib)
 
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
@@ -57,6 +58,24 @@ elseif(APPLE)
 else()
   set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
 endif(MSVC)
+
+set(TEMPLATE_DIRS
+  generate/templates/cpp2
+  generate/templates/cpp2/common
+  generate/templates/cpp2/module_types_cpp
+  generate/templates/cpp2/module_types_h
+  generate/templates/cpp2/module_types_tcc
+  generate/templates/cpp2/service_client_cpp
+  generate/templates/cpp2/service_common
+  generate/templates/cpp2/service_cpp
+  generate/templates/cpp2/service_h
+  generate/templates/cpp2/service_tcc
+  generate/templates/cpp2/types
+)
+foreach(dir ${TEMPLATE_DIRS})
+  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/thrift
+          FILES_MATCHING PATTERN "*.mustache")
+endforeach()
 
 # Flex generates functions that have a different naming convention in
 # gcc and msvc (i.e. isatty(...) and _isatty(...)). This flag makes flex use
@@ -105,12 +124,7 @@ target_compile_definitions(
 
   PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
-
-# Set the binary destination
-install(
-  TARGETS thrift1
-  DESTINATION .
-)
+install(TARGETS thrift1 DESTINATION bin)
 
 # Add tests
 if(enable_tests)

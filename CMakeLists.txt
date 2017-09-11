@@ -5,12 +5,13 @@ set(PACKAGE_NAME "thrift")
 project(${PACKAGE_NAME} C CXX)
 set(CMAKE_CXX_STANDARD 14) #Requires CMake 3.1.3
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Name the top level directories
 set(THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 set(THRIFT_BUILD ${CMAKE_CURRENT_BINARY_DIR})
-
-# Override default install path for `make install` step
-set(CMAKE_INSTALL_PREFIX ${THRIFT_BUILD} CACHE PATH "current dir build" FORCE)
 
 # Add root dir so qualified includes work. E.g. #include "thrift/compiler/$x.h"
 include_directories(${THRIFT_HOME})
@@ -47,7 +48,7 @@ if(compiler_only OR build_all)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
   include_directories(${MSTCH_INCLUDE_DIRS})
-  set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
+  set(THRIFT_BINARY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thrift1)
 endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib

@@ -210,3 +210,17 @@ target_link_libraries(
   ${FOLLY_LIBRARY}
   ${GLOG_LIBRARIES}
 )
+install(TARGETS thrift DESTINATION lib)
+
+set(THRIFT1_HEADER_DIRS
+  async
+  concurrency
+  protocol
+  server
+  transport
+  util
+)
+foreach(dir ${THRIFT1_HEADER_DIRS})
+  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp
+          FILES_MATCHING PATTERN "*.h")
+endforeach()

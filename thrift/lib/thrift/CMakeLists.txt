@@ -1,6 +1,5 @@
 # Set the lib directory
 set(LIB_THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift1)
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
 # Generate reflection files
@@ -79,3 +78,12 @@ add_custom_target(
   lib-thrift2 ALL
   DEPENDS ${FROZEN2_HEADERS} ${FROZEN2_SOURCES}
 )
+
+set(THRIFT_HEADER_DIRS
+  gen-cpp
+  gen-cpp2
+)
+foreach(dir ${THRIFT_HEADER_DIRS})
+  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/thrift
+          FILES_MATCHING PATTERN "*.h")
+endforeach()
