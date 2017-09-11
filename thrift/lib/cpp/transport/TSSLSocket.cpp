@@ -16,23 +16,21 @@
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
+#include <folly/String.h>
 #include <folly/portability/OpenSSL.h>
 #include <folly/portability/Sockets.h>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_array.hpp>
 #include <errno.h>
-#include <folly/String.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
+#include <mutex>
 #include <string>
 #include <vector>
 
-#include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
-
-using apache::thrift::concurrency::ProfiledMutex;
 using boost::lexical_cast;
 using boost::scoped_array;
 using std::exception;
@@ -42,7 +40,7 @@ using std::string;
 using std::vector;
 
 struct CRYPTO_dynlock_value {
-  ProfiledMutex<std::mutex> mutex;
+  std::mutex mutex;
 };
 
 namespace apache { namespace thrift { namespace transport {
