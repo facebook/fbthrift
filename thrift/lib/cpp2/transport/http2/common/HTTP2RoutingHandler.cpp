@@ -34,7 +34,7 @@ namespace {
 class HTTP2RoutingSessionManager
     : public proxygen::HTTPSession::EmptyInfoCallback {
  public:
-  ~HTTP2RoutingSessionManager() {}
+  ~HTTP2RoutingSessionManager() = default;
   proxygen::HTTPDownstreamSession* CreateSession(
       proxygen::HTTPServerOptions* options,
       folly::AsyncTransportWrapper::UniquePtr sock,
@@ -47,7 +47,7 @@ class HTTP2RoutingSessionManager
         proxygen::HTTPServerAcceptor::makeConfig(ipConfig, *options);
     serverAcceptor_ =
         proxygen::HTTPServerAcceptor::make(acceptorConfig, *options);
-    controller_.reset(new proxygen::SimpleController(serverAcceptor_.get()));
+    controller_ = new proxygen::SimpleController(serverAcceptor_.get());
 
     // Get the HTTP2 Codec
     auto codecFactory =
@@ -71,7 +71,7 @@ class HTTP2RoutingSessionManager
         std::move(sock),
         localAddress,
         *peerAddress,
-        controller_.get(),
+        controller_,
         std::move(h2codec),
         tinfo,
         this);
@@ -103,8 +103,9 @@ class HTTP2RoutingSessionManager
 
  private:
   // Supporting objects for HTTP2 session managed by the callback.
-  std::unique_ptr<proxygen::SimpleController> controller_;
   std::unique_ptr<proxygen::HTTPServerAcceptor> serverAcceptor_;
+  // The controller should only be destroyed once onDestroy is called.
+  proxygen::SimpleController* controller_;
 };
 
 } // anonymous namespace
