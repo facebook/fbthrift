@@ -10,6 +10,7 @@ except:
 
 from thrift_asyncio.tutorial import Calculator as AsyncCalculator
 from thrift_asyncio.sleep import Sleep as AsyncSleep
+from thrift_asyncio.sleep.ttypes import OverflowResult
 from tutorial import Calculator
 
 
@@ -47,3 +48,8 @@ class AsyncSleepHandler(AsyncSleep.Iface):
     @asyncio.coroutine
     def echo(self, message, delay):
         return asyncio.sleep(delay, result=message, loop=self._loop)
+
+    @asyncio.coroutine
+    def overflow(self, value):
+        # simply return the value in OverflowResult
+        return OverflowResult(value)

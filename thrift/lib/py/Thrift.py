@@ -166,13 +166,35 @@ class TProcessor:
         return TMessageType.REPLY
 
     def writeReply(self, oprot, handler_ctx, fn_name, seqid, result):
+
         self._event_handler.preWrite(handler_ctx, fn_name, result)
         reply_type = self._getReplyType(result)
-        oprot.writeMessageBegin(fn_name, reply_type, seqid)
-        result.write(oprot)
-        oprot.writeMessageEnd()
-        oprot.trans.flush()
-        self._event_handler.postWrite(handler_ctx, fn_name, result)
+
+        try:
+            oprot.writeMessageBegin(fn_name, reply_type, seqid)
+            result.write(oprot)
+            oprot.writeMessageEnd()
+            oprot.trans.flush()
+
+        except Exception as e:
+            # Handle any thrift serialization exceptions
+
+            # Transport is likely in a messed up state. Some data may already have
+            # been written and it may not be possible to recover. Doing nothing
+            # causes the client to wait until the request times out. Try to
+            # close the connection to trigger a quicker failure on client side
+            oprot.trans.close()
+
+            # Let application know that there has been an exception
+            self._event_handler.handlerError(handler_ctx, fn_name, e)
+
+            # We raise the exception again to avoid any further processing
+            raise
+
+        finally:
+            # Since we called preWrite, we should also call postWrite to
+            # allow application to properly log their requests.
+            self._event_handler.postWrite(handler_ctx, fn_name, result)
 
 
 class TException(Exception):

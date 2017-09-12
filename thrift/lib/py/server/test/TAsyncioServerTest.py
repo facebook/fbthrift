@@ -68,6 +68,24 @@ def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
     transport.close()
     protocol.close()
 
+@asyncio.coroutine
+def test_overflow(sock, value, loop, factory=ThriftClientProtocolFactory):
+    port = sock.getsockname()[1]
+    (transport, protocol) = yield from loop.create_connection(
+        factory(Sleep.Client, loop=loop, timeouts={'echo': 1}),
+        host='localhost',
+        port=port,
+    )
+    client = protocol.client
+
+    yield from asyncio.wait_for(
+        client.overflow(value),
+        timeout=None,
+        loop=loop,
+    )
+    transport.close()
+    protocol.close()
+
 
 class TestTHeaderProtocol(THeaderProtocol):
 
@@ -291,6 +309,29 @@ class TAsyncioServerTest(unittest.TestCase):
             loop.run_until_complete(
                 self._assert_transport_is_closed_on_error(sock, loop),
             )
+
+    def test_overflow_failure(self):
+        loop = asyncio.get_event_loop()
+        loop.set_debug(True)
+        sock = socket.socket()
+        server_loop_runner(loop, sock, AsyncSleepHandler(loop))
+        with self.assertRaises(
+            TTransportException, msg='Connection closed'
+        ):
+            # This will raise an exception on the server. The
+            # OverflowResult.value is byte and 0xffff will result in exception
+            #
+            #    struct.error('byte format requires -128 <= number <= 127',)
+            loop.run_until_complete(test_overflow(sock, 0xffff, loop))
+
+    def test_overflow_success(self):
+        loop = asyncio.get_event_loop()
+        loop.set_debug(True)
+        sock = socket.socket()
+        server_loop_runner(loop, sock, AsyncSleepHandler(loop))
+
+        # This shouldn't raise any exceptions
+        loop.run_until_complete(test_overflow(sock, 0x7f, loop))
 
     def test_timeout(self):
         loop = asyncio.get_event_loop()

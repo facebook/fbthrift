@@ -206,6 +206,42 @@ def future_process_main():
 
     return _decorator
 
+
+def write_result(result, reply_type, seqid,
+                  event_handler, handler_ctx, fn_name, oprot):
+
+    event_handler.preWrite(handler_ctx, fn_name, result)
+
+    try:
+        oprot.writeMessageBegin(fn_name, reply_type, seqid)
+
+        # Thrift serialization here could fail due to format error
+        result.write(oprot)
+
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    except Exception as e:
+        # Handle any thrift serialization exceptions
+
+        # Transport is likely in a messed up state. Some data may already have
+        # been written and it may not be possible to recover. Doing nothing
+        # causes the client to wait until the request times out. Try to
+        # close the connection to trigger a quicker failure on client side
+        oprot.trans.close()
+
+        # Let application know that there has been an exception
+        event_handler.handlerError(handler_ctx, fn_name, e)
+
+        # We raise the exception again to avoid any further processing
+        raise
+
+    finally:
+        # Since we called preWrite, we should also call postWrite to
+        # allow application to properly log their requests
+        event_handler.postWrite(handler_ctx, fn_name, result)
+
+
 def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
         oneway):
     try:
@@ -222,12 +258,8 @@ def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
     if isinstance(result, TApplicationException):
         reply_type = TMessageType.EXCEPTION
 
-    processor._event_handler.preWrite(handler_ctx, fn_name, result)
-    oprot.writeMessageBegin(fn_name, reply_type, seqid)
-    result.write(oprot)
-    oprot.writeMessageEnd()
-    oprot.trans.flush()
-    processor._event_handler.postWrite(handler_ctx, fn_name, result)
+    write_result(result, reply_type, seqid,
+                 processor._event_handler, handler_ctx, fn_name, oprot)
 
 def future_process_method(argtype, oneway=False):
     """Decorator for process_xxx methods of futuer processor.
@@ -297,12 +329,8 @@ def write_results_after_future(
         reply_type = TMessageType.EXCEPTION
         event_handler.handlerError(handler_ctx, fn_name, e)
 
-    event_handler.preWrite(handler_ctx, fn_name, result)
-    oprot.writeMessageBegin(fn_name, reply_type, seqid)
-    result.write(oprot)
-    oprot.writeMessageEnd()
-    oprot.trans.flush()
-    event_handler.postWrite(handler_ctx, fn_name, result)
+    write_result(result, reply_type, seqid,
+                 event_handler, handler_ctx, fn_name, oprot)
 
 
 def write_results_success_callback(func):
