@@ -286,6 +286,6 @@ class BinaryProtocolReader {
 
 }} // apache::thrift
 
-#include "BinaryProtocol.tcc"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.tcc>
 
 #endif // #ifndef CPP2_PROTOCOL_TBINARYPROTOCOL_H_

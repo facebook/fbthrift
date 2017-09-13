@@ -8,6 +8,8 @@ set(CMAKE_CXX_STANDARD 14) #Requires CMake 3.1.3
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Name the top level directories
 set(THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
@@ -53,11 +55,20 @@ endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
+  find_package(DoubleConversion REQUIRED)
   find_package(Folly REQUIRED)
-  find_package(Zstd REQUIRED)
+  find_package(Glog REQUIRED)
+  find_package(GFlags REQUIRED)
+  find_package(Krb5 REQUIRED gssapi)
   find_package(Wangle REQUIRED)
+  find_package(Zstd REQUIRED)
   include_directories(
+    ${DOUBLE_CONVERSION_INCLUDE_DIR}
     ${FOLLY_INCLUDE_DIR}
+    ${GFLAGS_INCLUDE_DIRS}
+    ${GLOG_INCLUDE_DIRS}
+    ${KRB5_INCLUDE_DIRS}
+    ${WANGLE_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
 endif(lib_only OR build_all)
@@ -66,11 +77,9 @@ endif(lib_only OR build_all)
 # To run tests: `make test`
 if(enable_tests)
   find_package(PythonInterp REQUIRED)
-  find_package(Glog REQUIRED)
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)
   include_directories(
-    ${GLOG_INCLUDE_DIRS}
     ${GTEST_INCLUDE_DIRS}
     ${GMOCK_INCLUDE_DIRS}
   )

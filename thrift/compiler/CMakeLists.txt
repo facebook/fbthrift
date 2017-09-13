@@ -8,6 +8,7 @@ set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 aux_source_directory(./parse PARSE_FILES)
 add_library(parse_lib ${PARSE_FILES})
 target_link_libraries(parse_lib ${OPENSSL_LIBRARIES})
+install(TARGETS parse_lib DESTINATION lib)
 
 # build the base libraries
 add_library(
@@ -58,6 +59,7 @@ elseif(APPLE)
 else()
   set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
 endif(MSVC)
+install(TARGETS generate_lib DESTINATION lib)
 
 set(TEMPLATE_DIRS
   generate/templates/cpp2
@@ -73,7 +75,7 @@ set(TEMPLATE_DIRS
   generate/templates/cpp2/types
 )
 foreach(dir ${TEMPLATE_DIRS})
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/thrift
+  install(DIRECTORY ${dir} DESTINATION include/thrift/templates
           FILES_MATCHING PATTERN "*.mustache")
 endforeach()
 

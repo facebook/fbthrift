@@ -129,6 +129,6 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
 
 }} // apache::thrift
 
-#include "SimpleJSONProtocol.tcc"
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.tcc>
 
 #endif // #ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_

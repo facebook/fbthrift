@@ -359,6 +359,6 @@ class CompactProtocolReader {
 
 }} // apache::thrift
 
-#include "CompactProtocol.tcc"
+#include <thrift/lib/cpp2/protocol/CompactProtocol.tcc>
 
 #endif // #ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_

@@ -141,4 +141,4 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
 
 }}
 
-#include "CompactV1Protocol.tcc"
+#include <thrift/lib/cpp2/protocol/CompactV1Protocol.tcc>

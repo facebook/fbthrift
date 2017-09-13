@@ -134,4 +134,4 @@ class Frozen2ProtocolReader {
 }
 } // apache::thrift
 
-#include "Frozen2Protocol.tcc"
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.tcc>

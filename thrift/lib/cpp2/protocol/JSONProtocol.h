@@ -119,4 +119,4 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
 
 }} // apache::thrift
 
-#include "JSONProtocol.tcc"
+#include <thrift/lib/cpp2/protocol/JSONProtocol.tcc>
