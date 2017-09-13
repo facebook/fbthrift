@@ -18,6 +18,8 @@
 
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 
+#include <proxygen/lib/http/session/HTTPTransaction.h>
+
 namespace apache {
 namespace thrift {
 
@@ -28,7 +30,7 @@ class SingleRpcChannel : public H2ChannelIf {
       ThriftProcessor* processor);
 
   SingleRpcChannel(
-      proxygen::HTTPTransaction* toHttp2,
+      H2ClientConnection* toHttp2,
       const std::string& httpHost,
       const std::string& httpUrl);
 
@@ -72,21 +74,22 @@ class SingleRpcChannel : public H2ChannelIf {
 
   // The thrift processor used to execute RPCs (server side only).
   // Owned by H2ThriftServer.
-  ThriftProcessor* processor_;
+  ThriftProcessor* processor_{nullptr};
 
   // Header information for RPCs (client side only).
   std::string httpHost_;
   std::string httpUrl_;
   // Callback for client side.
   std::unique_ptr<ThriftClientCallback> callback_;
+  // Transaction object for use on client side to communicate with the
+  // Proxygen layer.
+  proxygen::HTTPTransaction* httpTransaction_;
 
   std::unique_ptr<std::map<std::string, std::string>> headers_;
   std::unique_ptr<folly::IOBuf> contents_;
   bool receivedH2Stream_{false};
   bool receivedThriftRPC_{false};
-  // Only used for checks.
-  // TODO: delete this and get the event base from the underlying connection.
-  // Because the event base on the connection could change.
+  // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_;
 };
 

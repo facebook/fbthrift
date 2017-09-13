@@ -39,7 +39,6 @@ TEST_F(RSRoutingHandlerTest, RequestResponse_Simple) {
 }
 
 TEST_F(RSRoutingHandlerTest, RequestResponse_MultipleClients) {
-  // FLAGS_num_client_connections = 10;
   routingHandlerTest_->TestRequestResponse_MultipleClients();
 }
 

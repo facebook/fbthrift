@@ -48,6 +48,9 @@ namespace thrift {
  * Multiple "ClientConnectionIf" objects may be present at the same
  * time, each will manage a separate network connection and are
  * generally on different event bases (threads).
+ *
+ * All method, excepting getChannel() must be called on the same event
+ * base that manages the connection.
  */
 class ClientConnectionIf {
  protected:

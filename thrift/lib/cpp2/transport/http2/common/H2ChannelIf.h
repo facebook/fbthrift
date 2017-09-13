@@ -21,12 +21,12 @@
 #include <folly/io/IOBuf.h>
 #include <proxygen/httpserver/ResponseHandler.h>
 #include <proxygen/lib/http/HTTPMessage.h>
-#include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <memory>
 
 namespace apache {
 namespace thrift {
 
+class H2ClientConnection;
 class ThriftProcessor;
 
 /**
@@ -39,25 +39,23 @@ class ThriftProcessor;
  *
  * Lifetime for objects of this class is managed via shared pointers:
  *
- * On the client side, [TO BE COMPLETED]
+ * On the client side, a ThriftClient objects calls getChannel() on
+ * its H2ClientConnection object.  The H2ClientConnection object
+ * returns a shared pointer to an usable channel object (which may or
+ * may not have been used for previous RPCs).  Thr ThriftClient
+ * releases its shared pointer once its RPC is done, while the
+ * H2ClientConnection releases its shared pointer once the channel
+ * cannot be used for any more RPCs.
  *
- * On the server side, an H2RequestHandler object creates a shared
+ * On the server side, a H2RequestHandler object creates a shared
  * pointer of a channel object following which additional shared
  * pointers are passed to the single ThriftProcessor object using
  * shared_from_this().  When both the H2RequestHandler object and the
  * ThriftProcessor object are done with the channel object, all the
  * shared pointers are released and the channel object gets destroyed.
  *
- * Threading constraints:
- *
- * On the client side, [TO BE COMPLETED]
- *
- * On the server side, channel objects are created on a Proxygen
- * thread that manages an HTTP/2 connection.  This object calls the
- * ThriftProcessor object to perform the thrift call.  The thrift side
- * the calls back into this object via "sendThriftResponse()".  The
- * callback must be be scheduled on the event base of the Proxygen
- * thread.
+ * Channel object methods must always be invoked on the event base
+ * (thread) that manages the underlying connection.
  */
 class H2ChannelIf : public ThriftChannelIf {
  public:
@@ -83,19 +81,21 @@ class H2ChannelIf : public ThriftChannelIf {
   // object.
   virtual void onH2StreamClosed() noexcept {
     responseHandler_ = nullptr;
-    httpTransaction_ = nullptr;
+    h2ClientConnection_ = nullptr;
   }
 
  protected:
   // Constructor for server side that uses a ResponseHandler object
   // to write to the HTTP/2 stream.
   explicit H2ChannelIf(proxygen::ResponseHandler* toHttp2)
-      : responseHandler_(toHttp2), httpTransaction_(nullptr) {}
+      : responseHandler_(toHttp2), h2ClientConnection_(nullptr) {}
 
-  // Constructor for client side that uses a HTTPTransaction object
-  // to write to the HTTP/2 stream.
-  explicit H2ChannelIf(proxygen::HTTPTransaction* toHttp2)
-      : responseHandler_(nullptr), httpTransaction_(toHttp2) {}
+  // Constructor for client side that uses a HTTPTransaction object to
+  // write to the HTTP/2 stream.  The HTTPTransaction object is
+  // obtained from the H2ClientConnection object provided to this
+  // constructor just before sending the header frame to the server.
+  explicit H2ChannelIf(H2ClientConnection* toHttp2)
+      : responseHandler_(nullptr), h2ClientConnection_(toHttp2) {}
 
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(
@@ -110,11 +110,14 @@ class H2ChannelIf : public ThriftChannelIf {
 
   // Used to write messages to HTTP/2 on the server side.
   // Owned by H2RequestHandler.  Should not be used after
-  // setStreamClosed() has been called.
+  // onH2StreamClosed() has been called.
   proxygen::ResponseHandler* responseHandler_;
-  // Used to write messages to HTTP/2 on the client side.
-  // [ADD MORE DETAILS]
-  proxygen::HTTPTransaction* httpTransaction_;
+
+  // Used to write messages to HTTP/2 on the client side.  Owned by
+  // client side framework that manages connections (e.g.,
+  // ConnectionManager).  Should not be used after onH2StreamClosed()
+  // has been called.
+  H2ClientConnection* h2ClientConnection_;
 };
 
 } // namespace thrift

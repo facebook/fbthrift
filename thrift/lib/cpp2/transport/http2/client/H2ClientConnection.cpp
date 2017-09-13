@@ -52,7 +52,7 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP1xConnection(
           proxygen::TransportDirection::UPSTREAM)));
   connection->httpHost_ = httpHost;
   connection->httpUrl_ = httpUrl;
-  return connection;
+  return std::move(connection);
 }
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
@@ -65,16 +65,16 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
           proxygen::TransportDirection::UPSTREAM)));
   connection->httpHost_ = httpHost;
   connection->httpUrl_ = httpUrl;
-  return connection;
+  return std::move(connection);
 }
 
 H2ClientConnection::H2ClientConnection(
     TAsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
     : evb_(transport->getEventBase()) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
-
   httpSession_ = new HTTPUpstreamSession(
       WheelTimerInstance(timeout_, evb_),
       std::move(transport),
@@ -90,36 +90,11 @@ H2ClientConnection::~H2ClientConnection() {
 }
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
-  if (!httpSession_) {
-    throw TTransportException(
-        TTransportException::NOT_OPEN, "HTTPSession is not open");
-  }
-  ThriftTransactionHandler* handler = nullptr;
-  HTTPTransaction* txn = nullptr;
-  std::shared_ptr<H2ChannelIf> channel;
-  evb_->runInEventBaseThreadAndWait([&]() {
-    // These objects destroy themselves when done.
-    handler = new ThriftTransactionHandler();
-    txn = httpSession_->newTransaction(handler);
-    if (txn) {
-      channel = std::make_shared<SingleRpcChannel>(txn, httpHost_, httpUrl_);
-    } else {
-      delete handler;
-    }
-  });
-  if (!txn) {
-    TTransportException ex(
-        TTransportException::NOT_OPEN,
-        "Too many active requests on connection");
-    // Might be able to create another transaction soon
-    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    throw ex;
-  }
-  handler->setChannel(channel);
-  return channel;
+  return std::make_shared<SingleRpcChannel>(this, httpHost_, httpUrl_);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   if (httpSession_) {
     httpSession_->setMaxConcurrentOutgoingStreams(num);
   }
@@ -129,7 +104,30 @@ EventBase* H2ClientConnection::getEventBase() const {
   return evb_;
 }
 
+HTTPTransaction* H2ClientConnection::newTransaction(H2ChannelIf* channel) {
+  if (!httpSession_) {
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "HTTPSession is not open");
+  }
+  // These objects destroy themselves when done.
+  auto handler = new ThriftTransactionHandler();
+  auto txn = httpSession_->newTransaction(handler);
+  if (!txn) {
+    delete handler;
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    throw ex;
+  }
+  handler->setChannel(
+      std::dynamic_pointer_cast<H2ChannelIf>(channel->shared_from_this()));
+  return txn;
+}
+
 TAsyncTransport* H2ClientConnection::getTransport() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   if (httpSession_) {
     return dynamic_cast<TAsyncTransport*>(httpSession_->getTransport());
   } else {
@@ -138,11 +136,13 @@ TAsyncTransport* H2ClientConnection::getTransport() {
 }
 
 bool H2ClientConnection::good() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   auto transport = httpSession_ ? httpSession_->getTransport() : nullptr;
   return transport && transport->good();
 }
 
 ClientChannel::SaturationStatus H2ClientConnection::getSaturationStatus() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   if (httpSession_) {
     return ClientChannel::SaturationStatus(
         httpSession_->getNumOutgoingStreams(),
@@ -188,6 +188,7 @@ void H2ClientConnection::setTimeout(uint32_t ms) {
 }
 
 void H2ClientConnection::closeNow() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   if (httpSession_) {
     httpSession_->dropConnection();
     httpSession_ = nullptr;
@@ -199,6 +200,7 @@ CLIENT_TYPE H2ClientConnection::getClientType() {
 }
 
 void H2ClientConnection::onDestroy(const HTTPSession& /*session*/) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   httpSession_ = nullptr;
 }
 

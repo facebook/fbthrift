@@ -86,7 +86,8 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   ThriftChannelIf& operator=(const ThriftChannelIf&) = delete;
 
   // Returns true if this channel supports headers.  If the channel
-  // does not support headers, they will be ignored.
+  // does not support headers, they will be ignored.  This method
+  // can be called from any thread.
   virtual bool supportsHeaders() const noexcept = 0;
 
   // Called on the server at the end of a single response RPC.  This

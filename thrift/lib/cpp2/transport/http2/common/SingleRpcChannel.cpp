@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 namespace apache {
 namespace thrift {
@@ -48,14 +49,11 @@ SingleRpcChannel::SingleRpcChannel(
 }
 
 SingleRpcChannel::SingleRpcChannel(
-    HTTPTransaction* toHttp2,
+    H2ClientConnection* toHttp2,
     const string& httpHost,
     const string& httpUrl)
-    : H2ChannelIf(toHttp2),
-      processor_(nullptr),
-      httpHost_(httpHost),
-      httpUrl_(httpUrl) {
-  evb_ = EventBaseManager::get()->getExistingEventBase();
+    : H2ChannelIf(toHttp2), httpHost_(httpHost), httpUrl_(httpUrl) {
+  evb_ = toHttp2->getEventBase();
 }
 
 SingleRpcChannel::~SingleRpcChannel() {
@@ -113,16 +111,17 @@ void SingleRpcChannel::sendThriftRequest(
     DCHECK(callback);
     callback_ = std::move(callback);
   }
-  if (!httpTransaction_) {
-    LOG(ERROR) << "Network error before call initiation";
+  try {
+    httpTransaction_ = h2ClientConnection_->newTransaction(this);
+  } catch (TTransportException& te) {
     if (callback_) {
       auto evb = callback_->getEventBase();
-      evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
-        TTransportException ex(
-            TTransportException::NETWORK_ERROR,
-            "Network error before call initiation");
-        evbCallback->cancel(
-            folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+      evb->runInEventBaseThread([
+        evbCallback = std::move(callback_),
+        evbTe = std::move(te)
+      ]() mutable {
+        evbCallback->cancel(folly::make_exception_wrapper<TTransportException>(
+            std::move(evbTe)));
       });
     }
     return;
@@ -161,11 +160,14 @@ ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(uint32_t) noexcept {
 
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
+  VLOG(2) << "onH2StreamBegin";
   headers_ = std::make_unique<map<string, string>>();
   decodeHeaders(*headers, *headers_);
 }
 
 void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
+  VLOG(2) << "onH2BodyFrame: " << std::endl
+          << IOBufPrinter::printHexFolly(contents.get(), true);
   if (contents_) {
     contents_->prependChain(std::move(contents));
   } else {
@@ -179,6 +181,7 @@ bool SingleRpcChannel::isOneWay() noexcept {
 }
 
 void SingleRpcChannel::onH2StreamEnd() noexcept {
+  VLOG(2) << "onH2StreamEnd";
   receivedH2Stream_ = true;
   if (!contents_) {
     contents_ = IOBuf::createCombined(0);
@@ -224,6 +227,7 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
 }
 
 void SingleRpcChannel::onH2StreamClosed() noexcept {
+  VLOG(2) << "onH2StreamClosed";
   if (callback_) {
     // Stream died before callback happened.
     LOG(ERROR) << "Network error before call completion";

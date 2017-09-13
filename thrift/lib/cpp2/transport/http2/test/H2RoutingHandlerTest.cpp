@@ -35,20 +35,20 @@ class H2RoutingHandlerTest : public testing::Test {
 };
 
 TEST_F(H2RoutingHandlerTest, RequestResponse_Simple) {
-  // routingHandlerTest_->TestRequestResponse_Simple();
+  routingHandlerTest_->TestRequestResponse_Simple();
 }
 
 TEST_F(H2RoutingHandlerTest, RequestResponse_MultipleClients) {
-  // FLAGS_num_client_connections = 10;
-  // routingHandlerTest_->TestRequestResponse_MultipleClients();
+  routingHandlerTest_->TestRequestResponse_MultipleClients();
 }
 
 TEST_F(H2RoutingHandlerTest, RequestResponse_ExpectedException) {
-  // routingHandlerTest_->TestRequestResponse_ExpectedException();
+  routingHandlerTest_->TestRequestResponse_ExpectedException();
 }
 
 TEST_F(H2RoutingHandlerTest, RequestResponse_UnexpectedException) {
-  // routingHandlerTest_->TestRequestResponse_UnexpectedException();
+  routingHandlerTest_->TestRequestResponse_UnexpectedException();
 }
-}
-}
+
+} // namespace thrift
+} // namespace apache

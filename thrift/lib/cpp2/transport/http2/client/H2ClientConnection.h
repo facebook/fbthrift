@@ -20,6 +20,7 @@
 
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 #include <chrono>
 #include <string>
 
@@ -66,6 +67,10 @@ class H2ClientConnection : public ClientConnectionIf,
   std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
   folly::EventBase* getEventBase() const override;
+
+  // Returns a new transaction that is bound to the channel parameter.
+  // Throws TTransportException if unable to create a new transaction.
+  proxygen::HTTPTransaction* newTransaction(H2ChannelIf* channel);
 
   apache::thrift::async::TAsyncTransport* getTransport() override;
   bool good() override;
