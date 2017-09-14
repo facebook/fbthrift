@@ -38,17 +38,19 @@ using apache::thrift::async::TAsyncTransport;
 namespace apache { namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
-  const std::shared_ptr<TAsyncTransport>& transport,
-  std::unique_ptr<FramingHandler> framingHandler,
-  std::unique_ptr<ProtectionHandler> protectionHandler,
-  std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
-    : transport_(transport)
-    , queue_(new IOBufQueue(IOBufQueue::cacheChainLength()))
-    , recvCallback_(nullptr)
-    , eofInvoked_(false)
-    , protectionHandler_(std::move(protectionHandler))
-    , framingHandler_(std::move(framingHandler))
-    , saslNegotiationHandler_(std::move(saslNegotiationHandler)) {
+    const std::shared_ptr<TAsyncTransport>& transport,
+    std::unique_ptr<FramingHandler> framingHandler,
+    std::unique_ptr<ProtectionHandler> protectionHandler,
+    std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
+    : transport_(transport),
+      queue_(new IOBufQueue(IOBufQueue::cacheChainLength())),
+      recvCallback_(nullptr),
+      eofInvoked_(false),
+      outputBufferingHandler_(
+          std::make_shared<wangle::OutputBufferingHandler>()),
+      protectionHandler_(std::move(protectionHandler)),
+      framingHandler_(std::move(framingHandler)),
+      saslNegotiationHandler_(std::move(saslNegotiationHandler)) {
   if (!protectionHandler_) {
     protectionHandler_.reset(new ProtectionHandler);
   }
@@ -64,7 +66,7 @@ Cpp2Channel::Cpp2Channel(
   });
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
-      wangle::OutputBufferingHandler(),
+      outputBufferingHandler_,
       protectionHandler_,
       pcapLoggingHandler,
       framingHandler_,
@@ -115,6 +117,8 @@ void Cpp2Channel::attachEventBase(
 }
 
 void Cpp2Channel::detachEventBase() {
+  getEventBase()->dcheckIsInEventBaseThread();
+  outputBufferingHandler_->cleanUp();
   transportHandler_->detachEventBase();
 }
 

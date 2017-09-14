@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -158,6 +160,7 @@ class Cpp2Channel
 
   std::unique_ptr<RecvCallback::sample> sample_;
 
+  std::shared_ptr<wangle::OutputBufferingHandler> outputBufferingHandler_;
   std::shared_ptr<ProtectionHandler> protectionHandler_;
   std::shared_ptr<FramingHandler> framingHandler_;
   std::shared_ptr<SaslNegotiationHandler> saslNegotiationHandler_;
