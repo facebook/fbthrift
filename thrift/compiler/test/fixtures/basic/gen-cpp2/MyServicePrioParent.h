@@ -33,10 +33,8 @@ class MyServicePrioParentSvAsyncIf {
  public:
   virtual ~MyServicePrioParentSvAsyncIf() {}
   virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_ping() = 0;
   virtual void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_pong() = 0;
 };
 

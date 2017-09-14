@@ -33,22 +33,16 @@ class MyServiceFastSvAsyncIf {
  public:
   virtual ~MyServiceFastSvAsyncIf() {}
   virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_ping() = 0;
   virtual void async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
-  virtual void async_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_getRandomData() = 0;
   virtual void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
-  virtual void async_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = delete;
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
   virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = 0;
-  virtual void async_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_getDataById(int64_t id) = 0;
   virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
-  virtual void async_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = delete;
   virtual folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
-  virtual void async_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = delete;
   virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
 };
 

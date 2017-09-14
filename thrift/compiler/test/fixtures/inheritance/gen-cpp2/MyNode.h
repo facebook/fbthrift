@@ -31,7 +31,6 @@ class MyNodeSvAsyncIf {
  public:
   virtual ~MyNodeSvAsyncIf() {}
   virtual void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_do_mid() = 0;
 };
 

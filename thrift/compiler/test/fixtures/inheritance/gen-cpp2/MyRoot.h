@@ -30,7 +30,6 @@ class MyRootSvAsyncIf {
  public:
   virtual ~MyRootSvAsyncIf() {}
   virtual void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_do_root() = 0;
 };
 

@@ -30,16 +30,12 @@ class RaiserSvAsyncIf {
  public:
   virtual ~RaiserSvAsyncIf() {}
   virtual void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_doBland() = 0;
   virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_doRaise() = 0;
   virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
-  virtual void async_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_get200() = 0;
   virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
-  virtual void async_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_get500() = 0;
 };
 

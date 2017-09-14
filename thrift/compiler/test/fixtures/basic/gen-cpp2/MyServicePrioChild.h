@@ -34,7 +34,6 @@ class MyServicePrioChildSvAsyncIf {
  public:
   virtual ~MyServicePrioChildSvAsyncIf() {}
   virtual void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_pang() = 0;
 };
 

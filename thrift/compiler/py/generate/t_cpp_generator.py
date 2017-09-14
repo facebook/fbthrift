@@ -1147,13 +1147,6 @@ class CppGenerator(t_generator.Generator):
                        modifiers='virtual',
                        pure_virtual=True)
 
-                # TODO: Remove this once everything has migrated to async_eb or
-                # async_tm
-                out().defn(self._get_process_function_signature_async(service,
-                                                                  function),
-                       name="async_" + function.name,
-                       modifiers='virtual',
-                       delete=True)
                 if not self._is_stream_type(function.returntype):
                     out().defn(self._get_process_function_signature_future(
                            service, function),

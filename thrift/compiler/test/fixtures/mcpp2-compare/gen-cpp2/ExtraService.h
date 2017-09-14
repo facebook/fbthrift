@@ -32,31 +32,22 @@ class ExtraServiceSvAsyncIf {
  public:
   virtual ~ExtraServiceSvAsyncIf() {}
   virtual void async_tm_simple_function(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) = 0;
-  virtual void async_simple_function(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) = delete;
   virtual folly::Future<bool> future_simple_function() = 0;
   virtual void async_eb_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_throws_function() = 0;
   virtual void async_tm_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) = 0;
-  virtual void async_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) = delete;
   virtual folly::Future<bool> future_throws_function2(bool param1) = 0;
   virtual void async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>> callback, bool param1, const std::string& param2) = 0;
-  virtual void async_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>> callback, bool param1, const std::string& param2) = delete;
   virtual folly::Future<std::map<int32_t, std::string>> future_throws_function3(bool param1, const std::string& param2) = 0;
   virtual void async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) = 0;
-  virtual void async_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) = delete;
   virtual folly::Future<folly::Unit> future_oneway_void_ret() = 0;
   virtual void async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = 0;
-  virtual void async_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = delete;
   virtual folly::Future<folly::Unit> future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = 0;
   virtual void async_eb_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) = 0;
-  virtual void async_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) = delete;
   virtual folly::Future<folly::Unit> future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) = 0;
   virtual void async_tm_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const  ::some::valid::ns::MyStruct& param1) = 0;
-  virtual void async_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const  ::some::valid::ns::MyStruct& param1) = delete;
   virtual folly::Future<folly::Unit> future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) = 0;
   virtual void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) = 0;
-  virtual void async_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) = delete;
   virtual folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) = 0;
 };
 

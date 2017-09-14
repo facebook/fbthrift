@@ -31,21 +31,15 @@ class PubSubStreamingServiceSvAsyncIf {
  public:
   virtual ~PubSubStreamingServiceSvAsyncIf() {}
   virtual void async_tm_client(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
-  virtual void async_client(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = delete;
   virtual folly::Future<folly::Unit> future_client(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual void async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
-  virtual void async_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = delete;
   virtual folly::Future<folly::Unit> future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual void async_tm_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
-  virtual void async_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = delete;
   virtual folly::Future<folly::Unit> future_both(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::PubsubHandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) = 0;
-  virtual void async_returnstream(std::unique_ptr<apache::thrift::PubsubHandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) = delete;
   virtual void async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) = 0;
-  virtual void async_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) = delete;
   virtual folly::Future<folly::Unit> future_takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) = 0;
   virtual void async_tm_clientthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) = 0;
-  virtual void async_clientthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) = delete;
   virtual folly::Future<folly::Unit> future_clientthrows(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) = 0;
 };
 

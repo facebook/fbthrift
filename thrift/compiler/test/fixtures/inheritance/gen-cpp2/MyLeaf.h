@@ -31,7 +31,6 @@ class MyLeafSvAsyncIf {
  public:
   virtual ~MyLeafSvAsyncIf() {}
   virtual void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_do_leaf() = 0;
 };
 

@@ -36,22 +36,16 @@ class service1SvAsyncIf {
  public:
   virtual ~service1SvAsyncIf() {}
   virtual void async_tm_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual void async_method1(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_method1() = 0;
   virtual void async_tm_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) = 0;
-  virtual void async_method2(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) = delete;
   virtual folly::Future<folly::Unit> future_method2(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) = 0;
   virtual void async_tm_method3(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
-  virtual void async_method3(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
   virtual folly::Future<int32_t> future_method3() = 0;
   virtual void async_tm_method4(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) = 0;
-  virtual void async_method4(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) = delete;
   virtual folly::Future<int32_t> future_method4(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) = 0;
   virtual void async_tm_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) = 0;
-  virtual void async_method5(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) = delete;
   virtual folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> future_method5() = 0;
   virtual void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) = 0;
-  virtual void async_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) = delete;
   virtual folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> future_method6(int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) = 0;
 };
 
