@@ -71,6 +71,7 @@ if(lib_only OR build_all)
     ${WANGLE_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
+  add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
 endif(lib_only OR build_all)
 
 # Add the test dependencies

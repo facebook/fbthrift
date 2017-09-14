@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include "snappy.h"
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
@@ -36,6 +35,9 @@
 #include <string>
 #include <zlib.h>
 #include <zstd.h>
+#if THRIFT_HAVE_LIBSNAPPY > 0
+#include "snappy.h"
+#endif
 
 using std::map;
 using std::shared_ptr;
@@ -566,6 +568,7 @@ static unique_ptr<IOBuf> decompressZlib(unique_ptr<IOBuf> buf) {
   return out;
 }
 
+#if THRIFT_HAVE_LIBSNAPPY > 0
 static unique_ptr<IOBuf> decompressSnappy(unique_ptr<IOBuf> buf) {
   buf->coalesce(); // required for snappy uncompression
   size_t uncompressed_sz;
@@ -584,6 +587,7 @@ static unique_ptr<IOBuf> decompressSnappy(unique_ptr<IOBuf> buf) {
 
   return out;
 }
+#endif
 
 static unique_ptr<IOBuf> decompressZstd(unique_ptr<IOBuf> buf) {
   buf->coalesce();
@@ -615,7 +619,9 @@ unique_ptr<IOBuf> THeader::untransform(
         buf = decompressZlib(std::move(buf));
         break;
       case SNAPPY_TRANSFORM:
+#if THRIFT_HAVE_LIBSNAPPY > 0
         buf = decompressSnappy(std::move(buf));
+#endif
         break;
       case ZSTD_TRANSFORM:
         buf = decompressZstd(std::move(buf));
@@ -707,6 +713,7 @@ static unique_ptr<IOBuf> compressZlib(unique_ptr<IOBuf> buf) {
   return out;
 }
 
+#if THRIFT_HAVE_LIBSNAPPY > 0
 static unique_ptr<IOBuf> compressSnappy(unique_ptr<IOBuf> buf) {
   buf->coalesce(); // required for snappy compression
 
@@ -720,6 +727,7 @@ static unique_ptr<IOBuf> compressSnappy(unique_ptr<IOBuf> buf) {
   out->append(compressed_sz);
   return out;
 }
+#endif
 
 static unique_ptr<IOBuf> compressZstd(unique_ptr<IOBuf> buf) {
   buf->coalesce();
@@ -763,11 +771,13 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
         buf = compressZlib(std::move(buf));
         break;
       case SNAPPY_TRANSFORM:
+#if THRIFT_HAVE_LIBSNAPPY > 0
         if (dataSize < minCompressBytes) {
           it = writeTrans.erase(it);
           continue;
         }
         buf = compressSnappy(std::move(buf));
+#endif
         break;
       case ZSTD_TRANSFORM:
         if (dataSize < minCompressBytes) {
