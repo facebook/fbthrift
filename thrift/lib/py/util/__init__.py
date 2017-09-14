@@ -92,9 +92,10 @@ def struct_to_dict(struct, defaults=False):
             value = getattr(struct, field.name, field.default)
         if value != field.default or defaults:
             if field.type == TType.STRUCT:
-                sub_dict = struct_to_dict(value, defaults=defaults)
-                if sub_dict or defaults:  # Do not include empty sub structs
-                    adict[field.name] = sub_dict
+                if value is not None:
+                    sub_dict = struct_to_dict(value, defaults=defaults)
+                    if sub_dict or defaults:  # Do not include empty sub structs
+                        adict[field.name] = sub_dict
             elif field.type == TType.LIST or field.type == TType.SET:
                 sub_list = __list_to_dict(value,
                                           field.type_args,
