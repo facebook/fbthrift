@@ -61,6 +61,7 @@ if(lib_only OR build_all)
   find_package(GFlags REQUIRED)
   find_package(Krb5 REQUIRED gssapi)
   find_package(Wangle REQUIRED)
+  find_package(Zlib)
   find_package(Zstd REQUIRED)
   include_directories(
     ${DOUBLE_CONVERSION_INCLUDE_DIR}
@@ -69,6 +70,7 @@ if(lib_only OR build_all)
     ${GLOG_INCLUDE_DIRS}
     ${KRB5_INCLUDE_DIRS}
     ${WANGLE_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")

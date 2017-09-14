@@ -149,15 +149,16 @@ target_link_libraries(
   thrift
   thriftfrozen2
   thriftprotocol
+  ${Boost_LIBRARIES}
   ${DOUBLE_CONVERSION_LIBRARY}
   ${FOLLY_LIBRARY}
   ${GFLAGS_LIBRARIES}
   ${GLOG_LIBRARIES}
   ${KRB5_LIBRARIES}
-  ${WANGLE_LIBRARIES}
-  ${ZSTD_LIBRARIES}
   ${OPENSSL_LIBRARIES}
-  ${Boost_LIBRARIES}
+  ${WANGLE_LIBRARIES}
+  ${ZLIB_LIBRARIES}
+  ${ZSTD_LIBRARIES}
 )
 install(TARGETS thriftcpp2 DESTINATION lib)
 
