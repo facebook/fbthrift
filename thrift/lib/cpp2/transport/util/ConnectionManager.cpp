@@ -18,6 +18,7 @@
 
 #include <folly/Singleton.h>
 #include <gflags/gflags.h>
+#include <unistd.h>
 
 DEFINE_int32(
     num_client_connections,
@@ -39,6 +40,9 @@ std::shared_ptr<ConnectionManager> ConnectionManager::getInstance() {
 }
 
 ConnectionManager::ConnectionManager() {
+  if (FLAGS_num_client_connections == 0) {
+    FLAGS_num_client_connections = sysconf(_SC_NPROCESSORS_ONLN);
+  }
   for (int32_t i = 0; i < FLAGS_num_client_connections; ++i) {
     threads_.push_back(std::make_unique<ConnectionThread>());
   }

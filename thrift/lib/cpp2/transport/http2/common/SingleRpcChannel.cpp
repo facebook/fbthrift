@@ -61,11 +61,11 @@ SingleRpcChannel::~SingleRpcChannel() {
     return;
   }
   if (!receivedH2Stream_ && !receivedThriftRPC_) {
-    LOG(WARNING) << "Channel received nothing from Proxygen and Thrift";
+    VLOG(2) << "Channel received nothing from Proxygen and Thrift";
   } else if (receivedH2Stream_) {
-    LOG(ERROR) << "Channel received message from Proxygen, but not Thrift";
+    VLOG(2) << "Channel received message from Proxygen, but not Thrift";
   } else {
-    LOG(ERROR) << "Channel received message from Thrift, but not Proxygen";
+    VLOG(2) << "Channel received message from Thrift, but not Proxygen";
   }
 }
 
