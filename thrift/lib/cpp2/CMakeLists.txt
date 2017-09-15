@@ -6,24 +6,19 @@ set_source_files_properties(
   ${FROZEN_CPP_SOURCES}
   PROPERTIES GENERATED TRUE
 )
-add_library(frozen-cpp ${FROZEN_CPP_SOURCES})
-add_dependencies(frozen-cpp frozen-cpp-target)
-target_link_libraries(
-  frozen-cpp
-  thrift
-)
-
 add_library(
   thriftfrozen2
 
   frozen/Frozen.cpp
   frozen/FrozenUtil.cpp
   frozen/schema/MemorySchema.cpp
+  protocol/Frozen2Protocol.cpp
+  ${FROZEN_CPP_SOURCES}
 )
+add_dependencies(thriftfrozen2 frozen-cpp-target)
 target_link_libraries(
   thriftfrozen2
 
-  frozen-cpp
   ${FOLLY_LIBRARY}
   ${DOUBLE_CONVERSION_LIBRARY}
 )
@@ -39,7 +34,6 @@ add_library(
   protocol/CompactProtocol.cpp
   protocol/CompactV1Protocol.cpp
   protocol/DebugProtocol.cpp
-  protocol/Frozen2Protocol.cpp
   protocol/JSONProtocolCommon.cpp
   protocol/JSONProtocol.cpp
   protocol/Serializer.cpp
@@ -149,6 +143,7 @@ target_link_libraries(
   thrift
   thriftfrozen2
   thriftprotocol
+  Threads::Threads
   ${Boost_LIBRARIES}
   ${DOUBLE_CONVERSION_LIBRARY}
   ${FOLLY_LIBRARY}
@@ -213,23 +208,23 @@ target_link_libraries(
   ${OPENSSL_LIBRARIES}
 )
 
-#PROJECT(ChatRoomServer CXX)
-#add_executable(
-#  chatroomserver
-#
-#  example/ChatRoomService.h
-#  example/ChatRoomService.cpp
-#  example/ChatRoomServiceMain.cpp
-#)
-#target_link_libraries(
-#  chatroomserver
-#  chatroom-cpp2
-#)
-#install(
-#  TARGETS chatroomserver
-#  RUNTIME DESTINATION bin
-#  LIBRARY DESTINATION lib
-#)
+PROJECT(ChatRoomServer CXX)
+add_executable(
+  chatroomserver
+
+  example/ChatRoomService.h
+  example/ChatRoomService.cpp
+  example/ChatRoomServiceMain.cpp
+)
+target_link_libraries(
+  chatroomserver
+  chatroom-cpp2
+)
+install(
+  TARGETS chatroomserver
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
 
 # Install includes
 set(THRIFT2_HEADER_DIRS

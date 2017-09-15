@@ -73,7 +73,11 @@ if(lib_only OR build_all)
     ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
+  add_definitions("-DTHRIFT_HAVE_ZLIB=0")
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
+  # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads)
 endif(lib_only OR build_all)
 
 # Add the test dependencies

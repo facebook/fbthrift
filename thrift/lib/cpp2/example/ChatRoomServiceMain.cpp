@@ -25,6 +25,7 @@ using namespace apache::thrift;
 using namespace facebook::tutorials::thrift::chatroomservice;
 
 int main(int argc, char** argv) {
+  FLAGS_logtostderr = 1;
   folly::init(&argc, &argv);
 
   auto handler = std::make_shared<ChatRoomServiceHandler>();
@@ -32,14 +33,11 @@ int main(int argc, char** argv) {
   std::shared_ptr<wangle::SSLContextConfig> sslConfig;
   auto server = std::make_shared<ThriftServer>();
   server->setPort(7777);
+  server->setInterface(handler);
 
   LOG(INFO) << "ChatRoomService running on port: " << 7777;
 
-  server->setup();
-
-  getchar();
-
-  server->cleanUp();
+  server->serve();
 
   return 0;
 }
