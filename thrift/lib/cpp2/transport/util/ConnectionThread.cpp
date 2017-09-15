@@ -20,6 +20,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
@@ -28,13 +29,14 @@ DEFINE_string(
     transport,
     "http2",
     "The transport to use (http1, http2, rsocket)");
+DEFINE_bool(use_ssl, false, "Create an encrypted client connection");
 
 namespace apache {
 namespace thrift {
 
 using apache::thrift::async::TAsyncSocket;
+using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TAsyncTransport;
-using std::string;
 
 ConnectionThread::~ConnectionThread() {
   getEventBase()->runInEventBaseThreadAndWait([&]() {
@@ -45,9 +47,9 @@ ConnectionThread::~ConnectionThread() {
 }
 
 std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
-    const string& addr,
+    const std::string& addr,
     uint16_t port) {
-  string serverKey = folly::to<string>(addr, ":", port);
+  std::string serverKey = folly::to<std::string>(addr, ":", port);
   getEventBase()->runInEventBaseThreadAndWait(
       [&]() { maybeCreateConnection(serverKey, addr, port); });
   SYNCHRONIZED(connections_) {
@@ -57,14 +59,22 @@ std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
 }
 
 void ConnectionThread::maybeCreateConnection(
-    const string& serverKey,
-    const string& addr,
+    const std::string& serverKey,
+    const std::string& addr,
     uint16_t port) {
   SYNCHRONIZED(connections_) {
     std::shared_ptr<ClientConnectionIf>& connection = connections_[serverKey];
     if (connection == nullptr || !connection->good()) {
       TAsyncSocket::UniquePtr socket(
           new TAsyncSocket(getEventBase(), addr, port));
+      if (FLAGS_use_ssl) {
+        auto sslContext = std::make_shared<folly::SSLContext>();
+        sslContext->setAdvertisedNextProtocols({"h2", "http", "rs"});
+        auto sslSocket = new TAsyncSSLSocket(
+                    sslContext, getEventBase(), socket->detachFd(), false);
+        sslSocket->sslConn(nullptr);
+        socket.reset(sslSocket);
+      }
       if (FLAGS_transport == "rsocket") {
         connection = std::make_shared<RSClientConnection>(
             std::move(socket), getEventBase());
