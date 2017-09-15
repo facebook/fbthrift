@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 try:
     import asyncio
-except:
+except Exception:
     import trollius as asyncio
 
 from thrift_asyncio.tutorial import Calculator as AsyncCalculator

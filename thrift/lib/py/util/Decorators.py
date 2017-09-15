@@ -36,7 +36,6 @@ except ImportError:
 
 
 from thrift.Thrift import (
-    TMessageType,
     TApplicationException,
     TException,
     TMessageType,
@@ -49,14 +48,14 @@ log = logging.getLogger(__name__)
 
 
 def get_memory_usage():
-    #this parses the resident set size from /proc/self/stat, which
-    #is the same approach the C++ FacebookBase takes
+    # this parses the resident set size from /proc/self/stat, which
+    # is the same approach the C++ FacebookBase takes
     with open('/proc/self/stat') as stat:
         stat_string = stat.read()
-    #rss is field number 23 in /proc/pid/stat, see man proc
-    #for the full list
+    # rss is field number 23 in /proc/pid/stat, see man proc
+    # for the full list
     rss_pages = int(stat_string.split()[23])
-    #/proc/pid/stat excludes 3 administrative pages from the count
+    # /proc/pid/stat excludes 3 administrative pages from the count
     rss_pages += 3
     return rss_pages * resource.getpagesize()
 
@@ -187,6 +186,7 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
 
     return _decorator
 
+
 def future_process_main():
     """Decorator for process method of future processor."""
     def _decorator(func):
@@ -194,7 +194,7 @@ def future_process_main():
             name, seqid = self.readMessageBegin(iprot)
             if self.doesKnowFunction(name):
                 return self._processMap[name](self, seqid, iprot, oprot,
-                        server_ctx)
+                                              server_ctx)
             else:
                 self.skipMessageStruct(iprot)
                 exc = make_unknown_function_exception(name)
@@ -243,7 +243,7 @@ def write_result(result, reply_type, seqid,
 
 
 def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
-        oneway):
+          oneway):
     try:
         result = future.result()
     except TApplicationException as e:
@@ -261,6 +261,7 @@ def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
     write_result(result, reply_type, seqid,
                  processor._event_handler, handler_ctx, fn_name, oprot)
 
+
 def future_process_method(argtype, oneway=False):
     """Decorator for process_xxx methods of futuer processor.
 
@@ -273,7 +274,7 @@ def future_process_method(argtype, oneway=False):
         def nested(self, seqid, iprot, oprot, server_ctx):
             fn_name = func.__name__.split('_', 1)[-1]
             handler_ctx = self._event_handler.getHandlerContext(fn_name,
-                    server_ctx)
+                                                                server_ctx)
             args = argtype()
             reply_type = TMessageType.REPLY
             self._event_handler.preRead(handler_ctx, fn_name, args)
@@ -305,6 +306,7 @@ def future_process_method(argtype, oneway=False):
         return nested
 
     return _decorator
+
 
 def write_results_after_future(
     result, event_handler, handler_ctx, seqid, oprot, fn_name,

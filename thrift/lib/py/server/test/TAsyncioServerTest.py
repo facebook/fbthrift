@@ -29,16 +29,16 @@ def server_loop_runner(loop, sock, handler):
         ThriftAsyncServerFactory(handler, port=None, loop=loop, sock=sock),
     )
 
-@asyncio.coroutine
-def test_server_with_client(sock, loop, factory=ThriftClientProtocolFactory):
+
+async def test_server_with_client(sock, loop, factory=ThriftClientProtocolFactory):
     port = sock.getsockname()[1]
-    (transport, protocol) = yield from loop.create_connection(
+    (transport, protocol) = await loop.create_connection(
         factory(Calculator.Client, loop=loop),
         host='localhost',
         port=port,
     )
     client = protocol.client
-    add_result = yield from asyncio.wait_for(
+    add_result = await asyncio.wait_for(
         client.add(1, 2),
         timeout=None,
         loop=loop,
@@ -48,10 +48,9 @@ def test_server_with_client(sock, loop, factory=ThriftClientProtocolFactory):
     return add_result
 
 
-@asyncio.coroutine
-def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
+async def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
     port = sock.getsockname()[1]
-    (transport, protocol) = yield from loop.create_connection(
+    (transport, protocol) = await loop.create_connection(
         factory(Sleep.Client, loop=loop, timeouts={'echo': 1}),
         host='localhost',
         port=port,
@@ -60,7 +59,7 @@ def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
     # Ask the server to delay for 30 seconds.
     # However, we told the client factory above to use a 1 second timeout
     # for the echo() function.
-    yield from asyncio.wait_for(
+    await asyncio.wait_for(
         client.echo('test', 30),
         timeout=None,
         loop=loop,
@@ -68,17 +67,17 @@ def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
     transport.close()
     protocol.close()
 
-@asyncio.coroutine
-def test_overflow(sock, value, loop, factory=ThriftClientProtocolFactory):
+
+async def test_overflow(sock, value, loop, factory=ThriftClientProtocolFactory):
     port = sock.getsockname()[1]
-    (transport, protocol) = yield from loop.create_connection(
+    (transport, protocol) = await loop.create_connection(
         factory(Sleep.Client, loop=loop, timeouts={'echo': 1}),
         host='localhost',
         port=port,
     )
     client = protocol.client
 
-    yield from asyncio.wait_for(
+    await asyncio.wait_for(
         client.overflow(value),
         timeout=None,
         loop=loop,
@@ -244,10 +243,9 @@ class TAsyncioServerTest(unittest.TestCase):
         server_loop.call_soon_threadsafe(server.close)
         server_thread.join()
 
-    @asyncio.coroutine
-    def _make_out_of_order_calls(self, sock, loop):
+    async def _make_out_of_order_calls(self, sock, loop):
         port = sock.getsockname()[1]
-        client_manager = yield from create_client(
+        client_manager = await create_client(
             Sleep.Client,
             host='localhost',
             port=port,
@@ -260,7 +258,7 @@ class TAsyncioServerTest(unittest.TestCase):
             ]
             results_in_arrival_order = []
             for f in asyncio.as_completed(futures, loop=loop):
-                result = yield from f
+                result = await f
                 results_in_arrival_order.append(result)
             self.assertEquals(['1', '2', '3'], results_in_arrival_order)
 
@@ -286,10 +284,9 @@ class TAsyncioServerTest(unittest.TestCase):
                 self._make_out_of_order_calls(sock, client_loop),
             )
 
-    @asyncio.coroutine
-    def _assert_transport_is_closed_on_error(self, sock, loop):
+    async def _assert_transport_is_closed_on_error(self, sock, loop):
         port = sock.getsockname()[1]
-        client_manager = yield from create_client(
+        client_manager = await create_client(
             Sleep.Client,
             host='localhost',
             port=port,

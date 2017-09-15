@@ -26,6 +26,7 @@ import six
 import sys
 import threading
 
+
 class TType:
     STOP = 0
     VOID = 1
@@ -46,11 +47,13 @@ class TType:
     UTF16 = 17
     FLOAT = 19
 
+
 class TMessageType:
     CALL = 1
     REPLY = 2
     EXCEPTION = 3
     ONEWAY = 4
+
 
 class TRequestContext:
     def __init__(self):
@@ -62,9 +65,10 @@ class TRequestContext:
     def setHeaders(self, headers):
         self._headers = headers
 
+
 class TProcessorEventHandler:
     """Event handler for thrift processors"""
-    #TODO: implement asyncComplete for Twisted
+    # TODO: implement asyncComplete for Twisted
 
     def getHandlerContext(self, fn_name, server_context):
         """Called at the start of processing a handler method"""
@@ -96,6 +100,7 @@ class TProcessorEventHandler:
         Note that this method is NOT called if the handler threw an
         exception that is declared in the thrift service specification"""
         pass
+
 
 class TServerInterface:
     def __init__(self):
@@ -215,6 +220,7 @@ class TException(Exception):
         Exception.__init__(self, message)
         self.message = message
 
+
 class TApplicationException(TException):
 
     """Application level thrift exceptions."""
@@ -234,6 +240,22 @@ class TApplicationException(TException):
     TIMEOUT = 12
     INJECTED_FAILURE = 13
 
+    EXTYPE_TO_STRING = {
+        UNKNOWN_METHOD: 'Unknown method',
+        INVALID_MESSAGE_TYPE: 'Invalid message type',
+        WRONG_METHOD_NAME: 'Wrong method name',
+        BAD_SEQUENCE_ID: 'Bad sequence ID',
+        MISSING_RESULT: 'Missing result',
+        INTERNAL_ERROR: 'Internal error',
+        PROTOCOL_ERROR: 'Protocol error',
+        INVALID_TRANSFORM: 'Invalid transform',
+        INVALID_PROTOCOL: 'Invalid protocol',
+        UNSUPPORTED_CLIENT_TYPE: 'Unsupported client type',
+        LOADSHEDDING: 'Loadshedding request',
+        TIMEOUT: 'Task timeout',
+        INJECTED_FAILURE: 'Injected Failure',
+    }
+
     def __init__(self, type=UNKNOWN, message=None):
         TException.__init__(self, message)
         self.type = type
@@ -241,34 +263,10 @@ class TApplicationException(TException):
     def __str__(self):
         if self.message:
             return self.message
-        elif self.type == self.UNKNOWN_METHOD:
-            return 'Unknown method'
-        elif self.type == self.INVALID_MESSAGE_TYPE:
-            return 'Invalid message type'
-        elif self.type == self.WRONG_METHOD_NAME:
-            return 'Wrong method name'
-        elif self.type == self.BAD_SEQUENCE_ID:
-            return 'Bad sequence ID'
-        elif self.type == self.MISSING_RESULT:
-            return 'Missing result'
-        elif self.type == self.INTERNAL_ERROR:
-            return 'Internal error'
-        elif self.type == self.PROTOCOL_ERROR:
-            return 'Protocol error'
-        elif self.type == self.INVALID_TRANSFORM:
-            return 'Invalid transform'
-        elif self.type == self.INVALID_PROTOCOL:
-            return 'Invalid protocol'
-        elif self.type == self.UNSUPPORTED_CLIENT_TYPE:
-            return 'Unsupported client type'
-        elif self.type == self.LOADSHEDDING:
-            return 'Loadshedding request'
-        elif self.type == self.TIMEOUT:
-            return 'Task timeout'
-        elif self.type == self.INJECTED_FAILURE:
-            return 'Injected Failure'
         else:
-            return 'Default (unknown) TApplicationException'
+            return self.EXTYPE_TO_STRING.get(
+                self.type,
+                'Default (unknown) TApplicationException')
 
     def read(self, iprot):
         iprot.readStructBegin()
