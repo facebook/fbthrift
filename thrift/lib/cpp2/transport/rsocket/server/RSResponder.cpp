@@ -30,7 +30,7 @@ RSResponder::handleRequestResponse(
   return yarpl::single::Single<std::unique_ptr<folly::IOBuf>>::create(
              [ this, request = std::move(request), streamId ](
                  auto subscriber) mutable {
-               LOG(INFO) << "RSResponder.handleRequestResponse : " << request;
+               VLOG(4) << "RSResponder.handleRequestResponse : " << request;
 
                auto functionInfo = std::make_unique<FunctionInfo>();
                functionInfo->seqId = streamId;
