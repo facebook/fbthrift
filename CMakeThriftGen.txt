@@ -1,0 +1,102 @@
+# Macro to generate thrift files
+# Output:
+#  ${file_language_SOURCES} - The generated Source Files.
+#  file_language_target - The custom target to depend on.
+#
+# When using file_language_SOURCES you should always call:
+#   bypass_source_check(${file_language_SOURCES})
+# This will prevent cmake from complaining about missing source files
+#
+# Requirements: You will need to have the following two variables set:
+#   ${THRIFT_BINARY} - path/to/thrift1
+#   ${THRIFT_TEMPLATES_DIR} - path/to/include/thrift/templates
+#
+# Params:
+#   @file_path - The directory where your thrift file lives
+#   @file_name - The name of your thrift file
+#   @language - The generator to use (cpp or cpp2)
+#   @options - Extra options you wish to pass in to the generator
+# Extra Params:
+#   @services - Pass in a list of services to also generate those
+#
+# Example:
+#  thrift_gen("path/to/file" "thriftfile" "cpp2" "json" "ThriftService")
+#  bypass_source_check(${ChatRoomService_cpp2_SOURCES})
+#  add_exectuable(exe ${ChatRoomService_cpp2_SOURCES})
+#  target_link_libraries(exe thriftcpp2)
+
+macro(thrift_gen file_path file_name language options)
+set("${file_name}_${language}_HEADERS"
+  ${file_path}/gen-${language}/${file_name}_constants.h
+  ${file_path}/gen-${language}/${file_name}_data.h
+  ${file_path}/gen-${language}/${file_name}_types.h
+  ${file_path}/gen-${language}/${file_name}_types.tcc
+)
+set("${file_name}_${language}_SOURCES"
+  ${file_path}/gen-${language}/${file_name}_constants.cpp
+  ${file_path}/gen-${language}/${file_name}_data.cpp
+  ${file_path}/gen-${language}/${file_name}_types.cpp
+  CACHE INTERNAL "${thrift_name}_SOURCES"
+)
+if("${language}" STREQUAL "cpp")
+  set("${file_name}_${language}_HEADERS"
+    ${${file_name}_${language}_HEADERS}
+    ${file_path}/gen-${language}/${file_name}_reflection.h
+  )
+  set("${file_name}_${language}_SOURCES"
+    ${${file_name}_${language}_SOURCES}
+    ${file_path}/gen-${language}/${file_name}_reflection.cpp
+  )
+endif()
+set(services ${ARGV4})
+list(LENGTH services kServices)
+if(kServices GREATER 0)
+  foreach(service ${services})
+    set("${file_name}_${language}_HEADERS"
+      ${${file_name}_${language}_HEADERS}
+      ${file_path}/gen-${language}/${service}.h
+      ${file_path}/gen-${language}/${service}.tcc
+      ${file_path}/gen-${language}/${service}_custom_protocol.h
+    )
+    set("${file_name}_${language}_SOURCES"
+      ${${file_name}_${language}_SOURCES}
+      ${file_path}/gen-${language}/${service}.cpp
+      ${file_path}/gen-${language}/${service}_client.cpp
+      ${file_path}/gen-${language}/${service}_processmap_binary.cpp
+      ${file_path}/gen-${language}/${service}_processmap_compact.cpp
+    )
+  endforeach()
+endif()
+set(include_prefix "include_prefix=${file_path}")
+if(NOT ${options} STREQUAL "")
+  set(include_prefix ",${include_prefix}")
+endif()
+set(gen_language ${language})
+if("${language}" STREQUAL "cpp2")
+  set(gen_language "mstch_cpp2")
+endif()
+add_custom_command(
+  OUTPUT ${${file_name}_${language}_HEADERS} ${${file_name}_${language}_SOURCES}
+  COMMAND ${THRIFT_BINARY}
+    --gen "${gen_language}:${options}${include_prefix}"
+    -o ${file_path}
+    --templates ${THRIFT_TEMPLATES_DIR}
+    "${file_path}/${file_name}.thrift"
+  DEPENDS thrift1
+  COMMENT "Generating ${file_name} files. Output: ${file_path}"
+)
+add_custom_target(
+  ${file_name}_${language}_target ALL
+  DEPENDS ${${language}_${language}_HEADERS} ${${file_name}_${language}_SOURCES}
+)
+install(DIRECTORY gen-${language} DESTINATION include/${file_path}
+        FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY gen-${language} DESTINATION include/${file_path}
+        FILES_MATCHING PATTERN "*.tcc")
+endmacro()
+macro(bypass_source_check sources)
+set_source_files_properties(
+  ${sources}
+  PROPERTIES GENERATED TRUE
+)
+endmacro()

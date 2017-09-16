@@ -10,6 +10,7 @@ add_library(
   concurrency/Util.cpp
 )
 
+bypass_source_check("${reflection-cpp-SOURCES}")
 add_library(
   protocol
 
@@ -18,7 +19,7 @@ add_library(
   protocol/TBase64Utils.cpp
   protocol/TProtocolException.cpp
   protocol/TSimpleJSONProtocol.cpp
-  ${REFLECTION_SOURCES}
+  ${reflection-cpp-SOURCES}
 )
 add_dependencies(protocol reflection-cpp-target)
 

@@ -2,10 +2,7 @@
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
-set_source_files_properties(
-  ${FROZEN_CPP_SOURCES}
-  PROPERTIES GENERATED TRUE
-)
+bypass_source_check("${frozen_cpp_SOURCES}")
 add_library(
   thriftfrozen2
 
@@ -13,7 +10,7 @@ add_library(
   frozen/FrozenUtil.cpp
   frozen/schema/MemorySchema.cpp
   protocol/Frozen2Protocol.cpp
-  ${FROZEN_CPP_SOURCES}
+  ${frozen_cpp_SOURCES}
 )
 add_dependencies(thriftfrozen2 frozen-cpp-target)
 target_link_libraries(
@@ -49,41 +46,15 @@ target_link_libraries(
 )
 install(TARGETS thriftprotocol DESTINATION lib)
 
-set(SASL_CPP2_HEADERS
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService.h
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService.tcc
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService_custom_protocol.h
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_constants.h
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_data.h
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_types.h
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_types.tcc
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_types_custom_protocol.h
+thrift_generate(
+  "Sasl" #file_name
+  "SaslAuthService" #services
+  "cpp2" #language
+  "" #options
+  "${LIB_CPP2_HOME}" #file_path
+  "${LIB_CPP2_HOME}" #output_path
 )
-set(SASL_CPP2_SOURCES
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService_client.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService_processmap_binary.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/SaslAuthService_processmap_compact.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_constants.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_data.cpp
-  ${LIB_CPP2_HOME}/gen-cpp2/Sasl_types.cpp
-)
-add_custom_command(
-  OUTPUT ${SASL_CPP2_HEADERS} ${SASL_CPP2_SOURCES}
-  COMMAND ${THRIFT_BINARY}
-  ARGS --gen mstch_cpp2:include_prefix=${LIB_CPP2_HOME} --templates ${THRIFT_TEMPLATES_DIR} -o ${LIB_CPP2_HOME} ${LIB_CPP2_HOME}/Sasl.thrift
-  DEPENDS thrift1
-  COMMENT "Generating Sasl files"
-)
-add_custom_target(
-  sasl-cpp2-target ALL
-  DEPENDS ${SASL_CPP2_HEADERS} ${SASL_CPP2_SOURCES}
-)
-set_source_files_properties(
-  ${SASL_CPP2_SOURCES}
-  PROPERTIES GENERATED TRUE
-)
-
+bypass_source_check(${Sasl-cpp2-SOURCES})
 add_library(
   thriftcpp2
 
@@ -134,9 +105,9 @@ add_library(
   ${LIB_HOME}/cpp/util/kerberos/Krb5CCacheStore.cpp
   ${LIB_HOME}/cpp/util/kerberos/Krb5Tgts.cpp
   ${LIB_HOME}/cpp/util/kerberos/FBKrb5GetCreds.cpp
-  ${SASL_CPP2_SOURCES}
+  ${Sasl-cpp2-SOURCES}
 )
-add_dependencies(thriftcpp2 sasl-cpp2-target)
+add_dependencies(thriftcpp2 Sasl-cpp2-target)
 target_link_libraries(
   thriftcpp2
 
@@ -158,57 +129,15 @@ target_link_libraries(
 install(TARGETS thriftcpp2 DESTINATION lib)
 
 # Example to test linking
-set(CHATROOM_CPP2_HEADERS
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService.h
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService.tcc
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_custom_protocol.h
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_constants.h
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_data.h
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_types.h
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_types.tcc
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_types_custom_protocol.h
-)
-set(CHATROOM_CPP2_SOURCES
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_client.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_processmap_binary.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_processmap_compact.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_constants.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_data.cpp
-  ${LIB_CPP2_HOME}/example/if/gen-cpp2/ChatRoomService_types.cpp
-)
-add_custom_command(
-  OUTPUT ${CHATROOM_CPP2_HEADERS} ${CHATROOM_CPP2_SOURCES}
-  COMMAND ${THRIFT_BINARY}
-  ARGS --gen mstch_cpp2:include_prefix=${LIB_CPP2_HOME}/example/if --templates ${THRIFT_TEMPLATES_DIR} -o ${LIB_CPP2_HOME}/example/if ${LIB_CPP2_HOME}/example/if/ChatRoomService.thrift
-  DEPENDS thrift1
-  COMMENT "Generating Chatroom files"
-)
-add_custom_target(
-  chatroom-cpp2-target ALL
-  DEPENDS ${CHATROOM_CPP2_HEADERS} ${CHATROOM_CPP2_SOURCES}
-)
-set_source_files_properties(
-  ${CHATROOM_CPP2_SOURCES}
-  PROPERTIES GENERATED TRUE
-)
-add_library(
-  chatroom-cpp2
-  ${CHATROOM_CPP2_SOURCES}
-)
-add_dependencies(chatroom-cpp2 chatroom-cpp2-target)
-target_link_libraries(
-  chatroom-cpp2
-  thrift
-  thriftprotocol
-  thriftcpp2
-  ${FOLLY_LIBRARY}
-  ${WANGLE_LIBRARIES}
-  ${ZSTD_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
-)
-
 PROJECT(ChatRoomServer CXX)
+thrift_library(
+  "ChatRoomService" #file_name
+  "ChatRoomService" #services
+  "cpp2" #language
+  "" #options
+  "${LIB_CPP2_HOME}/example/if" #file_path
+  "${LIB_CPP2_HOME}/example/if" #output_path
+)
 add_executable(
   chatroomserver
 
@@ -218,7 +147,10 @@ add_executable(
 )
 target_link_libraries(
   chatroomserver
-  chatroom-cpp2
+  thriftcpp2
+  ChatRoomService-cpp2
+  ${GFLAGS_LIBRARIES}
+  ${GLOG_LIBRARIES}
 )
 install(
   TARGETS chatroomserver

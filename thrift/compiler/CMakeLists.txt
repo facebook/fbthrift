@@ -138,7 +138,7 @@ if(enable_tests)
 
   set(PY_ENV_VARS
     THRIFT_COMPILER_TEST_SKIP_PY_GENERATE=True
-    THRIFT_COMPILER_BIN=${THRIFT_BINARY}
+    THRIFT_COMPILER_BIN=${THRIFT1}
     THRIFT_FIXTURES_DIR=${COMPILER_DIR}/test/fixtures
     THRIFT_TEMPLATES_DIR=${COMPILER_DIR}/generate/templates)
   add_test(compiler-gen ${PYTHON_EXECUTABLE} ${TEST_DIR}/compiler_test.py)

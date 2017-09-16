@@ -50,19 +50,25 @@ if(compiler_only OR build_all)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
   include_directories(${MSTCH_INCLUDE_DIRS})
-  set(THRIFT_BINARY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thrift1)
+  set(THRIFT1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thrift1)
+  set(THRIFT_TEMPLATES ${THRIFT_HOME}/thrift/compiler/generate/templates)
+  include(ThriftLibrary.cmake)
+  install(FILES ThriftLibrary.cmake DESTINATION include/thrift)
 endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
   find_package(DoubleConversion REQUIRED)
   find_package(Folly REQUIRED)
-  find_package(Glog REQUIRED)
   find_package(GFlags REQUIRED)
+  find_package(Glog REQUIRED)
   find_package(Krb5 REQUIRED gssapi)
   find_package(Wangle REQUIRED)
-  find_package(Zlib)
+  find_package(Zlib REQUIRED)
   find_package(Zstd REQUIRED)
+  # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads)
   include_directories(
     ${DOUBLE_CONVERSION_INCLUDE_DIR}
     ${FOLLY_INCLUDE_DIR}
@@ -73,11 +79,7 @@ if(lib_only OR build_all)
     ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
-  add_definitions("-DTHRIFT_HAVE_ZLIB=0")
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
-  # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(Threads)
 endif(lib_only OR build_all)
 
 # Add the test dependencies
