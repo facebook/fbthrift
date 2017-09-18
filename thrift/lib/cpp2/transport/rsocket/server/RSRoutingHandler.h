@@ -31,11 +31,8 @@ class RSRoutingHandler : public TransportRoutingHandler {
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
-  bool canAcceptEncryptedConnection(const std::string&) override {
-    return false;
-  }
-
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
+  bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
       wangle::ConnectionManager*,
       folly::AsyncTransportWrapper::UniquePtr sock,

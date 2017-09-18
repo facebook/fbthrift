@@ -79,6 +79,11 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
       && (bytes[7] == 0x04 || bytes[7] == 0x34);
 }
 
+bool RSRoutingHandler::canAcceptEncryptedConnection(
+    const std::string& protocolName) {
+  return protocolName == "rs";
+}
+
 void RSRoutingHandler::handleConnection(
     wangle::ConnectionManager*,
     folly::AsyncTransportWrapper::UniquePtr sock,

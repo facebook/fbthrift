@@ -139,11 +139,7 @@ bool HTTP2RoutingHandler::canAcceptConnection(
 
 bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
     const std::string& protocolName) {
-  static constexpr folly::StringPiece kHTTP2ProtocolName = "h2";
-  static constexpr folly::StringPiece kHTTPProtocolName = "http";
-  return (
-      kHTTP2ProtocolName.equals(protocolName, folly::AsciiCaseInsensitive()) ||
-      kHTTPProtocolName.equals(protocolName, folly::AsciiCaseInsensitive()));
+  return protocolName == "h2" || protocolName == "http";
 }
 
 void HTTP2RoutingHandler::handleConnection(
