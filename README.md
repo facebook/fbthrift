@@ -30,7 +30,7 @@ Dependencies
       libssl-dev
 ```
 
-For your convenience script are provided to install `fbthrift`'s
+For your convenience, scripts are provided to install `fbthrift`'s
 dependencies on several common platforms:
 
 ```sh
