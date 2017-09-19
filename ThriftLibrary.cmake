@@ -1,7 +1,8 @@
 # Requirements:
 # Please provide the following two variables before using these macros:
-#   ${THRIFT1} - path/to/thrift1
+#   ${THRIFT1} - path/to/bin/thrift1
 #   ${THRIFT_TEMPLATES} - path/to/include/thrift/templates
+#   ${THRIFTCPP2} - path/to/lib/thriftcpp2
 
 # thrift_library
 # This creates a library that will contain the source files and all the proper
@@ -37,13 +38,13 @@ thrift_generate(
   "${services}"    #services
   "${language}"    #language
   "${options}"     #options
-  "${output_path}"   #output_path
+  "${file_path}"   #file_path
   "${output_path}" #output_path
 )
 bypass_source_check(${${file_name}-${language}-SOURCES})
 add_library("${file_name}-${language}" ${${file_name}-${language}-SOURCES})
 add_dependencies("${file_name}-${language}" "${file_name}-${language}-target")
-target_link_libraries("${file_name}-${language}" thriftcpp2)
+target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
 message("Thrift will create the Library: ${file_name}-${language}")
 endmacro()
 
@@ -92,7 +93,6 @@ set("${file_name}-${language}-SOURCES"
   ${output_path}/gen-${language}/${file_name}_constants.cpp
   ${output_path}/gen-${language}/${file_name}_data.cpp
   ${output_path}/gen-${language}/${file_name}_types.cpp
-  CACHE INTERNAL "${thrift_name}-SOURCES"
 )
 if("${language}" STREQUAL "cpp")
   set("${file_name}-${language}-HEADERS"
@@ -134,7 +134,7 @@ add_custom_command(
     -o ${output_path}
     --templates ${THRIFT_TEMPLATES}
     "${file_path}/${file_name}.thrift"
-  DEPENDS thrift1
+  DEPENDS ${THRIFT1}
   COMMENT "Generating ${file_name} files. Output: ${output_path}"
 )
 add_custom_target(
