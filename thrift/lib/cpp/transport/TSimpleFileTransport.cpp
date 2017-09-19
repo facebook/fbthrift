@@ -19,8 +19,7 @@
 
 #include <thrift/lib/cpp/transport/TSimpleFileTransport.h>
 
-#include <fcntl.h>
-
+#include <folly/portability/Fcntl.h>
 #include <folly/portability/SysStat.h>
 
 namespace apache { namespace thrift { namespace transport {
