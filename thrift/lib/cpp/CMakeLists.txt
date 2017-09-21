@@ -9,6 +9,7 @@ add_library(
   concurrency/TimerManager.cpp
   concurrency/Util.cpp
 )
+install(TARGETS concurrency DESTINATION lib)
 
 bypass_source_check("${reflection-cpp-SOURCES}")
 add_library(
@@ -22,6 +23,7 @@ add_library(
   ${reflection-cpp-SOURCES}
 )
 add_dependencies(protocol reflection-cpp-target)
+install(TARGETS protocol DESTINATION lib)
 
 add_library(
   transport
@@ -43,6 +45,7 @@ add_library(
   transport/THeader.cpp
   transport/TZlibTransport.cpp
 )
+install(TARGETS transport DESTINATION lib)
 
 target_link_libraries(
   transport
@@ -66,6 +69,7 @@ add_library(
   async/TUnframedAsyncChannel.cpp
   async/TZlibAsyncChannel.cpp
 )
+install(TARGETS async DESTINATION lib)
 
 add_library(
   util
@@ -75,12 +79,14 @@ add_library(
   util/SocketRetriever.cpp
   util/VarintUtils.cpp
 )
+install(TARGETS util DESTINATION lib)
 
 add_library(
   server
 
   server/TServer.cpp
 )
+install(TARGETS server DESTINATION lib)
 
 add_library(
   thrift

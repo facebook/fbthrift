@@ -19,6 +19,7 @@ target_link_libraries(
   ${FOLLY_LIBRARY}
   ${DOUBLE_CONVERSION_LIBRARY}
 )
+install(TARGETS thriftfrozen2 DESTINATION lib)
 
 add_library(
   thriftprotocol
