@@ -393,9 +393,8 @@ static string getString(RWPrivateCursor& c, size_t sz) {
      folly::stringPrintf("String size %zu is larger than available %zu bytes",
        sz, c.totalLength()));
   }
-  char strdata[sz];
-  c.pull(strdata, sz);
-  string str(strdata, sz);
+  string str(sz, '\0');
+  c.pull(&str[0], sz);
   return str;
 }
 
