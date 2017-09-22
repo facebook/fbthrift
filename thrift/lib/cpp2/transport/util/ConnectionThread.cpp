@@ -69,7 +69,13 @@ void ConnectionThread::maybeCreateConnection(
           new TAsyncSocket(getEventBase(), addr, port));
       if (FLAGS_use_ssl) {
         auto sslContext = std::make_shared<folly::SSLContext>();
-        sslContext->setAdvertisedNextProtocols({"h2", "http", "rs"});
+        if (FLAGS_transport == "rsocket") {
+          sslContext->setAdvertisedNextProtocols({"rs"});
+        } else if (FLAGS_transport == "http1") {
+          sslContext->setAdvertisedNextProtocols({"http"});
+        } else {
+          sslContext->setAdvertisedNextProtocols({"h2", "http"});
+        }
         auto sslSocket = new TAsyncSSLSocket(
                     sslContext, getEventBase(), socket->detachFd(), false);
         sslSocket->sslConn(nullptr);
