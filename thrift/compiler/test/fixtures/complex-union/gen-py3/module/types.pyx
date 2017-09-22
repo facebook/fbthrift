@@ -393,7 +393,6 @@ cdef class List__i64:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[int64_t]] c_inst
         cdef int64_t citem
         if isinstance(index_obj, slice):
@@ -542,7 +541,6 @@ cdef class List__string:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[string]] c_inst
         cdef string citem
         if isinstance(index_obj, slice):

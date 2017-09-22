@@ -1382,7 +1382,6 @@ cdef class List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):
@@ -1644,7 +1643,6 @@ cdef class List__Map__string_i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cmap[string,int32_t]]] c_inst
         cdef cmap[string,int32_t] citem
         if isinstance(index_obj, slice):
@@ -1796,7 +1794,6 @@ cdef class List__Range:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cRange]] c_inst
         cdef cRange citem
         if isinstance(index_obj, slice):
@@ -1945,7 +1942,6 @@ cdef class List__Internship:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cInternship]] c_inst
         cdef cInternship citem
         if isinstance(index_obj, slice):
@@ -2094,7 +2090,6 @@ cdef class List__string:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[string]] c_inst
         cdef string citem
         if isinstance(index_obj, slice):

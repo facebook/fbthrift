@@ -19,6 +19,7 @@ cimport thrift.py3.types
 cdef extern from * nogil:
     cdef cppclass std_list "std::list"[T]:
         ctypedef T value_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -34,6 +35,7 @@ cdef extern from * nogil:
         std_list() except +
         std_list(std_list&) except +
 
+        T& operator[](size_type)
         void push_back(T&) except +
         size_type size()
         iterator begin()
@@ -46,6 +48,7 @@ cdef extern from * nogil:
 cdef extern from * nogil:
     cdef cppclass std_deque "std::deque"[T]:
         ctypedef T value_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -61,6 +64,7 @@ cdef extern from * nogil:
         std_deque() except +
         std_deque(std_deque&) except +
 
+        T& operator[](size_type)
         void push_back(T&) except +
         size_type size()
         iterator begin()
@@ -73,6 +77,7 @@ cdef extern from * nogil:
 cdef extern from * nogil:
     cdef cppclass folly_fbvector "folly::fbvector"[T]:
         ctypedef T value_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -88,6 +93,7 @@ cdef extern from * nogil:
         folly_fbvector() except +
         folly_fbvector(folly_fbvector&) except +
 
+        T& operator[](size_type)
         void push_back(T&) except +
         size_type size()
         iterator begin()
@@ -100,6 +106,7 @@ cdef extern from * nogil:
 cdef extern from * nogil:
     cdef cppclass folly_small_vector "folly::small_vector"[T]:
         ctypedef T value_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -115,6 +122,7 @@ cdef extern from * nogil:
         folly_small_vector() except +
         folly_small_vector(folly_small_vector&) except +
 
+        T& operator[](size_type)
         void push_back(T&) except +
         size_type size()
         iterator begin()
@@ -127,6 +135,7 @@ cdef extern from * nogil:
 cdef extern from * nogil:
     cdef cppclass folly_sorted_vector_set "folly::sorted_vector_set"[T]:
         ctypedef T value_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -142,8 +151,9 @@ cdef extern from * nogil:
         folly_sorted_vector_set() except +
         folly_sorted_vector_set(folly_sorted_vector_set&) except +
 
-        iterator insert(iterator, const T&) except +
+        cpair[iterator, bint] insert(const T&) except +
         size_type size()
+        size_type count(const T&)
         iterator begin()
         iterator end()
         reverse_iterator rbegin()
@@ -155,6 +165,7 @@ cdef extern from * nogil:
     cdef cppclass folly_sorted_vector_map "folly::sorted_vector_map"[T, U]:
         ctypedef T key_type
         ctypedef U mapped_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             cpair[T, U]& operator*()
@@ -172,8 +183,8 @@ cdef extern from * nogil:
 
         cpair[iterator, bint] insert(cpair[T, U]) except +
         iterator find(const T&)
-        size_t count(const T&)
-        size_t size()
+        size_type count(const T&)
+        size_type size()
         iterator begin()
         iterator end()
         reverse_iterator rbegin()

@@ -1175,7 +1175,6 @@ cdef class List__Vehicle:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cVehicle]] c_inst
         cdef cVehicle citem
         if isinstance(index_obj, slice):

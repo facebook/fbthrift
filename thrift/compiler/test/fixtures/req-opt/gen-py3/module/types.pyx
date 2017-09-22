@@ -252,7 +252,6 @@ cdef class List__bool:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cbool]] c_inst
         cdef cbool citem
         if isinstance(index_obj, slice):
@@ -401,7 +400,6 @@ cdef class List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):

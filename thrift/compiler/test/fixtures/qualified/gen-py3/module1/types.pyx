@@ -220,7 +220,6 @@ cdef class List__Enum:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[cEnum]] c_inst
         cdef cEnum citem
         if isinstance(index_obj, slice):

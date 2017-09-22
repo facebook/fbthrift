@@ -500,7 +500,6 @@ cdef class List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):
@@ -649,7 +648,6 @@ cdef class std_list__List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[std_list[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):
@@ -798,7 +796,6 @@ cdef class std_deque__List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[std_deque[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):
@@ -947,7 +944,6 @@ cdef class folly_fbvector__List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[folly_fbvector[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):
@@ -1096,7 +1092,6 @@ cdef class folly_small_vector__List__i32:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[folly_small_vector[int32_t]] c_inst
         cdef int32_t citem
         if isinstance(index_obj, slice):

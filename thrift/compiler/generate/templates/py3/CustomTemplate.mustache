@@ -24,6 +24,9 @@ various container types, used in the appropriate .pxd file.
 cdef extern from * nogil:
     cdef cppclass {{type:cythonTemplate}} "{{type:cppTemplate}}"[T]:
         ctypedef T value_type
+        {{! see comment in https://github.com/cython/cython/blob/master/Cython/Includes/libcpp/vector.pxd
+           for context on why this is size_t }}
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -39,6 +42,7 @@ cdef extern from * nogil:
         {{type:cythonTemplate}}() except +
         {{type:cythonTemplate}}({{type:cythonTemplate}}&) except +
 
+        T& operator[](size_type)
         void push_back(T&) except +
         size_type size()
         iterator begin()
@@ -53,6 +57,9 @@ cdef extern from * nogil:
 cdef extern from * nogil:
     cdef cppclass {{type:cythonTemplate}} "{{type:cppTemplate}}"[T]:
         ctypedef T value_type
+        {{! see comment in https://github.com/cython/cython/blob/master/Cython/Includes/libcpp/vector.pxd
+           for context on why this is size_t }}
+        ctypedef size_t size_type
 
         cppclass iterator:
             T& operator*()
@@ -68,8 +75,9 @@ cdef extern from * nogil:
         {{type:cythonTemplate}}() except +
         {{type:cythonTemplate}}({{type:cythonTemplate}}&) except +
 
-        iterator insert(iterator, const T&) except +
+        cpair[iterator, bint] insert(const T&) except +
         size_type size()
+        size_type count(const T&)
         iterator begin()
         iterator end()
         reverse_iterator rbegin()
@@ -83,6 +91,9 @@ cdef extern from * nogil:
     cdef cppclass {{type:cythonTemplate}} "{{type:cppTemplate}}"[T, U]:
         ctypedef T key_type
         ctypedef U mapped_type
+        {{! see comment in https://github.com/cython/cython/blob/master/Cython/Includes/libcpp/vector.pxd
+           for context on why this is size_t }}
+        ctypedef size_t size_type
 
         cppclass iterator:
             cpair[T, U]& operator*()
@@ -100,8 +111,8 @@ cdef extern from * nogil:
 
         cpair[iterator, bint] insert(cpair[T, U]) except +
         iterator find(const T&)
-        size_t count(const T&)
-        size_t size()
+        size_type count(const T&)
+        size_type size()
         iterator begin()
         iterator end()
         reverse_iterator rbegin()

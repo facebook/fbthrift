@@ -52,7 +52,6 @@ cdef class List__string:
         return move_unique(c_inst)
 
     def __getitem__(self, object index_obj):
-        cdef int index
         cdef shared_ptr[vector[string]] c_inst
         cdef string citem
         if isinstance(index_obj, slice):
