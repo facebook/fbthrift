@@ -100,26 +100,14 @@ uint32_t ThriftClient::sendRequestSync(
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
   bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
   auto scb = std::make_unique<WaitableRequestCallback>(std::move(cb), baton);
-  int result;
-  if (oneway) {
-    result = sendRequestHelper(
-        rpcOptions,
-        true,
-        std::move(scb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header),
-        connectionEvb);
-  } else {
-    result = sendRequestHelper(
-        rpcOptions,
-        false,
-        std::move(scb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header),
-        connectionEvb);
-  }
+  int result = sendRequestHelper(
+      rpcOptions,
+      oneway,
+      std::move(scb),
+      std::move(ctx),
+      std::move(buf),
+      std::move(header),
+      connectionEvb);
   baton.wait();
   return result;
 }
