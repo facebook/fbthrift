@@ -9,6 +9,11 @@ add_library(
   concurrency/TimerManager.cpp
   concurrency/Util.cpp
 )
+target_link_libraries(
+  concurrency
+
+  ${FOLLY_LIBRARY}
+)
 install(TARGETS concurrency DESTINATION lib)
 
 bypass_source_check("${reflection-cpp-SOURCES}")
@@ -23,6 +28,11 @@ add_library(
   ${reflection-cpp-SOURCES}
 )
 add_dependencies(protocol reflection-cpp-target)
+target_link_libraries(
+  protocol
+
+  ${FOLLY_LIBRARY}
+)
 install(TARGETS protocol DESTINATION lib)
 
 add_library(
@@ -45,13 +55,13 @@ add_library(
   transport/THeader.cpp
   transport/TZlibTransport.cpp
 )
-install(TARGETS transport DESTINATION lib)
-
 target_link_libraries(
   transport
 
+  ${FOLLY_LIBRARY}
   ${ZSTD_LIBRARIES}
 )
+install(TARGETS transport DESTINATION lib)
 
 add_library(
   async
@@ -69,6 +79,11 @@ add_library(
   async/TUnframedAsyncChannel.cpp
   async/TZlibAsyncChannel.cpp
 )
+target_link_libraries(
+  async
+
+  ${FOLLY_LIBRARY}
+)
 install(TARGETS async DESTINATION lib)
 
 add_library(
@@ -79,12 +94,22 @@ add_library(
   util/SocketRetriever.cpp
   util/VarintUtils.cpp
 )
+target_link_libraries(
+  util
+
+  ${FOLLY_LIBRARY}
+)
 install(TARGETS util DESTINATION lib)
 
 add_library(
   server
 
   server/TServer.cpp
+)
+target_link_libraries(
+  server
+
+  ${FOLLY_LIBRARY}
 )
 install(TARGETS server DESTINATION lib)
 
@@ -102,6 +127,7 @@ target_link_libraries(
   concurrency
   protocol
   transport
+  util
   ${FOLLY_LIBRARY}
   ${GLOG_LIBRARIES}
 )

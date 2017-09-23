@@ -93,6 +93,7 @@ add_library(
   transport/core/ThriftProcessor.cpp
   util/ScopedServerInterfaceThread.cpp
   ${LIB_HOME}/cpp/EventHandlerBase.cpp
+  ${LIB_HOME}/cpp/transport/THeader.cpp
   ${LIB_HOME}/cpp/transport/THeaderTransport.cpp
   ${LIB_HOME}/cpp/util/ScopedServerThread.cpp
   ${LIB_HOME}/cpp/util/SocketRetriever.cpp
