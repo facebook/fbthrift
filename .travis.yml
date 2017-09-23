@@ -1,20 +1,36 @@
+# Facebook projects that use `fbcode_builder` for continuous integration
+# share this Travis configuration to run builds via Docker.
+
 sudo: required
-dist: trusty
 
-language: cpp
+env:
+  global:
+    - travis_cache_dir=$HOME/travis_ccache
+    # Travis times out after 50 minutes. Very generously leave 10 minutes
+    # for setup (e.g.  cache download, compression, and upload), so we never
+    # fail to cache the progress we made.
+    - docker_build_timeout=40m
 
-compiler:
-  - gcc
+cache:
+  # Our build caches can be 200-300MB, so increase the timeout to 7 minutes
+  # to make sure we never fail to cache the progress we made.
+  timeout: 420
+  directories:
+  - $HOME/travis_ccache  # see docker_build_with_ccache.sh
 
-install:
-  - ./thrift/build/deps_ubuntu_14.04.sh
+# Ugh, `services:` must be in the matrix, or we get `docker: command not found`
+#   https://github.com/travis-ci/travis-ci/issues/5142
+matrix:
+  include:
+    - env: ['os_image=ubuntu:16.04', gcc_version=5]
+      services: [docker]
 
 script:
-  - ./thrift/build/travis/install.sh
+  # Travis seems to get confused when `matrix:` is used with `language:`
+  - sudo apt-get install python2.7
+  # We don't want to write the script inline because of Travis kludginess --
+  # it looks like it escapes " and \ in scripts when using `matrix:`.
+  - ./build/fbcode_builder/travis_docker_build.sh
 
 notifications:
-  email:
-    recipients:
-      - thrift_oncall@fb.com
-    on_success: never
-    on_failure: always
+  webhooks: https://code.facebook.com/travis/webhook/
