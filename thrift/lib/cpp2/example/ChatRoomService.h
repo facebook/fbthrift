@@ -21,36 +21,28 @@
 
 #include "thrift/lib/cpp2/example/if/gen-cpp2/ChatRoomService.h"
 
-namespace facebook {
 namespace tutorials {
-namespace thrift {
-namespace chatroomservice {
+namespace chatroom {
 
 class ChatRoomServiceHandler : virtual public ChatRoomServiceSvIf {
  public:
-  ChatRoomServiceHandler();
+  ChatRoomServiceHandler() = default;
 
-  // Implement this constructor when you want all messages to have
-  // the same fixed timestamp for testing purposes.
   explicit ChatRoomServiceHandler(int64_t /*currentTime*/)
       : ChatRoomServiceHandler() {}
 
-  // Implement this constructor when you want to use a callback that
-  // returns a timestamp for testing purposes.
   explicit ChatRoomServiceHandler(std::function<int64_t()> /*timeFn*/)
       : ChatRoomServiceHandler() {}
 
   void getMessages(
-      ChatRoomServiceGetMessagesResponse& resp,
-      std::unique_ptr<ChatRoomServiceGetMessagesRequest> req) override;
+      GetMessagesResponse& resp,
+      std::unique_ptr<GetMessagesRequest> req) override;
 
-  void sendMessage(
-      std::unique_ptr<ChatRoomServiceSendMessageRequest> req) override;
+  void sendMessage(std::unique_ptr<SendMessageRequest> req) override;
 
  private:
-  folly::Synchronized<std::vector<ChatRoomServiceMessage>> messageBuffer_;
+  folly::Synchronized<std::vector<Message>> messageBuffer_ =
+      folly::Synchronized<std::vector<Message>>();
 };
-}
-}
-}
-}
+} // chatroom
+} // tutorials

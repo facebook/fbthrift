@@ -132,8 +132,8 @@ install(TARGETS thriftcpp2 DESTINATION lib)
 # Example to test linking
 PROJECT(ChatRoomServer CXX)
 thrift_library(
-  "ChatRoomService" #file_name
-  "ChatRoomService" #services
+  "chatroom" #file_name
+  "ChatRoomService;Echo" #services
   "cpp2" #language
   "" #options
   "${LIB_CPP2_HOME}/example/if" #file_path
@@ -142,14 +142,16 @@ thrift_library(
 add_executable(
   chatroomserver
 
+  example/EchoService.h
+  example/EchoService.cpp
   example/ChatRoomService.h
   example/ChatRoomService.cpp
-  example/ChatRoomServiceMain.cpp
+  example/ExampleServer.cpp
 )
 target_link_libraries(
   chatroomserver
   thriftcpp2
-  ChatRoomService-cpp2
+  chatroom-cpp2
   ${GFLAGS_LIBRARIES}
   ${GLOG_LIBRARIES}
 )

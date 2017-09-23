@@ -16,48 +16,48 @@
 
 #include "thrift/lib/cpp2/example/ChatRoomService.h"
 
-#include <gflags/gflags.h>
 #include <time.h>
-#include <vector>
 
-using namespace apache::thrift;
-using namespace facebook::tutorials::thrift::chatroomservice;
+DEFINE_int32(max_messages_per_get, 1000, "Maximum number of messages to fetch");
 
-ChatRoomServiceHandler::ChatRoomServiceHandler() : messageBuffer_() {}
+namespace tutorials {
+namespace chatroom {
 
 void ChatRoomServiceHandler::getMessages(
-    ChatRoomServiceGetMessagesResponse& resp,
-    std::unique_ptr<ChatRoomServiceGetMessagesRequest> req) {
+    GetMessagesResponse& resp,
+    std::unique_ptr<GetMessagesRequest> req) {
   int64_t idx = 0;
   if (req->__isset.token) {
     idx = req->token.index;
   }
 
-  size_t i = 0;
-  SYNCHRONIZED(messageBuffer_) {
-    int32_t count = 0;
-    for (i = idx;
-         i < messageBuffer_.size() && count < 1000;
-         ++i, ++count) {
-      resp.messages.push_back(messageBuffer_[i]);
+  int64_t i = idx;
+  messageBuffer_.withWLock([&](auto& lockedMessage) {
+    int size = lockedMessage.size();
+    int count = 0;
+    while (i < size && count < FLAGS_max_messages_per_get) {
+      resp.messages.push_back(lockedMessage[i]);
+      ++i;
+      ++count;
     }
-  }
+  });
 
-  ChatRoomServiceIndexToken token;
+  IndexToken token;
   token.index = i;
   resp.token = token;
 }
 
 void ChatRoomServiceHandler::sendMessage(
-    std::unique_ptr<ChatRoomServiceSendMessageRequest> req) {
-  ChatRoomServiceMessage msg;
+    std::unique_ptr<SendMessageRequest> req) {
+  Message msg;
   msg.message = req->message;
   msg.sender = req->sender;
 
-  // Avoid using the actual time of the day in unit tests.
   msg.timestamp = (int64_t)time(nullptr);
 
-  SYNCHRONIZED(messageBuffer_) {
-    messageBuffer_.push_back(msg);
-  }
+  messageBuffer_.withWLock([&](auto& lockedMessage) {
+    lockedMessage.push_back(msg);
+  });
 }
+} // chatroom
+} // tutorials

@@ -15,29 +15,37 @@
  */
 
 #include "thrift/lib/cpp2/example/ChatRoomService.h"
+#include "thrift/lib/cpp2/example/EchoService.h"
 
 #include <folly/init/Init.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
-using namespace apache::thrift;
-using namespace facebook::tutorials::thrift::chatroomservice;
-
 int main(int argc, char** argv) {
   FLAGS_logtostderr = 1;
   folly::init(&argc, &argv);
 
-  auto handler = std::make_shared<ChatRoomServiceHandler>();
+  auto chatroom_handler =
+      std::make_shared<tutorials::chatroom::ChatRoomServiceHandler>();
+  auto chatroom_server = std::make_shared<apache::thrift::ThriftServer>();
+  chatroom_server->setPort(7777);
+  chatroom_server->setInterface(chatroom_handler);
 
-  std::shared_ptr<wangle::SSLContextConfig> sslConfig;
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(7777);
-  server->setInterface(handler);
+  LOG(INFO) << "ChatRoom Server running on port: " << 7777;
+  std::thread t([&] {
+    chatroom_server->serve();
+  });
 
-  LOG(INFO) << "ChatRoomService running on port: " << 7777;
+  auto echo_handler =
+      std::make_shared<tutorials::chatroom::EchoHandler>();
+  auto echo_server = std::make_shared<apache::thrift::ThriftServer>();
+  echo_server->setPort(7778);
+  echo_server->setInterface(echo_handler);
 
-  server->serve();
+  LOG(INFO) << "Echo Server running on port: " << 7778;
+
+  echo_server->serve();
 
   return 0;
 }
