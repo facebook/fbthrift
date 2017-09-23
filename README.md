@@ -1,75 +1,69 @@
-FBThrift: Facebook's branch of apache thrift [![Build Status](https://travis-ci.org/facebook/fbthrift.svg?branch=master)](https://travis-ci.org/facebook/fbthrift)
+Facebook Thrift [![Build Status](https://travis-ci.org/facebook/fbthrift.svg?branch=master)](https://travis-ci.org/facebook/fbthrift)
 --------------------------------------------
 
-The main focus of this package is the new C++ server, under thrift/lib/cpp2.  This repo also contains a branch of the rest of apache thrift's repo with any changes Facebook has made, however the build system only supports cpp2.
+Thrift is a serialization and RPC framework for service communication. Thrift enables these features in all major languages, and there is strong support for C++, Python, Hack, and Java. Most services at Facebook are written using Thrift for RPC, and some storage systems use Thrift for serializing records on disk.
 
-Apache thrift is at https://thrift.apache.org/
+At a high level, Thrift is three major things:
 
-Building
---------
+### A Code Generator
 
-Note that under GCC, you probably need at least 2GB of memory to compile fbthrift.  If you see 'internal compiler error', this is probably because you ran out of memory during compilation.
+Thrift has a code generator which generates data structures that can be serialized using Thrift, and client and server stubs for RPC, in different languages.
 
-Dependencies
-------------
+### A Serialization Framework
 
- - Facebook's folly library: https://github.com/facebook/folly
+Thrift has a set of protocols for serialization that may be used in different languages to serialize the generated structures created from the code generator.
 
- - In addition to the packages required for building folly, Ubuntu 13.10 and
-   14.04 require the following packages (feel free to cut and paste the apt-get
-   command below):
+### An RPC Framework
 
-```
-  sudo apt-get install \
-      flex \
-      bison \
-      libkrb5-dev \
-      libsasl2-dev \
-      libnuma-dev \
-      pkg-config \
-      libssl-dev
-```
+Thrift has a framework to frame messages to send between clients and servers, and to call application-defined functions when receiving messages in different languages.
 
-For your convenience script are provided to install `fbthrift`'s
-dependencies on several common platforms:
+There are several key goals for these components:
+* Ease of use  
+  Thrift takes care of the boilerplate of serialization and RPC, and enables the developer to focus on the schema of the system's serializable types and on the interfaces of system's RPC services.
 
-```sh
-cd fbthrift/thrift/
-# Or ./build/deps_ubuntu_12.04.sh or ./build/deps_centos.sh
-./build/deps_ubuntu_14.04.sh  
-autoreconf -if && ./configure && make
-```
+* Cross language support  
+  Thrift enables intercommunication between different languages. For example, a Python client communicating with a C++ server.
 
-Each `deps_*.sh` script will install a variety of base system packages, as
-well as compile and install into in `/usr/local` some from-source
-dependencies (like `folly`).
+* Performance  
+  Thrift structures and services enable fast serialization and deserialization, and its RPC protocol and frameworks are designed with performance as a feature.
 
- - Ubuntu 14.04 64-bit requires the following packages:
+* Backwards compatibility  
+  Thrift allows fields to be added to and removed from serializable types in a manner that preserves backward and forward compatibility.
 
-    - make
-    - autoconf
-    - libtool
-    - g++
-    - libboost-all-dev
-    - libevent-dev
-    - flex
-    - bison
-    - libgoogle-glog-dev
-    - libdouble-conversion-dev
-    - scons
-    - libkrb5-dev
-    - libsnappy-dev
-    - libsasl2-dev
+## Building
 
-[Mstch](https://github.com/no1msd/mstch) also needs to be installed.
+### Dependencies
+        Please install the following dependencies before building Facebook Thrift:
 
-Docs
-----
+        **System**: [Flex](https://www.gnu.org/software/flex), [Bison](https://www.gnu.org/software/bison), [Krb5](https://web.mit.edu/kerberos), [Zlib](https://zlib.net), [PThreads](https://computing.llnl.gov/tutorials/pthreads). *MacOSX*: [OpenSSLv1.0.2g](https://www.openssl.org)
 
-Some docs on the new cpp2 server are at:
-https://github.com/facebook/fbthrift/blob/master/thrift/doc/Cpp2.md
+        **External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
 
-C++ Static Reflection
----------------------
+        **Facebook**: [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
 
+### Build
+    git clone https://github.com/facebook/fbthrift
+    cd build
+    cmake .. # Add -DOPENSSL_ROOT_DIR for MacOSX. Usually in /usr/local/ssl
+    make # or make -j $(nproc), or make install.
+
+This will create:
+  * thrift/bin/thrift1: The Thrift compiler binary to generate client and server code.
+  * thrift/lib/libthriftcpp2.so: Runtime library for clients and servers.
+
+### Thrift Files
+When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in your project. This includes the following macro to help when building Thrift files:
+
+    thrift_library(
+      #file_name
+      #services
+      #language
+      #options
+      #file_path
+      #output_path
+    )
+
+This generates a library called: `file_name-language`. That is, for `Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`. This should be added as a dependency to any `*.h` or `*.cpp` file that contains an include to generated code.
+
+## C++ Static Reflection
 Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/fatal/), in the corresponding [`README` file](thrift/lib/cpp2/fatal/README.md).
