@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
@@ -25,7 +24,6 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
-#include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
 
@@ -54,7 +52,6 @@ using apache::thrift::util::ServerCreator;
 using apache::thrift::util::TEventServerCreator;
 using apache::thrift::util::TSimpleServerCreator;
 using apache::thrift::util::TThreadedServerCreator;
-using apache::thrift::util::TThreadPoolServerCreator;
 using apache::thrift::test::getLocalAddresses;
 
 class ConnCtxHandler : public ConnCtxServiceIf {
@@ -232,14 +229,6 @@ TEST(ConnCtxTest, TSimpleServerTest) {
 
 TEST(ConnCtxTest, TThreadedServerTest) {
   runTest<TThreadedServerCreator>();
-}
-
-TEST(ConnCtxTest, TThreadPoolServerTest) {
-  // "For testing TThreadPoolServerCreator"
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  runTest<TThreadPoolServerCreator>();
-  #pragma GCC diagnostic pop
 }
 
 TEST(ConnCtxTest, TEventServerTest) {

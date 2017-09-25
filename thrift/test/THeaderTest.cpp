@@ -27,7 +27,6 @@
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
-#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
@@ -40,7 +39,6 @@
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
-#include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 
 #include <thrift/test/gen-cpp/Service.h>
 
@@ -132,7 +130,6 @@ enum ClientType {
 enum ServerType {
   SERVER_TYPE_SIMPLE = 0,
   SERVER_TYPE_THREADED = 1,
-  SERVER_TYPE_THREADPOOL = 2,
   SERVER_TYPE_EVENT = 5,
 };
 
@@ -294,14 +291,6 @@ void runTestCase(ServerType sType, ClientType clientType) {
       serverCreator = make_shared<TThreadedServerCreator>(
           testProcessor, port, false);
       break;
-    case SERVER_TYPE_THREADPOOL:
-      // "Testing TThreadPoolServerCreator"
-      #pragma GCC diagnostic push
-      #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-      serverCreator = make_shared<TThreadPoolServerCreator>(
-          testProcessor, port, false);
-      #pragma GCC diagnostic pop
-      break;
     case SERVER_TYPE_EVENT:
       serverCreator = make_shared<TEventServerCreator>(
           testAsyncProcessor, port);
@@ -324,20 +313,12 @@ TEST(THeaderTest, threadedServerUnframed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_UNFRAMED);
 }
 
-TEST(THeaderTest, threadPoolServerUnframed) {
-  runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_UNFRAMED);
-}
-
 TEST(THeaderTest, simpleServerFramed) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED);
 }
 
 TEST(THeaderTest, threadedServerFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED);
-}
-
-TEST(THeaderTest, threadPoolServerFramed) {
-  runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED);
 }
 
 TEST(THeaderTest, eventServerFramed) {
@@ -352,10 +333,6 @@ TEST(THeaderTest, threadedServerHeader) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HEADER);
 }
 
-TEST(THeaderTest, threadPoolServerHeader) {
-  runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_HEADER);
-}
-
 TEST(THeaderTest, eventServerHeader) {
   runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_HEADER);
 }
@@ -368,20 +345,12 @@ TEST(THeaderTest, threadedServerHttp) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HTTP);
 }
 
-TEST(THeaderTest, threadPoolServerHttp) {
-  runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_HTTP);
-}
-
 TEST(THeaderTest, simpleServerCompactFramed) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
 TEST(THeaderTest, threadedServerCompactFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED_COMPACT);
-}
-
-TEST(THeaderTest, threadPoolServerCompactFramed) {
-  runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
 TEST(THeaderTest, eventServerCompactFramed) {

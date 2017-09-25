@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
-#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
@@ -500,30 +499,6 @@ int main(int argc, char **argv) {
                                                    serverSocket,
                                                    transportFactory,
                                                    protocolFactory));
-    #pragma GCC diagnostic pop
-
-    printf("Starting the server on port %d...\n", port);
-
-  } else if (serverType == "thread-pool") {
-
-    std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(workerCount);
-
-    std::shared_ptr<PosixThreadFactory> threadFactory =
-      std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
-
-    threadManager->threadFactory(threadFactory);
-
-    threadManager->start();
-
-    // "Testing TThreadPoolServer"
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    server = std::shared_ptr<TServer>(new TThreadPoolServer(testProcessor,
-                                                       serverSocket,
-                                                       transportFactory,
-                                                       protocolFactory,
-                                                       threadManager));
     #pragma GCC diagnostic pop
 
     printf("Starting the server on port %d...\n", port);
