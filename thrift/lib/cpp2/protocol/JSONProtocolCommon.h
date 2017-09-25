@@ -34,6 +34,11 @@
 
 namespace apache { namespace thrift {
 
+namespace detail {
+template <typename Str>
+using is_string = std::is_same<typename Str::value_type, char>;
+}
+
 class JSONProtocolWriterCommon {
 
  public:
@@ -228,7 +233,7 @@ class JSONProtocolReaderCommon {
   inline uint32_t readJSONVal(double& val);
   inline uint32_t readJSONVal(float& val);
   template <typename Str>
-  inline typename std::enable_if<is_string<Str>::value, uint32_t>::type
+  inline typename std::enable_if<detail::is_string<Str>::value, uint32_t>::type
   readJSONVal(Str& val);
   inline bool JSONtoBool(const std::string& s);
   inline uint32_t readJSONVal(bool& val);
