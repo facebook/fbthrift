@@ -286,6 +286,10 @@ class THeader {
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
 
+  void setClientTimeout(std::chrono::milliseconds timeout);
+  void setClientQueueTimeout(std::chrono::milliseconds timeout);
+  void setCallPriority(apache::thrift::concurrency::PRIORITY priority);
+
   // Utility method for converting TRANSFORMS enum to string
   static const folly::StringPiece getStringTransform(
       const TRANSFORMS transform);
@@ -355,6 +359,12 @@ class THeader {
 
   // Won't be cleared when flushing
   StringToStringMap* extraWriteHeaders_{nullptr};
+
+  // If these values are set, they are used instead of looking inside
+  // the header map.
+  folly::Optional<std::chrono::milliseconds> clientTimeout_;
+  folly::Optional<std::chrono::milliseconds> queueTimeout_;
+  folly::Optional<apache::thrift::concurrency::PRIORITY> priority_;
 
   static const std::string IDENTITY_HEADER;
   static const std::string ID_VERSION_HEADER;

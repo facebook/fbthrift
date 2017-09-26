@@ -1,4 +1,6 @@
 /*
+ * Copyright 2014-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -112,5 +114,39 @@ TEST(THeaderTest, removeHeaderEmptyQueue) {
   IOBufQueue queue(IOBufQueue::cacheChainLength());
   EXPECT_EQ(nullptr, header.removeHeader(&queue, needed, persistentHeaders));
   EXPECT_EQ(4, needed);
+}
+
+TEST(THeaderTest, explicitTimeoutAndPriority) {
+  THeader header;
+  header.setClientTimeout(std::chrono::milliseconds(100));
+  header.setClientQueueTimeout(std::chrono::milliseconds(200));
+  header.setCallPriority(concurrency::PRIORITY::IMPORTANT);
+  std::map<std::string, std::string> headerMap;
+  headerMap[THeader::CLIENT_TIMEOUT_HEADER] = "10";
+  headerMap[THeader::QUEUE_TIMEOUT_HEADER] = "20";
+  headerMap[THeader::PRIORITY_HEADER] = "3";
+  header.setReadHeaders(std::move(headerMap));
+  EXPECT_EQ(std::chrono::milliseconds(100), header.getClientTimeout());
+  EXPECT_EQ(std::chrono::milliseconds(200), header.getClientQueueTimeout());
+  EXPECT_EQ(concurrency::PRIORITY::IMPORTANT, header.getCallPriority());
+}
+
+TEST(THeaderTest, headerTimeoutAndPriority) {
+  THeader header;
+  std::map<std::string, std::string> headerMap;
+  headerMap[THeader::CLIENT_TIMEOUT_HEADER] = "10";
+  headerMap[THeader::QUEUE_TIMEOUT_HEADER] = "20";
+  headerMap[THeader::PRIORITY_HEADER] = "3";
+  header.setReadHeaders(std::move(headerMap));
+  EXPECT_EQ(std::chrono::milliseconds(10), header.getClientTimeout());
+  EXPECT_EQ(std::chrono::milliseconds(20), header.getClientQueueTimeout());
+  EXPECT_EQ(concurrency::PRIORITY::NORMAL, header.getCallPriority());
+}
+
+TEST(THeaderTest, defaultTimeoutAndPriority) {
+  THeader header;
+  EXPECT_EQ(std::chrono::milliseconds(0), header.getClientTimeout());
+  EXPECT_EQ(std::chrono::milliseconds(0), header.getClientQueueTimeout());
+  EXPECT_EQ(concurrency::PRIORITY::N_PRIORITIES, header.getCallPriority());
 }
 }}}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1092,6 +1092,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
 
 apache::thrift::concurrency::PRIORITY
 THeader::getCallPriority() {
+  if (priority_) {
+    return *priority_;
+  }
   const auto& map = getHeaders();
   auto iter = map.find(PRIORITY_HEADER);
   if (iter != map.end()) {
@@ -1125,16 +1128,36 @@ std::chrono::milliseconds THeader::getTimeoutFromHeader(
 }
 
 std::chrono::milliseconds THeader::getClientTimeout() const {
-  return getTimeoutFromHeader(CLIENT_TIMEOUT_HEADER);
+  if (clientTimeout_) {
+    return *clientTimeout_;
+  } else {
+    return getTimeoutFromHeader(CLIENT_TIMEOUT_HEADER);
+  }
 }
 
 std::chrono::milliseconds THeader::getClientQueueTimeout() const {
-  return getTimeoutFromHeader(QUEUE_TIMEOUT_HEADER);
+  if (queueTimeout_) {
+    return *queueTimeout_;
+  } else {
+    return getTimeoutFromHeader(QUEUE_TIMEOUT_HEADER);
+  }
 }
 
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
   CHECK(clientType == THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = parser;
+}
+
+void THeader::setClientTimeout(std::chrono::milliseconds timeout) {
+  clientTimeout_ = timeout;
+}
+
+void THeader::setClientQueueTimeout(std::chrono::milliseconds timeout) {
+  queueTimeout_ = timeout;
+}
+
+void THeader::setCallPriority(apache::thrift::concurrency::PRIORITY priority) {
+  priority_ = priority;
 }
 
 static constexpr folly::StringPiece TRANSFORMS_STRING_LIST[] = {
