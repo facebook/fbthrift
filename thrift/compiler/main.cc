@@ -128,7 +128,6 @@ static void preprocess_cpp2_generator_strings(
   if (gen_string.find("mstch_cpp2") != std::string::npos &&
       (gen_string.find("future") != std::string::npos ||
        gen_string.find("py_generator") != std::string::npos ||
-       gen_string.find("fatal") != std::string::npos ||
        gen_string.find("compatibility") != std::string::npos ||
        gen_string.find("implicit_templates") != std::string::npos ||
        gen_string.find("separate_processmap") != std::string::npos ||
@@ -144,7 +143,9 @@ static void preprocess_cpp2_generator_strings(
   }
 
   // Use mstch_cpp2 and python generator if mstch_cpp2 and reflection present
-  if (gen_mstch_cpp2 && gen_string.find("reflection") != std::string::npos) {
+  if (gen_mstch_cpp2 &&
+      (gen_string.find("reflection") != std::string::npos ||
+       gen_string.find("fatal") != std::string::npos)) {
     gen_py_cpp2_reflection = true;
   }
 }
