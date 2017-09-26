@@ -55,7 +55,9 @@ thrift_generate(
   "${LIB_CPP2_HOME}" #file_path
   "${LIB_CPP2_HOME}" #output_path
 )
-bypass_source_check(${Sasl-cpp2-SOURCES})
+
+bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
+bypass_source_check("${Sasl-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
@@ -107,6 +109,7 @@ add_library(
   ${LIB_HOME}/cpp/util/kerberos/Krb5CCacheStore.cpp
   ${LIB_HOME}/cpp/util/kerberos/Krb5Tgts.cpp
   ${LIB_HOME}/cpp/util/kerberos/FBKrb5GetCreds.cpp
+  ${RpcMetadata-cpp2-SOURCES}
   ${Sasl-cpp2-SOURCES}
 )
 add_dependencies(thriftcpp2 Sasl-cpp2-target)
