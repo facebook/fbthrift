@@ -22,8 +22,8 @@
 #include <boost/noncopyable.hpp>
 
 namespace apache { namespace thrift { namespace concurrency {
-class ProfiledPthreadMutex;
-class ProfiledPthreadRWMutex;
+class PthreadMutex;
+class PthreadRWMutex;
 
 /**
  * A simple mutex class
@@ -67,7 +67,7 @@ class Mutex {
   static int RECURSIVE_INITIALIZER;
 
  private:
-  std::shared_ptr<ProfiledPthreadMutex> impl_;
+  std::shared_ptr<PthreadMutex> impl_;
 };
 
 class ReadWriteMutex {
@@ -92,7 +92,7 @@ public:
   virtual void release() const;
 
 private:
-  std::shared_ptr<ProfiledPthreadRWMutex> impl_;
+  std::shared_ptr<PthreadRWMutex> impl_;
 };
 
 /**

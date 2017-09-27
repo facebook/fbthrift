@@ -17,7 +17,6 @@
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex-impl.h>
-#include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <folly/portability/PThread.h>
@@ -29,19 +28,10 @@ namespace apache { namespace thrift { namespace concurrency {
 int Mutex::DEFAULT_INITIALIZER = PTHREAD_MUTEX_NORMAL;
 int Mutex::RECURSIVE_INITIALIZER = PTHREAD_MUTEX_RECURSIVE;
 
-class ProfiledPthreadMutex : public ProfiledTimedMutex<PthreadMutex> {
- public:
-  explicit ProfiledPthreadMutex(int type)
-    : ProfiledTimedMutex<PthreadMutex>(type) {}
-};
-
-class ProfiledPthreadRWMutex : public ProfiledSharedTimedMutex<PthreadRWMutex> {
-};
-
-Mutex::Mutex(int type) : impl_(std::make_shared<ProfiledPthreadMutex>(type)) {}
+Mutex::Mutex(int type) : impl_(std::make_shared<PthreadMutex>(type)) {}
 
 void* Mutex::getUnderlyingImpl() const {
-  return impl_->getImpl().getUnderlyingImpl();
+  return impl_->getUnderlyingImpl();
 }
 
 void Mutex::lock() const { impl_->lock(); }
@@ -54,10 +44,11 @@ bool Mutex::timedlock(std::chrono::milliseconds ms) const {
 
 void Mutex::unlock() const { impl_->unlock(); }
 
-bool Mutex::isLocked() const { return impl_->getImpl().isLocked(); }
+bool Mutex::isLocked() const {
+  return impl_->isLocked();
+}
 
-ReadWriteMutex::ReadWriteMutex()
-  : impl_(std::make_shared<ProfiledPthreadRWMutex>()) {}
+ReadWriteMutex::ReadWriteMutex() : impl_(std::make_shared<PthreadRWMutex>()) {}
 
 void ReadWriteMutex::acquireRead() const { impl_->lock_shared(); }
 

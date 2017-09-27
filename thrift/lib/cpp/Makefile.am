@@ -86,8 +86,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
 
 libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/Monitor.cpp \
-                        concurrency/PosixThreadFactory.cpp \
-                        concurrency/ProfiledMutex.cpp
+                        concurrency/PosixThreadFactory.cpp
 
 libthriftz_la_SOURCES = \
                        async/TZlibAsyncChannel.cpp \
@@ -121,7 +120,6 @@ include_concurrency_HEADERS = \
                          concurrency/Monitor.h \
                          concurrency/Mutex.h \
                          concurrency/PosixThreadFactory.h \
-                         concurrency/ProfiledMutex.h \
                          concurrency/Thread.h \
                          concurrency/ThreadManager-impl.h \
 			 concurrency/ThreadManager.tcc \

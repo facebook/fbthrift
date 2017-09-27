@@ -4,7 +4,6 @@ add_library(
   concurrency/Mutex.cpp
   concurrency/Monitor.cpp
   concurrency/PosixThreadFactory.cpp
-  concurrency/ProfiledMutex.cpp
   concurrency/ThreadManager.cpp
   concurrency/TimerManager.cpp
   concurrency/Util.cpp
