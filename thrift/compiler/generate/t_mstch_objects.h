@@ -786,6 +786,9 @@ class mstch_function : public mstch_base {
         strct->annotations_.at("thread") == "eb") {
       return true;
     }
+    if (cache_->parsed_options_.count("process_in_event_base") != 0) {
+      return true;
+    }
     return false;
   }
   mstch::node priority() {

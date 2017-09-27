@@ -131,7 +131,6 @@ static void preprocess_cpp2_generator_strings(
        gen_string.find("compatibility") != std::string::npos ||
        gen_string.find("implicit_templates") != std::string::npos ||
        gen_string.find("separate_processmap") != std::string::npos ||
-       gen_string.find("process_in_event_base") != std::string::npos ||
        gen_string.find("terse_writes") != std::string::npos ||
        gen_string.find("modulemap") != std::string::npos)) {
     gen_py_cpp2 = true;
