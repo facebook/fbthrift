@@ -40,14 +40,14 @@ from module.services_wrapper cimport cSomeServiceInterface
 
 cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[unique_ptr[std_unordered_map[int32_t,string]]] move(
-        cFollyPromise[unique_ptr[std_unordered_map[int32_t,string]]])
+    cdef cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] move(
+        cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]])
 
 cdef class Promise_std_unordered_map__Map__i32_string:
-    cdef cFollyPromise[unique_ptr[std_unordered_map[int32_t,string]]] cPromise
+    cdef cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[std_unordered_map[int32_t,string]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise):
         inst = <Promise_std_unordered_map__Map__i32_string>Promise_std_unordered_map__Map__i32_string.__new__(Promise_std_unordered_map__Map__i32_string)
         inst.cPromise = move(cPromise)
         return inst
@@ -72,8 +72,8 @@ cdef class SomeServiceInterface(
 cdef api void call_cy_SomeService_bounce_map(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[std_unordered_map[int32_t,string]]] cPromise,
-    unique_ptr[std_unordered_map[int32_t,string]] m
+    cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise,
+    unique_ptr[module.types.std_unordered_map[int32_t,string]] m
 ):
     cdef SomeServiceInterface iface
     iface = self
@@ -114,5 +114,5 @@ async def SomeService_bounce_map_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[std_unordered_map[int32_t,string]](deref((<module.types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[module.types.std_unordered_map[int32_t,string]](deref((<module.types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
 

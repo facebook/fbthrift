@@ -33,6 +33,6 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrif
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[std_unordered_map[int32_t,string]] bounce_map(
-      std_unordered_map[int32_t,string] arg_m,)
+    cFollyFuture[module.types.std_unordered_map[int32_t,string]] bounce_map(
+      module.types.std_unordered_map[int32_t,string] arg_m,)
 

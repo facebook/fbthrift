@@ -41,6 +41,12 @@ in the client or server source rather than the type definition source.
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
   }}c{{struct:name}}{{!
 }}{{/type:struct}}{{!
+}}{{#type:container?}}{{^type:defaultTemplate?}}{{!
+  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
+    }}{{> common/ModulePath}}.{{!
+  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+}}{{/type:defaultTemplate?}}{{/type:container?}}{{!
 }}{{#type:list?}}{{type:cythonTemplate}}[{{!
   }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
 }}]{{/type:list?}}{{!

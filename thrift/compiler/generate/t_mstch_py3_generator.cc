@@ -174,6 +174,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
 
   string cpp_template = this->get_cpp_template(type);
   string cython_template = this->to_cython_template(cpp_template);
+  bool is_default_template = this->is_default_template(cpp_template, type);
 
   mstch::map result{
       {"modulePath", modulePath},
@@ -182,6 +183,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"cppNamespaces", cppNamespaces},
       {"cppTemplate", cpp_template},
       {"cythonTemplate", cython_template},
+      {"defaultTemplate?", is_default_template},
   };
   return result;
 }

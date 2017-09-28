@@ -35,7 +35,7 @@ from module.clients_wrapper cimport cSomeServiceAsyncClient, cSomeServiceClientW
 
 
 cdef void SomeService_bounce_map_callback(
-    cFollyTry[std_unordered_map[int32_t,string]]&& result,
+    cFollyTry[module.types.std_unordered_map[int32_t,string]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -45,7 +45,7 @@ cdef void SomeService_bounce_map_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.std_unordered_map__Map__i32_string.create(make_shared[std_unordered_map[int32_t,string]](result.value())))
+        pyfuture.set_result(module.types.std_unordered_map__Map__i32_string.create(make_shared[module.types.std_unordered_map[int32_t,string]](result.value())))
 
 
 cdef class SomeService(thrift.py3.client.Client):
@@ -114,10 +114,10 @@ cdef class SomeService(thrift.py3.client.Client):
         self._check_connect_future()
         loop = asyncio.get_event_loop()
         future = loop.create_future()
-        bridgeFutureWith[std_unordered_map[int32_t,string]](
+        bridgeFutureWith[module.types.std_unordered_map[int32_t,string]](
             self._executor,
             deref(self._module_SomeService_client).bounce_map(
-                std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(arg_m)._cpp_obj.get())),
+                module.types.std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(arg_m)._cpp_obj.get())),
             ),
             SomeService_bounce_map_callback,
             <PyObject *> future
