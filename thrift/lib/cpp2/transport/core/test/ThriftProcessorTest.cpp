@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
@@ -60,12 +59,10 @@ TEST(ThriftProcessorTest, SendAndReceiveSumTwoNumbers) {
   eventBase.runInEventBaseThread([&]() mutable {
     auto headers = std::make_unique<std::map<std::string, std::string>>();
     auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel);
-    auto finfo = std::make_unique<FunctionInfo>();
-    finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
-    finfo->seqId = 0;
-    // "name" and "protocol" fields of "finfo" are not used right now.
-    processor.onThriftRequest(
-        std::move(finfo), std::move(headers), request.move(), channel);
+    auto metadata = std::make_unique<RequestRpcMetadata>();
+    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+    metadata->__isset.kind = true;
+    processor.onThriftRequest(std::move(metadata), request.move(), channel);
   });
 
   // Start the event loop before calling into the channel and leave it

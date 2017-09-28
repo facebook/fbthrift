@@ -40,23 +40,21 @@ class FakeChannel : public ThriftChannelIf {
   }
 
   void sendThriftResponse(
-      uint32_t /*seqId*/,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override {
-    headers_ = std::move(headers);
+    metadata_ = std::move(metadata);
     payload_ = std::move(payload);
     // Tests that use this class are expected to be done at this point.
     // So we shut down the event base.
     keepAliveToken_.reset();
   }
 
-  void cancel(uint32_t /*seqId*/) noexcept override {
+  void cancel(int32_t /*seqId*/) noexcept override {
     LOG(ERROR) << "cancel() unused in this fake object.";
   }
 
   void sendThriftRequest(
-      std::unique_ptr<FunctionInfo> /*functionInfo*/,
-      std::unique_ptr<std::map<std::string, std::string>> /*headers*/,
+      std::unique_ptr<RequestRpcMetadata> /*metadata*/,
       std::unique_ptr<folly::IOBuf> /*payload*/,
       std::unique_ptr<ThriftClientCallback> /*callback*/) noexcept override {
     LOG(FATAL) << "sendThriftRequest() unused in this fake object.";
@@ -70,16 +68,12 @@ class FakeChannel : public ThriftChannelIf {
     return evb_;
   }
 
-  void setInput(uint32_t, SubscriberRef) noexcept override {
+  void setInput(int32_t, SubscriberRef) noexcept override {
     LOG(FATAL) << "setInput() unused in this fake object.";
   }
 
-  SubscriberRef getOutput(uint32_t) noexcept override {
+  SubscriberRef getOutput(int32_t) noexcept override {
     LOG(FATAL) << "getOutput() unused in this fake object.";
-  }
-
-  std::map<std::string, std::string>* getHeaders() {
-    return headers_.get();
   }
 
   folly::IOBuf* getPayloadBuf() {
@@ -87,7 +81,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
  private:
-  std::unique_ptr<std::map<std::string, std::string>> headers_;
+  std::unique_ptr<ResponseRpcMetadata> metadata_;
   std::unique_ptr<folly::IOBuf> payload_;
   folly::EventBase* evb_;
   folly::Executor::KeepAlive keepAliveToken_;

@@ -22,50 +22,50 @@
 namespace apache {
 namespace thrift {
 
-using std::map;
-using std::string;
 using folly::EventBase;
 using folly::IOBuf;
 
 void EchoProcessor::onThriftRequest(
-    std::unique_ptr<FunctionInfo> functionInfo,
-    std::unique_ptr<std::map<std::string, std::string>> headers,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel) noexcept {
   evb_->runInEventBaseThread([
     this,
-    evbFunctionInfo = std::move(functionInfo),
-    evbHeaders = std::move(headers),
+    evbMetadata = std::move(metadata),
     evbPayload = std::move(payload),
     evbChannel = std::move(channel)
   ]() mutable {
     onThriftRequestHelper(
-        std::move(evbFunctionInfo),
-        std::move(evbHeaders),
-        std::move(evbPayload),
-        std::move(evbChannel));
+        std::move(evbMetadata), std::move(evbPayload), std::move(evbChannel));
   });
 }
 
 void EchoProcessor::cancel(
-    uint32_t /*seqId*/,
+    int32_t /*seqId*/,
     ThriftChannelIf* /*channel*/) noexcept {
   LOG(ERROR) << "cancel() unused in this fake object.";
 }
 
 void EchoProcessor::onThriftRequestHelper(
-    std::unique_ptr<FunctionInfo> functionInfo,
-    std::unique_ptr<std::map<std::string, std::string>> headers,
+    std::unique_ptr<RequestRpcMetadata> requestMetadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel) noexcept {
-  CHECK(headers);
+  CHECK(requestMetadata);
   CHECK(payload);
   CHECK(channel);
-  (*headers)[key_] = value_;
+  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+  if (requestMetadata->__isset.seqId) {
+    responseMetadata->seqId = requestMetadata->seqId;
+    responseMetadata->__isset.seqId = true;
+  }
+  if (requestMetadata->__isset.otherMetadata) {
+    responseMetadata->otherMetadata = std::move(requestMetadata->otherMetadata);
+  }
+  (responseMetadata->otherMetadata)[key_] = value_;
+  responseMetadata->__isset.otherMetadata = true;
   auto iobuf = IOBuf::copyBuffer(trailer_);
   payload->prependChain(std::move(iobuf));
-  channel->sendThriftResponse(
-      functionInfo->seqId, std::move(headers), std::move(payload));
+  channel->sendThriftResponse(std::move(responseMetadata), std::move(payload));
 }
 
 } // namespace thrift

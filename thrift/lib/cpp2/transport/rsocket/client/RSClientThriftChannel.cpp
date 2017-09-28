@@ -29,17 +29,17 @@ bool RSClientThriftChannel::supportsHeaders() const noexcept {
 }
 
 void RSClientThriftChannel::sendThriftRequest(
-    std::unique_ptr<FunctionInfo> functionInfo,
-    std::unique_ptr<std::map<std::string, std::string>> headers,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   // TODO: callback also has the protocolId, check if this is a duplicate info
   // auto protocolId = functionInfo->getProtocolId();
 
-  switch (functionInfo->kind) {
-    case FunctionKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+  DCHECK(metadata->__isset.kind);
+  switch (metadata->kind) {
+    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(
-          std::move(headers), std::move(payload), std::move(callback));
+          std::move(metadata), std::move(payload), std::move(callback));
       break;
     default:
       LOG(FATAL) << "not implemented";
@@ -47,28 +47,32 @@ void RSClientThriftChannel::sendThriftRequest(
 }
 
 void RSClientThriftChannel::sendSingleRequestResponse(
-    std::unique_ptr<std::map<std::string, std::string>>,
+    std::unique_ptr<RequestRpcMetadata> requestMetadata,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   std::shared_ptr<ThriftClientCallback> spCallback{std::move(callback)};
-  auto func = [spCallback](Payload payload) mutable {
+  auto func = [spCallback, requestMetadata = std::move(requestMetadata)](
+                  Payload payload) mutable {
     VLOG(3) << "Received: '"
             << folly::humanify(
                    payload.data->cloneCoalescedAsValue().moveToFbString());
 
     // TODO: extract headers from the payload.metadata
-    auto headers = std::make_unique<std::map<std::string, std::string>>();
+    auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+    if (requestMetadata->__isset.seqId) {
+      responseMetadata->seqId = requestMetadata->seqId;
+      responseMetadata->__isset.seqId = true;
+    }
     auto evb_ = spCallback->getEventBase();
-    evb_->runInEventBaseThread([
-      headers = std::move(headers),
-      spCallback = std::move(spCallback),
-      payload = std::move(payload)
-    ]() mutable {
+    evb_->runInEventBaseThread([responseMetadata = std::move(responseMetadata),
+                                spCallback = std::move(spCallback),
+                                payload = std::move(payload)]() mutable {
       VLOG(3) << "Pass data to callback: '"
               << folly::humanify(
                      payload.data->cloneCoalescedAsValue().moveToFbString());
 
-      spCallback->onThriftResponse(std::move(headers), std::move(payload.data));
+      spCallback->onThriftResponse(
+          std::move(responseMetadata), std::move(payload.data));
     });
   };
 

@@ -52,9 +52,9 @@ TEST(RequestResponseThriftChannel, SuccessResponse) {
       std::make_shared<RequestResponseThriftChannel>(&evb, subscriberRef);
 
   evb.runInEventBaseThread([requestResponse = std::move(requestResponse)]() {
-    auto headers = std::make_unique<std::map<std::string, std::string>>();
+    auto metadata = std::make_unique<ResponseRpcMetadata>();
     auto data = folly::IOBuf::copyBuffer(std::string("data"));
-    requestResponse->sendThriftResponse(0, std::move(headers), std::move(data));
+    requestResponse->sendThriftResponse(std::move(metadata), std::move(data));
   });
 
   evb.loop();

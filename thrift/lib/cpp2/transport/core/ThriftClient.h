@@ -22,9 +22,7 @@
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
-#include <map>
 #include <memory>
-#include <string>
 
 namespace apache {
 namespace thrift {
@@ -154,10 +152,6 @@ class ThriftClient : public ClientChannel {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       folly::EventBase* callbackEvb);
-
-  std::unique_ptr<std::map<std::string, std::string>> buildHeaders(
-      apache::thrift::transport::THeader* header,
-      RpcOptions& rpcOptions);
 };
 
 } // namespace thrift

@@ -32,20 +32,16 @@ RSResponder::handleRequestResponse(
                  auto subscriber) mutable {
                VLOG(4) << "RSResponder.handleRequestResponse : " << request;
 
-               auto functionInfo = std::make_unique<FunctionInfo>();
-               functionInfo->seqId = streamId;
-               functionInfo->kind =
-                   FunctionKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+               auto metadata = std::make_unique<RequestRpcMetadata>();
+               metadata->seqId = streamId;
+               metadata->__isset.seqId = true;
+               metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+               metadata->__isset.kind = true;
 
-               auto headers =
-                   std::make_unique<std::map<std::string, std::string>>();
                auto channel = std::make_shared<RequestResponseThriftChannel>(
                    evb_, subscriber);
                processor_->onThriftRequest(
-                   std::move(functionInfo),
-                   std::move(headers),
-                   std::move(request.data),
-                   channel);
+                   std::move(metadata), std::move(request.data), channel);
 
              })
       ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });

@@ -74,17 +74,18 @@ bool SingleRpcChannel::supportsHeaders() const noexcept {
 }
 
 void SingleRpcChannel::sendThriftResponse(
-    uint32_t seqId,
-    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
-  DCHECK(seqId == 0);
+  DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
   VLOG(2) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    encodeHeaders(std::move(*headers), msg);
+    if (metadata->__isset.otherMetadata) {
+      encodeHeaders(std::move(metadata->otherMetadata), msg);
+    }
     responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
     responseHandler_->sendEOM();
@@ -92,22 +93,24 @@ void SingleRpcChannel::sendThriftResponse(
   receivedThriftRPC_ = true;
 }
 
-void SingleRpcChannel::cancel(uint32_t /*seqId*/) noexcept {
+void SingleRpcChannel::cancel(int32_t /*seqId*/) noexcept {
   LOG(ERROR) << "cancel() not yet implemented";
 }
 
 void SingleRpcChannel::sendThriftRequest(
-    std::unique_ptr<FunctionInfo> functionInfo,
-    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(evb_->isInEventBaseThread());
-  DCHECK(functionInfo);
+  DCHECK(metadata);
   DCHECK(payload);
   VLOG(2) << "sendThriftRequest:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
-  if (functionInfo->kind == SINGLE_REQUEST_SINGLE_RESPONSE ||
-      functionInfo->kind == STREAMING_REQUEST_SINGLE_RESPONSE) {
+  if (metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      // TODO: probably remove following check.  This is going to be a legacy
+      // channel and will not support streaming.  DCHECK somewhere that it
+      // is oneway or twoway.
+      metadata->kind == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {
     DCHECK(callback);
     callback_ = std::move(callback);
   }
@@ -133,9 +136,21 @@ void SingleRpcChannel::sendThriftRequest(
     auto& msgHeaders = msg.getHeaders();
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
+  if (metadata->__isset.clientTimeoutMs) {
+    metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
+        folly::to<std::string>(metadata->clientTimeoutMs);
+  }
+  if (metadata->__isset.queueTimeoutMs) {
+    metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
+        folly::to<std::string>(metadata->queueTimeoutMs);
+  }
+  if (metadata->__isset.priority) {
+    metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
+        folly::to<std::string>(metadata->priority);
+  }
   // TODO: We've left out a few header settings when copying from
   // HTTPClientChannel.  Verify that this is OK.
-  encodeHeaders(std::move(*headers), msg);
+  encodeHeaders(std::move(metadata->otherMetadata), msg);
   httpTransaction_->sendHeaders(msg);
   httpTransaction_->sendBody(std::move(payload));
   httpTransaction_->sendEOM();
@@ -150,11 +165,11 @@ folly::EventBase* SingleRpcChannel::getEventBase() noexcept {
   return evb_;
 }
 
-void SingleRpcChannel::setInput(uint32_t, SubscriberRef) noexcept {
+void SingleRpcChannel::setInput(int32_t, SubscriberRef) noexcept {
   LOG(FATAL) << "Streaming not supported.";
 }
 
-ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(uint32_t) noexcept {
+ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(int32_t) noexcept {
   LOG(FATAL) << "Streaming not supported.";
 }
 
@@ -175,11 +190,6 @@ void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
   }
 }
 
-bool SingleRpcChannel::isOneWay() noexcept {
-  // TODO: currently hardwired to false.
-  return false;
-}
-
 void SingleRpcChannel::onH2StreamEnd() noexcept {
   VLOG(2) << "onH2StreamEnd";
   receivedH2Stream_ = true;
@@ -189,38 +199,78 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
   if (processor_) {
     // Server side
     bool oneway = isOneWay();
-    auto finfo = std::make_unique<FunctionInfo>();
+    auto metadata = std::make_unique<RequestRpcMetadata>();
     if (oneway) {
-      finfo->kind = SINGLE_REQUEST_NO_RESPONSE;
+      metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
     } else {
-      finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
+      metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
     }
-    finfo->seqId = 0;
-    // "name" and "protocol" fields of "finfo" are not used right now.
+    metadata->__isset.kind = true;
+    auto iter = headers_->find(transport::THeader::CLIENT_TIMEOUT_HEADER);
+    if (iter != headers_->end()) {
+      try {
+        metadata->clientTimeoutMs = folly::to<int64_t>(iter->second);
+        metadata->__isset.clientTimeoutMs = true;
+      } catch (const std::range_error&) {
+        LOG(INFO) << "Bad client timeout " << iter->second;
+      }
+      headers_->erase(iter);
+    }
+    iter = headers_->find(transport::THeader::QUEUE_TIMEOUT_HEADER);
+    if (iter != headers_->end()) {
+      try {
+        metadata->queueTimeoutMs = folly::to<int64_t>(iter->second);
+        metadata->__isset.queueTimeoutMs = true;
+      } catch (const std::range_error&) {
+        LOG(INFO) << "Bad client timeout " << iter->second;
+      }
+      headers_->erase(iter);
+    }
+    iter = headers_->find(transport::THeader::PRIORITY_HEADER);
+    if (iter != headers_->end()) {
+      try {
+        auto pr = static_cast<RpcPriority>(folly::to<int32_t>(iter->second));
+        if (pr < RpcPriority::N_PRIORITIES) {
+          metadata->priority = pr;
+          metadata->__isset.priority = true;
+        } else {
+          LOG(INFO) << "Too large value for method priority " << iter->second;
+        }
+      } catch (const std::range_error&) {
+        LOG(INFO) << "Bad method priority " << iter->second;
+      }
+      headers_->erase(iter);
+    }
+    if (!headers_->empty()) {
+      metadata->otherMetadata = std::move(*headers_);
+      metadata->__isset.otherMetadata = true;
+    }
     processor_->onThriftRequest(
-        std::move(finfo),
-        std::move(headers_),
-        std::move(contents_),
-        shared_from_this());
+        std::move(metadata), std::move(contents_), shared_from_this());
     if (oneway) {
       // Send a dummy response since we need to do this with HTTP2.
-      auto headers = std::make_unique<map<string, string>>();
+      auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
       auto payload = IOBuf::createCombined(0);
-      sendThriftResponse(0, std::move(headers), std::move(payload));
+      sendThriftResponse(std::move(responseMetadata), std::move(payload));
       receivedThriftRPC_ = true;
     }
   } else {
     // Client side
     DCHECK(httpTransaction_);
     if (callback_) {
+      auto metadata = std::make_unique<ResponseRpcMetadata>();
+      if (!headers_->empty()) {
+        metadata->otherMetadata = std::move(*headers_);
+        metadata->__isset.otherMetadata = true;
+      }
       auto evb = callback_->getEventBase();
       evb->runInEventBaseThread([
         evbCallback = std::move(callback_),
-        evbHeaders = std::move(headers_),
+        evbMetadata = std::move(metadata),
         evbContents = std::move(contents_)
       ]() mutable {
         evbCallback->onThriftResponse(
-            std::move(evbHeaders), std::move(evbContents));
+            std::move(evbMetadata), std::move(evbContents));
       });
     }
   }
@@ -241,6 +291,11 @@ void SingleRpcChannel::onH2StreamClosed() noexcept {
     });
   }
   H2ChannelIf::onH2StreamClosed();
+}
+
+bool SingleRpcChannel::isOneWay() noexcept {
+  // TODO: currently hardwired to false.
+  return false;
 }
 
 } // namespace thrift

@@ -19,11 +19,9 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 // #include <yarpl/flowable/Subscriber.h>
-#include <map>
 #include <memory>
-#include <string>
 
 namespace apache {
 namespace thrift {
@@ -50,7 +48,7 @@ class ThriftClientCallback;
  * connection.
  *
  * The channel object supports streaming as follows:
- * - Server and client keeps an instance of the channel as a twin of
+ * - Server and client each keep an instance of the channel as duals of
  *   each other. The input in one side is perceived as output in the other
  *   side, and vice versa.
  *
@@ -92,14 +90,11 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
 
   // Called on the server at the end of a single response RPC.  This
   // is not called for streaming response and no response RPCs.
-  // "seqId" is used to match the request that this channel object
-  // sent to ThriftProcessor.
   //
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
   virtual void sendThriftResponse(
-      uint32_t seqId,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept = 0;
 
   // Can be called on the server to cancel a RPC (instead of calling
@@ -114,7 +109,7 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // to handle various error conditions.  The details of how this is
   // used is TBD.  We may add more parameters to the various
   // cancel() methods as necessary going forward.
-  virtual void cancel(uint32_t seqId) noexcept = 0;
+  virtual void cancel(int32_t seqId) noexcept = 0;
 
   // Called from the client to initiate an RPC with a server.
   // "callback" is used to call back with the response for single
@@ -127,12 +122,8 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   //
   // "callback" must not be destroyed until it has received the call
   // back to "onThriftResponse()" or "cancel()".
-  //
-  // TODO: We should replace functionInfo and headers with a
-  // RpcOptions parameter afer merging FunctionInfo with RpcOptions.
   virtual void sendThriftRequest(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept = 0;
 
@@ -150,13 +141,13 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
 
   // Used to manage streams on both the client and server side.
 
-  // Caller provides a Subscriber to the Channel, meaning that, any data, that
-  // is received, to be forwarded to the given subscriber.
-  virtual void setInput(uint32_t seqId, SubscriberRef sink) noexcept = 0;
+  // Caller provides a Subscriber to the Channel, meaning that, any
+  // data, that is received, to be forwarded to the given subscriber.
+  virtual void setInput(int32_t seqId, SubscriberRef sink) noexcept = 0;
 
-  // Channel provides a Subscriber object to the caller. Caller can use this
-  // object to send data to the receiving side.
-  virtual SubscriberRef getOutput(uint32_t seqId) noexcept = 0;
+  // Channel provides a Subscriber object to the caller. Caller can
+  // use this object to send data to the receiving side.
+  virtual SubscriberRef getOutput(int32_t seqId) noexcept = 0;
 };
 
 } // namespace thrift

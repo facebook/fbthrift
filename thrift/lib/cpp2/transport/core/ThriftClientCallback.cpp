@@ -21,8 +21,6 @@
 namespace apache {
 namespace thrift {
 
-using std::map;
-using std::string;
 using folly::EventBase;
 using folly::exception_wrapper;
 using folly::IOBuf;
@@ -40,13 +38,13 @@ ThriftClientCallback::ThriftClientCallback(
       protoId_(protoId) {}
 
 void ThriftClientCallback::onThriftResponse(
-    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
   if (cb_) {
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    if (headers) {
-      tHeader->setReadHeaders(std::move(*headers));
+    if (metadata->__isset.otherMetadata) {
+      tHeader->setReadHeaders(std::move(metadata->otherMetadata));
     }
     cb_->replyReceived(ClientReceiveState(
         protoId_,

@@ -21,9 +21,8 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <map>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
-#include <string>
 
 namespace apache {
 namespace thrift {
@@ -51,7 +50,7 @@ class ThriftClientCallback {
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
   void onThriftResponse(
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
 
   // Can be called from the channel to cancel a RPC (instead of

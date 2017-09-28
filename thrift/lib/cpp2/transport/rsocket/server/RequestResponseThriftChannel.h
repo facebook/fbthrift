@@ -38,8 +38,7 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
   }
 
   void sendThriftResponse(
-      uint32_t,
-      std::unique_ptr<std::map<std::string, std::string>>,
+      std::unique_ptr<ResponseRpcMetadata>,
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
     // TODO encoding & sending headers - metadata of Payload?
     CHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
@@ -65,13 +64,12 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
   }
 
  private:
-  void cancel(uint32_t /*seqId*/) noexcept override {
+  void cancel(int32_t /*seqId*/) noexcept override {
     LOG(FATAL) << "cancel() not yet implemented";
   }
 
   void sendThriftRequest(
-      std::unique_ptr<FunctionInfo>,
-      std::unique_ptr<std::map<std::string, std::string>>,
+      std::unique_ptr<RequestRpcMetadata>,
       std::unique_ptr<folly::IOBuf>,
       std::unique_ptr<ThriftClientCallback>) noexcept override {
     LOG(DFATAL) << "Server should not call this function.";
@@ -81,11 +79,11 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
     LOG(FATAL) << "cancel() not yet implemented";
   }
 
-  void setInput(uint32_t, SubscriberRef) noexcept override {
+  void setInput(int32_t, SubscriberRef) noexcept override {
     LOG(FATAL) << "RequestResponse should not support streaming.";
   }
 
-  SubscriberRef getOutput(uint32_t) noexcept override {
+  SubscriberRef getOutput(int32_t) noexcept override {
     LOG(FATAL) << "RequestResponse should not support streaming.";
   }
 

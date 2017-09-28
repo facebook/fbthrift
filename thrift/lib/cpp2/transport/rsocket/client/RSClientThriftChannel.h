@@ -31,25 +31,23 @@ class RSClientThriftChannel : public ThriftChannelIf {
   bool supportsHeaders() const noexcept override;
 
   void sendThriftRequest(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
  protected:
   virtual void sendSingleRequestResponse(
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept;
 
   void sendThriftResponse(
-      uint32_t,
-      std::unique_ptr<std::map<std::string, std::string>>,
+      std::unique_ptr<ResponseRpcMetadata>,
       std::unique_ptr<folly::IOBuf>) noexcept override {
     LOG(FATAL) << "Server side function is called in client side.";
   }
 
-  void cancel(uint32_t) noexcept override {
+  void cancel(int32_t) noexcept override {
     LOG(FATAL) << "not implemented";
   }
 
@@ -61,11 +59,11 @@ class RSClientThriftChannel : public ThriftChannelIf {
     LOG(FATAL) << "not implemented";
   }
 
-  void setInput(uint32_t, SubscriberRef) noexcept override {
+  void setInput(int32_t, SubscriberRef) noexcept override {
     LOG(FATAL) << "not implemented";
   }
 
-  SubscriberRef getOutput(uint32_t) noexcept override {
+  SubscriberRef getOutput(int32_t) noexcept override {
     LOG(FATAL) << "not implemented";
   }
 

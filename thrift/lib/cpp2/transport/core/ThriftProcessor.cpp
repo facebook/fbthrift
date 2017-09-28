@@ -22,17 +22,14 @@
 namespace apache {
 namespace thrift {
 
-using std::map;
-using std::string;
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
 void ThriftProcessor::onThriftRequest(
-    std::unique_ptr<FunctionInfo> functionInfo,
-    std::unique_ptr<map<string, string>> headers,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel) noexcept {
-  DCHECK(headers);
+  DCHECK(metadata);
   DCHECK(payload);
   DCHECK(channel);
 
@@ -49,11 +46,33 @@ void ThriftProcessor::onThriftRequest(
   }
 
   auto header = std::make_unique<transport::THeader>();
-  header->setHeaders(std::move(*headers));
+  if (metadata->__isset.protocol) {
+    header->setProtocolId(static_cast<int16_t>(metadata->protocol));
+  }
+  if (metadata->__isset.seqId) {
+    header->setSequenceNumber(metadata->seqId);
+  }
+  if (metadata->__isset.clientTimeoutMs) {
+    header->setClientTimeout(
+        std::chrono::milliseconds(metadata->clientTimeoutMs));
+  }
+  if (metadata->__isset.queueTimeoutMs) {
+    header->setClientQueueTimeout(
+        std::chrono::milliseconds(metadata->queueTimeoutMs));
+  }
+  if (metadata->__isset.priority) {
+    header->setCallPriority(
+        static_cast<concurrency::PRIORITY>(metadata->priority));
+  }
+  if (metadata->__isset.otherMetadata) {
+    header->setReadHeaders(std::move(metadata->otherMetadata));
+  }
 
   // TODO: Looks like this code can be placed after call to
   // deserializeMessageBegin().  Looks like we are repeating
   // some work here.
+  // TODO: Also, get this data from metadata after we properly
+  // populate it.  Then we don't need the following code.
   auto protByte = payload->data()[0];
   switch (protByte) {
     case 0x80:
@@ -74,13 +93,14 @@ void ThriftProcessor::onThriftRequest(
   auto context =
       std::make_unique<Cpp2RequestContext>(connContext.get(), header.get());
   auto rawContext = context.get();
+  auto seqId = metadata->__isset.seqId ? metadata->seqId : -1;
   std::unique_ptr<ResponseChannel::Request> request =
       std::make_unique<ThriftRequest>(
           channel,
           std::move(header),
           std::move(context),
           std::move(connContext),
-          functionInfo->seqId);
+          seqId);
 
   apache::thrift::detail::ap::deserializeMessageBegin(
       protoId, request, payload.get(), rawContext, evb);
@@ -89,7 +109,7 @@ void ThriftProcessor::onThriftRequest(
 }
 
 void ThriftProcessor::cancel(
-    uint32_t /*seqId*/,
+    int32_t /*seqId*/,
     ThriftChannelIf* /*channel*/) noexcept {
   // Processor currently ignores cancellations.
 }

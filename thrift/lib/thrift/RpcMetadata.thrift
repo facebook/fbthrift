@@ -17,9 +17,10 @@
 namespace cpp2 apache.thrift
 
 enum ProtocolId {
+  // The values must match those in thrift/lib/cpp/protocol/TProtocolTypes.h
   BINARY = 0,
-  COMPACT = 1,
-  FROZEN2 = 2,
+  COMPACT = 2,
+  FROZEN2 = 6,
 }
 
 enum RpcKind {
@@ -37,6 +38,8 @@ enum RpcPriority {
   IMPORTANT = 2,
   NORMAL = 3,
   BEST_EFFORT = 4,
+  // This should be the immediately after the last enumerator.
+  N_PRIORITIES = 5,
 }
 
 // RPC metadata sent from the client to the server.  The lifetime of
@@ -75,6 +78,8 @@ struct RequestRpcMetadata {
   // A string to string map that can be populated in the call to the
   // generated client code and further populated by plugins on the
   // client side before it is finally sent over to the server.
+  // Any frequently used key-value pair in this map should be replaced
+  // by a field in this struct.
   8: optional map<string, string> otherMetadata;
 }
 
@@ -93,5 +98,7 @@ struct ResponseRpcMetadata {
   // A string to string map that can be populated by the server
   // handler and further populated by plugins on the server side
   // before it is finally sent back to the client.
+  // Any frequently used key-value pair in this map should be replaced
+  // by a field in this struct.
   3: optional map<string, string> otherMetadata;
 }

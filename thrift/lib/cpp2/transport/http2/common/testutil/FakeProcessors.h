@@ -49,12 +49,11 @@ class EchoProcessor : public ThriftProcessor {
   ~EchoProcessor() override = default;
 
   void onThriftRequest(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel) noexcept override;
 
-  void cancel(uint32_t seqId, ThriftChannelIf* channel) noexcept override;
+  void cancel(int32_t seqId, ThriftChannelIf* channel) noexcept override;
 
  private:
   // The new entry to add to the header.
@@ -68,8 +67,7 @@ class EchoProcessor : public ThriftProcessor {
   folly::EventBase* evb_;
 
   void onThriftRequestHelper(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel) noexcept;
 };

@@ -39,15 +39,13 @@ class SingleRpcChannel : public H2ChannelIf {
   bool supportsHeaders() const noexcept override;
 
   void sendThriftResponse(
-      uint32_t seqId,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
 
-  void cancel(uint32_t seqId) noexcept override;
+  void cancel(int32_t seqId) noexcept override;
 
   void sendThriftRequest(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
@@ -55,9 +53,9 @@ class SingleRpcChannel : public H2ChannelIf {
 
   folly::EventBase* getEventBase() noexcept override;
 
-  void setInput(uint32_t seqId, SubscriberRef sink) noexcept override;
+  void setInput(int32_t seqId, SubscriberRef sink) noexcept override;
 
-  SubscriberRef getOutput(uint32_t seqId) noexcept override;
+  SubscriberRef getOutput(int32_t seqId) noexcept override;
 
   void onH2StreamBegin(
       std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;

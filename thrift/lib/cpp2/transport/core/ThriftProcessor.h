@@ -23,9 +23,8 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-#include <thrift/lib/cpp2/transport/core/FunctionInfo.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-#include <map>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
 #include <string>
 
@@ -58,12 +57,8 @@ class ThriftProcessor {
   // "channel" is used to call back with the response for single
   // (non-streaming) responses, and to manage stream objects for RPCs
   // with streaming.
-  //
-  // TODO: We should replace functionInfo and headers with a
-  // RpcOptions parameter afer merging FunctionInfo with RpcOptions.
   virtual void onThriftRequest(
-      std::unique_ptr<FunctionInfo> functionInfo,
-      std::unique_ptr<std::map<std::string, std::string>> headers,
+      std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel) noexcept;
 
@@ -71,7 +66,7 @@ class ThriftProcessor {
   // "onThriftRequest()".  The processor does not have to call back
   // once this method has been called, and the call back will be
   // ignored if it does.
-  virtual void cancel(uint32_t seqId, ThriftChannelIf* channel) noexcept;
+  virtual void cancel(int32_t seqId, ThriftChannelIf* channel) noexcept;
 
   // Called from the server initialization code if there's an update
   // to the thread manager used to manage the server
@@ -97,7 +92,7 @@ class ThriftProcessor {
         std::unique_ptr<transport::THeader> header,
         std::unique_ptr<Cpp2RequestContext> context,
         std::unique_ptr<Cpp2ConnContext> connContext,
-        uint32_t seqId)
+        int32_t seqId)
         : channel_(channel),
           header_(std::move(header)),
           context_(std::move(context)),
@@ -122,8 +117,12 @@ class ThriftProcessor {
         std::unique_ptr<folly::IOBuf>&& buf,
         apache::thrift::MessageChannel::SendCallback* /* cb */ =
             nullptr) override {
-      auto headers = std::make_unique<std::map<std::string, std::string>>();
-      channel_->sendThriftResponse(seqId_, std::move(headers), std::move(buf));
+      auto metadata = std::make_unique<ResponseRpcMetadata>();
+      if (seqId_ != -1) {
+        metadata->seqId = seqId_;
+        metadata->__isset.seqId = true;
+      }
+      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
     }
 
     // TODO: Implement sendErrorWrapped
@@ -138,7 +137,7 @@ class ThriftProcessor {
     std::unique_ptr<transport::THeader> header_;
     std::unique_ptr<Cpp2RequestContext> context_;
     std::unique_ptr<Cpp2ConnContext> connContext_;
-    uint32_t seqId_;
+    int32_t seqId_;
     std::atomic<bool> active_;
   };
 };

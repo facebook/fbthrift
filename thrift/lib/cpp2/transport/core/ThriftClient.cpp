@@ -22,12 +22,11 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
 
-using std::map;
-using std::string;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::transport::THeader;
@@ -170,21 +169,39 @@ uint32_t ThriftClient::sendRequestHelper(
         isSecurityActive()));
     return 0;
   }
-  std::unique_ptr<FunctionInfo> finfo = std::make_unique<FunctionInfo>();
+  auto metadata = std::make_unique<RequestRpcMetadata>();
+  metadata->protocol = static_cast<ProtocolId>(protocolId_);
+  metadata->__isset.protocol = true;
   // TODO: add function name.  We don't use it right now.  The payload
   // already contains the function name - so that's where the name is
   // obtained right now.
-  finfo->name = "";
   if (oneway) {
-    finfo->kind = SINGLE_REQUEST_NO_RESPONSE;
+    metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   } else {
-    finfo->kind = SINGLE_REQUEST_SINGLE_RESPONSE;
+    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   }
-  finfo->seqId = 0; // not used.
-  finfo->protocol = static_cast<PROTOCOL_TYPES>(protocolId_);
-  std::unique_ptr<map<string, string>> headers;
-  if (channel->supportsHeaders()) {
-    headers = buildHeaders(header.get(), rpcOptions);
+  metadata->__isset.kind = true;
+  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
+    metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
+    metadata->__isset.clientTimeoutMs = true;
+  }
+  if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
+    metadata->queueTimeoutMs = rpcOptions.getTimeout().count();
+    metadata->__isset.queueTimeoutMs = true;
+  }
+  if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
+    metadata->priority = static_cast<RpcPriority>(rpcOptions.getPriority());
+    metadata->__isset.priority = true;
+  }
+  metadata->otherMetadata = header->releaseWriteHeaders();
+  auto* eh = header->getExtraWriteHeaders();
+  if (eh) {
+    metadata->otherMetadata.insert(eh->begin(), eh->end());
+  }
+  auto& pwh = getPersistentWriteHeaders();
+  metadata->otherMetadata.insert(pwh.begin(), pwh.end());
+  if (!metadata->otherMetadata.empty()) {
+    metadata->__isset.otherMetadata = true;
   }
   std::unique_ptr<ThriftClientCallback> callback;
   if (!oneway) {
@@ -197,45 +214,24 @@ uint32_t ThriftClient::sendRequestHelper(
   }
   connection_->getEventBase()->runInEventBaseThread([
     evbChannel = channel,
-    evbFinfo = std::move(finfo),
-    evbHeaders = std::move(headers),
+    evbMetadata = std::move(metadata),
     evbBuf = std::move(buf),
     evbCallback = std::move(callback),
     oneway,
     evbCb = std::move(cb)
   ]() mutable {
     evbChannel->sendThriftRequest(
-        std::move(evbFinfo),
-        std::move(evbHeaders),
-        std::move(evbBuf),
-        std::move(evbCallback));
+        std::move(evbMetadata), std::move(evbBuf), std::move(evbCallback));
     if (oneway) {
-      // TODO: We only invoke requestSent for oneway calls.  I don't think it
-      // use used for any other kind of call.  Verify.
+      // TODO: We only invoke requestSent for oneway calls.  I
+      // don't think it use used for any other kind of call.
+      // Verify.
+      // TODO: Actually we do need to callback for twoway also.
+      // But evbCb may have been deallocated by now.  Fix this.
       evbCb->requestSent();
     }
   });
   return 0;
-}
-
-std::unique_ptr<map<string, string>> ThriftClient::buildHeaders(
-    THeader* header,
-    RpcOptions& rpcOptions) {
-  header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-  header->forceClientType(THRIFT_HTTP_CLIENT_TYPE);
-  addRpcOptionHeaders(header, rpcOptions);
-  auto headers = std::make_unique<map<string, string>>();
-  auto pwh = getPersistentWriteHeaders();
-  headers->insert(pwh.begin(), pwh.end());
-  {
-    auto wh = header->releaseWriteHeaders();
-    headers->insert(wh.begin(), wh.end());
-  }
-  auto eh = header->getExtraWriteHeaders();
-  if (eh) {
-    headers->insert(eh->begin(), eh->end());
-  }
-  return headers;
 }
 
 EventBase* ThriftClient::getEventBase() const {
