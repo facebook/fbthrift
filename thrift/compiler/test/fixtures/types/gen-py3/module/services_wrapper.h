@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <src/gen-cpp2/SomeService.h>
 #include <folly/python/futures.h>
 #include <Python.h>
 
@@ -16,6 +17,19 @@ namespace thrift {
 namespace fixtures {
 namespace types {
 
+class SomeServiceWrapper : virtual public SomeServiceSvIf {
+  protected:
+    PyObject *if_object;
+    folly::Executor *executor;
+  public:
+    explicit SomeServiceWrapper(PyObject *if_object, folly::Executor *exc);
+    virtual ~SomeServiceWrapper();
+    folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> future_bounce_map(
+        std::unique_ptr<std::unordered_map<int32_t,std::string>> m
+    ) override;
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> SomeServiceInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace apache
 } // namespace thrift
 } // namespace fixtures

@@ -14,6 +14,7 @@
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
 }}}
+#include "thrift/compiler/test/fixtures/types/gen-cpp/include_types.h"
 
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
@@ -227,6 +228,19 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
     fieldG = arg.move();
     __isset.fieldG = true;
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldH = arg.move();
+    __isset.fieldH = true;
+  }
 
   ContainerStruct(const ContainerStruct&) = default;
   ContainerStruct& operator=(const ContainerStruct& src)= default;
@@ -244,6 +258,7 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
   folly::small_vector<int32_t>  fieldE;
   folly::sorted_vector_set<int32_t>  fieldF;
   folly::sorted_vector_map<int32_t, std::string>  fieldG;
+   ::apache::thrift::fixtures::types::SomeMap fieldH;
 
   struct __isset {
     __isset() { __clear(); } 
@@ -255,6 +270,7 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
       fieldE = false;
       fieldF = false;
       fieldG = false;
+      fieldH = false;
     }
     bool fieldA;
     bool fieldB;
@@ -263,6 +279,7 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
     bool fieldE;
     bool fieldF;
     bool fieldG;
+    bool fieldH;
   } __isset;
 
   bool operator == (const ContainerStruct &) const;

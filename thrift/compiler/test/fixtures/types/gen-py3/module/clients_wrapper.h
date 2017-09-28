@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <src/gen-cpp2/SomeService.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
@@ -22,6 +23,23 @@ namespace apache {
 namespace thrift {
 namespace fixtures {
 namespace types {
+
+class SomeServiceClientWrapper {
+  protected:
+    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
+  public:
+    explicit SomeServiceClientWrapper(
+      std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client);
+    virtual ~SomeServiceClientWrapper();
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
+
+    folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(
+      std::unordered_map<int32_t,std::string> arg_m);
+};
+
 
 } // namespace apache
 } // namespace thrift

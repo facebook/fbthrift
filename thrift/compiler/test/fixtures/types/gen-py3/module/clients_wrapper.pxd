@@ -19,5 +19,20 @@ from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport module.types
 
 
+cdef extern from "src/gen-cpp2/SomeService.h" namespace "apache::thrift::fixtures::types":
+  cdef cppclass cSomeServiceAsyncClient "apache::thrift::fixtures::types::SomeServiceAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cSomeServiceClientWrapper] move(unique_ptr[cSomeServiceClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrift::fixtures::types":
-  pass
+  cdef cppclass cSomeServiceClientWrapper "apache::thrift::fixtures::types::SomeServiceClientWrapper":
+    cSomeServiceClientWrapper(
+      shared_ptr[cSomeServiceAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
+    cFollyFuture[std_unordered_map[int32_t,string]] bounce_map(
+      std_unordered_map[int32_t,string] arg_m,)
+

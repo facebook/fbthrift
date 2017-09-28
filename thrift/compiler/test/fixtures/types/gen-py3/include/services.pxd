@@ -8,7 +8,3 @@
 from thrift.py3.server cimport ServiceInterface
 
 
-cdef class SomeServiceInterface(ServiceInterface):
-    cdef public bint _pass_context_bounce_map
-    pass
-

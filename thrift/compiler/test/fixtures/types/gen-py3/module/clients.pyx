@@ -31,6 +31,104 @@ import traceback
 cimport module.types
 import module.types
 
+from module.clients_wrapper cimport cSomeServiceAsyncClient, cSomeServiceClientWrapper
+
+
+cdef void SomeService_bounce_map_callback(
+    cFollyTry[std_unordered_map[int32_t,string]]&& result,
+    PyObject* future
+):
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throw_exception()
+        except Exception as ex:
+            pyfuture.set_exception(ex)
+    else:
+        pyfuture.set_result(module.types.std_unordered_map__Map__i32_string.create(make_shared[std_unordered_map[int32_t,string]](result.value())))
+
+
+cdef class SomeService(thrift.py3.client.Client):
+
+    def __cinit__(SomeService self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
+
+    cdef const type_info* _typeid(SomeService self):
+        return &typeid(cSomeServiceAsyncClient)
+
+    @staticmethod
+    cdef _module_SomeService_set_client(SomeService inst, shared_ptr[cSomeServiceClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_SomeService_client = c_obj
+
+    cdef _module_SomeService_reset_client(SomeService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_SomeService_client.reset()
+
+    def __dealloc__(SomeService self):
+        if self._cRequestChannel or self._module_SomeService_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
+
+    async def __aenter__(SomeService self):
+        await self._connect_future
+        if self._cRequestChannel:
+            SomeService._module_SomeService_set_client(
+                self,
+                makeClientWrapper[cSomeServiceAsyncClient, cSomeServiceClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(SomeService self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_SomeService_client).disconnect(),
+            closed_SomeService_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._module_SomeService_reset_client()
+
+    def set_persistent_header(SomeService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_SomeService_client).setPersistentHeader(ckey, cvalue)
+
+    async def bounce_map(
+            SomeService self,
+            arg_m):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[std_unordered_map[int32_t,string]](
+            self._executor,
+            deref(self._module_SomeService_client).bounce_map(
+                std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(arg_m)._cpp_obj.get())),
+            ),
+            SomeService_bounce_map_callback,
+            <PyObject *> future
+        )
+        return await future
 
 
 
+cdef void closed_SomeService_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)

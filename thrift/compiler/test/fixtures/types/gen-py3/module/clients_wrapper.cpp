@@ -11,6 +11,39 @@ namespace apache {
 namespace thrift {
 namespace fixtures {
 namespace types {
+SomeServiceClientWrapper::SomeServiceClientWrapper(
+    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
+
+SomeServiceClientWrapper::~SomeServiceClientWrapper() {}
+
+folly::Future<folly::Unit> SomeServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void SomeServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+void SomeServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
+
+folly::Future<std::unordered_map<int32_t,std::string>>
+SomeServiceClientWrapper::bounce_map(
+    std::unordered_map<int32_t,std::string> arg_m) {
+ return async_client->future_bounce_map(
+   arg_m
+ );
+}
+
+
 } // namespace apache
 } // namespace thrift
 } // namespace fixtures

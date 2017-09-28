@@ -1,3 +1,5 @@
+include "include.thrift"
+
 namespace cpp apache.thrift.fixtures.types
 namespace cpp2 apache.thrift.fixtures.types
 
@@ -13,6 +15,7 @@ struct ContainerStruct {
   5: list<i32> (cpp.template = "folly::small_vector") fieldE
   6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF
   7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG
+  8: include.SomeMap fieldH
 }
 
 enum has_bitwise_ops {
@@ -22,3 +25,7 @@ enum has_bitwise_ops {
   two = 4,
   three = 8,
 } (cpp.declare_bitwise_ops)
+
+service SomeService {
+  include.SomeMap bounce_map(1: include.SomeMap m)
+}

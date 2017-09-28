@@ -121,8 +121,72 @@ void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Sc
     f.name = "fieldG";
     f.order = 6;
   }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[8];
+    f.isRequired = true;
+    f.type = 673983474151144843U;
+    f.name = "fieldH";
+    f.order = 7;
+  }
   reflectionInitializer_10941653322204590122(schema);  // set<i32>
   reflectionInitializer_12058391220869880681(schema);  // list<i32>
+  reflectionInitializer_673983474151144843(schema);  // map<i32, string>
+}
+
+static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
+// Reflection initializer for struct module.SomeService_bounce_map_args
+void reflectionInitializer_8067468913239303596(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8067468913239303596U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.SomeService_bounce_map_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 673983474151144843U;
+    f.name = "m";
+    f.order = 0;
+  }
+  reflectionInitializer_673983474151144843(schema);  // map<i32, string>
+}
+
+static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
+// Reflection initializer for struct module.SomeService_bounce_map_pargs
+void reflectionInitializer_13692909882459418892(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 13692909882459418892U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.SomeService_bounce_map_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 673983474151144843U;
+    f.name = "m";
+    f.order = 0;
+  }
+  reflectionInitializer_673983474151144843(schema);  // map<i32, string>
+}
+
+static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
+// Reflection initializer for struct module.SomeService_bounce_map_presult
+void reflectionInitializer_14908807508243143308(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 14908807508243143308U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.SomeService_bounce_map_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 673983474151144843U;
+    f.name = "success";
+    f.order = 0;
+  }
   reflectionInitializer_673983474151144843(schema);  // map<i32, string>
 }
 

@@ -163,6 +163,8 @@ bool ContainerStruct::operator == (const ContainerStruct & rhs) const {
     return false;
   if (!(this->fieldG == rhs.fieldG))
     return false;
+  if (!(this->fieldH == rhs.fieldH))
+    return false;
   return true;
 }
 
@@ -197,6 +199,10 @@ void ContainerStruct::translateFieldName(
   }
   else if (_fname == "fieldG") {
     fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldH") {
+    fid = 8;
     _ftype = apache::thrift::protocol::T_MAP;
   }
 };
@@ -446,6 +452,40 @@ uint32_t ContainerStruct::read(apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(_ftype);
         }
         break;
+      case 8:
+        if (_ftype == apache::thrift::protocol::T_MAP) {
+          {
+            this->fieldH.clear();
+            uint32_t _size66;
+            bool _sizeUnknown67;
+            apache::thrift::protocol::TType _ktype68;
+            apache::thrift::protocol::TType _vtype69;
+            xfer += iprot->readMapBegin(_ktype68, _vtype69, _size66, _sizeUnknown67);
+            if (!_sizeUnknown67) {
+              uint32_t _i72;
+              for (_i72 = 0; _i72 < _size66; ++_i72)
+              {
+                int32_t _key73;
+                xfer += iprot->readI32(_key73);
+                std::string& _val74 = this->fieldH[_key73];
+                xfer += iprot->readString(_val74);
+              }
+            } else {
+              while (iprot->peekMap())
+              {
+                int32_t _key75;
+                xfer += iprot->readI32(_key75);
+                std::string& _val76 = this->fieldH[_key75];
+                xfer += iprot->readString(_val76);
+              }
+            }
+            xfer += iprot->readMapEnd();
+          }
+          this->__isset.fieldH = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(_ftype);
         break;
@@ -466,6 +506,7 @@ void ContainerStruct::__clear() {
   fieldE.clear();
   fieldF.clear();
   fieldG.clear();
+  fieldH.clear();
   __isset.__clear();
 }
 uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
@@ -474,10 +515,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldB", apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldB.size());
-    std::list<int32_t> ::const_iterator _iter66;
-    for (_iter66 = this->fieldB.begin(); _iter66 != this->fieldB.end(); ++_iter66)
+    std::list<int32_t> ::const_iterator _iter77;
+    for (_iter77 = this->fieldB.begin(); _iter77 != this->fieldB.end(); ++_iter77)
     {
-      xfer += oprot->writeI32((*_iter66));
+      xfer += oprot->writeI32((*_iter77));
     }
     xfer += oprot->writeListEnd();
   }
@@ -485,10 +526,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldC", apache::thrift::protocol::T_LIST, 3);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldC.size());
-    std::deque<int32_t> ::const_iterator _iter67;
-    for (_iter67 = this->fieldC.begin(); _iter67 != this->fieldC.end(); ++_iter67)
+    std::deque<int32_t> ::const_iterator _iter78;
+    for (_iter78 = this->fieldC.begin(); _iter78 != this->fieldC.end(); ++_iter78)
     {
-      xfer += oprot->writeI32((*_iter67));
+      xfer += oprot->writeI32((*_iter78));
     }
     xfer += oprot->writeListEnd();
   }
@@ -496,10 +537,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldD", apache::thrift::protocol::T_LIST, 4);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldD.size());
-    folly::fbvector<int32_t> ::const_iterator _iter68;
-    for (_iter68 = this->fieldD.begin(); _iter68 != this->fieldD.end(); ++_iter68)
+    folly::fbvector<int32_t> ::const_iterator _iter79;
+    for (_iter79 = this->fieldD.begin(); _iter79 != this->fieldD.end(); ++_iter79)
     {
-      xfer += oprot->writeI32((*_iter68));
+      xfer += oprot->writeI32((*_iter79));
     }
     xfer += oprot->writeListEnd();
   }
@@ -507,10 +548,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldE", apache::thrift::protocol::T_LIST, 5);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldE.size());
-    folly::small_vector<int32_t> ::const_iterator _iter69;
-    for (_iter69 = this->fieldE.begin(); _iter69 != this->fieldE.end(); ++_iter69)
+    folly::small_vector<int32_t> ::const_iterator _iter80;
+    for (_iter80 = this->fieldE.begin(); _iter80 != this->fieldE.end(); ++_iter80)
     {
-      xfer += oprot->writeI32((*_iter69));
+      xfer += oprot->writeI32((*_iter80));
     }
     xfer += oprot->writeListEnd();
   }
@@ -518,10 +559,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldF", apache::thrift::protocol::T_SET, 6);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->fieldF.size());
-    folly::sorted_vector_set<int32_t> ::const_iterator _iter70;
-    for (_iter70 = this->fieldF.begin(); _iter70 != this->fieldF.end(); ++_iter70)
+    folly::sorted_vector_set<int32_t> ::const_iterator _iter81;
+    for (_iter81 = this->fieldF.begin(); _iter81 != this->fieldF.end(); ++_iter81)
     {
-      xfer += oprot->writeI32((*_iter70));
+      xfer += oprot->writeI32((*_iter81));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -529,11 +570,23 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldG", apache::thrift::protocol::T_MAP, 7);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldG.size());
-    folly::sorted_vector_map<int32_t, std::string> ::const_iterator _iter71;
-    for (_iter71 = this->fieldG.begin(); _iter71 != this->fieldG.end(); ++_iter71)
+    folly::sorted_vector_map<int32_t, std::string> ::const_iterator _iter82;
+    for (_iter82 = this->fieldG.begin(); _iter82 != this->fieldG.end(); ++_iter82)
     {
-      xfer += oprot->writeI32(_iter71->first);
-      xfer += oprot->writeString(_iter71->second);
+      xfer += oprot->writeI32(_iter82->first);
+      xfer += oprot->writeString(_iter82->second);
+    }
+    xfer += oprot->writeMapEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("fieldH", apache::thrift::protocol::T_MAP, 8);
+  {
+    xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldH.size());
+    std::unordered_map<int32_t, std::string> ::const_iterator _iter83;
+    for (_iter83 = this->fieldH.begin(); _iter83 != this->fieldH.end(); ++_iter83)
+    {
+      xfer += oprot->writeI32(_iter83->first);
+      xfer += oprot->writeString(_iter83->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -541,10 +594,10 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldA", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
-    std::vector<int32_t> ::const_iterator _iter72;
-    for (_iter72 = this->fieldA.begin(); _iter72 != this->fieldA.end(); ++_iter72)
+    std::vector<int32_t> ::const_iterator _iter84;
+    for (_iter84 = this->fieldA.begin(); _iter84 != this->fieldA.end(); ++_iter84)
     {
-      xfer += oprot->writeI32((*_iter72));
+      xfer += oprot->writeI32((*_iter84));
     }
     xfer += oprot->writeListEnd();
   }
@@ -565,6 +618,7 @@ void swap(ContainerStruct &a, ContainerStruct &b) {
   swap(a.fieldE, b.fieldE);
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
+  swap(a.fieldH, b.fieldH);
   swap(a.__isset, b.__isset);
 }
 
@@ -584,6 +638,8 @@ void merge(const ContainerStruct& from, ContainerStruct& to) {
   to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
   merge(from.fieldG, to.fieldG);
   to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
+  merge(from.fieldH, to.fieldH);
+  to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
 }
 
 void merge(ContainerStruct&& from, ContainerStruct& to) {
@@ -602,6 +658,8 @@ void merge(ContainerStruct&& from, ContainerStruct& to) {
   to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
   merge(std::move(from.fieldG), to.fieldG);
   to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
+  merge(std::move(from.fieldH), to.fieldH);
+  to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
 }
 
 }}}} // namespace

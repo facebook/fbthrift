@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
+#include "include_types.h"
 
 // BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {
@@ -264,14 +265,15 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
   ContainerStruct() {}
   // FragileConstructor for use in initialization lists only
 
-  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg) :
+  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
       fieldA(std::move(fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
       fieldD(std::move(fieldD__arg)),
       fieldE(std::move(fieldE__arg)),
       fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)) {
+      fieldG(std::move(fieldG__arg)),
+      fieldH(std::move(fieldH__arg)) {
     __isset.fieldA = true;
     __isset.fieldB = true;
     __isset.fieldC = true;
@@ -279,6 +281,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldE = true;
     __isset.fieldF = true;
     __isset.fieldG = true;
+    __isset.fieldH = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ContainerStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -329,6 +332,13 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldG = arg.move();
     __isset.fieldG = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldH = arg.move();
+    __isset.fieldH = true;
+  }
 
   ContainerStruct(ContainerStruct&&) = default;
 
@@ -348,6 +358,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
   folly::small_vector<int32_t> fieldE;
   folly::sorted_vector_set<int32_t> fieldF;
   folly::sorted_vector_map<int32_t, std::string> fieldG;
+   ::apache::thrift::fixtures::types::SomeMap fieldH;
 
   struct __isset {
     void __clear() {
@@ -358,6 +369,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldE = false;
       fieldF = false;
       fieldG = false;
+      fieldH = false;
     }
 
     bool fieldA = false;
@@ -367,6 +379,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldE = false;
     bool fieldF = false;
     bool fieldG = false;
+    bool fieldH = false;
   } __isset;
   bool operator==(const ContainerStruct& rhs) const;
   bool operator < (const ContainerStruct& rhs) const;
@@ -432,6 +445,15 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
     return fieldG;
+  }
+  const  ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
+   ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
+
+  template <typename T_ContainerStruct_fieldH_struct_setter>
+   ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
+    fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
+    __isset.fieldH = true;
+    return fieldH;
   }
 
   template <class Protocol_>

@@ -87,6 +87,7 @@ void ContainerStruct::__clear() {
   fieldE.clear();
   fieldF.clear();
   fieldG.clear();
+  fieldH.clear();
   __isset.__clear();
 }
 
@@ -110,6 +111,9 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
     return false;
   }
   if (!((fieldG == rhs.fieldG))) {
+    return false;
+  }
+  if (!((fieldH == rhs.fieldH))) {
     return false;
   }
   return true;
@@ -171,6 +175,14 @@ folly::sorted_vector_map<int32_t, std::string> ContainerStruct::get_fieldG() && 
   return std::move(fieldG);
 }
 
+const  ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH() const& {
+  return fieldH;
+}
+
+ ::apache::thrift::fixtures::types::SomeMap ContainerStruct::get_fieldH() && {
+  return std::move(fieldH);
+}
+
 void ContainerStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "fieldA") {
@@ -201,6 +213,10 @@ void ContainerStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _
     fid = 7;
     _ftype = apache::thrift::protocol::T_MAP;
   }
+  else if (_fname == "fieldH") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
 }
 
 void swap(ContainerStruct& a, ContainerStruct& b) {
@@ -212,6 +228,7 @@ void swap(ContainerStruct& a, ContainerStruct& b) {
   swap(a.fieldE, b.fieldE);
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
+  swap(a.fieldH, b.fieldH);
   swap(a.__isset, b.__isset);
 }
 

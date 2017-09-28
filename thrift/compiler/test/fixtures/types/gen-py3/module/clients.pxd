@@ -8,4 +8,13 @@ from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
+from module.clients_wrapper cimport cSomeServiceClientWrapper
 
+cdef class SomeService(thrift.py3.client.Client):
+    cdef shared_ptr[cSomeServiceClientWrapper] _module_SomeService_client
+
+    @staticmethod
+    cdef _module_SomeService_set_client(SomeService inst, shared_ptr[cSomeServiceClientWrapper] c_obj)
+
+    cdef _module_SomeService_reset_client(SomeService self)
+    
