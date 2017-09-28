@@ -16,18 +16,16 @@ add_dependencies(thriftfrozen2 frozen-cpp-target)
 target_link_libraries(
   thriftfrozen2
 
-  ${FOLLY_LIBRARY}
   ${DOUBLE_CONVERSION_LIBRARY}
+  ${FOLLY_LIBRARY}
+  ${GLOG_LIBRARIES}
+  ${GFLAGS_LIBRARIES}
 )
 install(TARGETS thriftfrozen2 DESTINATION lib)
 
 add_library(
   thriftprotocol
 
-  ${LIB_HOME}/cpp/Thrift.cpp
-  ${LIB_HOME}/cpp/concurrency/Util.cpp
-  ${LIB_HOME}/cpp/transport/TTransportException.cpp
-  ${LIB_HOME}/cpp/util/VarintUtils.cpp
   protocol/BinaryProtocol.cpp
   protocol/CompactProtocol.cpp
   protocol/CompactV1Protocol.cpp
@@ -41,6 +39,7 @@ add_library(
 target_link_libraries(
   thriftprotocol
 
+  thrift
   ${FOLLY_LIBRARY}
   ${WANGLE_LIBRARIES}
   ${DOUBLE_CONVERSION_LIBRARY}
@@ -94,21 +93,6 @@ add_library(
   server/peeking/TLSHelper.cpp
   transport/core/ThriftProcessor.cpp
   util/ScopedServerInterfaceThread.cpp
-  ${LIB_HOME}/cpp/EventHandlerBase.cpp
-  ${LIB_HOME}/cpp/transport/THeader.cpp
-  ${LIB_HOME}/cpp/transport/THeaderTransport.cpp
-  ${LIB_HOME}/cpp/util/ScopedServerThread.cpp
-  ${LIB_HOME}/cpp/util/SocketRetriever.cpp
-  ${LIB_HOME}/cpp/util/VarintUtils.cpp
-  ${LIB_HOME}/cpp/util/FdUtils.cpp
-  ${LIB_HOME}/cpp/util/THttpParser.cpp
-  ${LIB_HOME}/cpp/util/PausableTimer.cpp
-  ${LIB_HOME}/cpp/util/kerberos/Krb5Util.cpp
-  ${LIB_HOME}/cpp/util/kerberos/Krb5OlderVersionStubs.cpp
-  ${LIB_HOME}/cpp/util/kerberos/Krb5CredentialsCacheManager.cpp
-  ${LIB_HOME}/cpp/util/kerberos/Krb5CCacheStore.cpp
-  ${LIB_HOME}/cpp/util/kerberos/Krb5Tgts.cpp
-  ${LIB_HOME}/cpp/util/kerberos/FBKrb5GetCreds.cpp
   ${RpcMetadata-cpp2-SOURCES}
   ${Sasl-cpp2-SOURCES}
 )
@@ -116,20 +100,10 @@ add_dependencies(thriftcpp2 Sasl-cpp2-target)
 target_link_libraries(
   thriftcpp2
 
+  security
   thrift
   thriftfrozen2
   thriftprotocol
-  Threads::Threads
-  ${Boost_LIBRARIES}
-  ${DOUBLE_CONVERSION_LIBRARY}
-  ${FOLLY_LIBRARY}
-  ${GFLAGS_LIBRARIES}
-  ${GLOG_LIBRARIES}
-  ${KRB5_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
-  ${WANGLE_LIBRARIES}
-  ${ZLIB_LIBRARIES}
-  ${ZSTD_LIBRARIES}
 )
 install(TARGETS thriftcpp2 DESTINATION lib)
 
