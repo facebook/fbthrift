@@ -32,6 +32,7 @@ find_package(
   COMPONENTS
     filesystem
     system
+    thread
 )
 include_directories(${Boost_INCLUDE_DIRS})
 

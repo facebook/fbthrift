@@ -1,4 +1,15 @@
 add_library(
+  thrift-core
+
+  Thrift.cpp
+)
+target_link_libraries(
+  thrift-core
+
+  ${FOLLY_LIBRARY}
+)
+
+add_library(
   concurrency
 
   concurrency/Mutex.cpp
@@ -12,6 +23,8 @@ target_link_libraries(
   concurrency
 
   ${FOLLY_LIBRARY}
+  ${GFLAGS_LIBRARIES}
+  ${GLOG_LIBRARIES}
 )
 install(TARGETS concurrency DESTINATION lib)
 
@@ -30,7 +43,9 @@ add_dependencies(protocol reflection-cpp-target)
 target_link_libraries(
   protocol
 
+  ${DOUBLE_CONVERSION_LIBRARY}
   ${FOLLY_LIBRARY}
+  ${GLOG_LIBRARIES}
 )
 install(TARGETS protocol DESTINATION lib)
 
@@ -53,11 +68,21 @@ add_library(
   transport/TBufferTransports.cpp
   transport/THeader.cpp
   transport/TZlibTransport.cpp
+  util/FdUtils.cpp
+  util/PausableTimer.cpp
+  util/ScopedServerThread.cpp
+  util/SocketRetriever.cpp
+  util/THttpParser.cpp
+  util/VarintUtils.cpp
 )
 target_link_libraries(
   transport
 
+  concurrency
+  thrift-core
   ${FOLLY_LIBRARY}
+  ${OPENSSL_LIBRARIES}
+  ${ZLIB_LIBRARIES}
   ${ZSTD_LIBRARIES}
 )
 install(TARGETS transport DESTINATION lib)
@@ -65,6 +90,7 @@ install(TARGETS transport DESTINATION lib)
 add_library(
   async
 
+  EventHandlerBase.cpp
   async/TAsyncSocketFactory.cpp
   async/TAsyncSSLSocketFactory.cpp
   async/TBinaryAsyncChannel.cpp
@@ -81,24 +107,34 @@ add_library(
 target_link_libraries(
   async
 
+  concurrency
+  transport
+  ${Boost_LIBRARIES}
   ${FOLLY_LIBRARY}
+  ${GLOG_LIBRARIES}
+  ${OPENSSL_LIBRARIES}
 )
 install(TARGETS async DESTINATION lib)
 
 add_library(
-  util
+  security  
 
-  util/FdUtils.cpp
-  util/THttpParser.cpp
-  util/SocketRetriever.cpp
-  util/VarintUtils.cpp
+  util/kerberos/Krb5Util.cpp
+  util/kerberos/Krb5OlderVersionStubs.cpp
+  util/kerberos/Krb5CredentialsCacheManager.cpp
+  util/kerberos/Krb5CCacheStore.cpp
+  util/kerberos/Krb5Tgts.cpp
+  util/kerberos/FBKrb5GetCreds.cpp
 )
 target_link_libraries(
-  util
-
+  security
+  
+  ${KRB5_LIBRARIES}
+  ${Boost_LIBRARIES}
   ${FOLLY_LIBRARY}
+  ${GFLAGS_LIBRARIES}
+  ${GLOG_LIBRARIES}
 )
-install(TARGETS util DESTINATION lib)
 
 add_library(
   server
@@ -115,8 +151,6 @@ install(TARGETS server DESTINATION lib)
 add_library(
   thrift
 
-  EventHandlerBase.cpp
-  Thrift.cpp
   VirtualProfiling.cpp
 )
 target_link_libraries(
@@ -126,7 +160,6 @@ target_link_libraries(
   concurrency
   protocol
   transport
-  util
   ${FOLLY_LIBRARY}
   ${GLOG_LIBRARIES}
 )
@@ -138,7 +171,6 @@ set(THRIFT1_HEADER_DIRS
   protocol
   server
   transport
-  util
 )
 foreach(dir ${THRIFT1_HEADER_DIRS})
   install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp
