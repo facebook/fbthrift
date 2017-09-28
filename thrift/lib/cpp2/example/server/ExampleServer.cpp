@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/example/ChatRoomService.h"
-#include "thrift/lib/cpp2/example/EchoService.h"
+#include "thrift/lib/cpp2/example/server/ChatRoomService.h"
+#include "thrift/lib/cpp2/example/server/EchoService.h"
 
 #include <folly/init/Init.h>
 #include <glog/logging.h>
