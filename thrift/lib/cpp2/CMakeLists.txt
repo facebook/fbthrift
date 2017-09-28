@@ -107,8 +107,6 @@ target_link_libraries(
 )
 install(TARGETS thriftcpp2 DESTINATION lib)
 
-add_subdirectory(example)
-
 # Install includes
 set(THRIFT2_HEADER_DIRS
   async

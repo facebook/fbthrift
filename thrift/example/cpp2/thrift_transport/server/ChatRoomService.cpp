@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/example/server/ChatRoomService.h"
+#include "thrift/example/cpp2/thrift_transport/server/ChatRoomService.h"
 
 #include <time.h>
 

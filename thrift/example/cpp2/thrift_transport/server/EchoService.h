@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/example/server/EchoService.h"
+#pragma once
+
+#include "thrift/example/if/gen-cpp2/Echo.h"
 
 namespace tutorials {
 namespace chatroom {
 
-void EchoHandler::echo(
-    std::string& response,
-    std::unique_ptr<std::string> message) {
-  response = *message;
-}
+class EchoHandler : virtual public EchoSvIf {
+ public:
+  void echo(
+      std::string& response,
+      std::unique_ptr<std::string> message) override;
+};
 } // chatroom
 } // tutorials

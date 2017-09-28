@@ -19,7 +19,7 @@
 #include <folly/Synchronized.h>
 #include <vector>
 
-#include "thrift/lib/cpp2/example/if/gen-cpp2/ChatRoomService.h"
+#include "thrift/example/if/gen-cpp2/ChatRoomService.h"
 
 namespace tutorials {
 namespace chatroom {

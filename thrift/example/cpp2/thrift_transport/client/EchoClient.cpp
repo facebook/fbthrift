@@ -16,9 +16,9 @@
 
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/example/if/gen-cpp2/Echo.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/example/if/gen-cpp2/Echo.h>
 
 int main(int argc, char *argv[]) {
   FLAGS_logtostderr = 1;
