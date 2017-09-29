@@ -8,6 +8,7 @@ target_link_libraries(
 
   ${FOLLY_LIBRARY}
 )
+install(TARGETS thrift-core DESTINATION lib)
 
 add_library(
   concurrency
@@ -117,7 +118,7 @@ target_link_libraries(
 install(TARGETS async DESTINATION lib)
 
 add_library(
-  security  
+  security
 
   util/kerberos/Krb5Util.cpp
   util/kerberos/Krb5OlderVersionStubs.cpp
@@ -128,13 +129,14 @@ add_library(
 )
 target_link_libraries(
   security
-  
+
   ${KRB5_LIBRARIES}
   ${Boost_LIBRARIES}
   ${FOLLY_LIBRARY}
   ${GFLAGS_LIBRARIES}
   ${GLOG_LIBRARIES}
 )
+install(TARGETS security DESTINATION lib)
 
 add_library(
   server
