@@ -21,6 +21,7 @@ cdef extern from * nogil:
     cdef cppclass std_unordered_map "std::unordered_map"[T, U]:
         ctypedef T key_type
         ctypedef U mapped_type
+        ctypedef size_t size_type
 
         cppclass iterator:
             cpair[T, U]& operator*()
@@ -38,8 +39,8 @@ cdef extern from * nogil:
 
         cpair[iterator, bint] insert(cpair[T, U]) except +
         iterator find(const T&)
-        size_t count(const T&)
-        size_t size()
+        size_type count(const T&)
+        size_type size()
         iterator begin()
         iterator end()
         reverse_iterator rbegin()
