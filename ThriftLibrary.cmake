@@ -1,22 +1,79 @@
+#
 # Requirements:
 # Please provide the following two variables before using these macros:
 #   ${THRIFT1} - path/to/bin/thrift1
 #   ${THRIFT_TEMPLATES} - path/to/include/thrift/templates
 #   ${THRIFTCPP2} - path/to/lib/thriftcpp2
+#
 
-# thrift_library
-# This creates a library that will contain the source files and all the proper
+#
+# thrift_object
+# This creates a object that will contain the source files and all the proper
 # dependencies to generate and compile thrift generated files
 #
 # Params:
-#   @file_name - The name of tge thrift file
+#   @file_name - The name of the thrift file
 #   @services  - A list of services that are declared in the thrift file
 #   @language  - The generator to use (cpp or cpp2)
 #   @options   - Extra options to pass to the generator
 #   @output_path - The directory where the thrift file lives
 #
 # Output:
-#  file-language - A library to link to be used for linking
+#  A object file named `${file-name}-${language}-obj` to include into your
+#  project's library
+#
+# Notes:
+# If any of the fields is empty, it is still required to provide an empty string
+#
+# Usage:
+#   thrift_object(
+#     #file_name
+#     #services
+#     #language
+#     #options
+#     #output_path
+#     #output_path
+#   )
+#   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
+#
+
+macro(thrift_object file_name services language options file_path output_path)
+thrift_generate(
+  "${file_name}"   #file_name
+  "${services}"    #services
+  "${language}"    #language
+  "${options}"     #options
+  "${file_path}"   #file_path
+  "${output_path}" #output_path
+)
+bypass_source_check(${${file_name}-${language}-SOURCES})
+add_library(
+  "${file_name}-${language}-obj"
+  OBJECT
+  ${${file_name}-${language}-SOURCES}
+)
+add_dependencies(
+  "${file_name}-${language}-obj"
+  "${file_name}-${language}-target"
+)
+message("Thrift will create the Object file : ${file_name}-${language}-obj")
+endmacro()
+
+# thrift_library
+# Same as thrift object in terms of usage but creates the library instead of
+# object so that you can use to link against your library instead of including
+# all symbols into your library
+#
+# Params:
+#   @file_name - The name of the thrift file
+#   @services  - A list of services that are declared in the thrift file
+#   @language  - The generator to use (cpp or cpp2)
+#   @options   - Extra options to pass to the generator
+#   @output_path - The directory where the thrift file lives
+#
+# Output:
+#  A library file named `${file-name}-${language}` to link against your
+#  project's library
 #
 # Notes:
 # If any of the fields is empty, it is still required to provide an empty string
@@ -31,23 +88,27 @@
 #     #output_path
 #   )
 #   add_library(somelib ...)
-#   target_link_libraries(somelib file_name-language)
+#   target_link_libraries(somelibe ${file_name}-${language} ...)
+#
+
 macro(thrift_library file_name services language options file_path output_path)
-thrift_generate(
-  "${file_name}"   #file_name
-  "${services}"    #services
-  "${language}"    #language
-  "${options}"     #options
-  "${file_path}"   #file_path
-  "${output_path}" #output_path
+thrift_object(
+  "${file_name}"
+  "${services}"
+  "${language}"
+  "${options}"
+  "${file_path}"
+  "${output_path}"
 )
-bypass_source_check(${${file_name}-${language}-SOURCES})
-add_library("${file_name}-${language}" ${${file_name}-${language}-SOURCES})
-add_dependencies("${file_name}-${language}" "${file_name}-${language}-target")
+add_library(
+  "${file_name}-${language}"
+  $<TARGET_OBJECTS:${file_name}-${language}-obj>
+)
 target_link_libraries("${file_name}-${language}" ${THRIFTCPP2})
-message("Thrift will create the Library: ${file_name}-${language}")
+message("Thrift will create the Library file : ${file_name}-${language}")
 endmacro()
 
+#
 # bypass_source_check
 # This tells cmake to ignore if it doesn't see the following sources in
 # the library that will be installed. Thrift files are generated at compile
@@ -55,6 +116,8 @@ endmacro()
 #
 # Params:
 #   @sources - The list of files to ignore in source check
+#
+
 macro(bypass_source_check sources)
 set_source_files_properties(
   ${sources}
@@ -62,6 +125,7 @@ set_source_files_properties(
 )
 endmacro()
 
+#
 # thrift_generate
 # This is used to codegen thrift files using the thrift compiler
 # Params:
@@ -82,6 +146,8 @@ endmacro()
 # When using file_language-SOURCES it should always call:
 #   bypass_source_check(${file_language-SOURCES})
 # This will prevent cmake from complaining about missing source files
+#
+
 macro(thrift_generate file_name services language options file_path output_path)
 set("${file_name}-${language}-HEADERS"
   ${output_path}/gen-${language}/${file_name}_constants.h
