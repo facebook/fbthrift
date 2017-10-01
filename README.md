@@ -33,13 +33,13 @@ There are several key goals for these components:
 ## Building
 
 ### Dependencies
-        Please install the following dependencies before building Facebook Thrift:
+Please install the following dependencies before building Facebook Thrift:
 
-        **System**: [Flex](https://www.gnu.org/software/flex), [Bison](https://www.gnu.org/software/bison), [Krb5](https://web.mit.edu/kerberos), [Zlib](https://zlib.net), [PThreads](https://computing.llnl.gov/tutorials/pthreads). *MacOSX*: [OpenSSLv1.0.2g](https://www.openssl.org)
+**System**: [Flex](https://www.gnu.org/software/flex), [Bison](https://www.gnu.org/software/bison), [Krb5](https://web.mit.edu/kerberos), [Zlib](https://zlib.net), [PThreads](https://computing.llnl.gov/tutorials/pthreads). *MacOSX*: [OpenSSLv1.0.2g](https://www.openssl.org)
 
-        **External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
+**External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
 
-        **Facebook**: [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
+**Facebook**: [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
 
 ### Build
     git clone https://github.com/facebook/fbthrift
