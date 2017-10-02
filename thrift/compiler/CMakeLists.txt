@@ -4,14 +4,14 @@ set(COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 # Override default install path for `make install` step
 set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 
+# Compile Flex and Bison files and tie their dependencies
 if(WIN32)
   set(FLEX_FLAGS "--wincompat")
 endif(WIN32)
-# Compile Flex and Bison files and tie their dependencies
 BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_DIR}/thrifty.cc
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh)
 FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_DIR}/thriftl.cc
-  COMPILE_FLAGS ${FLEX_FLAGS})
+  COMPILE_FLAGS "${FLEX_FLAGS}")
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # build compiler/parse
