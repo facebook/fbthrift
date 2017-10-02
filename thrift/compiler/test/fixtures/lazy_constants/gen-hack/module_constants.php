@@ -226,10 +226,10 @@ class module_CONSTANTS {
   }
 
 
-  private static ?array $____values = null;
-  public static function __values(): array {
+  private static ?darray $____values = null;
+  public static function __values(): darray {
     if (self::$____values == null) {
-      self::$____values = array(
+      self::$____values = darray[
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",
         "states" => Vector {
@@ -284,7 +284,7 @@ class module_CONSTANTS {
           "\\" => 92,
           "\x61" => 97,
         },
-      );
+      ];
     }
     return self::$____values;
   }

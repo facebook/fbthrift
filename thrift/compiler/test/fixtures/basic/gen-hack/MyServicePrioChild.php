@@ -181,7 +181,7 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     $handler_ctx = $this->eventHandler_->getHandlerContext('pang');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'pang', array());
+    $this->eventHandler_->preRead($handler_ctx, 'pang', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
@@ -232,7 +232,7 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     $handler_ctx = $this->eventHandler_->getHandlerContext('pang');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'pang', array());
+    $this->eventHandler_->preRead($handler_ctx, 'pang', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
@@ -284,8 +284,8 @@ class MyServicePrioChildProcessor extends MyServicePrioChildSyncProcessor {}
 class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -322,8 +322,8 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
 class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;

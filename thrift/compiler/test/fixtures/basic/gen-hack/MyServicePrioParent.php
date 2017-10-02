@@ -318,7 +318,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
+    $this->eventHandler_->preRead($handler_ctx, 'ping', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
@@ -362,7 +362,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $handler_ctx = $this->eventHandler_->getHandlerContext('pong');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'pong', array());
+    $this->eventHandler_->preRead($handler_ctx, 'pong', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
@@ -413,7 +413,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
+    $this->eventHandler_->preRead($handler_ctx, 'ping', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
@@ -457,7 +457,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $handler_ctx = $this->eventHandler_->getHandlerContext('pong');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'pong', array());
+    $this->eventHandler_->preRead($handler_ctx, 'pong', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
@@ -509,8 +509,8 @@ class MyServicePrioParentProcessor extends MyServicePrioParentSyncProcessor {}
 class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -547,8 +547,8 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
 class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -565,8 +565,8 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
 class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -603,8 +603,8 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
 class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;

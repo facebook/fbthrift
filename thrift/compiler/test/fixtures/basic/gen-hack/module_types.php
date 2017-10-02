@@ -23,21 +23,21 @@ type MyEnumType = MyEnum;
 class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'MyIntField',
       'type' => \TType::I64,
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'MyStringField',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => darray[
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
     'MyStringField' => 2,
@@ -140,8 +140,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    );
+  public static darray $_TSPEC = darray[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(

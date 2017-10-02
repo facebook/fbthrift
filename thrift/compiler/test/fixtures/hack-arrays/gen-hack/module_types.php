@@ -13,40 +13,40 @@
 class Foo implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'a',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => array(
+      'elem' => darray[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'harray',
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'b',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => darray[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => darray[
         'type' => \TType::LST,
         'etype' => \TType::SET,
-        'elem' => array(
+        'elem' => darray[
           'type' => \TType::SET,
           'etype' => \TType::I32,
-          'elem' => array(
+          'elem' => darray[
             'type' => \TType::I32,
-            ),
+            ],
             'format' => 'harray',
-          ),
+          ],
           'format' => 'harray',
-        ),
+        ],
         'format' => 'harray',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,

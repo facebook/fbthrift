@@ -24,24 +24,24 @@ type AnimalType = Animal;
 class Color implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'red',
       'type' => \TType::DOUBLE,
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'green',
       'type' => \TType::DOUBLE,
-      ),
-    3 => array(
+      ],
+    3 => darray[
       'var' => 'blue',
       'type' => \TType::DOUBLE,
-      ),
-    4 => array(
+      ],
+    4 => darray[
       'var' => 'alpha',
       'type' => \TType::DOUBLE,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'red' => 1,
     'green' => 2,
@@ -106,29 +106,29 @@ class Color implements \IThriftStruct {
 class Vehicle implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'color',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'licensePlate',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => darray[
       'var' => 'description',
       'type' => \TType::STRING,
-      ),
-    4 => array(
+      ],
+    4 => darray[
       'var' => 'name',
       'type' => \TType::STRING,
-      ),
-    5 => array(
+      ],
+    5 => darray[
       'var' => 'hasAC',
       'type' => \TType::BOOL,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'color' => 1,
     'licensePlate' => 2,
@@ -188,71 +188,71 @@ class Vehicle implements \IThriftStruct {
 class Person implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'id',
       'type' => \TType::I64,
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'name',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => darray[
       'var' => 'age',
       'type' => \TType::I16,
-      ),
-    4 => array(
+      ],
+    4 => darray[
       'var' => 'address',
       'type' => \TType::STRING,
-      ),
-    5 => array(
+      ],
+    5 => darray[
       'var' => 'favoriteColor',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-      ),
-    6 => array(
+      ],
+    6 => darray[
       'var' => 'friends',
       'type' => \TType::SET,
       'etype' => \TType::I64,
-      'elem' => array(
+      'elem' => darray[
         'type' => \TType::I64,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    7 => array(
+      ],
+    7 => darray[
       'var' => 'bestFriend',
       'type' => \TType::I64,
-      ),
-    8 => array(
+      ],
+    8 => darray[
       'var' => 'petNames',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => array(
+      'key' => darray[
         'type' => \TType::I32,
         'enum' => 'Animal',
-      ),
-      'val' => array(
+      ],
+      'val' => darray[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    9 => array(
+      ],
+    9 => darray[
       'var' => 'afraidOfAnimal',
       'type' => \TType::I32,
       'enum' => 'Animal',
-      ),
-    10 => array(
+      ],
+    10 => darray[
       'var' => 'vehicles',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => array(
+      'elem' => darray[
         'type' => \TType::STRUCT,
         'class' => 'Vehicle',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
     'name' => 2,

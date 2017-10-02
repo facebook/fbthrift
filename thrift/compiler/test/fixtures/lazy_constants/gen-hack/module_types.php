@@ -37,21 +37,21 @@ type CompanyType = Company;
 class Internship implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'weeks',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'title',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => darray[
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'weeks' => 1,
     'title' => 2,
@@ -101,16 +101,16 @@ class Internship implements \IThriftStruct {
 class Range implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array $_TSPEC = array(
-    1 => array(
+  public static darray $_TSPEC = darray[
+    1 => darray[
       'var' => 'min',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => darray[
       'var' => 'max',
       'type' => \TType::I32,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'min' => 1,
     'max' => 2,
