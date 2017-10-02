@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
 #include "<%service:include_prefix%><%service:program_name%>_types.h"
 <%#service:frozen2?%>
 #include "<%service:include_prefix%><%service:program_name%>_layouts.h"
@@ -57,22 +56,7 @@ namespace apache { namespace thrift {
 <% > common/namespace_cpp2_begin%>
 
 
-<% > service_h/service_async_interface%>
-
-
-class <%service:name%>AsyncProcessor;
-
-<% > service_h/service_interface%>
-
-
-<% > service_h/service_null%>
-
-
-<% > service_h/async_processor%>
+<% > service_h/async_client%>
 
 
 <% > common/namespace_cpp2_end%>
-
-namespace apache { namespace thrift {
-
-}} // apache::thrift

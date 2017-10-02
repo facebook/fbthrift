@@ -184,6 +184,15 @@ foreach(service ${services})
     ${output_path}/gen-${language}/${service}_processmap_binary.cpp
     ${output_path}/gen-${language}/${service}_processmap_compact.cpp
   )
+  if("${language}" STREQUAL "cpp2")
+    if (NOT "${options}" MATCHES ".*(future|py_generator|compatibility|implicit_templates|separate_processmap|terse_writes|modulemap).*")
+      set("${file_name}-${language}-HEADERS"
+        ${${file_name}-${language}-HEADERS}
+        ${output_path}/gen-${language}/${service}AsyncClient.h
+      )
+    endif()
+
+  endif()
 endforeach()
 set(include_prefix "include_prefix=${output_path}")
 if(NOT ${options} STREQUAL "")

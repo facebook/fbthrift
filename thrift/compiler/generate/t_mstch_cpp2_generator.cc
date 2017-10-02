@@ -947,6 +947,10 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
     cache_->services_[service_id] =
         generators_->service_generator_->generate(service, generators_, cache_);
   }
+  render_to_file(
+      cache_->services_[service_id],
+      "ServiceAsyncClient.h",
+      name + "AsyncClient.h");
   render_to_file(cache_->services_[service_id], "service.cpp", name + ".cpp");
   render_to_file(cache_->services_[service_id], "service.h", name + ".h");
   render_to_file(cache_->services_[service_id], "service.tcc", name + ".tcc");

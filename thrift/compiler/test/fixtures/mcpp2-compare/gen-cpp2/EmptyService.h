@@ -11,6 +11,7 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include "src/gen-cpp2/EmptyServiceAsyncClient.h"
 #include "src/gen-cpp2/module_types.h"
 #include "includes_types.h"
 #include <folly/small_vector.h>
@@ -78,30 +79,6 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       iface_(iface) {}
 
   virtual ~EmptyServiceAsyncProcessor() {}
-};
-
-class EmptyServiceAsyncClient : public apache::thrift::TClientBase {
- public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
-
-  virtual ~EmptyServiceAsyncClient() {}
-
-  EmptyServiceAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
-  }
-
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
-  }
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 }}} // some::valid::ns
