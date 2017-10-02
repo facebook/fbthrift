@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/transport/TSocket.h>
 
 #include <folly/portability/Fcntl.h>
@@ -71,21 +70,23 @@ TSocket::TSocket(string host, int port) :
   maxRecvRetries_(5) {
 }
 
-TSocket::TSocket(const folly::SocketAddress* address) :
-  host_(address->getAddressStr()),
-  port_(address->getPort()),
-  socket_(-1),
-  maxRecvRetries_(5) {
+TSocket::TSocket(const folly::SocketAddress* address)
+    : host_(address->isFamilyInet() ? address->getAddressStr() : ""),
+      port_(address->isFamilyInet() ? address->getPort() : 0),
+      path_(address->isFamilyInet() ? "" : address->getPath()),
+      socket_(-1),
+      maxRecvRetries_(5) {
   // For convenience with the existing code that resolves hostnames,
   // we just store the IP address as a string in host_, and convert it back to
   // an address in connect()
 }
 
-TSocket::TSocket(const folly::SocketAddress& address) :
-  host_(address.getAddressStr()),
-  port_(address.getPort()),
-  socket_(-1),
-  maxRecvRetries_(5) {
+TSocket::TSocket(const folly::SocketAddress& address)
+    : host_(address.isFamilyInet() ? address.getAddressStr() : ""),
+      port_(address.isFamilyInet() ? address.getPort() : 0),
+      path_(address.isFamilyInet() ? "" : address.getPath()),
+      socket_(-1),
+      maxRecvRetries_(5) {
   // For convenience with the existing code that resolves hostnames,
   // we just store the IP address as a string in host_, and convert it back to
   // an address in connect()
