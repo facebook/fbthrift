@@ -82,6 +82,12 @@ if(lib_only OR build_all)
     ${ZSTD_INCLUDE_DIRS}
   )
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
+  if(lib_only)
+    find_program(THRIFT1 thrift1)
+    find_path(THRIFT_COMPILER_INCLUDE thrift/templates)
+    set(THRIFT_TEMPLATES ${THRIFT_COMPILER_INCLUDE}/thrift/templates)
+    include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
+  endif(lib_only)
 endif(lib_only OR build_all)
 
 # Add the test dependencies
