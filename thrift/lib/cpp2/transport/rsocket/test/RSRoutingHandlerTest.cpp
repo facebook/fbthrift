@@ -49,5 +49,13 @@ TEST_F(RSRoutingHandlerTest, RequestResponse_ExpectedException) {
 TEST_F(RSRoutingHandlerTest, RequestResponse_UnexpectedException) {
   routingHandlerTest_->TestRequestResponse_UnexpectedException();
 }
+
+/* TODO: uncomment after timeouts are implemented
+// Warning: This test may be flaky due to use of timeouts.
+TEST_F(RSRoutingHandlerTest, RequestResponse_Timeout) {
+  routingHandlerTest_->TestRequestResponse_Timeout();
 }
-}
+*/
+
+} // namespace thrift
+} // namespace apache

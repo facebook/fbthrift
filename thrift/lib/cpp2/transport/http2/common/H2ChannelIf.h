@@ -79,7 +79,7 @@ class H2ChannelIf : public ThriftChannelIf {
   // more writes to the stream should be performed after this point.
   // Also, after this call Proxygen will relinquish access to this
   // object.
-  virtual void onH2StreamClosed() noexcept {
+  virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {
     responseHandler_ = nullptr;
     h2ClientConnection_ = nullptr;
   }

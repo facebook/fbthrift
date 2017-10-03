@@ -53,17 +53,19 @@ class ThriftClientCallback {
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
 
-  // Can be called from the channel to cancel a RPC (instead of
-  // calling "onThriftResponse()").  Once this is called, the channel
-  // does not have to perform any additional calls such as
-  // "onThriftResponse()", or closing of streams.
+  // Called from the channel in case of an error RPC (instead of
+  // calling "onThriftResponse()").
   //
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
+  void onError(folly::exception_wrapper ex) noexcept;
+
+  // TODO: Not sure if we need this method.  We'll leave it here for
+  // now and do a refactor after a design discussion.
   void cancel(folly::exception_wrapper ex) noexcept;
 
-  // Returns the event base on which calls to "onThriftResponse()"
-  // and "cancel()" must be scheduled.
+  // Returns the event base on which calls to "onThriftResponse()",
+  // "onError()", and "cancel()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
  private:

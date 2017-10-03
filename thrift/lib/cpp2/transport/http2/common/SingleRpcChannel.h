@@ -64,7 +64,7 @@ class SingleRpcChannel : public H2ChannelIf {
 
   void onH2StreamEnd() noexcept override;
 
-  void onH2StreamClosed() noexcept override;
+  void onH2StreamClosed(proxygen::ProxygenError error) noexcept override;
 
  private:
   // TODO: Temporary method until we add envelope to payload.

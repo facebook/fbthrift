@@ -46,7 +46,7 @@ using namespace testutil::testservice;
 using proxygen::RequestHandlerChain;
 
 RoutingHandlerTest::RoutingHandlerTest(RoutingType routingType)
-    : workerThread("RSRequestResponseTest_WorkerThread") {
+    : workerThread_("RSRequestResponseTest_WorkerThread") {
   if (routingType == RoutingType::RSOCKET) { // override the default
     FLAGS_transport = "rsocket"; // client's transport
   }
@@ -143,12 +143,54 @@ void RoutingHandlerTest::connectToServer(
   CHECK_GT(port_, 0) << "Check if the server has started already";
   auto connection = mgr->getConnection(FLAGS_host, port_);
   auto channel = ThriftClient::Ptr(
-      new ThriftClient(connection, workerThread.getEventBase()));
+      new ThriftClient(connection, workerThread_.getEventBase()));
   channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
 
   auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
 
   callMe(std::move(client));
+}
+
+class TimeoutTestCallback : public RequestCallback {
+ public:
+  TimeoutTestCallback(bool shouldTimeout) : shouldTimeout_(shouldTimeout) {}
+  virtual ~TimeoutTestCallback() {
+    EXPECT_TRUE(callbackReceived_);
+  }
+  void requestSent() override {
+    EXPECT_FALSE(requestSentCalled_);
+    requestSentCalled_ = true;
+  }
+  void replyReceived(ClientReceiveState&& /*crs*/) override {
+    // EXPECT_TRUE(requestSentCalled_); TODO: uncomment after fixing code.
+    EXPECT_FALSE(callbackReceived_);
+    EXPECT_FALSE(shouldTimeout_);
+    callbackReceived_ = true;
+  }
+  void requestError(ClientReceiveState&& /*crs*/) override {
+    // EXPECT_TRUE(requestSentCalled_); TODO: uncomment after fixing code.
+    EXPECT_FALSE(callbackReceived_);
+    EXPECT_TRUE(shouldTimeout_);
+    callbackReceived_ = true;
+  }
+  bool callbackReceived() {
+    return callbackReceived_;
+  }
+
+ private:
+  bool shouldTimeout_;
+  bool requestSentCalled_{false};
+  bool callbackReceived_{false};
+};
+
+void RoutingHandlerTest::callSleep(
+    TestServiceAsyncClient* client,
+    int32_t timeoutMs,
+    int32_t sleepMs) {
+  auto cb = std::make_unique<TimeoutTestCallback>(timeoutMs < sleepMs);
+  RpcOptions opts;
+  opts.setTimeout(std::chrono::milliseconds(timeoutMs));
+  client->sleep(opts, std::move(cb), sleepMs);
 }
 
 void RoutingHandlerTest::TestRequestResponse_Simple() {
@@ -217,5 +259,30 @@ void RoutingHandlerTest::TestRequestResponse_UnexpectedException() {
           [&](auto client) { client->sync_throwUnexpectedException(2); }),
       apache::thrift::TApplicationException);
 }
+
+void RoutingHandlerTest::TestRequestResponse_Timeout() {
+  // Note: This test requires sufficient number of CPU threads on the
+  // server so that the sleep calls are not backed up.
+  // Warning: This test may be flaky due to use of timeouts.
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    // These are all async calls.  The first batch of calls get
+    // dispatched immediately, then there is a sleep, and then the
+    // second batch of calls get dispatched.  All calls have separate
+    // timeouts and different delays on the server side.
+    callSleep(client.get(), 1, 100);
+    callSleep(client.get(), 100, 0);
+    callSleep(client.get(), 1, 100);
+    callSleep(client.get(), 100, 0);
+    callSleep(client.get(), 2000, 500);
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    callSleep(client.get(), 1, 100);
+    callSleep(client.get(), 100, 0);
+    /* Sleep to give time for all callback to be completed */
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  });
 }
-}
+
+} // namespace thrift
+} // namespace apache

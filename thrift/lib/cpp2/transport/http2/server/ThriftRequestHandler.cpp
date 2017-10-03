@@ -62,13 +62,13 @@ void ThriftRequestHandler::onEOM() noexcept {
 void ThriftRequestHandler::onUpgrade(UpgradeProtocol /*prot*/) noexcept {}
 
 void ThriftRequestHandler::requestComplete() noexcept {
-  channel_->onH2StreamClosed();
+  channel_->onH2StreamClosed(ProxygenError::kErrorNone);
   delete this;
 }
 
-void ThriftRequestHandler::onError(ProxygenError /*err*/) noexcept {
+void ThriftRequestHandler::onError(ProxygenError error) noexcept {
   if (channel_) {
-    channel_->onH2StreamClosed();
+    channel_->onH2StreamClosed(error);
   }
   delete this;
 }

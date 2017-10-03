@@ -35,6 +35,7 @@ class RoutingHandlerTest {
   void TestRequestResponse_MultipleClients();
   void TestRequestResponse_ExpectedException();
   void TestRequestResponse_UnexpectedException();
+  void TestRequestResponse_Timeout();
 
  protected:
   void startServer(RoutingType routingType);
@@ -43,13 +44,17 @@ class RoutingHandlerTest {
       folly::Function<
           void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
           callMe);
+  void callSleep(
+      testutil::testservice::TestServiceAsyncClient* client,
+      int32_t timeoutMs,
+      int32_t sleepMs);
 
- protected:
   std::shared_ptr<testing::StrictMock<testutil::testservice::TestServiceMock>>
       handler_;
   std::unique_ptr<ThriftServer> server_;
   uint16_t port_;
-  folly::ScopedEventBaseThread workerThread;
+  folly::ScopedEventBaseThread workerThread_;
 };
-}
-}
+
+} // namespace thrift
+} // namespace apache

@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <chrono>
 
 namespace apache {
 namespace thrift {
@@ -39,6 +40,7 @@ using proxygen::HTTPMessage;
 using proxygen::HTTPMethod;
 using proxygen::HTTPTransaction;
 using proxygen::IOBufPrinter;
+using proxygen::ProxygenError;
 using proxygen::ResponseHandler;
 
 SingleRpcChannel::SingleRpcChannel(
@@ -119,11 +121,9 @@ void SingleRpcChannel::sendThriftRequest(
   } catch (TTransportException& te) {
     if (callback_) {
       auto evb = callback_->getEventBase();
-      evb->runInEventBaseThread([
-        evbCallback = std::move(callback_),
-        evbTe = std::move(te)
-      ]() mutable {
-        evbCallback->cancel(folly::make_exception_wrapper<TTransportException>(
+      evb->runInEventBaseThread([evbCallback = std::move(callback_),
+                                 evbTe = std::move(te)]() mutable {
+        evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
             std::move(evbTe)));
       });
     }
@@ -137,10 +137,14 @@ void SingleRpcChannel::sendThriftRequest(
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
   if (metadata->__isset.clientTimeoutMs) {
+    DCHECK(metadata->clientTimeoutMs > 0);
+    httpTransaction_->setIdleTimeout(
+        std::chrono::milliseconds(metadata->clientTimeoutMs));
     metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
         folly::to<std::string>(metadata->clientTimeoutMs);
   }
   if (metadata->__isset.queueTimeoutMs) {
+    DCHECK(metadata->queueTimeoutMs > 0);
     metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
         folly::to<std::string>(metadata->queueTimeoutMs);
   }
@@ -276,21 +280,33 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
   }
 }
 
-void SingleRpcChannel::onH2StreamClosed() noexcept {
+void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
   VLOG(2) << "onH2StreamClosed";
   if (callback_) {
-    // Stream died before callback happened.
-    LOG(ERROR) << "Network error before call completion";
+    std::unique_ptr<TTransportException> ex;
+    if (error == ProxygenError::kErrorTimeout) {
+      ex =
+          std::make_unique<TTransportException>(TTransportException::TIMED_OUT);
+    } else {
+      // Some unknown error.
+      VLOG(2) << "Network error before call completion";
+      ex = std::make_unique<TTransportException>(
+          TTransportException::NETWORK_ERROR);
+    }
+    // We assume that the connection is still valid.  If not, we will
+    // get an error the next time we try to create a new transaction
+    // and can deal with it then.
+    // TODO: We could also try to understand the kind of error be looking
+    // at "error" in more detail.
+    ex->setOptions(TTransportException::CHANNEL_IS_VALID);
     auto evb = callback_->getEventBase();
-    evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
-      TTransportException ex(
-          TTransportException::NETWORK_ERROR,
-          "Network error before call completion");
-      evbCallback->cancel(
-          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+    evb->runInEventBaseThread([evbCallback = std::move(callback_),
+                               evbEx = std::move(ex)]() mutable {
+      evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
+          std::move(*evbEx)));
     });
   }
-  H2ChannelIf::onH2StreamClosed();
+  H2ChannelIf::onH2StreamClosed(error);
 }
 
 bool SingleRpcChannel::isOneWay() noexcept {

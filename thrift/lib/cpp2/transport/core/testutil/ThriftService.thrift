@@ -9,15 +9,9 @@ service TestService {
 
   i32 add(1: i32 x),
 
-  /**
-   * Throw the expected exception
-   */
- void throwExpectedException(1: i32 x)
-     throws (1: TestServiceException e),
+  void throwExpectedException(1: i32 x) throws (1: TestServiceException e),
 
-  /**
-   * Throw an unexpected exception
-   */
- void throwUnexpectedException(1: i32 x)
-   throws (1: TestServiceException e),
+  void throwUnexpectedException(1: i32 x) throws (1: TestServiceException e),
+
+  void sleep(1: i32 timeMs),
 }

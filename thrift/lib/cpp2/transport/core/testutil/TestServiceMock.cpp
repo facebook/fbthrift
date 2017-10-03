@@ -17,7 +17,9 @@
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <chrono>
 #include <string>
+#include <thread>
 
 namespace testutil {
 namespace testservice {
@@ -70,6 +72,11 @@ void TestServiceMock::throwExpectedException(int32_t) {
 
 void TestServiceMock::throwUnexpectedException(int32_t) {
   throw std::runtime_error("mock_runtime_error");
+}
+
+void TestServiceMock::sleep(int32_t timeMs) {
+  /* sleep override */
+  std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
 }
 
 } // namespace testservice

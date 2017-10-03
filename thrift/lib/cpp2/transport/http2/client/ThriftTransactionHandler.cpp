@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 
+#include <proxygen/lib/http/ProxygenErrorEnum.h>
+
 #include <glog/logging.h>
 
 namespace apache {
@@ -24,6 +26,7 @@ namespace thrift {
 using proxygen::HTTPException;
 using proxygen::HTTPMessage;
 using proxygen::HTTPTransaction;
+using proxygen::ProxygenError;
 
 ThriftTransactionHandler::~ThriftTransactionHandler() {
   if (txn_) {
@@ -42,7 +45,7 @@ void ThriftTransactionHandler::setTransaction(HTTPTransaction* txn) noexcept {
 
 void ThriftTransactionHandler::detachTransaction() noexcept {
   DCHECK(channel_);
-  channel_->onH2StreamClosed();
+  channel_->onH2StreamClosed(ProxygenError::kErrorNone);
   delete this;
 }
 
@@ -63,10 +66,9 @@ void ThriftTransactionHandler::onEOM() noexcept {
   channel_->onH2StreamEnd();
 }
 
-void ThriftTransactionHandler::onError(
-    const HTTPException& /*error*/) noexcept {
+void ThriftTransactionHandler::onError(const HTTPException& error) noexcept {
   DCHECK(channel_);
-  channel_->onH2StreamClosed();
+  channel_->onH2StreamClosed(error.getProxygenError());
 }
 
 } // namespace thrift

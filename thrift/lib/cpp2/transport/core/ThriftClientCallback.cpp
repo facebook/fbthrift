@@ -40,6 +40,7 @@ ThriftClientCallback::ThriftClientCallback(
 void ThriftClientCallback::onThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
+  DCHECK(evb_->isInEventBaseThread());
   if (cb_) {
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
@@ -56,13 +57,18 @@ void ThriftClientCallback::onThriftResponse(
   }
 }
 
-void ThriftClientCallback::cancel(exception_wrapper ex) noexcept {
+void ThriftClientCallback::onError(exception_wrapper ex) noexcept {
+  DCHECK(evb_->isInEventBaseThread());
   if (cb_) {
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->requestError(
         ClientReceiveState(std::move(ex), std::move(ctx_), isSecurityActive_));
     cb_ = nullptr;
   }
+}
+
+void ThriftClientCallback::cancel(exception_wrapper /*ex*/) noexcept {
+  LOG(ERROR) << "cancel() not yet implemented";
 }
 
 EventBase* ThriftClientCallback::getEventBase() const {

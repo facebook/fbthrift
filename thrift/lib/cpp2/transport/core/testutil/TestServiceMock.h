@@ -42,6 +42,8 @@ class TestServiceMock : public TestServiceSvIf {
 
   void throwUnexpectedException(int32_t x) override;
 
+  void sleep(int32_t timeMs) override;
+
  public:
   // Send the two integers to be serialized for 'sumTwoNumbers'
   static folly::IOBufQueue

@@ -53,7 +53,7 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
 
   void requestComplete() noexcept override;
 
-  void onError(proxygen::ProxygenError err) noexcept override;
+  void onError(proxygen::ProxygenError error) noexcept override;
 
  private:
   // There is a single ThriftProcessor object which is used for all requests.

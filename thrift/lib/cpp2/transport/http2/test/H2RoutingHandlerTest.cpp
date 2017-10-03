@@ -50,5 +50,10 @@ TEST_F(H2RoutingHandlerTest, RequestResponse_UnexpectedException) {
   routingHandlerTest_->TestRequestResponse_UnexpectedException();
 }
 
+// Warning: This test may be flaky due to use of timeouts.
+TEST_F(H2RoutingHandlerTest, RequestResponse_Timeout) {
+  routingHandlerTest_->TestRequestResponse_Timeout();
+}
+
 } // namespace thrift
 } // namespace apache
