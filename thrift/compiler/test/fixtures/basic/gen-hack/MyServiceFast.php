@@ -840,7 +840,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_ping_args');
@@ -884,7 +884,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getRandomData_args');
@@ -928,7 +928,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_hasDataById_args');
@@ -972,7 +972,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getDataById_args');
@@ -1016,7 +1016,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_putDataById_args');
@@ -1060,7 +1060,7 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_lobDataById_args');
@@ -1093,7 +1093,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_ping_args');
@@ -1137,7 +1137,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getRandomData_args');
@@ -1181,7 +1181,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_hasDataById_args');
@@ -1225,7 +1225,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getDataById_args');
@@ -1269,7 +1269,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_putDataById_args');
@@ -1313,7 +1313,7 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_lobDataById_args');
@@ -1347,8 +1347,8 @@ class MyServiceFastProcessor extends MyServiceFastSyncProcessor {}
 class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    ];
+  public static array $_TSPEC = array(
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -1385,8 +1385,8 @@ class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    ];
+  public static array $_TSPEC = array(
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1403,8 +1403,8 @@ class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct
 class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    ];
+  public static array $_TSPEC = array(
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -1441,12 +1441,12 @@ class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapis
 class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    0 => darray[
+  public static array $_TSPEC = array(
+    0 => array(
       'var' => 'success',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1465,12 +1465,12 @@ class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShap
 class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'id',
       'type' => \TType::I64,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
@@ -1524,12 +1524,12 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    0 => darray[
+  public static array $_TSPEC = array(
+    0 => array(
       'var' => 'success',
       'type' => \TType::BOOL,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1548,12 +1548,12 @@ class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapis
 class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'id',
       'type' => \TType::I64,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
@@ -1607,12 +1607,12 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    0 => darray[
+  public static array $_TSPEC = array(
+    0 => array(
       'var' => 'success',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1631,16 +1631,16 @@ class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapis
 class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'id',
       'type' => \TType::I64,
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'data',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
     'data' => 2,
@@ -1711,8 +1711,8 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    ];
+  public static array $_TSPEC = array(
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1729,16 +1729,16 @@ class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapis
 class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'id',
       'type' => \TType::I64,
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'data',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
     'data' => 2,

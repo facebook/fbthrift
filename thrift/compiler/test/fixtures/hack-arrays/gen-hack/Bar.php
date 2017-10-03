@@ -192,40 +192,40 @@ class BarClient extends ThriftClientBase implements BarIf {
 class Bar_baz_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'a',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'harray',
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'b',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::MAP,
         'ktype' => \TType::I32,
         'vtype' => \TType::SET,
-        'key' => darray[
+        'key' => array(
           'type' => \TType::I32,
-        ],
-        'val' => darray[
+        ),
+        'val' => array(
           'type' => \TType::SET,
           'etype' => \TType::STRING,
-          'elem' => darray[
+          'elem' => array(
             'type' => \TType::STRING,
-            ],
+            ),
             'format' => 'harray',
-          ],
+          ),
           'format' => 'harray',
-        ],
+        ),
         'format' => 'harray',
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
@@ -256,12 +256,12 @@ class Bar_baz_args implements \IThriftStruct {
 class Bar_baz_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    0 => darray[
+  public static array $_TSPEC = array(
+    0 => array(
       'var' => 'success',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };

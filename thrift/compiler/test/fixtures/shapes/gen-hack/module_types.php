@@ -22,12 +22,12 @@ type EnumType = Enum;
  * A
  */
 class A implements \IThriftStruct, \IThriftShapishStruct {
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'a',
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
   };
@@ -138,448 +138,448 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
  * B
  */
 class B implements \IThriftStruct, \IThriftShapishStruct {
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    3 => darray[
+      ),
+    3 => array(
       'var' => 'list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    4 => darray[
+      ),
+    4 => array(
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    5 => darray[
+      ),
+    5 => array(
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    6 => darray[
+      ),
+    6 => array(
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    7 => darray[
+      ),
+    7 => array(
       'var' => 'map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    8 => darray[
+      ),
+    8 => array(
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    9 => darray[
+      ),
+    9 => array(
       'var' => 'map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    10 => darray[
+      ),
+    10 => array(
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::I32,
-        'key' => darray[
+        'key' => array(
           'type' => \TType::STRING,
-        ],
-        'val' => darray[
+        ),
+        'val' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    11 => darray[
+      ),
+    11 => array(
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => darray[
+        'key' => array(
           'type' => \TType::STRING,
-        ],
-        'val' => darray[
+        ),
+        'val' => array(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    12 => darray[
+      ),
+    12 => array(
       'var' => 'list_of_set_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::SET,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    13 => darray[
+      ),
+    13 => array(
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::LST,
-        'key' => darray[
+        'key' => array(
           'type' => \TType::STRING,
-        ],
-        'val' => darray[
+        ),
+        'val' => array(
           'type' => \TType::LST,
           'etype' => \TType::STRUCT,
-          'elem' => darray[
+          'elem' => array(
             'type' => \TType::STRUCT,
             'class' => '\test\fixtures\A',
-            ],
+            ),
             'format' => 'collection',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    14 => darray[
+      ),
+    14 => array(
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => darray[
+        'key' => array(
           'type' => \TType::STRING,
-        ],
-        'val' => darray[
+        ),
+        'val' => array(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    15 => darray[
+      ),
+    15 => array(
       'var' => 'list_of_self',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\B',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    16 => darray[
+      ),
+    16 => array(
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\B',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    17 => darray[
+      ),
+    17 => array(
       'var' => 'just_an_enum',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-      ],
-    51 => darray[
+      ),
+    51 => array(
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-      ],
-    52 => darray[
+      ),
+    52 => array(
       'var' => 'optional_set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    53 => darray[
+      ),
+    53 => array(
       'var' => 'optional_list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    54 => darray[
+      ),
+    54 => array(
       'var' => 'optional_list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    55 => darray[
+      ),
+    55 => array(
       'var' => 'optional_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    56 => darray[
+      ),
+    56 => array(
       'var' => 'optional_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    57 => darray[
+      ),
+    57 => array(
       'var' => 'optional_map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    58 => darray[
+      ),
+    58 => array(
       'var' => 'optional_map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    59 => darray[
+      ),
+    59 => array(
       'var' => 'optional_map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    60 => darray[
+      ),
+    60 => array(
       'var' => 'optional_enum',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-      ],
-    70 => darray[
+      ),
+    70 => array(
       'var' => 'required_enum_with_default',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-      ],
-    80 => darray[
+      ),
+    80 => array(
       'var' => 'string_with_default_value',
       'type' => \TType::STRING,
-      ],
-    81 => darray[
+      ),
+    81 => array(
       'var' => 'i32_with_default_value',
       'type' => \TType::I32,
-      ],
-    82 => darray[
+      ),
+    82 => array(
       'var' => 'double_with_default_value',
       'type' => \TType::DOUBLE,
-      ],
-    83 => darray[
+      ),
+    83 => array(
       'var' => 'enum_with_default_value',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-      ],
-    84 => darray[
+      ),
+    84 => array(
       'var' => 'A_with_default_value',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-      ],
-    85 => darray[
+      ),
+    85 => array(
       'var' => 'set_of_i32_with_default_value',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    86 => darray[
+      ),
+    86 => array(
       'var' => 'map_of_i32_to_string_with_default_value',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::I32,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    87 => darray[
+      ),
+    87 => array(
       'var' => 'list_of_string_with_default_value',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    88 => darray[
+      ),
+    88 => array(
       'var' => 'map_of_string_to_list_of_i32_with_default_value',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::STRING,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => darray[
+        'elem' => array(
           'type' => \TType::I32,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'just_an_A' => 1,
     'set_of_i32' => 2,
@@ -1028,7 +1028,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     if (!is_array($shape_data['set_of_i32'])) {
       return null;
     }
-    $the_set2 = darray[];
+    $the_set2 = array();
     foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32'] as $key0 => $shape_data1) {
       if (!is_int($shape_data1)) {
         return null;
@@ -1174,7 +1174,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($value20)) {
         return null;
       }
-      $the_set23 = darray[];
+      $the_set23 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $value20 as $key21 => $shape_data22) {
         if (!is_int($shape_data22)) {
           return null;
@@ -1254,7 +1254,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($value33)) {
         return null;
       }
-      $the_set36 = darray[];
+      $the_set36 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $value33 as $key34 => $shape_data35) {
         if (!is_int($shape_data35)) {
           return null;
@@ -1392,7 +1392,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($shape_data['optional_set_of_i32'])) {
         return null;
       }
-      $the_set53 = darray[];
+      $the_set53 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
         if (!is_int($shape_data52)) {
           return null;
@@ -1552,7 +1552,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         if (!is_array($value71)) {
           return null;
         }
-        $the_set74 = darray[];
+        $the_set74 = array();
         foreach (/* HH_IGNORE_ERROR[4110] */ $value71 as $key72 => $shape_data73) {
           if (!is_int($shape_data73)) {
             return null;
@@ -1626,7 +1626,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     if (!is_array($shape_data['set_of_i32_with_default_value'])) {
       return null;
     }
-    $the_set77 = darray[];
+    $the_set77 = array();
     foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32_with_default_value'] as $key75 => $shape_data76) {
       if (!is_int($shape_data76)) {
         return null;

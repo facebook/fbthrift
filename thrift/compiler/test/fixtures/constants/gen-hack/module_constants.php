@@ -720,10 +720,10 @@ class module_CONSTANTS {
   }
 
 
-  private static ?darray $____values = null;
-  public static function __values(): darray {
+  private static ?array $____values = null;
+  public static function __values(): array {
     if (self::$____values == null) {
-      self::$____values = darray[
+      self::$____values = array(
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",
         "states" => Vector {
@@ -920,7 +920,7 @@ class module_CONSTANTS {
         },
         "empty_string_string_map" => Map {
         },
-      ];
+      );
     }
     return self::$____values;
   }

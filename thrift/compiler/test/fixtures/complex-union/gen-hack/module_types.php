@@ -23,57 +23,57 @@ enum ComplexUnionEnum: int {
 class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-      ],
-    5 => darray[
+      ),
+    5 => array(
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'intListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::I64,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::I64,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    3 => darray[
+      ),
+    3 => array(
       'var' => 'stringListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => darray[
+      'elem' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    9 => darray[
+      ),
+    9 => array(
       'var' => 'typedefValue',
       'union' => true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::STRING,
-      'key' => darray[
+      'key' => array(
         'type' => \TType::I16,
-      ],
-      'val' => darray[
+      ),
+      'val' => array(
         'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
-    14 => darray[
+      ),
+    14 => array(
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'intValue' => 1,
     'stringValue' => 5,
@@ -256,18 +256,18 @@ enum FinalComplexUnionEnum: int {
 class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
-  public static darray $_TSPEC = darray[
-    1 => darray[
+  public static array $_TSPEC = array(
+    1 => array(
       'var' => 'thingOne',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    2 => darray[
+      ),
+    2 => array(
       'var' => 'thingTwo',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    ];
+      ),
+    );
   public static Map<string, int> $_TFIELDMAP = Map {
     'thingOne' => 1,
     'thingTwo' => 2,

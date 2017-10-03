@@ -637,7 +637,7 @@ void t_hack_generator::generate_json_container(std::ofstream& out,
     if (arrays_) {
       indent(out) << container << " = keyset[];" << endl;
     } else if (arraysets_) {
-      indent(out) << container << " = darray[];" << endl;
+      indent(out) << container << " = array();" << endl;
     } else {
       indent(out) << container << " = Set {};" << endl;
     }
@@ -828,26 +828,26 @@ void t_hack_generator::close_generator() {
     if (!lazy_constants_) {
       indent(f_consts_) << "public static ";
       if (strict_) {
-        f_consts_ << "darray<string, mixed>";
+        f_consts_ << "array<string, mixed>";
       } else {
-        f_consts_ << "darray";
+        f_consts_ << "array";
       }
-      f_consts_ << " $__values = darray[" << endl;
+      f_consts_ << " $__values = array(" << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(f_consts_, ",\n"));
-      indent(f_consts_) << "];" << endl;
+      indent(f_consts_) << ");" << endl;
     } else {
       stringstream oss(stringstream::out);
-      oss << "darray[" << endl;
+      oss << "array(" << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(oss, ",\n"));
-      indent(oss) << "    ]";
+      indent(oss) << "    )";
 
       string rendered_value = oss.str();
       generate_lazy_init_for_constant(
-          f_consts_, "__values", "darray", rendered_value);
+          f_consts_, "__values", "array", rendered_value);
     }
     indent_down();
     // close constants class
@@ -910,11 +910,11 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     // names
     indent(f_types_) << "public static ";
     if (strict_) {
-      f_types_ << "darray<int, string>";
+      f_types_ << "array<int, string>";
     } else {
-      f_types_ << "darray";
+      f_types_ << "array";
     }
-    f_types_ << " $__names = darray[" << endl;
+    f_types_ << " $__names = array(" << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -922,15 +922,15 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         "  " << value << " => '" << (*c_iter)->get_name() << "'," << endl;
     }
     indent(f_types_) <<
-      "];" << endl;
+      ");" << endl;
     // values
     indent(f_types_) << "public static ";
     if (strict_) {
-      f_types_ << "darray<string, int>";
+      f_types_ << "array<string, int>";
     } else {
-      f_types_ << "darray";
+      f_types_ << "array";
     }
-    f_types_ << " $__values = darray[" << endl;
+    f_types_ << " $__values = array(" << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -938,7 +938,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         "  '" << (*c_iter)->get_name() << "' => " << value << "," << endl;
     }
     indent(f_types_) <<
-      "];" << endl;
+      ");" << endl;
   }
 
   indent_down();
@@ -1217,7 +1217,7 @@ string t_hack_generator::render_const_value(
       indent_down();
       indent(out) << "]";
     } else if (arraysets_) {
-      out << "darray[" << endl;
+      out << "array(" << endl;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
         out << render_const_value(etype, *v_iter);
@@ -1225,7 +1225,7 @@ string t_hack_generator::render_const_value(
         out << "," << endl;
       }
       indent_down();
-      indent(out) << "]";
+      indent(out) << ")";
     } else {
       out << "Set {" << endl;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1291,7 +1291,7 @@ string t_hack_generator::render_default_value(t_type* type) {
     if (arrays_) {
       dval = "keyset[]";
     } else if (arraysets_) {
-      dval = "darray[]";
+      dval = "array()";
     } else {
       dval = "Set {}";
     }
@@ -1341,15 +1341,15 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     t_type* vtype = get_true_type(((t_map*)t)->get_val_type());
     indent(out) << "'ktype' => " << type_to_enum(ktype) << "," << endl;
     indent(out) << "'vtype' => " << type_to_enum(vtype) << "," << endl;
-    indent(out) << "'key' => darray[" << endl;
+    indent(out) << "'key' => array(" << endl;
     indent_up();
     generate_php_type_spec(out, ktype);
     indent_down();
-    indent(out) << "]," << endl;
-    indent(out) << "'val' => darray[" << endl;
+    indent(out) << ")," << endl;
+    indent(out) << "'val' => array(" << endl;
     indent_up();
     generate_php_type_spec(out, vtype);
-    indent(out) << "]," << endl;
+    indent(out) << ")," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else {
@@ -1359,10 +1359,10 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_list()) {
     t_type* etype = get_true_type(((t_list*)t)->get_elem_type());
     indent(out) << "'etype' => " << type_to_enum(etype) <<"," << endl;
-    indent(out) << "'elem' => darray[" << endl;
+    indent(out) << "'elem' => array(" << endl;
     indent_up();
     generate_php_type_spec(out, etype);
-    indent(out) << "]," << endl;
+    indent(out) << ")," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else {
@@ -1372,10 +1372,10 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_set()) {
     t_type* etype = get_true_type(((t_set*)t)->get_elem_type());
     indent(out) << "'etype' => " << type_to_enum(etype) <<"," << endl;
-    indent(out) << "'elem' => darray[" << endl;
+    indent(out) << "'elem' => array(" << endl;
     indent_up();
     generate_php_type_spec(out, etype);
-    indent(out) << "]," << endl;
+    indent(out) << ")," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else if (arraysets_) {
@@ -1398,18 +1398,18 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
                                                t_struct* tstruct) {
   indent(out) << "public static ";
   if (strict_) {
-    out << "darray<int, darray<string, mixed>>";
+    out << "array<int, array<string, mixed>>";
   } else {
-    out << "darray";
+    out << "array";
   }
-  out << " $_TSPEC = darray[" << endl;
+  out << " $_TSPEC = array(" << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
-    indent(out) << (*m_iter)->get_key() << " => darray[" << endl;
+    indent(out) << (*m_iter)->get_key() << " => array(" << endl;
     indent_up();
     out <<
       indent() << "'var' => '" << (*m_iter)->get_name() << "'," << endl;
@@ -1422,12 +1422,12 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
       out << indent() << "'union' => true," << endl;
     }
     generate_php_type_spec(out, t);
-    indent(out) << "]," << endl;
+    indent(out) << ")," << endl;
     indent_down();
   }
 
   indent_down();
-  indent(out) << "  ];" << endl;
+  indent(out) << "  );" << endl;
 
   indent(out) << "public static Map<string, int> $_TFIELDMAP = Map {" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -1657,7 +1657,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
     }
     t_type* val_type = get_true_type(((t_set*)t)->get_elem_type());
     string the_set = "$" + namer("the_set");
-    indent(out) << the_set << " = darray[];" << endl;
+    indent(out) << the_set << " = array();" << endl;
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data << " as "
                 << k << " => " << v << ") {" << endl;
     if (!shape_unsafe_json_) {
@@ -2321,7 +2321,7 @@ void t_hack_generator::_generate_php_struct_definition(
     } else {
       // Generate constructor from Indexish
       out <<
-        indent() << "public function __construct(@\\Indexish<string, mixed> $vals = darray[]) {" << endl;
+        indent() << "public function __construct(@\\Indexish<string, mixed> $vals = array()) {" << endl;
     }
     out <<
       indent() << "  // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)" << endl;
@@ -2902,7 +2902,7 @@ void t_hack_generator::generate_process_function(t_service* tservice,
     indent() << "$reply_type = \\TMessageType::REPLY;" << endl
              << endl <<
     indent() << "$this->eventHandler_->preRead($handler_ctx, '"
-             << fn_name << "', darray[]);" << endl
+             << fn_name << "', array());" << endl
              << endl <<
     indent() << "if ($input instanceof \\TBinaryProtocolAccelerated) {" << endl <<
     indent() << "  $args = thrift_protocol_read_binary_struct("
@@ -4250,7 +4250,7 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
     if (arrays_) {
       out << indent() << "$" << val << " = keyset[];" << endl;
     } else if (arraysets_) {
-      out << indent() << "$" << val << " = darray[];" << endl;
+      out << indent() << "$" << val << " = array();" << endl;
     } else {
       out << indent() << "$" << val << " = Set{};" << endl;
     }
@@ -4649,7 +4649,7 @@ string t_hack_generator::declare_field(t_field* tfield, bool init,
       if (arrays_) {
         result += " = keyset[]";
       } else if (arraysets_) {
-        result += " = darray[]";
+        result += " = array()";
       } else {
         result += " = Set {}";
       }
