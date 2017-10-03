@@ -48,12 +48,12 @@ folly::Future<RequestChannel_ptr> createThriftChannel(
     const uint16_t port,
     const uint32_t connect_timeout) {
   return folly::via(
-    wangle::getEventBase(),
+    folly::getEventBase(),
     [=] {
       RequestChannel_ptr channel = std::move(
         apache::thrift::HeaderClientChannel::newChannel(
           apache::thrift::async::TAsyncSocket::newSocket(
-            wangle::getEventBase(),
+            folly::getEventBase(),
             host,
             port,
             connect_timeout)));

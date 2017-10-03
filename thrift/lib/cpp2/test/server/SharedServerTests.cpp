@@ -427,7 +427,7 @@ namespace {
 class FiberExecutor : public folly::Executor {
  public:
   void add(folly::Func f) override {
-    folly::fibers::getFiberManager(*wangle::getEventBase()).add(std::move(f));
+    folly::fibers::getFiberManager(*folly::getEventBase()).add(std::move(f));
   }
 };
 }
