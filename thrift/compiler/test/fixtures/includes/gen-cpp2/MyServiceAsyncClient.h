@@ -63,12 +63,14 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_query(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_query(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void queryT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  private:
@@ -85,12 +87,14 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_has_arg_docs(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void has_arg_docsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_has_arg_docsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_has_arg_docsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

@@ -63,12 +63,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_moduleAMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_moduleAMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void moduleAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleAMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_moduleAMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void moduleBMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
   virtual void moduleBMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
  private:
@@ -85,12 +87,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_moduleBMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_moduleBMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void moduleBMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleBMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_moduleBMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void i32StrDoubleMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   virtual void i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
  private:
@@ -107,12 +111,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_i32StrDoubleMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_i32StrDoubleMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void i32StrDoubleMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_i32StrDoubleMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_i32StrDoubleMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void versioningMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   virtual void versioningMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
  private:
@@ -129,12 +135,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_versioningMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_versioningMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void versioningMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_versioningMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_versioningMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void retI32Method(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void retI32Method(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
@@ -151,12 +159,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual int32_t recv_instance_retI32Method(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_retI32Method(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void retI32MethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_retI32MethodT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static int32_t recv_retI32MethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void retModAMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void retModAMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
@@ -173,12 +183,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_retModAMethod( ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_retModAMethod( ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void retModAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_retModAMethodT(Protocol_* prot,  ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_retModAMethodT(Protocol_* prot,  ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void throwMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throwMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
@@ -195,12 +207,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_throwMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_throwMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void throwMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_throwMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_throwMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void multiThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void multiThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
@@ -217,12 +231,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_multiThrowMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_multiThrowMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void multiThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_multiThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_multiThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void i32ThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
   virtual void i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
  private:
@@ -239,12 +255,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_i32ThrowMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_i32ThrowMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void i32ThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_i32ThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_i32ThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void moduleAThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   virtual void moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
  private:
@@ -261,12 +279,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_moduleAThrowMethod(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_moduleAThrowMethod(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void moduleAThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleAThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_moduleAThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void mixedMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
   virtual void mixedMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
  private:
@@ -283,12 +303,14 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_mixedMethod(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_mixedMethod(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void mixedMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
+ public:
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

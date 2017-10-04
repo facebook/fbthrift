@@ -16,20 +16,30 @@
 
 %><% > Autogen%>
 
-#include "<%service:include_prefix%><%service:name%>.h"
-#include "<%service:include_prefix%><%service:name%>.tcc"
+#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
 
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 <%#service:frozen2?%>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 <%/service:frozen2?%>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 
 <% > common/namespace_cpp2_begin%>
+
+<% > service_common/typedefs%>
 
 const char* <%service:name%>AsyncClient::getServiceName() {
   return "<%service:name%>";
 }
+
+<% > service_client_cpp/templated_received%>
+
 
 <%#service:functions%><%#function:returnType%>
 <% > service_client_cpp/function_implementation%>

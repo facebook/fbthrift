@@ -61,12 +61,14 @@ class NestedContainersAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_mapList(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_mapList(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void mapListT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::vector<int32_t>>& foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void mapSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::set<int32_t>>& foo);
   virtual void mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::set<int32_t>>& foo);
  private:
@@ -83,12 +85,14 @@ class NestedContainersAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_mapSet(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_mapSet(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void mapSetT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::set<int32_t>>& foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void listMap(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::map<int32_t, int32_t>>& foo);
   virtual void listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::map<int32_t, int32_t>>& foo);
  private:
@@ -105,12 +109,14 @@ class NestedContainersAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_listMap(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_listMap(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void listMapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::map<int32_t, int32_t>>& foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void listSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::set<int32_t>>& foo);
   virtual void listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::set<int32_t>>& foo);
  private:
@@ -127,12 +133,14 @@ class NestedContainersAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_listSet(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_listSet(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void listSetT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::set<int32_t>>& foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
   virtual void turtles(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo);
   virtual void turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo);
  private:
@@ -149,12 +157,14 @@ class NestedContainersAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_turtles(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_turtles(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void turtlesT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

@@ -61,12 +61,14 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
   // Mock friendly virtual instance method
   virtual void recv_instance_do_root(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_do_root(::apache::thrift::ClientReceiveState& state);
+ private:
   template <typename Protocol_>
   void do_rootT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_do_rootT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_do_rootT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+ public:
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
