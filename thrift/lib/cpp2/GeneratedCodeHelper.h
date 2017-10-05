@@ -1154,6 +1154,17 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
 namespace detail {
 namespace ac {
 
+//  Everything templated on only protocol goes here. The corresponding .cpp file
+//  explicitly instantiates this struct for each supported protocol.
+template <class Protocol>
+struct helper {
+  static folly::exception_wrapper recv_exn(
+      const char* method,
+      const std::string& fname,
+      Protocol* prot,
+      MessageType mtype);
+};
+
 [[noreturn]] void throw_app_exn(char const* msg);
 } // namespace ac
 } // namespace detail

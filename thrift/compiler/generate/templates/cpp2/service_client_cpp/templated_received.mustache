@@ -100,28 +100,10 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-<%^service:frozen2?%>
-      x.read(prot);
-<%/service:frozen2?%>
-<%#service:frozen2?%>
-      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
-<%/service:frozen2?%>
+    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
+        "<%function:name%>", _fname, prot, mtype);
+    if (interior_ew) {
       prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("<%function:name%>") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -130,7 +112,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     ctx->onReadData(smsg);
     <%service:name%>_<%function:name%>_presult result;
 <%#type:stream?%>
-  assert(false); // we're a stream
+    assert(false); // we're a stream
 <%/type:stream?%>
 <%^type:stream?%>
 <%^type:void?%>
