@@ -35,17 +35,6 @@ RSClientConnection::RSClientConnection(
   rsRequester_ = rsClient_->getRequester();
 }
 
-RSClientConnection::RSClientConnection(
-    folly::EventBase& evb,
-    folly::SocketAddress address)
-    : evb_(evb) {
-  rsClient_ =
-      RSocket::createConnectedClient(
-          std::make_unique<TcpConnectionFactory>(evb, std::move(address)))
-          .get();
-  rsRequester_ = rsClient_->getRequester();
-}
-
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel() {
   return std::make_shared<RSClientThriftChannel>(rsRequester_);
 }
@@ -102,5 +91,5 @@ void RSClientConnection::closeNow() {
 CLIENT_TYPE RSClientConnection::getClientType() {
   LOG(FATAL) << "not implemented";
 }
-}
-}
+} // namespace thrift
+} // namespace apache

@@ -19,8 +19,8 @@
 #include <folly/Conv.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
@@ -77,7 +77,7 @@ void ConnectionThread::maybeCreateConnection(
           sslContext->setAdvertisedNextProtocols({"h2", "http"});
         }
         auto sslSocket = new TAsyncSSLSocket(
-                    sslContext, getEventBase(), socket->detachFd(), false);
+            sslContext, getEventBase(), socket->detachFd(), false);
         sslSocket->sslConn(nullptr);
         socket.reset(sslSocket);
       }
@@ -92,7 +92,8 @@ void ConnectionThread::maybeCreateConnection(
           LOG(ERROR) << "Unknown transport " << FLAGS_transport
                      << ".  Will use http2.";
         }
-        connection = H2ClientConnection::newHTTP2Connection(std::move(socket));
+        connection = H2ClientConnection::newHTTP2Connection(
+            std::move(socket), addr, "/");
       }
     }
   }

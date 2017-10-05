@@ -28,7 +28,6 @@ class RSClientConnection : public ClientConnectionIf {
   RSClientConnection(
       folly::AsyncSocket::UniquePtr socket,
       folly::EventBase* evb);
-  RSClientConnection(folly::EventBase& evb, folly::SocketAddress address);
 
   std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
@@ -47,8 +46,9 @@ class RSClientConnection : public ClientConnectionIf {
 
  protected:
   folly::EventBase& evb_;
+
   std::shared_ptr<rsocket::RSocketClient> rsClient_;
   std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
 };
-}
-}
+} // namespace thrift
+} // namespace apache
