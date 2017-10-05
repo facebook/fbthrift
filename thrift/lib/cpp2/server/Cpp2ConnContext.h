@@ -104,7 +104,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return std::string();
   }
 
-  std::shared_ptr<X509> getPeerCertificate() const {
+  virtual std::shared_ptr<X509> getPeerCertificate() const {
     return peerCert_;
   }
 
