@@ -530,6 +530,214 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   }
 };
 
+namespace forward_compatibility {
+// TODO(denplusplus): remove.
+// DO NOT USE.
+template <typename Protocol_, typename T>
+uint32_t readIntegral(Protocol_& prot, TType arg_type, T& out) {
+  switch (arg_type) {
+    case TType::T_BOOL: {
+      bool boolv;
+      auto res = prot.readBool(boolv);
+      out = static_cast<T>(boolv);
+      return res;
+    }
+    case TType::T_BYTE: {
+      int8_t bytev;
+      auto res = prot.readByte(bytev);
+      out = static_cast<T>(bytev);
+      return res;
+    }
+    case TType::T_I16: {
+      int16_t i16;
+      auto res = prot.readI16(i16);
+      out = static_cast<T>(i16);
+      return res;
+    }
+    case TType::T_I32: {
+      int32_t i32;
+      auto res = prot.readI32(i32);
+      out = static_cast<T>(i32);
+      return res;
+    }
+    case TType::T_I64: {
+      int64_t i64;
+      auto res = prot.readI64(i64);
+      out = static_cast<T>(i64);
+      return res;
+    }
+    default: {
+      throw TProtocolException(
+          std::string("Cannot parse integral number of ") +
+          std::to_string(arg_type) + " type");
+    }
+  }
+}
+
+// TODO(denplusplus): remove.
+// DO NOT USE.
+template <typename Protocol_, typename T>
+uint32_t readFloatingPoint(Protocol_& prot, TType arg_type, T& out) {
+  switch (arg_type) {
+    case TType::T_DOUBLE: {
+      double dub;
+      auto res = prot.readDouble(dub);
+      out = static_cast<T>(dub);
+      return res;
+    }
+    case TType::T_FLOAT: {
+      float flt;
+      auto res = prot.readFloat(flt);
+      out = static_cast<T>(flt);
+      return res;
+    }
+    default: {
+      throw TProtocolException(
+          std::string("Cannot parse floating number of ") +
+          std::to_string(arg_type) + " type");
+    }
+  }
+}
+
+template <typename Protocol_, typename T>
+struct ReadForwardCompatible {
+  static uint32_t read(Protocol_& prot, TType arg_type, T& out) {
+    return forward_compatibility::readIntegral(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_>
+struct ReadForwardCompatible<Protocol_, float> {
+  static uint32_t read(Protocol_& prot, TType arg_type, float& out) {
+    return forward_compatibility::readFloatingPoint(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_>
+struct ReadForwardCompatible<Protocol_, double> {
+  static uint32_t read(Protocol_& prot, TType arg_type, double& out) {
+    return forward_compatibility::readFloatingPoint(prot, arg_type, out);
+  }
+};
+
+} // namespace forward_compatibility
+
+// TODO(@denplusplus, by 11/4/2017) Remove.
+template <typename KeyClass, typename MappedClass, typename Type>
+struct protocol_methods<
+    type_class::map_forward_compatibility<KeyClass, MappedClass>,
+    Type> {
+  static_assert(
+      !std::is_same<KeyClass, type_class::unknown>(),
+      "Unable to serialize unknown key type in map");
+  static_assert(
+      !std::is_same<MappedClass, type_class::unknown>(),
+      "Unable to serialize unknown mapped type in map");
+
+  constexpr static protocol::TType ttype_value = protocol::T_MAP;
+
+  using key_type = typename Type::key_type;
+  using mapped_type = typename Type::mapped_type;
+  using key_methods = protocol_methods<KeyClass, key_type>;
+  using mapped_methods = protocol_methods<MappedClass, mapped_type>;
+
+ private:
+  template <typename Protocol>
+  static std::size_t consume_elem(Protocol& protocol, Type& out) {
+    std::size_t xfer = 0;
+    key_type key_tmp;
+    xfer += key_methods::read(protocol, key_tmp);
+    xfer += mapped_methods::read(protocol, out[std::move(key_tmp)]);
+    return xfer;
+  }
+
+  template <typename Protocol>
+  static std::size_t consume_elem_forward_compatible(
+      Protocol& protocol,
+      TType keyType,
+      TType valueType,
+      Type& out) {
+    std::size_t xfer = 0;
+    key_type key_tmp;
+    xfer +=
+        forward_compatibility::ReadForwardCompatible<Protocol, key_type>::read(
+            protocol, keyType, key_tmp);
+    xfer +=
+        forward_compatibility::ReadForwardCompatible<Protocol, mapped_type>::
+            read(protocol, valueType, out[std::move(key_tmp)]);
+    return xfer;
+  }
+
+ public:
+  template <typename Protocol>
+  static std::size_t read(Protocol& protocol, Type& out) {
+    std::size_t xfer = 0;
+    std::uint32_t map_size = -1;
+    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+
+    xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
+    if (is_unknown_container_size(map_size)) {
+      // SimpleJSONProtocol do not save types and map length.
+      if (rpt_key_type != protocol::T_STOP &&
+          rpt_mapped_type != protocol::T_STOP) {
+        while (protocol.peekMap()) {
+          xfer += consume_elem_forward_compatible(
+              protocol, rpt_key_type, rpt_mapped_type, out);
+        }
+      } else {
+        while (protocol.peekMap()) {
+          xfer += consume_elem(protocol, out);
+        }
+      }
+    } else {
+      auto const kreader = [&xfer, &protocol, &rpt_key_type](auto& key) {
+        xfer +=
+            forward_compatibility::ReadForwardCompatible<Protocol, key_type>::
+                read(protocol, rpt_key_type, key);
+      };
+      auto const vreader = [&xfer, &protocol, &rpt_mapped_type](auto& value) {
+        xfer += forward_compatibility::
+            ReadForwardCompatible<Protocol, mapped_type>::read(
+                protocol, rpt_mapped_type, value);
+      };
+      reserve_if_possible(&out, map_size);
+      deserialize_known_length_map(out, map_size, kreader, vreader);
+    }
+    xfer += protocol.readMapEnd();
+    return xfer;
+  }
+
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+
+    xfer += protocol.writeMapBegin(
+        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
+    for (auto const& elem_pair : out) {
+      xfer += key_methods::write(protocol, elem_pair.first);
+      xfer += mapped_methods::write(protocol, elem_pair.second);
+    }
+    xfer += protocol.writeMapEnd();
+    return xfer;
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+
+    xfer += protocol.serializedSizeMapBegin(
+        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
+    for (auto const& elem_pair : out) {
+      xfer += key_methods::template serializedSize<ZeroCopy>(
+          protocol, elem_pair.first);
+      xfer += mapped_methods::template serializedSize<ZeroCopy>(
+          protocol, elem_pair.second);
+    }
+    xfer += protocol.serializedSizeMapEnd();
+    return xfer;
+  }
+};
+
 /*
  * Struct with Indirection Specialization
  */

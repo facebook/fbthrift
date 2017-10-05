@@ -110,6 +110,24 @@ namespace type_class {
      */
     using mapped_type_class = MappedTypeClass;
   };
+
+  /**
+   * Represents all map implementations, which are forward compatible.
+   * It is a temporary struct for migration only.
+   * TODO(@denpluplus, by 11/4/2017) Remove.
+   */
+  template <typename KeyTypeClass, typename MappedTypeClass>
+  struct map_forward_compatibility {
+    /**
+     * The type class of the keys of this container.
+     */
+    using key_type_class = KeyTypeClass;
+
+    /**
+     * The type class of the mapped elements of this container.
+     */
+    using mapped_type_class = MappedTypeClass;
+  };
 } // type_class
 
 }}
