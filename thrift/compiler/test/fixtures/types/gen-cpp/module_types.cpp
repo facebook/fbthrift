@@ -424,8 +424,8 @@ uint32_t ContainerStruct::read(apache::thrift::protocol::TProtocol* iprot) {
             this->fieldG.clear();
             uint32_t _size55;
             bool _sizeUnknown56;
-            apache::thrift::protocol::TType _ktype57;
-            apache::thrift::protocol::TType _vtype58;
+            apache::thrift::protocol::TType _ktype57 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype58 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype57, _vtype58, _size55, _sizeUnknown56);
             if (!_sizeUnknown56) {
               uint32_t _i61;
@@ -458,8 +458,8 @@ uint32_t ContainerStruct::read(apache::thrift::protocol::TProtocol* iprot) {
             this->fieldH.clear();
             uint32_t _size66;
             bool _sizeUnknown67;
-            apache::thrift::protocol::TType _ktype68;
-            apache::thrift::protocol::TType _vtype69;
+            apache::thrift::protocol::TType _ktype68 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype69 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype68, _vtype69, _size66, _sizeUnknown67);
             if (!_sizeUnknown67) {
               uint32_t _i72;

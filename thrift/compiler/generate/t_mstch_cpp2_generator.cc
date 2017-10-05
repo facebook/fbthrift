@@ -166,6 +166,8 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
             {"type:optionals?", &mstch_cpp2_type::optionals},
+            {"type:forward_compatibility?",
+             &mstch_cpp2_type::forward_compatibility},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -221,6 +223,9 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string() || resolved_type_->is_binary();
+  }
+  mstch::node forward_compatibility() {
+    return resolved_type_->annotations_.count("forward_compatibility") != 0;
   }
   mstch::node cpp_template() {
     if (type_->annotations_.count("cpp.template")) {

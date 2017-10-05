@@ -40,9 +40,11 @@
   %>set<<%#type:setElemType%><% > module_types_tcc/protocol_methods%><%/type:setElemType%>><%!
 %><%/type:set?%><%!
 
-%><%#type:map?%><%!
+%><%#type:map?%><%^type:forward_compatibility?%><%!
     %>map<<%#type:keyType%><% > module_types_tcc/protocol_methods%><%/type:keyType%>, <%#type:valueType%><% > module_types_tcc/protocol_methods%><%/type:valueType%>><%!
-%><%/type:map?%><%!
+%><%/type:forward_compatibility?%><%#type:forward_compatibility?%><%!
+    %>map_forward_compatibility<<%#type:keyType%><% > module_types_tcc/protocol_methods%><%/type:keyType%>, <%#type:valueType%><% > module_types_tcc/protocol_methods%><%/type:valueType%>><%!
+%><%/type:forward_compatibility?%><%/type:map?%><%!
 
 %><%#type:cpp_indirection%><%!
   %>><%!

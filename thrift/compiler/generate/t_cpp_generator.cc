@@ -234,7 +234,9 @@ class t_cpp_generator : public t_oop_generator {
   void generate_deserialize_field        (std::ofstream& out,
                                           t_field*    tfield,
                                           std::string prefix="",
-                                          std::string suffix="");
+                                          std::string suffix = "",
+                                          bool forwardCompatibility = false,
+                                          string originalType = "");
 
   void generate_deserialize_struct       (std::ofstream& out,
                                           t_struct*   tstruct,
@@ -252,7 +254,10 @@ class t_cpp_generator : public t_oop_generator {
 
   void generate_deserialize_map_element  (std::ofstream& out,
                                           t_map*      tmap,
-                                          std::string prefix="");
+                                          std::string prefix = "",
+                                          bool forwardCompatibility = false,
+                                          std::string ktype = "",
+                                          std::string vtype = "");
 
   void generate_deserialize_list_element (std::ofstream& out,
                                           t_list*     tlist,
@@ -6737,7 +6742,9 @@ void t_cpp_generator::generate_service_perfhash_keywords(t_service* tservice) {
 void t_cpp_generator::generate_deserialize_field(ofstream& out,
                                                  t_field* tfield,
                                                  string prefix,
-                                                 string suffix) {
+    string suffix,
+    bool forwardCompatibility,
+    string originalType) {
   t_type* f_type = tfield->get_type();
   suffix = get_type_access_suffix(f_type) + suffix;
   t_type* type = get_true_type(f_type);
@@ -6755,46 +6762,67 @@ void t_cpp_generator::generate_deserialize_field(ofstream& out,
   } else if (type->is_container()) {
     generate_deserialize_container(out, type, name, pointer);
   } else if (type->is_base_type()) {
-    indent(out) <<
-      "xfer += iprot->";
-    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
-    switch (tbase) {
-    case t_base_type::TYPE_VOID:
-      throw "compiler error: cannot serialize void field in a struct: " + name;
-    case t_base_type::TYPE_STRING:
-      if (((t_base_type*)type)->is_binary()) {
-        out << "readBinary(" << name << ");";
+    if (!forwardCompatibility) {
+      indent(out) << "xfer += iprot->";
+      t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+      switch (tbase) {
+        case t_base_type::TYPE_VOID:
+          throw "compiler error: cannot serialize void field in a struct: " +
+              name;
+        case t_base_type::TYPE_STRING:
+          if (((t_base_type*)type)->is_binary()) {
+            out << "readBinary(" << name << ");";
+          } else {
+            out << "readString(" << name << ");";
+          }
+          break;
+        case t_base_type::TYPE_BOOL:
+          out << "readBool(" << name << ");";
+          break;
+        case t_base_type::TYPE_BYTE:
+          out << "readByte(" << name << ");";
+          break;
+        case t_base_type::TYPE_I16:
+          out << "readI16(" << name << ");";
+          break;
+        case t_base_type::TYPE_I32:
+          out << "readI32(" << name << ");";
+          break;
+        case t_base_type::TYPE_I64:
+          out << "readI64(" << name << ");";
+          break;
+        case t_base_type::TYPE_DOUBLE:
+          out << "readDouble(" << name << ");";
+          break;
+        case t_base_type::TYPE_FLOAT:
+          out << "readFloat(" << name << ");";
+          break;
+        default:
+          throw "compiler error: no C++ reader for base type " +
+              t_base_type::t_base_name(tbase) + name;
       }
-      else {
-        out << "readString(" << name << ");";
+      out << endl;
+    } else {
+      t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+      switch (tbase) {
+        case t_base_type::TYPE_BOOL:
+        case t_base_type::TYPE_BYTE:
+        case t_base_type::TYPE_I16:
+        case t_base_type::TYPE_I32:
+        case t_base_type::TYPE_I64:
+          indent(out) << "xfer += readIntegral(*iprot, " << originalType << ", "
+                      << name << ");";
+          break;
+        case t_base_type::TYPE_DOUBLE:
+        case t_base_type::TYPE_FLOAT:
+          indent(out) << "xfer += readFloatingPoint(*iprot, " << originalType
+                      << ", " << name << ");";
+          break;
+        default:
+          throw "compiler error: no forward compatibility C++ reader for base type " + t_base_type::t_base_name(tbase) + name;
       }
-      break;
-    case t_base_type::TYPE_BOOL:
-      out << "readBool(" << name << ");";
-      break;
-    case t_base_type::TYPE_BYTE:
-      out << "readByte(" << name << ");";
-      break;
-    case t_base_type::TYPE_I16:
-      out << "readI16(" << name << ");";
-      break;
-    case t_base_type::TYPE_I32:
-      out << "readI32(" << name << ");";
-      break;
-    case t_base_type::TYPE_I64:
-      out << "readI64(" << name << ");";
-      break;
-    case t_base_type::TYPE_DOUBLE:
-      out << "readDouble(" << name << ");";
-      break;
-    case t_base_type::TYPE_FLOAT:
-      out << "readFloat(" << name << ");";
-      break;
-    default:
-      throw "compiler error: no C++ reader for base type " + t_base_type::t_base_name(tbase) + name;
+      out << endl;
     }
-    out <<
-      endl;
   } else if (type->is_enum()) {
     string t = tmp("ecast");
     out <<
@@ -6906,14 +6934,26 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
     indent() << "uint32_t " << size << ";" << endl <<
     indent() << "bool " << sizeUnknown << ";" << endl;
 
+  bool forward_compatibility =
+      ttype->annotations_.count("forward_compatibility") != 0;
+
   // Declare variables, read header
   if (ttype->is_map()) {
-    out <<
-      indent() << "apache::thrift::protocol::TType " << ktype << ";" << endl <<
-      indent() << "apache::thrift::protocol::TType " << vtype << ";" << endl <<
-      indent() << "xfer += iprot->readMapBegin(" <<
-        ktype << ", " << vtype << ", " << size << ", " << sizeUnknown << ");" <<
-        endl;
+    out << indent() << "apache::thrift::protocol::TType " << ktype
+        << " = apache::thrift::protocol::T_STOP;" << endl
+        << indent() << "apache::thrift::protocol::TType " << vtype
+        << " = apache::thrift::protocol::T_STOP;" << endl
+        << indent() << "xfer += iprot->readMapBegin(" << ktype << ", " << vtype
+        << ", " << size << ", " << sizeUnknown << ");" << endl;
+    if (forward_compatibility) {
+      auto tmap = (t_map*)ttype;
+      out << indent() << "if (" << ktype
+          << " == apache::thrift::protocol::T_STOP) {" << ktype << " = "
+          << type_to_enum(tmap->get_key_type()) << ";}" << endl;
+      out << indent() << "if (" << vtype
+          << " == apache::thrift::protocol::T_STOP) {" << vtype << " = "
+          << type_to_enum(tmap->get_val_type()) << ";}" << endl;
+    }
   } else if (ttype->is_set()) {
     out <<
       indent() << "apache::thrift::protocol::TType " << etype << ";" << endl <<
@@ -6949,7 +6989,8 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
       scope_up(out);
 
       if (ttype->is_map()) {
-        generate_deserialize_map_element(out, (t_map*)ttype, contref);
+        generate_deserialize_map_element(
+            out, (t_map*)ttype, contref, forward_compatibility, ktype, vtype);
       } else if (ttype->is_set()) {
         generate_deserialize_set_element(out, (t_set*)ttype, contref);
       } else if (ttype->is_list()) {
@@ -6961,29 +7002,34 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
 
     indent_down();
   out << indent() << "} else {" << endl;
-    indent_up();
+  indent_up();
 
-      if (ttype->is_map()) {
-        out << indent() << "while (iprot->peekMap())" << endl;
-      } else if (ttype->is_set()) {
-        out << indent() << "while (iprot->peekSet())" << endl;
-      } else if (ttype->is_list()) {
-        out << indent() << "while (iprot->peekList())" << endl;
-      }
+  if (ttype->is_map()) {
+    out << indent() << "while (iprot->peekMap())" << endl;
+  } else if (ttype->is_set()) {
+    out << indent() << "while (iprot->peekSet())" << endl;
+  } else if (ttype->is_list()) {
+    out << indent() << "while (iprot->peekList())" << endl;
+  }
 
-      scope_up(out);
+  scope_up(out);
 
-      if (ttype->is_map()) {
-        generate_deserialize_map_element(out, (t_map*)ttype, contref);
-      } else if (ttype->is_set()) {
-        generate_deserialize_set_element(out, (t_set*)ttype, contref);
-      } else if (ttype->is_list()) {
-        generate_deserialize_list_element(out, (t_list*)ttype, contref,
-                                          true, i);
-      }
+  if (ttype->is_map()) {
+    generate_deserialize_map_element(
+        out,
+        (t_map*)ttype,
+        contref,
+        ttype->annotations_.count("forward_compatibility") != 0,
+        ktype,
+        vtype);
+  } else if (ttype->is_set()) {
+    generate_deserialize_set_element(out, (t_set*)ttype, contref);
+  } else if (ttype->is_list()) {
+    generate_deserialize_list_element(out, (t_list*)ttype, contref, true, i);
+  }
 
-      scope_down(out);
-    indent_down();
+  scope_down(out);
+  indent_down();
   indent(out) << "}" << endl;
 
   if (pointer) {
@@ -7008,21 +7054,22 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
  */
 void t_cpp_generator::generate_deserialize_map_element(ofstream& out,
                                                        t_map* tmap,
-                                                       string prefix) {
+                                                       string prefix,
+                                                       bool forwardCompatibility,
+                                                       string ktype,
+                                                       string vtype) {
   string key = tmp("_key");
   string val = tmp("_val");
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
 
-  out <<
-    indent() << declare_field(&fkey) << endl;
+  out << indent() << declare_field(&fkey) << endl;
 
-  generate_deserialize_field(out, &fkey);
-  indent(out) <<
-    declare_field(&fval, false, false, false, true) << " = " <<
-    prefix << "[" << key << "];" << endl;
+  generate_deserialize_field(out, &fkey, "", "", forwardCompatibility, ktype);
+  indent(out) << declare_field(&fval, false, false, false, true) << " = "
+              << prefix << "[" << key << "];" << endl;
 
-  generate_deserialize_field(out, &fval);
+  generate_deserialize_field(out, &fval, "", "", forwardCompatibility, vtype);
 }
 
 void t_cpp_generator::generate_deserialize_set_element(ofstream& out,

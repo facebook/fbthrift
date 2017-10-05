@@ -145,8 +145,8 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             this->value_.typedefValue.clear();
             uint32_t _size16;
             bool _sizeUnknown17;
-            apache::thrift::protocol::TType _ktype18;
-            apache::thrift::protocol::TType _vtype19;
+            apache::thrift::protocol::TType _ktype18 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype19 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype18, _vtype19, _size16, _sizeUnknown17);
             if (!_sizeUnknown17) {
               uint32_t _i22;

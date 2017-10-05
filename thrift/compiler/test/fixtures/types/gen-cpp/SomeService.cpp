@@ -59,8 +59,8 @@ uint32_t SomeService_bounce_map_args::read(apache::thrift::protocol::TProtocol* 
             this->m.clear();
             uint32_t _size85;
             bool _sizeUnknown86;
-            apache::thrift::protocol::TType _ktype87;
-            apache::thrift::protocol::TType _vtype88;
+            apache::thrift::protocol::TType _ktype87 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype88 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype87, _vtype88, _size85, _sizeUnknown86);
             if (!_sizeUnknown86) {
               uint32_t _i91;
@@ -203,8 +203,8 @@ uint32_t SomeService_bounce_map_presult::read(apache::thrift::protocol::TProtoco
             (*(this->success)).clear();
             uint32_t _size98;
             bool _sizeUnknown99;
-            apache::thrift::protocol::TType _ktype100;
-            apache::thrift::protocol::TType _vtype101;
+            apache::thrift::protocol::TType _ktype100 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype101 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype100, _vtype101, _size98, _sizeUnknown99);
             if (!_sizeUnknown99) {
               uint32_t _i104;

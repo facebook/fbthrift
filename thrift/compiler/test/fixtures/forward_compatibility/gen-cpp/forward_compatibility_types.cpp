@@ -70,8 +70,8 @@ uint32_t OldStructure::read(apache::thrift::protocol::TProtocol* iprot) {
             this->features.clear();
             uint32_t _size1;
             bool _sizeUnknown2;
-            apache::thrift::protocol::TType _ktype3;
-            apache::thrift::protocol::TType _vtype4;
+            apache::thrift::protocol::TType _ktype3 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype4 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype3, _vtype4, _size1, _sizeUnknown2);
             if (!_sizeUnknown2) {
               uint32_t _i7;
@@ -208,25 +208,27 @@ uint32_t NewStructure::read(apache::thrift::protocol::TProtocol* iprot) {
             this->features.clear();
             uint32_t _size14;
             bool _sizeUnknown15;
-            apache::thrift::protocol::TType _ktype16;
-            apache::thrift::protocol::TType _vtype17;
+            apache::thrift::protocol::TType _ktype16 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype17 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype16, _vtype17, _size14, _sizeUnknown15);
+            if (_ktype16 == apache::thrift::protocol::T_STOP) {_ktype16 = apache::thrift::protocol::T_I16;}
+            if (_vtype17 == apache::thrift::protocol::T_STOP) {_vtype17 = apache::thrift::protocol::T_DOUBLE;}
             if (!_sizeUnknown15) {
               uint32_t _i20;
               for (_i20 = 0; _i20 < _size14; ++_i20)
               {
                 int16_t _key21;
-                xfer += iprot->readI16(_key21);
+                xfer += readIntegral(*iprot, _ktype16, _key21);
                 double& _val22 = this->features[_key21];
-                xfer += iprot->readDouble(_val22);
+                xfer += readFloatingPoint(*iprot, _vtype17, _val22);
               }
             } else {
               while (iprot->peekMap())
               {
                 int16_t _key23;
-                xfer += iprot->readI16(_key23);
+                xfer += readIntegral(*iprot, _ktype16, _key23);
                 double& _val24 = this->features[_key23];
-                xfer += iprot->readDouble(_val24);
+                xfer += readFloatingPoint(*iprot, _vtype17, _val24);
               }
             }
             xfer += iprot->readMapEnd();
@@ -346,25 +348,27 @@ uint32_t NewStructure2::read(apache::thrift::protocol::TProtocol* iprot) {
             this->features.clear();
             uint32_t _size27;
             bool _sizeUnknown28;
-            apache::thrift::protocol::TType _ktype29;
-            apache::thrift::protocol::TType _vtype30;
+            apache::thrift::protocol::TType _ktype29 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype30 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype29, _vtype30, _size27, _sizeUnknown28);
+            if (_ktype29 == apache::thrift::protocol::T_STOP) {_ktype29 = apache::thrift::protocol::T_I16;}
+            if (_vtype30 == apache::thrift::protocol::T_STOP) {_vtype30 = apache::thrift::protocol::T_FLOAT;}
             if (!_sizeUnknown28) {
               uint32_t _i33;
               for (_i33 = 0; _i33 < _size27; ++_i33)
               {
                 int16_t _key34;
-                xfer += iprot->readI16(_key34);
+                xfer += readIntegral(*iprot, _ktype29, _key34);
                 float& _val35 = this->features[_key34];
-                xfer += iprot->readFloat(_val35);
+                xfer += readFloatingPoint(*iprot, _vtype30, _val35);
               }
             } else {
               while (iprot->peekMap())
               {
                 int16_t _key36;
-                xfer += iprot->readI16(_key36);
+                xfer += readIntegral(*iprot, _ktype29, _key36);
                 float& _val37 = this->features[_key36];
-                xfer += iprot->readFloat(_val37);
+                xfer += readFloatingPoint(*iprot, _vtype30, _val37);
               }
             }
             xfer += iprot->readMapEnd();

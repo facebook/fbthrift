@@ -987,8 +987,8 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             _rtype46.clear();
             uint32_t _size40;
             bool _sizeUnknown41;
-            apache::thrift::protocol::TType _ktype42;
-            apache::thrift::protocol::TType _vtype43;
+            apache::thrift::protocol::TType _ktype42 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype43 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype42, _vtype43, _size40, _sizeUnknown41);
             if (!_sizeUnknown41) {
               uint32_t _i47;

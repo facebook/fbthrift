@@ -3623,9 +3623,14 @@ class CppGenerator(t_generator.Generator):
             return '::apache::thrift::type_class::list<{0}>'.format(
                 self._render_type_class_for_serialization(ttype.as_list.elem_type))
         elif ttype.is_map:
-            return '::apache::thrift::type_class::map<{0}, {1}>'.format(
-                self._render_type_class_for_serialization(ttype.as_map.key_type),
-                self._render_type_class_for_serialization(ttype.as_map.value_type))
+            if 'forward_compatibility' not in ttype.annotations:
+                return '::apache::thrift::type_class::map<{0}, {1}>'.format(
+                    self._render_type_class_for_serialization(ttype.as_map.key_type),
+                    self._render_type_class_for_serialization(ttype.as_map.value_type))
+            else:
+                return '::apache::thrift::type_class::map_forward_compatibility<{0}, {1}>'.format(
+                    self._render_type_class_for_serialization(ttype.as_map.key_type),
+                    self._render_type_class_for_serialization(ttype.as_map.value_type))
         elif ttype.is_set:
             return '::apache::thrift::type_class::set<{0}>'.format(
                 self._render_type_class_for_serialization(ttype.as_set.elem_type))

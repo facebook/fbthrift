@@ -642,8 +642,8 @@ uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
             this->petNames.clear();
             uint32_t _size12;
             bool _sizeUnknown13;
-            apache::thrift::protocol::TType _ktype14;
-            apache::thrift::protocol::TType _vtype15;
+            apache::thrift::protocol::TType _ktype14 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype15 = apache::thrift::protocol::T_STOP;
             xfer += iprot->readMapBegin(_ktype14, _vtype15, _size12, _sizeUnknown13);
             if (!_sizeUnknown13) {
               uint32_t _i18;

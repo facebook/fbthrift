@@ -128,7 +128,7 @@ uint32_t NewStructure::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->features = std::map<int16_t, double>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
           this->__isset.features = true;
         } else {
           xfer += iprot->skip(_ftype);
@@ -153,7 +153,7 @@ uint32_t NewStructure::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NewStructure");
   xfer += prot_->serializedFieldSize("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::serializedSize<false>(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::serializedSize<false>(*prot_, this->features);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -163,7 +163,7 @@ uint32_t NewStructure::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NewStructure");
   xfer += prot_->serializedFieldSize("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::serializedSize<false>(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::serializedSize<false>(*prot_, this->features);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -173,7 +173,7 @@ uint32_t NewStructure::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("NewStructure");
   xfer += prot_->writeFieldBegin("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::write(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::write(*prot_, this->features);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -211,7 +211,7 @@ uint32_t NewStructure2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->features =  ::cpp2::FloatFeatures();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::read(*iprot, this->features);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::read(*iprot, this->features);
           this->__isset.features = true;
         } else {
           xfer += iprot->skip(_ftype);
@@ -236,7 +236,7 @@ uint32_t NewStructure2::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NewStructure2");
   xfer += prot_->serializedFieldSize("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::serializedSize<false>(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::serializedSize<false>(*prot_, this->features);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -246,7 +246,7 @@ uint32_t NewStructure2::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NewStructure2");
   xfer += prot_->serializedFieldSize("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::serializedSize<false>(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::serializedSize<false>(*prot_, this->features);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -256,7 +256,7 @@ uint32_t NewStructure2::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("NewStructure2");
   xfer += prot_->writeFieldBegin("features", apache::thrift::protocol::T_MAP, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::write(*prot_, this->features);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::write(*prot_, this->features);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
