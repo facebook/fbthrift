@@ -23,11 +23,11 @@
 #include <gtest/gtest.h>
 
 #include <folly/Memory.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
-#include <wangle/concurrent/GlobalExecutor.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>

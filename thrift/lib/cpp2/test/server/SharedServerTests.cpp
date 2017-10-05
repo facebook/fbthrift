@@ -38,8 +38,8 @@
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
 
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
-#include <wangle/concurrent/GlobalExecutor.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>

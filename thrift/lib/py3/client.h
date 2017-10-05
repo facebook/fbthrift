@@ -18,9 +18,9 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Try.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
-#include <wangle/concurrent/GlobalExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
