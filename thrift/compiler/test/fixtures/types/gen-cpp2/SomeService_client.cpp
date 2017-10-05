@@ -66,7 +66,7 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_mapT(Protoc
     ctx->onReadData(smsg);
     SomeService_bounce_map_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {

@@ -96,7 +96,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientT
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_client_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -178,7 +178,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_serverT
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_server_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -264,7 +264,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_bothT(P
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_both_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -333,7 +333,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
     ctx->onReadData(smsg);
     PubSubStreamingService_returnstream_presult result;
     assert(false); // we're a stream
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -426,7 +426,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesst
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_takesstream_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -508,7 +508,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientt
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_clientthrows_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

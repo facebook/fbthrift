@@ -119,12 +119,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     result.get<0>().value = &_return;
 <%/type:void?%>
 <%/type:stream?%>
-<%^service:frozen2?%>
-    result.read(prot);
-<%/service:frozen2?%>
-<%#service:frozen2?%>
     ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-<%/service:frozen2?%>
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
 <%^type:void?%>

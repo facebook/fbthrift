@@ -68,7 +68,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_queryT(Protocol_* pr
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyService_query_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -130,7 +130,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_has_arg_docsT(Protoc
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyService_has_arg_docs_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

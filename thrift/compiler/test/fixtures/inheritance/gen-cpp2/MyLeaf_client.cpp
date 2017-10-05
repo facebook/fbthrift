@@ -64,7 +64,7 @@ folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leafT(Protocol_* pro
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyLeaf_do_leaf_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

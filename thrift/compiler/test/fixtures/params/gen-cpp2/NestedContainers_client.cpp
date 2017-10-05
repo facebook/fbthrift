@@ -73,7 +73,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapListT(Prot
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     NestedContainers_mapList_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -134,7 +134,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSetT(Proto
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     NestedContainers_mapSet_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -195,7 +195,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMapT(Prot
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     NestedContainers_listMap_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -256,7 +256,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSetT(Prot
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     NestedContainers_listSet_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -317,7 +317,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtlesT(Prot
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     NestedContainers_turtles_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

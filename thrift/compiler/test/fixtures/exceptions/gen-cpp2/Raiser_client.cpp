@@ -70,7 +70,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* pro
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     Raiser_doBland_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -130,7 +130,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* pro
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     Raiser_doRaise_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -199,7 +199,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot
     ctx->onReadData(smsg);
     Raiser_get200_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -268,7 +268,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot
     ctx->onReadData(smsg);
     Raiser_get500_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {

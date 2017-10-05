@@ -64,7 +64,7 @@ folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_midT(Protocol_* prot
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyNode_do_mid_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

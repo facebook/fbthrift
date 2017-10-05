@@ -64,7 +64,7 @@ folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_rootT(Protocol_* pro
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyRoot_do_root_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }

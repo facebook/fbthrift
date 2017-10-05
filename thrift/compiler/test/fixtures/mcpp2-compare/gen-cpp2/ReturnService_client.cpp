@@ -104,7 +104,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturnT(Protoc
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ReturnService_noReturn_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -165,7 +165,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturnT(Prot
     ctx->onReadData(smsg);
     ReturnService_boolReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -236,7 +236,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16ReturnT(Proto
     ctx->onReadData(smsg);
     ReturnService_i16Return_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -307,7 +307,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32ReturnT(Proto
     ctx->onReadData(smsg);
     ReturnService_i32Return_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -378,7 +378,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64ReturnT(Proto
     ctx->onReadData(smsg);
     ReturnService_i64Return_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -449,7 +449,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturnT(Pro
     ctx->onReadData(smsg);
     ReturnService_floatReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -520,7 +520,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturnT(Pr
     ctx->onReadData(smsg);
     ReturnService_doubleReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -591,7 +591,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturnT(Pr
     ctx->onReadData(smsg);
     ReturnService_stringReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -660,7 +660,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturnT(Pr
     ctx->onReadData(smsg);
     ReturnService_binaryReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -729,7 +729,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturnT(Proto
     ctx->onReadData(smsg);
     ReturnService_mapReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -798,7 +798,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefRet
     ctx->onReadData(smsg);
     ReturnService_simpleTypedefReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -869,7 +869,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefRe
     ctx->onReadData(smsg);
     ReturnService_complexTypedefReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -938,7 +938,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplex
     ctx->onReadData(smsg);
     ReturnService_list_mostComplexTypedefReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1007,7 +1007,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturnT(Prot
     ctx->onReadData(smsg);
     ReturnService_enumReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1078,7 +1078,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturnT
     ctx->onReadData(smsg);
     ReturnService_list_EnumReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1147,7 +1147,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturnT(Pr
     ctx->onReadData(smsg);
     ReturnService_structReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1216,7 +1216,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturn
     ctx->onReadData(smsg);
     ReturnService_set_StructReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1285,7 +1285,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturnT(Pro
     ctx->onReadData(smsg);
     ReturnService_unionReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1354,7 +1354,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturn
     ctx->onReadData(smsg);
     ReturnService_list_UnionReturn_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1424,7 +1424,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEbT(Prot
     ctx->onReadData(smsg);
     ReturnService_readDataEb_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1494,7 +1494,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataT(Protoc
     ctx->onReadData(smsg);
     ReturnService_readData_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {

@@ -121,7 +121,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_i16_para
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_i16_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -183,7 +183,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_byte_i16
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_byte_i16_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -244,7 +244,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_para
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_map_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -306,7 +306,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_setl
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_map_setlist_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -367,7 +367,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_map_type
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_map_typedef_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -428,7 +428,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_enum_par
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_enum_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -489,7 +489,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_struct_p
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_struct_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -550,7 +550,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_void_ret_listunio
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     ParamService_void_ret_listunion_param_presult result;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
   }
@@ -613,7 +613,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_i32_i64_
     ctx->onReadData(smsg);
     ParamService_bool_ret_i32_i64_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -685,7 +685,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_map_para
     ctx->onReadData(smsg);
     ParamService_bool_ret_map_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -757,7 +757,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_bool_ret_union_pa
     ctx->onReadData(smsg);
     ParamService_bool_ret_union_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -830,7 +830,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_float_dou
     ctx->onReadData(smsg);
     ParamService_i64_ret_float_double_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -903,7 +903,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_string_ty
     ctx->onReadData(smsg);
     ParamService_i64_ret_string_typedef_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -979,7 +979,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_i64_ret_i32_i32_i
     ctx->onReadData(smsg);
     ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1051,7 +1051,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_double_ret_setstr
     ctx->onReadData(smsg);
     ParamService_double_ret_setstruct_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1123,7 +1123,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_string_ret_string
     ctx->onReadData(smsg);
     ParamService_string_ret_string_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1193,7 +1193,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_binary_ret_binary
     ctx->onReadData(smsg);
     ParamService_binary_ret_binary_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1263,7 +1263,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_map_ret_bool_para
     ctx->onReadData(smsg);
     ParamService_map_ret_bool_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1334,7 +1334,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_list_ret_map_setl
     ctx->onReadData(smsg);
     ParamService_list_ret_map_setlist_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1404,7 +1404,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_mapsetlistmaplist
     ctx->onReadData(smsg);
     ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1474,7 +1474,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_typedef_ret_i32_p
     ctx->onReadData(smsg);
     ParamService_typedef_ret_i32_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1546,7 +1546,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listtypedef_ret_t
     ctx->onReadData(smsg);
     ParamService_listtypedef_ret_typedef_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1616,7 +1616,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_enum_ret_double_p
     ctx->onReadData(smsg);
     ParamService_enum_ret_double_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1689,7 +1689,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_enum_ret_double_e
     ctx->onReadData(smsg);
     ParamService_enum_ret_double_enum_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1761,7 +1761,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listenum_ret_map_
     ctx->onReadData(smsg);
     ParamService_listenum_ret_map_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1831,7 +1831,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_struct_ret_i16_pa
     ctx->onReadData(smsg);
     ParamService_struct_ret_i16_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1901,7 +1901,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_setstruct_ret_set
     ctx->onReadData(smsg);
     ParamService_setstruct_ret_set_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -1972,7 +1972,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_union_ret_i32_i32
     ctx->onReadData(smsg);
     ParamService_union_ret_i32_i32_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
@@ -2042,7 +2042,7 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_listunion_string_
     ctx->onReadData(smsg);
     ParamService_listunion_string_param_presult result;
     result.get<0>().value = &_return;
-    result.read(prot);
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
     if (result.getIsSet(0)) {
