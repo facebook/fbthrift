@@ -14,4 +14,6 @@ service TestService {
   void throwUnexpectedException(1: i32 x) throws (1: TestServiceException e),
 
   void sleep(1: i32 timeMs),
+
+  void headers();
 }

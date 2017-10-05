@@ -79,5 +79,9 @@ void TestServiceMock::sleep(int32_t timeMs) {
   std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
 }
 
+void TestServiceMock::headers() {
+  // TODO: implement
+}
+
 } // namespace testservice
 } // namespace testutil

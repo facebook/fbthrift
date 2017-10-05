@@ -19,17 +19,30 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
 namespace apache {
 namespace thrift {
 
-class RoutingHandlerTest {
+// Transport layer compliance tests.
+// List of tests:
+//  - Routing
+//  - Multiple parallel clients
+//  - Exception handling
+//  - Timeouts
+//  - Header support
+class ComplianceTest {
  public:
-  enum class RoutingType { NONE = 0, HTTP = 1, HTTP2 = 2, RSOCKET = 3 };
+  ComplianceTest();
+  virtual ~ComplianceTest();
 
-  explicit RoutingHandlerTest(RoutingType routingType);
-  virtual ~RoutingHandlerTest();
+  // Don't forget to start the server before running the tests.
+  void startServer();
+
+  void addRoutingHandler(
+      std::unique_ptr<TransportRoutingHandler> routingHandler);
+  ThriftServer* getServer();
 
   void TestRequestResponse_Simple();
   void TestRequestResponse_MultipleClients();
@@ -38,7 +51,7 @@ class RoutingHandlerTest {
   void TestRequestResponse_Timeout();
 
  protected:
-  void startServer(RoutingType routingType);
+  void setupServer();
   void stopServer();
   void connectToServer(
       folly::Function<
