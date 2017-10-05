@@ -70,5 +70,5 @@ class RSClientThriftChannel : public ThriftChannelIf {
  protected:
   std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
 };
-}
-}
+} // namespace thrift
+} // namespace apache

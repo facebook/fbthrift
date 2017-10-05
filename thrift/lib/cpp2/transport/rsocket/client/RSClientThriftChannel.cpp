@@ -15,10 +15,30 @@
  */
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h"
 
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+
 namespace apache {
 namespace thrift {
 
 using namespace rsocket;
+
+std::unique_ptr<folly::IOBuf> serializeMetadata(
+    const RequestRpcMetadata& requestMetadata) {
+  CompactProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  requestMetadata.write(&writer);
+  return queue.move();
+}
+
+std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
+    const folly::IOBuf& buffer) {
+  CompactProtocolReader reader;
+  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+  reader.setInput(&buffer);
+  responseMetadata->read(&reader);
+  return responseMetadata;
+}
 
 RSClientThriftChannel::RSClientThriftChannel(
     std::shared_ptr<RSocketRequester> rsRequester)
@@ -32,9 +52,6 @@ void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  // TODO: callback also has the protocolId, check if this is a duplicate info
-  // auto protocolId = functionInfo->getProtocolId();
-
   DCHECK(metadata->__isset.kind);
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
@@ -50,29 +67,17 @@ void RSClientThriftChannel::sendSingleRequestResponse(
     std::unique_ptr<RequestRpcMetadata> requestMetadata,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  DCHECK(requestMetadata);
+
   std::shared_ptr<ThriftClientCallback> spCallback{std::move(callback)};
-  auto func = [spCallback, requestMetadata = std::move(requestMetadata)](
-                  Payload payload) mutable {
-    VLOG(3) << "Received: '"
-            << folly::humanify(
-                   payload.data->cloneCoalescedAsValue().moveToFbString());
-
-    // TODO: extract headers from the payload.metadata
-    auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
-    if (requestMetadata->__isset.seqId) {
-      responseMetadata->seqId = requestMetadata->seqId;
-      responseMetadata->__isset.seqId = true;
-    }
+  auto func = [spCallback](Payload payload) mutable {
     auto evb_ = spCallback->getEventBase();
-    evb_->runInEventBaseThread([responseMetadata = std::move(responseMetadata),
-                                spCallback = std::move(spCallback),
+    evb_->runInEventBaseThread([spCallback = std::move(spCallback),
                                 payload = std::move(payload)]() mutable {
-      VLOG(3) << "Pass data to callback: '"
-              << folly::humanify(
-                     payload.data->cloneCoalescedAsValue().moveToFbString());
-
       spCallback->onThriftResponse(
-          std::move(responseMetadata), std::move(payload.data));
+          payload.metadata ? deserializeMetadata(*payload.metadata)
+                           : std::make_unique<ResponseRpcMetadata>(),
+          std::move(payload.data));
     });
   };
 
@@ -84,10 +89,11 @@ void RSClientThriftChannel::sendSingleRequestResponse(
 
   auto singleObserver = yarpl::single::SingleObservers::create<Payload>(
       std::move(func), std::move(err));
-
-  // TODO: send `headers` too
-  rsRequester_->requestResponse(rsocket::Payload(std::move(buf)))
+  rsRequester_
+      ->requestResponse(
+          rsocket::Payload(std::move(buf), serializeMetadata(*requestMetadata)))
       ->subscribe(singleObserver);
 }
-}
-}
+
+} // namespace thrift
+} // namespace apache

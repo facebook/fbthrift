@@ -22,8 +22,8 @@ namespace apache {
 namespace thrift {
 
 using folly::EventBase;
-using folly::exception_wrapper;
 using folly::IOBuf;
+using folly::exception_wrapper;
 
 ThriftClientCallback::ThriftClientCallback(
     EventBase* evb,
@@ -40,6 +40,7 @@ ThriftClientCallback::ThriftClientCallback(
 void ThriftClientCallback::onThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
+  DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
   if (cb_) {
     auto tHeader = std::make_unique<transport::THeader>();
