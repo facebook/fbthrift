@@ -20,8 +20,9 @@
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-// #include <yarpl/flowable/Subscriber.h>
-#include <memory>
+#ifdef YARPL_INCLUDED
+#include <yarpl/flowable/Subscriber.h>
+#endif
 
 namespace apache {
 namespace thrift {
@@ -66,15 +67,17 @@ class ThriftClientCallback;
  */
 class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
  public:
+#ifdef YARPL_INCLUDED
   // yarpl::Reference is a reference counted object, similar to shared_ptr.
   // Subscriber is an interface with methods: onNext, onComplete and onError.
   // @see <a
   // href="https://github.com/reactive-streams/reactive-streams-jvm/blob/v1.0.0/README.md#2-subscriber-code">Reactive
   // streams' Subscriber specification</a>
-  // using SubscriberRef = yarpl::Reference<
-  //     yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
-
+  using SubscriberRef = yarpl::Reference<
+      yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
+#else
   using SubscriberRef = std::nullptr_t;
+#endif // YARPL_INCLUDED
 
   ThriftChannelIf() {}
 
