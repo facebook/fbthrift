@@ -24,6 +24,7 @@
 
 #include <folly/Baton.h>
 #include <folly/Synchronized.h>
+#include <folly/executors/Codel.h>
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
 #include <gtest/gtest.h>
@@ -33,7 +34,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-#include <wangle/concurrent/Codel.h>
 
 using namespace apache::thrift::concurrency;
 

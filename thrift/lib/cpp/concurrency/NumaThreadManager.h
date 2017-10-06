@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -208,7 +208,7 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
-  wangle::Codel* getCodel() override {
+  folly::Codel* getCodel() override {
     // They *should* be roughtly the same, just return one for now.
     return managers_[0]->getCodel();
   }

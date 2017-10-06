@@ -23,12 +23,12 @@
 #include <memory>
 
 #include <folly/Executor.h>
-#include <folly/io/async/Request.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
+#include <folly/executors/Codel.h>
+#include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/Unistd.h>
-#include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -275,7 +275,7 @@ class ThreadManager : public folly::Executor {
 
   virtual void enableCodel(bool) = 0;
 
-  virtual wangle::Codel* getCodel() = 0;
+  virtual folly::Codel* getCodel() = 0;
 
   template <typename SemType>
   class ImplT;
@@ -329,7 +329,7 @@ class PriorityThreadManager : public ThreadManager {
   }
 
   using ThreadManager::getCodel;
-  virtual wangle::Codel* getCodel(PRIORITY priority) = 0;
+  virtual folly::Codel* getCodel(PRIORITY priority) = 0;
 
   /**
    * Creates a priority-aware thread manager given thread factory and size for
@@ -425,7 +425,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   void setCodelCallback(ExpireCallback /*expireCallback*/) override {}
   void setThreadInitCallback(InitCallback /*initCallback*/) override {}
   void enableCodel(bool) override {}
-  wangle::Codel* getCodel() override { return nullptr; }
+  folly::Codel* getCodel() override {
+    return nullptr;
+  }
 
  private:
   std::shared_ptr<folly::Executor> exe_;

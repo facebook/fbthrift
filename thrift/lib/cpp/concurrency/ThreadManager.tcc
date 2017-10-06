@@ -30,13 +30,13 @@
 #include <folly/Logging.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Memory.h>
-#include <folly/io/async/Request.h>
 #include <folly/String.h>
+#include <folly/executors/Codel.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
