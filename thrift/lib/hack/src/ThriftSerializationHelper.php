@@ -59,7 +59,7 @@ class ThriftSerializationHelper {
       $xfer += self::readStructHelper(
         $protocol,
         $tspec[$field_id]['type'],
-        $object->$field_name,
+        &$object->$field_name,
         $tspec[$field_id]
       );
 
@@ -128,7 +128,7 @@ class ThriftSerializationHelper {
       $xfer += self::readStructHelper(
         $protocol,
         $tspec[$field_id]['type'],
-        $object->$field_name,
+        &$object->$field_name,
         $tspec[$field_id]
       );
       $union_enum = $union_enum_name::coerce($object::$_TFIELDMAP[$field_name]);
@@ -142,7 +142,7 @@ class ThriftSerializationHelper {
     $protocol,
     $field_type,
     &$object,
-    array $tspec,
+    $tspec,
   ): int {
     $xfer = 0;
     switch ($field_type) {
@@ -206,7 +206,7 @@ class ThriftSerializationHelper {
           $xfer += self::readStructHelper(
             $protocol,
             $tspec['etype'],
-            $list_element,
+            &$list_element,
             $tspec['elem']
           );
 
@@ -246,7 +246,7 @@ class ThriftSerializationHelper {
           $xfer += self::readStructHelper(
             $protocol,
             $tspec['etype'],
-            $set_element,
+            &$set_element,
             $tspec['elem']
           );
 
@@ -297,13 +297,13 @@ class ThriftSerializationHelper {
           $xfer += self::readStructHelper(
             $protocol,
             $tspec['ktype'],
-            $key,
+            &$key,
             $tspec['key']
           );
           $xfer += self::readStructHelper(
             $protocol,
             $tspec['vtype'],
-            $val,
+            &$val,
             $tspec['val']
           );
 
@@ -364,7 +364,7 @@ class ThriftSerializationHelper {
     $protocol,
     $field_type,
     $object,
-    array $tspec,
+    $tspec,
   ): int {
     $xfer = 0;
     switch ($field_type) {
