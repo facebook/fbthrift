@@ -434,4 +434,444 @@ void merge(NewStructure2&& from, NewStructure2& to) {
   to.__isset.features = to.__isset.features || from.__isset.features;
 }
 
+const uint64_t NewStructureNested::_reflection_id;
+void NewStructureNested::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::forward_compatibility_reflection_::reflectionInitializer_8209486072152767468(schema);
+}
+
+bool NewStructureNested::operator == (const NewStructureNested & rhs) const {
+  if (!(this->lst == rhs.lst))
+    return false;
+  if (!(this->mp == rhs.mp))
+    return false;
+  if (!(this->s == rhs.s))
+    return false;
+  return true;
+}
+
+void NewStructureNested::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "lst") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "mp") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "s") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+};
+
+uint32_t NewStructureNested::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::forward_compatibility_reflection_::reflectionInitializer_8209486072152767468(*schema);
+    iprot->setNextStructType(NewStructureNested::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_LIST) {
+          {
+            this->lst.clear();
+            uint32_t _size40;
+            bool _sizeUnknown41;
+            apache::thrift::protocol::TType _etype44;
+            xfer += iprot->readListBegin(_etype44, _size40, _sizeUnknown41);
+            if (!_sizeUnknown41) {
+              this->lst.resize(_size40);
+              uint32_t _i46;
+              for (_i46 = 0; _i46 < _size40; ++_i46)
+              {
+                {
+                  this->lst[_i46].clear();
+                  uint32_t _size47;
+                  bool _sizeUnknown48;
+                  apache::thrift::protocol::TType _ktype49 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype50 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype49, _vtype50, _size47, _sizeUnknown48);
+                  if (_ktype49 == apache::thrift::protocol::T_STOP) {_ktype49 = apache::thrift::protocol::T_I16;}
+                  if (_vtype50 == apache::thrift::protocol::T_STOP) {_vtype50 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown48) {
+                    uint32_t _i53;
+                    for (_i53 = 0; _i53 < _size47; ++_i53)
+                    {
+                      int16_t _key54;
+                      xfer += readIntegral(*iprot, _ktype49, _key54);
+                      float& _val55 = this->lst[_i46][_key54];
+                      xfer += readFloatingPoint(*iprot, _vtype50, _val55);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key56;
+                      xfer += readIntegral(*iprot, _ktype49, _key56);
+                      float& _val57 = this->lst[_i46][_key56];
+                      xfer += readFloatingPoint(*iprot, _vtype50, _val57);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+              }
+            } else {
+              while (iprot->peekList())
+              {
+                FloatFeatures _elem58;
+                {
+                  _elem58.clear();
+                  uint32_t _size59;
+                  bool _sizeUnknown60;
+                  apache::thrift::protocol::TType _ktype61 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype62 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype61, _vtype62, _size59, _sizeUnknown60);
+                  if (_ktype61 == apache::thrift::protocol::T_STOP) {_ktype61 = apache::thrift::protocol::T_I16;}
+                  if (_vtype62 == apache::thrift::protocol::T_STOP) {_vtype62 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown60) {
+                    uint32_t _i65;
+                    for (_i65 = 0; _i65 < _size59; ++_i65)
+                    {
+                      int16_t _key66;
+                      xfer += readIntegral(*iprot, _ktype61, _key66);
+                      float& _val67 = _elem58[_key66];
+                      xfer += readFloatingPoint(*iprot, _vtype62, _val67);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key68;
+                      xfer += readIntegral(*iprot, _ktype61, _key68);
+                      float& _val69 = _elem58[_key68];
+                      xfer += readFloatingPoint(*iprot, _vtype62, _val69);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+                this->lst.push_back(_elem58);
+              }
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.lst = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 2:
+        if (_ftype == apache::thrift::protocol::T_MAP) {
+          {
+            this->mp.clear();
+            uint32_t _size70;
+            bool _sizeUnknown71;
+            apache::thrift::protocol::TType _ktype72 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype73 = apache::thrift::protocol::T_STOP;
+            xfer += iprot->readMapBegin(_ktype72, _vtype73, _size70, _sizeUnknown71);
+            if (!_sizeUnknown71) {
+              uint32_t _i76;
+              for (_i76 = 0; _i76 < _size70; ++_i76)
+              {
+                int16_t _key77;
+                xfer += iprot->readI16(_key77);
+                FloatFeatures& _val78 = this->mp[_key77];
+                {
+                  _val78.clear();
+                  uint32_t _size79;
+                  bool _sizeUnknown80;
+                  apache::thrift::protocol::TType _ktype81 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype82 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype81, _vtype82, _size79, _sizeUnknown80);
+                  if (_ktype81 == apache::thrift::protocol::T_STOP) {_ktype81 = apache::thrift::protocol::T_I16;}
+                  if (_vtype82 == apache::thrift::protocol::T_STOP) {_vtype82 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown80) {
+                    uint32_t _i85;
+                    for (_i85 = 0; _i85 < _size79; ++_i85)
+                    {
+                      int16_t _key86;
+                      xfer += readIntegral(*iprot, _ktype81, _key86);
+                      float& _val87 = _val78[_key86];
+                      xfer += readFloatingPoint(*iprot, _vtype82, _val87);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key88;
+                      xfer += readIntegral(*iprot, _ktype81, _key88);
+                      float& _val89 = _val78[_key88];
+                      xfer += readFloatingPoint(*iprot, _vtype82, _val89);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+              }
+            } else {
+              while (iprot->peekMap())
+              {
+                int16_t _key90;
+                xfer += iprot->readI16(_key90);
+                FloatFeatures& _val91 = this->mp[_key90];
+                {
+                  _val91.clear();
+                  uint32_t _size92;
+                  bool _sizeUnknown93;
+                  apache::thrift::protocol::TType _ktype94 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype95 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype94, _vtype95, _size92, _sizeUnknown93);
+                  if (_ktype94 == apache::thrift::protocol::T_STOP) {_ktype94 = apache::thrift::protocol::T_I16;}
+                  if (_vtype95 == apache::thrift::protocol::T_STOP) {_vtype95 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown93) {
+                    uint32_t _i98;
+                    for (_i98 = 0; _i98 < _size92; ++_i98)
+                    {
+                      int16_t _key99;
+                      xfer += readIntegral(*iprot, _ktype94, _key99);
+                      float& _val100 = _val91[_key99];
+                      xfer += readFloatingPoint(*iprot, _vtype95, _val100);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key101;
+                      xfer += readIntegral(*iprot, _ktype94, _key101);
+                      float& _val102 = _val91[_key101];
+                      xfer += readFloatingPoint(*iprot, _vtype95, _val102);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+              }
+            }
+            xfer += iprot->readMapEnd();
+          }
+          this->__isset.mp = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 3:
+        if (_ftype == apache::thrift::protocol::T_SET) {
+          {
+            this->s.clear();
+            uint32_t _size103;
+            bool _sizeUnknown104;
+            apache::thrift::protocol::TType _etype107;
+            xfer += iprot->readSetBegin(_etype107, _size103, _sizeUnknown104);
+            if (!_sizeUnknown104) {
+              uint32_t _i109;
+              for (_i109 = 0; _i109 < _size103; ++_i109)
+              {
+                FloatFeatures _elem110;
+                {
+                  _elem110.clear();
+                  uint32_t _size111;
+                  bool _sizeUnknown112;
+                  apache::thrift::protocol::TType _ktype113 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype114 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype113, _vtype114, _size111, _sizeUnknown112);
+                  if (_ktype113 == apache::thrift::protocol::T_STOP) {_ktype113 = apache::thrift::protocol::T_I16;}
+                  if (_vtype114 == apache::thrift::protocol::T_STOP) {_vtype114 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown112) {
+                    uint32_t _i117;
+                    for (_i117 = 0; _i117 < _size111; ++_i117)
+                    {
+                      int16_t _key118;
+                      xfer += readIntegral(*iprot, _ktype113, _key118);
+                      float& _val119 = _elem110[_key118];
+                      xfer += readFloatingPoint(*iprot, _vtype114, _val119);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key120;
+                      xfer += readIntegral(*iprot, _ktype113, _key120);
+                      float& _val121 = _elem110[_key120];
+                      xfer += readFloatingPoint(*iprot, _vtype114, _val121);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+                this->s.insert(_elem110);
+              }
+            } else {
+              while (iprot->peekSet())
+              {
+                FloatFeatures _elem122;
+                {
+                  _elem122.clear();
+                  uint32_t _size123;
+                  bool _sizeUnknown124;
+                  apache::thrift::protocol::TType _ktype125 = apache::thrift::protocol::T_STOP;
+                  apache::thrift::protocol::TType _vtype126 = apache::thrift::protocol::T_STOP;
+                  xfer += iprot->readMapBegin(_ktype125, _vtype126, _size123, _sizeUnknown124);
+                  if (_ktype125 == apache::thrift::protocol::T_STOP) {_ktype125 = apache::thrift::protocol::T_I16;}
+                  if (_vtype126 == apache::thrift::protocol::T_STOP) {_vtype126 = apache::thrift::protocol::T_FLOAT;}
+                  if (!_sizeUnknown124) {
+                    uint32_t _i129;
+                    for (_i129 = 0; _i129 < _size123; ++_i129)
+                    {
+                      int16_t _key130;
+                      xfer += readIntegral(*iprot, _ktype125, _key130);
+                      float& _val131 = _elem122[_key130];
+                      xfer += readFloatingPoint(*iprot, _vtype126, _val131);
+                    }
+                  } else {
+                    while (iprot->peekMap())
+                    {
+                      int16_t _key132;
+                      xfer += readIntegral(*iprot, _ktype125, _key132);
+                      float& _val133 = _elem122[_key132];
+                      xfer += readFloatingPoint(*iprot, _vtype126, _val133);
+                    }
+                  }
+                  xfer += iprot->readMapEnd();
+                }
+                this->s.insert(_elem122);
+              }
+            }
+            xfer += iprot->readSetEnd();
+          }
+          this->__isset.s = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void NewStructureNested::__clear() {
+  lst.clear();
+  mp.clear();
+  s.clear();
+  __isset.__clear();
+}
+uint32_t NewStructureNested::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("NewStructureNested");
+  xfer += oprot->writeFieldBegin("lst", apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(apache::thrift::protocol::T_MAP, this->lst.size());
+    std::vector<FloatFeatures> ::const_iterator _iter134;
+    for (_iter134 = this->lst.begin(); _iter134 != this->lst.end(); ++_iter134)
+    {
+      {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, (*_iter134).size());
+        std::map<int16_t, float> ::const_iterator _iter135;
+        for (_iter135 = (*_iter134).begin(); _iter135 != (*_iter134).end(); ++_iter135)
+        {
+          xfer += oprot->writeI16(_iter135->first);
+          xfer += oprot->writeFloat(_iter135->second);
+        }
+        xfer += oprot->writeMapEnd();
+      }
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("mp", apache::thrift::protocol::T_MAP, 2);
+  {
+    xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_MAP, this->mp.size());
+    std::map<int16_t, FloatFeatures> ::const_iterator _iter136;
+    for (_iter136 = this->mp.begin(); _iter136 != this->mp.end(); ++_iter136)
+    {
+      xfer += oprot->writeI16(_iter136->first);
+      {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, _iter136->second.size());
+        std::map<int16_t, float> ::const_iterator _iter137;
+        for (_iter137 = _iter136->second.begin(); _iter137 != _iter136->second.end(); ++_iter137)
+        {
+          xfer += oprot->writeI16(_iter137->first);
+          xfer += oprot->writeFloat(_iter137->second);
+        }
+        xfer += oprot->writeMapEnd();
+      }
+    }
+    xfer += oprot->writeMapEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("s", apache::thrift::protocol::T_SET, 3);
+  {
+    xfer += oprot->writeSetBegin(apache::thrift::protocol::T_MAP, this->s.size());
+    std::set<FloatFeatures> ::const_iterator _iter138;
+    for (_iter138 = this->s.begin(); _iter138 != this->s.end(); ++_iter138)
+    {
+      {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, (*_iter138).size());
+        std::map<int16_t, float> ::const_iterator _iter139;
+        for (_iter139 = (*_iter138).begin(); _iter139 != (*_iter138).end(); ++_iter139)
+        {
+          xfer += oprot->writeI16(_iter139->first);
+          xfer += oprot->writeFloat(_iter139->second);
+        }
+        xfer += oprot->writeMapEnd();
+      }
+    }
+    xfer += oprot->writeSetEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(NewStructureNested &a, NewStructureNested &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.lst, b.lst);
+  swap(a.mp, b.mp);
+  swap(a.s, b.s);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const NewStructureNested& from, NewStructureNested& to) {
+  using apache::thrift::merge;
+  merge(from.lst, to.lst);
+  to.__isset.lst = to.__isset.lst || from.__isset.lst;
+  merge(from.mp, to.mp);
+  to.__isset.mp = to.__isset.mp || from.__isset.mp;
+  merge(from.s, to.s);
+  to.__isset.s = to.__isset.s || from.__isset.s;
+}
+
+void merge(NewStructureNested&& from, NewStructureNested& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.lst), to.lst);
+  to.__isset.lst = to.__isset.lst || from.__isset.lst;
+  merge(std::move(from.mp), to.mp);
+  to.__isset.mp = to.__isset.mp || from.__isset.mp;
+  merge(std::move(from.s), to.s);
+  to.__isset.s = to.__isset.s || from.__isset.s;
+}
+
 

@@ -380,4 +380,335 @@ class NewStructure2 implements IThriftStruct {
 
 }
 
+class NewStructureNested implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'lst',
+      'type' => TType::LST,
+      'etype' => TType::MAP,
+      'elem' => array(
+        'type' => TType::MAP,
+        'ktype' => TType::I16,
+        'vtype' => TType::FLOAT,
+        'key' => array(
+          'type' => TType::I16,
+        ),
+        'val' => array(
+          'type' => TType::FLOAT,
+          ),
+          'format' => 'array',
+        ),
+        'format' => 'array',
+      ),
+    2 => array(
+      'var' => 'mp',
+      'type' => TType::MAP,
+      'ktype' => TType::I16,
+      'vtype' => TType::MAP,
+      'key' => array(
+        'type' => TType::I16,
+      ),
+      'val' => array(
+        'type' => TType::MAP,
+        'ktype' => TType::I16,
+        'vtype' => TType::FLOAT,
+        'key' => array(
+          'type' => TType::I16,
+        ),
+        'val' => array(
+          'type' => TType::FLOAT,
+          ),
+          'format' => 'array',
+        ),
+        'format' => 'array',
+      ),
+    3 => array(
+      'var' => 's',
+      'type' => TType::SET,
+      'etype' => TType::MAP,
+      'elem' => array(
+        'type' => TType::MAP,
+        'ktype' => TType::I16,
+        'vtype' => TType::FLOAT,
+        'key' => array(
+          'type' => TType::I16,
+        ),
+        'val' => array(
+          'type' => TType::FLOAT,
+          ),
+          'format' => 'array',
+        ),
+        'format' => 'array',
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'lst' => 1,
+    'mp' => 2,
+    's' => 3,
+  );
+  const STRUCTURAL_ID = 2933545103058330422;
+  public $lst = null;
+  public $mp = null;
+  public $s = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['lst'])) {
+        $this->lst = $vals['lst'];
+      }
+      if (isset($vals['mp'])) {
+        $this->mp = $vals['mp'];
+      }
+      if (isset($vals['s'])) {
+        $this->s = $vals['s'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'NewStructureNested constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'NewStructureNested';
+  }
+
+  public static function __set_state($vals) {
+    return new NewStructureNested($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::LST) {
+            $this->lst = array();
+            $_size0 = 0;
+            $_etype3 = 0;
+            $xfer += $input->readListBegin($_etype3, $_size0);
+            for ($_i4 = 0; $_size0 === null || $_i4 < $_size0; ++$_i4)
+            {
+              if ($_size0 === null && !$input->readListHasNext()) {
+                break;
+              }
+              $elem5 = null;
+              $elem5 = array();
+              $_size6 = 0;
+              $_ktype7 = 0;
+              $_vtype8 = 0;
+              $xfer += $input->readMapBegin($_ktype7, $_vtype8, $_size6);
+              for ($_i10 = 0; $_size6 === null || $_i10 < $_size6; ++$_i10)
+              {
+                if ($_size6 === null && !$input->readMapHasNext()) {
+                  break;
+                }
+                $key11 = 0;
+                $val12 = 0.0;
+                $xfer += $input->readI16($key11);
+                $xfer += $input->readFloat($val12);
+                $elem5[$key11] = $val12;
+              }
+              $xfer += $input->readMapEnd();
+              $this->lst []= $elem5;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::MAP) {
+            $this->mp = array();
+            $_size13 = 0;
+            $_ktype14 = 0;
+            $_vtype15 = 0;
+            $xfer += $input->readMapBegin($_ktype14, $_vtype15, $_size13);
+            for ($_i17 = 0; $_size13 === null || $_i17 < $_size13; ++$_i17)
+            {
+              if ($_size13 === null && !$input->readMapHasNext()) {
+                break;
+              }
+              $key18 = 0;
+              $val19 = array();
+              $xfer += $input->readI16($key18);
+              $val19 = array();
+              $_size20 = 0;
+              $_ktype21 = 0;
+              $_vtype22 = 0;
+              $xfer += $input->readMapBegin($_ktype21, $_vtype22, $_size20);
+              for ($_i24 = 0; $_size20 === null || $_i24 < $_size20; ++$_i24)
+              {
+                if ($_size20 === null && !$input->readMapHasNext()) {
+                  break;
+                }
+                $key25 = 0;
+                $val26 = 0.0;
+                $xfer += $input->readI16($key25);
+                $xfer += $input->readFloat($val26);
+                $val19[$key25] = $val26;
+              }
+              $xfer += $input->readMapEnd();
+              $this->mp[$key18] = $val19;
+            }
+            $xfer += $input->readMapEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::SET) {
+            $this->s = array();
+            $_size27 = 0;
+            $_etype30 = 0;
+            $xfer += $input->readSetBegin($_etype30, $_size27);
+            for ($_i31 = 0; $_size27 === null || $_i31 < $_size27; ++$_i31)
+            {
+              if ($_size27 === null && !$input->readSetHasNext()) {
+                break;
+              }
+              $elem32 = null;
+              $elem32 = array();
+              $_size33 = 0;
+              $_ktype34 = 0;
+              $_vtype35 = 0;
+              $xfer += $input->readMapBegin($_ktype34, $_vtype35, $_size33);
+              for ($_i37 = 0; $_size33 === null || $_i37 < $_size33; ++$_i37)
+              {
+                if ($_size33 === null && !$input->readMapHasNext()) {
+                  break;
+                }
+                $key38 = 0;
+                $val39 = 0.0;
+                $xfer += $input->readI16($key38);
+                $xfer += $input->readFloat($val39);
+                $elem32[$key38] = $val39;
+              }
+              $xfer += $input->readMapEnd();
+              $this->s[$elem32] = true;
+            }
+            $xfer += $input->readSetEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('NewStructureNested');
+    if ($this->lst !== null) {
+      if (!is_array($this->lst) && !(($this->lst instanceof Iterator || $this->lst instanceof IteratorAggregate) && $this->lst instanceof Countable)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('lst', TType::LST, 1);
+      {
+        $output->writeListBegin(TType::MAP, count($this->lst));
+        {
+          foreach ($this->lst as $iter0)
+          {
+            {
+              $output->writeMapBegin(TType::I16, TType::FLOAT, count($iter0));
+              {
+                foreach ($iter0 as $kiter1 => $viter2)
+                {
+                  $xfer += $output->writeI16($kiter1);
+                  $xfer += $output->writeFloat($viter2);
+                }
+              }
+              $output->writeMapEnd();
+            }
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->mp !== null) {
+      if (!is_array($this->mp) && !(($this->mp instanceof Iterator || $this->mp instanceof IteratorAggregate) && $this->mp instanceof Countable)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('mp', TType::MAP, 2);
+      {
+        $output->writeMapBegin(TType::I16, TType::MAP, count($this->mp));
+        {
+          foreach ($this->mp as $kiter3 => $viter4)
+          {
+            $xfer += $output->writeI16($kiter3);
+            {
+              $output->writeMapBegin(TType::I16, TType::FLOAT, count($viter4));
+              {
+                foreach ($viter4 as $kiter5 => $viter6)
+                {
+                  $xfer += $output->writeI16($kiter5);
+                  $xfer += $output->writeFloat($viter6);
+                }
+              }
+              $output->writeMapEnd();
+            }
+          }
+        }
+        $output->writeMapEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->s !== null) {
+      if (!is_array($this->s) && !(($this->s instanceof Iterator || $this->s instanceof IteratorAggregate) && $this->s instanceof Countable)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('s', TType::SET, 3);
+      {
+        $output->writeSetBegin(TType::MAP, count($this->s));
+        {
+          foreach ($this->s as $iter7 => $true)
+          {
+            {
+              $output->writeMapBegin(TType::I16, TType::FLOAT, count($iter7));
+              {
+                foreach ($iter7 as $kiter8 => $viter9)
+                {
+                  $xfer += $output->writeI16($kiter8);
+                  $xfer += $output->writeFloat($viter9);
+                }
+              }
+              $output->writeMapEnd();
+            }
+          }
+        }
+        $output->writeSetEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 ?>

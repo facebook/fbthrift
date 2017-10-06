@@ -426,6 +426,194 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         return (deserialize, (NewStructure2, serialize(self)))
 
 
+cdef cNewStructureNested _NewStructureNested_defaults = cNewStructureNested()
+
+cdef class NewStructureNested(thrift.py3.types.Struct):
+
+    def __init__(
+        NewStructureNested self,
+        lst=None,
+        mp=None,
+        s=None
+    ):
+        self._cpp_obj = move(NewStructureNested._make_instance(
+          NULL,
+          lst,
+          mp,
+          s,
+        ))
+
+    def __call__(
+        NewStructureNested self,
+        lst=NOTSET,
+        mp=NOTSET,
+        s=NOTSET
+    ):
+        changes = any((
+            lst is not NOTSET,
+
+            mp is not NOTSET,
+
+            s is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <NewStructureNested>NewStructureNested.__new__(NewStructureNested)
+        inst._cpp_obj = move(NewStructureNested._make_instance(
+          self._cpp_obj.get(),
+          lst,
+          mp,
+          s,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cNewStructureNested] _make_instance(
+        cNewStructureNested* base_instance,
+        object lst,
+        object mp,
+        object s
+    ) except *:
+        cdef unique_ptr[cNewStructureNested] c_inst
+        if base_instance:
+            c_inst = make_unique[cNewStructureNested](deref(base_instance))
+        else:
+            c_inst = make_unique[cNewStructureNested]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if lst is None:
+                deref(c_inst).lst = _NewStructureNested_defaults.lst
+                deref(c_inst).__isset.lst = False
+            elif lst is NOTSET:
+                lst = None
+
+            if mp is None:
+                deref(c_inst).mp = _NewStructureNested_defaults.mp
+                deref(c_inst).__isset.mp = False
+            elif mp is NOTSET:
+                mp = None
+
+            if s is None:
+                deref(c_inst).s = _NewStructureNested_defaults.s
+                deref(c_inst).__isset.s = False
+            elif s is NOTSET:
+                s = None
+
+        if lst is not None:
+            deref(c_inst).lst = <vector[cmap[int16_t,float]]>deref(List__Map__i16_float(lst)._cpp_obj)
+            deref(c_inst).__isset.lst = True
+
+        if mp is not None:
+            deref(c_inst).mp = <cmap[int16_t,cmap[int16_t,float]]>deref(Map__i16_Map__i16_float(mp)._cpp_obj)
+            deref(c_inst).__isset.mp = True
+
+        if s is not None:
+            deref(c_inst).s = <cset[cmap[int16_t,float]]>deref(Set__Map__i16_float(s)._cpp_obj)
+            deref(c_inst).__isset.s = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'lst', self.lst
+        yield 'mp', self.mp
+        yield 's', self.s
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.lst or deref(self._cpp_obj).__isset.mp or deref(self._cpp_obj).__isset.s
+
+    @staticmethod
+    cdef create(shared_ptr[cNewStructureNested] cpp_obj):
+        inst = <NewStructureNested>NewStructureNested.__new__(NewStructureNested)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def lst(self):
+        if not deref(self._cpp_obj).__isset.lst:
+            return None
+
+        if self.__lst is None:
+            self.__lst = List__Map__i16_float.create(make_shared[vector[cmap[int16_t,float]]](deref(self._cpp_obj).lst))
+        return self.__lst
+
+    @property
+    def mp(self):
+        if not deref(self._cpp_obj).__isset.mp:
+            return None
+
+        if self.__mp is None:
+            self.__mp = Map__i16_Map__i16_float.create(make_shared[cmap[int16_t,cmap[int16_t,float]]](deref(self._cpp_obj).mp))
+        return self.__mp
+
+    @property
+    def s(self):
+        if not deref(self._cpp_obj).__isset.s:
+            return None
+
+        if self.__s is None:
+            self.__s = Set__Map__i16_float.create(make_shared[cset[cmap[int16_t,float]]](deref(self._cpp_obj).s))
+        return self.__s
+
+
+    def __hash__(NewStructureNested self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.lst,
+            self.mp,
+            self.s,
+            ))
+        return self.__hash
+
+    def __repr__(NewStructureNested self):
+        return f'NewStructureNested(lst={repr(self.lst)}, mp={repr(self.mp)}, s={repr(self.s)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, NewStructureNested) and
+                isinstance(other, NewStructureNested)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cNewStructureNested cself = deref((<NewStructureNested>self)._cpp_obj)
+        cdef cNewStructureNested cother = deref((<NewStructureNested>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(NewStructureNested self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cNewStructureNested](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cNewStructureNested](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cNewStructureNested](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(NewStructureNested self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cNewStructureNested](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cNewStructureNested](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cNewStructureNested](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (NewStructureNested, serialize(self)))
+
+
 cdef class Map__i16_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_double):
@@ -651,5 +839,459 @@ cdef class Map__i16_float:
 
 
 Mapping.register(Map__i16_float)
+
+cdef class List__Map__i16_float:
+    def __init__(self, items=None):
+        if isinstance(items, List__Map__i16_float):
+            self._cpp_obj = (<List__Map__i16_float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__Map__i16_float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[cmap[int16_t,float]]] c_items):
+        inst = <List__Map__i16_float>List__Map__i16_float.__new__(List__Map__i16_float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cmap[int16_t,float]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cmap[int16_t,float]]] c_inst = make_unique[vector[cmap[int16_t,float]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get())))
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[cmap[int16_t,float]]] c_inst
+        cdef cmap[int16_t,float] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cmap[int16_t,float]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__Map__i16_float.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef cmap[int16_t,float] citem = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
+        cdef vector[cmap[int16_t,float]] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef cmap[int16_t,float] citem
+        for citem in deref(self._cpp_obj):
+            yield Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef cmap[int16_t,float] citem
+        cdef vector[cmap[int16_t,float]] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[cmap[int16_t,float]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef cmap[int16_t,float] citem = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
+        cdef vector[cmap[int16_t,float]] vec = deref(self._cpp_obj.get())
+        cdef vector[cmap[int16_t,float]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef cmap[int16_t,float] citem = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
+        cdef vector[cmap[int16_t,float]] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__Map__i16_float)
+
+cdef class Map__i16_Map__i16_float:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i16_Map__i16_float):
+            self._cpp_obj = (<Map__i16_Map__i16_float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i16_Map__i16_float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int16_t,cmap[int16_t,float]]] c_items):
+        inst = <Map__i16_Map__i16_float>Map__i16_Map__i16_float.__new__(Map__i16_Map__i16_float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] c_inst = make_unique[cmap[int16_t,cmap[int16_t,float]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int16_t,cmap[int16_t,float]](key,cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,cmap[int16_t,float]].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef cmap[int16_t,float] citem = deref(iter).second
+        return Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int16_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,cmap[int16_t,float]].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef cmap[int16_t,float] citem = deref(iter).second
+        return Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef cmap[int16_t,float] citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t ckey
+        cdef cmap[int16_t,float] citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem)))
+
+
+
+Mapping.register(Map__i16_Map__i16_float)
+
+cdef class Set__Map__i16_float:
+    def __init__(self, items=None):
+        if isinstance(items, Set__Map__i16_float):
+            self._cpp_obj = (<Set__Map__i16_float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Set__Map__i16_float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cset[cmap[int16_t,float]]] c_items):
+        inst = <Set__Map__i16_float>Set__Map__i16_float.__new__(Set__Map__i16_float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[cmap[int16_t,float]]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[cmap[int16_t,float]]] c_inst = make_unique[cset[cmap[int16_t,float]]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get())))
+        return move_unique(c_inst)
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        return pbool(deref(self._cpp_obj).count(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        for citem in deref(self._cpp_obj):
+            yield Map__i16_float.create(
+    make_shared[cmap[int16_t,float]](citem))
+
+    def __repr__(self):
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        cdef cset[cmap[int16_t,float]] cself, cother
+        cdef cbool retval
+        if (isinstance(self, Set__Map__i16_float) and
+                isinstance(other, Set__Map__i16_float)):
+            cself = deref((<Set__Map__i16_float> self)._cpp_obj)
+            cother = deref((<Set__Map__i16_float> other)._cpp_obj)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __and__(self, other):
+        if not isinstance(self, Set__Map__i16_float):
+            self = Set__Map__i16_float(self)
+        if not isinstance(other, Set__Map__i16_float):
+            other = Set__Map__i16_float(other)
+
+        cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
+            make_shared[cset[cmap[int16_t,float]]]()
+        for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
+            if deref((<Set__Map__i16_float> other)._cpp_obj).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return Set__Map__i16_float.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, Set__Map__i16_float):
+            self = Set__Map__i16_float(self)
+        if not isinstance(other, Set__Map__i16_float):
+            other = Set__Map__i16_float(other)
+
+        cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
+            make_shared[cset[cmap[int16_t,float]]]()
+        for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
+            if deref((<Set__Map__i16_float> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__Map__i16_float.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, Set__Map__i16_float):
+            self = Set__Map__i16_float(self)
+        if not isinstance(other, Set__Map__i16_float):
+            other = Set__Map__i16_float(other)
+
+        cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
+            make_shared[cset[cmap[int16_t,float]]]()
+        for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__Map__i16_float> other)._cpp_obj):
+                deref(shretval).insert(citem)
+        return Set__Map__i16_float.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, Set__Map__i16_float):
+            self = Set__Map__i16_float(self)
+        if not isinstance(other, Set__Map__i16_float):
+            other = Set__Map__i16_float(other)
+
+        cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
+            make_shared[cset[cmap[int16_t,float]]]()
+        for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
+            if deref((<Set__Map__i16_float> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__Map__i16_float> other)._cpp_obj):
+            if deref((<Set__Map__i16_float> self)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__Map__i16_float.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
+Set.register(Set__Map__i16_float)
 
 FloatFeatures = Map__i16_float

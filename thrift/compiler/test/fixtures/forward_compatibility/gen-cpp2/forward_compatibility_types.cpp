@@ -180,4 +180,92 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+void NewStructureNested::__clear() {
+  // clear all fields
+  lst.clear();
+  mp.clear();
+  s.clear();
+  __isset.__clear();
+}
+
+bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
+  if (!((lst == rhs.lst))) {
+    return false;
+  }
+  if (!((mp == rhs.mp))) {
+    return false;
+  }
+  if (!((s == rhs.s))) {
+    return false;
+  }
+  return true;
+}
+
+const std::vector< ::cpp2::FloatFeatures>& NewStructureNested::get_lst() const& {
+  return lst;
+}
+
+std::vector< ::cpp2::FloatFeatures> NewStructureNested::get_lst() && {
+  return std::move(lst);
+}
+
+const std::map<int16_t,  ::cpp2::FloatFeatures>& NewStructureNested::get_mp() const& {
+  return mp;
+}
+
+std::map<int16_t,  ::cpp2::FloatFeatures> NewStructureNested::get_mp() && {
+  return std::move(mp);
+}
+
+const std::set< ::cpp2::FloatFeatures>& NewStructureNested::get_s() const& {
+  return s;
+}
+
+std::set< ::cpp2::FloatFeatures> NewStructureNested::get_s() && {
+  return std::move(s);
+}
+
+void NewStructureNested::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "lst") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "mp") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "s") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+}
+
+void swap(NewStructureNested& a, NewStructureNested& b) {
+  using ::std::swap;
+  swap(a.lst, b.lst);
+  swap(a.mp, b.mp);
+  swap(a.s, b.s);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t NewStructureNested::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NewStructureNested::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NewStructureNested::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NewStructureNested::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NewStructureNested::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NewStructureNested::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NewStructureNested::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t NewStructureNested::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t NewStructureNested::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

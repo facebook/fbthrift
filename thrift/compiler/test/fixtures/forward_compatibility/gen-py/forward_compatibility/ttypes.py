@@ -27,7 +27,7 @@ except:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'OldStructure', 'NewStructure', 'NewStructure2']
+__all__ = ['UTF8STRINGS', 'OldStructure', 'NewStructure', 'NewStructure2', 'NewStructureNested']
 
 class OldStructure:
   """
@@ -311,6 +311,236 @@ class NewStructure2:
   if not six.PY2:
     __hash__ = object.__hash__
 
+class NewStructureNested:
+  """
+  Attributes:
+   - lst
+   - mp
+   - s
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.LIST:
+          self.lst = []
+          (_etype36, _size33) = iprot.readListBegin()
+          if _size33 >= 0:
+            for _i37 in six.moves.range(_size33):
+              _elem38 = {}
+              (_ktype40, _vtype41, _size39 ) = iprot.readMapBegin() 
+              if _size39 >= 0:
+                for _i43 in six.moves.range(_size39):
+                  _key44 = iprot.readI16()
+                  _val45 = iprot.readFloat()
+                  _elem38[_key44] = _val45
+              else: 
+                while iprot.peekMap():
+                  _key46 = iprot.readI16()
+                  _val47 = iprot.readFloat()
+                  _elem38[_key46] = _val47
+              iprot.readMapEnd()
+              self.lst.append(_elem38)
+          else: 
+            while iprot.peekList():
+              _elem48 = {}
+              (_ktype50, _vtype51, _size49 ) = iprot.readMapBegin() 
+              if _size49 >= 0:
+                for _i53 in six.moves.range(_size49):
+                  _key54 = iprot.readI16()
+                  _val55 = iprot.readFloat()
+                  _elem48[_key54] = _val55
+              else: 
+                while iprot.peekMap():
+                  _key56 = iprot.readI16()
+                  _val57 = iprot.readFloat()
+                  _elem48[_key56] = _val57
+              iprot.readMapEnd()
+              self.lst.append(_elem48)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.MAP:
+          self.mp = {}
+          (_ktype59, _vtype60, _size58 ) = iprot.readMapBegin() 
+          if _size58 >= 0:
+            for _i62 in six.moves.range(_size58):
+              _key63 = iprot.readI16()
+              _val64 = {}
+              (_ktype66, _vtype67, _size65 ) = iprot.readMapBegin() 
+              if _size65 >= 0:
+                for _i69 in six.moves.range(_size65):
+                  _key70 = iprot.readI16()
+                  _val71 = iprot.readFloat()
+                  _val64[_key70] = _val71
+              else: 
+                while iprot.peekMap():
+                  _key72 = iprot.readI16()
+                  _val73 = iprot.readFloat()
+                  _val64[_key72] = _val73
+              iprot.readMapEnd()
+              self.mp[_key63] = _val64
+          else: 
+            while iprot.peekMap():
+              _key74 = iprot.readI16()
+              _val75 = {}
+              (_ktype77, _vtype78, _size76 ) = iprot.readMapBegin() 
+              if _size76 >= 0:
+                for _i80 in six.moves.range(_size76):
+                  _key81 = iprot.readI16()
+                  _val82 = iprot.readFloat()
+                  _val75[_key81] = _val82
+              else: 
+                while iprot.peekMap():
+                  _key83 = iprot.readI16()
+                  _val84 = iprot.readFloat()
+                  _val75[_key83] = _val84
+              iprot.readMapEnd()
+              self.mp[_key74] = _val75
+          iprot.readMapEnd()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.SET:
+          self.s = set()
+          (_etype88, _size85) = iprot.readSetBegin()
+          if _size85 >= 0:
+            for _i89 in six.moves.range(_size85):
+              _elem90 = {}
+              (_ktype92, _vtype93, _size91 ) = iprot.readMapBegin() 
+              if _size91 >= 0:
+                for _i95 in six.moves.range(_size91):
+                  _key96 = iprot.readI16()
+                  _val97 = iprot.readFloat()
+                  _elem90[_key96] = _val97
+              else: 
+                while iprot.peekMap():
+                  _key98 = iprot.readI16()
+                  _val99 = iprot.readFloat()
+                  _elem90[_key98] = _val99
+              iprot.readMapEnd()
+              self.s.add(_elem90)
+          else: 
+            while iprot.peekSet():
+              _elem100 = {}
+              (_ktype102, _vtype103, _size101 ) = iprot.readMapBegin() 
+              if _size101 >= 0:
+                for _i105 in six.moves.range(_size101):
+                  _key106 = iprot.readI16()
+                  _val107 = iprot.readFloat()
+                  _elem100[_key106] = _val107
+              else: 
+                while iprot.peekMap():
+                  _key108 = iprot.readI16()
+                  _val109 = iprot.readFloat()
+                  _elem100[_key108] = _val109
+              iprot.readMapEnd()
+              self.s.add(_elem100)
+          iprot.readSetEnd()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('NewStructureNested')
+    if self.lst != None:
+      oprot.writeFieldBegin('lst', TType.LIST, 1)
+      oprot.writeListBegin(TType.MAP, len(self.lst))
+      for iter110 in self.lst:
+        oprot.writeMapBegin(TType.I16, TType.FLOAT, len(iter110))
+        for kiter111,viter112 in iter110.items():
+          oprot.writeI16(kiter111)
+          oprot.writeFloat(viter112)
+        oprot.writeMapEnd()
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    if self.mp != None:
+      oprot.writeFieldBegin('mp', TType.MAP, 2)
+      oprot.writeMapBegin(TType.I16, TType.MAP, len(self.mp))
+      for kiter113,viter114 in self.mp.items():
+        oprot.writeI16(kiter113)
+        oprot.writeMapBegin(TType.I16, TType.FLOAT, len(viter114))
+        for kiter115,viter116 in viter114.items():
+          oprot.writeI16(kiter115)
+          oprot.writeFloat(viter116)
+        oprot.writeMapEnd()
+      oprot.writeMapEnd()
+      oprot.writeFieldEnd()
+    if self.s != None:
+      oprot.writeFieldBegin('s', TType.SET, 3)
+      oprot.writeSetBegin(TType.MAP, len(self.s))
+      for iter117 in self.s:
+        oprot.writeMapBegin(TType.I16, TType.FLOAT, len(iter117))
+        for kiter118,viter119 in iter117.items():
+          oprot.writeI16(kiter118)
+          oprot.writeFloat(viter119)
+        oprot.writeMapEnd()
+      oprot.writeSetEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    value = pprint.pformat(self.lst, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    lst=%s' % (value))
+    value = pprint.pformat(self.mp, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    mp=%s' % (value))
+    value = pprint.pformat(self.s, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    s=%s' % (value))
+    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 all_structs.append(OldStructure)
 OldStructure.thrift_spec = (
   None, # 0
@@ -358,6 +588,26 @@ def NewStructure2__init__(self, features=None,):
   self.features = features
 
 NewStructure2.__init__ = NewStructure2__init__
+
+all_structs.append(NewStructureNested)
+NewStructureNested.thrift_spec = (
+  None, # 0
+  (1, TType.LIST, 'lst', (TType.MAP,(TType.I16,None,TType.FLOAT,None)), None, 2, ), # 1
+  (2, TType.MAP, 'mp', (TType.I16,None,TType.MAP,(TType.I16,None,TType.FLOAT,None)), None, 2, ), # 2
+  (3, TType.SET, 's', (TType.MAP,(TType.I16,None,TType.FLOAT,None)), None, 2, ), # 3
+)
+
+NewStructureNested.thrift_struct_annotations = {
+}
+NewStructureNested.thrift_field_annotations = {
+}
+
+def NewStructureNested__init__(self, lst=None, mp=None, s=None,):
+  self.lst = lst
+  self.mp = mp
+  self.s = s
+
+NewStructureNested.__init__ = NewStructureNested__init__
 
 fix_spec(all_structs)
 del all_structs
