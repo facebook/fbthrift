@@ -83,6 +83,8 @@ H2ClientConnection::H2ClientConnection(
       std::move(codec),
       wangle::TransportInfo(),
       this);
+  // TODO: Improve the way max outging streams is set
+  setMaxPendingRequests(100000);
 }
 
 H2ClientConnection::~H2ClientConnection() {

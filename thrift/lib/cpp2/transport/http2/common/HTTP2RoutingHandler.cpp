@@ -75,10 +75,14 @@ class HTTP2RoutingSessionManager
         std::move(h2codec),
         tinfo,
         this);
+    /*
     if (acceptorConfig.maxConcurrentIncomingStreams) {
       session->setMaxConcurrentIncomingStreams(
           acceptorConfig.maxConcurrentIncomingStreams);
     }
+    */
+    // TODO: Improve the way max incoming streams is set
+    session->setMaxConcurrentIncomingStreams(100000);
 
     // Set HTTP2 priorities flag on session object.
     session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
