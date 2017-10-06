@@ -26,24 +26,22 @@ using namespace testing;
 
 TEST(RequestResponseThriftChannel, SuccessResponse) {
   folly::EventBase evb;
-  yarpl::Reference<yarpl::single::SingleObserver<std::unique_ptr<folly::IOBuf>>>
+  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
       subscriberRef;
   folly::Baton<> subscriberBaton;
-  auto single =
-      yarpl::single::Single<std::unique_ptr<folly::IOBuf>>::create(
-          [&subscriberRef, &subscriberBaton](auto subscriber) mutable {
-            subscriberRef = subscriber;
-            subscriberBaton.post();
-          })
-          ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+  auto single = yarpl::single::Single<rsocket::Payload>::create(
+      [&subscriberRef, &subscriberBaton](auto subscriber) mutable {
+        subscriberRef = subscriber;
+        subscriberBaton.post();
+      });
 
   single->subscribe([](rsocket::Payload payload) mutable {
     CHECK_STREQ(
+        "data",
         payload.data->cloneCoalescedAsValue()
             .moveToFbString()
             .toStdString()
-            .c_str(),
-        "data");
+            .c_str());
   });
 
   subscriberBaton.wait();
@@ -62,16 +60,14 @@ TEST(RequestResponseThriftChannel, SuccessResponse) {
 
 TEST(RequestResponseThriftChannel, FailureResponse) {
   folly::EventBase evb;
-  yarpl::Reference<yarpl::single::SingleObserver<std::unique_ptr<folly::IOBuf>>>
+  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
       subscriberRef;
   folly::Baton<> subscriberBaton;
-  auto single =
-      yarpl::single::Single<std::unique_ptr<folly::IOBuf>>::create(
-          [&subscriberRef, &subscriberBaton](auto subscriber) mutable {
-            subscriberRef = subscriber;
-            subscriberBaton.post();
-          })
-          ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+  auto single = yarpl::single::Single<rsocket::Payload>::create(
+      [&subscriberRef, &subscriberBaton](auto subscriber) mutable {
+        subscriberRef = subscriber;
+        subscriberBaton.post();
+      });
 
   single->subscribe(
       [](rsocket::Payload) { FAIL() << "Error is expected"; },
@@ -85,13 +81,11 @@ TEST(RequestResponseThriftChannel, FailureResponse) {
       std::make_shared<RequestResponseThriftChannel>(&evb, subscriberRef);
 
   evb.runInEventBaseThread([requestResponse = std::move(requestResponse)]() {
-    auto headers = std::make_unique<std::map<std::string, std::string>>();
-    auto data = folly::IOBuf::copyBuffer(std::string("data"));
     requestResponse->sendErrorWrapped(
         folly::exception_wrapper(), "mock_exception", nullptr);
   });
 
   evb.loop();
 }
-}
-}
+} // namespace thrift
+} // namespace apache

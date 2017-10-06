@@ -28,8 +28,7 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
  public:
   explicit RequestResponseThriftChannel(
       folly::EventBase* evb,
-      yarpl::Reference<
-          yarpl::single::SingleObserver<std::unique_ptr<folly::IOBuf>>>
+      yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
           subscriber)
       : evb_(evb), subscriber_(subscriber) {}
 
@@ -38,16 +37,8 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
   }
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
-      std::unique_ptr<folly::IOBuf> buf) noexcept override {
-    // TODO encoding & sending headers - metadata of Payload?
-    CHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
-
-    VLOG(3) << "sendThriftResponse";
-    subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
-    subscriber_->onSuccess(std::move(buf));
-    subscriber_ = nullptr;
-  }
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> buf) noexcept override;
 
   // TODO - this methods isn't get called even for error case!
   void sendErrorWrapped(
@@ -62,6 +53,12 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
   folly::EventBase* getEventBase() noexcept override {
     return evb_;
   }
+
+  static std::unique_ptr<folly::IOBuf> serializeMetadata(
+      const ResponseRpcMetadata& responseMetadata);
+
+  static std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
+      const folly::IOBuf& buffer);
 
  private:
   void cancel(int32_t /*seqId*/) noexcept override {
@@ -89,9 +86,7 @@ class RequestResponseThriftChannel : public ThriftChannelIf {
 
  private:
   folly::EventBase* evb_;
-  yarpl::Reference<yarpl::single::SingleObserver<std::unique_ptr<folly::IOBuf>>>
-      subscriber_;
+  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>> subscriber_;
 };
-
 } // namespace thrift
 } // namespace apache

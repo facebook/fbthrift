@@ -18,7 +18,9 @@
 #include <gtest/gtest.h>
 
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponseThriftChannel.h>
 
 namespace apache {
 namespace thrift {
@@ -56,9 +58,12 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
 
   auto request = TestServiceMock::serializeSumTwoNumbers(5, 10);
   eventBase_.runInEventBaseThread(
-      [ request = std::move(request), this ]() mutable {
+      [request = std::move(request), this]() mutable {
+        auto metadata = std::make_unique<RequestRpcMetadata>();
+        auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
+
         auto response = responder_->handleRequestResponse(
-            rsocket::Payload(request.move()), 0);
+            rsocket::Payload(request.move(), std::move(metaBuf)), 0);
         response->subscribe(
             [](auto payload) {
               auto result =
@@ -76,9 +81,12 @@ TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
   auto request =
       TestServiceMock::serializeSumTwoNumbers(5, 10, true /*wrongMethodName*/);
   eventBase_.runInEventBaseThread(
-      [ request = std::move(request), this ]() mutable {
+      [request = std::move(request), this]() mutable {
+        auto metadata = std::make_unique<RequestRpcMetadata>();
+        auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
+
         auto response = responder_->handleRequestResponse(
-            rsocket::Payload(request.move()), 0);
+            rsocket::Payload(request.move(), std::move(metaBuf)), 0);
         response->subscribe(
             [](auto payload) {
               EXPECT_THAT(
@@ -93,5 +101,5 @@ TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
   eventBase_.loop();
   threadManager_->join();
 }
-}
-}
+} // namespace thrift
+} // namespace apache

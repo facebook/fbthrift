@@ -22,7 +22,7 @@ namespace thrift {
 
 using namespace rsocket;
 
-std::unique_ptr<folly::IOBuf> serializeMetadata(
+std::unique_ptr<folly::IOBuf> RSClientThriftChannel::serializeMetadata(
     const RequestRpcMetadata& requestMetadata) {
   CompactProtocolWriter writer;
   folly::IOBufQueue queue;
@@ -31,7 +31,7 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
   return queue.move();
 }
 
-std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
+std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
     const folly::IOBuf& buffer) {
   CompactProtocolReader reader;
   auto responseMetadata = std::make_unique<ResponseRpcMetadata>();

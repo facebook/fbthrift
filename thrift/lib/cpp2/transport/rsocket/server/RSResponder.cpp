@@ -15,6 +15,7 @@
  */
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponseThriftChannel.h>
 
 namespace apache {
@@ -27,24 +28,29 @@ yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
 RSResponder::handleRequestResponse(
     rsocket::Payload request,
     rsocket::StreamId streamId) {
-  return yarpl::single::Single<std::unique_ptr<folly::IOBuf>>::create(
-             [ this, request = std::move(request), streamId ](
-                 auto subscriber) mutable {
-               VLOG(4) << "RSResponder.handleRequestResponse : " << request;
+  // TODO: Where do we use this streamId value
+  DCHECK(request.metadata);
+  return yarpl::single::Single<rsocket::Payload>::create(
+      [this, request = std::move(request), streamId](auto subscriber) mutable {
+        VLOG(4) << "RSResponder.handleRequestResponse : " << request;
 
-               auto metadata = std::make_unique<RequestRpcMetadata>();
-               metadata->seqId = streamId;
-               metadata->__isset.seqId = true;
-               metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-               metadata->__isset.kind = true;
+        auto metadata = RequestResponseThriftChannel::deserializeMetadata(
+            *request.metadata);
+        if (!metadata->__isset.kind) {
+          metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+          metadata->__isset.kind = true;
+        }
+        if (!metadata->__isset.seqId) {
+          metadata->seqId = streamId;
+          metadata->__isset.seqId = true;
+        }
 
-               auto channel = std::make_shared<RequestResponseThriftChannel>(
-                   evb_, subscriber);
-               processor_->onThriftRequest(
-                   std::move(metadata), std::move(request.data), channel);
+        auto channel =
+            std::make_shared<RequestResponseThriftChannel>(evb_, subscriber);
+        processor_->onThriftRequest(
+            std::move(metadata), std::move(request.data), channel);
 
-             })
-      ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+      });
 }
-}
-}
+} // namespace thrift
+} // namespace apache

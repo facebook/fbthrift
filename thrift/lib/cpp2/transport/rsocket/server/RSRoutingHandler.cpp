@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-// #pragma once
-
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 #include <folly/io/async/EventBaseManager.h>

@@ -42,5 +42,5 @@ class RSResponder : public rsocket::RSocketResponder {
   ThriftProcessor* processor_;
   folly::EventBase* evb_;
 };
-}
-}
+} // namespace thrift
+} // namespace apache

@@ -35,6 +35,12 @@ class RSClientThriftChannel : public ThriftChannelIf {
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
+  static std::unique_ptr<folly::IOBuf> serializeMetadata(
+      const RequestRpcMetadata& requestMetadata);
+
+  static std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
+      const folly::IOBuf& buffer);
+
  protected:
   virtual void sendSingleRequestResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
