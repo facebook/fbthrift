@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "thrift/lib/cpp2/transport/core/testutil/ComplianceTest.h"
+#include "thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h"
 
 #include <folly/Baton.h>
 #include <folly/ScopeGuard.h>
@@ -36,20 +36,21 @@ DEFINE_string(host, "::1", "host to connect to");
 using namespace apache::thrift;
 using namespace testutil::testservice;
 
-ComplianceTest::ComplianceTest()
+TransportCompatibilityTest::TransportCompatibilityTest()
     : workerThread_("RSRequestResponseTest_WorkerThread") {
   setupServer();
 }
 
 // Tears down after the test.
-ComplianceTest::~ComplianceTest() {
+TransportCompatibilityTest::~TransportCompatibilityTest() {
   stopServer();
 }
 
 // Event handler to attach to the Thrift server so we know when it is
 // ready to serve and also so we can determine the port it is
 // listening on.
-class ComplianceTestEventHandler : public server::TServerEventHandler {
+class TransportCompatibilityTestEventHandler
+    : public server::TServerEventHandler {
  public:
   // This is a callback that is called when the Thrift server has
   // initialized and is ready to serve RPCs.
@@ -68,20 +69,20 @@ class ComplianceTestEventHandler : public server::TServerEventHandler {
   int32_t port_;
 };
 
-void ComplianceTest::addRoutingHandler(
+void TransportCompatibilityTest::addRoutingHandler(
     std::unique_ptr<TransportRoutingHandler> routingHandler) {
   DCHECK(server_) << "First call setupServer() function";
 
   server_->addRoutingHandler(std::move(routingHandler));
 }
 
-ThriftServer* ComplianceTest::getServer() {
+ThriftServer* TransportCompatibilityTest::getServer() {
   DCHECK(server_) << "First call setupServer() function";
 
   return server_.get();
 }
 
-void ComplianceTest::setupServer() {
+void TransportCompatibilityTest::setupServer() {
   DCHECK(!server_) << "First close the server with stopServer()";
 
   handler_ = std::make_shared<StrictMock<TestServiceMock>>();
@@ -94,10 +95,11 @@ void ComplianceTest::setupServer() {
   server_->setProcessorFactory(cpp2PFac);
 }
 
-void ComplianceTest::startServer() {
+void TransportCompatibilityTest::startServer() {
   DCHECK(server_) << "First call setupServer() function";
 
-  auto eventHandler = std::make_shared<ComplianceTestEventHandler>();
+  auto eventHandler =
+      std::make_shared<TransportCompatibilityTestEventHandler>();
   server_->setServerEventHandler(eventHandler);
   server_->setup();
 
@@ -105,7 +107,7 @@ void ComplianceTest::startServer() {
   port_ = eventHandler->waitForPortAssignment();
 }
 
-void ComplianceTest::stopServer() {
+void TransportCompatibilityTest::stopServer() {
   if (server_) {
     server_->cleanUp();
     server_.reset();
@@ -113,7 +115,7 @@ void ComplianceTest::stopServer() {
   }
 }
 
-void ComplianceTest::connectToServer(
+void TransportCompatibilityTest::connectToServer(
     folly::Function<void(std::unique_ptr<TestServiceAsyncClient>)> callMe) {
   auto mgr = ConnectionManager::getInstance();
   CHECK_GT(port_, 0) << "Check if the server has started already";
@@ -159,7 +161,7 @@ class TimeoutTestCallback : public RequestCallback {
   bool callbackReceived_{false};
 };
 
-void ComplianceTest::callSleep(
+void TransportCompatibilityTest::callSleep(
     TestServiceAsyncClient* client,
     int32_t timeoutMs,
     int32_t sleepMs) {
@@ -169,7 +171,7 @@ void ComplianceTest::callSleep(
   client->sleep(opts, std::move(cb), sleepMs);
 }
 
-void ComplianceTest::TestRequestResponse_Simple() {
+void TransportCompatibilityTest::TestRequestResponse_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2);
     EXPECT_CALL(*handler_.get(), add_(1));
@@ -188,7 +190,7 @@ void ComplianceTest::TestRequestResponse_Simple() {
   });
 }
 
-void ComplianceTest::TestRequestResponse_MultipleClients() {
+void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
   const int clientCount = 10;
   EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2 * clientCount);
   EXPECT_CALL(*handler_.get(), add_(1)).Times(clientCount);
@@ -222,21 +224,32 @@ void ComplianceTest::TestRequestResponse_MultipleClients() {
   threads.clear();
 }
 
-void ComplianceTest::TestRequestResponse_ExpectedException() {
+void TransportCompatibilityTest::TestRequestResponse_ExpectedException() {
   EXPECT_THROW(
       connectToServer(
           [&](auto client) { client->sync_throwExpectedException(1); }),
       TestServiceException);
+
+  EXPECT_THROW(
+      connectToServer(
+          [&](auto client) { client->future_throwExpectedException(1).get(); }),
+      TestServiceException);
 }
 
-void ComplianceTest::TestRequestResponse_UnexpectedException() {
+void TransportCompatibilityTest::TestRequestResponse_UnexpectedException() {
   EXPECT_THROW(
       connectToServer(
           [&](auto client) { client->sync_throwUnexpectedException(2); }),
       apache::thrift::TApplicationException);
+
+  EXPECT_THROW(
+      connectToServer([&](auto client) {
+        client->future_throwUnexpectedException(2).get();
+      }),
+      apache::thrift::TApplicationException);
 }
 
-void ComplianceTest::TestRequestResponse_Timeout() {
+void TransportCompatibilityTest::TestRequestResponse_Timeout() {
   // Note: This test requires sufficient number of CPU threads on the
   // server so that the sleep calls are not backed up.
   // Warning: This test may be flaky due to use of timeouts.
@@ -257,6 +270,143 @@ void ComplianceTest::TestRequestResponse_Timeout() {
     /* Sleep to give time for all callback to be completed */
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  });
+}
+
+void TransportCompatibilityTest::TestRequestResponse_Header() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
+    { // Sync
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      client->sync_headers(rpcOptions);
+      auto keyValue = rpcOptions.getReadHeaders();
+      CHECK(keyValue.find("header_from_server") != keyValue.end());
+      CHECK_STREQ(keyValue.find("header_from_server")->second.c_str(), "1");
+    }
+
+    { // Future
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      auto future = client->header_future_headers(rpcOptions);
+      auto tHeader = future.get().second;
+      auto keyValue = tHeader->getHeaders();
+      CHECK(keyValue.find("header_from_server") != keyValue.end());
+      CHECK_STREQ(keyValue.find("header_from_server")->second.c_str(), "1");
+    }
+
+    { // Callback
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      client->headers(
+          rpcOptions,
+          std::unique_ptr<RequestCallback>(
+              new FunctionReplyCallback([&](ClientReceiveState&& state) {
+                auto keyValue = state.header()->getHeaders();
+                CHECK(keyValue.find("header_from_server") != keyValue.end());
+                CHECK_STREQ(
+                    keyValue.find("header_from_server")->second.c_str(), "1");
+
+                auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
+                EXPECT_FALSE(exw);
+              })));
+    }
+  });
+}
+
+void TransportCompatibilityTest::
+    TestRequestResponse_Header_ExpectedException() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
+    { // Sync
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("expected_exception", "1");
+      bool thrown = false;
+      try {
+        client->sync_headers(rpcOptions);
+      } catch (const std::exception& ex) {
+        thrown = true;
+      }
+      EXPECT_TRUE(thrown);
+      auto keyValue = rpcOptions.getReadHeaders();
+      CHECK(keyValue.find("header_from_server") != keyValue.end());
+    }
+
+    { // Future
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("expected_exception", "1");
+      auto future = client->header_future_headers(rpcOptions);
+      auto& waited = future.wait();
+      auto& ftry = waited.getTry();
+      EXPECT_TRUE(ftry.hasException());
+      EXPECT_THAT(
+          ftry.tryGetExceptionObject()->what(),
+          HasSubstr("TestServiceException"));
+    }
+
+    { // Callback
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("expected_exception", "1");
+      client->headers(
+          rpcOptions,
+          std::unique_ptr<RequestCallback>(
+              new FunctionReplyCallback([&](ClientReceiveState&& state) {
+                auto keyValue = state.header()->getHeaders();
+                CHECK(keyValue.find("header_from_server") != keyValue.end());
+                CHECK_STREQ(
+                    keyValue.find("header_from_server")->second.c_str(), "1");
+
+                auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
+                CHECK_NOTNULL(exw.get_exception());
+                EXPECT_THAT(
+                    exw.what().c_str(), HasSubstr("TestServiceException"));
+              })));
+    }
+  });
+}
+
+void TransportCompatibilityTest::
+    TestRequestResponse_Header_UnexpectedException() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
+    { // Sync
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("unexpected_exception", "1");
+      EXPECT_THROW(
+          client->sync_headers(rpcOptions),
+          apache::thrift::TApplicationException);
+      auto keyValue = rpcOptions.getReadHeaders();
+      CHECK(keyValue.find("header_from_server") != keyValue.end());
+    }
+
+    { // Future
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("unexpected_exception", "1");
+      auto future = client->header_future_headers(rpcOptions);
+      EXPECT_THROW(future.get(), apache::thrift::TApplicationException);
+    }
+
+    { // Callback
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("unexpected_exception", "1");
+      client->headers(
+          rpcOptions,
+          std::unique_ptr<RequestCallback>(
+              new FunctionReplyCallback([&](ClientReceiveState&& state) {
+                auto keyValue = state.header()->getHeaders();
+                CHECK(keyValue.find("header_from_server") != keyValue.end());
+                CHECK_STREQ(
+                    keyValue.find("header_from_server")->second.c_str(), "1");
+
+                auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
+                CHECK_NOTNULL(exw.get_exception());
+                EXPECT_THAT(
+                    exw.what().c_str(), HasSubstr("TApplicationException"));
+              })));
+    }
   });
 }
 

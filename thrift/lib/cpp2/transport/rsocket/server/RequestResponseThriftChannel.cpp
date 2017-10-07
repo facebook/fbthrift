@@ -44,16 +44,18 @@ void RequestResponseThriftChannel::sendThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf) noexcept {
   DCHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
+  DCHECK(metadata);
 
   VLOG(3) << "sendThriftResponse";
   subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
 
-  std::unique_ptr<folly::IOBuf> metaBuf = nullptr;
-  if (metadata) {
-    metaBuf = serializeMetadata(*metadata);
-  }
+  VLOG(3)
+      << "Metadata: "
+      << folly::humanify(
+             serializeMetadata(*metadata)->cloneCoalesced()->moveToFbString());
 
-  subscriber_->onSuccess(rsocket::Payload(std::move(buf), std::move(metaBuf)));
+  subscriber_->onSuccess(
+      rsocket::Payload(std::move(buf), serializeMetadata(*metadata)));
   subscriber_ = nullptr;
 }
 } // namespace thrift

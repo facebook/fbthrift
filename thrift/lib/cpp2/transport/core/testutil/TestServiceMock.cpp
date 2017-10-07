@@ -80,8 +80,29 @@ void TestServiceMock::sleep(int32_t timeMs) {
 }
 
 void TestServiceMock::headers() {
-  // TODO: implement
-}
+  auto header = getConnectionContext()->getHeader();
 
+  // Even if the method throws or not, put the header value and check if reaches
+  // to the client in any case or not
+  header->setHeader("header_from_server", "1");
+
+  auto keyValue = header->getHeaders();
+  if (keyValue.find("unexpected_exception") != keyValue.end()) {
+    throw std::runtime_error("unexpected exception");
+  }
+
+  if (keyValue.find("expected_exception") != keyValue.end()) {
+    TestServiceException exception;
+    exception.message = "expected exception";
+    throw exception;
+  }
+
+  if (keyValue.find("foo") == keyValue.end() ||
+      keyValue.find("foo")->second != "bar") {
+    TestServiceException exception;
+    exception.message = "Expected key/value, foo:bar, is missing";
+    throw exception;
+  }
+}
 } // namespace testservice
 } // namespace testutil

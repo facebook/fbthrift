@@ -122,6 +122,25 @@ class ThriftProcessor {
         metadata->seqId = seqId_;
         metadata->__isset.seqId = true;
       }
+
+      auto header = context_->getHeader();
+      DCHECK(header);
+      metadata->otherMetadata = header->releaseWriteHeaders();
+      auto* eh = header->getExtraWriteHeaders();
+      if (eh) {
+        metadata->otherMetadata.insert(eh->begin(), eh->end());
+      }
+      // TODO: Do we have persistent headers to send server2client?
+      // auto& pwh = getPersistentWriteHeaders();
+      // metadata->otherMetadata.insert(pwh.begin(), pwh.end());
+      // if (!metadata->otherMetadata.empty()) {
+      //   metadata->__isset.otherMetadata = true;
+      // }
+
+      if (!metadata->otherMetadata.empty()) {
+        metadata->__isset.otherMetadata = true;
+      }
+
       channel_->sendThriftResponse(std::move(metadata), std::move(buf));
     }
 

@@ -32,10 +32,10 @@ namespace thrift {
 //  - Exception handling
 //  - Timeouts
 //  - Header support
-class ComplianceTest {
+class TransportCompatibilityTest {
  public:
-  ComplianceTest();
-  virtual ~ComplianceTest();
+  TransportCompatibilityTest();
+  virtual ~TransportCompatibilityTest();
 
   // Don't forget to start the server before running the tests.
   void startServer();
@@ -49,6 +49,9 @@ class ComplianceTest {
   void TestRequestResponse_ExpectedException();
   void TestRequestResponse_UnexpectedException();
   void TestRequestResponse_Timeout();
+  void TestRequestResponse_Header();
+  void TestRequestResponse_Header_ExpectedException();
+  void TestRequestResponse_Header_UnexpectedException();
 
  protected:
   void setupServer();

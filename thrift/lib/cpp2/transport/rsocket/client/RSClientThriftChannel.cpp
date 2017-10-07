@@ -82,9 +82,10 @@ void RSClientThriftChannel::sendSingleRequestResponse(
   };
 
   auto err = [spCallback](folly::exception_wrapper ex) mutable {
-    LOG(FATAL) << "This method should never be called: " << ex;
+    LOG(ERROR) << "This method should never be called: " << ex;
 
     // TODO: Inspect the cases where might we end up in this function.
+    // 1- server closes the stream before all the messages are delievered.
   };
 
   auto singleObserver = yarpl::single::SingleObservers::create<Payload>(
