@@ -28,15 +28,32 @@
 namespace apache {
 namespace thrift {
 
+// One instance of RSResponder per client connection.
 class RSResponder : public rsocket::RSocketResponder {
  public:
+  using FlowableRef =
+      yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
+  using SingleRef = yarpl::Reference<yarpl::single::Single<rsocket::Payload>>;
+
   RSResponder(ThriftProcessor* processor, folly::EventBase* evb);
 
   virtual ~RSResponder() = default;
 
-  yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
-  handleRequestResponse(rsocket::Payload request, rsocket::StreamId streamId)
+  SingleRef handleRequestResponse(
+      rsocket::Payload request,
+      rsocket::StreamId streamId) override;
+
+  void handleFireAndForget(rsocket::Payload request, rsocket::StreamId streamId)
       override;
+
+  FlowableRef handleRequestStream(
+      rsocket::Payload request,
+      rsocket::StreamId streamId) override;
+
+  FlowableRef handleRequestChannel(
+      rsocket::Payload request,
+      FlowableRef requestStream,
+      rsocket::StreamId streamId) override;
 
  protected:
   ThriftProcessor* processor_;
