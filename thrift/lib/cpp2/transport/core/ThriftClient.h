@@ -19,9 +19,9 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <memory>
 
 namespace apache {
@@ -135,7 +135,7 @@ class ThriftClient : public ClientChannel {
 
   // end ClientChannel methods
 
- private:
+ protected:
   std::shared_ptr<ClientConnectionIf> connection_;
   folly::EventBase* callbackEvb_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};

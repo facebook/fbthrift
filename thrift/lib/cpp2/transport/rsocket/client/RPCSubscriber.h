@@ -65,7 +65,9 @@ class RPCSubscriber
       yarpl::Reference<yarpl::flowable::Subscription> subscription) override {
     subscription_ = std::move(subscription);
     if (cancelled_) {
-      subscription_->cancel();
+      if (auto sub = subscription_.exchange(nullptr)) {
+        sub->cancel();
+      }
     } else if (toRequest_ > 0) {
       subscription_->request(toRequest_);
       toRequest_ = 0;
