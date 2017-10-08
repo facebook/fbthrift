@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/futures/Future.h>
 #include <rsocket/RSocketRequester.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
@@ -25,6 +26,9 @@ namespace thrift {
 
 class RSClientThriftChannel : public ThriftChannelIf {
  public:
+  using FlowableRef = yarpl::Reference<
+      yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
+
   explicit RSClientThriftChannel(
       std::shared_ptr<rsocket::RSocketRequester> rsRequester);
 
@@ -42,10 +46,25 @@ class RSClientThriftChannel : public ThriftChannelIf {
       const folly::IOBuf& buffer);
 
  protected:
-  virtual void sendSingleRequestResponse(
+  void setInput(
+      int32_t,
+      ThriftChannelIf::SubscriberRef input) noexcept override {
+    input_ = input;
+  }
+
+  SubscriberRef getOutput(int32_t) noexcept override {
+    auto future = outputPromise_.getFuture();
+    return future.get();
+  }
+
+  void sendSingleRequestResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept;
+
+  void channelRequest(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload) noexcept;
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata>,
@@ -65,16 +84,11 @@ class RSClientThriftChannel : public ThriftChannelIf {
     LOG(FATAL) << "not implemented";
   }
 
-  void setInput(int32_t, SubscriberRef) noexcept override {
-    LOG(FATAL) << "not implemented";
-  }
-
-  SubscriberRef getOutput(int32_t) noexcept override {
-    LOG(FATAL) << "not implemented";
-  }
-
  protected:
   std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
+
+  ThriftChannelIf::SubscriberRef input_;
+  folly::Promise<ThriftChannelIf::SubscriberRef> outputPromise_;
 };
 } // namespace thrift
 } // namespace apache

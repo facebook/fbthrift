@@ -16,6 +16,7 @@
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h"
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RPCSubscriber.h>
 
 namespace apache {
 namespace thrift {
@@ -58,6 +59,9 @@ void RSClientThriftChannel::sendThriftRequest(
       sendSingleRequestResponse(
           std::move(metadata), std::move(payload), std::move(callback));
       break;
+    case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
+      channelRequest(std::move(metadata), std::move(payload));
+      break;
     default:
       LOG(FATAL) << "not implemented";
   }
@@ -96,5 +100,33 @@ void RSClientThriftChannel::sendSingleRequestResponse(
       ->subscribe(singleObserver);
 }
 
+void RSClientThriftChannel::channelRequest(
+    std::unique_ptr<RequestRpcMetadata>,
+    std::unique_ptr<folly::IOBuf> payload) noexcept {
+  auto input =
+      yarpl::flowable::Flowables::fromPublisher<std::unique_ptr<folly::IOBuf>>(
+          [this, initialBuf = std::move(payload)](
+              yarpl::Reference<yarpl::flowable::Subscriber<
+                  std::unique_ptr<folly::IOBuf>>> subscriber) mutable {
+            VLOG(3)
+                << "Input is started to be consumed: "
+                << initialBuf->cloneAsValue().moveToFbString().toStdString();
+            outputPromise_.setValue(yarpl::make_ref<RPCSubscriber>(
+                std::move(initialBuf), std::move(subscriber)));
+          })
+          ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+
+  // Perform the rpc call
+  auto result = rsRequester_->requestChannel(input);
+  result
+      ->map([](auto payload) -> std::unique_ptr<folly::IOBuf> {
+        VLOG(3) << "Request channel: "
+                << payload.data->cloneAsValue().moveToFbString().toStdString();
+
+        // TODO - don't drop the headers
+        return std::move(payload.data);
+      })
+      ->subscribe(input_);
+}
 } // namespace thrift
 } // namespace apache
