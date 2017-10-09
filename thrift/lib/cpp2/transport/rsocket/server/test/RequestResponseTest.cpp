@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/transport/rsocket/server/test/RSResponderTestFixture.h>
+
 #include <folly/io/async/EventBase.h>
 #include <gtest/gtest.h>
 
@@ -27,31 +29,6 @@ namespace thrift {
 
 using namespace testing;
 using namespace testutil::testservice;
-
-class RSResponderTestFixture : public testing::Test {
- public:
-  RSResponderTestFixture() {
-    threadManager_ = PriorityThreadManager::newPriorityThreadManager(
-        32 /*threads*/, true /*stats*/, 1000 /*maxQueueLen*/);
-    threadManager_->start();
-
-    auto cpp2Processor = service_.getProcessor();
-    processor_ = std::make_unique<ThriftProcessor>(std::move(cpp2Processor));
-    processor_->setThreadManager(threadManager_.get());
-
-    responder_ = std::make_unique<RSResponder>(processor_.get(), &eventBase_);
-  }
-
-  // Tears down after the test.
-  ~RSResponderTestFixture() override = default;
-
- protected:
-  StrictMock<TestServiceMock> service_;
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
-  std::unique_ptr<ThriftProcessor> processor_;
-  std::unique_ptr<RSResponder> responder_;
-  folly::EventBase eventBase_;
-};
 
 TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
   EXPECT_CALL(service_, sumTwoNumbers_(5, 10));
