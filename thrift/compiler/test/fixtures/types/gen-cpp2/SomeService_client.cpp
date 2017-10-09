@@ -54,10 +54,23 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_mapT(Protoc
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "bounce_map", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("bounce_map") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;

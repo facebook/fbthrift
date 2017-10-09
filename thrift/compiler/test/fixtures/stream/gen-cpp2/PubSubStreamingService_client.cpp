@@ -85,10 +85,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientT
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "client", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("client") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -167,10 +180,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_serverT
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "server", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("server") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -253,10 +279,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_bothT(P
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "both", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("both") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -321,10 +360,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "returnstream", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("returnstream") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -332,7 +384,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     PubSubStreamingService_returnstream_presult result;
-    assert(false); // we're a stream
+  assert(false); // we're a stream
     ::apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
@@ -415,10 +467,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesst
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "takesstream", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("takesstream") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;
@@ -497,10 +562,23 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientt
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(_fname, mtype, protoSeqId);
-    interior_ew = apache::thrift::detail::ac::helper<Protocol_>::recv_exn(
-        "clientthrows", _fname, prot, mtype);
-    if (interior_ew) {
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      x.read(prot);
       prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("clientthrows") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
       return; // from try_and_catch
     }
     ::apache::thrift::SerializedMessage smsg;

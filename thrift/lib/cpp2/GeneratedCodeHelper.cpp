@@ -31,32 +31,6 @@ namespace apache { namespace thrift {
 namespace detail {
 namespace ac {
 
-template <class Protocol>
-exception_wrapper helper<Protocol>::recv_exn(
-    const char* method,
-    const std::string& fname,
-    Protocol* prot,
-    MessageType mtype) {
-  if (mtype == T_EXCEPTION) {
-    TApplicationException x;
-    detail::deserializeExceptionBody(prot, &x);
-    return exception_wrapper(std::move(x));
-  } else if (mtype != T_REPLY) {
-    prot->skip(T_STRUCT);
-    return make_exception_wrapper<TApplicationException>(
-        TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-  } else if (fname.compare(method) != 0) {
-    prot->skip(T_STRUCT);
-    return make_exception_wrapper<TApplicationException>(
-        TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-  }
-  return exception_wrapper();
-}
-
-template struct helper<BinaryProtocolReader>;
-template struct helper<CompactProtocolReader>;
-template struct helper<Frozen2ProtocolReader>;
-
 [[noreturn]] void throw_app_exn(char const* const msg) {
   throw TApplicationException(msg);
 }
