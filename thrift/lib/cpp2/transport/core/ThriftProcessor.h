@@ -81,6 +81,7 @@ class ThriftProcessor {
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;
 
+ public:
   /**
    * Manages per-RPC state.  There is one of these objects for each
    * RPC.
@@ -150,6 +151,10 @@ class ThriftProcessor {
         std::string /* exCode */,
         apache::thrift::MessageChannel::SendCallback* /* cb */ =
             nullptr) override {}
+
+    auto getChannel() {
+      return channel_;
+    }
 
    private:
     std::shared_ptr<ThriftChannelIf> channel_;
