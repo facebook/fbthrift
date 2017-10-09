@@ -25,10 +25,10 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class AnEnum(Enum):
+class AnEnum(IntEnum):
     ONE = <int> (AnEnum__ONE)
     TWO = <int> (AnEnum__TWO)
     THREE = <int> (AnEnum__THREE)

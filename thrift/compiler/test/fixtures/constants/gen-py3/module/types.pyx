@@ -25,13 +25,15 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class EmptyEnum(Enum):
+class EmptyEnum(IntEnum):
+    pass
 
 cdef cEmptyEnum EmptyEnum_to_cpp(value):
-class City(Enum):
+    pass
+class City(IntEnum):
     NYC = <int> (City__NYC)
     MPK = <int> (City__MPK)
     SEA = <int> (City__SEA)
@@ -46,7 +48,7 @@ cdef cCity City_to_cpp(value):
         return City__SEA
     elif value == City.LON:
         return City__LON
-class Company(Enum):
+class Company(IntEnum):
     FACEBOOK = <int> (Company__FACEBOOK)
     WHATSAPP = <int> (Company__WHATSAPP)
     OCULUS = <int> (Company__OCULUS)

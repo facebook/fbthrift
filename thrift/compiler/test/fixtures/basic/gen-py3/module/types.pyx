@@ -25,10 +25,10 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class MyEnum(Enum):
+class MyEnum(IntEnum):
     MyValue1 = <int> (MyEnum__MyValue1)
     MyValue2 = <int> (MyEnum__MyValue2)
 

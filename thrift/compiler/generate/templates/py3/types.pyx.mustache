@@ -54,7 +54,7 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
@@ -64,15 +64,21 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 
 
 {{#program:enums}}
-class {{enum:name}}(Enum):
+class {{enum:name}}(IntEnum):
     {{#enum:values}}
     {{enumValue:name}} = <int> ({{enum:name}}__{{enumValue:name}})
+    {{/enum:values}}
+    {{^enum:values}}
+    pass
     {{/enum:values}}
 
 cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
     {{#enum:values}}
     {{^first?}}el{{/first?}}if value == {{enum:name}}.{{enumValue:name}}:
         return {{enum:name}}__{{enumValue:name}}
+    {{/enum:values}}
+    {{^enum:values}}
+    pass
     {{/enum:values}}
 {{/program:enums}}
 

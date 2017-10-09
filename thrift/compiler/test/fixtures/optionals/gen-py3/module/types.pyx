@@ -25,10 +25,10 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class Animal(Enum):
+class Animal(IntEnum):
     DOG = <int> (Animal__DOG)
     CAT = <int> (Animal__CAT)
     TARANTULA = <int> (Animal__TARANTULA)

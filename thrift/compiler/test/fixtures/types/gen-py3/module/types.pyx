@@ -25,10 +25,10 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class has_bitwise_ops(Enum):
+class has_bitwise_ops(IntEnum):
     none = <int> (has_bitwise_ops__none)
     zero = <int> (has_bitwise_ops__zero)
     one = <int> (has_bitwise_ops__one)
