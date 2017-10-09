@@ -112,8 +112,8 @@ void TestServiceMock::headers() {
     throw exception;
   }
 
-  if (keyValue.find("foo") == keyValue.end() ||
-      keyValue.find("foo")->second != "bar") {
+  if (keyValue.find("header_from_client") == keyValue.end() ||
+      keyValue.find("header_from_client")->second != "2") {
     TestServiceException exception;
     exception.message = "Expected key/value, foo:bar, is missing";
     throw exception;

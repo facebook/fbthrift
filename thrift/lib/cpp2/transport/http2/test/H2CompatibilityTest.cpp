@@ -76,20 +76,15 @@ TEST_F(H2CompatibilityTest, RequestResponse_Timeout) {
 }
 
 TEST_F(H2CompatibilityTest, RequestResponse_Header) {
-  // TODO: fails - unable to get reply headers from the server!
-  // compatibilityTest_->TestRequestResponse_Header();
+  compatibilityTest_->TestRequestResponse_Header();
 }
 
 TEST_F(H2CompatibilityTest, RequestResponse_Header_ExpectedException) {
-  // TODO: fails - throws apache::thrift::transport::TTransportException instead
-  // of TServiceException
-  // compatibilityTest_->TestRequestResponse_Header_ExpectedException();
+  compatibilityTest_->TestRequestResponse_Header_ExpectedException();
 }
 
 TEST_F(H2CompatibilityTest, RequestResponse_Header_UnexpectedException) {
-  // TODO: fails - throws apache::thrift::transport::TTransportException instead
-  // of TApplicationException
-  // compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
+  compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
 } // namespace thrift

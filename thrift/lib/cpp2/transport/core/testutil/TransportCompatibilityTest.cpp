@@ -277,7 +277,7 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     { // Sync
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       client->sync_headers(rpcOptions);
       auto keyValue = rpcOptions.getReadHeaders();
       CHECK(keyValue.find("header_from_server") != keyValue.end());
@@ -286,7 +286,7 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
 
     { // Future
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       auto future = client->header_future_headers(rpcOptions);
       auto tHeader = future.get().second;
       auto keyValue = tHeader->getHeaders();
@@ -296,7 +296,9 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
 
     { // Callback
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
+      folly::Promise<folly::Unit> executed;
+      auto future = executed.getFuture();
       client->headers(
           rpcOptions,
           std::unique_ptr<RequestCallback>(
@@ -308,7 +310,10 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
 
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
                 EXPECT_FALSE(exw);
+                executed.setValue();
               })));
+      auto& waited = future.wait(folly::Duration(100));
+      CHECK(waited.isReady());
     }
   });
 }
@@ -318,7 +323,7 @@ void TransportCompatibilityTest::
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     { // Sync
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("expected_exception", "1");
       bool thrown = false;
       try {
@@ -333,7 +338,7 @@ void TransportCompatibilityTest::
 
     { // Future
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("expected_exception", "1");
       auto future = client->header_future_headers(rpcOptions);
       auto& waited = future.wait();
@@ -346,22 +351,22 @@ void TransportCompatibilityTest::
 
     { // Callback
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("expected_exception", "1");
+      folly::Promise<folly::Unit> executed;
+      auto future = executed.getFuture();
       client->headers(
           rpcOptions,
           std::unique_ptr<RequestCallback>(
               new FunctionReplyCallback([&](ClientReceiveState&& state) {
-                auto keyValue = state.header()->getHeaders();
-                CHECK(keyValue.find("header_from_server") != keyValue.end());
-                CHECK_STREQ(
-                    keyValue.find("header_from_server")->second.c_str(), "1");
-
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
                 CHECK_NOTNULL(exw.get_exception());
                 EXPECT_THAT(
                     exw.what().c_str(), HasSubstr("TestServiceException"));
+                executed.setValue();
               })));
+      auto& waited = future.wait(folly::Duration(100));
+      CHECK(waited.isReady());
     }
   });
 }
@@ -371,7 +376,7 @@ void TransportCompatibilityTest::
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     { // Sync
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("unexpected_exception", "1");
       EXPECT_THROW(
           client->sync_headers(rpcOptions),
@@ -382,7 +387,7 @@ void TransportCompatibilityTest::
 
     { // Future
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("unexpected_exception", "1");
       auto future = client->header_future_headers(rpcOptions);
       EXPECT_THROW(future.get(), apache::thrift::TApplicationException);
@@ -390,22 +395,22 @@ void TransportCompatibilityTest::
 
     { // Callback
       apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("foo", "bar");
+      rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("unexpected_exception", "1");
+      folly::Promise<folly::Unit> executed;
+      auto future = executed.getFuture();
       client->headers(
           rpcOptions,
           std::unique_ptr<RequestCallback>(
               new FunctionReplyCallback([&](ClientReceiveState&& state) {
-                auto keyValue = state.header()->getHeaders();
-                CHECK(keyValue.find("header_from_server") != keyValue.end());
-                CHECK_STREQ(
-                    keyValue.find("header_from_server")->second.c_str(), "1");
-
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
                 CHECK_NOTNULL(exw.get_exception());
                 EXPECT_THAT(
                     exw.what().c_str(), HasSubstr("TApplicationException"));
+                executed.setValue();
               })));
+      auto& waited = future.wait(folly::Duration(100));
+      CHECK(waited.isReady());
     }
   });
 }
