@@ -40,8 +40,7 @@ class t_json_generator : public t_concat_generator {
       t_program* program,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-    : t_concat_generator(program)
-  {
+      : t_concat_generator(program) {
     out_dir_base_ = "gen-json";
   }
 
@@ -65,6 +64,8 @@ class t_json_generator : public t_concat_generator {
   void print_lineno(int lineno);
   string type_to_string   (t_type* type);
   string type_to_spec_args(t_type* ttype);
+
+  bool should_resolve_to_true_type(const t_type* ttype);
 
   std::ofstream f_out_;
 };
@@ -193,7 +194,10 @@ void t_json_generator::generate_program() {
  * Converts the parse type to a string
  */
 string t_json_generator::type_to_string(t_type* type) {
-  type = get_true_type(type);
+  if (should_resolve_to_true_type(type)) {
+    type = get_true_type(type);
+  }
+
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
@@ -228,6 +232,8 @@ string t_json_generator::type_to_string(t_type* type) {
     return "LIST";
   } else if (type->is_service()) {
     return "SERVICE";
+  } else if (type->is_typedef()) {
+    return "TYPEDEF";
   }
 
   throw "INVALID TYPE IN type_to_string: " + type->get_name();
@@ -243,12 +249,15 @@ string t_json_generator::type_to_string(t_type* type) {
  *              | { "key_type" : tuple_spec, "val_type" : tuple_spec}  // (maps)
  */
 string t_json_generator::type_to_spec_args(t_type* ttype) {
-  ttype = get_true_type(ttype);
+  if (should_resolve_to_true_type(ttype)) {
+    ttype = get_true_type(ttype);
+  }
 
   if (ttype->is_base_type()) {
     return "null";
-  } else if (ttype->is_struct() || ttype->is_xception() ||
-             ttype->is_service() || ttype->is_enum()) {
+  } else if (
+      ttype->is_struct() || ttype->is_xception() || ttype->is_service() ||
+      ttype->is_enum() || ttype->is_typedef()) {
     string module = "";
     if (ttype->get_program() != program_) {
       module = ttype->get_program()->get_name() + ".";
@@ -598,6 +607,16 @@ void t_json_generator::generate_service(t_service* tservice) {
   f_out_ << endl;
   indent_down();
   indent(f_out_) << "}";
+}
+
+bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
+  if (ttype->is_typedef()) {
+    // Only resolve undefined typedefs as they were used for undeclared types
+    if (!static_cast<const t_typedef*>(ttype)->is_defined()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 THRIFT_REGISTER_GENERATOR(json, "JSON", "");

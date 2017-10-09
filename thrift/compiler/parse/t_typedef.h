@@ -37,7 +37,8 @@ class t_typedef : public t_type {
       : t_type(program, symbolic),
         type_(type),
         symbolic_(symbolic),
-        scope_(scope) {}
+        scope_(scope),
+        defined_(true) {}
 
   /**
    * This constructor is used to refer to a type that is lazily
@@ -48,7 +49,8 @@ class t_typedef : public t_type {
       : t_type(program, symbolic),
         type_(nullptr),
         symbolic_(symbolic),
-        scope_(scope) {}
+        scope_(scope),
+        defined_(false) {}
 
   ~t_typedef() override {}
 
@@ -74,8 +76,13 @@ class t_typedef : public t_type {
 
   uint64_t get_type_id() const override { return get_type()->get_type_id(); }
 
+  bool is_defined() const {
+    return defined_;
+  }
+
  private:
   mutable t_type* type_;
   std::string symbolic_;
   t_scope* scope_;
+  bool defined_{true};
 };
