@@ -170,5 +170,24 @@ void reflectionInitializer_8209486072152767468(::apache::thrift::reflection::Sch
   reflectionInitializer_9053610038315710217(schema);  // list<map<i16, float>>
 }
 
+void  reflectionInitializer_8209486072152767468(::apache::thrift::reflection::Schema&);  // struct forward_compatibility.NewStructureNested
+// Reflection initializer for struct forward_compatibility.NewStructureNestedField
+void reflectionInitializer_5773853137915793324(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 5773853137915793324U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct forward_compatibility.NewStructureNestedField";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 8209486072152767468U;
+    f.name = "f";
+    f.order = 0;
+  }
+  reflectionInitializer_8209486072152767468(schema);  // struct forward_compatibility.NewStructureNested
+}
+
 }
 

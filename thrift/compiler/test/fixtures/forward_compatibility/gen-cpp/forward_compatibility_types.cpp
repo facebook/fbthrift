@@ -874,4 +874,107 @@ void merge(NewStructureNested&& from, NewStructureNested& to) {
   to.__isset.s = to.__isset.s || from.__isset.s;
 }
 
+const uint64_t NewStructureNestedField::_reflection_id;
+void NewStructureNestedField::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::forward_compatibility_reflection_::reflectionInitializer_5773853137915793324(schema);
+}
+
+bool NewStructureNestedField::operator == (const NewStructureNestedField & rhs) const {
+  if (!(this->f == rhs.f))
+    return false;
+  return true;
+}
+
+void NewStructureNestedField::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "f") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+};
+
+uint32_t NewStructureNestedField::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::forward_compatibility_reflection_::reflectionInitializer_5773853137915793324(*schema);
+    iprot->setNextStructType(NewStructureNestedField::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->f.read(iprot);
+          this->__isset.f = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void NewStructureNestedField::__clear() {
+  f.__clear();
+  __isset.__clear();
+}
+uint32_t NewStructureNestedField::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("NewStructureNestedField");
+  xfer += oprot->writeFieldBegin("f", apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->f.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(NewStructureNestedField &a, NewStructureNestedField &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.f, b.f);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const NewStructureNestedField& from, NewStructureNestedField& to) {
+  using apache::thrift::merge;
+  merge(from.f, to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
+}
+
+void merge(NewStructureNestedField&& from, NewStructureNestedField& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.f), to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
+}
+
 

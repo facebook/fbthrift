@@ -17,3 +17,7 @@ struct NewStructureNested {
   2: map<i16, FloatFeatures> mp,
   3: set<FloatFeatures> s,
 }
+
+struct NewStructureNestedField {
+  1: NewStructureNested f,
+}

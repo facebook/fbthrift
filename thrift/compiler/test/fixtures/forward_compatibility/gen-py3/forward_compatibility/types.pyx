@@ -614,6 +614,138 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         return (deserialize, (NewStructureNested, serialize(self)))
 
 
+cdef cNewStructureNestedField _NewStructureNestedField_defaults = cNewStructureNestedField()
+
+cdef class NewStructureNestedField(thrift.py3.types.Struct):
+
+    def __init__(
+        NewStructureNestedField self,
+        f=None
+    ):
+        self._cpp_obj = move(NewStructureNestedField._make_instance(
+          NULL,
+          f,
+        ))
+
+    def __call__(
+        NewStructureNestedField self,
+        f=NOTSET
+    ):
+        changes = any((
+            f is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <NewStructureNestedField>NewStructureNestedField.__new__(NewStructureNestedField)
+        inst._cpp_obj = move(NewStructureNestedField._make_instance(
+          self._cpp_obj.get(),
+          f,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cNewStructureNestedField] _make_instance(
+        cNewStructureNestedField* base_instance,
+        object f
+    ) except *:
+        cdef unique_ptr[cNewStructureNestedField] c_inst
+        if base_instance:
+            c_inst = make_unique[cNewStructureNestedField](deref(base_instance))
+        else:
+            c_inst = make_unique[cNewStructureNestedField]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if f is None:
+                deref(c_inst).f = _NewStructureNestedField_defaults.f
+                deref(c_inst).__isset.f = False
+            elif f is NOTSET:
+                f = None
+
+        if f is not None:
+            deref(c_inst).f = deref((<NewStructureNested?> f)._cpp_obj)
+            deref(c_inst).__isset.f = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'f', self.f
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.f
+
+    @staticmethod
+    cdef create(shared_ptr[cNewStructureNestedField] cpp_obj):
+        inst = <NewStructureNestedField>NewStructureNestedField.__new__(NewStructureNestedField)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def f(self):
+        if not deref(self._cpp_obj).__isset.f:
+            return None
+
+        if self.__f is None:
+            self.__f = NewStructureNested.create(make_shared[cNewStructureNested](deref(self._cpp_obj).f))
+        return self.__f
+
+
+    def __hash__(NewStructureNestedField self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.f,
+            ))
+        return self.__hash
+
+    def __repr__(NewStructureNestedField self):
+        return f'NewStructureNestedField(f={repr(self.f)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, NewStructureNestedField) and
+                isinstance(other, NewStructureNestedField)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cNewStructureNestedField cself = deref((<NewStructureNestedField>self)._cpp_obj)
+        cdef cNewStructureNestedField cother = deref((<NewStructureNestedField>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(NewStructureNestedField self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cNewStructureNestedField](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cNewStructureNestedField](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cNewStructureNestedField](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(NewStructureNestedField self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cNewStructureNestedField](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cNewStructureNestedField](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cNewStructureNestedField](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (NewStructureNestedField, serialize(self)))
+
+
 cdef class Map__i16_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_double):

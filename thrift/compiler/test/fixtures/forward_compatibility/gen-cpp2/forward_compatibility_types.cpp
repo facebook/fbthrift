@@ -268,4 +268,58 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+void NewStructureNestedField::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::cpp2::NewStructureNested>::clear(&f);
+  __isset.__clear();
+}
+
+bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) const {
+  if (!((f == rhs.f))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::cpp2::NewStructureNested& NewStructureNestedField::get_f() const& {
+  return f;
+}
+
+ ::cpp2::NewStructureNested NewStructureNestedField::get_f() && {
+  return std::move(f);
+}
+
+void NewStructureNestedField::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "f") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+void swap(NewStructureNestedField& a, NewStructureNestedField& b) {
+  using ::std::swap;
+  swap(a.f, b.f);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t NewStructureNestedField::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NewStructureNestedField::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NewStructureNestedField::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NewStructureNestedField::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NewStructureNestedField::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t NewStructureNestedField::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

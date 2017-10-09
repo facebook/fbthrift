@@ -28,6 +28,8 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types_custom_protocol.h" na
     cdef cppclass cNewStructure2 "cpp2::NewStructure2"
     # Forward Declaration
     cdef cppclass cNewStructureNested "cpp2::NewStructureNested"
+    # Forward Declaration
+    cdef cppclass cNewStructureNestedField "cpp2::NewStructureNestedField"
 
 cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
     cdef cppclass cOldStructure__isset "cpp2::OldStructure::__isset":
@@ -74,6 +76,16 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cset[cmap[int16_t,float]] s
         cNewStructureNested__isset __isset
 
+    cdef cppclass cNewStructureNestedField__isset "cpp2::NewStructureNestedField::__isset":
+        bint f
+
+    cdef cppclass cNewStructureNestedField "cpp2::NewStructureNestedField":
+        cNewStructureNestedField() except +
+        cNewStructureNestedField(const cNewStructureNestedField&) except +
+        bint operator==(cNewStructureNestedField&)
+        cNewStructureNested f
+        cNewStructureNestedField__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cOldStructure] move(unique_ptr[cOldStructure])
@@ -88,12 +100,16 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cNewStructureNested] move(unique_ptr[cNewStructureNested])
     cdef shared_ptr[cNewStructureNested] move_shared "std::move"(shared_ptr[cNewStructureNested])
     cdef unique_ptr[cNewStructureNested] move_unique "std::move"(unique_ptr[cNewStructureNested])
+    cdef shared_ptr[cNewStructureNestedField] move(unique_ptr[cNewStructureNestedField])
+    cdef shared_ptr[cNewStructureNestedField] move_shared "std::move"(shared_ptr[cNewStructureNestedField])
+    cdef unique_ptr[cNewStructureNestedField] move_unique "std::move"(unique_ptr[cNewStructureNestedField])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cOldStructure] const_pointer_cast "std::const_pointer_cast<const cpp2::OldStructure>"(shared_ptr[cOldStructure])
     cdef shared_ptr[const cNewStructure] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructure>"(shared_ptr[cNewStructure])
     cdef shared_ptr[const cNewStructure2] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructure2>"(shared_ptr[cNewStructure2])
     cdef shared_ptr[const cNewStructureNested] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructureNested>"(shared_ptr[cNewStructureNested])
+    cdef shared_ptr[const cNewStructureNestedField] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructureNestedField>"(shared_ptr[cNewStructureNestedField])
 
 # Forward Definition of the cython struct
 cdef class OldStructure(thrift.py3.types.Struct)
@@ -170,6 +186,24 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cNewStructureNested])
+
+# Forward Definition of the cython struct
+cdef class NewStructureNestedField(thrift.py3.types.Struct)
+
+cdef class NewStructureNestedField(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNewStructureNestedField] _cpp_obj
+    cdef NewStructureNested __f
+
+    @staticmethod
+    cdef unique_ptr[cNewStructureNestedField] _make_instance(
+        cNewStructureNestedField* base_instance,
+        object f
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNewStructureNestedField])
 
 
 cdef class Map__i16_double:

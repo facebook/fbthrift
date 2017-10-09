@@ -26,6 +26,8 @@ class NewStructure2;
 
 class NewStructureNested;
 
+class NewStructureNestedField;
+
 typedef std::map<int16_t, float>  FloatFeatures;
 
 void swap(OldStructure &a, OldStructure &b);
@@ -304,5 +306,66 @@ class NewStructureNested : public apache::thrift::TStructType<NewStructureNested
 class NewStructureNested;
 void merge(const NewStructureNested& from, NewStructureNested& to);
 void merge(NewStructureNested&& from, NewStructureNested& to);
+void swap(NewStructureNestedField &a, NewStructureNestedField &b);
+
+class NewStructureNestedField : public apache::thrift::TStructType<NewStructureNestedField> {
+ public:
+
+  static const uint64_t _reflection_id = 5773853137915793324U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  NewStructureNestedField() {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit NewStructureNestedField(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    NewStructureNestedField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    f = arg.move();
+    __isset.f = true;
+  }
+
+  NewStructureNestedField(const NewStructureNestedField&) = default;
+  NewStructureNestedField& operator=(const NewStructureNestedField& src)= default;
+  NewStructureNestedField(NewStructureNestedField&&) = default;
+  NewStructureNestedField& operator=(NewStructureNestedField&&) = default;
+
+  void __clear();
+
+  virtual ~NewStructureNestedField() noexcept {}
+
+  NewStructureNested f;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      f = false;
+    }
+    bool f;
+  } __isset;
+
+  bool operator == (const NewStructureNestedField &) const;
+  bool operator != (const NewStructureNestedField& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const NewStructureNestedField & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+class NewStructureNestedField;
+void merge(const NewStructureNestedField& from, NewStructureNestedField& to);
+void merge(NewStructureNestedField&& from, NewStructureNestedField& to);
 
 
