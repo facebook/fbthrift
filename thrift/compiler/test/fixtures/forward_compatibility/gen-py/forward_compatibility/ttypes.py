@@ -139,11 +139,11 @@ class NewStructure:
 
   def read(self, iprot):
     if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0, forward_compatibility=True)
       self.checkRequired()
       return
     if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2, forward_compatibility=True)
       self.checkRequired()
       return
     iprot.readStructBegin()
@@ -155,15 +155,17 @@ class NewStructure:
         if ftype == TType.MAP:
           self.features = {}
           (_ktype12, _vtype13, _size11 ) = iprot.readMapBegin() 
+          _ktype12 = _ktype12 if _ktype12 != TType.STOP else TType.I16
+          _vtype13 = _vtype13 if _vtype13 != TType.STOP else TType.DOUBLE
           if _size11 >= 0:
             for _i15 in six.moves.range(_size11):
-              _key16 = iprot.readI16()
-              _val17 = iprot.readDouble()
+              _key16 = iprot.readIntegral(_ktype12)
+              _val17 = iprot.readFloatingPoint(_vtype13)
               self.features[_key16] = _val17
           else: 
             while iprot.peekMap():
-              _key18 = iprot.readI16()
-              _val19 = iprot.readDouble()
+              _key18 = iprot.readIntegral(_ktype12)
+              _val19 = iprot.readFloatingPoint(_vtype13)
               self.features[_key18] = _val19
           iprot.readMapEnd()
         else:
@@ -233,11 +235,11 @@ class NewStructure2:
 
   def read(self, iprot):
     if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0, forward_compatibility=True)
       self.checkRequired()
       return
     if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2, forward_compatibility=True)
       self.checkRequired()
       return
     iprot.readStructBegin()
@@ -249,15 +251,17 @@ class NewStructure2:
         if ftype == TType.MAP:
           self.features = {}
           (_ktype23, _vtype24, _size22 ) = iprot.readMapBegin() 
+          _ktype23 = _ktype23 if _ktype23 != TType.STOP else TType.I16
+          _vtype24 = _vtype24 if _vtype24 != TType.STOP else TType.FLOAT
           if _size22 >= 0:
             for _i26 in six.moves.range(_size22):
-              _key27 = iprot.readI16()
-              _val28 = iprot.readFloat()
+              _key27 = iprot.readIntegral(_ktype23)
+              _val28 = iprot.readFloatingPoint(_vtype24)
               self.features[_key27] = _val28
           else: 
             while iprot.peekMap():
-              _key29 = iprot.readI16()
-              _val30 = iprot.readFloat()
+              _key29 = iprot.readIntegral(_ktype23)
+              _val30 = iprot.readFloatingPoint(_vtype24)
               self.features[_key29] = _val30
           iprot.readMapEnd()
         else:
@@ -329,11 +333,11 @@ class NewStructureNested:
 
   def read(self, iprot):
     if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0, forward_compatibility=True)
       self.checkRequired()
       return
     if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2, forward_compatibility=True)
       self.checkRequired()
       return
     iprot.readStructBegin()
@@ -349,15 +353,17 @@ class NewStructureNested:
             for _i37 in six.moves.range(_size33):
               _elem38 = {}
               (_ktype40, _vtype41, _size39 ) = iprot.readMapBegin() 
+              _ktype40 = _ktype40 if _ktype40 != TType.STOP else TType.I16
+              _vtype41 = _vtype41 if _vtype41 != TType.STOP else TType.FLOAT
               if _size39 >= 0:
                 for _i43 in six.moves.range(_size39):
-                  _key44 = iprot.readI16()
-                  _val45 = iprot.readFloat()
+                  _key44 = iprot.readIntegral(_ktype40)
+                  _val45 = iprot.readFloatingPoint(_vtype41)
                   _elem38[_key44] = _val45
               else: 
                 while iprot.peekMap():
-                  _key46 = iprot.readI16()
-                  _val47 = iprot.readFloat()
+                  _key46 = iprot.readIntegral(_ktype40)
+                  _val47 = iprot.readFloatingPoint(_vtype41)
                   _elem38[_key46] = _val47
               iprot.readMapEnd()
               self.lst.append(_elem38)
@@ -365,15 +371,17 @@ class NewStructureNested:
             while iprot.peekList():
               _elem48 = {}
               (_ktype50, _vtype51, _size49 ) = iprot.readMapBegin() 
+              _ktype50 = _ktype50 if _ktype50 != TType.STOP else TType.I16
+              _vtype51 = _vtype51 if _vtype51 != TType.STOP else TType.FLOAT
               if _size49 >= 0:
                 for _i53 in six.moves.range(_size49):
-                  _key54 = iprot.readI16()
-                  _val55 = iprot.readFloat()
+                  _key54 = iprot.readIntegral(_ktype50)
+                  _val55 = iprot.readFloatingPoint(_vtype51)
                   _elem48[_key54] = _val55
               else: 
                 while iprot.peekMap():
-                  _key56 = iprot.readI16()
-                  _val57 = iprot.readFloat()
+                  _key56 = iprot.readIntegral(_ktype50)
+                  _val57 = iprot.readFloatingPoint(_vtype51)
                   _elem48[_key56] = _val57
               iprot.readMapEnd()
               self.lst.append(_elem48)
@@ -389,15 +397,17 @@ class NewStructureNested:
               _key63 = iprot.readI16()
               _val64 = {}
               (_ktype66, _vtype67, _size65 ) = iprot.readMapBegin() 
+              _ktype66 = _ktype66 if _ktype66 != TType.STOP else TType.I16
+              _vtype67 = _vtype67 if _vtype67 != TType.STOP else TType.FLOAT
               if _size65 >= 0:
                 for _i69 in six.moves.range(_size65):
-                  _key70 = iprot.readI16()
-                  _val71 = iprot.readFloat()
+                  _key70 = iprot.readIntegral(_ktype66)
+                  _val71 = iprot.readFloatingPoint(_vtype67)
                   _val64[_key70] = _val71
               else: 
                 while iprot.peekMap():
-                  _key72 = iprot.readI16()
-                  _val73 = iprot.readFloat()
+                  _key72 = iprot.readIntegral(_ktype66)
+                  _val73 = iprot.readFloatingPoint(_vtype67)
                   _val64[_key72] = _val73
               iprot.readMapEnd()
               self.mp[_key63] = _val64
@@ -406,15 +416,17 @@ class NewStructureNested:
               _key74 = iprot.readI16()
               _val75 = {}
               (_ktype77, _vtype78, _size76 ) = iprot.readMapBegin() 
+              _ktype77 = _ktype77 if _ktype77 != TType.STOP else TType.I16
+              _vtype78 = _vtype78 if _vtype78 != TType.STOP else TType.FLOAT
               if _size76 >= 0:
                 for _i80 in six.moves.range(_size76):
-                  _key81 = iprot.readI16()
-                  _val82 = iprot.readFloat()
+                  _key81 = iprot.readIntegral(_ktype77)
+                  _val82 = iprot.readFloatingPoint(_vtype78)
                   _val75[_key81] = _val82
               else: 
                 while iprot.peekMap():
-                  _key83 = iprot.readI16()
-                  _val84 = iprot.readFloat()
+                  _key83 = iprot.readIntegral(_ktype77)
+                  _val84 = iprot.readFloatingPoint(_vtype78)
                   _val75[_key83] = _val84
               iprot.readMapEnd()
               self.mp[_key74] = _val75
@@ -429,15 +441,17 @@ class NewStructureNested:
             for _i89 in six.moves.range(_size85):
               _elem90 = {}
               (_ktype92, _vtype93, _size91 ) = iprot.readMapBegin() 
+              _ktype92 = _ktype92 if _ktype92 != TType.STOP else TType.I16
+              _vtype93 = _vtype93 if _vtype93 != TType.STOP else TType.FLOAT
               if _size91 >= 0:
                 for _i95 in six.moves.range(_size91):
-                  _key96 = iprot.readI16()
-                  _val97 = iprot.readFloat()
+                  _key96 = iprot.readIntegral(_ktype92)
+                  _val97 = iprot.readFloatingPoint(_vtype93)
                   _elem90[_key96] = _val97
               else: 
                 while iprot.peekMap():
-                  _key98 = iprot.readI16()
-                  _val99 = iprot.readFloat()
+                  _key98 = iprot.readIntegral(_ktype92)
+                  _val99 = iprot.readFloatingPoint(_vtype93)
                   _elem90[_key98] = _val99
               iprot.readMapEnd()
               self.s.add(_elem90)
@@ -445,15 +459,17 @@ class NewStructureNested:
             while iprot.peekSet():
               _elem100 = {}
               (_ktype102, _vtype103, _size101 ) = iprot.readMapBegin() 
+              _ktype102 = _ktype102 if _ktype102 != TType.STOP else TType.I16
+              _vtype103 = _vtype103 if _vtype103 != TType.STOP else TType.FLOAT
               if _size101 >= 0:
                 for _i105 in six.moves.range(_size101):
-                  _key106 = iprot.readI16()
-                  _val107 = iprot.readFloat()
+                  _key106 = iprot.readIntegral(_ktype102)
+                  _val107 = iprot.readFloatingPoint(_vtype103)
                   _elem100[_key106] = _val107
               else: 
                 while iprot.peekMap():
-                  _key108 = iprot.readI16()
-                  _val109 = iprot.readFloat()
+                  _key108 = iprot.readIntegral(_ktype102)
+                  _val109 = iprot.readFloatingPoint(_vtype103)
                   _elem100[_key108] = _val109
               iprot.readMapEnd()
               self.s.add(_elem100)
@@ -557,11 +573,11 @@ class NewStructureNestedField:
 
   def read(self, iprot):
     if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0, forward_compatibility=True)
       self.checkRequired()
       return
     if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2, forward_compatibility=True)
       self.checkRequired()
       return
     iprot.readStructBegin()

@@ -221,6 +221,28 @@ class TProtocolBase:
                 self.skip(etype)
             self.readListEnd()
 
+    def readIntegral(self, type):
+        if type == TType.BOOL:
+            return self.readBool()
+        elif type == TType.BYTE:
+            return self.readByte()
+        elif type == TType.I16:
+            return self.readI16()
+        elif type == TType.I32:
+            return self.readI32()
+        elif type == TType.I64:
+            return self.readI64()
+        else:
+            raise Exception("Unknown integral type: %s" % str(type))
+
+    def readFloatingPoint(self, type):
+        if type == TType.FLOAT:
+            return self.readFloat()
+        elif type == TType.DOUBLE:
+            return self.readDouble()
+        else:
+            raise Exception("Unknown floating point type: %s" % str(type))
+
 class TProtocolFactory:
     def getProtocol(self, trans):
         pass

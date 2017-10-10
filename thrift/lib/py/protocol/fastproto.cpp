@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,6 +137,7 @@ typedef struct {
   PyObject* klass;
   PyObject* spec;
   bool isunion;
+  bool forward_compatibility;
 } StructTypeArgs;
 
 typedef struct {
@@ -173,8 +174,8 @@ parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
   long ktype, vtype;
 
   if (PyTuple_Size(typeargs) != 4) {
-    PyErr_SetString(PyExc_TypeError,
-        "expecting tuple of size 4 for map type args");
+    PyErr_SetString(
+        PyExc_TypeError, "expecting tuple of size 4 for map type args");
     return false;
   }
 
@@ -196,8 +197,10 @@ parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
   return true;
 }
 
-static bool
-parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
+static bool parse_struct_args(
+    StructTypeArgs* dest,
+    PyObject* typeargs,
+    bool forward_compatibility = false) {
   if (PyList_Size(typeargs) != 3) {
     PyErr_SetString(PyExc_TypeError,
         "expecting list of size 3 for struct args");
@@ -207,6 +210,7 @@ parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
   dest->klass = PyList_GET_ITEM(typeargs, 0);
   dest->spec = PyList_GET_ITEM(typeargs, 1);
   dest->isunion = (PyObject_IsTrue(PyList_GET_ITEM(typeargs, 2)) == 1);
+  dest->forward_compatibility = forward_compatibility;
 
   return true;
 }
@@ -282,9 +286,13 @@ parse_pyfloat(PyObject *o, double *ret) {
 /**
  * Main loop for reading a struct and serializing fields.
  */
-template<typename Writer>
-static bool encode_impl(Writer *writer, PyObject *value, PyObject *typeargs,
-    TType type, int utf8strings) {
+template <typename Writer>
+static bool encode_impl(
+    Writer* writer,
+    PyObject* value,
+    PyObject* typeargs,
+    TType type,
+    int utf8strings) {
   switch (type) {
     case TType::T_BOOL: {
       int v = PyObject_IsTrue(value);
@@ -583,9 +591,13 @@ static bool encode_impl(Writer *writer, PyObject *value, PyObject *typeargs,
   return true;
 }
 
-template<typename Reader>
-static PyObject*
-decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings);
+template <typename Reader>
+static PyObject* decode_val(
+    Reader* reader,
+    TType type,
+    PyObject* typeargs,
+    int utf8strings,
+    StructTypeArgs* args);
 
 template<typename Reader>
 static bool
@@ -677,8 +689,8 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
       }
     }
 
-    fieldval = decode_val(reader, parsedspec.type, parsedspec.typeargs,
-        utf8strings);
+    fieldval = decode_val(
+        reader, parsedspec.type, parsedspec.typeargs, utf8strings, args);
     if (!fieldval) {
       return false;
     }
@@ -741,9 +753,13 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
   return true;
 }
 
-template<typename Reader>
-static PyObject*
-decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
+template <typename Reader>
+static PyObject* decode_val(
+    Reader* reader,
+    TType type,
+    PyObject* typeargs,
+    int utf8strings,
+    StructTypeArgs* args) {
   switch (type) {
     case TType::T_BOOL: {
       bool v;
@@ -823,8 +839,12 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
       }
 
       for (auto i = 0u; i < len; i++) {
-        PyObject *item = decode_val(reader, parsedargs.element_type,
-            parsedargs.typeargs, utf8strings);
+        PyObject* item = decode_val(
+            reader,
+            parsedargs.element_type,
+            parsedargs.typeargs,
+            utf8strings,
+            args);
         if (!item) {
           Py_DECREF(ret);
           return nullptr;
@@ -842,7 +862,8 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
     }
     case TType::T_MAP: {
       MapTypeArgs parsedargs;
-      TType ktype, vtype;
+      TType ktype = apache::thrift::protocol::T_STOP;
+      TType vtype = apache::thrift::protocol::T_STOP;
       uint32_t len;
 
       if (!parse_map_args(&parsedargs, typeargs)) {
@@ -850,15 +871,17 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
       }
 
       reader->readMapBegin(ktype, vtype, len);
-      if (ktype != parsedargs.ktype || vtype != parsedargs.vtype) {
-        if (len == 0 &&
-            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
-          reader->readMapEnd();
-          return PyDict_New();
+      if (!args->forward_compatibility) {
+        if (ktype != parsedargs.ktype || vtype != parsedargs.vtype) {
+          if (len == 0 &&
+              std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+            reader->readMapEnd();
+            return PyDict_New();
+          }
+          PyErr_SetString(
+              PyExc_TypeError, "got wrong ttype while reading map field");
+          return nullptr;
         }
-        PyErr_SetString(PyExc_TypeError,
-            "got wrong ttype while reading map field");
-        return nullptr;
       }
 
       PyObject *ret = PyDict_New();
@@ -869,14 +892,12 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
       for (auto i = 0u; i < len; i++) {
         PyObject *k = nullptr;
         PyObject *v = nullptr;
-        k = decode_val(reader, parsedargs.ktype, parsedargs.ktypeargs,
-            utf8strings);
+        k = decode_val(reader, ktype, parsedargs.ktypeargs, utf8strings, args);
         if (!k) {
           Py_DECREF(ret);
           return nullptr;
         }
-        v = decode_val(reader, parsedargs.vtype, parsedargs.vtypeargs,
-            utf8strings);
+        v = decode_val(reader, vtype, parsedargs.vtypeargs, utf8strings, args);
         if (!v) {
           Py_DECREF(ret);
           Py_DECREF(k);
@@ -900,7 +921,8 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
       StructTypeArgs parsedargs;
       PyObject *ret;
 
-      if (!parse_struct_args(&parsedargs, typeargs)) {
+      if (!parse_struct_args(
+              &parsedargs, typeargs, args->forward_compatibility)) {
         return nullptr;
       }
 
@@ -1045,24 +1067,33 @@ decode(PyObject* /*self*/, PyObject *args, PyObject *kws) {
   PyObject *spec;
   int utf8strings = 0;
   int protoid = 0;
+  int forward_compatibility = 0;
   StructTypeArgs parsedargs;
   DecodeBuffer input = {};
 
-  static char *kwlist[] = {
-    (char*)"dec",
-    (char*)"transport",
-    (char*)"spec",
-    (char*)"utf8strings",
-    (char*)"protoid",
-    nullptr
-  };
+  static char* kwlist[] = {(char*)"dec",
+                           (char*)"transport",
+                           (char*)"spec",
+                           (char*)"utf8strings",
+                           (char*)"protoid",
+                           (char*)"forward_compatibility",
+                           nullptr};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kws, "OOO|ii", kwlist, &dec_obj,
-        &transport, &spec, &utf8strings, &protoid)) {
+  if (!PyArg_ParseTupleAndKeywords(
+          args,
+          kws,
+          "OOO|iii",
+          kwlist,
+          &dec_obj,
+          &transport,
+          &spec,
+          &utf8strings,
+          &protoid,
+          &forward_compatibility)) {
     return nullptr;
   }
 
-  if (!parse_struct_args(&parsedargs, spec)) {
+  if (!parse_struct_args(&parsedargs, spec, forward_compatibility)) {
     return nullptr;
   }
 
