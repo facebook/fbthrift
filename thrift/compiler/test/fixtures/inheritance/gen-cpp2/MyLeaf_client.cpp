@@ -20,10 +20,6 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyLeaf_do_leaf_pargs;
 typedef apache::thrift::ThriftPresult<true> MyLeaf_do_leaf_presult;
 
-const char* MyLeafAsyncClient::getServiceName() {
-  return "MyLeaf";
-}
-
 template <typename Protocol_>
 void MyLeafAsyncClient::do_leafT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

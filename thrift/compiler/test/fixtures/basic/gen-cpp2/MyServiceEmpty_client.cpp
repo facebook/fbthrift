@@ -12,10 +12,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-const char* MyServiceEmptyAsyncClient::getServiceName() {
-  return "MyServiceEmpty";
-}
-
 } // cpp2
 namespace apache { namespace thrift {
 

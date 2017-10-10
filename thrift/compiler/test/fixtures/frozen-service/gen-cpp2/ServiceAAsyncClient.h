@@ -9,6 +9,7 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/module_types.h"
@@ -28,25 +29,14 @@ namespace apache { namespace thrift {
 
 namespace some { namespace ns {
 
-class ServiceAAsyncClient : public apache::thrift::TClientBase {
+class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  virtual ~ServiceAAsyncClient() {}
-
-  ServiceAAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+  char const* getServiceName() const noexcept override {
+    return "ServiceA";
   }
 
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
-  }
   virtual void moduleAMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   virtual void moduleAMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
  private:
@@ -311,9 +301,6 @@ class ServiceAAsyncClient : public apache::thrift::TClientBase {
   template <typename Protocol_>
   static void recv_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
  public:
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 }} // some::ns

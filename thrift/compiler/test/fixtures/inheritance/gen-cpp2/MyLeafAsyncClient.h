@@ -9,6 +9,7 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/module_types.h"
@@ -29,13 +30,12 @@ namespace cpp2 {
 
 class MyLeafAsyncClient : public  ::cpp2::MyNodeAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using  ::cpp2::MyNodeAsyncClient::MyNodeAsyncClient;
 
-  virtual ~MyLeafAsyncClient() {}
+  char const* getServiceName() const noexcept override {
+    return "MyLeaf";
+  }
 
-  MyLeafAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-       ::cpp2::MyNodeAsyncClient(channel) {}
   virtual void do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:

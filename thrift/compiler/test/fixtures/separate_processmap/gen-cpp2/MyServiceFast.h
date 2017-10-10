@@ -7,6 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -143,24 +144,12 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   virtual ~MyServiceFastAsyncProcessor() {}
 };
 
-class MyServiceFastAsyncClient : public apache::thrift::TClientBase {
+class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  virtual ~MyServiceFastAsyncClient() {}
-
-  MyServiceFastAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
-  }
-
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
+  char const* getServiceName() const noexcept override {
+    return "MyServiceFast";
   }
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -284,9 +273,6 @@ class MyServiceFastAsyncClient : public apache::thrift::TClientBase {
   virtual void lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data);
   template <typename Protocol_>
   void lobDataByIdT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 } // cpp2

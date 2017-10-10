@@ -60,10 +60,6 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> ReturnService_readData_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING,  ::some::valid::ns::IOBufPtr*>> ReturnService_readData_presult;
 
-const char* ReturnServiceAsyncClient::getServiceName() {
-  return "ReturnService";
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::noReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

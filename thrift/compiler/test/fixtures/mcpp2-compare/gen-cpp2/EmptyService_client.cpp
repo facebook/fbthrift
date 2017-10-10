@@ -18,10 +18,6 @@
 
 namespace some { namespace valid { namespace ns {
 
-const char* EmptyServiceAsyncClient::getServiceName() {
-  return "EmptyService";
-}
-
 
 
 }}} // some::valid::ns

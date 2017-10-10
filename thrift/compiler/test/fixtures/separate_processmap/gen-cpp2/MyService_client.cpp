@@ -12,10 +12,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-const char* MyServiceAsyncClient::getServiceName() {
-  return "MyService";
-}
-
 void MyServiceAsyncClient::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   pingImpl(false, rpcOptions, std::move(callback));

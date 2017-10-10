@@ -41,10 +41,6 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache:
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<6, apache::thrift::protocol::T_STRUCT,  ::some::ns::ModuleB*>> ServiceA_mixedMethod_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::ns::ExceptionA>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::ns::ExceptionB>> ServiceA_mixedMethod_presult;
 
-const char* ServiceAAsyncClient::getServiceName() {
-  return "ServiceA";
-}
-
 template <typename Protocol_>
 void ServiceAAsyncClient::moduleAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

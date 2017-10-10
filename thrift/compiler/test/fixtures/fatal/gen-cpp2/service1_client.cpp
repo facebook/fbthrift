@@ -12,10 +12,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace test_cpp2 { namespace cpp_reflection {
 
-const char* service1AsyncClient::getServiceName() {
-  return "service1";
-}
-
 void service1AsyncClient::method1(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   method1Impl(false, rpcOptions, std::move(callback));

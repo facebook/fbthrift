@@ -9,6 +9,7 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/extra_services_types.h"
@@ -30,13 +31,12 @@ namespace extra { namespace svc {
 
 class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using  ::some::valid::ns::ParamServiceAsyncClient::ParamServiceAsyncClient;
 
-  virtual ~ExtraServiceAsyncClient() {}
+  char const* getServiceName() const noexcept override {
+    return "ExtraService";
+  }
 
-  ExtraServiceAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-       ::some::valid::ns::ParamServiceAsyncClient(channel) {}
   virtual void simple_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void simple_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:

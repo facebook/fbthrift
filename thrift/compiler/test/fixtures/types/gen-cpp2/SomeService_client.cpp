@@ -20,10 +20,6 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP,  ::apache::thrift::fixtures::types::SomeMap*>> SomeService_bounce_map_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP,  ::apache::thrift::fixtures::types::SomeMap*>> SomeService_bounce_map_presult;
 
-const char* SomeServiceAsyncClient::getServiceName() {
-  return "SomeService";
-}
-
 template <typename Protocol_>
 void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

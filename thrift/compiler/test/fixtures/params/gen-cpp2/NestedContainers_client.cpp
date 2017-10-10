@@ -28,10 +28,6 @@ typedef apache::thrift::ThriftPresult<true> NestedContainers_listSet_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>*>> NestedContainers_turtles_pargs;
 typedef apache::thrift::ThriftPresult<true> NestedContainers_turtles_presult;
 
-const char* NestedContainersAsyncClient::getServiceName() {
-  return "NestedContainers";
-}
-
 template <typename Protocol_>
 void NestedContainersAsyncClient::mapListT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::vector<int32_t>>& foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

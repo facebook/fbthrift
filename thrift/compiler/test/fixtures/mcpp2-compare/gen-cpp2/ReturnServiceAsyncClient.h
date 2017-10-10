@@ -9,6 +9,7 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/module_types.h"
@@ -28,25 +29,14 @@ namespace apache { namespace thrift {
 
 namespace some { namespace valid { namespace ns {
 
-class ReturnServiceAsyncClient : public apache::thrift::TClientBase {
+class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  virtual ~ReturnServiceAsyncClient() {}
-
-  ReturnServiceAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+  char const* getServiceName() const noexcept override {
+    return "ReturnService";
   }
 
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
-  }
   virtual void noReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void noReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
@@ -551,9 +541,6 @@ class ReturnServiceAsyncClient : public apache::thrift::TClientBase {
   template <typename Protocol_>
   static void recv_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
  public:
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 }}} // some::valid::ns

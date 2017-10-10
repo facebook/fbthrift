@@ -20,10 +20,6 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyNode_do_mid_pargs;
 typedef apache::thrift::ThriftPresult<true> MyNode_do_mid_presult;
 
-const char* MyNodeAsyncClient::getServiceName() {
-  return "MyNode";
-}
-
 template <typename Protocol_>
 void MyNodeAsyncClient::do_midT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

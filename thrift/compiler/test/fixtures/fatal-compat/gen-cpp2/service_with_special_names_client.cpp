@@ -428,10 +428,6 @@ template uint32_t service_with_special_names_members_presult_read<>(apache::thri
 template uint32_t service_with_special_names_members_presult_write<>(apache::thrift::CompactProtocolWriter*, const service_with_special_names_members_presult*);
 template uint32_t service_with_special_names_members_presult_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const service_with_special_names_members_presult*);
 template uint32_t service_with_special_names_members_presult_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const service_with_special_names_members_presult*);
-const char* service_with_special_namesAsyncClient::getServiceName() {
-  return "service_with_special_names";
-}
-
 void service_with_special_namesAsyncClient::get(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   getImpl(false, rpcOptions, std::move(callback));

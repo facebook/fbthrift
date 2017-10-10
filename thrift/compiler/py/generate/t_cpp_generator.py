@@ -791,6 +791,7 @@ class CppGenerator(t_generator.Generator):
         # Enter the scope (prints guard)
         s.acquire()
         s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
+        s('#include <thrift/lib/cpp2/async/AsyncClient.h>')
         s('#include <thrift/lib/cpp2/async/HeaderChannel.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
@@ -1007,55 +1008,23 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
-        if not service.extends:
-            class_signature = 'class ' + classname + \
-                ' : public apache::thrift::TClientBase'
+        if service.extends:
+            base_fullname = self._type_name(service.extends) + "AsyncClient"
         else:
-            class_signature = 'class ' + classname + \
-                ' : public ' + self._type_name(service.extends) +\
-                'AsyncClient'
+            base_fullname = "apache::thrift::GeneratedAsyncClient"
+        base_classname = base_fullname.rsplit("::", 1)[1]
+        class_signature = (
+            'class {0} : public {1}'.format(classname, base_fullname))
         with s.cls(class_signature):
             out().label('public:')
 
-            with out().defn('const char* {name}()',
+            out('using {0}::{1};'.format(base_fullname, base_classname))
+
+            with out().defn('char const* {name}() const noexcept',
                     name='getServiceName',
-                    modifiers='virtual',
-                    output=self._additional_outputs[-1]):
+                    override=True,
+                    in_header=True):
                 out("return \"{0}\";".format(service.name))
-
-            out("typedef std::unique_ptr<apache::thrift::RequestChannel"
-              ", folly::DelayedDestruction::Destructor>"
-              " channel_ptr;")
-            init = OrderedDict()
-            if service.extends:
-                init[self._type_name(service.extends) + 'AsyncClient'] = \
-                    'channel'
-            if not service.extends:
-                init["channel_"] = "channel"
-            # TODO: make it possible to create a connection context from a
-            # thrift channel
-            out().defn('~{name}()', name=classname,
-                   modifiers='virtual', in_header=True).scope.empty()
-
-            with out().defn('{name}(std::shared_ptr<' +
-                            'apache::thrift::RequestChannel> channel)',
-                        name=classname,
-                        init_dict=init,
-                        in_header=True):
-                if not service.extends:
-                    out('connectionContext_.reset('
-                            'new apache::thrift::Cpp2ConnContext);')
-
-            if not service.extends:
-                with out().defn('apache::thrift::RequestChannel* '
-                            ' {name}()', name='getChannel',
-                            in_header=True):
-                    out("return this->channel_.get();")
-                with out().defn('apache::thrift::HeaderChannel* '
-                            ' {name}()', name='getHeaderChannel',
-                            in_header=True):
-                    out("return dynamic_cast<apache::thrift::HeaderChannel*>"
-                            "(this->channel_.get());")
 
             # Write out all the functions
             for function in service.functions:
@@ -1092,12 +1061,6 @@ class CppGenerator(t_generator.Generator):
 
                 if not function.oneway:
                     self._generate_templated_recv_function(service, function)
-
-            if not service.extends:
-                out().label('protected:')
-                out("std::unique_ptr<apache::thrift::Cpp2ConnContext> "
-                  "connectionContext_;")
-                out("std::shared_ptr<apache::thrift::RequestChannel> channel_;")
 
     def _get_async_func_name(self, function):
         if self._is_processed_in_eb(function):

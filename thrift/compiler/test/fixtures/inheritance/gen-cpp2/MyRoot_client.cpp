@@ -20,10 +20,6 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyRoot_do_root_pargs;
 typedef apache::thrift::ThriftPresult<true> MyRoot_do_root_presult;
 
-const char* MyRootAsyncClient::getServiceName() {
-  return "MyRoot";
-}
-
 template <typename Protocol_>
 void MyRootAsyncClient::do_rootT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

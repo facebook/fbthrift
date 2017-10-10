@@ -30,10 +30,6 @@ typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_takesstream_p
 typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_clientthrows_pargs;
 typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_clientthrows_presult;
 
-const char* PubSubStreamingServiceAsyncClient::getServiceName() {
-  return "PubSubStreamingService";
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -99,13 +100,11 @@ class MyServicePrioChildAsyncProcessor : public  ::cpp2::MyServicePrioParentAsyn
 
 class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using  ::cpp2::MyServicePrioParentAsyncClient::MyServicePrioParentAsyncClient;
 
-  virtual ~MyServicePrioChildAsyncClient() {}
-
-  MyServicePrioChildAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-       ::cpp2::MyServicePrioParentAsyncClient(channel) {}
+  char const* getServiceName() const noexcept override {
+    return "MyServicePrioChild";
+  }
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:

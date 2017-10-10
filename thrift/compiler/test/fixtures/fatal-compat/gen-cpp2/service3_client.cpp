@@ -108,10 +108,6 @@ template uint32_t service3_methodF_presult_read<>(apache::thrift::CompactProtoco
 template uint32_t service3_methodF_presult_write<>(apache::thrift::CompactProtocolWriter*, const service3_methodF_presult*);
 template uint32_t service3_methodF_presult_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const service3_methodF_presult*);
 template uint32_t service3_methodF_presult_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const service3_methodF_presult*);
-const char* service3AsyncClient::getServiceName() {
-  return "service3";
-}
-
 void service3AsyncClient::methodA(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   methodAImpl(false, rpcOptions, std::move(callback));

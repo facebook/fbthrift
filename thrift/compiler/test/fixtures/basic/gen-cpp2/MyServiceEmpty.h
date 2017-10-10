@@ -7,6 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -81,28 +82,13 @@ class MyServiceEmptyAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
   virtual ~MyServiceEmptyAsyncProcessor() {}
 };
 
-class MyServiceEmptyAsyncClient : public apache::thrift::TClientBase {
+class MyServiceEmptyAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  virtual ~MyServiceEmptyAsyncClient() {}
-
-  MyServiceEmptyAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+  char const* getServiceName() const noexcept override {
+    return "MyServiceEmpty";
   }
-
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
-  }
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 } // cpp2

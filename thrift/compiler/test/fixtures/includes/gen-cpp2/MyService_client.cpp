@@ -22,10 +22,6 @@ typedef apache::thrift::ThriftPresult<true> MyService_query_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::MyStruct*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Included*>> MyService_has_arg_docs_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_has_arg_docs_presult;
 
-const char* MyServiceAsyncClient::getServiceName() {
-  return "MyService";
-}
-
 template <typename Protocol_>
 void MyServiceAsyncClient::queryT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);

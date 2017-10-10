@@ -63,6 +63,7 @@ add_library(
   FrozenTApplicationException.cpp
   GeneratedCodeHelper.cpp
   Version.cpp
+  async/AsyncClient.cpp
   async/AsyncProcessor.cpp
   async/Cpp2Channel.cpp
   async/DuplexChannel.cpp

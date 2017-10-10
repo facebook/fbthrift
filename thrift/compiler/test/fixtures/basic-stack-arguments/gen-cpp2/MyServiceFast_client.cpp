@@ -12,10 +12,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-const char* MyServiceFastAsyncClient::getServiceName() {
-  return "MyServiceFast";
-}
-
 void MyServiceFastAsyncClient::hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   hasDataByIdImpl(false, rpcOptions, std::move(callback), id);

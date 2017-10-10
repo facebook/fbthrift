@@ -12,10 +12,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-const char* MyServicePrioChildAsyncClient::getServiceName() {
-  return "MyServicePrioChild";
-}
-
 void MyServicePrioChildAsyncClient::pang(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   pangImpl(false, rpcOptions, std::move(callback));

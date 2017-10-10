@@ -7,6 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -168,24 +169,12 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   virtual ~service3AsyncProcessor() {}
 };
 
-class service3AsyncClient : public apache::thrift::TClientBase {
+class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
-  virtual const char* getServiceName();
-  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  virtual ~service3AsyncClient() {}
-
-  service3AsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
-      channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
-  }
-
-  apache::thrift::RequestChannel*  getChannel() {
-    return this->channel_.get();
-  }
-
-  apache::thrift::HeaderChannel*  getHeaderChannel() {
-    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
+  char const* getServiceName() const noexcept override {
+    return "service3";
   }
   virtual void methodA(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodA(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -319,9 +308,6 @@ class service3AsyncClient : public apache::thrift::TClientBase {
   static folly::exception_wrapper recv_wrapped_methodFT(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_methodFT(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
- protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
-  std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 
 }} // test_cpp2::cpp_reflection
