@@ -105,15 +105,15 @@ cdef api void call_cy_MyRoot_do_root(
 ):
     cdef MyRootInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_do_root:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -145,15 +145,15 @@ cdef api void call_cy_MyNode_do_mid(
 ):
     cdef MyNodeInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_do_mid:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -185,15 +185,15 @@ cdef api void call_cy_MyLeaf_do_leaf(
 ):
     cdef MyLeafInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_do_leaf:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 

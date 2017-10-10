@@ -90,17 +90,17 @@ cdef api void call_cy_MyService_query(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
     arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
-    context = None
+    __context = None
     if iface._pass_context_query:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_query_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_s,
             arg_i
         )
@@ -142,17 +142,17 @@ cdef api void call_cy_MyService_has_arg_docs(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
     arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
-    context = None
+    __context = None
     if iface._pass_context_has_arg_docs:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_has_arg_docs_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_s,
             arg_i
         )

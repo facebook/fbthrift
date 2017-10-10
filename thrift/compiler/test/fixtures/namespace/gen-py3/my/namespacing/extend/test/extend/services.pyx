@@ -81,16 +81,16 @@ cdef api void call_cy_ExtendTestService_check(
 ):
     cdef ExtendTestServiceInterface iface
     iface = self
-    promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_bool.create(move(cPromise))
     arg_struct1 = hsmodule.types.HsFoo.create(shared_ptr[hsmodule.types.cHsFoo](struct1.release()))
-    context = None
+    __context = None
     if iface._pass_context_check:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_struct1
         )
     )

@@ -77,16 +77,16 @@ cdef api void call_cy_TestService_init(
 ):
     cdef TestServiceInterface iface
     iface = self
-    promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_i64.create(move(cPromise))
     arg_int1 = int1
-    context = None
+    __context = None
     if iface._pass_context_init:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         TestService_init_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_int1
         )
     )

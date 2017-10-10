@@ -217,15 +217,15 @@ cdef api void call_cy_MyService_ping(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_ping:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_ping_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -257,15 +257,15 @@ cdef api void call_cy_MyService_getRandomData(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
-    context = None
+    __promise = Promise_string.create(move(cPromise))
+    __context = None
     if iface._pass_context_getRandomData:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -298,16 +298,16 @@ cdef api void call_cy_MyService_hasDataById(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_bool.create(move(cPromise))
     arg_id = id
-    context = None
+    __context = None
     if iface._pass_context_hasDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id
         )
     )
@@ -344,16 +344,16 @@ cdef api void call_cy_MyService_getDataById(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move(cPromise))
     arg_id = id
-    context = None
+    __context = None
     if iface._pass_context_getDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id
         )
     )
@@ -391,17 +391,17 @@ cdef api void call_cy_MyService_putDataById(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    context = None
+    __context = None
     if iface._pass_context_putDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id,
             arg_data
         )
@@ -443,17 +443,17 @@ cdef api void call_cy_MyService_lobDataById(
 ):
     cdef MyServiceInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    context = None
+    __context = None
     if iface._pass_context_lobDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id,
             arg_data
         )
@@ -493,15 +493,15 @@ cdef api void call_cy_MyServiceFast_ping(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_ping:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_ping_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -533,15 +533,15 @@ cdef api void call_cy_MyServiceFast_getRandomData(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
-    context = None
+    __promise = Promise_string.create(move(cPromise))
+    __context = None
     if iface._pass_context_getRandomData:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getRandomData_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -574,16 +574,16 @@ cdef api void call_cy_MyServiceFast_hasDataById(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_bool.create(move(cPromise))
     arg_id = id
-    context = None
+    __context = None
     if iface._pass_context_hasDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_hasDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id
         )
     )
@@ -620,16 +620,16 @@ cdef api void call_cy_MyServiceFast_getDataById(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move(cPromise))
     arg_id = id
-    context = None
+    __context = None
     if iface._pass_context_getDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id
         )
     )
@@ -667,17 +667,17 @@ cdef api void call_cy_MyServiceFast_putDataById(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    context = None
+    __context = None
     if iface._pass_context_putDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_putDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id,
             arg_data
         )
@@ -719,17 +719,17 @@ cdef api void call_cy_MyServiceFast_lobDataById(
 ):
     cdef MyServiceFastInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
+    __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    context = None
+    __context = None
     if iface._pass_context_lobDataById:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_lobDataById_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_id,
             arg_data
         )
@@ -769,15 +769,15 @@ cdef api void call_cy_MyServicePrioParent_ping(
 ):
     cdef MyServicePrioParentInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_ping:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_ping_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -809,15 +809,15 @@ cdef api void call_cy_MyServicePrioParent_pong(
 ):
     cdef MyServicePrioParentInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_pong:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_pong_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -849,15 +849,15 @@ cdef api void call_cy_MyServicePrioChild_pang(
 ):
     cdef MyServicePrioChildInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_pang:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioChild_pang_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 

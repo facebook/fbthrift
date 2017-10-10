@@ -77,16 +77,16 @@ cdef api void call_cy_SomeService_bounce_map(
 ):
     cdef SomeServiceInterface iface
     iface = self
-    promise = Promise_std_unordered_map__Map__i32_string.create(move(cPromise))
+    __promise = Promise_std_unordered_map__Map__i32_string.create(move(cPromise))
     arg_m = module.types.std_unordered_map__Map__i32_string.create(module.types.move(m))
-    context = None
+    __context = None
     if iface._pass_context_bounce_map:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(
             self,
-            context,
-            promise,
+            __context,
+            __promise,
             arg_m
         )
     )

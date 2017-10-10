@@ -99,15 +99,15 @@ cdef api void call_cy_Raiser_doBland(
 ):
     cdef RaiserInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_doBland:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -139,15 +139,15 @@ cdef api void call_cy_Raiser_doRaise(
 ):
     cdef RaiserInterface iface
     iface = self
-    promise = Promise_void.create(move(cPromise))
-    context = None
+    __promise = Promise_void.create(move(cPromise))
+    __context = None
     if iface._pass_context_doRaise:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -183,15 +183,15 @@ cdef api void call_cy_Raiser_get200(
 ):
     cdef RaiserInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
-    context = None
+    __promise = Promise_string.create(move(cPromise))
+    __context = None
     if iface._pass_context_get200:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 
@@ -223,15 +223,15 @@ cdef api void call_cy_Raiser_get500(
 ):
     cdef RaiserInterface iface
     iface = self
-    promise = Promise_string.create(move(cPromise))
-    context = None
+    __promise = Promise_string.create(move(cPromise))
+    __context = None
     if iface._pass_context_get500:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(
             self,
-            context,
-            promise
+            __context,
+            __promise
         )
     )
 

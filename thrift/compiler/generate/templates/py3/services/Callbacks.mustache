@@ -41,18 +41,18 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 ):{{! Gets called from a python Executor }}
     cdef {{service:name}}Interface iface
     iface = self
-    promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
+    __promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
     {{#function:args}}
     arg_{{field:name}} = {{#field:type}}{{> CythonCppToPython}}{{/field:type}}
     {{/function:args}}
-    context = None
+    __context = None
     if iface._pass_context_{{function:name}}:
-        context = RequestContext.create(ctx)
+        __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
             self,
-            context,
-            promise{{#function:args}},
+            __context,
+            __promise{{#function:args}},
             arg_{{field:name}}{{/function:args}}
         )
     )
