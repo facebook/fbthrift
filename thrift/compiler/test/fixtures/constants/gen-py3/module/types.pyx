@@ -25,19 +25,37 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum, IntEnum
+from enum import Enum
+import warnings
 
 
-class EmptyEnum(IntEnum):
-    pass
+class EmptyEnum(Enum):
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef cEmptyEnum EmptyEnum_to_cpp(value):
     pass
-class City(IntEnum):
+class City(Enum):
     NYC = <int> (City__NYC)
     MPK = <int> (City__MPK)
     SEA = <int> (City__SEA)
     LON = <int> (City__LON)
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef cCity City_to_cpp(value):
     if value == City.NYC:
@@ -48,11 +66,20 @@ cdef cCity City_to_cpp(value):
         return City__SEA
     elif value == City.LON:
         return City__LON
-class Company(IntEnum):
+class Company(Enum):
     FACEBOOK = <int> (Company__FACEBOOK)
     WHATSAPP = <int> (Company__WHATSAPP)
     OCULUS = <int> (Company__OCULUS)
     INSTAGRAM = <int> (Company__INSTAGRAM)
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef cCompany Company_to_cpp(value):
     if value == Company.FACEBOOK:

@@ -37,23 +37,32 @@ class EnumTest(unittest.TestCase):
     def test_values(self):
         # Check that all the enum values match what we expect
         my_enum1_values = [x.value for x in MyEnum1]
-        self.assertEquals(min(my_enum1_values), 0)
-        self.assertEquals(MyEnum1.ME1_0, 0)
-        self.assertEquals(MyEnum1.ME1_1, 1)
-        self.assertEquals(MyEnum1.ME1_2, 2)
-        self.assertEquals(MyEnum1.ME1_3, 3)
-        self.assertEquals(MyEnum1.ME1_5, 5)
-        self.assertEquals(MyEnum1.ME1_6, 6)
-        self.assertEquals(max(my_enum1_values), 6)
+        self.assertEqual(min(my_enum1_values), 0)
+        self.assertEqual(MyEnum1.ME1_0.value, 0)
+        self.assertEqual(MyEnum1.ME1_1.value, 1)
+        self.assertEqual(MyEnum1.ME1_2.value, 2)
+        self.assertEqual(MyEnum1.ME1_3.value, 3)
+        self.assertEqual(MyEnum1.ME1_5.value, 5)
+        self.assertEqual(MyEnum1.ME1_6.value, 6)
+        self.assertEqual(max(my_enum1_values), 6)
 
     def test_enum_names(self):
-        self.assertEquals(MyEnum1.ME1_0.name, "ME1_0")
+        self.assertEqual(MyEnum1.ME1_0.name, "ME1_0")
 
     def test_names_to_values(self):
-        self.assertEquals(MyEnum1["ME1_0"], MyEnum1.ME1_0)
+        self.assertEqual(MyEnum1["ME1_0"], MyEnum1.ME1_0)
 
     def test_compare(self):
-        self.assertTrue(MyEnum1.ME1_0 < MyEnum1.ME1_1)
+        self.assertEqual(MyEnum1.ME1_1, MyEnum1(1))
+        self.assertEqual(MyEnum1.ME1_1.value, 1)
+        self.assertEqual(MyEnum1.ME1_1.__hash__(), MyEnum1(1).__hash__())
+
+        with self.assertWarns(RuntimeWarning):
+            self.assertFalse(MyEnum1.ME1_1 == 1)
+        with self.assertWarns(RuntimeWarning):
+            self.assertTrue(MyEnum1.ME1_1 != 1)
+        with self.assertRaises(TypeError):
+            MyEnum1.ME1_1 > 0
 
 
 if __name__ == '__main__':

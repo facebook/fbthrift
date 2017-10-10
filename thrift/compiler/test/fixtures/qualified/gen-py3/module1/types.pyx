@@ -25,13 +25,23 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum, IntEnum
+from enum import Enum
+import warnings
 
 
-class Enum(IntEnum):
+class Enum(Enum):
     ONE = <int> (Enum__ONE)
     TWO = <int> (Enum__TWO)
     THREE = <int> (Enum__THREE)
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef cEnum Enum_to_cpp(value):
     if value == Enum.ONE:

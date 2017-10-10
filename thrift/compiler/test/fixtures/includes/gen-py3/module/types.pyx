@@ -25,7 +25,8 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum, IntEnum
+from enum import Enum
+import warnings
 cimport includes.types
 import includes.types
 

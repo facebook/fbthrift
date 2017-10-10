@@ -25,15 +25,25 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum, IntEnum
+from enum import Enum
+import warnings
 
 
-class has_bitwise_ops(IntEnum):
+class has_bitwise_ops(Enum):
     none = <int> (has_bitwise_ops__none)
     zero = <int> (has_bitwise_ops__zero)
     one = <int> (has_bitwise_ops__one)
     two = <int> (has_bitwise_ops__two)
     three = <int> (has_bitwise_ops__three)
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value):
     if value == has_bitwise_ops.none:

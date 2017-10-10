@@ -54,7 +54,8 @@ from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
-from enum import Enum, IntEnum
+from enum import Enum
+import warnings
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
@@ -64,13 +65,19 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 
 
 {{#program:enums}}
-class {{enum:name}}(IntEnum):
+class {{enum:name}}(Enum):
     {{#enum:values}}
     {{enumValue:name}} = <int> ({{enum:name}}__{{enumValue:name}})
     {{/enum:values}}
-    {{^enum:values}}
-    pass
-    {{/enum:values}}
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
 
 cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
     {{#enum:values}}
