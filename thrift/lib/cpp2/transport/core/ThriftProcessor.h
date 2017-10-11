@@ -19,14 +19,10 @@
 #include <folly/io/IOBuf.h>
 #include <stdint.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
-#include <string>
 
 namespace apache {
 namespace thrift {
@@ -80,90 +76,6 @@ class ThriftProcessor {
   // Thread manager that is used to run thrift handlers.
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;
-
- public:
-  /**
-   * Manages per-RPC state.  There is one of these objects for each
-   * RPC.
-   */
-  class ThriftRequest : public ResponseChannel::Request {
-   public:
-    ThriftRequest(
-        std::shared_ptr<ThriftChannelIf> channel,
-        std::unique_ptr<transport::THeader> header,
-        std::unique_ptr<Cpp2RequestContext> context,
-        std::unique_ptr<Cpp2ConnContext> connContext,
-        int32_t seqId)
-        : channel_(channel),
-          header_(std::move(header)),
-          context_(std::move(context)),
-          connContext_(std::move(connContext)),
-          seqId_(seqId),
-          active_(true) {}
-
-    bool isActive() override {
-      return active_;
-    }
-
-    void cancel() override {
-      active_ = false;
-    }
-
-    // TODO: Implement isOneway
-    bool isOneway() override {
-      return false;
-    }
-
-    void sendReply(
-        std::unique_ptr<folly::IOBuf>&& buf,
-        apache::thrift::MessageChannel::SendCallback* /* cb */ =
-            nullptr) override {
-      auto metadata = std::make_unique<ResponseRpcMetadata>();
-      if (seqId_ != -1) {
-        metadata->seqId = seqId_;
-        metadata->__isset.seqId = true;
-      }
-
-      auto header = context_->getHeader();
-      DCHECK(header);
-      metadata->otherMetadata = header->releaseWriteHeaders();
-      auto* eh = header->getExtraWriteHeaders();
-      if (eh) {
-        metadata->otherMetadata.insert(eh->begin(), eh->end());
-      }
-      // TODO: Do we have persistent headers to send server2client?
-      // auto& pwh = getPersistentWriteHeaders();
-      // metadata->otherMetadata.insert(pwh.begin(), pwh.end());
-      // if (!metadata->otherMetadata.empty()) {
-      //   metadata->__isset.otherMetadata = true;
-      // }
-
-      if (!metadata->otherMetadata.empty()) {
-        metadata->__isset.otherMetadata = true;
-      }
-
-      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
-    }
-
-    // TODO: Implement sendErrorWrapped
-    void sendErrorWrapped(
-        folly::exception_wrapper /* ex */,
-        std::string /* exCode */,
-        apache::thrift::MessageChannel::SendCallback* /* cb */ =
-            nullptr) override {}
-
-    auto getChannel() {
-      return channel_;
-    }
-
-   private:
-    std::shared_ptr<ThriftChannelIf> channel_;
-    std::unique_ptr<transport::THeader> header_;
-    std::unique_ptr<Cpp2RequestContext> context_;
-    std::unique_ptr<Cpp2ConnContext> connContext_;
-    int32_t seqId_;
-    std::atomic<bool> active_;
-  };
 };
 
 } // namespace thrift

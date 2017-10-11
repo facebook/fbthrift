@@ -15,8 +15,8 @@
  */
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceExtension.h>
 
-// Access to the channel at the inside of the ThriftRequest!
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+// TODO: Do we really want this dependency?
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -200,8 +200,7 @@ void TestServiceExtensionSvIf::async_tm_helloChannel(
     std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // Reach to the Channel object!
   auto request = callback->getRequest();
-  auto thriftRequest =
-      dynamic_cast<apache::thrift::ThriftProcessor::ThriftRequest*>(request);
+  auto thriftRequest = dynamic_cast<apache::thrift::ThriftRequest*>(request);
   CHECK_NOTNULL(thriftRequest);
   auto channel = thriftRequest->getChannel();
 

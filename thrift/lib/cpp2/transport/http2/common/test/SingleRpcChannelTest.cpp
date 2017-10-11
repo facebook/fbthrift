@@ -33,6 +33,13 @@ class SingleRpcChannelTest
 TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
   EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
+
+  // The following header settings can be removed once we serialize
+  // metadata directly.
+  inputHeaders[kProtocolKey] = "0";
+  inputHeaders[kRpcNameKey] = "foo";
+  inputHeaders[kRpcKindKey] = "0";
+
   inputHeaders["key1"] = "value1";
   inputHeaders["key2"] = "value2";
   string inputPayload = "single stream payload";

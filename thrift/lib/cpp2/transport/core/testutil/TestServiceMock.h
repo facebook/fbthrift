@@ -17,8 +17,8 @@
 #pragma once
 
 #include <gmock/gmock.h>
-
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceExtension.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <yarpl/Flowable.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 
@@ -55,10 +55,13 @@ class TestServiceMock : public TestServiceExtensionSvIf {
   yarpl::Reference<yarpl::flowable::Flowable<std::string>> helloChannel(
       yarpl::Reference<yarpl::flowable::Flowable<std::string>> names) override;
 
- public:
   // Send the two integers to be serialized for 'sumTwoNumbers'
-  static folly::IOBufQueue
-  serializeSumTwoNumbers(int32_t x, int32_t y, bool wrongMethodName = false);
+  static void serializeSumTwoNumbers(
+      int32_t x,
+      int32_t y,
+      bool wrongMethodName,
+      folly::IOBufQueue* request,
+      apache::thrift::RequestRpcMetadata* metadata);
 
   // Receive the deserialized integer that results from 'sumTwoNumbers'
   static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);

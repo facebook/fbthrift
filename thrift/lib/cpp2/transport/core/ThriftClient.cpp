@@ -20,6 +20,7 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -170,17 +171,11 @@ uint32_t ThriftClient::sendRequestHelper(
     return 0;
   }
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol = static_cast<ProtocolId>(protocolId_);
-  metadata->__isset.protocol = true;
-  // TODO: add function name.  We don't use it right now.  The payload
-  // already contains the function name - so that's where the name is
-  // obtained right now.
-  if (oneway) {
-    metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  } else {
-    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  if (!stripEnvelope(metadata.get(), buf)) {
+    LOG(FATAL) << "Unexpected problem stripping envelope";
   }
-  metadata->__isset.kind = true;
+  DCHECK(static_cast<ProtocolId>(protocolId_) == metadata->protocol);
+  DCHECK(oneway == (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE));
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
     metadata->__isset.clientTimeoutMs = true;

@@ -18,10 +18,26 @@
 
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 
+#include <folly/FixedString.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
+#include <string>
 
 namespace apache {
 namespace thrift {
+
+// These will go away once we sent the RPC metadata directly.  "src"
+// stands for SingleRpcChannel.
+constexpr auto kProtocolKey = folly::makeFixedString("src_protocol");
+constexpr auto kRpcNameKey = folly::makeFixedString("src_rpc_name");
+constexpr auto kRpcKindKey = folly::makeFixedString("src_rpc_kind");
+constexpr auto kErrorKindKey = folly::makeFixedString("src_error_kind");
+constexpr auto kErrorMessageKey = folly::makeFixedString("src_error_reason");
+
+// This will go away once we have deprecated all uses of the existing
+// HTTP2 support (HTTPClientChannel and the matching server
+// implementation).
+constexpr auto kHttpClientChannelKey =
+    folly::makeFixedString("src_httpclientchannel");
 
 class SingleRpcChannel : public H2ChannelIf {
  public:
@@ -64,11 +80,24 @@ class SingleRpcChannel : public H2ChannelIf {
 
   void onH2StreamEnd() noexcept override;
 
-  void onH2StreamClosed(proxygen::ProxygenError error) noexcept override;
+  void onH2StreamClosed(proxygen::ProxygenError) noexcept override;
 
  private:
-  // TODO: Temporary method until we add envelope to payload.
-  bool isOneWay() noexcept;
+  // The service side handling code for onH2StreamEnd().
+  void onThriftRequest() noexcept;
+
+  // The client side handling code for onH2StreamEnd().
+  void onThriftResponse() noexcept;
+
+  // TODO: This method will go away once we serialize the metadata directly.
+  bool extractEnvelopeInfoFromHeader(RequestRpcMetadata* metadata) noexcept;
+
+  void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
+
+  // Called from onThriftRequest() to send an error response.
+  void sendErrorThriftResponse(
+      ErrorKind error,
+      const std::string& message) noexcept;
 
   // The thrift processor used to execute RPCs (server side only).
   // Owned by H2ThriftServer.

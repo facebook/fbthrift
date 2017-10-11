@@ -50,18 +50,16 @@ TEST(ThriftProcessorTest, SendAndReceiveSumTwoNumbers) {
   // Schedule the calls to the processor in the event base so that the
   // event loop is running for the entirety of the test.
 
-  auto request = TestServiceMock::serializeSumTwoNumbers(x, y);
-
   folly::EventBase eventBase;
   std::shared_ptr<FakeChannel> fakeChannel =
       std::make_shared<FakeChannel>(&eventBase);
 
   eventBase.runInEventBaseThread([&]() mutable {
-    auto headers = std::make_unique<std::map<std::string, std::string>>();
-    auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel);
     auto metadata = std::make_unique<RequestRpcMetadata>();
-    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-    metadata->__isset.kind = true;
+    folly::IOBufQueue request;
+    TestServiceMock::serializeSumTwoNumbers(
+        x, y, false, &request, metadata.get());
+    auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel);
     processor.onThriftRequest(std::move(metadata), request.move(), channel);
   });
 

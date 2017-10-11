@@ -17,7 +17,11 @@
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
 #include <glog/logging.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <string>
 
 namespace apache {
 namespace thrift {
@@ -32,80 +36,19 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(metadata);
   DCHECK(payload);
   DCHECK(channel);
+  DCHECK(tm_);
+  DCHECK(metadata->__isset.protocol);
+  DCHECK(metadata->__isset.name);
+  DCHECK(metadata->__isset.seqId);
+  DCHECK(metadata->__isset.kind);
 
+  std::unique_ptr<ThriftRequest> request =
+      std::make_unique<ThriftRequest>(channel, std::move(metadata));
+  auto protoId = request->getProtoId();
+  auto reqContext = request->getRequestContext();
   auto* evb = channel->getEventBase();
-
-  // TODO: Move this loop into channel and do not call ThriftProcessor
-  // if payload is empty.
-  while (payload->length() == 0) {
-    if (payload->next() != payload.get()) {
-      payload = payload->pop();
-    } else {
-      LOG(FATAL) << "Empty payload.";
-    }
-  }
-
-  auto header = std::make_unique<transport::THeader>();
-  if (metadata->__isset.protocol) {
-    header->setProtocolId(static_cast<int16_t>(metadata->protocol));
-  }
-  if (metadata->__isset.seqId) {
-    header->setSequenceNumber(metadata->seqId);
-  }
-  if (metadata->__isset.clientTimeoutMs) {
-    header->setClientTimeout(
-        std::chrono::milliseconds(metadata->clientTimeoutMs));
-  }
-  if (metadata->__isset.queueTimeoutMs) {
-    header->setClientQueueTimeout(
-        std::chrono::milliseconds(metadata->queueTimeoutMs));
-  }
-  if (metadata->__isset.priority) {
-    header->setCallPriority(
-        static_cast<concurrency::PRIORITY>(metadata->priority));
-  }
-  if (metadata->__isset.otherMetadata) {
-    header->setReadHeaders(std::move(metadata->otherMetadata));
-  }
-
-  // TODO: Looks like this code can be placed after call to
-  // deserializeMessageBegin().  Looks like we are repeating
-  // some work here.
-  // TODO: Also, get this data from metadata after we properly
-  // populate it.  Then we don't need the following code.
-  auto protByte = payload->data()[0];
-  switch (protByte) {
-    case 0x80:
-      header->setProtocolId(protocol::T_BINARY_PROTOCOL);
-      break;
-    case 0x82:
-      header->setProtocolId(protocol::T_COMPACT_PROTOCOL);
-      break;
-    // TODO: Add Frozen2 case.
-    default:
-      LOG(FATAL) << "Bad protocol";
-  }
-  auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-      header->getProtocolId());
-
-  auto connContext = std::make_unique<Cpp2ConnContext>(
-      nullptr, nullptr, nullptr, nullptr, nullptr);
-  auto context =
-      std::make_unique<Cpp2RequestContext>(connContext.get(), header.get());
-  auto rawContext = context.get();
-  auto seqId = metadata->__isset.seqId ? metadata->seqId : -1;
-  std::unique_ptr<ResponseChannel::Request> request =
-      std::make_unique<ThriftRequest>(
-          channel,
-          std::move(header),
-          std::move(context),
-          std::move(connContext),
-          seqId);
-
-  apache::thrift::detail::ap::deserializeMessageBegin(
-      protoId, request, payload.get(), rawContext, evb);
   cpp2Processor_->process(
-      std::move(request), std::move(payload), protoId, rawContext, evb, tm_);
+      std::move(request), std::move(payload), protoId, reqContext, evb, tm_);
 }
 
 void ThriftProcessor::cancel(

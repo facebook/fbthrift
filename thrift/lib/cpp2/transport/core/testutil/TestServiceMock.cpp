@@ -24,10 +24,14 @@
 namespace testutil {
 namespace testservice {
 
-folly::IOBufQueue TestServiceMock::serializeSumTwoNumbers(
+using namespace apache::thrift;
+
+void TestServiceMock::serializeSumTwoNumbers(
     int32_t x,
     int32_t y,
-    bool wrongMethodName) {
+    bool wrongMethodName,
+    folly::IOBufQueue* request,
+    RequestRpcMetadata* metadata) {
   std::string methodName = "sumTwoNumbers";
   if (wrongMethodName) {
     methodName = "wrongMethodName";
@@ -37,14 +41,20 @@ folly::IOBufQueue TestServiceMock::serializeSumTwoNumbers(
   args.get<1>().value = &y;
 
   auto writer = std::make_unique<apache::thrift::CompactProtocolWriter>();
-  size_t bufSize = args.serializedSizeZC(writer.get());
-  bufSize += writer->serializedMessageSize(methodName);
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  writer->setOutput(&queue, bufSize);
-  writer->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
+  writer->setOutput(request);
   args.write(writer.get());
-  writer->writeMessageEnd();
-  return queue;
+  metadata->protocol = ProtocolId::COMPACT;
+  metadata->__isset.protocol = true;
+  if (wrongMethodName) {
+    metadata->name = "wrongMethodName";
+  } else {
+    metadata->name = "sumTwoNumbers";
+  }
+  metadata->__isset.name = true;
+  metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  metadata->__isset.kind = true;
+  metadata->seqId = 0;
+  metadata->__isset.seqId = true;
 }
 
 int32_t TestServiceMock::deserializeSumTwoNumbers(folly::IOBuf* buf) {

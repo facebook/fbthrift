@@ -33,10 +33,12 @@ using namespace testutil::testservice;
 TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
   EXPECT_CALL(service_, sumTwoNumbers_(5, 10));
 
-  auto request = TestServiceMock::serializeSumTwoNumbers(5, 10);
   eventBase_.runInEventBaseThread(
-      [request = std::move(request), this]() mutable {
+      [this]() mutable {
+        folly::IOBufQueue request;
         auto metadata = std::make_unique<RequestRpcMetadata>();
+        TestServiceMock::serializeSumTwoNumbers(
+            5, 10, false, &request, metadata.get());
         auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
 
         auto response = responder_->handleRequestResponse(
@@ -55,11 +57,12 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
 }
 
 TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
-  auto request =
-      TestServiceMock::serializeSumTwoNumbers(5, 10, true /*wrongMethodName*/);
   eventBase_.runInEventBaseThread(
-      [request = std::move(request), this]() mutable {
+      [this]() mutable {
+        folly::IOBufQueue request;
         auto metadata = std::make_unique<RequestRpcMetadata>();
+        TestServiceMock::serializeSumTwoNumbers(
+            5, 10, true, &request, metadata.get());
         auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
 
         auto response = responder_->handleRequestResponse(

@@ -19,6 +19,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
@@ -50,6 +51,14 @@ class ThriftRequestHandlerTest : public testing::Test {
   // Tears down after the test.
   ~ThriftRequestHandlerTest() override {}
 
+  // This method can be removed once we serialize metadata directly.
+  void setEnvelopeHeaders(HTTPMessage* msg) {
+    auto& headers = msg->getHeaders();
+    headers.rawSet(kProtocolKey, "0");
+    headers.rawSet(kRpcNameKey, "foo");
+    headers.rawSet(kRpcKindKey, "0");
+  }
+
  protected:
   std::unique_ptr<folly::EventBase> eventBase_;
   std::unique_ptr<FakeResponseHandler> responseHandler_;
@@ -61,6 +70,7 @@ class ThriftRequestHandlerTest : public testing::Test {
 // SingleRpcChannel without any errors.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
   auto msg = std::make_unique<HTTPMessage>();
+  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
@@ -84,6 +94,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
 // processed.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
   auto msg = std::make_unique<HTTPMessage>();
+  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
@@ -107,6 +118,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
 // callbacks take place.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
   auto msg = std::make_unique<HTTPMessage>();
+  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
@@ -126,6 +138,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
 // SingleRpcChannel with an error before onEOM().
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
   auto msg = std::make_unique<HTTPMessage>();
+  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
@@ -144,6 +157,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
 // SingleRpcChannel with an error before onBody().
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
   auto msg = std::make_unique<HTTPMessage>();
+  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
