@@ -743,7 +743,8 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   indent(out) << "}" << endl << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field *tf = *f_iter;
-    indent(out) << "if (isset($parsed['" << tf->get_name() << "'])) {" << endl;
+    indent(out) << "if (idx($parsed, '" << tf->get_name() << "') !== null) {"
+                << endl;
     indent_up();
     generate_json_field(
         out, namer, tf, "$this->", "", "$parsed['" + tf->get_name() + "']");
