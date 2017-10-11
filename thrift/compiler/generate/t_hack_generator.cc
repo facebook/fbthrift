@@ -848,7 +848,10 @@ void t_hack_generator::close_generator() {
 
       string rendered_value = oss.str();
       generate_lazy_init_for_constant(
-          f_consts_, "__values", "array", rendered_value);
+          f_consts_,
+          "__values",
+          (strict_ ? "array<string, mixed>" : "array"),
+          rendered_value);
     }
     indent_down();
     // close constants class
