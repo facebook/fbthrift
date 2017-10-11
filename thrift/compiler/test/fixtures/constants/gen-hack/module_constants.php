@@ -12,7 +12,7 @@ class module_CONSTANTS {
    */
   private static ?int $__myInt = null;
   public static function myInt(): int {
-    if (self::$__myInt == null) {
+    if (self::$__myInt === null) {
       self::$__myInt = 1337;
     }
     return self::$__myInt;
@@ -24,7 +24,7 @@ class module_CONSTANTS {
    */
   private static ?string $__name = null;
   public static function name(): string {
-    if (self::$__name == null) {
+    if (self::$__name === null) {
       self::$__name = "Mark Zuckerberg";
     }
     return self::$__name;
@@ -36,7 +36,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Map<string, int>> $__states = null;
   public static function states(): Vector<Map<string, int>> {
-    if (self::$__states == null) {
+    if (self::$__states === null) {
       self::$__states = Vector {
         Map {
           "San Diego" => 3211000,
@@ -58,7 +58,7 @@ class module_CONSTANTS {
    */
   private static ?float $__x = null;
   public static function x(): float {
-    if (self::$__x == null) {
+    if (self::$__x === null) {
       self::$__x = 1.0;
     }
     return self::$__x;
@@ -70,7 +70,7 @@ class module_CONSTANTS {
    */
   private static ?float $__y = null;
   public static function y(): float {
-    if (self::$__y == null) {
+    if (self::$__y === null) {
       self::$__y = 1000000.0;
     }
     return self::$__y;
@@ -82,7 +82,7 @@ class module_CONSTANTS {
    */
   private static ?float $__z = null;
   public static function z(): float {
-    if (self::$__z == null) {
+    if (self::$__z === null) {
       self::$__z = 1e+09;
     }
     return self::$__z;
@@ -94,7 +94,7 @@ class module_CONSTANTS {
    */
   private static ?float $__zeroDoubleValue = null;
   public static function zeroDoubleValue(): float {
-    if (self::$__zeroDoubleValue == null) {
+    if (self::$__zeroDoubleValue === null) {
       self::$__zeroDoubleValue = 0.0;
     }
     return self::$__zeroDoubleValue;
@@ -106,7 +106,7 @@ class module_CONSTANTS {
    */
   private static ?float $__longDoubleValue = null;
   public static function longDoubleValue(): float {
-    if (self::$__longDoubleValue == null) {
+    if (self::$__longDoubleValue === null) {
       self::$__longDoubleValue = 2.59961e-05;
     }
     return self::$__longDoubleValue;
@@ -118,7 +118,7 @@ class module_CONSTANTS {
    */
   private static ?Internship $__instagram = null;
   public static function instagram(): Internship {
-    if (self::$__instagram == null) {
+    if (self::$__instagram === null) {
       self::$__instagram = new Internship(
         12,
         "Software Engineer",
@@ -134,7 +134,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Range> $__kRanges = null;
   public static function kRanges(): Vector<Range> {
-    if (self::$__kRanges == null) {
+    if (self::$__kRanges === null) {
       self::$__kRanges = Vector {
         new Range(
           1,
@@ -155,7 +155,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Internship> $__internList = null;
   public static function internList(): Vector<Internship> {
-    if (self::$__internList == null) {
+    if (self::$__internList === null) {
       self::$__internList = Vector {
         new Internship(
           12,
@@ -178,7 +178,7 @@ class module_CONSTANTS {
    */
   private static ?struct1 $__pod_0 = null;
   public static function pod_0(): struct1 {
-    if (self::$__pod_0 == null) {
+    if (self::$__pod_0 === null) {
       self::$__pod_0 = new struct1(
         null,
         null,
@@ -193,7 +193,7 @@ class module_CONSTANTS {
    */
   private static ?struct1 $__pod_1 = null;
   public static function pod_1(): struct1 {
-    if (self::$__pod_1 == null) {
+    if (self::$__pod_1 === null) {
       self::$__pod_1 = new struct1(
         10,
         "foo",
@@ -208,7 +208,7 @@ class module_CONSTANTS {
    */
   private static ?struct2 $__pod_2 = null;
   public static function pod_2(): struct2 {
-    if (self::$__pod_2 == null) {
+    if (self::$__pod_2 === null) {
       self::$__pod_2 = new struct2(
         98,
         "gaz",
@@ -232,7 +232,7 @@ class module_CONSTANTS {
    */
   private static ?struct3 $__pod_3 = null;
   public static function pod_3(): struct3 {
-    if (self::$__pod_3 == null) {
+    if (self::$__pod_3 === null) {
       self::$__pod_3 = new struct3(
         "abc",
         456,
@@ -260,7 +260,7 @@ class module_CONSTANTS {
    */
   private static ?union1 $__u_1_1 = null;
   public static function u_1_1(): union1 {
-    if (self::$__u_1_1 == null) {
+    if (self::$__u_1_1 === null) {
       self::$__u_1_1 = new union1(
         97,
         null,
@@ -275,7 +275,7 @@ class module_CONSTANTS {
    */
   private static ?union1 $__u_1_2 = null;
   public static function u_1_2(): union1 {
-    if (self::$__u_1_2 == null) {
+    if (self::$__u_1_2 === null) {
       self::$__u_1_2 = new union1(
         null,
         5.6,
@@ -290,7 +290,7 @@ class module_CONSTANTS {
    */
   private static ?union1 $__u_1_3 = null;
   public static function u_1_3(): union1 {
-    if (self::$__u_1_3 == null) {
+    if (self::$__u_1_3 === null) {
       self::$__u_1_3 = new union1(
         null,
         null,
@@ -305,7 +305,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_1 = null;
   public static function u_2_1(): union2 {
-    if (self::$__u_2_1 == null) {
+    if (self::$__u_2_1 === null) {
       self::$__u_2_1 = new union2(
         51,
         null,
@@ -322,7 +322,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_2 = null;
   public static function u_2_2(): union2 {
-    if (self::$__u_2_2 == null) {
+    if (self::$__u_2_2 === null) {
       self::$__u_2_2 = new union2(
         null,
         6.7,
@@ -339,7 +339,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_3 = null;
   public static function u_2_3(): union2 {
-    if (self::$__u_2_3 == null) {
+    if (self::$__u_2_3 === null) {
       self::$__u_2_3 = new union2(
         null,
         null,
@@ -359,7 +359,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_4 = null;
   public static function u_2_4(): union2 {
-    if (self::$__u_2_4 == null) {
+    if (self::$__u_2_4 === null) {
       self::$__u_2_4 = new union2(
         null,
         null,
@@ -379,7 +379,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_5 = null;
   public static function u_2_5(): union2 {
-    if (self::$__u_2_5 == null) {
+    if (self::$__u_2_5 === null) {
       self::$__u_2_5 = new union2(
         null,
         null,
@@ -399,7 +399,7 @@ class module_CONSTANTS {
    */
   private static ?union2 $__u_2_6 = null;
   public static function u_2_6(): union2 {
-    if (self::$__u_2_6 == null) {
+    if (self::$__u_2_6 === null) {
       self::$__u_2_6 = new union2(
         null,
         null,
@@ -419,7 +419,7 @@ class module_CONSTANTS {
    */
   private static ?string $__apostrophe = null;
   public static function apostrophe(): string {
-    if (self::$__apostrophe == null) {
+    if (self::$__apostrophe === null) {
       self::$__apostrophe = "'";
     }
     return self::$__apostrophe;
@@ -431,7 +431,7 @@ class module_CONSTANTS {
    */
   private static ?string $__tripleApostrophe = null;
   public static function tripleApostrophe(): string {
-    if (self::$__tripleApostrophe == null) {
+    if (self::$__tripleApostrophe === null) {
       self::$__tripleApostrophe = "'''";
     }
     return self::$__tripleApostrophe;
@@ -443,7 +443,7 @@ class module_CONSTANTS {
    */
   private static ?string $__quotationMark = null;
   public static function quotationMark(): string {
-    if (self::$__quotationMark == null) {
+    if (self::$__quotationMark === null) {
       self::$__quotationMark = "\"";
     }
     return self::$__quotationMark;
@@ -455,7 +455,7 @@ class module_CONSTANTS {
    */
   private static ?string $__backslash = null;
   public static function backslash(): string {
-    if (self::$__backslash == null) {
+    if (self::$__backslash === null) {
       self::$__backslash = "\\";
     }
     return self::$__backslash;
@@ -467,7 +467,7 @@ class module_CONSTANTS {
    */
   private static ?string $__escaped_a = null;
   public static function escaped_a(): string {
-    if (self::$__escaped_a == null) {
+    if (self::$__escaped_a === null) {
       self::$__escaped_a = "\x61";
     }
     return self::$__escaped_a;
@@ -479,7 +479,7 @@ class module_CONSTANTS {
    */
   private static ?Map<string, int> $__char2ascii = null;
   public static function char2ascii(): Map<string, int> {
-    if (self::$__char2ascii == null) {
+    if (self::$__char2ascii === null) {
       self::$__char2ascii = Map {
         "'" => 39,
         "\"" => 34,
@@ -496,7 +496,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<string> $__escaped_strings = null;
   public static function escaped_strings(): Vector<string> {
-    if (self::$__escaped_strings == null) {
+    if (self::$__escaped_strings === null) {
       self::$__escaped_strings = Vector {
         "\x61",
         "\xab",
@@ -525,7 +525,7 @@ class module_CONSTANTS {
    */
   private static ?bool $__false_c = null;
   public static function false_c(): bool {
-    if (self::$__false_c == null) {
+    if (self::$__false_c === null) {
       self::$__false_c = false;
     }
     return self::$__false_c;
@@ -537,7 +537,7 @@ class module_CONSTANTS {
    */
   private static ?bool $__true_c = null;
   public static function true_c(): bool {
-    if (self::$__true_c == null) {
+    if (self::$__true_c === null) {
       self::$__true_c = true;
     }
     return self::$__true_c;
@@ -549,7 +549,7 @@ class module_CONSTANTS {
    */
   private static ?int $__zero_byte = null;
   public static function zero_byte(): int {
-    if (self::$__zero_byte == null) {
+    if (self::$__zero_byte === null) {
       self::$__zero_byte = 0;
     }
     return self::$__zero_byte;
@@ -561,7 +561,7 @@ class module_CONSTANTS {
    */
   private static ?int $__zero16 = null;
   public static function zero16(): int {
-    if (self::$__zero16 == null) {
+    if (self::$__zero16 === null) {
       self::$__zero16 = 0;
     }
     return self::$__zero16;
@@ -573,7 +573,7 @@ class module_CONSTANTS {
    */
   private static ?int $__zero32 = null;
   public static function zero32(): int {
-    if (self::$__zero32 == null) {
+    if (self::$__zero32 === null) {
       self::$__zero32 = 0;
     }
     return self::$__zero32;
@@ -585,7 +585,7 @@ class module_CONSTANTS {
    */
   private static ?int $__zero64 = null;
   public static function zero64(): int {
-    if (self::$__zero64 == null) {
+    if (self::$__zero64 === null) {
       self::$__zero64 = 0;
     }
     return self::$__zero64;
@@ -597,7 +597,7 @@ class module_CONSTANTS {
    */
   private static ?float $__zero_dot_zero = null;
   public static function zero_dot_zero(): float {
-    if (self::$__zero_dot_zero == null) {
+    if (self::$__zero_dot_zero === null) {
       self::$__zero_dot_zero = 0.0;
     }
     return self::$__zero_dot_zero;
@@ -609,7 +609,7 @@ class module_CONSTANTS {
    */
   private static ?string $__empty_string = null;
   public static function empty_string(): string {
-    if (self::$__empty_string == null) {
+    if (self::$__empty_string === null) {
       self::$__empty_string = "";
     }
     return self::$__empty_string;
@@ -621,7 +621,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<int> $__empty_int_list = null;
   public static function empty_int_list(): Vector<int> {
-    if (self::$__empty_int_list == null) {
+    if (self::$__empty_int_list === null) {
       self::$__empty_int_list = Vector {
       };
     }
@@ -634,7 +634,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<string> $__empty_string_list = null;
   public static function empty_string_list(): Vector<string> {
-    if (self::$__empty_string_list == null) {
+    if (self::$__empty_string_list === null) {
       self::$__empty_string_list = Vector {
       };
     }
@@ -647,7 +647,7 @@ class module_CONSTANTS {
    */
   private static ?Set<int> $__empty_int_set = null;
   public static function empty_int_set(): Set<int> {
-    if (self::$__empty_int_set == null) {
+    if (self::$__empty_int_set === null) {
       self::$__empty_int_set = Set {
       };
     }
@@ -660,7 +660,7 @@ class module_CONSTANTS {
    */
   private static ?Set<string> $__empty_string_set = null;
   public static function empty_string_set(): Set<string> {
-    if (self::$__empty_string_set == null) {
+    if (self::$__empty_string_set === null) {
       self::$__empty_string_set = Set {
       };
     }
@@ -673,7 +673,7 @@ class module_CONSTANTS {
    */
   private static ?Map<int, int> $__empty_int_int_map = null;
   public static function empty_int_int_map(): Map<int, int> {
-    if (self::$__empty_int_int_map == null) {
+    if (self::$__empty_int_int_map === null) {
       self::$__empty_int_int_map = Map {
       };
     }
@@ -686,7 +686,7 @@ class module_CONSTANTS {
    */
   private static ?Map<int, string> $__empty_int_string_map = null;
   public static function empty_int_string_map(): Map<int, string> {
-    if (self::$__empty_int_string_map == null) {
+    if (self::$__empty_int_string_map === null) {
       self::$__empty_int_string_map = Map {
       };
     }
@@ -699,7 +699,7 @@ class module_CONSTANTS {
    */
   private static ?Map<string, int> $__empty_string_int_map = null;
   public static function empty_string_int_map(): Map<string, int> {
-    if (self::$__empty_string_int_map == null) {
+    if (self::$__empty_string_int_map === null) {
       self::$__empty_string_int_map = Map {
       };
     }
@@ -712,7 +712,7 @@ class module_CONSTANTS {
    */
   private static ?Map<string, string> $__empty_string_string_map = null;
   public static function empty_string_string_map(): Map<string, string> {
-    if (self::$__empty_string_string_map == null) {
+    if (self::$__empty_string_string_map === null) {
       self::$__empty_string_string_map = Map {
       };
     }
@@ -722,7 +722,7 @@ class module_CONSTANTS {
 
   private static ?array $____values = null;
   public static function __values(): array {
-    if (self::$____values == null) {
+    if (self::$____values === null) {
       self::$____values = array(
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",

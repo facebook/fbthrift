@@ -1028,7 +1028,7 @@ void t_hack_generator::generate_lazy_init_for_constant(
               << " = null;" << endl;
   indent(out) << "public static function " << name << "(): " << typehint << " {"
               << endl;
-  indent(out) << "  if (self::$" << name_internal << " == null) {" << endl;
+  indent(out) << "  if (self::$" << name_internal << " === null) {" << endl;
   indent(out) << "    self::$" << name_internal << " = " << rendered_value
               << ";" << endl;
   indent(out) << "  }" << endl;

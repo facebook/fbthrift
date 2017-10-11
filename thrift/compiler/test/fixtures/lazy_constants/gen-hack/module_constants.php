@@ -12,7 +12,7 @@ class module_CONSTANTS {
    */
   private static ?int $__myInt = null;
   public static function myInt(): int {
-    if (self::$__myInt == null) {
+    if (self::$__myInt === null) {
       self::$__myInt = 1337;
     }
     return self::$__myInt;
@@ -24,7 +24,7 @@ class module_CONSTANTS {
    */
   private static ?string $__name = null;
   public static function name(): string {
-    if (self::$__name == null) {
+    if (self::$__name === null) {
       self::$__name = "Mark Zuckerberg";
     }
     return self::$__name;
@@ -36,7 +36,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Map<string, int>> $__states = null;
   public static function states(): Vector<Map<string, int>> {
-    if (self::$__states == null) {
+    if (self::$__states === null) {
       self::$__states = Vector {
         Map {
           "San Diego" => 3211000,
@@ -58,7 +58,7 @@ class module_CONSTANTS {
    */
   private static ?float $__x = null;
   public static function x(): float {
-    if (self::$__x == null) {
+    if (self::$__x === null) {
       self::$__x = 1.0;
     }
     return self::$__x;
@@ -70,7 +70,7 @@ class module_CONSTANTS {
    */
   private static ?float $__y = null;
   public static function y(): float {
-    if (self::$__y == null) {
+    if (self::$__y === null) {
       self::$__y = 1000000.0;
     }
     return self::$__y;
@@ -82,7 +82,7 @@ class module_CONSTANTS {
    */
   private static ?float $__z = null;
   public static function z(): float {
-    if (self::$__z == null) {
+    if (self::$__z === null) {
       self::$__z = 1e+09;
     }
     return self::$__z;
@@ -94,7 +94,7 @@ class module_CONSTANTS {
    */
   private static ?Internship $__instagram = null;
   public static function instagram(): Internship {
-    if (self::$__instagram == null) {
+    if (self::$__instagram === null) {
       self::$__instagram = new Internship(
         12,
         "Software Engineer",
@@ -110,7 +110,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Range> $__kRanges = null;
   public static function kRanges(): Vector<Range> {
-    if (self::$__kRanges == null) {
+    if (self::$__kRanges === null) {
       self::$__kRanges = Vector {
         new Range(
           1,
@@ -131,7 +131,7 @@ class module_CONSTANTS {
    */
   private static ?Vector<Internship> $__internList = null;
   public static function internList(): Vector<Internship> {
-    if (self::$__internList == null) {
+    if (self::$__internList === null) {
       self::$__internList = Vector {
         new Internship(
           12,
@@ -154,7 +154,7 @@ class module_CONSTANTS {
    */
   private static ?string $__apostrophe = null;
   public static function apostrophe(): string {
-    if (self::$__apostrophe == null) {
+    if (self::$__apostrophe === null) {
       self::$__apostrophe = "'";
     }
     return self::$__apostrophe;
@@ -166,7 +166,7 @@ class module_CONSTANTS {
    */
   private static ?string $__tripleApostrophe = null;
   public static function tripleApostrophe(): string {
-    if (self::$__tripleApostrophe == null) {
+    if (self::$__tripleApostrophe === null) {
       self::$__tripleApostrophe = "'''";
     }
     return self::$__tripleApostrophe;
@@ -178,7 +178,7 @@ class module_CONSTANTS {
    */
   private static ?string $__quotationMark = null;
   public static function quotationMark(): string {
-    if (self::$__quotationMark == null) {
+    if (self::$__quotationMark === null) {
       self::$__quotationMark = "\"";
     }
     return self::$__quotationMark;
@@ -190,7 +190,7 @@ class module_CONSTANTS {
    */
   private static ?string $__backslash = null;
   public static function backslash(): string {
-    if (self::$__backslash == null) {
+    if (self::$__backslash === null) {
       self::$__backslash = "\\";
     }
     return self::$__backslash;
@@ -202,7 +202,7 @@ class module_CONSTANTS {
    */
   private static ?string $__escaped_a = null;
   public static function escaped_a(): string {
-    if (self::$__escaped_a == null) {
+    if (self::$__escaped_a === null) {
       self::$__escaped_a = "\x61";
     }
     return self::$__escaped_a;
@@ -214,7 +214,7 @@ class module_CONSTANTS {
    */
   private static ?Map<string, int> $__char2ascii = null;
   public static function char2ascii(): Map<string, int> {
-    if (self::$__char2ascii == null) {
+    if (self::$__char2ascii === null) {
       self::$__char2ascii = Map {
         "'" => 39,
         "\"" => 34,
@@ -228,7 +228,7 @@ class module_CONSTANTS {
 
   private static ?array $____values = null;
   public static function __values(): array {
-    if (self::$____values == null) {
+    if (self::$____values === null) {
       self::$____values = array(
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",
