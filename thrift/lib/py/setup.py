@@ -51,7 +51,7 @@ class build_ext(_build_ext):
 fastprotomod = Extension(
     'thrift.protocol.fastproto',
     sources = ['protocol/fastproto.cpp'],
-    libraries=['thriftcpp2', 'folly'],
+    libraries=['thriftcpp2', 'thriftprotocol', 'folly'],
     extra_compile_args=['-std=c++1y'],
     optional=True,
 )
