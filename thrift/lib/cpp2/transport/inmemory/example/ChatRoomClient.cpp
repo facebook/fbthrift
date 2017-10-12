@@ -18,9 +18,9 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/http2/example/ChatRoomService.h>
-#include <thrift/lib/cpp2/transport/http2/example/if/gen-cpp2/ChatRoomService.h>
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
+#include <thrift/lib/cpp2/transport/inmemory/example/ChatRoomService.h>
+#include <thrift/lib/cpp2/transport/inmemory/example/if/gen-cpp2/ChatRoomService.h>
 #include <memory>
 
 using apache::thrift::InMemoryConnection;

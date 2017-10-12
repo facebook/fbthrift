@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/transport/http2/example/ChatRoomService.h"
+#include "thrift/lib/cpp2/transport/inmemory/example/ChatRoomService.h"
 
 #include <gflags/gflags.h>
 #include <time.h>
