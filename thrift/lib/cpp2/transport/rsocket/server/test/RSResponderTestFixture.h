@@ -26,9 +26,6 @@ namespace thrift {
 class RSResponderTestFixture : public testing::Test {
  public:
   RSResponderTestFixture() {
-    testutil::testservice::TestServiceAsyncProcessorExtension::
-        injectNewMethods();
-
     threadManager_ = PriorityThreadManager::newPriorityThreadManager(
         32 /*threads*/, true /*stats*/, 1000 /*maxQueueLen*/);
     threadManager_->start();

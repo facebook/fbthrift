@@ -74,21 +74,6 @@ int32_t TestServiceMock::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   return result;
 }
 
-folly::IOBufQueue TestServiceMock::serializeNoParameterRPCCall(
-    const std::string& methodName) {
-  EmptyArgs args;
-
-  auto writer = std::make_unique<apache::thrift::CompactProtocolWriter>();
-  size_t bufSize = args.serializedSizeZC(writer.get());
-  bufSize += writer->serializedMessageSize(methodName);
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  writer->setOutput(&queue, bufSize);
-  writer->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
-  args.write(writer.get());
-  writer->writeMessageEnd();
-  return queue;
-}
-
 void TestServiceMock::throwExpectedException(int32_t) {
   TestServiceException exception;
   exception.message = "mock_service_method_exception";
@@ -130,14 +115,5 @@ void TestServiceMock::headers() {
   }
 }
 
-yarpl::Reference<yarpl::flowable::Flowable<std::string>>
-TestServiceMock::helloChannel(
-    yarpl::Reference<yarpl::flowable::Flowable<std::string>> names) {
-  VLOG(4) << "TestServiceMock::helloChannel";
-  return names->map([](std::string name) {
-    VLOG(3) << "Hello, " << name;
-    return "Hello, " + name;
-  });
-}
 } // namespace testservice
 } // namespace testutil
