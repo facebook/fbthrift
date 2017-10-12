@@ -101,20 +101,19 @@ void RSClientThriftChannel::sendSingleRequestResponse(
 }
 
 void RSClientThriftChannel::channelRequest(
-    std::unique_ptr<RequestRpcMetadata>,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload) noexcept {
-  auto input =
-      yarpl::flowable::Flowables::fromPublisher<std::unique_ptr<folly::IOBuf>>(
-          [this, initialBuf = std::move(payload)](
-              yarpl::Reference<yarpl::flowable::Subscriber<
-                  std::unique_ptr<folly::IOBuf>>> subscriber) mutable {
-            VLOG(3)
-                << "Input is started to be consumed: "
+  auto input = yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
+      [this, initialBuf = std::move(payload), metadata = std::move(metadata)](
+          yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
+              subscriber) mutable {
+        VLOG(3) << "Input is started to be consumed: "
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
-            outputPromise_.setValue(yarpl::make_ref<RPCSubscriber>(
-                std::move(initialBuf), std::move(subscriber)));
-          })
-          ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+        outputPromise_.setValue(yarpl::make_ref<RPCSubscriber>(
+            serializeMetadata(*metadata),
+            std::move(initialBuf),
+            std::move(subscriber)));
+      });
 
   // Perform the rpc call
   auto result = rsRequester_->requestChannel(input);

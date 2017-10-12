@@ -30,23 +30,17 @@ RSResponder::RSResponder(ThriftProcessor* processor, folly::EventBase* evb)
 yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
 RSResponder::handleRequestResponse(
     rsocket::Payload request,
-    rsocket::StreamId streamId) {
-  // TODO: Where do we use this streamId value
+    rsocket::StreamId) {
+  // TODO: Where do we use this streamId value -> might make batching possible!
   DCHECK(request.metadata);
   return yarpl::single::Single<rsocket::Payload>::create(
-      [this, request = std::move(request), streamId](auto subscriber) mutable {
+      [this, request = std::move(request)](auto subscriber) mutable {
         VLOG(4) << "RSResponder.handleRequestResponse : " << request;
 
         auto metadata = RequestResponseThriftChannel::deserializeMetadata(
             *request.metadata);
-        if (!metadata->__isset.kind) {
-          metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-          metadata->__isset.kind = true;
-        }
-        if (!metadata->__isset.seqId) {
-          metadata->seqId = streamId;
-          metadata->__isset.seqId = true;
-        }
+        DCHECK(metadata->__isset.kind);
+        DCHECK(metadata->__isset.seqId);
 
         auto channel =
             std::make_shared<RequestResponseThriftChannel>(evb_, subscriber);
@@ -58,14 +52,13 @@ RSResponder::handleRequestResponse(
 
 void RSResponder::handleFireAndForget(
     rsocket::Payload request,
-    rsocket::StreamId streamId) {
+    rsocket::StreamId) {
   VLOG(3) << "RSResponder.handleFireAndForget : " << request;
 
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->seqId = streamId;
-  metadata->__isset.seqId = true;
-  metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  metadata->__isset.kind = true;
+  auto metadata =
+      RequestResponseThriftChannel::deserializeMetadata(*request.metadata);
+  DCHECK(metadata->__isset.kind);
+  DCHECK(metadata->__isset.seqId);
 
   auto channel = std::make_shared<RSThriftChannelBase>(evb_);
   processor_->onThriftRequest(
@@ -86,11 +79,11 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
                VLOG(3) << "PointResponder.handleRequestStream : " << request
                        << ", streamId: " << streamId;
 
-               auto metadata = std::make_unique<RequestRpcMetadata>();
-               metadata->seqId = streamId;
-               metadata->__isset.seqId = true;
-               metadata->kind = RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE;
-               metadata->__isset.kind = true;
+               auto metadata =
+                   RequestResponseThriftChannel::deserializeMetadata(
+                       *request.metadata);
+               DCHECK(metadata->__isset.kind);
+               DCHECK(metadata->__isset.seqId);
 
                auto channel = std::make_shared<StreamingOutput>(
                    evb_, streamId, subscriber);
@@ -119,11 +112,11 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
                VLOG(3) << "PointResponder.handleRequestChannel : " << request
                        << ", streamId: " << streamId;
 
-               auto metadata = std::make_unique<RequestRpcMetadata>();
-               metadata->seqId = streamId;
-               metadata->__isset.seqId = true;
-               metadata->kind = RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE;
-               metadata->__isset.kind = true;
+               auto metadata =
+                   RequestResponseThriftChannel::deserializeMetadata(
+                       *request.metadata);
+               DCHECK(metadata->__isset.kind);
+               DCHECK(metadata->__isset.seqId);
 
                // TODO - STREAMING_REQUEST_NO_RESPONSE?
                // TODO - STREAMING_REQUEST_SINGLE_RESPONSE?
