@@ -66,8 +66,6 @@
 <%^function:oneway?%>
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
 <%/function:oneway?%>
  public:
 <%/type:void?%>
@@ -92,13 +90,6 @@
 <%^function:oneway?%>
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-<%^type:resolves_to_complex_return?%>
-  static <% > types/type%> recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-  static void recv_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-<%/type:resolves_to_complex_return?%>
  public:
 <%/function:oneway?%>
 <%/type:void?%>

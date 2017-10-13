@@ -56,8 +56,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void moduleAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleAMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_moduleAMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void moduleBMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
   virtual void moduleBMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
@@ -80,8 +78,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void moduleBMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleBMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_moduleBMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void i32StrDoubleMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   virtual void i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
@@ -104,8 +100,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void i32StrDoubleMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_i32StrDoubleMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_i32StrDoubleMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void versioningMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   virtual void versioningMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
@@ -128,8 +122,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void versioningMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_versioningMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_versioningMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void retI32Method(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void retI32Method(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -152,8 +144,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void retI32MethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_retI32MethodT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static int32_t recv_retI32MethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void retModAMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void retModAMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -176,8 +166,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void retModAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_retModAMethodT(Protocol_* prot,  ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_retModAMethodT(Protocol_* prot,  ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void throwMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throwMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -200,8 +188,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void throwMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_throwMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_throwMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void multiThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void multiThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -224,8 +210,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void multiThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_multiThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_multiThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void i32ThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
   virtual void i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
@@ -248,8 +232,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void i32ThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_i32ThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_i32ThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void moduleAThrowMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   virtual void moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
@@ -272,8 +254,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void moduleAThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_moduleAThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_moduleAThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void mixedMethod(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
   virtual void mixedMethod(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
@@ -296,8 +276,6 @@ class ServiceAAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void mixedMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
  public:
 };
 

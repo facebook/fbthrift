@@ -41,7 +41,7 @@ void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, a
   PubSubStreamingService_client_pargs args;
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = foo->map([](int32_t /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -69,9 +69,6 @@ void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, a
 
 template <typename Protocol_>
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -117,15 +114,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientT
   }
   return ew;
 }
-
-template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::recv_clientT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_clientT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -136,7 +124,7 @@ void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, a
   PubSubStreamingService_server_pargs args;
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = foo->map([](int32_t /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -164,9 +152,6 @@ void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, a
 
 template <typename Protocol_>
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -216,15 +201,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_serverT
   }
   return ew;
 }
-
-template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::recv_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_serverT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -235,7 +211,7 @@ void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apa
   PubSubStreamingService_both_pargs args;
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = foo->map([](int32_t /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -263,9 +239,6 @@ void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apa
 
 template <typename Protocol_>
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_bothT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -315,15 +288,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_bothT(P
   }
   return ew;
 }
-
-template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::recv_bothT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_bothT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32_from, int32_t i32_to) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -344,9 +308,6 @@ template <typename Protocol_>
 // returning a stream should probably be closer to returning a void or a future; for now this'll just be a stub
 // folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamT(Protocol_* prot, yarpl::Reference<yarpl::flowable::Flowable<int32_t>>& /*_return*/, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -401,17 +362,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   }
   return ew;
 }
-
-template <typename Protocol_>
-yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceAsyncClient::recv_returnstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  yarpl::Reference<yarpl::flowable::Flowable<int32_t>> _return;
-  auto ew = recv_wrapped_returnstreamT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -422,7 +372,7 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
   PubSubStreamingService_takesstream_pargs args;
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = instream->map([](int32_t /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -451,9 +401,6 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
 
 template <typename Protocol_>
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -499,15 +446,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesst
   }
   return ew;
 }
-
-template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::recv_takesstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_takesstreamT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -518,7 +456,7 @@ void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useS
   PubSubStreamingService_clientthrows_pargs args;
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = foostream->map([](int32_t /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -546,9 +484,6 @@ void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useS
 
 template <typename Protocol_>
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientthrowsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -594,15 +529,6 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientt
   }
   return ew;
 }
-
-template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::recv_clientthrowsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_clientthrowsT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void PubSubStreamingServiceAsyncClient::client(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
@@ -688,6 +614,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_client(
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -804,6 +731,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_server(
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -920,6 +848,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_both(::
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1017,6 +946,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1135,6 +1065,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesst
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1251,6 +1182,7 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientt
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

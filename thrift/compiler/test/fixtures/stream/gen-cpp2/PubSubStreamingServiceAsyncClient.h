@@ -55,8 +55,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void clientT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_clientT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_clientT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void server(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   virtual void server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
@@ -79,8 +77,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void both(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   virtual void both(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
@@ -103,8 +99,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void bothT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_bothT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_bothT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void returnstream(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32_from, int32_t i32_to);
   virtual void returnstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32_from, int32_t i32_to);
@@ -123,8 +117,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void returnstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32_from, int32_t i32_to);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_returnstreamT(Protocol_* prot, yarpl::Reference<yarpl::flowable::Flowable<int32_t>>& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static yarpl::Reference<yarpl::flowable::Flowable<int32_t>> recv_returnstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void takesstream(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param);
   virtual void takesstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param);
@@ -147,8 +139,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void takesstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_takesstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_takesstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void clientthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream);
   virtual void clientthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream);
@@ -171,8 +161,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   void clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_clientthrowsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_clientthrowsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
 };
 

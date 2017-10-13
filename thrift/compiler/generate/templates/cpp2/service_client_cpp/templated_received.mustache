@@ -26,7 +26,7 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
 <%#function:args%><%#field:type%><%#type:stream?%><%#type:streamElemType%>
   // channel generates a stream going to the server
   assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable 
+  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
     = <%field:name%>->map([](<% > types/type %> /* elem */) {
       folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
       return queue;
@@ -87,9 +87,6 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:stream?%>
 <%/type:void?%>
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -166,29 +163,5 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
   }
   return ew;
 }
-
-template <typename Protocol_>
-<%^type:resolves_to_complex_return?%>
-<% > types/type%> <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-<%#type:void?%>
-  auto ew = recv_wrapped_<%function:name%>T(prot, state);
-<%/type:void?%>
-<%^type:void?%>
-  <% > types/type%> _return;
-  auto ew = recv_wrapped_<%function:name%>T(prot, _return, state);
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_<%function:name%>T(prot, _return, state);
-<%/type:resolves_to_complex_return?%>
-  if (ew) {
-    ew.throw_exception();
-  }
-<%^type:resolves_to_complex_return?%><%^type:void?%>
-  return _return;
-<%/type:void?%><%/type:resolves_to_complex_return?%>
-}
-
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

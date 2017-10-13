@@ -55,8 +55,6 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   void bounce_mapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_bounce_mapT(Protocol_* prot,  ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_bounce_mapT(Protocol_* prot,  ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
  public:
 };
 

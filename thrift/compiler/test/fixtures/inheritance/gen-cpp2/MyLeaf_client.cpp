@@ -37,9 +37,6 @@ void MyLeafAsyncClient::do_leafT(Protocol_* prot, bool useSync, apache::thrift::
 
 template <typename Protocol_>
 folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leafT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -85,15 +82,6 @@ folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leafT(Protocol_* pro
   }
   return ew;
 }
-
-template <typename Protocol_>
-void MyLeafAsyncClient::recv_do_leafT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_do_leafT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void MyLeafAsyncClient::do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -179,6 +167,7 @@ folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leaf(::apache::thrif
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

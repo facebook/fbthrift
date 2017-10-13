@@ -38,9 +38,6 @@ void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_mapT(Protocol_* prot,  ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -95,15 +92,6 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_mapT(Protoc
   }
   return ew;
 }
-
-template <typename Protocol_>
-void SomeServiceAsyncClient::recv_bounce_mapT(Protocol_* prot,  ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_bounce_mapT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void SomeServiceAsyncClient::bounce_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
@@ -189,6 +177,7 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_wrapped_bounce_map( ::apac
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

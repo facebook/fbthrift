@@ -77,9 +77,6 @@ void ReturnServiceAsyncClient::noReturnT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -125,15 +122,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturnT(Protoc
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_noReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_noReturnT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::boolReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -150,9 +138,6 @@ void ReturnServiceAsyncClient::boolReturnT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturnT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -207,17 +192,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturnT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-bool ReturnServiceAsyncClient::recv_boolReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  bool _return;
-  auto ew = recv_wrapped_boolReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::i16ReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -234,9 +208,6 @@ void ReturnServiceAsyncClient::i16ReturnT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16ReturnT(Protocol_* prot, int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -291,17 +262,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16ReturnT(Proto
   }
   return ew;
 }
-
-template <typename Protocol_>
-int16_t ReturnServiceAsyncClient::recv_i16ReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  int16_t _return;
-  auto ew = recv_wrapped_i16ReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::i32ReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -318,9 +278,6 @@ void ReturnServiceAsyncClient::i32ReturnT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32ReturnT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -375,17 +332,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32ReturnT(Proto
   }
   return ew;
 }
-
-template <typename Protocol_>
-int32_t ReturnServiceAsyncClient::recv_i32ReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  int32_t _return;
-  auto ew = recv_wrapped_i32ReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::i64ReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -402,9 +348,6 @@ void ReturnServiceAsyncClient::i64ReturnT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64ReturnT(Protocol_* prot, int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -459,17 +402,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64ReturnT(Proto
   }
   return ew;
 }
-
-template <typename Protocol_>
-int64_t ReturnServiceAsyncClient::recv_i64ReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  int64_t _return;
-  auto ew = recv_wrapped_i64ReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::floatReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -486,9 +418,6 @@ void ReturnServiceAsyncClient::floatReturnT(Protocol_* prot, bool useSync, apach
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturnT(Protocol_* prot, float& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -543,17 +472,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturnT(Pro
   }
   return ew;
 }
-
-template <typename Protocol_>
-float ReturnServiceAsyncClient::recv_floatReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  float _return;
-  auto ew = recv_wrapped_floatReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::doubleReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -570,9 +488,6 @@ void ReturnServiceAsyncClient::doubleReturnT(Protocol_* prot, bool useSync, apac
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturnT(Protocol_* prot, double& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -627,17 +542,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturnT(Pr
   }
   return ew;
 }
-
-template <typename Protocol_>
-double ReturnServiceAsyncClient::recv_doubleReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  double _return;
-  auto ew = recv_wrapped_doubleReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::stringReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -654,9 +558,6 @@ void ReturnServiceAsyncClient::stringReturnT(Protocol_* prot, bool useSync, apac
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -711,15 +612,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturnT(Pr
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_stringReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_stringReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::binaryReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -736,9 +628,6 @@ void ReturnServiceAsyncClient::binaryReturnT(Protocol_* prot, bool useSync, apac
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -793,15 +682,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturnT(Pr
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_binaryReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_binaryReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::mapReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -818,9 +698,6 @@ void ReturnServiceAsyncClient::mapReturnT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturnT(Protocol_* prot, std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -875,15 +752,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturnT(Proto
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_mapReturnT(Protocol_* prot, std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_mapReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::simpleTypedefReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -900,9 +768,6 @@ void ReturnServiceAsyncClient::simpleTypedefReturnT(Protocol_* prot, bool useSyn
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefReturnT(Protocol_* prot,  ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -957,17 +822,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefRet
   }
   return ew;
 }
-
-template <typename Protocol_>
- ::some::valid::ns::simpleTypeDef ReturnServiceAsyncClient::recv_simpleTypedefReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-   ::some::valid::ns::simpleTypeDef _return;
-  auto ew = recv_wrapped_simpleTypedefReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::complexTypedefReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -984,9 +838,6 @@ void ReturnServiceAsyncClient::complexTypedefReturnT(Protocol_* prot, bool useSy
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefReturnT(Protocol_* prot,  ::some::valid::ns::complexStructTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1041,15 +892,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefRe
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_complexTypedefReturnT(Protocol_* prot,  ::some::valid::ns::complexStructTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_complexTypedefReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::list_mostComplexTypedefReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1066,9 +908,6 @@ void ReturnServiceAsyncClient::list_mostComplexTypedefReturnT(Protocol_* prot, b
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplexTypedefReturnT(Protocol_* prot, std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1123,15 +962,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplex
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_list_mostComplexTypedefReturnT(Protocol_* prot, std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_list_mostComplexTypedefReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::enumReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1148,9 +978,6 @@ void ReturnServiceAsyncClient::enumReturnT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturnT(Protocol_* prot,  ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1205,17 +1032,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturnT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
- ::some::valid::ns::MyEnumA ReturnServiceAsyncClient::recv_enumReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-   ::some::valid::ns::MyEnumA _return;
-  auto ew = recv_wrapped_enumReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-  return _return;
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::list_EnumReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1232,9 +1048,6 @@ void ReturnServiceAsyncClient::list_EnumReturnT(Protocol_* prot, bool useSync, a
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturnT(Protocol_* prot, std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1289,15 +1102,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturnT
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_list_EnumReturnT(Protocol_* prot, std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_list_EnumReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::structReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1314,9 +1118,6 @@ void ReturnServiceAsyncClient::structReturnT(Protocol_* prot, bool useSync, apac
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturnT(Protocol_* prot,  ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1371,15 +1172,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturnT(Pr
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_structReturnT(Protocol_* prot,  ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_structReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::set_StructReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1396,9 +1188,6 @@ void ReturnServiceAsyncClient::set_StructReturnT(Protocol_* prot, bool useSync, 
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturnT(Protocol_* prot, std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1453,15 +1242,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturn
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_set_StructReturnT(Protocol_* prot, std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_set_StructReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::unionReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1478,9 +1258,6 @@ void ReturnServiceAsyncClient::unionReturnT(Protocol_* prot, bool useSync, apach
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturnT(Protocol_* prot,  ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1535,15 +1312,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturnT(Pro
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_unionReturnT(Protocol_* prot,  ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_unionReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::list_UnionReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1560,9 +1328,6 @@ void ReturnServiceAsyncClient::list_UnionReturnT(Protocol_* prot, bool useSync, 
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturnT(Protocol_* prot, std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1617,15 +1382,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturn
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_list_UnionReturnT(Protocol_* prot, std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_list_UnionReturnT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::readDataEbT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1643,9 +1399,6 @@ void ReturnServiceAsyncClient::readDataEbT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEbT(Protocol_* prot,  ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1700,15 +1453,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEbT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_readDataEbT(Protocol_* prot,  ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_readDataEbT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void ReturnServiceAsyncClient::readDataT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -1726,9 +1470,6 @@ void ReturnServiceAsyncClient::readDataT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1783,15 +1524,6 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataT(Protoc
   }
   return ew;
 }
-
-template <typename Protocol_>
-void ReturnServiceAsyncClient::recv_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_readDataT(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void ReturnServiceAsyncClient::noReturn(std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -1877,6 +1609,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturn(::apach
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1993,6 +1726,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturn(bool&
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2111,6 +1845,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16Return(int16_
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2229,6 +1964,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32Return(int32_
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2347,6 +2083,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64Return(int64_
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2465,6 +2202,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturn(floa
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2583,6 +2321,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturn(dou
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2701,6 +2440,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturn(std
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2817,6 +2557,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturn(std
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2933,6 +2674,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturn(std::m
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3049,6 +2791,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefRet
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3167,6 +2910,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefRe
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3283,6 +3027,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplex
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3399,6 +3144,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturn( ::so
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3517,6 +3263,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturn(
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3633,6 +3380,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturn( ::
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3749,6 +3497,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturn
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3865,6 +3614,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturn( ::s
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3981,6 +3731,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturn
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4097,6 +3848,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEb( ::so
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4213,6 +3965,7 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readData( ::some
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

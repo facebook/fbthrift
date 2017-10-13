@@ -46,9 +46,6 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -94,15 +91,6 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapListT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void NestedContainersAsyncClient::recv_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_mapListT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void NestedContainersAsyncClient::mapSetT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::set<int32_t>>& foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -120,9 +108,6 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -168,15 +153,6 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSetT(Proto
   }
   return ew;
 }
-
-template <typename Protocol_>
-void NestedContainersAsyncClient::recv_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_mapSetT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void NestedContainersAsyncClient::listMapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::map<int32_t, int32_t>>& foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -194,9 +170,6 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -242,15 +215,6 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMapT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void NestedContainersAsyncClient::recv_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_listMapT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void NestedContainersAsyncClient::listSetT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::set<int32_t>>& foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -268,9 +232,6 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -316,15 +277,6 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSetT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void NestedContainersAsyncClient::recv_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_listSetT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void NestedContainersAsyncClient::turtlesT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -342,9 +294,6 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, bool useSync, apache
 
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -390,15 +339,6 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtlesT(Prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void NestedContainersAsyncClient::recv_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_turtlesT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void NestedContainersAsyncClient::mapList(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::vector<int32_t>>& foo) {
@@ -484,6 +424,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapList(::apa
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -600,6 +541,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSet(::apac
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -716,6 +658,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMap(::apa
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -832,6 +775,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSet(::apa
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -948,6 +892,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtles(::apa
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

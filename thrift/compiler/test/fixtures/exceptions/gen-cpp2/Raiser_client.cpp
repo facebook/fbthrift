@@ -43,9 +43,6 @@ void RaiserAsyncClient::doBlandT(Protocol_* prot, bool useSync, apache::thrift::
 
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -91,15 +88,6 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* pro
   }
   return ew;
 }
-
-template <typename Protocol_>
-void RaiserAsyncClient::recv_doBlandT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_doBlandT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void RaiserAsyncClient::doRaiseT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -116,9 +104,6 @@ void RaiserAsyncClient::doRaiseT(Protocol_* prot, bool useSync, apache::thrift::
 
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -172,15 +157,6 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* pro
   }
   return ew;
 }
-
-template <typename Protocol_>
-void RaiserAsyncClient::recv_doRaiseT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_doRaiseT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void RaiserAsyncClient::get200T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -197,9 +173,6 @@ void RaiserAsyncClient::get200T(Protocol_* prot, bool useSync, apache::thrift::R
 
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -254,15 +227,6 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void RaiserAsyncClient::recv_get200T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_get200T(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void RaiserAsyncClient::get500T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -279,9 +243,6 @@ void RaiserAsyncClient::get500T(Protocol_* prot, bool useSync, apache::thrift::R
 
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -344,15 +305,6 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot
   }
   return ew;
 }
-
-template <typename Protocol_>
-void RaiserAsyncClient::recv_get500T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_get500T(prot, _return, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void RaiserAsyncClient::doBland(std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -438,6 +390,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBland(::apache::thrif
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -554,6 +507,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaise(::apache::thrif
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -670,6 +624,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200(std::string& _re
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -786,6 +741,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500(std::string& _re
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

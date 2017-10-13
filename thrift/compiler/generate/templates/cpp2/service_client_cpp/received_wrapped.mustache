@@ -26,6 +26,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

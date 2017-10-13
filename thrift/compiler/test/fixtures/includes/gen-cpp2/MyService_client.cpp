@@ -41,9 +41,6 @@ void MyServiceAsyncClient::queryT(Protocol_* prot, bool useSync, apache::thrift:
 
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -89,15 +86,6 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_queryT(Protocol_* pr
   }
   return ew;
 }
-
-template <typename Protocol_>
-void MyServiceAsyncClient::recv_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_queryT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 template <typename Protocol_>
 void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -116,9 +104,6 @@ void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_has_arg_docsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  if (state.isException()) {
-    return std::move(state.exception());
-  }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -164,15 +149,6 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_has_arg_docsT(Protoc
   }
   return ew;
 }
-
-template <typename Protocol_>
-void MyServiceAsyncClient::recv_has_arg_docsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_has_arg_docsT(prot, state);
-  if (ew) {
-    ew.throw_exception();
-  }
-}
-
 
 
 void MyServiceAsyncClient::query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
@@ -258,6 +234,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_query(::apache::thri
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -374,6 +351,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_has_arg_docs(::apach
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
+
   switch(state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
