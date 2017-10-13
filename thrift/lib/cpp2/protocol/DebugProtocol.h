@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,13 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 #define CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <folly/Format.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
 
 namespace apache { namespace thrift {
 

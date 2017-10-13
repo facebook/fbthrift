@@ -215,6 +215,8 @@ thrift2include_protocol_HEADERS = \
 	protocol/CompactProtocol.tcc \
 	protocol/CompactV1Protocol.h \
 	protocol/CompactV1Protocol.tcc \
+	protocol/Cpp2Ops.h \
+	protocol/Cpp2Ops.tcc \
 	protocol/Frozen2Protocol.h \
 	protocol/Frozen2Protocol.tcc \
 	protocol/JSONProtocol.h \

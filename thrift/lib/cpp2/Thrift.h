@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/util/MapCopy.h>
 
 #include <initializer_list>
@@ -65,40 +66,6 @@ struct enum_equal_to {
 };
 
 }
-
-/**
- * Class template (specialized for each type in generated code) that allows
- * access to write / read / serializedSize / serializedSizeZC functions in
- * a generic way.
- *
- * For native Cpp2 structs, one could call the corresponding methods
- * directly, but structs generated in compatibility mode (ie. typedef'ed
- * to the Thrift1 version) don't have them; they are defined as free
- * functions named <type>_read, <type>_write, etc, so they can't be accessed
- * generically (because the type name is part of the function name).
- *
- * Cpp2Ops bridges to either struct methods (for native Cpp2 structs)
- * or the corresponding free functions (for structs in compatibility mode).
- */
-template <class T, class = void>
-class Cpp2Ops {
- public:
-  static void clear(T* );
-
-  template <class P>
-  static uint32_t write(P*, const T*);
-
-  template <class P>
-  static uint32_t read(P*, T*);
-
-  template <class P>
-  static uint32_t serializedSize(P const*, T const*);
-
-  template <class P>
-  static uint32_t serializedSizeZC(P const*, T const*);
-
-  static constexpr apache::thrift::protocol::TType thriftType();
-};
 
 namespace detail {
 
