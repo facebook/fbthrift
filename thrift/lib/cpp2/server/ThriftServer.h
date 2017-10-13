@@ -95,8 +95,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   size_t nSaslPoolThreads_ = 0;
   std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
-  std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_ =
-      std::make_unique<folly::ShutdownSocketSet>();
+  std::weak_ptr<folly::ShutdownSocketSet> wShutdownSocketSet_;
 
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;
@@ -760,26 +759,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void stopListening() override;
 
   /**
-   * Immediate shutdown of all connections. This is a hard-hitting hammer;
-   * all reads and writes will return errors and no new connections will
-   * be accepted.
-   *
-   * To be used only in dire situations. We're using it from the failure
-   * signal handler to close all connections quickly, even though the server
-   * might take multiple seconds to finish crashing.
-   *
-   * The optional bool parameter indicates whether to set the active
-   * connections in the ShutdownSocketSet to not linger.  The effect of that
-   * includes RST packets being immediately sent to clients which will result
-   * in errors (and not normal EOF) on the client side.  This also causes
-   * the local (ip, tcp port number) tuple to be reusable immediately, instead
-   * of having to wait the standard amount of time.  For full details see
-   * the `shutdown` method of `ShutdownSocketSet` (incl. notes about the
-   * `abortive` parameter).
-   */
-  void immediateShutdown(bool abortConnections = false);
-
-  /**
    * Queue sends - better throughput by avoiding syscalls, but can increase
    * latency for low-QPS servers.  Defaults to true
    */
@@ -886,6 +865,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     BaseThriftServer::setProcessorFactory(pFac);
     thriftProcessor_.reset(new ThriftProcessor(getCpp2Processor()));
   }
+
+  // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's
+  // FDs are registered there. But in some tests you might want to simulate 2
+  // ThriftServer running in different processes, so their ShutdownSocketSet are
+  // different. In that case server should have their own SSS each so shutting
+  // down FD from one doesn't interfere with shutting down sockets for the
+  // other.
+  void replaceShutdownSocketSet(
+      const std::shared_ptr<folly::ShutdownSocketSet>& newSSS);
 };
 
 }} // apache::thrift

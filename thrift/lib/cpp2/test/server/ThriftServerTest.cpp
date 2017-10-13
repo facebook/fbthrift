@@ -703,7 +703,8 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
   socket2->setReadCallback(&cb);
 
-  base.tryRunAfterDelay([&]() { server->immediateShutdown(true); }, 10);
+  base.tryRunAfterDelay(
+      [&]() { folly::ShutdownSocketSet::getInstance()->shutdownAll(); }, 10);
   base.tryRunAfterDelay([&]() { base.terminateLoopSoon(); }, 30);
   base.loopForever();
   EXPECT_EQ(cb.eof, true);

@@ -92,13 +92,14 @@ class ThriftAcceptorFactory : public wangle::AcceptorFactory {
 ThriftServer::ThriftServer() :
   ThriftServer("", false) {}
 
-ThriftServer::ThriftServer(const std::string& saslPolicy,
-                           bool allowInsecureLoopback)
-  : BaseThriftServer()
-  , saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy)
-  , allowInsecureLoopback_(allowInsecureLoopback)
-  , lastRequestTime_(monotonic_clock::now().time_since_epoch().count())
-{
+ThriftServer::ThriftServer(
+    const std::string& saslPolicy,
+    bool allowInsecureLoopback)
+    : BaseThriftServer(),
+      saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
+      allowInsecureLoopback_(allowInsecureLoopback),
+      wShutdownSocketSet_(folly::ShutdownSocketSet::getInstance()),
+      lastRequestTime_(monotonic_clock::now().time_since_epoch().count()) {
   // SASL setup
   if (saslPolicy_ == "required") {
     setSaslEnabled(true);
@@ -412,7 +413,7 @@ void ThriftServer::setup() {
       ServerBootstrap::getSockets()[0]->getAddress(&address_);
 
       for (auto& socket : getSockets()) {
-        socket->setShutdownSocketSet(shutdownSocketSet_.get());
+        socket->setShutdownSocketSet(wShutdownSocketSet_);
         socket->setMaxNumMessagesInQueue(maxNumPendingConnectionsPerWorker_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
       }
@@ -557,10 +558,6 @@ void ThriftServer::handleSetupFailure(void) {
 }
 
 
-void ThriftServer::immediateShutdown(bool abortConnections) {
-  shutdownSocketSet_->shutdownAll(abortConnections);
-}
-
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
   if (!trackPendingIO_) { // Ignore pending
@@ -680,4 +677,8 @@ std::string ThriftServer::getLoadInfo(int64_t load) {
   return stream.str();
 }
 
+void ThriftServer::replaceShutdownSocketSet(
+    const std::shared_ptr<folly::ShutdownSocketSet>& newSSS) {
+  wShutdownSocketSet_ = newSSS;
+}
 }} // apache::thrift

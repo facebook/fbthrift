@@ -107,7 +107,7 @@ std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
   auto asyncSocket =
       std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
   asyncSocket->setIsAccepted(true);
-  asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
+  asyncSocket->setShutdownSocketSet(server_->wShutdownSocketSet_);
   return asyncSocket;
 }
 
@@ -119,7 +119,7 @@ void Cpp2Worker::plaintextConnectionReady(
     wangle::TransportInfo& tinfo) {
   auto asyncSocket = sock->getUnderlyingTransport<folly::AsyncSocket>();
   CHECK(asyncSocket) << "Underlying socket is not a AsyncSocket type";
-  asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
+  asyncSocket->setShutdownSocketSet(server_->wShutdownSocketSet_);
   auto peekingManager = new PeekingManager(
       this,
       clientAddr,
