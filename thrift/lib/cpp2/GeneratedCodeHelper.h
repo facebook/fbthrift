@@ -15,6 +15,9 @@
  */
 #pragma once
 
+#include <type_traits>
+
+#include <folly/Format.h>
 #include <folly/Traits.h>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/FrozenTApplicationException.h>
@@ -25,7 +28,6 @@
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
-#include <type_traits>
 
 namespace apache { namespace thrift {
 

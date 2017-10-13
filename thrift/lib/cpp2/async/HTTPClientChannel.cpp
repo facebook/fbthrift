@@ -18,6 +18,7 @@
 
 #include <utility>
 
+#include <folly/Format.h>
 #include <proxygen/lib/http/HTTPCommonHeaders.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
