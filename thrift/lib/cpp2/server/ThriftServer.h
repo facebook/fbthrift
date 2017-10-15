@@ -27,6 +27,7 @@
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
+#include <folly/executors/IOThreadPoolExecutor.h>
 #include <folly/io/ShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -47,7 +48,6 @@
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
-#include <wangle/concurrent/IOThreadPoolExecutor.h>
 #include <wangle/ssl/SSLContextConfig.h>
 #include <wangle/ssl/TLSCredProcessor.h>
 
@@ -136,14 +136,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   folly::EventBaseManager* eventBaseManager_ = folly::EventBaseManager::get();
 
   //! IO thread pool. Drives Cpp2Workers.
-  std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_ =
-      std::make_shared<wangle::IOThreadPoolExecutor>(0);
+  std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool_ =
+      std::make_shared<folly::IOThreadPoolExecutor>(0);
 
   //! Separate thread pool for handling SSL handshakes.
-  std::shared_ptr<wangle::IOThreadPoolExecutor> sslHandshakePool_ =
-      std::make_shared<wangle::IOThreadPoolExecutor>(
+  std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool_ =
+      std::make_shared<folly::IOThreadPoolExecutor>(
           0,
-          std::make_shared<wangle::NamedThreadFactory>("SSLHandshakePool"));
+          std::make_shared<folly::NamedThreadFactory>("SSLHandshakePool"));
 
   /**
    * The speed for adjusting connection accept rate.
@@ -182,7 +182,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   bool stopWorkersOnStopListening_ = true;
 
-  std::shared_ptr<wangle::IOThreadPoolExecutor> acceptPool_;
+  std::shared_ptr<folly::IOThreadPoolExecutor> acceptPool_;
   int nAcceptors_ = 1;
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
@@ -194,7 +194,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   mutable std::mutex ioGroupMutex_;
 
-  std::shared_ptr<wangle::IOThreadPoolExecutor> getIOGroupSafe() const {
+  std::shared_ptr<folly::IOThreadPoolExecutor> getIOGroupSafe() const {
     std::lock_guard<std::mutex> lock(ioGroupMutex_);
     return getIOGroup();
   }
@@ -239,7 +239,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * @param the new thread pool
    */
   void setIOThreadPool(
-      std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool) {
+      std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool) {
     CHECK(configMutable());
     ioThreadPool_ = ioThreadPool;
 
@@ -254,7 +254,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * @param the new thread factory
    */
   void setIOThreadFactory(
-      std::shared_ptr<wangle::NamedThreadFactory> threadFactory) {
+      std::shared_ptr<folly::NamedThreadFactory> threadFactory) {
     CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
   }
@@ -272,7 +272,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * @param the new thread pool
    */
   void setSSLHandshakeThreadPool(
-      std::shared_ptr<wangle::IOThreadPoolExecutor> sslHandshakePool) {
+      std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool) {
     CHECK(configMutable());
     sslHandshakePool_ = sslHandshakePool;
 
@@ -288,7 +288,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * @param the new thread factory
    */
   void setSSLHandshakeThreadFactory(
-      std::shared_ptr<wangle::NamedThreadFactory> threadFactory) {
+      std::shared_ptr<folly::NamedThreadFactory> threadFactory) {
     CHECK(configMutable());
     sslHandshakePool_->setThreadFactory(threadFactory);
   }
@@ -304,7 +304,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     auto factory = ioThreadPool_->getThreadFactory();
     CHECK(factory);
     auto namedFactory =
-      std::dynamic_pointer_cast<wangle::NamedThreadFactory>(factory);
+        std::dynamic_pointer_cast<folly::NamedThreadFactory>(factory);
     CHECK(namedFactory);
     namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
@@ -323,7 +323,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   int64_t getRequestLoad() override;
   std::string getLoadInfo(int64_t load) override;
 
-  void setAcceptExecutor(std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {
+  void setAcceptExecutor(std::shared_ptr<folly::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
   }
 
@@ -332,8 +332,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     nAcceptors_ = numAcceptThreads;
   }
 
-  std::shared_ptr<wangle::IOThreadPoolExecutor>
-  getIOThreadPoolExecutor_() const {
+  std::shared_ptr<folly::IOThreadPoolExecutor> getIOThreadPoolExecutor_()
+      const {
     return acceptPool_;
   }
 

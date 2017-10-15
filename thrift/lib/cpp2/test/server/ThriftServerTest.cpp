@@ -721,7 +721,7 @@ TEST(ThriftServer, ShutdownDegenarateServer) {
 TEST(ThriftServer, ModifyingIOThreadCountLive) {
   TestThriftServerFactory<TestInterface> factory;
   auto server = std::static_pointer_cast<ThriftServer>(factory.create());
-  auto iothreadpool = std::make_shared<wangle::IOThreadPoolExecutor>(0);
+  auto iothreadpool = std::make_shared<folly::IOThreadPoolExecutor>(0);
   server->setIOThreadPool(iothreadpool);
 
   ScopedServerThread sst(server);
@@ -764,7 +764,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
 }
 
 TEST(ThriftServer, setIOThreadPool) {
-  auto exe = std::make_shared<wangle::IOThreadPoolExecutor>(1);
+  auto exe = std::make_shared<folly::IOThreadPoolExecutor>(1);
   TestThriftServerFactory<TestInterface> factory;
   factory.useSimpleThreadManager(false);
   auto server = std::static_pointer_cast<ThriftServer>(factory.create());

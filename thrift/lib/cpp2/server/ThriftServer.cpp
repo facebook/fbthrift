@@ -61,8 +61,8 @@ using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::PriorityThreadManager;
-using wangle::IOThreadPoolExecutor;
-using wangle::NamedThreadFactory;
+using folly::IOThreadPoolExecutor;
+using folly::NamedThreadFactory;
 using wangle::TLSCredProcessor;
 
 namespace {
@@ -382,9 +382,9 @@ void ThriftServer::setup() {
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers_);
       if (!acceptPool_) {
-        acceptPool_ = std::make_shared<wangle::IOThreadPoolExecutor>(
+        acceptPool_ = std::make_shared<folly::IOThreadPoolExecutor>(
             nAcceptors_,
-            std::make_shared<wangle::NamedThreadFactory>("Acceptor Thread"));
+            std::make_shared<folly::NamedThreadFactory>("Acceptor Thread"));
       }
 
       // Resize the SSL handshake pool
@@ -658,9 +658,10 @@ int64_t ThriftServer::getRequestLoad() {
 
 std::string ThriftServer::getLoadInfo(int64_t load) {
   auto ioGroup = getIOGroupSafe();
-  auto workerFactory = ioGroup != nullptr ?
-    std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
-      ioGroup->getThreadFactory()) : nullptr;
+  auto workerFactory = ioGroup != nullptr
+      ? std::dynamic_pointer_cast<folly::NamedThreadFactory>(
+            ioGroup->getThreadFactory())
+      : nullptr;
 
   if (!workerFactory) {
     return "";
