@@ -57,6 +57,11 @@ class RSClientThriftChannel : public ThriftChannelIf {
     return future.get();
   }
 
+  void sendSingleRequestNoResponse(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload,
+      std::unique_ptr<ThriftClientCallback> callback) noexcept;
+
   void sendSingleRequestResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,

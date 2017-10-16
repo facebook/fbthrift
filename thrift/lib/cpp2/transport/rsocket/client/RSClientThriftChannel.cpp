@@ -59,12 +59,28 @@ void RSClientThriftChannel::sendThriftRequest(
       sendSingleRequestResponse(
           std::move(metadata), std::move(payload), std::move(callback));
       break;
+    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+      sendSingleRequestNoResponse(
+          std::move(metadata), std::move(payload), std::move(callback));
+      break;
     case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
       channelRequest(std::move(metadata), std::move(payload));
       break;
     default:
       LOG(FATAL) << "not implemented";
   }
+}
+
+void RSClientThriftChannel::sendSingleRequestNoResponse(
+    std::unique_ptr<RequestRpcMetadata> requestMetadata,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::unique_ptr<ThriftClientCallback>) noexcept {
+  DCHECK(requestMetadata);
+
+  rsRequester_
+      ->fireAndForget(
+          rsocket::Payload(std::move(buf), serializeMetadata(*requestMetadata)))
+      ->subscribe([] {});
 }
 
 void RSClientThriftChannel::sendSingleRequestResponse(
