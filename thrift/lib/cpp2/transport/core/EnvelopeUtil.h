@@ -77,15 +77,6 @@ static bool stripEnvelope(
   metadata->__isset.protocol = true;
   metadata->__isset.name = true;
   metadata->__isset.seqId = true;
-  if (mtype == T_CALL) {
-    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  } else if (mtype == T_ONEWAY) {
-    metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  } else {
-    LOG(ERROR) << "Invalid RPC kind: " << mtype;
-    return false;
-  }
-  metadata->__isset.kind = true;
   return true;
 }
 

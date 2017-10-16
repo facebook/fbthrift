@@ -17,8 +17,7 @@
 #pragma once
 
 #include <gmock/gmock.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <yarpl/Flowable.h>
+#include <atomic>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 
 namespace testutil {
@@ -32,16 +31,11 @@ class TestServiceMock : public TestServiceSvIf {
   MOCK_METHOD2(sumTwoNumbers_, int32_t(int32_t, int32_t));
   MOCK_METHOD1(add_, int32_t(int32_t));
 
-  int32_t sumTwoNumbers(int32_t x, int32_t y) override {
-    sumTwoNumbers_(x, y); // just inform that this function is called
-    return x + y;
-  }
+  int32_t sumTwoNumbers(int32_t x, int32_t y) override;
 
-  int32_t add(int32_t x) override {
-    add_(x);
-    sum += x;
-    return sum;
-  }
+  int32_t add(int32_t x) override;
+
+  void addAfterDelay(int32_t delayMs, int32_t x) override;
 
   void throwExpectedException(int32_t x) override;
 
@@ -51,19 +45,8 @@ class TestServiceMock : public TestServiceSvIf {
 
   void headers() override;
 
-  // Send the two integers to be serialized for 'sumTwoNumbers'
-  static void serializeSumTwoNumbers(
-      int32_t x,
-      int32_t y,
-      bool wrongMethodName,
-      folly::IOBufQueue* request,
-      apache::thrift::RequestRpcMetadata* metadata);
-
-  // Receive the deserialized integer that results from 'sumTwoNumbers'
-  static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);
-
  protected:
-  int32_t sum = 0;
+  std::atomic<int32_t> sum{0};
 };
 
 } // namespace testservice

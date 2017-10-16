@@ -16,9 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <chrono>
-#include <string>
 #include <thread>
 
 namespace testutil {
@@ -26,52 +24,21 @@ namespace testservice {
 
 using namespace apache::thrift;
 
-void TestServiceMock::serializeSumTwoNumbers(
-    int32_t x,
-    int32_t y,
-    bool wrongMethodName,
-    folly::IOBufQueue* request,
-    RequestRpcMetadata* metadata) {
-  std::string methodName = "sumTwoNumbers";
-  if (wrongMethodName) {
-    methodName = "wrongMethodName";
-  }
-  TestService_sumTwoNumbers_pargs args;
-  args.get<0>().value = &x;
-  args.get<1>().value = &y;
-
-  auto writer = std::make_unique<apache::thrift::CompactProtocolWriter>();
-  writer->setOutput(request);
-  args.write(writer.get());
-  metadata->protocol = ProtocolId::COMPACT;
-  metadata->__isset.protocol = true;
-  if (wrongMethodName) {
-    metadata->name = "wrongMethodName";
-  } else {
-    metadata->name = "sumTwoNumbers";
-  }
-  metadata->__isset.name = true;
-  metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  metadata->__isset.kind = true;
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
+int32_t TestServiceMock::sumTwoNumbers(int32_t x, int32_t y) {
+  sumTwoNumbers_(x, y); // just inform that this function is called
+  return x + y;
 }
 
-int32_t TestServiceMock::deserializeSumTwoNumbers(folly::IOBuf* buf) {
-  auto reader = std::make_unique<apache::thrift::CompactProtocolReader>();
-  int32_t result;
-  std::string fname;
-  apache::thrift::MessageType mtype;
-  int32_t protoSeqId = 0;
+int32_t TestServiceMock::add(int32_t x) {
+  add_(x); // just inform that this function is called
+  sum += x;
+  return sum;
+}
 
-  reader->setInput(buf);
-  reader->readMessageBegin(fname, mtype, protoSeqId);
-  TestService_sumTwoNumbers_presult args;
-  args.get<0>().value = &result;
-  args.read(reader.get());
-  reader->readMessageEnd();
-
-  return result;
+void TestServiceMock::addAfterDelay(int32_t delayMs, int32_t x) {
+  /* sleep override */
+  std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+  sum += x;
 }
 
 void TestServiceMock::throwExpectedException(int32_t) {

@@ -79,5 +79,15 @@ TEST_F(RSCompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
+/* TODO: uncomment after oneway is implemented.
+TEST_F(RSCompatibilityTest, TestOneway_Simple) {
+  compatibilityTest_->TestOneway_Simple();
+}
+
+TEST_F(RSCompatibilityTest, TestOneway_WithDelay) {
+  compatibilityTest_->TestOneway_WithDelay();
+}
+*/
+
 } // namespace thrift
 } // namespace apache

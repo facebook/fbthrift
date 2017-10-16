@@ -179,14 +179,14 @@ void TransportCompatibilityTest::TestRequestResponse_Simple() {
     EXPECT_CALL(*handler_.get(), add_(5));
 
     // Send a message
-    CHECK_EQ(client->sync_sumTwoNumbers(1, 2), 3);
-    CHECK_EQ(client->sync_add(1), 1);
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(1, client->sync_add(1));
 
     auto future = client->future_add(2);
-    CHECK_EQ(future.get(), 3);
+    EXPECT_EQ(3, future.get());
 
-    CHECK_EQ(client->sync_sumTwoNumbers(1, 2), 3);
-    CHECK_EQ(client->sync_add(5), 8);
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(8, client->sync_add(5));
   });
 }
 
@@ -199,14 +199,14 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
 
   auto lambda = [](std::unique_ptr<TestServiceAsyncClient> client) {
     // Send a message
-    CHECK_EQ(client->sync_sumTwoNumbers(1, 2), 3);
-    CHECK_GE(client->sync_add(1), 1);
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_LE(1, client->sync_add(1));
 
     auto future = client->future_add(2);
-    CHECK_GE(future.get(), 3);
+    EXPECT_LE(3, future.get());
 
-    CHECK_EQ(client->sync_sumTwoNumbers(1, 2), 3);
-    CHECK_GE(client->sync_add(5), 8);
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_LE(8, client->sync_add(5));
   };
 
   std::vector<folly::ScopedEventBaseThread> threads(clientCount);
@@ -280,8 +280,8 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
       rpcOptions.setWriteHeader("header_from_client", "2");
       client->sync_headers(rpcOptions);
       auto keyValue = rpcOptions.getReadHeaders();
-      CHECK(keyValue.find("header_from_server") != keyValue.end());
-      CHECK_STREQ(keyValue.find("header_from_server")->second.c_str(), "1");
+      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
+      EXPECT_STREQ("1", keyValue.find("header_from_server")->second.c_str());
     }
 
     { // Future
@@ -290,8 +290,8 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
       auto future = client->header_future_headers(rpcOptions);
       auto tHeader = future.get().second;
       auto keyValue = tHeader->getHeaders();
-      CHECK(keyValue.find("header_from_server") != keyValue.end());
-      CHECK_STREQ(keyValue.find("header_from_server")->second.c_str(), "1");
+      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
+      EXPECT_STREQ("1", keyValue.find("header_from_server")->second.c_str());
     }
 
     { // Callback
@@ -304,16 +304,16 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
           std::unique_ptr<RequestCallback>(
               new FunctionReplyCallback([&](ClientReceiveState&& state) {
                 auto keyValue = state.header()->getHeaders();
-                CHECK(keyValue.find("header_from_server") != keyValue.end());
-                CHECK_STREQ(
-                    keyValue.find("header_from_server")->second.c_str(), "1");
+                EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
+                EXPECT_STREQ(
+                    "1", keyValue.find("header_from_server")->second.c_str());
 
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
                 EXPECT_FALSE(exw);
                 executed.setValue();
               })));
       auto& waited = future.wait(folly::Duration(100));
-      CHECK(waited.isReady());
+      EXPECT_TRUE(waited.isReady());
     }
   });
 }
@@ -333,7 +333,7 @@ void TransportCompatibilityTest::
       }
       EXPECT_TRUE(thrown);
       auto keyValue = rpcOptions.getReadHeaders();
-      CHECK(keyValue.find("header_from_server") != keyValue.end());
+      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
     }
 
     { // Future
@@ -360,7 +360,7 @@ void TransportCompatibilityTest::
           std::unique_ptr<RequestCallback>(
               new FunctionReplyCallback([&](ClientReceiveState&& state) {
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
-                CHECK_NOTNULL(exw.get_exception());
+                EXPECT_TRUE(exw.get_exception());
                 EXPECT_THAT(
                     exw.what().c_str(), HasSubstr("TestServiceException"));
                 executed.setValue();
@@ -382,7 +382,7 @@ void TransportCompatibilityTest::
           client->sync_headers(rpcOptions),
           apache::thrift::TApplicationException);
       auto keyValue = rpcOptions.getReadHeaders();
-      CHECK(keyValue.find("header_from_server") != keyValue.end());
+      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
     }
 
     { // Future
@@ -404,14 +404,41 @@ void TransportCompatibilityTest::
           std::unique_ptr<RequestCallback>(
               new FunctionReplyCallback([&](ClientReceiveState&& state) {
                 auto exw = TestServiceAsyncClient::recv_wrapped_headers(state);
-                CHECK_NOTNULL(exw.get_exception());
+                EXPECT_TRUE(exw.get_exception());
                 EXPECT_THAT(
                     exw.what().c_str(), HasSubstr("TApplicationException"));
                 executed.setValue();
               })));
       auto& waited = future.wait(folly::Duration(100));
-      CHECK(waited.isReady());
+      EXPECT_TRUE(waited.isReady());
     }
+  });
+}
+
+void TransportCompatibilityTest::TestOneway_Simple() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), add_(0));
+    client->sync_addAfterDelay(0, 5);
+    // Sleep a bit for oneway call to complete on server
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_EQ(5, client->sync_add(0));
+  });
+}
+
+void TransportCompatibilityTest::TestOneway_WithDelay() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), add_(0)).Times(2);
+    // Perform an add on the server after a delay
+    client->sync_addAfterDelay(800, 5);
+    // Call add to get result before the previous addAfterDelay takes
+    // place - this verifies that the addAfterDelay call is really
+    // oneway.
+    EXPECT_EQ(0, client->sync_add(0));
+    // Sleep to wait for oneway call to complete on server
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    EXPECT_EQ(5, client->sync_add(0));
   });
 }
 

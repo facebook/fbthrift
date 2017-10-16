@@ -21,7 +21,10 @@
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/utils/Base64.h>
 #include <proxygen/lib/utils/Logging.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -31,6 +34,7 @@
 namespace apache {
 namespace thrift {
 
+using apache::thrift::protocol::TProtocolException;
 using apache::thrift::transport::TTransportException;
 using std::map;
 using std::string;
@@ -86,11 +90,6 @@ void SingleRpcChannel::sendThriftResponse(
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    if (metadata->__isset.error) {
-      metadata->otherMetadata[kErrorKindKey] =
-          folly::to<string>(metadata->error);
-      metadata->__isset.otherMetadata = true;
-    }
     if (metadata->__isset.otherMetadata) {
       encodeHeaders(std::move(metadata->otherMetadata), msg);
     }
@@ -249,22 +248,19 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
 
 void SingleRpcChannel::onThriftRequest() noexcept {
   if (!contents_) {
-    sendErrorThriftResponse(
-        ErrorKind::MISSING_BODY, "Proxygen stream has no body");
+    sendThriftErrorResponse("Proxygen stream has no body");
     return;
   }
   auto metadata = std::make_unique<RequestRpcMetadata>();
   if (headers_->count(kHttpClientChannelKey)) {
     // Legacy support for JiaJie's code.
     if (!stripEnvelope(metadata.get(), contents_)) {
-      sendErrorThriftResponse(
-          ErrorKind::INVALID_ENVELOPE,
-          folly::to<string>("Invalid envelope: see logs for error"));
+      sendThriftErrorResponse("Invalid envelope: see logs for error");
       return;
     }
   } else {
     if (!extractEnvelopeInfoFromHeader(metadata.get())) {
-      // sendErrorThriftResponse() will have been called from
+      // sendThriftErrorResponse() will have been called from
       // extractEnvelopeInfoFromHeader().
       return;
     }
@@ -285,36 +281,24 @@ void SingleRpcChannel::onThriftRequest() noexcept {
 }
 
 void SingleRpcChannel::onThriftResponse() noexcept {
-  if (!contents_) {
-    contents_ = IOBuf::createCombined(0);
-  }
   DCHECK(httpTransaction_);
-  if (callback_) {
-    auto evb = callback_->getEventBase();
-    auto iter = headers_->find(kErrorKindKey);
-    if (iter != headers_->end()) {
-      // Error from server.
-      TTransportException te(
-          folly::to<string>(iter->second, ": ", (*headers_)[kErrorMessageKey]));
-      evb->runInEventBaseThread([evbCallback = std::move(callback_),
-                                 evbTe = std::move(te)]() mutable {
-        evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
-            std::move(evbTe)));
-      });
-      return;
-    }
-    auto metadata = std::make_unique<ResponseRpcMetadata>();
-    if (!headers_->empty()) {
-      metadata->otherMetadata = std::move(*headers_);
-      metadata->__isset.otherMetadata = true;
-    }
-    evb->runInEventBaseThread([evbCallback = std::move(callback_),
-                               evbMetadata = std::move(metadata),
-                               evbContents = std::move(contents_)]() mutable {
-      evbCallback->onThriftResponse(
-          std::move(evbMetadata), std::move(evbContents));
-    });
+  if (!callback_) {
+    return;
   }
+  DCHECK(contents_);
+  auto evb = callback_->getEventBase();
+  auto metadata = std::make_unique<ResponseRpcMetadata>();
+  if (!headers_->empty()) {
+    metadata->otherMetadata = std::move(*headers_);
+    metadata->__isset.otherMetadata = true;
+  }
+  // We don't need to set any of the other fields in metadata currently.
+  evb->runInEventBaseThread([evbCallback = std::move(callback_),
+                             evbMetadata = std::move(metadata),
+                             evbContents = std::move(contents_)]() mutable {
+    evbCallback->onThriftResponse(
+        std::move(evbMetadata), std::move(evbContents));
+  });
 }
 
 bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
@@ -322,8 +306,7 @@ bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
   auto iter = headers_->find(kProtocolKey);
   if (iter == headers_->end()) {
     LOG(ERROR) << "Protocol not in header";
-    sendErrorThriftResponse(
-        ErrorKind::MISSING_HEADER, "Protocol not in header");
+    sendThriftErrorResponse("Protocol not in header");
     return false;
   }
   try {
@@ -331,7 +314,7 @@ bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
     metadata->__isset.protocol = true;
   } catch (const std::range_error&) {
     LOG(ERROR) << "Bad protocol value: " << iter->second;
-    sendErrorThriftResponse(ErrorKind::BAD_HEADER, "Bad protocol value");
+    sendThriftErrorResponse("Bad protocol value");
     return false;
   }
   headers_->erase(iter);
@@ -339,8 +322,7 @@ bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
   iter = headers_->find(kRpcNameKey);
   if (iter == headers_->end()) {
     LOG(ERROR) << "RPC name not in header";
-    sendErrorThriftResponse(
-        ErrorKind::MISSING_HEADER, "RPC name not in header");
+    sendThriftErrorResponse("RPC name not in header", metadata->protocol);
     return false;
   }
   metadata->name = iter->second;
@@ -350,8 +332,8 @@ bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
   iter = headers_->find(kRpcKindKey);
   if (iter == headers_->end()) {
     LOG(ERROR) << "RPC kind not in header";
-    sendErrorThriftResponse(
-        ErrorKind::MISSING_HEADER, "RPC kind not in header");
+    sendThriftErrorResponse(
+        "RPC kind not in header", metadata->protocol, metadata->name);
     return false;
   }
   try {
@@ -359,14 +341,15 @@ bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
     if (metadata->kind != RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE &&
         metadata->kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
       LOG(ERROR) << "Unexpected RPC kind: " << iter->second;
-      sendErrorThriftResponse(
-          ErrorKind::INVALID_RPC_KIND, "Bad RPC kind for this channel");
+      sendThriftErrorResponse(
+          "Bad RPC kind for this channel", metadata->protocol, metadata->name);
       return false;
     }
     metadata->__isset.kind = true;
   } catch (const std::range_error&) {
     LOG(ERROR) << "Bad RPC kind value: " << iter->second;
-    sendErrorThriftResponse(ErrorKind::BAD_HEADER, "Bad RPC kind value");
+    sendThriftErrorResponse(
+        "Bad RPC kind value", metadata->protocol, metadata->name);
     return false;
   }
   headers_->erase(iter);
@@ -416,15 +399,27 @@ void SingleRpcChannel::extractHeaderInfo(
   }
 }
 
-void SingleRpcChannel::sendErrorThriftResponse(
-    ErrorKind error,
-    const string& message) noexcept {
+void SingleRpcChannel::sendThriftErrorResponse(
+    const string& message,
+    ProtocolId protoId,
+    const string& name) noexcept {
   auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
-  responseMetadata->error = error;
-  responseMetadata->__isset.error = true;
-  responseMetadata->otherMetadata[kErrorMessageKey] = message;
-  responseMetadata->__isset.otherMetadata = true;
-  auto payload = IOBuf::createCombined(0);
+  responseMetadata->protocol = protoId;
+  responseMetadata->__isset.protocol = true;
+  // Not setting the "ex" header since these errors do not fit into any
+  // of the existing error categories.
+  TApplicationException tae(message);
+  std::unique_ptr<folly::IOBuf> payload;
+  auto proto = static_cast<int16_t>(protoId);
+  try {
+    payload = serializeError(proto, tae, name, 0);
+  } catch (const TProtocolException& pe) {
+    // Should never happen.  Log an error and return an empty
+    // payload.
+    LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+               << " what()=" << pe.what();
+    payload = IOBuf::createCombined(0);
+  }
   sendThriftResponse(std::move(responseMetadata), std::move(payload));
   receivedThriftRPC_ = true;
 }

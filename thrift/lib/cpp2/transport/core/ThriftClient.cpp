@@ -47,14 +47,19 @@ class WaitableRequestCallback final : public RequestCallback {
  public:
   WaitableRequestCallback(
       std::unique_ptr<RequestCallback> cb,
-      folly::Baton<>& baton)
-      : cb_(std::move(cb)), baton_(baton) {}
+      folly::Baton<>& baton,
+      bool oneway)
+      : cb_(std::move(cb)), baton_(baton), oneway_(oneway) {}
 
   void requestSent() override {
     cb_->requestSent();
+    if (oneway_) {
+      baton_.post();
+    }
   }
 
   void replyReceived(ClientReceiveState&& rs) override {
+    DCHECK(!oneway_);
     cb_->replyReceived(std::move(rs));
     baton_.post();
   }
@@ -68,6 +73,7 @@ class WaitableRequestCallback final : public RequestCallback {
  private:
   std::unique_ptr<RequestCallback> cb_;
   folly::Baton<>& baton_;
+  bool oneway_;
 };
 
 } // namespace
@@ -99,7 +105,8 @@ uint32_t ThriftClient::sendRequestSync(
   folly::Baton<> baton;
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
   bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
-  auto scb = std::make_unique<WaitableRequestCallback>(std::move(cb), baton);
+  auto scb =
+      std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
   int result = sendRequestHelper(
       rpcOptions,
       oneway,
@@ -174,8 +181,15 @@ uint32_t ThriftClient::sendRequestHelper(
   if (!stripEnvelope(metadata.get(), buf)) {
     LOG(FATAL) << "Unexpected problem stripping envelope";
   }
+  // The envelope does not say whether or not the call is oneway - so
+  // we set it here.
+  if (oneway) {
+    metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+  } else {
+    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  }
+  metadata->__isset.kind = true;
   DCHECK(static_cast<ProtocolId>(protocolId_) == metadata->protocol);
-  DCHECK(oneway == (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE));
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
     metadata->__isset.clientTimeoutMs = true;

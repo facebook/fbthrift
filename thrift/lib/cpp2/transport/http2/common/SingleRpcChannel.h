@@ -20,6 +20,7 @@
 
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <string>
 
 namespace apache {
@@ -30,8 +31,6 @@ namespace thrift {
 constexpr auto kProtocolKey = folly::makeFixedString("src_protocol");
 constexpr auto kRpcNameKey = folly::makeFixedString("src_rpc_name");
 constexpr auto kRpcKindKey = folly::makeFixedString("src_rpc_kind");
-constexpr auto kErrorKindKey = folly::makeFixedString("src_error_kind");
-constexpr auto kErrorMessageKey = folly::makeFixedString("src_error_reason");
 
 // This will go away once we have deprecated all uses of the existing
 // HTTP2 support (HTTPClientChannel and the matching server
@@ -95,9 +94,10 @@ class SingleRpcChannel : public H2ChannelIf {
   void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
 
   // Called from onThriftRequest() to send an error response.
-  void sendErrorThriftResponse(
-      ErrorKind error,
-      const std::string& message) noexcept;
+  void sendThriftErrorResponse(
+      const std::string& message,
+      ProtocolId protoId = ProtocolId::COMPACT,
+      const std::string& name = "process") noexcept;
 
   // The thrift processor used to execute RPCs (server side only).
   // Owned by H2ThriftServer.

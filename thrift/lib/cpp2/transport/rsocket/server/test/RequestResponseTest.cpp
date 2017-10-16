@@ -19,7 +19,7 @@
 #include <folly/io/async/EventBase.h>
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponseThriftChannel.h>
@@ -37,7 +37,7 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
       [this]() mutable {
         folly::IOBufQueue request;
         auto metadata = std::make_unique<RequestRpcMetadata>();
-        TestServiceMock::serializeSumTwoNumbers(
+        CoreTestFixture::serializeSumTwoNumbers(
             5, 10, false, &request, metadata.get());
         auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
 
@@ -46,7 +46,7 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
         response->subscribe(
             [](auto payload) {
               auto result =
-                  TestServiceMock::deserializeSumTwoNumbers(payload.data.get());
+                  CoreTestFixture::deserializeSumTwoNumbers(payload.data.get());
               EXPECT_EQ(result, 15);
             },
             [](folly::exception_wrapper) { FAIL() << "No error is expected"; });
@@ -61,7 +61,7 @@ TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
       [this]() mutable {
         folly::IOBufQueue request;
         auto metadata = std::make_unique<RequestRpcMetadata>();
-        TestServiceMock::serializeSumTwoNumbers(
+        CoreTestFixture::serializeSumTwoNumbers(
             5, 10, true, &request, metadata.get());
         auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
 

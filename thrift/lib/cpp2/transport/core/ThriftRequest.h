@@ -19,9 +19,12 @@
 #include <folly/io/IOBuf.h>
 #include <glog/logging.h>
 #include <stdint.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -30,8 +33,6 @@
 
 namespace apache {
 namespace thrift {
-
-using folly::IOBuf;
 
 /**
  * Manages per-RPC state.  There is one of these objects for each RPC.
@@ -46,8 +47,9 @@ class ThriftRequest : public ResponseChannel::Request {
       std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<RequestRpcMetadata> metadata)
       : channel_(channel),
-        seqId_(metadata->seqId),
+        name_(metadata->name),
         kind_(metadata->kind),
+        seqId_(metadata->seqId),
         active_(true),
         reqContext_(&connContext_, &header_) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
@@ -99,30 +101,36 @@ class ThriftRequest : public ResponseChannel::Request {
     auto metadata = std::make_unique<ResponseRpcMetadata>();
     metadata->seqId = seqId_;
     metadata->__isset.seqId = true;
-    auto header = reqContext_.getHeader();
-    DCHECK(header);
-    metadata->otherMetadata = header->releaseWriteHeaders();
-    auto* eh = header->getExtraWriteHeaders();
+    metadata->otherMetadata = header_.releaseWriteHeaders();
+    auto* eh = header_.getExtraWriteHeaders();
     if (eh) {
       metadata->otherMetadata.insert(eh->begin(), eh->end());
     }
-    // TODO: Do we have persistent headers to send server2client?
-    // auto& pwh = getPersistentWriteHeaders();
-    // metadata->otherMetadata.insert(pwh.begin(), pwh.end());
-    // if (!metadata->otherMetadata.empty()) {
-    //   metadata->__isset.otherMetadata = true;
-    // }
     if (!metadata->otherMetadata.empty()) {
       metadata->__isset.otherMetadata = true;
     }
     channel_->sendThriftResponse(std::move(metadata), std::move(buf));
   }
 
-  // TODO: Implement sendErrorWrapped
   void sendErrorWrapped(
-      folly::exception_wrapper /* ex */,
-      std::string /* exCode */,
+      folly::exception_wrapper ew,
+      std::string exCode,
       apache::thrift::MessageChannel::SendCallback* /*cb*/ = nullptr) override {
+    DCHECK(ew.is_compatible_with<TApplicationException>());
+    header_.setHeader("ex", exCode);
+    ew.with_exception([&](TApplicationException& tae) {
+      std::unique_ptr<folly::IOBuf> exbuf;
+      auto proto = header_.getProtocolId();
+      try {
+        exbuf = serializeError(proto, tae, name_, seqId_);
+      } catch (const protocol::TProtocolException& pe) {
+        // Should never happen.  Log an error and return an empty
+        // payload.
+        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+                   << " what()=" << pe.what();
+      }
+      sendReply(std::move(exbuf));
+    });
   }
 
   std::shared_ptr<ThriftChannelIf> getChannel() {
@@ -131,8 +139,9 @@ class ThriftRequest : public ResponseChannel::Request {
 
  private:
   std::shared_ptr<ThriftChannelIf> channel_;
-  int32_t seqId_;
+  std::string name_;
   RpcKind kind_;
+  int32_t seqId_;
   std::atomic<bool> active_;
   transport::THeader header_;
   Cpp2ConnContext connContext_;

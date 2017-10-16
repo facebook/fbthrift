@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
@@ -26,55 +27,69 @@ namespace thrift {
 using namespace testing;
 using namespace testutil::testservice;
 
-TEST(ThriftProcessorTest, SendAndReceiveSumTwoNumbers) {
+TEST_F(CoreTestFixture, SumTwoNumbers) {
   int32_t x = 5;
   int32_t y = 10;
   int32_t expected_result = x + y;
 
-  // Set up Async Processor
-  StrictMock<TestServiceMock> service;
-  EXPECT_CALL(service, sumTwoNumbers_(x, y));
-  std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor =
-      service.getProcessor();
+  EXPECT_CALL(service_, sumTwoNumbers_(x, y));
 
-  // Set up Thread Manager
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
-      PriorityThreadManager::newPriorityThreadManager(
-          32 /*threads*/, true /*stats*/, 1000 /*maxQueueLen*/));
-  threadManager->start();
-
-  // Set up processor.
-  ThriftProcessor processor(std::move(cpp2Processor));
-  processor.setThreadManager(threadManager.get());
-
-  // Schedule the calls to the processor in the event base so that the
-  // event loop is running for the entirety of the test.
-
-  folly::EventBase eventBase;
-  std::shared_ptr<FakeChannel> fakeChannel =
-      std::make_shared<FakeChannel>(&eventBase);
-
-  eventBase.runInEventBaseThread([&]() mutable {
+  runInEventBaseThread([&]() mutable {
     auto metadata = std::make_unique<RequestRpcMetadata>();
     folly::IOBufQueue request;
-    TestServiceMock::serializeSumTwoNumbers(
-        x, y, false, &request, metadata.get());
-    auto channel = std::shared_ptr<ThriftChannelIf>(fakeChannel);
-    processor.onThriftRequest(std::move(metadata), request.move(), channel);
+    serializeSumTwoNumbers(x, y, false, &request, metadata.get());
+    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
+    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
   });
 
-  // Start the event loop before calling into the channel and leave it
-  // running for the entirety of the test.  The loop exits after
-  // FakeChannel::sendThriftResponse() is called.
-  eventBase.loop();
-
-  // The RPC has completed.
-  threadManager->join();
-
   // Receive Response and compare result
-  auto result =
-      TestServiceMock::deserializeSumTwoNumbers(fakeChannel->getPayloadBuf());
-  EXPECT_EQ(result, expected_result);
+  auto result = deserializeSumTwoNumbers(channel_->getPayloadBuf());
+  EXPECT_EQ(expected_result, result);
+}
+
+TEST_F(CoreTestFixture, BadName) {
+  runInEventBaseThread([&]() mutable {
+    auto metadata = makeMetadata("foobar");
+    auto payload = folly::IOBuf::copyBuffer("dummy payload");
+    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
+    processor_.onThriftRequest(
+        std::move(metadata), std::move(payload), channel);
+  });
+
+  TApplicationException tae;
+  EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
+  EXPECT_EQ(TApplicationException::UNKNOWN_METHOD, tae.getType());
+}
+
+TEST_F(CoreTestFixture, BadPayload) {
+  runInEventBaseThread([&]() mutable {
+    // Set function name to some valid function in ThriftService.thrift
+    auto metadata = makeMetadata("headers");
+    auto payload = folly::IOBuf::copyBuffer("bad payload");
+    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
+    processor_.onThriftRequest(
+        std::move(metadata), std::move(payload), channel);
+  });
+
+  TApplicationException tae;
+  EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
+  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
+}
+
+// Forces calling sendErrorWrapped()
+TEST_F(CoreTestFixture, SendErrorWrapped) {
+  threadManager_->setThrowOnAdd(true);
+  runInEventBaseThread([&]() mutable {
+    auto metadata = std::make_unique<RequestRpcMetadata>();
+    folly::IOBufQueue request;
+    serializeSumTwoNumbers(5, 10, false, &request, metadata.get());
+    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
+    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
+  });
+
+  TApplicationException tae;
+  EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
+  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
 }
 
 } // namespace thrift

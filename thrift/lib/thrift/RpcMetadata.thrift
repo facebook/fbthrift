@@ -42,18 +42,6 @@ enum RpcPriority {
   N_PRIORITIES = 5,
 }
 
-// The kinds of errors that might be encountered at the transport
-// level.  Some of these are generic, while others may only apply to
-// specific transports.
-enum ErrorKind {
-  NONE = 0,
-  INVALID_ENVELOPE = 1,
-  MISSING_HEADER = 2,
-  BAD_HEADER = 3,
-  MISSING_BODY = 4,
-  INVALID_RPC_KIND = 5,
-}
-
 // RPC metadata sent from the client to the server.  The lifetime of
 // objects of this type starts at the call to the generated client
 // code, and ends at the generated server code.
@@ -100,20 +88,17 @@ struct RequestRpcMetadata {
 // as a return value to the application code that initiated the RPC on
 // the client side.
 struct ResponseRpcMetadata {
-  // In case there is a transport level error, this field contains the
-  // kind of error.
-  1: optional ErrorKind error;
   // The protocol using which the RPC payload has been serialized.
-  2: optional ProtocolId protocol;
+  1: optional ProtocolId protocol;
   // The same sequence id that was passed to the server from the
   // client in RequestRpcMetadata.  This is returned to the client so
   // the channel can match the response to the correct request.  See
   // additional comments in RequestRpcMetadata above.
-  3: optional i32 seqId;
+  2: optional i32 seqId;
   // A string to string map that can be populated by the server
   // handler and further populated by plugins on the server side
   // before it is finally sent back to the client.
   // Any frequently used key-value pair in this map should be replaced
   // by a field in this struct.
-  4: optional map<string, string> otherMetadata;
+  3: optional map<string, string> otherMetadata;
 }

@@ -26,12 +26,6 @@ namespace apache {
 namespace thrift {
 
 // Transport layer compliance tests.
-// List of tests:
-//  - Routing
-//  - Multiple parallel clients
-//  - Exception handling
-//  - Timeouts
-//  - Header support
 class TransportCompatibilityTest {
  public:
   TransportCompatibilityTest();
@@ -52,6 +46,9 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Header();
   void TestRequestResponse_Header_ExpectedException();
   void TestRequestResponse_Header_UnexpectedException();
+
+  void TestOneway_Simple();
+  void TestOneway_WithDelay();
 
  protected:
   void setupServer();

@@ -9,6 +9,8 @@ service TestService {
 
   i32 add(1: i32 x),
 
+  oneway void addAfterDelay(1: i32 delayMs, 2: i32 x),
+
   void throwExpectedException(1: i32 x) throws (1: TestServiceException e),
 
   void throwUnexpectedException(1: i32 x) throws (1: TestServiceException e),

@@ -87,5 +87,13 @@ TEST_F(H2CompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
+TEST_F(H2CompatibilityTest, TestOneway_Simple) {
+  compatibilityTest_->TestOneway_Simple();
+}
+
+TEST_F(H2CompatibilityTest, TestOneway_WithDelay) {
+  compatibilityTest_->TestOneway_WithDelay();
+}
+
 } // namespace thrift
 } // namespace apache
