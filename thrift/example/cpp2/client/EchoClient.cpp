@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
+#include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/example/cpp2/util/Util.h>
 #include <thrift/example/if/gen-cpp2/Echo.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+
+DEFINE_string(host, "::1", "EchoServer host");
+DEFINE_int32(port, 7777, "EchoServer port");
+DEFINE_string(transport, "header", "Transport to use: header, rsocket, http2");
+
+using example::chatroom::EchoAsyncClient;
 
 int main(int argc, char *argv[]) {
-  FLAGS_logtostderr = 1;
+  FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
-  folly::EventBase eventBase;
+  folly::EventBase evb;
 
   try {
-    // Create a client to the service
-    auto socket = apache::thrift::async::TAsyncSocket::newSocket(
-        &eventBase, "::1", 7778);
-    auto connection = apache::thrift::HeaderClientChannel::newChannel(socket);
-    auto client = std::make_unique<
-        tutorials::chatroom::EchoAsyncClient>(std::move(connection));
+    auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
+    auto client =  newClient<EchoAsyncClient>(&evb, addr, FLAGS_transport);
 
     // Get an echo'd message
     std::string message = "Ping this back";

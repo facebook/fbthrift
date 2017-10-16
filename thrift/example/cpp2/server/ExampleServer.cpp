@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/example/cpp2/thrift_transport/server/ChatRoomService.h"
-#include "thrift/example/cpp2/thrift_transport/server/EchoService.h"
+#include "thrift/example/cpp2/server/ChatRoomService.h"
+#include "thrift/example/cpp2/server/EchoService.h"
 
 #include <folly/init/Init.h>
 #include <glog/logging.h>
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   auto chatroom_handler =
-      std::make_shared<tutorials::chatroom::ChatRoomServiceHandler>();
+      std::make_shared<example::chatroom::ChatRoomServiceHandler>();
   auto chatroom_server = std::make_shared<apache::thrift::ThriftServer>();
   chatroom_server->setPort(7777);
   chatroom_server->setInterface(chatroom_handler);
@@ -37,8 +37,7 @@ int main(int argc, char** argv) {
     chatroom_server->serve();
   });
 
-  auto echo_handler =
-      std::make_shared<tutorials::chatroom::EchoHandler>();
+  auto echo_handler = std::make_shared<example::chatroom::EchoHandler>();
   auto echo_server = std::make_shared<apache::thrift::ThriftServer>();
   echo_server->setPort(7778);
   echo_server->setInterface(echo_handler);

@@ -1,4 +1,4 @@
-namespace cpp2 tutorials.chatroom
+namespace cpp2 example.chatroom
 
 struct Message {
   1: string message

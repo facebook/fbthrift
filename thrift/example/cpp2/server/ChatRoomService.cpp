@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "thrift/example/cpp2/thrift_transport/server/ChatRoomService.h"
+#include "thrift/example/cpp2/server/ChatRoomService.h"
 
 #include <time.h>
 
 DEFINE_int32(max_messages_per_get, 1000, "Maximum number of messages to fetch");
 
-namespace tutorials {
+namespace example {
 namespace chatroom {
 
 void ChatRoomServiceHandler::getMessages(
@@ -60,4 +60,4 @@ void ChatRoomServiceHandler::sendMessage(
   });
 }
 } // chatroom
-} // tutorials
+} // example

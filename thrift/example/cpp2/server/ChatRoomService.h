@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 
 #include "thrift/example/if/gen-cpp2/ChatRoomService.h"
 
-namespace tutorials {
+namespace example {
 namespace chatroom {
 
 class ChatRoomServiceHandler : virtual public ChatRoomServiceSvIf {
@@ -45,4 +45,4 @@ class ChatRoomServiceHandler : virtual public ChatRoomServiceSvIf {
       folly::Synchronized<std::vector<Message>>();
 };
 } // chatroom
-} // tutorials
+} // example

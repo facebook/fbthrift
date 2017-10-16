@@ -1,5 +1,5 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-#include "thrift/example/cpp2/thrift_transport/server/EchoService.h"
+#pragma once
 
-namespace tutorials {
+#include "thrift/example/if/gen-cpp2/Echo.h"
+
+namespace example {
 namespace chatroom {
 
-void EchoHandler::echo(
-    std::string& response,
-    std::unique_ptr<std::string> message) {
-  response = *message;
-}
+class EchoHandler : virtual public EchoSvIf {
+ public:
+  void echo(
+      std::string& response,
+      std::unique_ptr<std::string> message) override;
+};
 } // chatroom
-} // tutorials
+} // example
