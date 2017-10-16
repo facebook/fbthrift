@@ -25,10 +25,14 @@ namespace thrift {
 
 using namespace rsocket;
 
+static constexpr std::chrono::milliseconds kDefaultTimeout =
+    std::chrono::milliseconds(5000);
+
 RSClientConnection::RSClientConnection(
     folly::AsyncSocket::UniquePtr socket,
-    folly::EventBase* evb)
-    : evb_(*evb) {
+    folly::EventBase* evb,
+    bool isSecure)
+    : evb_(evb), timeout_(kDefaultTimeout), isSecure_(isSecure) {
   rsClient_ = RSocket::createClientFromConnection(
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
       *evb);
@@ -44,7 +48,7 @@ void RSClientConnection::setMaxPendingRequests(uint32_t) {
 }
 
 folly::EventBase* RSClientConnection::getEventBase() const {
-  return &evb_;
+  return evb_;
 }
 
 apache::thrift::async::TAsyncTransport* RSClientConnection::getTransport() {
@@ -61,35 +65,41 @@ ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
 }
 
 void RSClientConnection::attachEventBase(folly::EventBase*) {
-  LOG(FATAL) << "not implemented";
+  DLOG(FATAL) << "not implemented, just ignore";
 }
 
 void RSClientConnection::detachEventBase() {
-  LOG(FATAL) << "not implemented";
+  DLOG(FATAL) << "not implemented, just ignore";
 }
 
 bool RSClientConnection::isDetachable() {
-  LOG(FATAL) << "not implemented";
+  return false;
 }
 
 bool RSClientConnection::isSecurityActive() {
-  return false; // ?
+  return isSecure_;
 }
 
 uint32_t RSClientConnection::getTimeout() {
-  LOG(FATAL) << "not implemented";
+  return timeout_.count();
 }
 
-void RSClientConnection::setTimeout(uint32_t) {
-  LOG(FATAL) << "not implemented";
+void RSClientConnection::setTimeout(uint32_t ms) {
+  // TODO: update rsClient_'s timeout
+  timeout_ = std::chrono::milliseconds(ms);
 }
 
 void RSClientConnection::closeNow() {
-  LOG(FATAL) << "not implemented";
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  if (rsClient_) {
+    rsClient_->disconnect();
+    rsClient_.reset();
+  }
 }
 
 CLIENT_TYPE RSClientConnection::getClientType() {
-  LOG(FATAL) << "not implemented";
+  // TODO: Should we use this value?
+  return THRIFT_HTTP_CLIENT_TYPE;
 }
 } // namespace thrift
 } // namespace apache

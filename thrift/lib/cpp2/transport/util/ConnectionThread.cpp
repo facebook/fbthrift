@@ -34,8 +34,8 @@ DEFINE_bool(use_ssl, false, "Create an encrypted client connection");
 namespace apache {
 namespace thrift {
 
-using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
+using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
 
 ConnectionThread::~ConnectionThread() {
@@ -83,7 +83,7 @@ void ConnectionThread::maybeCreateConnection(
       }
       if (FLAGS_transport == "rsocket") {
         connection = std::make_shared<RSClientConnection>(
-            std::move(socket), getEventBase());
+            std::move(socket), getEventBase(), FLAGS_use_ssl);
       } else if (FLAGS_transport == "http1") {
         connection = H2ClientConnection::newHTTP1xConnection(
             std::move(socket), addr, "/");

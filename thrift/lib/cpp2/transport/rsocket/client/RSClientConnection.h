@@ -27,7 +27,8 @@ class RSClientConnection : public ClientConnectionIf {
  public:
   RSClientConnection(
       folly::AsyncSocket::UniquePtr socket,
-      folly::EventBase* evb);
+      folly::EventBase* evb,
+      bool isSecure = false);
 
   std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
@@ -45,10 +46,13 @@ class RSClientConnection : public ClientConnectionIf {
   CLIENT_TYPE getClientType() override;
 
  protected:
-  folly::EventBase& evb_;
+  folly::EventBase* evb_;
 
   std::shared_ptr<rsocket::RSocketClient> rsClient_;
   std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
+
+  std::chrono::milliseconds timeout_;
+  bool isSecure_;
 };
 } // namespace thrift
 } // namespace apache

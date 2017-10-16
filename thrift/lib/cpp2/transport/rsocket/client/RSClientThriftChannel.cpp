@@ -15,6 +15,7 @@
  */
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h"
 
+#include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RPCSubscriber.h>
 
@@ -22,6 +23,8 @@ namespace apache {
 namespace thrift {
 
 using namespace rsocket;
+using namespace yarpl::single;
+using proxygen::WheelTimerInstance;
 
 std::unique_ptr<folly::IOBuf> RSClientThriftChannel::serializeMetadata(
     const RequestRpcMetadata& requestMetadata) {
@@ -40,6 +43,97 @@ std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
   responseMetadata->read(&reader);
   return responseMetadata;
 }
+
+namespace {
+// Never timeout in the default
+static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
+    std::chrono::milliseconds(0);
+
+// Adds a timer that timesout if the observer could not get its onSuccess or
+// onError methods being called in a specified time range, which causes onError
+// method to be called.
+class TimedSingleObserver : public SingleObserver<Payload>,
+                            public folly::HHWheelTimer::Callback {
+ public:
+  TimedSingleObserver(
+      std::unique_ptr<ThriftClientCallback> callback,
+      std::chrono::milliseconds timeout)
+      : timeout_(timeout),
+        timer_(timeout, callback->getEventBase()),
+        callback_(std::move(callback)) {}
+
+ protected:
+  void onSubscribe(Reference<SingleSubscription> subscription) override {
+    auto ref = this->ref_from_this(this);
+    SingleObserver<Payload>::onSubscribe(std::move(subscription));
+
+    if (timeout_.count() > 0) {
+      auto evb = callback_->getEventBase();
+      evb->runInEventBaseThread(
+          [this]() { timer_.scheduleTimeout(this, timeout_); });
+    }
+  }
+
+  void onSuccess(Payload payload) override {
+    auto ref = this->ref_from_this(this);
+    auto evb = callback_->getEventBase();
+    evb->runInEventBaseThread([ref, payload = std::move(payload)]() mutable {
+      if (ref->alreadySignalled_) {
+        return;
+      }
+      ref->alreadySignalled_ = true;
+
+      ref->cancelTimeout();
+      ref->callback_->onThriftResponse(
+          payload.metadata
+              ? RSClientThriftChannel::deserializeMetadata(*payload.metadata)
+              : std::make_unique<ResponseRpcMetadata>(),
+          std::move(payload.data));
+    });
+    if (SingleObserver<Payload>::subscription()) {
+      // TODO: can we get rid of calling the parent functions
+      SingleObserver<Payload>::onSuccess({});
+    }
+  }
+
+  void onError(folly::exception_wrapper ew) override {
+    auto ref = this->ref_from_this(this);
+    auto evb = callback_->getEventBase();
+    evb->runInEventBaseThread([ref, ew = std::move(ew)]() mutable {
+      if (ref->alreadySignalled_) {
+        return;
+      }
+      ref->alreadySignalled_ = true;
+
+      ref->cancelTimeout();
+      ref->callback_->onError(std::move(ew));
+      // TODO: Inspect the cases where might we end up in this function.
+      // 1- server closes the stream before all the messages are
+      // delievered.
+      // 2- time outs
+    });
+    if (SingleObserver<Payload>::subscription()) {
+      // TODO: can we get rid of calling the parent functions
+      SingleObserver<Payload>::onError({});
+    }
+  }
+
+  void timeoutExpired() noexcept override {
+    onError(std::runtime_error("Request has timed out"));
+  }
+
+  void callbackCanceled() noexcept override {
+    // nothing!
+  }
+
+ private:
+  std::chrono::milliseconds timeout_;
+  // TODO: WheelTimerInstance is part of Proxygen, we need to use another timer.
+  WheelTimerInstance timer_;
+  std::unique_ptr<ThriftClientCallback> callback_;
+  bool alreadySignalled_{false};
+};
+} // namespace
 
 RSClientThriftChannel::RSClientThriftChannel(
     std::shared_ptr<RSocketRequester> rsRequester)
@@ -88,28 +182,18 @@ void RSClientThriftChannel::sendSingleRequestResponse(
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(requestMetadata);
+  // As we send clientTimeoutMs, queueTimeoutMs and priority values using
+  // RequestRpcMetadata object, there is no need for RSocket to put them to
+  // metadata->otherMetadata map.
 
-  std::shared_ptr<ThriftClientCallback> spCallback{std::move(callback)};
-  auto func = [spCallback](Payload payload) mutable {
-    auto evb_ = spCallback->getEventBase();
-    evb_->runInEventBaseThread([spCallback = std::move(spCallback),
-                                payload = std::move(payload)]() mutable {
-      spCallback->onThriftResponse(
-          payload.metadata ? deserializeMetadata(*payload.metadata)
-                           : std::make_unique<ResponseRpcMetadata>(),
-          std::move(payload.data));
-    });
-  };
+  auto timeout = kDefaultRequestTimeout;
+  if (requestMetadata->__isset.clientTimeoutMs) {
+    timeout = std::chrono::milliseconds(requestMetadata->clientTimeoutMs);
+  }
 
-  auto err = [spCallback](folly::exception_wrapper ex) mutable {
-    LOG(ERROR) << "This method should never be called: " << ex;
+  auto singleObserver = yarpl::make_ref<TimedSingleObserver>(
+      std::forward<std::unique_ptr<ThriftClientCallback>>(callback), timeout);
 
-    // TODO: Inspect the cases where might we end up in this function.
-    // 1- server closes the stream before all the messages are delievered.
-  };
-
-  auto singleObserver = yarpl::single::SingleObservers::create<Payload>(
-      std::move(func), std::move(err));
   rsRequester_
       ->requestResponse(
           rsocket::Payload(std::move(buf), serializeMetadata(*requestMetadata)))

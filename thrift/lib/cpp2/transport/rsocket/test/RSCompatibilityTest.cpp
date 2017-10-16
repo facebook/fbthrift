@@ -60,12 +60,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_UnexpectedException();
 }
 
-/* TODO: uncomment after timeouts are implemented
 // Warning: This test may be flaky due to use of timeouts.
 TEST_F(RSCompatibilityTest, RequestResponse_Timeout) {
   compatibilityTest_->TestRequestResponse_Timeout();
 }
-*/
 
 TEST_F(RSCompatibilityTest, RequestResponse_Header) {
   compatibilityTest_->TestRequestResponse_Header();
