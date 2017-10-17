@@ -19,6 +19,7 @@
 
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <iostream>
