@@ -45,7 +45,6 @@ class t_hack_generator : public t_oop_generator {
     phps_ = option_is_specified(parsed_options, "server");
     oldenum_ = option_is_specified(parsed_options, "oldenum");
     strict_types_ = option_is_specified(parsed_options, "stricttypes");
-    strict_ = option_is_specified(parsed_options, "strict");
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
@@ -439,11 +438,6 @@ class t_hack_generator : public t_oop_generator {
   bool strict_types_;
 
   /**
-   * Whether to generate strict hack
-   */
-  bool strict_;
-
-  /**
    * Whether to generate array sets or Set objects
    */
   bool arraysets_;
@@ -787,8 +781,7 @@ void t_hack_generator::init_generator() {
   record_genfile(f_types_name);
 
   // Print header
-  f_types_ << "<?hh" << (strict_ ? " // strict" : "") << endl
-           << autogen_comment() << endl;
+  f_types_ << "<?hh // strict" << endl << autogen_comment() << endl;
 
   string hack_ns = hack_namespace(program_);
   if (!hack_ns.empty()) {
@@ -800,8 +793,7 @@ void t_hack_generator::init_generator() {
     string f_consts_name = get_out_dir() + program_name_ + "_constants.php";
     f_consts_.open(f_consts_name.c_str());
     record_genfile(f_consts_name);
-    f_consts_ << "<?hh" << (strict_ ? " // strict" : "") << endl
-              << autogen_comment();
+    f_consts_ << "<?hh // strict" << endl << autogen_comment();
     constants_values_.clear();
     string const_namespace = php_namespace(program_);
     if (const_namespace != "") {
@@ -827,13 +819,8 @@ void t_hack_generator::close_generator() {
     indent_up();
     f_consts_ << endl;
     if (!lazy_constants_) {
-      indent(f_consts_) << "public static ";
-      if (strict_) {
-        f_consts_ << "array<string, mixed>";
-      } else {
-        f_consts_ << "array";
-      }
-      f_consts_ << " $__values = array(" << endl;
+      indent(f_consts_)
+          << "public static array<string, mixed> $__values = array(" << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(f_consts_, ",\n"));
@@ -848,10 +835,7 @@ void t_hack_generator::close_generator() {
 
       string rendered_value = oss.str();
       generate_lazy_init_for_constant(
-          f_consts_,
-          "__values",
-          (strict_ ? "array<string, mixed>" : "array"),
-          rendered_value);
+          f_consts_, "__values", "array<string, mixed>", rendered_value);
     }
     indent_down();
     // close constants class
@@ -912,13 +896,8 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
   if (oldenum_) {
     // names
-    indent(f_types_) << "public static ";
-    if (strict_) {
-      f_types_ << "array<int, string>";
-    } else {
-      f_types_ << "array";
-    }
-    f_types_ << " $__names = array(" << endl;
+    indent(f_types_) << "public static array<int, string> $__names = array("
+                     << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -928,13 +907,8 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     indent(f_types_) <<
       ");" << endl;
     // values
-    indent(f_types_) << "public static ";
-    if (strict_) {
-      f_types_ << "array<string, int>";
-    } else {
-      f_types_ << "array";
-    }
-    f_types_ << " $__values = array(" << endl;
+    indent(f_types_) << "public static array<string, int> $__values = array("
+                     << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
 
@@ -1400,13 +1374,9 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
  */
 void t_hack_generator::generate_php_struct_spec(ofstream& out,
                                                t_struct* tstruct) {
-  indent(out) << "public static ";
-  if (strict_) {
-    out << "array<int, array<string, mixed>>";
-  } else {
-    out << "array";
-  }
-  out << " $_TSPEC = array(" << endl;
+  indent(out)
+      << "public static array<int, array<string, mixed>> $_TSPEC = array("
+      << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
@@ -2775,9 +2745,7 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
 
-  f_service_ <<
-    "<?hh" << (strict_ ? " // strict" : "") << endl <<
-    autogen_comment() << endl;
+  f_service_ << "<?hh // strict" << endl << autogen_comment() << endl;
   string hack_ns = hack_namespace(program_);
   if (!hack_ns.empty()) {
     f_service_ << "namespace " << hack_ns << ";" << endl << endl;
