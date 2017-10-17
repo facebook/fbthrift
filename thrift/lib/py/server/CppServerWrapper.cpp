@@ -53,6 +53,9 @@ using namespace boost::python;
 
 namespace {
 
+const std::string kHeaderEx = "uex";
+const std::string kHeaderExWhat = "uexw";
+
 object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
   object headers = dict();
   for (const auto& it : cppheaders) {
@@ -271,7 +274,8 @@ public:
                 auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
                 object callbackWrapper = cb_ctor();
                 extract<CallbackWrapper&>(callbackWrapper)().setCallback(
-                    [oneway, req_up = std::move(req_up), context, eb]
+                    [oneway, req_up = std::move(req_up), context, eb,
+                     contextData]
                     (object output) mutable {
                   // Make sure the request is deleted in evb.
                   SCOPE_EXIT {
@@ -313,6 +317,15 @@ public:
 
                     if (!req_up->isActive()) {
                       return;
+                    }
+                    CppContextData& cppContextData = extract<CppContextData&>(contextData);
+                    if (!cppContextData.getHeaderEx().empty()) {
+                      context->getHeader()->setHeader(
+                          kHeaderEx, cppContextData.getHeaderEx());
+                    }
+                    if (!cppContextData.getHeaderExWhat().empty()) {
+                      context->getHeader()->setHeader(
+                          kHeaderExWhat, cppContextData.getHeaderExWhat());
                     }
                     auto q = THeader::transform(
                           std::move(outbuf),
@@ -583,6 +596,8 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("getClientIdentity", &CppContextData::getClientIdentity)
     .def("getPeerAddress", &CppContextData::getPeerAddress)
     .def("getLocalAddress", &CppContextData::getLocalAddress)
+    .def("setHeaderEx", &CppContextData::setHeaderEx)
+    .def("setHeaderExWhat", &CppContextData::setHeaderExWhat)
     ;
 
   class_<CallbackWrapper, boost::noncopyable>("CallbackWrapper")

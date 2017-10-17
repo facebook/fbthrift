@@ -47,7 +47,7 @@ boost::python::object makePythonAddress(const folly::SocketAddress& sa) {
 class CppContextData {
 public:
   CppContextData()
-    : ctx_(nullptr) {}
+      : ctx_(nullptr) {}
 
   void copyContextContents(Cpp2ConnContext* ctx) {
     if (!ctx) {
@@ -93,11 +93,26 @@ public:
   const Cpp2ConnContext * getCtx() const {
     return ctx_;
   }
+  const std::string& getHeaderEx() {
+    return headerEx_;
+  }
+  void setHeaderEx(const std::string& headerEx) {
+    headerEx_ = headerEx;
+  }
+  const std::string& getHeaderExWhat() {
+    return headerExWhat_;
+  }
+  void setHeaderExWhat(const std::string& headerExWhat) {
+    headerExWhat_ = headerExWhat;
+  }
+
 private:
   const apache::thrift::Cpp2ConnContext* ctx_;
   std::string clientIdentity_;
   folly::SocketAddress peerAddress_;
   folly::SocketAddress localAddress_;
+  std::string headerEx_;
+  std::string headerExWhat_;
 };
 }}
 

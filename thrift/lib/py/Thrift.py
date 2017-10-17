@@ -26,6 +26,7 @@ import six
 import sys
 import threading
 
+UEXW_MAX_LENGTH = 1024
 
 class TType:
     STOP = 0
@@ -170,10 +171,34 @@ class TProcessor:
             return TMessageType.EXCEPTION
         return TMessageType.REPLY
 
-    def writeReply(self, oprot, handler_ctx, fn_name, seqid, result):
+    @staticmethod
+    def _get_exception_from_thrift_result(result):
+        """Returns the wrapped exception, if pressent. None if not.
+
+        result is a generated *_result object. This object either has a
+        'success' field set indicating the call succeeded, or a field set
+        indicating the exception thrown.
+        """
+        for field, value in result.__dict__.items():
+            if value is None:
+                continue
+            elif field == 'success':
+                return None
+            else:
+                return value
+        return None
+
+    def writeReply(self, oprot, handler_ctx, fn_name, seqid, result, server_ctx=None):
 
         self._event_handler.preWrite(handler_ctx, fn_name, result)
         reply_type = self._getReplyType(result)
+
+        if server_ctx is not None and hasattr(server_ctx, 'context_data'):
+            ex = (result if reply_type == TMessageType.EXCEPTION
+                  else self._get_exception_from_thrift_result(result))
+            if ex:
+                server_ctx.context_data.setHeaderEx(ex.__class__.__name__)
+                server_ctx.context_data.setHeaderExWhat(str(ex)[:UEXW_MAX_LENGTH])
 
         try:
             oprot.writeMessageBegin(fn_name, reply_type, seqid)

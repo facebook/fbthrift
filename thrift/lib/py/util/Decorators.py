@@ -169,7 +169,8 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 set_request_context(self, iprot)
                 result = func(self, args, handler_ctx)
                 if not oneway:
-                    self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
+                    self.writeReply(
+                        oprot, handler_ctx, fn_name, seqid, result, server_ctx)
                 reset_request_context(self)
 
             _mem_after = _process_method_mem_usage()
