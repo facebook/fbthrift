@@ -29,20 +29,14 @@ class InMemoryChannel : public ThriftChannelIf {
   InMemoryChannel(ThriftProcessor* processor, folly::EventBase* evb);
   virtual ~InMemoryChannel() override = default;
 
-  bool supportsHeaders() const noexcept override;
-
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
-
-  void cancel(int32_t seqId) noexcept override;
 
   void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
-
-  void cancel(ThriftClientCallback* callback) noexcept override;
 
   folly::EventBase* getEventBase() noexcept override;
 

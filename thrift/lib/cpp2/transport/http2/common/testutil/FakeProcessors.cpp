@@ -40,12 +40,6 @@ void EchoProcessor::onThriftRequest(
   });
 }
 
-void EchoProcessor::cancel(
-    int32_t /*seqId*/,
-    ThriftChannelIf* /*channel*/) noexcept {
-  LOG(ERROR) << "cancel() unused in this fake object.";
-}
-
 void EchoProcessor::onThriftRequestHelper(
     std::unique_ptr<RequestRpcMetadata> requestMetadata,
     std::unique_ptr<folly::IOBuf> payload,

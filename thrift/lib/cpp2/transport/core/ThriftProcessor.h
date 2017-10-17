@@ -58,12 +58,6 @@ class ThriftProcessor {
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel) noexcept;
 
-  // Called from the channel to cancel a previous call to
-  // "onThriftRequest()".  The processor does not have to call back
-  // once this method has been called, and the call back will be
-  // ignored if it does.
-  virtual void cancel(int32_t seqId, ThriftChannelIf* channel) noexcept;
-
   // Called from the server initialization code if there's an update
   // to the thread manager used to manage the server
   void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {

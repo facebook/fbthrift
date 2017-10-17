@@ -68,10 +68,6 @@ void ThriftClientCallback::onError(exception_wrapper ex) noexcept {
   }
 }
 
-void ThriftClientCallback::cancel(exception_wrapper /*ex*/) noexcept {
-  LOG(ERROR) << "cancel() not yet implemented";
-}
-
 EventBase* ThriftClientCallback::getEventBase() const {
   return evb_;
 }

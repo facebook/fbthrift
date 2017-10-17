@@ -139,10 +139,6 @@ RSClientThriftChannel::RSClientThriftChannel(
     std::shared_ptr<RSocketRequester> rsRequester)
     : rsRequester_(std::move(rsRequester)) {}
 
-bool RSClientThriftChannel::supportsHeaders() const noexcept {
-  return true;
-}
-
 void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,

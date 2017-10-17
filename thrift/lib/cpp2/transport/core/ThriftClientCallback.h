@@ -60,12 +60,8 @@ class ThriftClientCallback {
   // "getEventBase()".
   void onError(folly::exception_wrapper ex) noexcept;
 
-  // TODO: Not sure if we need this method.  We'll leave it here for
-  // now and do a refactor after a design discussion.
-  void cancel(folly::exception_wrapper ex) noexcept;
-
-  // Returns the event base on which calls to "onThriftResponse()",
-  // "onError()", and "cancel()" must be scheduled.
+  // Returns the event base on which calls to "onThriftResponse()"
+  // and "onError()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
  private:

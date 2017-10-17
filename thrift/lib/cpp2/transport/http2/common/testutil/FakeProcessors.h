@@ -53,8 +53,6 @@ class EchoProcessor : public ThriftProcessor {
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel) noexcept override;
 
-  void cancel(int32_t seqId, ThriftChannelIf* channel) noexcept override;
-
  private:
   // The new entry to add to the header.
   std::string key_;

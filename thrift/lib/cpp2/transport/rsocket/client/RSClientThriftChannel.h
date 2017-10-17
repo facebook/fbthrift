@@ -34,8 +34,6 @@ class RSClientThriftChannel : public ThriftChannelIf {
 
   virtual ~RSClientThriftChannel() = default;
 
-  bool supportsHeaders() const noexcept override;
-
   void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
@@ -77,14 +75,6 @@ class RSClientThriftChannel : public ThriftChannelIf {
       std::unique_ptr<ResponseRpcMetadata>,
       std::unique_ptr<folly::IOBuf>) noexcept override {
     LOG(FATAL) << "Server side function is called in client side.";
-  }
-
-  void cancel(int32_t) noexcept override {
-    LOG(FATAL) << "not implemented";
-  }
-
-  void cancel(ThriftClientCallback*) noexcept override {
-    LOG(FATAL) << "not implemented";
   }
 
   folly::EventBase* getEventBase() noexcept override {

@@ -76,10 +76,6 @@ SingleRpcChannel::~SingleRpcChannel() {
   }
 }
 
-bool SingleRpcChannel::supportsHeaders() const noexcept {
-  return true;
-}
-
 void SingleRpcChannel::sendThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
@@ -98,10 +94,6 @@ void SingleRpcChannel::sendThriftResponse(
     responseHandler_->sendEOM();
   }
   receivedThriftRPC_ = true;
-}
-
-void SingleRpcChannel::cancel(int32_t /*seqId*/) noexcept {
-  LOG(ERROR) << "cancel() not yet implemented";
 }
 
 void SingleRpcChannel::sendThriftRequest(
@@ -170,10 +162,6 @@ void SingleRpcChannel::sendThriftRequest(
   httpTransaction_->sendBody(std::move(payload));
   httpTransaction_->sendEOM();
   receivedThriftRPC_ = true;
-}
-
-void SingleRpcChannel::cancel(ThriftClientCallback* /*callback*/) noexcept {
-  LOG(ERROR) << "cancel() not yet implemented";
 }
 
 folly::EventBase* SingleRpcChannel::getEventBase() noexcept {

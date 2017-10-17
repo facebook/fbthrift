@@ -35,10 +35,6 @@ class FakeChannel : public ThriftChannelIf {
       : evb_(evb), keepAliveToken_(evb_->getKeepAliveToken()) {}
   ~FakeChannel() override = default;
 
-  bool supportsHeaders() const noexcept override {
-    return true;
-  }
-
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override {
@@ -49,19 +45,11 @@ class FakeChannel : public ThriftChannelIf {
     keepAliveToken_.reset();
   }
 
-  void cancel(int32_t /*seqId*/) noexcept override {
-    LOG(ERROR) << "cancel() unused in this fake object.";
-  }
-
   void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> /*metadata*/,
       std::unique_ptr<folly::IOBuf> /*payload*/,
       std::unique_ptr<ThriftClientCallback> /*callback*/) noexcept override {
     LOG(FATAL) << "sendThriftRequest() unused in this fake object.";
-  }
-
-  void cancel(ThriftClientCallback* /*callback*/) noexcept override {
-    LOG(ERROR) << "cancel() unused in this fake object.";
   }
 
   folly::EventBase* getEventBase() noexcept override {

@@ -51,11 +51,5 @@ void ThriftProcessor::onThriftRequest(
       std::move(request), std::move(payload), protoId, reqContext, evb, tm_);
 }
 
-void ThriftProcessor::cancel(
-    int32_t /*seqId*/,
-    ThriftChannelIf* /*channel*/) noexcept {
-  // Processor currently ignores cancellations.
-}
-
 } // namespace thrift
 } // namespace apache

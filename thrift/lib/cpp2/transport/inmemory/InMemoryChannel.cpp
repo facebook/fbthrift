@@ -31,10 +31,6 @@ using std::string;
 InMemoryChannel::InMemoryChannel(ThriftProcessor* processor, EventBase* evb)
     : processor_(processor), evb_(evb) {}
 
-bool InMemoryChannel::supportsHeaders() const noexcept {
-  return true;
-}
-
 void InMemoryChannel::sendThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
@@ -48,10 +44,6 @@ void InMemoryChannel::sendThriftResponse(
     evbCallback->onThriftResponse(
         std::move(evbMetadata), std::move(evbPayload));
   });
-}
-
-void InMemoryChannel::cancel(int32_t /*seqId*/) noexcept {
-  LOG(ERROR) << "cancel() not yet implemented";
 }
 
 void InMemoryChannel::sendThriftRequest(
@@ -71,10 +63,6 @@ void InMemoryChannel::sendThriftRequest(
   metadata->__isset.seqId = true;
   processor_->onThriftRequest(
       std::move(metadata), std::move(payload), shared_from_this());
-}
-
-void InMemoryChannel::cancel(ThriftClientCallback* /*callback*/) noexcept {
-  LOG(ERROR) << "cancel() not yet implemented";
 }
 
 folly::EventBase* InMemoryChannel::getEventBase() noexcept {

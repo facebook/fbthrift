@@ -86,11 +86,6 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   ThriftChannelIf(const ThriftChannelIf&) = delete;
   ThriftChannelIf& operator=(const ThriftChannelIf&) = delete;
 
-  // Returns true if this channel supports headers.  If the channel
-  // does not support headers, they will be ignored.  This method
-  // can be called from any thread.
-  virtual bool supportsHeaders() const noexcept = 0;
-
   // Called on the server at the end of a single response RPC.  This
   // is not called for streaming response and no response RPCs.
   //
@@ -99,20 +94,6 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   virtual void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept = 0;
-
-  // Can be called on the server to cancel a RPC (instead of calling
-  // "sendThriftResponse()").  Once this is called, the server does
-  // not have to perform any additional calls such as
-  // "sendThriftResponse()", or closing of streams.
-  //
-  // Calls must be scheduled on the event base obtained from
-  // "getEventBase()".
-  //
-  // TODO: cancel() has been added at a few places and will be used
-  // to handle various error conditions.  The details of how this is
-  // used is TBD.  We may add more parameters to the various
-  // cancel() methods as necessary going forward.
-  virtual void cancel(int32_t seqId) noexcept = 0;
 
   // Called from the client to initiate an RPC with a server.
   // "callback" is used to call back with the response for single
@@ -124,22 +105,14 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // "callback->getEventBase()".
   //
   // "callback" must not be destroyed until it has received the call
-  // back to "onThriftResponse()" or "cancel()".
+  // back to "onThriftResponse()".
   virtual void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept = 0;
 
-  // Can be called from the client to cancel a previous call to
-  // "sendThriftRequest()".  "callback" is used to identify the call
-  // that is being cancelled.  The channel will not interact with
-  // "callback" after this call.
-  //
-  // This may be called from any thread.
-  virtual void cancel(ThriftClientCallback* callback) noexcept = 0;
-
-  // Returns the event base on which calls to "sendThriftRequest()",
-  // "sendThriftResponse()", and cancel must be scheduled.
+  // Returns the event base on which calls to "sendThriftRequest()"
+  // and "sendThriftResponse()" must be scheduled.
   virtual folly::EventBase* getEventBase() noexcept = 0;
 
   // Used to manage streams on both the client and server side.

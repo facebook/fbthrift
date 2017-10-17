@@ -30,10 +30,6 @@ class RSThriftChannelBase : public ThriftChannelIf {
 
   virtual ~RSThriftChannelBase() = default;
 
-  bool supportsHeaders() const noexcept override {
-    return false;
-  }
-
   virtual void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata>,
       std::unique_ptr<folly::IOBuf>) noexcept override {
@@ -55,14 +51,6 @@ class RSThriftChannelBase : public ThriftChannelIf {
       std::unique_ptr<RequestRpcMetadata>,
       std::unique_ptr<folly::IOBuf>,
       std::unique_ptr<ThriftClientCallback>) noexcept override {
-    LOG(FATAL) << "Server should not call this function.";
-  }
-
-  void cancel(int32_t) noexcept override {
-    LOG(FATAL) << "Server can call this function but it is not implemented";
-  }
-
-  void cancel(ThriftClientCallback*) noexcept override {
     LOG(FATAL) << "Server should not call this function.";
   }
 
