@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "ThreadManager.h"
 
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
@@ -43,7 +42,7 @@ using std::dynamic_pointer_cast;
 using std::unique_ptr;
 using folly::RequestContext;
 
-folly::RWSpinLock ThreadManager::observerLock_;
+folly::SharedMutex ThreadManager::observerLock_;
 std::shared_ptr<ThreadManager::Observer> ThreadManager::observer_;
 
 shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
@@ -53,7 +52,7 @@ shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
 void ThreadManager::setObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
   {
-    folly::RWSpinLock::WriteHolder g(observerLock_);
+    folly::SharedMutex::WriteHolder g(observerLock_);
     observer_.swap(observer);
   }
 }

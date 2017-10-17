@@ -24,7 +24,7 @@
 
 #include <folly/Executor.h>
 #include <folly/LifoSem.h>
-#include <folly/RWSpinLock.h>
+#include <folly/SharedMutex.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
@@ -283,7 +283,7 @@ class ThreadManager : public folly::Executor {
   typedef ImplT<folly::LifoSem> Impl;
 
  protected:
-  static folly::RWSpinLock observerLock_;
+  static folly::SharedMutex observerLock_;
   static std::shared_ptr<Observer> observer_;
 };
 

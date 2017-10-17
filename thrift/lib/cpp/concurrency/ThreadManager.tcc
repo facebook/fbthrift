@@ -130,7 +130,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
         if (manager_->observer_) {
           // Hold lock to ensure that observer_ does not get deleted
-          folly::RWSpinLock::ReadHolder g(manager_->observerLock_);
+          folly::SharedMutex::ReadHolder g(manager_->observerLock_);
           if (manager_->observer_) {
             manager_->observer_->preRun(task->getContext().get());
           }
@@ -616,7 +616,8 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
   // Optimistic check lock free
   if (ThreadManager::ImplT<SemType>::observer_) {
     // Hold lock to ensure that observer_ does not get deleted.
-    folly::RWSpinLock::ReadHolder g(ThreadManager::ImplT<SemType>::observerLock_);
+    folly::SharedMutex::ReadHolder g(
+        ThreadManager::ImplT<SemType>::observerLock_);
     if (ThreadManager::ImplT<SemType>::observer_) {
       // Note: We are assuming the namePrefix_ does not change after the thread is
       // started.
