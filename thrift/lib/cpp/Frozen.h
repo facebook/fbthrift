@@ -26,6 +26,7 @@
 #include <unordered_map>
 
 #include <folly/Bits.h>
+#include <folly/FBString.h>
 #include <folly/Range.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/RelativePtr.h>
