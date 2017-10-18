@@ -91,6 +91,10 @@ TEST_F(H2CompatibilityTest, RequestResponse_Saturation) {
   compatibilityTest_->TestRequestResponse_Saturation();
 }
 
+TEST_F(H2CompatibilityTest, RequestResponse_Connection_CloseNow) {
+  compatibilityTest_->TestRequestResponse_Connection_CloseNow();
+}
+
 TEST_F(H2CompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
@@ -100,13 +104,17 @@ TEST_F(H2CompatibilityTest, Oneway_WithDelay) {
 }
 
 /* TODO: Uncomment when H2 part is updated
-TEST_F(H2CompatibilityTest, OneWay_Saturation) {
-  compatibilityTest_->TestOneWay_Saturation();
+TEST_F(H2CompatibilityTest, Oneway_Saturation) {
+  compatibilityTest_->TestOneway_Saturation();
 }
 */
 
-TEST_F(H2CompatibilityTest, TestOneway_UnexpectedException) {
+TEST_F(H2CompatibilityTest, Oneway_UnexpectedException) {
   compatibilityTest_->TestOneway_UnexpectedException();
+}
+
+TEST_F(H2CompatibilityTest, Oneway_Connection_CloseNow) {
+  compatibilityTest_->TestOneway_Connection_CloseNow();
 }
 
 } // namespace thrift

@@ -28,6 +28,8 @@ namespace detail {
 class ChannelCounters {
  public:
   ChannelCounters();
+  void setRequestTimeout(std::chrono::milliseconds);
+  std::chrono::milliseconds getRequestTimeout();
   void setMaxPendingRequests(uint32_t);
   uint32_t getMaxPendingRequests();
   uint32_t getPendingRequests();
@@ -36,6 +38,8 @@ class ChannelCounters {
 
  private:
   uint32_t maxPendingRequests_;
+  std::chrono::milliseconds requestTimeout_;
+
   uint32_t pendingRequests_{0u};
 };
 } // namespace detail

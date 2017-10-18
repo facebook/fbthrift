@@ -48,11 +48,13 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Header_ExpectedException();
   void TestRequestResponse_Header_UnexpectedException();
   void TestRequestResponse_Saturation();
+  void TestRequestResponse_Connection_CloseNow();
 
   void TestOneway_Simple();
   void TestOneway_WithDelay();
-  void TestOneWay_Saturation();
+  void TestOneway_Saturation();
   void TestOneway_UnexpectedException();
+  void TestOneway_Connection_CloseNow();
 
  protected:
   void setupServer();

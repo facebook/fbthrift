@@ -49,7 +49,7 @@ std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
 namespace {
 // Never timeout in the default
 static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
-    std::chrono::milliseconds(0);
+    std::chrono::milliseconds(5000);
 
 // Adds a timer that timesout if the observer could not get its onSuccess or
 // onError methods being called in a specified time range, which causes onError
@@ -168,9 +168,19 @@ void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(metadata->__isset.kind);
 
+  if (!rsRequester_) {
+    if (callback) {
+      auto evb = callback->getEventBase();
+      evb->runInEventBaseThread([evbCallback = std::move(callback)]() mutable {
+        evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NOT_OPEN));
+      });
+    }
+    return;
+  }
+
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
-
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(
@@ -276,7 +286,9 @@ void RSClientThriftChannel::channelRequest(
 static constexpr uint32_t kMaxPendingRequests =
     std::numeric_limits<uint32_t>::max();
 
-ChannelCounters::ChannelCounters() : maxPendingRequests_(kMaxPendingRequests) {}
+ChannelCounters::ChannelCounters()
+    : maxPendingRequests_(kMaxPendingRequests),
+      requestTimeout_(kDefaultRequestTimeout) {}
 
 void ChannelCounters::setMaxPendingRequests(uint32_t count) {
   maxPendingRequests_ = count;
@@ -300,6 +312,14 @@ bool ChannelCounters::incPendingRequests() {
 
 void ChannelCounters::decPendingRequests() {
   --pendingRequests_;
+}
+
+void ChannelCounters::setRequestTimeout(std::chrono::milliseconds timeout) {
+  requestTimeout_ = timeout;
+}
+
+std::chrono::milliseconds ChannelCounters::getRequestTimeout() {
+  return requestTimeout_;
 }
 
 } // namespace thrift

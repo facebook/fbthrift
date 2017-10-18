@@ -81,6 +81,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
   compatibilityTest_->TestRequestResponse_Saturation();
 }
 
+TEST_F(RSCompatibilityTest, RequestResponse_Connection_CloseNow) {
+  compatibilityTest_->TestRequestResponse_Connection_CloseNow();
+}
+
 TEST_F(RSCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
@@ -89,12 +93,16 @@ TEST_F(RSCompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
 }
 
-TEST_F(RSCompatibilityTest, OneWay_Saturation) {
-  compatibilityTest_->TestOneWay_Saturation();
+TEST_F(RSCompatibilityTest, Oneway_Saturation) {
+  compatibilityTest_->TestOneway_Saturation();
 }
 
-TEST_F(RSCompatibilityTest, TestOneway_UnexpectedException) {
+TEST_F(RSCompatibilityTest, Oneway_UnexpectedException) {
   compatibilityTest_->TestOneway_UnexpectedException();
+}
+
+TEST_F(RSCompatibilityTest, Oneway_Connection_CloseNow) {
+  compatibilityTest_->TestOneway_Connection_CloseNow();
 }
 
 } // namespace thrift

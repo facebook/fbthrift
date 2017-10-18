@@ -24,14 +24,11 @@ namespace thrift {
 
 using namespace rsocket;
 
-static constexpr std::chrono::milliseconds kDefaultTimeout =
-    std::chrono::milliseconds(5000);
-
 RSClientConnection::RSClientConnection(
     folly::AsyncSocket::UniquePtr socket,
     folly::EventBase* evb,
     bool isSecure)
-    : evb_(evb), timeout_(kDefaultTimeout), isSecure_(isSecure) {
+    : evb_(evb), isSecure_(isSecure) {
   rsClient_ = RSocket::createClientFromConnection(
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
       *evb);
@@ -57,7 +54,7 @@ apache::thrift::async::TAsyncTransport* RSClientConnection::getTransport() {
 
 bool RSClientConnection::good() {
   // TODO: Temporary implementation.
-  return true;
+  return rsClient_.get();
 }
 
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
@@ -83,18 +80,18 @@ bool RSClientConnection::isSecurityActive() {
 }
 
 uint32_t RSClientConnection::getTimeout() {
-  return timeout_.count();
+  return counters_.getRequestTimeout().count();
 }
 
 void RSClientConnection::setTimeout(uint32_t ms) {
-  // TODO: update rsClient_'s timeout
-  timeout_ = std::chrono::milliseconds(ms);
+  counters_.setRequestTimeout(std::chrono::milliseconds(ms));
 }
 
 void RSClientConnection::closeNow() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   if (rsClient_) {
-    rsClient_->disconnect();
+    rsClient_->disconnect().get();
+    rsRequester_.reset();
     rsClient_.reset();
   }
 }

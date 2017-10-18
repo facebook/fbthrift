@@ -445,6 +445,26 @@ void TransportCompatibilityTest::TestRequestResponse_Saturation() {
   });
 }
 
+void TransportCompatibilityTest::TestRequestResponse_Connection_CloseNow() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
+                     std::shared_ptr<ClientConnectionIf> connection) {
+    // It should not reach to server: no EXPECT_CALL for add_(3)
+
+    // Observe the behavior if the connection is closed already
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->closeNow(); });
+
+    try {
+      client->sync_add(3);
+      EXPECT_TRUE(false) << "sync_add should have thrown";
+    } catch (apache::thrift::transport::TTransportException& ex) {
+      EXPECT_EQ(
+          apache::thrift::transport::TTransportException::NOT_OPEN,
+          ex.getType());
+    }
+  });
+}
+
 void TransportCompatibilityTest::TestOneway_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), add_(0));
@@ -476,14 +496,14 @@ void TransportCompatibilityTest::TestOneway_WithDelay() {
   });
 }
 
-void TransportCompatibilityTest::TestOneWay_Saturation() {
+void TransportCompatibilityTest::TestOneway_Saturation() {
   connectToServer([this](
                       std::unique_ptr<TestServiceAsyncClient> client,
                       std::shared_ptr<ClientConnectionIf> connection) {
     EXPECT_CALL(*handler_.get(), add_(3));
     // note that no EXPECT_CALL for addAfterDelay_(0, 5)
-    EXPECT_CALL(*handler_.get(), addAfterDelay_(300, 5));
-    EXPECT_CALL(*handler_.get(), addAfterDelay_(200, 5));
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5));
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(50, 5));
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
@@ -496,16 +516,31 @@ void TransportCompatibilityTest::TestOneWay_Saturation() {
 
     // Client should be able to issue both of these functions as
     // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
-    client->sync_addAfterDelay(300, 5);
-    client->sync_addAfterDelay(200, 5); // TODO: H2 fails in this call.
+    client->sync_addAfterDelay(100, 5);
+    client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
   });
 }
 
 void TransportCompatibilityTest::TestOneway_UnexpectedException() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), onewayThrowsUnexpectedException_(100));
+    EXPECT_CALL(*handler_.get(), onewayThrowsUnexpectedException_(0));
     client->sync_onewayThrowsUnexpectedException(100);
+    client->sync_onewayThrowsUnexpectedException(0);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  });
+}
+
+void TransportCompatibilityTest::TestOneway_Connection_CloseNow() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
+                     std::shared_ptr<ClientConnectionIf> connection) {
+    // It should not reach server - no EXPECT_CALL for addAfterDelay_(0, 5)
+
+    // Observe the behavior if the connection is closed already
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->closeNow(); });
+
+    EXPECT_NO_THROW(client->sync_addAfterDelay(0, 5));
   });
 }
 
