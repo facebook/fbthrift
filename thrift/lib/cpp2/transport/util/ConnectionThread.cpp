@@ -39,11 +39,8 @@ using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
 
 ConnectionThread::~ConnectionThread() {
-  getEventBase()->runInEventBaseThreadAndWait([&]() {
-    SYNCHRONIZED(connections_) {
-      connections_.clear();
-    }
-  });
+  getEventBase()->runInEventBaseThreadAndWait(
+      [&] { connections_.wlock()->clear(); });
 }
 
 std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
@@ -52,18 +49,16 @@ std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
   std::string serverKey = folly::to<std::string>(addr, ":", port);
   getEventBase()->runInEventBaseThreadAndWait(
       [&]() { maybeCreateConnection(serverKey, addr, port); });
-  SYNCHRONIZED(connections_) {
-    return connections_[serverKey];
-  }
-  LOG(FATAL) << "Unreachable";
+  return connections_.withWLock(
+      [&](auto& connections) { return connections[serverKey]; });
 }
 
 void ConnectionThread::maybeCreateConnection(
     const std::string& serverKey,
     const std::string& addr,
     uint16_t port) {
-  SYNCHRONIZED(connections_) {
-    std::shared_ptr<ClientConnectionIf>& connection = connections_[serverKey];
+  connections_.withWLock([&](auto& connections) {
+    std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];
     if (connection == nullptr || !connection->good()) {
       TAsyncSocket::UniquePtr socket(
           new TAsyncSocket(getEventBase(), addr, port));
@@ -96,7 +91,7 @@ void ConnectionThread::maybeCreateConnection(
             std::move(socket), addr, "/");
       }
     }
-  }
+  });
 }
 
 } // namespace thrift

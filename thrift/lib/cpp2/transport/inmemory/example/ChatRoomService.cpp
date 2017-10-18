@@ -36,14 +36,14 @@ void ChatRoomServiceHandler::getMessages(
   }
 
   size_t i = 0;
-  SYNCHRONIZED(messageBuffer_) {
+  messageBuffer_.withWLock([&](auto& messageBuffer) {
     int32_t count = 0;
     for (i = idx;
-         i < messageBuffer_.size() && count < FLAGS_max_messages_per_get;
+         i < messageBuffer.size() && count < FLAGS_max_messages_per_get;
          ++i, ++count) {
-      resp.messages.push_back(messageBuffer_[i]);
+      resp.messages.push_back(messageBuffer[i]);
     }
-  }
+  });
 
   ChatRoomServiceIndexToken token;
   token.index = i;
@@ -59,7 +59,6 @@ void ChatRoomServiceHandler::sendMessage(
   // Avoid using the actual time of the day in unit tests.
   msg.timestamp = (int64_t)time(nullptr);
 
-  SYNCHRONIZED(messageBuffer_) {
-    messageBuffer_.push_back(msg);
-  }
+  messageBuffer_.withWLock(
+      [&](auto& messageBuffer) { messageBuffer.push_back(msg); });
 }
