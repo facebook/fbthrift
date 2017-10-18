@@ -20,7 +20,6 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -87,6 +86,16 @@ ThriftClient::ThriftClient(std::shared_ptr<ClientConnectionIf> connection)
     : ThriftClient(connection, connection->getEventBase()) {}
 
 void ThriftClient::setProtocolId(uint16_t protocolId) {
+  switch (protocolId) {
+    case protocol::T_BINARY_PROTOCOL:
+    case protocol::T_COMPACT_PROTOCOL:
+    case protocol::T_FROZEN2_PROTOCOL:
+      break;
+    default:
+      DCHECK(false)
+          << "invalid protocolId specified (supports binary, compact, frozen)";
+  }
+
   protocolId_ = protocolId;
 }
 
@@ -177,19 +186,24 @@ uint32_t ThriftClient::sendRequestHelper(
         isSecurityActive()));
     return 0;
   }
+
+  // TODO(dymk): create this in clientSendT, which has enough information to
+  // set up the RequestRpcMetadata
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (!stripEnvelope(metadata.get(), buf)) {
-    LOG(FATAL) << "Unexpected problem stripping envelope";
-  }
-  // The envelope does not say whether or not the call is oneway - so
-  // we set it here.
+
+  metadata->protocol = static_cast<ProtocolId>(protocolId_);
+  metadata->__isset.protocol = true;
+
   if (oneway) {
     metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   } else {
     metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   }
   metadata->__isset.kind = true;
-  DCHECK(static_cast<ProtocolId>(protocolId_) == metadata->protocol);
+
+  metadata->name = rpcOptions.getMethodName();
+  metadata->__isset.name = rpcOptions.getMethodName() != nullptr;
+
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
     metadata->__isset.clientTimeoutMs = true;

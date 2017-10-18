@@ -144,6 +144,10 @@ void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(metadata->__isset.kind);
+
+  metadata->seqId = 0;
+  metadata->__isset.seqId = true;
+
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(
