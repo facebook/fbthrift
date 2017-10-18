@@ -77,12 +77,20 @@ TEST_F(RSCompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
-TEST_F(RSCompatibilityTest, TestOneway_Simple) {
+TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
+  compatibilityTest_->TestRequestResponse_Saturation();
+}
+
+TEST_F(RSCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
 
-TEST_F(RSCompatibilityTest, TestOneway_WithDelay) {
+TEST_F(RSCompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
+}
+
+TEST_F(RSCompatibilityTest, OneWay_Saturation) {
+  compatibilityTest_->TestOneWay_Saturation();
 }
 } // namespace thrift
 } // namespace apache

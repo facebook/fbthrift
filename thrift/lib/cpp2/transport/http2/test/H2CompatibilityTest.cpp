@@ -87,13 +87,22 @@ TEST_F(H2CompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
-TEST_F(H2CompatibilityTest, TestOneway_Simple) {
+TEST_F(H2CompatibilityTest, RequestResponse_Saturation) {
+  compatibilityTest_->TestRequestResponse_Saturation();
+}
+
+TEST_F(H2CompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
 
-TEST_F(H2CompatibilityTest, TestOneway_WithDelay) {
+TEST_F(H2CompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
 }
 
+/* TODO: Uncomment when H2 part is updated
+TEST_F(H2CompatibilityTest, OneWay_Saturation) {
+  compatibilityTest_->TestOneWay_Saturation();
+}
+*/
 } // namespace thrift
 } // namespace apache

@@ -38,6 +38,7 @@ int32_t TestServiceMock::add(int32_t x) {
 void TestServiceMock::addAfterDelay(int32_t delayMs, int32_t x) {
   /* sleep override */
   std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+  addAfterDelay_(delayMs, x); // just to inform that this function is called
   sum += x;
 }
 

@@ -19,6 +19,7 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
@@ -46,9 +47,11 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Header();
   void TestRequestResponse_Header_ExpectedException();
   void TestRequestResponse_Header_UnexpectedException();
+  void TestRequestResponse_Saturation();
 
   void TestOneway_Simple();
   void TestOneway_WithDelay();
+  void TestOneWay_Saturation();
 
  protected:
   void setupServer();
@@ -57,6 +60,11 @@ class TransportCompatibilityTest {
       folly::Function<
           void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
           callMe);
+  void connectToServer(
+      folly::Function<void(
+          std::unique_ptr<testutil::testservice::TestServiceAsyncClient>,
+          std::shared_ptr<ClientConnectionIf>)> callMe);
+
   void callSleep(
       testutil::testservice::TestServiceAsyncClient* client,
       int32_t timeoutMs,

@@ -21,7 +21,6 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 #include "thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h"
@@ -117,6 +116,15 @@ void TransportCompatibilityTest::stopServer() {
 
 void TransportCompatibilityTest::connectToServer(
     folly::Function<void(std::unique_ptr<TestServiceAsyncClient>)> callMe) {
+  connectToServer([callMe = std::move(callMe)](
+                      std::unique_ptr<TestServiceAsyncClient> client,
+                      auto) mutable { callMe(std::move(client)); });
+}
+
+void TransportCompatibilityTest::connectToServer(
+    folly::Function<void(
+        std::unique_ptr<TestServiceAsyncClient>,
+        std::shared_ptr<ClientConnectionIf>)> callMe) {
   auto mgr = ConnectionManager::getInstance();
   CHECK_GT(port_, 0) << "Check if the server has started already";
   auto connection = mgr->getConnection(FLAGS_host, port_);
@@ -126,7 +134,7 @@ void TransportCompatibilityTest::connectToServer(
 
   auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
 
-  callMe(std::move(client));
+  callMe(std::move(client), std::move(connection));
 }
 
 class TimeoutTestCallback : public RequestCallback {
@@ -145,8 +153,12 @@ class TimeoutTestCallback : public RequestCallback {
     EXPECT_FALSE(shouldTimeout_);
     callbackReceived_ = true;
   }
-  void requestError(ClientReceiveState&& /*crs*/) override {
+  void requestError(ClientReceiveState&& crs) override {
     // EXPECT_TRUE(requestSentCalled_); TODO: uncomment after fixing code.
+    EXPECT_TRUE(crs.isException());
+    EXPECT_TRUE(crs.exception()
+                    .is_compatible_with<
+                        apache::thrift::transport::TTransportException>());
     EXPECT_FALSE(callbackReceived_);
     EXPECT_TRUE(shouldTimeout_);
     callbackReceived_ = true;
@@ -415,9 +427,29 @@ void TransportCompatibilityTest::
   });
 }
 
+void TransportCompatibilityTest::TestRequestResponse_Saturation() {
+  connectToServer([this](
+                      std::unique_ptr<TestServiceAsyncClient> client,
+                      std::shared_ptr<ClientConnectionIf> connection) {
+    EXPECT_CALL(*handler_.get(), add_(3)).Times(2);
+    // note that no EXPECT_CALL for add_(5)
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->setMaxPendingRequests(0u); });
+    EXPECT_THROW(
+        client->sync_add(5), apache::thrift::transport::TTransportException);
+
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->setMaxPendingRequests(1u); });
+    EXPECT_EQ(3, client->sync_add(3));
+    EXPECT_EQ(6, client->sync_add(3));
+  });
+}
+
 void TransportCompatibilityTest::TestOneway_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), add_(0));
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(0, 5));
+
     client->sync_addAfterDelay(0, 5);
     // Sleep a bit for oneway call to complete on server
     /* sleep override */
@@ -429,6 +461,8 @@ void TransportCompatibilityTest::TestOneway_Simple() {
 void TransportCompatibilityTest::TestOneway_WithDelay() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), add_(0)).Times(2);
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(800, 5));
+
     // Perform an add on the server after a delay
     client->sync_addAfterDelay(800, 5);
     // Call add to get result before the previous addAfterDelay takes
@@ -439,6 +473,31 @@ void TransportCompatibilityTest::TestOneway_WithDelay() {
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     EXPECT_EQ(5, client->sync_add(0));
+  });
+}
+
+void TransportCompatibilityTest::TestOneWay_Saturation() {
+  connectToServer([this](
+                      std::unique_ptr<TestServiceAsyncClient> client,
+                      std::shared_ptr<ClientConnectionIf> connection) {
+    EXPECT_CALL(*handler_.get(), add_(3));
+    // note that no EXPECT_CALL for addAfterDelay_(0, 5)
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(300, 5));
+    EXPECT_CALL(*handler_.get(), addAfterDelay_(200, 5));
+
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->setMaxPendingRequests(0u); });
+    client->sync_addAfterDelay(0, 5);
+
+    // the first call is not completed as the connection was saturated
+    connection->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->setMaxPendingRequests(1u); });
+    EXPECT_EQ(3, client->sync_add(3));
+
+    // Client should be able to issue both of these functions as
+    // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
+    client->sync_addAfterDelay(300, 5);
+    client->sync_addAfterDelay(200, 5); // TODO: H2 fails in this call.
   });
 }
 
