@@ -18,7 +18,6 @@
 #include <folly/io/async/EventBase.h>
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 
 namespace apache {
 namespace thrift {
@@ -40,11 +39,12 @@ RSClientConnection::RSClientConnection(
 }
 
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel() {
-  return std::make_shared<RSClientThriftChannel>(rsRequester_);
+  return std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
 }
 
-void RSClientConnection::setMaxPendingRequests(uint32_t) {
-  LOG(FATAL) << "not implemented";
+void RSClientConnection::setMaxPendingRequests(uint32_t count) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  counters_.setMaxPendingRequests(count);
 }
 
 folly::EventBase* RSClientConnection::getEventBase() const {
@@ -61,7 +61,9 @@ bool RSClientConnection::good() {
 }
 
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
-  LOG(FATAL) << "not implemented";
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  return ClientChannel::SaturationStatus(
+      counters_.getPendingRequests(), counters_.getMaxPendingRequests());
 }
 
 void RSClientConnection::attachEventBase(folly::EventBase*) {

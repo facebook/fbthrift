@@ -22,6 +22,8 @@
 namespace apache {
 namespace thrift {
 
+using namespace apache::thrift::transport;
+using namespace apache::thrift::detail;
 using namespace rsocket;
 using namespace yarpl::single;
 using proxygen::WheelTimerInstance;
@@ -57,10 +59,20 @@ class TimedSingleObserver : public SingleObserver<Payload>,
  public:
   TimedSingleObserver(
       std::unique_ptr<ThriftClientCallback> callback,
-      std::chrono::milliseconds timeout)
+      std::chrono::milliseconds timeout,
+      ChannelCounters& counters)
       : timeout_(timeout),
         timer_(timeout, callback->getEventBase()),
-        callback_(std::move(callback)) {}
+        callback_(std::move(callback)),
+        counters_(counters) {}
+
+  virtual ~TimedSingleObserver() {
+    complete();
+  }
+
+  void setDecrementPendingRequestCounter() {
+    decrementPendingRequestCounter_ = true;
+  }
 
  protected:
   void onSubscribe(Reference<SingleSubscription> subscription) override {
@@ -78,17 +90,13 @@ class TimedSingleObserver : public SingleObserver<Payload>,
     auto ref = this->ref_from_this(this);
     auto evb = callback_->getEventBase();
     evb->runInEventBaseThread([ref, payload = std::move(payload)]() mutable {
-      if (ref->alreadySignalled_) {
-        return;
+      if (ref->complete()) {
+        ref->callback_->onThriftResponse(
+            payload.metadata
+                ? RSClientThriftChannel::deserializeMetadata(*payload.metadata)
+                : std::make_unique<ResponseRpcMetadata>(),
+            std::move(payload.data));
       }
-      ref->alreadySignalled_ = true;
-
-      ref->cancelTimeout();
-      ref->callback_->onThriftResponse(
-          payload.metadata
-              ? RSClientThriftChannel::deserializeMetadata(*payload.metadata)
-              : std::make_unique<ResponseRpcMetadata>(),
-          std::move(payload.data));
     });
     if (SingleObserver<Payload>::subscription()) {
       // TODO: can we get rid of calling the parent functions
@@ -100,17 +108,13 @@ class TimedSingleObserver : public SingleObserver<Payload>,
     auto ref = this->ref_from_this(this);
     auto evb = callback_->getEventBase();
     evb->runInEventBaseThread([ref, ew = std::move(ew)]() mutable {
-      if (ref->alreadySignalled_) {
-        return;
+      if (ref->complete()) {
+        ref->callback_->onError(std::move(ew));
+        // TODO: Inspect the cases where might we end up in this function.
+        // 1- server closes the stream before all the messages are
+        // delievered.
+        // 2- time outs
       }
-      ref->alreadySignalled_ = true;
-
-      ref->cancelTimeout();
-      ref->callback_->onError(std::move(ew));
-      // TODO: Inspect the cases where might we end up in this function.
-      // 1- server closes the stream before all the messages are
-      // delievered.
-      // 2- time outs
     });
     if (SingleObserver<Payload>::subscription()) {
       // TODO: can we get rid of calling the parent functions
@@ -119,11 +123,26 @@ class TimedSingleObserver : public SingleObserver<Payload>,
   }
 
   void timeoutExpired() noexcept override {
-    onError(std::runtime_error("Request has timed out"));
+    onError(folly::make_exception_wrapper<TTransportException>(
+        apache::thrift::transport::TTransportException::TIMED_OUT));
   }
 
   void callbackCanceled() noexcept override {
     // nothing!
+  }
+
+  bool complete() {
+    if (alreadySignalled_) {
+      return false;
+    }
+    alreadySignalled_ = true;
+
+    cancelTimeout();
+    if (decrementPendingRequestCounter_) {
+      counters_.decPendingRequests();
+      decrementPendingRequestCounter_ = false;
+    }
+    return true;
   }
 
  private:
@@ -131,13 +150,17 @@ class TimedSingleObserver : public SingleObserver<Payload>,
   // TODO: WheelTimerInstance is part of Proxygen, we need to use another timer.
   WheelTimerInstance timer_;
   std::unique_ptr<ThriftClientCallback> callback_;
+  apache::thrift::detail::ChannelCounters& counters_;
+
   bool alreadySignalled_{false};
+  bool decrementPendingRequestCounter_{false};
 };
 } // namespace
 
 RSClientThriftChannel::RSClientThriftChannel(
-    std::shared_ptr<RSocketRequester> rsRequester)
-    : rsRequester_(std::move(rsRequester)) {}
+    std::shared_ptr<RSocketRequester> rsRequester,
+    ChannelCounters& channelCounters)
+    : rsRequester_(std::move(rsRequester)), channelCounters_(channelCounters) {}
 
 void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
@@ -171,10 +194,16 @@ void RSClientThriftChannel::sendSingleRequestNoResponse(
     std::unique_ptr<ThriftClientCallback>) noexcept {
   DCHECK(requestMetadata);
 
-  rsRequester_
-      ->fireAndForget(
-          rsocket::Payload(std::move(buf), serializeMetadata(*requestMetadata)))
-      ->subscribe([] {});
+  if (channelCounters_.incPendingRequests()) {
+    auto guard =
+        folly::makeGuard([&] { channelCounters_.decPendingRequests(); });
+    rsRequester_
+        ->fireAndForget(rsocket::Payload(
+            std::move(buf), serializeMetadata(*requestMetadata)))
+        ->subscribe([] {});
+  } else {
+    LOG(ERROR) << "max number of pending requests is exceeded";
+  }
 }
 
 void RSClientThriftChannel::sendSingleRequestResponse(
@@ -182,22 +211,37 @@ void RSClientThriftChannel::sendSingleRequestResponse(
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(requestMetadata);
-  // As we send clientTimeoutMs, queueTimeoutMs and priority values using
-  // RequestRpcMetadata object, there is no need for RSocket to put them to
-  // metadata->otherMetadata map.
-
   auto timeout = kDefaultRequestTimeout;
   if (requestMetadata->__isset.clientTimeoutMs) {
     timeout = std::chrono::milliseconds(requestMetadata->clientTimeoutMs);
   }
 
   auto singleObserver = yarpl::make_ref<TimedSingleObserver>(
-      std::forward<std::unique_ptr<ThriftClientCallback>>(callback), timeout);
+      std::forward<std::unique_ptr<ThriftClientCallback>>(callback),
+      timeout,
+      channelCounters_);
 
-  rsRequester_
-      ->requestResponse(
-          rsocket::Payload(std::move(buf), serializeMetadata(*requestMetadata)))
-      ->subscribe(singleObserver);
+  if (channelCounters_.incPendingRequests()) {
+    singleObserver->setDecrementPendingRequestCounter();
+
+    // As we send clientTimeoutMs, queueTimeoutMs and priority values using
+    // RequestRpcMetadata object, there is no need for RSocket to put them to
+    // metadata->otherMetadata map.
+
+    rsRequester_
+        ->requestResponse(rsocket::Payload(
+            std::move(buf), serializeMetadata(*requestMetadata)))
+        ->subscribe(std::move(singleObserver));
+  } else {
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    yarpl::single::Singles::error<Payload>(
+        folly::make_exception_wrapper<TTransportException>(std::move(ex)))
+        ->subscribe(std::move(singleObserver));
+  }
 }
 
 void RSClientThriftChannel::channelRequest(
@@ -227,5 +271,36 @@ void RSClientThriftChannel::channelRequest(
       })
       ->subscribe(input_);
 }
+
+// ChannelCounters' functions
+static constexpr uint32_t kMaxPendingRequests =
+    std::numeric_limits<uint32_t>::max();
+
+ChannelCounters::ChannelCounters() : maxPendingRequests_(kMaxPendingRequests) {}
+
+void ChannelCounters::setMaxPendingRequests(uint32_t count) {
+  maxPendingRequests_ = count;
+}
+
+uint32_t ChannelCounters::getMaxPendingRequests() {
+  return maxPendingRequests_;
+}
+
+uint32_t ChannelCounters::getPendingRequests() {
+  return pendingRequests_;
+}
+
+bool ChannelCounters::incPendingRequests() {
+  if (pendingRequests_ >= maxPendingRequests_) {
+    return false;
+  }
+  ++pendingRequests_;
+  return true;
+}
+
+void ChannelCounters::decPendingRequests() {
+  --pendingRequests_;
+}
+
 } // namespace thrift
 } // namespace apache

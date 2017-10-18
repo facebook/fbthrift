@@ -24,13 +24,30 @@
 namespace apache {
 namespace thrift {
 
+namespace detail {
+class ChannelCounters {
+ public:
+  ChannelCounters();
+  void setMaxPendingRequests(uint32_t);
+  uint32_t getMaxPendingRequests();
+  uint32_t getPendingRequests();
+  bool incPendingRequests();
+  void decPendingRequests();
+
+ private:
+  uint32_t maxPendingRequests_;
+  uint32_t pendingRequests_{0u};
+};
+} // namespace detail
+
 class RSClientThriftChannel : public ThriftChannelIf {
  public:
   using FlowableRef = yarpl::Reference<
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
   explicit RSClientThriftChannel(
-      std::shared_ptr<rsocket::RSocketRequester> rsRequester);
+      std::shared_ptr<rsocket::RSocketRequester> rsRequester,
+      apache::thrift::detail::ChannelCounters& counters);
 
   virtual ~RSClientThriftChannel() = default;
 
@@ -86,6 +103,8 @@ class RSClientThriftChannel : public ThriftChannelIf {
 
   ThriftChannelIf::SubscriberRef input_;
   folly::Promise<ThriftChannelIf::SubscriberRef> outputPromise_;
+
+  apache::thrift::detail::ChannelCounters& channelCounters_;
 };
 } // namespace thrift
 } // namespace apache
