@@ -104,5 +104,10 @@ TEST_F(H2CompatibilityTest, OneWay_Saturation) {
   compatibilityTest_->TestOneWay_Saturation();
 }
 */
+
+TEST_F(H2CompatibilityTest, TestOneway_UnexpectedException) {
+  compatibilityTest_->TestOneway_UnexpectedException();
+}
+
 } // namespace thrift
 } // namespace apache

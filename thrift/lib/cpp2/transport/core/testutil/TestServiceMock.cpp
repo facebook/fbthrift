@@ -42,6 +42,12 @@ void TestServiceMock::addAfterDelay(int32_t delayMs, int32_t x) {
   sum += x;
 }
 
+void TestServiceMock::onewayThrowsUnexpectedException(int32_t delayMs) {
+  onewayThrowsUnexpectedException_(delayMs);
+  std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+  throw std::runtime_error("mock_runtime_error");
+}
+
 void TestServiceMock::throwExpectedException(int32_t) {
   TestServiceException exception;
   exception.message = "mock_service_method_exception";

@@ -92,5 +92,10 @@ TEST_F(RSCompatibilityTest, Oneway_WithDelay) {
 TEST_F(RSCompatibilityTest, OneWay_Saturation) {
   compatibilityTest_->TestOneWay_Saturation();
 }
+
+TEST_F(RSCompatibilityTest, TestOneway_UnexpectedException) {
+  compatibilityTest_->TestOneway_UnexpectedException();
+}
+
 } // namespace thrift
 } // namespace apache

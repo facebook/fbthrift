@@ -501,5 +501,13 @@ void TransportCompatibilityTest::TestOneWay_Saturation() {
   });
 }
 
+void TransportCompatibilityTest::TestOneway_UnexpectedException() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), onewayThrowsUnexpectedException_(100));
+    client->sync_onewayThrowsUnexpectedException(100);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  });
+}
+
 } // namespace thrift
 } // namespace apache

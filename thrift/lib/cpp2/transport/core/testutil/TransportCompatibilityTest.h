@@ -52,6 +52,7 @@ class TransportCompatibilityTest {
   void TestOneway_Simple();
   void TestOneway_WithDelay();
   void TestOneWay_Saturation();
+  void TestOneway_UnexpectedException();
 
  protected:
   void setupServer();

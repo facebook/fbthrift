@@ -31,12 +31,15 @@ class TestServiceMock : public TestServiceSvIf {
   MOCK_METHOD2(sumTwoNumbers_, int32_t(int32_t, int32_t));
   MOCK_METHOD1(add_, int32_t(int32_t));
   MOCK_METHOD2(addAfterDelay_, void(int32_t, int32_t));
+  MOCK_METHOD1(onewayThrowsUnexpectedException_, void(int32_t));
 
   int32_t sumTwoNumbers(int32_t x, int32_t y) override;
 
   int32_t add(int32_t x) override;
 
   void addAfterDelay(int32_t delayMs, int32_t x) override;
+
+  void onewayThrowsUnexpectedException(int32_t delayMs) override;
 
   void throwExpectedException(int32_t x) override;
 
