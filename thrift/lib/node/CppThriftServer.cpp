@@ -17,8 +17,8 @@
 #include <node_buffer.h>
 #include <v8.h>
 
-#include <folly/CallOnce.h>
 #include <folly/Singleton.h>
+#include <folly/synchronization/CallOnce.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
