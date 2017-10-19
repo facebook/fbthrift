@@ -54,7 +54,7 @@ static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
 // Adds a timer that timesout if the observer could not get its onSuccess or
 // onError methods being called in a specified time range, which causes onError
 // method to be called.
-class TimedSingleObserver : public SingleObserver<Payload>,
+class TimedSingleObserver : public SingleObserverBase<Payload>,
                             public folly::HHWheelTimer::Callback {
  public:
   TimedSingleObserver(
@@ -77,7 +77,7 @@ class TimedSingleObserver : public SingleObserver<Payload>,
  protected:
   void onSubscribe(Reference<SingleSubscription> subscription) override {
     auto ref = this->ref_from_this(this);
-    SingleObserver<Payload>::onSubscribe(std::move(subscription));
+    SingleObserverBase<Payload>::onSubscribe(std::move(subscription));
 
     if (timeout_.count() > 0) {
       auto evb = callback_->getEventBase();
@@ -98,9 +98,9 @@ class TimedSingleObserver : public SingleObserver<Payload>,
             std::move(payload.data));
       }
     });
-    if (SingleObserver<Payload>::subscription()) {
+    if (SingleObserverBase<Payload>::subscription()) {
       // TODO: can we get rid of calling the parent functions
-      SingleObserver<Payload>::onSuccess({});
+      SingleObserverBase<Payload>::onSuccess({});
     }
   }
 
@@ -116,9 +116,9 @@ class TimedSingleObserver : public SingleObserver<Payload>,
         // 2- time outs
       }
     });
-    if (SingleObserver<Payload>::subscription()) {
+    if (SingleObserverBase<Payload>::subscription()) {
       // TODO: can we get rid of calling the parent functions
-      SingleObserver<Payload>::onError({});
+      SingleObserverBase<Payload>::onError({});
     }
   }
 
