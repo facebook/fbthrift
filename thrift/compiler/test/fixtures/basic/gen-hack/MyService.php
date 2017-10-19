@@ -167,7 +167,7 @@ trait MyServiceClientBase {
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
@@ -256,7 +256,7 @@ return;
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
@@ -352,7 +352,7 @@ return;
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
@@ -448,7 +448,7 @@ return;
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
@@ -545,7 +545,7 @@ return;
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);

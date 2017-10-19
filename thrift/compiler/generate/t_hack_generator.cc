@@ -2443,7 +2443,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
   }
   // Declare stack tmp variables
   indent(out) <<
-    "$xfer += $input->readStructBegin($fname);" << endl;
+    "$xfer += $input->readStructBegin(&$fname);" << endl;
 
   // Loop over reading in fields
   indent(out) <<
@@ -2453,7 +2453,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
 
     // Read beginning field marker
     out <<
-      indent() << "$xfer += $input->readFieldBegin($fname, $ftype, $fid);" << endl;
+      indent() << "$xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);" << endl;
     // Check for field STOP marker and break
     indent(out) <<
       "if ($ftype == \\TType::STOP) {" << endl;
@@ -3821,8 +3821,8 @@ void t_hack_generator::_generate_service_client(
         endl;
 
       out <<
-        indent() << "$this->input_->readMessageBegin($fname, $mtype, "
-                 << "$rseqid);" << endl <<
+        indent() << "$this->input_->readMessageBegin(&$fname, &$mtype, "
+                 << "&$rseqid);" << endl <<
         indent() << "if ($mtype == \\TMessageType::EXCEPTION) {" << endl <<
         indent() << "  $x = new \\TApplicationException();" << endl <<
         indent() << "  $x->read($this->input_);" << endl <<
@@ -4123,28 +4123,28 @@ void t_hack_generator::generate_deserialize_field(ofstream& out,
           throw "compiler error: cannot serialize void field in a struct: " +
             name;
         case t_base_type::TYPE_STRING:
-          out << "readString($" << name << ");";
+          out << "readString(&$" << name << ");";
           break;
         case t_base_type::TYPE_BOOL:
-          out << "readBool($" << name << ");";
+          out << "readBool(&$" << name << ");";
           break;
         case t_base_type::TYPE_BYTE:
-          out << "readByte($" << name << ");";
+          out << "readByte(&$" << name << ");";
           break;
         case t_base_type::TYPE_I16:
-          out << "readI16($" << name << ");";
+          out << "readI16(&$" << name << ");";
           break;
         case t_base_type::TYPE_I32:
-          out << "readI32($" << name << ");";
+          out << "readI32(&$" << name << ");";
           break;
         case t_base_type::TYPE_I64:
-          out << "readI64($" << name << ");";
+          out << "readI64(&$" << name << ");";
           break;
         case t_base_type::TYPE_DOUBLE:
-          out << "readDouble($" << name << ");";
+          out << "readDouble(&$" << name << ");";
           break;
         case t_base_type::TYPE_FLOAT:
-          out << "readFloat($" << name << ");";
+          out << "readFloat(&$" << name << ");";
           break;
         default:
           throw "compiler error: no PHP name for base type " + t_base_type::t_base_name(tbase);
@@ -4216,7 +4216,7 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
       indent() << "$" << vtype << " = 0;" << endl;
     out <<
       indent() << "$xfer += $input->readMapBegin(" <<
-      "$" << ktype << ", $" << vtype << ", $" << size << ");" << endl;
+      "&$" << ktype << ", &$" << vtype << ", &$" << size << ");" << endl;
   } else if (ttype->is_set()) {
     out << indent() << "$" << etype << " = 0;" << endl;
     if (arrays_) {
@@ -4228,7 +4228,7 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
     }
     out <<
       indent() << "$xfer += $input->readSetBegin(" <<
-      "$" << etype << ", $" << size << ");" << endl;
+      "&$" << etype << ", &$" << size << ");" << endl;
   } else if (ttype->is_list()) {
     if (arrays_) {
       out << indent() << "$" << val << " = vec[];" << endl;
@@ -4238,7 +4238,7 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
     out <<
       indent() << "$" << etype << " = 0;" << endl <<
       indent() << "$xfer += $input->readListBegin(" <<
-      "$" << etype << ", $" << size << ");" << endl;
+      "&$" << etype << ", &$" << size << ");" << endl;
   }
 
   // For loop iterates over elements

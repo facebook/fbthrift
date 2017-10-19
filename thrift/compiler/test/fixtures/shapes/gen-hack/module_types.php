@@ -85,10 +85,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin($fname);
+    $xfer += $input->readStructBegin(&$fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -102,7 +102,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       {
         case 1:
           if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->a);
+            $xfer += $input->readString(&$this->a);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -1883,10 +1883,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $ftype = 0;
     $fid = 0;
     $required_enum_with_default__isset = false;
-    $xfer += $input->readStructBegin($fname);
+    $xfer += $input->readStructBegin(&$fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -1911,14 +1911,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size1 = 0;
             $_etype4 = 0;
             $_val0 = Set{};
-            $xfer += $input->readSetBegin($_etype4, $_size1);
+            $xfer += $input->readSetBegin(&$_etype4, &$_size1);
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
             {
               if ($_size1 === null && !$input->readSetHasNext()) {
                 break;
               }
               $elem6 = null;
-              $xfer += $input->readI32($elem6);
+              $xfer += $input->readI32(&$elem6);
               if ($elem6 !== null) {
                 $_val0->add($elem6);
               }
@@ -1934,14 +1934,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size8 = 0;
             $_val7 = Vector {};
             $_etype11 = 0;
-            $xfer += $input->readListBegin($_etype11, $_size8);
+            $xfer += $input->readListBegin(&$_etype11, &$_size8);
             for ($_i12 = 0; $_size8 === null || $_i12 < $_size8; ++$_i12)
             {
               if ($_size8 === null && !$input->readListHasNext()) {
                 break;
               }
               $elem13 = null;
-              $xfer += $input->readI32($elem13);
+              $xfer += $input->readI32(&$elem13);
               if ($elem13 !== null) {
                 $_val7 []= $elem13;
               }
@@ -1957,14 +1957,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size15 = 0;
             $_val14 = Vector {};
             $_etype18 = 0;
-            $xfer += $input->readListBegin($_etype18, $_size15);
+            $xfer += $input->readListBegin(&$_etype18, &$_size15);
             for ($_i19 = 0; $_size15 === null || $_i19 < $_size15; ++$_i19)
             {
               if ($_size15 === null && !$input->readListHasNext()) {
                 break;
               }
               $elem20 = null;
-              $xfer += $input->readString($elem20);
+              $xfer += $input->readString(&$elem20);
               if ($elem20 !== null) {
                 $_val14 []= $elem20;
               }
@@ -1981,16 +1981,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val21 = Map {};
             $_ktype23 = 0;
             $_vtype24 = 0;
-            $xfer += $input->readMapBegin($_ktype23, $_vtype24, $_size22);
+            $xfer += $input->readMapBegin(&$_ktype23, &$_vtype24, &$_size22);
             for ($_i26 = 0; $_size22 === null || $_i26 < $_size22; ++$_i26)
             {
               if ($_size22 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key27 = null;
-              $xfer += $input->readString($key27);
+              $xfer += $input->readString(&$key27);
               $val28 = null;
-              $xfer += $input->readI32($val28);
+              $xfer += $input->readI32(&$val28);
               if ($key27 !== null && $val28 !== null) {
                 $_val21[$key27] = $val28;
               }
@@ -2007,14 +2007,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val29 = Map {};
             $_ktype31 = 0;
             $_vtype32 = 0;
-            $xfer += $input->readMapBegin($_ktype31, $_vtype32, $_size30);
+            $xfer += $input->readMapBegin(&$_ktype31, &$_vtype32, &$_size30);
             for ($_i34 = 0; $_size30 === null || $_i34 < $_size30; ++$_i34)
             {
               if ($_size30 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key35 = null;
-              $xfer += $input->readString($key35);
+              $xfer += $input->readString(&$key35);
               $val36 = new \test\fixtures\A();
               $xfer += $val36->read($input);
               if ($key35 !== null && $val36 !== null) {
@@ -2033,25 +2033,25 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val37 = Map {};
             $_ktype39 = 0;
             $_vtype40 = 0;
-            $xfer += $input->readMapBegin($_ktype39, $_vtype40, $_size38);
+            $xfer += $input->readMapBegin(&$_ktype39, &$_vtype40, &$_size38);
             for ($_i42 = 0; $_size38 === null || $_i42 < $_size38; ++$_i42)
             {
               if ($_size38 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key43 = null;
-              $xfer += $input->readString($key43);
+              $xfer += $input->readString(&$key43);
               $_size46 = 0;
               $_val45 = Vector {};
               $_etype49 = 0;
-              $xfer += $input->readListBegin($_etype49, $_size46);
+              $xfer += $input->readListBegin(&$_etype49, &$_size46);
               for ($_i50 = 0; $_size46 === null || $_i50 < $_size46; ++$_i50)
               {
                 if ($_size46 === null && !$input->readListHasNext()) {
                   break;
                 }
                 $elem51 = null;
-                $xfer += $input->readI32($elem51);
+                $xfer += $input->readI32(&$elem51);
                 if ($elem51 !== null) {
                   $_val45 []= $elem51;
                 }
@@ -2074,18 +2074,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val52 = Map {};
             $_ktype54 = 0;
             $_vtype55 = 0;
-            $xfer += $input->readMapBegin($_ktype54, $_vtype55, $_size53);
+            $xfer += $input->readMapBegin(&$_ktype54, &$_vtype55, &$_size53);
             for ($_i57 = 0; $_size53 === null || $_i57 < $_size53; ++$_i57)
             {
               if ($_size53 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key58 = null;
-              $xfer += $input->readString($key58);
+              $xfer += $input->readString(&$key58);
               $_size61 = 0;
               $_val60 = Vector {};
               $_etype64 = 0;
-              $xfer += $input->readListBegin($_etype64, $_size61);
+              $xfer += $input->readListBegin(&$_etype64, &$_size61);
               for ($_i65 = 0; $_size61 === null || $_i65 < $_size61; ++$_i65)
               {
                 if ($_size61 === null && !$input->readListHasNext()) {
@@ -2115,25 +2115,25 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val67 = Map {};
             $_ktype69 = 0;
             $_vtype70 = 0;
-            $xfer += $input->readMapBegin($_ktype69, $_vtype70, $_size68);
+            $xfer += $input->readMapBegin(&$_ktype69, &$_vtype70, &$_size68);
             for ($_i72 = 0; $_size68 === null || $_i72 < $_size68; ++$_i72)
             {
               if ($_size68 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key73 = null;
-              $xfer += $input->readString($key73);
+              $xfer += $input->readString(&$key73);
               $_size76 = 0;
               $_etype79 = 0;
               $_val75 = Set{};
-              $xfer += $input->readSetBegin($_etype79, $_size76);
+              $xfer += $input->readSetBegin(&$_etype79, &$_size76);
               for ($_i80 = 0; $_size76 === null || $_i80 < $_size76; ++$_i80)
               {
                 if ($_size76 === null && !$input->readSetHasNext()) {
                   break;
                 }
                 $elem81 = null;
-                $xfer += $input->readI32($elem81);
+                $xfer += $input->readI32(&$elem81);
                 if ($elem81 !== null) {
                   $_val75->add($elem81);
                 }
@@ -2156,28 +2156,28 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val82 = Map {};
             $_ktype84 = 0;
             $_vtype85 = 0;
-            $xfer += $input->readMapBegin($_ktype84, $_vtype85, $_size83);
+            $xfer += $input->readMapBegin(&$_ktype84, &$_vtype85, &$_size83);
             for ($_i87 = 0; $_size83 === null || $_i87 < $_size83; ++$_i87)
             {
               if ($_size83 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key88 = null;
-              $xfer += $input->readString($key88);
+              $xfer += $input->readString(&$key88);
               $_size91 = 0;
               $_val90 = Map {};
               $_ktype92 = 0;
               $_vtype93 = 0;
-              $xfer += $input->readMapBegin($_ktype92, $_vtype93, $_size91);
+              $xfer += $input->readMapBegin(&$_ktype92, &$_vtype93, &$_size91);
               for ($_i95 = 0; $_size91 === null || $_i95 < $_size91; ++$_i95)
               {
                 if ($_size91 === null && !$input->readMapHasNext()) {
                   break;
                 }
                 $key96 = null;
-                $xfer += $input->readString($key96);
+                $xfer += $input->readString(&$key96);
                 $val97 = null;
-                $xfer += $input->readI32($val97);
+                $xfer += $input->readI32(&$val97);
                 if ($key96 !== null && $val97 !== null) {
                   $_val90[$key96] = $val97;
                 }
@@ -2200,26 +2200,26 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val98 = Map {};
             $_ktype100 = 0;
             $_vtype101 = 0;
-            $xfer += $input->readMapBegin($_ktype100, $_vtype101, $_size99);
+            $xfer += $input->readMapBegin(&$_ktype100, &$_vtype101, &$_size99);
             for ($_i103 = 0; $_size99 === null || $_i103 < $_size99; ++$_i103)
             {
               if ($_size99 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key104 = null;
-              $xfer += $input->readString($key104);
+              $xfer += $input->readString(&$key104);
               $_size107 = 0;
               $_val106 = Map {};
               $_ktype108 = 0;
               $_vtype109 = 0;
-              $xfer += $input->readMapBegin($_ktype108, $_vtype109, $_size107);
+              $xfer += $input->readMapBegin(&$_ktype108, &$_vtype109, &$_size107);
               for ($_i111 = 0; $_size107 === null || $_i111 < $_size107; ++$_i111)
               {
                 if ($_size107 === null && !$input->readMapHasNext()) {
                   break;
                 }
                 $key112 = null;
-                $xfer += $input->readString($key112);
+                $xfer += $input->readString(&$key112);
                 $val113 = new \test\fixtures\A();
                 $xfer += $val113->read($input);
                 if ($key112 !== null && $val113 !== null) {
@@ -2243,7 +2243,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size115 = 0;
             $_val114 = Vector {};
             $_etype118 = 0;
-            $xfer += $input->readListBegin($_etype118, $_size115);
+            $xfer += $input->readListBegin(&$_etype118, &$_size115);
             for ($_i119 = 0; $_size115 === null || $_i119 < $_size115; ++$_i119)
             {
               if ($_size115 === null && !$input->readListHasNext()) {
@@ -2252,14 +2252,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
               $_size122 = 0;
               $_etype125 = 0;
               $_val121 = Set{};
-              $xfer += $input->readSetBegin($_etype125, $_size122);
+              $xfer += $input->readSetBegin(&$_etype125, &$_size122);
               for ($_i126 = 0; $_size122 === null || $_i126 < $_size122; ++$_i126)
               {
                 if ($_size122 === null && !$input->readSetHasNext()) {
                   break;
                 }
                 $elem127 = null;
-                $xfer += $input->readI32($elem127);
+                $xfer += $input->readI32(&$elem127);
                 if ($elem127 !== null) {
                   $_val121->add($elem127);
                 }
@@ -2281,7 +2281,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size129 = 0;
             $_val128 = Vector {};
             $_etype132 = 0;
-            $xfer += $input->readListBegin($_etype132, $_size129);
+            $xfer += $input->readListBegin(&$_etype132, &$_size129);
             for ($_i133 = 0; $_size129 === null || $_i133 < $_size129; ++$_i133)
             {
               if ($_size129 === null && !$input->readListHasNext()) {
@@ -2291,18 +2291,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
               $_val135 = Map {};
               $_ktype137 = 0;
               $_vtype138 = 0;
-              $xfer += $input->readMapBegin($_ktype137, $_vtype138, $_size136);
+              $xfer += $input->readMapBegin(&$_ktype137, &$_vtype138, &$_size136);
               for ($_i140 = 0; $_size136 === null || $_i140 < $_size136; ++$_i140)
               {
                 if ($_size136 === null && !$input->readMapHasNext()) {
                   break;
                 }
                 $key141 = null;
-                $xfer += $input->readString($key141);
+                $xfer += $input->readString(&$key141);
                 $_size144 = 0;
                 $_val143 = Vector {};
                 $_etype147 = 0;
-                $xfer += $input->readListBegin($_etype147, $_size144);
+                $xfer += $input->readListBegin(&$_etype147, &$_size144);
                 for ($_i148 = 0; $_size144 === null || $_i148 < $_size144; ++$_i148)
                 {
                   if ($_size144 === null && !$input->readListHasNext()) {
@@ -2337,7 +2337,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size151 = 0;
             $_val150 = Vector {};
             $_etype154 = 0;
-            $xfer += $input->readListBegin($_etype154, $_size151);
+            $xfer += $input->readListBegin(&$_etype154, &$_size151);
             for ($_i155 = 0; $_size151 === null || $_i155 < $_size151; ++$_i155)
             {
               if ($_size151 === null && !$input->readListHasNext()) {
@@ -2347,14 +2347,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
               $_val157 = Map {};
               $_ktype159 = 0;
               $_vtype160 = 0;
-              $xfer += $input->readMapBegin($_ktype159, $_vtype160, $_size158);
+              $xfer += $input->readMapBegin(&$_ktype159, &$_vtype160, &$_size158);
               for ($_i162 = 0; $_size158 === null || $_i162 < $_size158; ++$_i162)
               {
                 if ($_size158 === null && !$input->readMapHasNext()) {
                   break;
                 }
                 $key163 = null;
-                $xfer += $input->readString($key163);
+                $xfer += $input->readString(&$key163);
                 $val164 = new \test\fixtures\A();
                 $xfer += $val164->read($input);
                 if ($key163 !== null && $val164 !== null) {
@@ -2378,7 +2378,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size166 = 0;
             $_val165 = Vector {};
             $_etype169 = 0;
-            $xfer += $input->readListBegin($_etype169, $_size166);
+            $xfer += $input->readListBegin(&$_etype169, &$_size166);
             for ($_i170 = 0; $_size166 === null || $_i170 < $_size166; ++$_i170)
             {
               if ($_size166 === null && !$input->readListHasNext()) {
@@ -2402,14 +2402,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val172 = Map {};
             $_ktype174 = 0;
             $_vtype175 = 0;
-            $xfer += $input->readMapBegin($_ktype174, $_vtype175, $_size173);
+            $xfer += $input->readMapBegin(&$_ktype174, &$_vtype175, &$_size173);
             for ($_i177 = 0; $_size173 === null || $_i177 < $_size173; ++$_i177)
             {
               if ($_size173 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key178 = null;
-              $xfer += $input->readString($key178);
+              $xfer += $input->readString(&$key178);
               $val179 = new \test\fixtures\B();
               $xfer += $val179->read($input);
               if ($key178 !== null && $val179 !== null) {
@@ -2445,14 +2445,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size182 = 0;
             $_etype185 = 0;
             $_val181 = Set{};
-            $xfer += $input->readSetBegin($_etype185, $_size182);
+            $xfer += $input->readSetBegin(&$_etype185, &$_size182);
             for ($_i186 = 0; $_size182 === null || $_i186 < $_size182; ++$_i186)
             {
               if ($_size182 === null && !$input->readSetHasNext()) {
                 break;
               }
               $elem187 = null;
-              $xfer += $input->readI32($elem187);
+              $xfer += $input->readI32(&$elem187);
               if ($elem187 !== null) {
                 $_val181->add($elem187);
               }
@@ -2468,14 +2468,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size189 = 0;
             $_val188 = Vector {};
             $_etype192 = 0;
-            $xfer += $input->readListBegin($_etype192, $_size189);
+            $xfer += $input->readListBegin(&$_etype192, &$_size189);
             for ($_i193 = 0; $_size189 === null || $_i193 < $_size189; ++$_i193)
             {
               if ($_size189 === null && !$input->readListHasNext()) {
                 break;
               }
               $elem194 = null;
-              $xfer += $input->readI32($elem194);
+              $xfer += $input->readI32(&$elem194);
               if ($elem194 !== null) {
                 $_val188 []= $elem194;
               }
@@ -2491,14 +2491,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size196 = 0;
             $_val195 = Vector {};
             $_etype199 = 0;
-            $xfer += $input->readListBegin($_etype199, $_size196);
+            $xfer += $input->readListBegin(&$_etype199, &$_size196);
             for ($_i200 = 0; $_size196 === null || $_i200 < $_size196; ++$_i200)
             {
               if ($_size196 === null && !$input->readListHasNext()) {
                 break;
               }
               $elem201 = null;
-              $xfer += $input->readString($elem201);
+              $xfer += $input->readString(&$elem201);
               if ($elem201 !== null) {
                 $_val195 []= $elem201;
               }
@@ -2515,16 +2515,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val202 = Map {};
             $_ktype204 = 0;
             $_vtype205 = 0;
-            $xfer += $input->readMapBegin($_ktype204, $_vtype205, $_size203);
+            $xfer += $input->readMapBegin(&$_ktype204, &$_vtype205, &$_size203);
             for ($_i207 = 0; $_size203 === null || $_i207 < $_size203; ++$_i207)
             {
               if ($_size203 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key208 = null;
-              $xfer += $input->readString($key208);
+              $xfer += $input->readString(&$key208);
               $val209 = null;
-              $xfer += $input->readI32($val209);
+              $xfer += $input->readI32(&$val209);
               if ($key208 !== null && $val209 !== null) {
                 $_val202[$key208] = $val209;
               }
@@ -2541,14 +2541,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val210 = Map {};
             $_ktype212 = 0;
             $_vtype213 = 0;
-            $xfer += $input->readMapBegin($_ktype212, $_vtype213, $_size211);
+            $xfer += $input->readMapBegin(&$_ktype212, &$_vtype213, &$_size211);
             for ($_i215 = 0; $_size211 === null || $_i215 < $_size211; ++$_i215)
             {
               if ($_size211 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key216 = null;
-              $xfer += $input->readString($key216);
+              $xfer += $input->readString(&$key216);
               $val217 = new \test\fixtures\A();
               $xfer += $val217->read($input);
               if ($key216 !== null && $val217 !== null) {
@@ -2567,25 +2567,25 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val218 = Map {};
             $_ktype220 = 0;
             $_vtype221 = 0;
-            $xfer += $input->readMapBegin($_ktype220, $_vtype221, $_size219);
+            $xfer += $input->readMapBegin(&$_ktype220, &$_vtype221, &$_size219);
             for ($_i223 = 0; $_size219 === null || $_i223 < $_size219; ++$_i223)
             {
               if ($_size219 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key224 = null;
-              $xfer += $input->readString($key224);
+              $xfer += $input->readString(&$key224);
               $_size227 = 0;
               $_val226 = Vector {};
               $_etype230 = 0;
-              $xfer += $input->readListBegin($_etype230, $_size227);
+              $xfer += $input->readListBegin(&$_etype230, &$_size227);
               for ($_i231 = 0; $_size227 === null || $_i231 < $_size227; ++$_i231)
               {
                 if ($_size227 === null && !$input->readListHasNext()) {
                   break;
                 }
                 $elem232 = null;
-                $xfer += $input->readI32($elem232);
+                $xfer += $input->readI32(&$elem232);
                 if ($elem232 !== null) {
                   $_val226 []= $elem232;
                 }
@@ -2608,18 +2608,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val233 = Map {};
             $_ktype235 = 0;
             $_vtype236 = 0;
-            $xfer += $input->readMapBegin($_ktype235, $_vtype236, $_size234);
+            $xfer += $input->readMapBegin(&$_ktype235, &$_vtype236, &$_size234);
             for ($_i238 = 0; $_size234 === null || $_i238 < $_size234; ++$_i238)
             {
               if ($_size234 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key239 = null;
-              $xfer += $input->readString($key239);
+              $xfer += $input->readString(&$key239);
               $_size242 = 0;
               $_val241 = Vector {};
               $_etype245 = 0;
-              $xfer += $input->readListBegin($_etype245, $_size242);
+              $xfer += $input->readListBegin(&$_etype245, &$_size242);
               for ($_i246 = 0; $_size242 === null || $_i246 < $_size242; ++$_i246)
               {
                 if ($_size242 === null && !$input->readListHasNext()) {
@@ -2649,25 +2649,25 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val248 = Map {};
             $_ktype250 = 0;
             $_vtype251 = 0;
-            $xfer += $input->readMapBegin($_ktype250, $_vtype251, $_size249);
+            $xfer += $input->readMapBegin(&$_ktype250, &$_vtype251, &$_size249);
             for ($_i253 = 0; $_size249 === null || $_i253 < $_size249; ++$_i253)
             {
               if ($_size249 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key254 = null;
-              $xfer += $input->readString($key254);
+              $xfer += $input->readString(&$key254);
               $_size257 = 0;
               $_etype260 = 0;
               $_val256 = Set{};
-              $xfer += $input->readSetBegin($_etype260, $_size257);
+              $xfer += $input->readSetBegin(&$_etype260, &$_size257);
               for ($_i261 = 0; $_size257 === null || $_i261 < $_size257; ++$_i261)
               {
                 if ($_size257 === null && !$input->readSetHasNext()) {
                   break;
                 }
                 $elem262 = null;
-                $xfer += $input->readI32($elem262);
+                $xfer += $input->readI32(&$elem262);
                 if ($elem262 !== null) {
                   $_val256->add($elem262);
                 }
@@ -2707,21 +2707,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           break;
         case 80:
           if ($ftype == \TType::STRING) {
-            $xfer += $input->readString($this->string_with_default_value);
+            $xfer += $input->readString(&$this->string_with_default_value);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 81:
           if ($ftype == \TType::I32) {
-            $xfer += $input->readI32($this->i32_with_default_value);
+            $xfer += $input->readI32(&$this->i32_with_default_value);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 82:
           if ($ftype == \TType::DOUBLE) {
-            $xfer += $input->readDouble($this->double_with_default_value);
+            $xfer += $input->readDouble(&$this->double_with_default_value);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -2749,14 +2749,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size267 = 0;
             $_etype270 = 0;
             $_val266 = Set{};
-            $xfer += $input->readSetBegin($_etype270, $_size267);
+            $xfer += $input->readSetBegin(&$_etype270, &$_size267);
             for ($_i271 = 0; $_size267 === null || $_i271 < $_size267; ++$_i271)
             {
               if ($_size267 === null && !$input->readSetHasNext()) {
                 break;
               }
               $elem272 = null;
-              $xfer += $input->readI32($elem272);
+              $xfer += $input->readI32(&$elem272);
               if ($elem272 !== null) {
                 $_val266->add($elem272);
               }
@@ -2773,16 +2773,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val273 = Map {};
             $_ktype275 = 0;
             $_vtype276 = 0;
-            $xfer += $input->readMapBegin($_ktype275, $_vtype276, $_size274);
+            $xfer += $input->readMapBegin(&$_ktype275, &$_vtype276, &$_size274);
             for ($_i278 = 0; $_size274 === null || $_i278 < $_size274; ++$_i278)
             {
               if ($_size274 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key279 = null;
-              $xfer += $input->readI32($key279);
+              $xfer += $input->readI32(&$key279);
               $val280 = null;
-              $xfer += $input->readString($val280);
+              $xfer += $input->readString(&$val280);
               if ($key279 !== null && $val280 !== null) {
                 $_val273[$key279] = $val280;
               }
@@ -2798,14 +2798,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_size282 = 0;
             $_val281 = Vector {};
             $_etype285 = 0;
-            $xfer += $input->readListBegin($_etype285, $_size282);
+            $xfer += $input->readListBegin(&$_etype285, &$_size282);
             for ($_i286 = 0; $_size282 === null || $_i286 < $_size282; ++$_i286)
             {
               if ($_size282 === null && !$input->readListHasNext()) {
                 break;
               }
               $elem287 = null;
-              $xfer += $input->readString($elem287);
+              $xfer += $input->readString(&$elem287);
               if ($elem287 !== null) {
                 $_val281 []= $elem287;
               }
@@ -2822,25 +2822,25 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             $_val288 = Map {};
             $_ktype290 = 0;
             $_vtype291 = 0;
-            $xfer += $input->readMapBegin($_ktype290, $_vtype291, $_size289);
+            $xfer += $input->readMapBegin(&$_ktype290, &$_vtype291, &$_size289);
             for ($_i293 = 0; $_size289 === null || $_i293 < $_size289; ++$_i293)
             {
               if ($_size289 === null && !$input->readMapHasNext()) {
                 break;
               }
               $key294 = null;
-              $xfer += $input->readString($key294);
+              $xfer += $input->readString(&$key294);
               $_size297 = 0;
               $_val296 = Vector {};
               $_etype300 = 0;
-              $xfer += $input->readListBegin($_etype300, $_size297);
+              $xfer += $input->readListBegin(&$_etype300, &$_size297);
               for ($_i301 = 0; $_size297 === null || $_i301 < $_size297; ++$_i301)
               {
                 if ($_size297 === null && !$input->readListHasNext()) {
                   break;
                 }
                 $elem302 = null;
-                $xfer += $input->readI32($elem302);
+                $xfer += $input->readI32(&$elem302);
                 if ($elem302 !== null) {
                   $_val296 []= $elem302;
                 }
