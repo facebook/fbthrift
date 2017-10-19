@@ -15,11 +15,11 @@
  */
 #define BOOST_TEST_MODULE FrozenTest
 
-#include <folly/Conv.h>
-#include <folly/Hash.h>
 #include <folly/Benchmark.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <folly/Conv.h>
+#include <folly/hash/Hash.h>
 #include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 using namespace FrozenTypes;
 using std::string;
