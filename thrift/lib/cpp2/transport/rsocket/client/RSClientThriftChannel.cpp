@@ -79,11 +79,13 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
     auto ref = this->ref_from_this(this);
     SingleObserverBase<Payload>::onSubscribe(std::move(subscription));
 
-    if (timeout_.count() > 0) {
-      auto evb = callback_->getEventBase();
-      evb->runInEventBaseThread(
-          [this]() { timer_.scheduleTimeout(this, timeout_); });
-    }
+    auto evb = callback_->getEventBase();
+    evb->runInEventBaseThread([this]() {
+      callback_->onThriftRequestSent();
+      if (timeout_.count() > 0) {
+        timer_.scheduleTimeout(this, timeout_);
+      }
+    });
   }
 
   void onSuccess(Payload payload) override {
@@ -182,20 +184,6 @@ void RSClientThriftChannel::sendThriftRequest(
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
 
-  // TODO(geleri): Please replace this temporary code with the right
-  // version.  Now that unit tests expect requestSent() to be called,
-  // I needed to add this here to keep the tests passing.  This code
-  // is completely equivalent to code at the end of
-  // SingleRpcChannel::sendThriftRequest().
-  auto evb = callback->getEventBase();
-  if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-    evb->runInEventBaseThread(
-        [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
-  } else {
-    evb->runInEventBaseThread(
-        [cb = callback.get()]() mutable { cb->onThriftRequestSent(); });
-  }
-
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(
@@ -216,7 +204,7 @@ void RSClientThriftChannel::sendThriftRequest(
 void RSClientThriftChannel::sendSingleRequestNoResponse(
     std::unique_ptr<RequestRpcMetadata> requestMetadata,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback>) noexcept {
+    std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(requestMetadata);
 
   if (channelCounters_.incPendingRequests()) {
@@ -229,6 +217,10 @@ void RSClientThriftChannel::sendSingleRequestNoResponse(
   } else {
     LOG(ERROR) << "max number of pending requests is exceeded";
   }
+
+  auto cbEvb = callback->getEventBase();
+  cbEvb->runInEventBaseThread(
+      [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
 }
 
 void RSClientThriftChannel::sendSingleRequestResponse(
@@ -242,9 +234,7 @@ void RSClientThriftChannel::sendSingleRequestResponse(
   }
 
   auto singleObserver = yarpl::make_ref<TimedSingleObserver>(
-      std::forward<std::unique_ptr<ThriftClientCallback>>(callback),
-      timeout,
-      channelCounters_);
+      std::move(callback), timeout, channelCounters_);
 
   if (channelCounters_.incPendingRequests()) {
     singleObserver->setDecrementPendingRequestCounter();
