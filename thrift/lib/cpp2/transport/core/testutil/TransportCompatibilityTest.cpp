@@ -36,7 +36,7 @@ using namespace apache::thrift;
 using namespace testutil::testservice;
 
 TransportCompatibilityTest::TransportCompatibilityTest()
-    : workerThread_("RSRequestResponseTest_WorkerThread") {
+    : workerThread_("TransportCompatibilityTest_WorkerThread") {
   setupServer();
 }
 
@@ -148,13 +148,13 @@ class TimeoutTestCallback : public RequestCallback {
     requestSentCalled_ = true;
   }
   void replyReceived(ClientReceiveState&& /*crs*/) override {
-    // EXPECT_TRUE(requestSentCalled_); TODO: uncomment after fixing code.
+    EXPECT_TRUE(requestSentCalled_);
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(shouldTimeout_);
     callbackReceived_ = true;
   }
   void requestError(ClientReceiveState&& crs) override {
-    // EXPECT_TRUE(requestSentCalled_); TODO: uncomment after fixing code.
+    EXPECT_TRUE(requestSentCalled_);
     EXPECT_TRUE(crs.isException());
     EXPECT_TRUE(crs.exception()
                     .is_compatible_with<
@@ -279,7 +279,7 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
     callSleep(client.get(), 1, 100);
     callSleep(client.get(), 100, 0);
-    /* Sleep to give time for all callback to be completed */
+    /* Sleep to give time for all callbacks to be completed */
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   });

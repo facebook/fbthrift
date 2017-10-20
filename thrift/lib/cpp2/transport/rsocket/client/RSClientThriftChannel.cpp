@@ -181,6 +181,21 @@ void RSClientThriftChannel::sendThriftRequest(
 
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
+
+  // TODO(geleri): Please replace this temporary code with the right
+  // version.  Now that unit tests expect requestSent() to be called,
+  // I needed to add this here to keep the tests passing.  This code
+  // is completely equivalent to code at the end of
+  // SingleRpcChannel::sendThriftRequest().
+  auto evb = callback->getEventBase();
+  if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+    evb->runInEventBaseThread(
+        [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
+  } else {
+    evb->runInEventBaseThread(
+        [cb = callback.get()]() mutable { cb->onThriftRequestSent(); });
+  }
+
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(

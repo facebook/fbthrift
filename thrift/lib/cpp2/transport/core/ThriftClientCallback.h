@@ -44,6 +44,12 @@ class ThriftClientCallback {
   ThriftClientCallback(const ThriftClientCallback&) = delete;
   ThriftClientCallback& operator=(const ThriftClientCallback&) = delete;
 
+  // Called from the channel once the request has been sent.
+  //
+  // Calls must be scheduled on the event base obtained from
+  // "getEventBase()".
+  void onThriftRequestSent();
+
   // Called from the channel at the end of a single response RPC.
   // This is not called for streaming response RPCs.
   //
@@ -60,8 +66,8 @@ class ThriftClientCallback {
   // "getEventBase()".
   void onError(folly::exception_wrapper ex) noexcept;
 
-  // Returns the event base on which calls to "onThriftResponse()"
-  // and "onError()" must be scheduled.
+  // Returns the event base on which calls to "onThriftRequestSent()",
+  // "onThriftResponse()", and "onError()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
  private:

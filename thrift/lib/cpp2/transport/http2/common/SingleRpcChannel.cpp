@@ -104,27 +104,22 @@ void SingleRpcChannel::sendThriftRequest(
   DCHECK(metadata->__isset.protocol);
   DCHECK(metadata->__isset.name);
   DCHECK(metadata->__isset.kind);
-  DCHECK(payload);
   DCHECK(
       metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
       metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  DCHECK(payload);
+  DCHECK(callback);
   VLOG(2) << "sendThriftRequest:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
-  if (metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
-    DCHECK(callback);
-    callback_ = std::move(callback);
-  }
+  auto callbackEvb = callback->getEventBase();
   try {
     httpTransaction_ = h2ClientConnection_->newTransaction(this);
   } catch (TTransportException& te) {
-    if (callback_) {
-      auto evb = callback_->getEventBase();
-      evb->runInEventBaseThread([evbCallback = std::move(callback_),
-                                 evbTe = std::move(te)]() mutable {
-        evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
-            std::move(evbTe)));
-      });
-    }
+    callbackEvb->runInEventBaseThread([evbCallback = std::move(callback),
+                                       evbTe = std::move(te)]() mutable {
+      evbCallback->onError(
+          folly::make_exception_wrapper<TTransportException>(std::move(evbTe)));
+    });
     return;
   }
   HTTPMessage msg;
@@ -160,6 +155,20 @@ void SingleRpcChannel::sendThriftRequest(
   httpTransaction_->sendHeaders(msg);
   httpTransaction_->sendBody(std::move(payload));
   httpTransaction_->sendEOM();
+  // For oneway calls, we move "callback" to "callbackEvb" since we do
+  // not require the callback any more.  For twoway calls, we move
+  // "callback" to "callback_" and use a raw pointer to call
+  // "onThriftRequestSent()".  This is safe because "callback_" will
+  // be eventually moved to this same thread to call either
+  // "onThriftResponse()" or "onThriftError()".
+  if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+    callbackEvb->runInEventBaseThread(
+        [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
+  } else {
+    callback_ = std::move(callback);
+    callbackEvb->runInEventBaseThread(
+        [cb = callback_.get()]() mutable { cb->onThriftRequestSent(); });
+  }
   receivedThriftRPC_ = true;
 }
 

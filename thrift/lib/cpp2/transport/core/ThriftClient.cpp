@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 
 #include <folly/Baton.h>
+#include <folly/io/async/Request.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
@@ -169,11 +170,7 @@ uint32_t ThriftClient::sendRequestHelper(
     std::unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header,
     EventBase* callbackEvb) {
-  // TODO: We'll deal with properties such as timeouts later.  Timeouts
-  // are of multiple kinds and can be set in different ways - so need to
-  // understand this first.
-  DestructorGuard dg(this); //// understand what this and
-                            //// RequestContextScopeGuard are doing!!!!
+  DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
   std::shared_ptr<ThriftChannelIf> channel;
   try {
@@ -226,34 +223,20 @@ uint32_t ThriftClient::sendRequestHelper(
   if (!metadata->otherMetadata.empty()) {
     metadata->__isset.otherMetadata = true;
   }
-  std::unique_ptr<ThriftClientCallback> callback;
-  if (!oneway) {
-    callback = std::make_unique<ThriftClientCallback>(
-        callbackEvb,
-        std::move(cb),
-        std::move(ctx),
-        isSecurityActive(),
-        protocolId_);
-  }
-  connection_->getEventBase()->runInEventBaseThread([
-    evbChannel = channel,
-    evbMetadata = std::move(metadata),
-    evbBuf = std::move(buf),
-    evbCallback = std::move(callback),
-    oneway,
-    evbCb = std::move(cb)
-  ]() mutable {
-    evbChannel->sendThriftRequest(
-        std::move(evbMetadata), std::move(evbBuf), std::move(evbCallback));
-    if (oneway) {
-      // TODO: We only invoke requestSent for oneway calls.  I
-      // don't think it use used for any other kind of call.
-      // Verify.
-      // TODO: Actually we do need to callback for twoway also.
-      // But evbCb may have been deallocated by now.  Fix this.
-      evbCb->requestSent();
-    }
-  });
+  auto callback = std::make_unique<ThriftClientCallback>(
+      callbackEvb,
+      std::move(cb),
+      std::move(ctx),
+      isSecurityActive(),
+      protocolId_);
+  connection_->getEventBase()->runInEventBaseThread(
+      [evbChannel = channel,
+       evbMetadata = std::move(metadata),
+       evbBuf = std::move(buf),
+       evbCallback = std::move(callback)]() mutable {
+        evbChannel->sendThriftRequest(
+            std::move(evbMetadata), std::move(evbBuf), std::move(evbCallback));
+      });
   return 0;
 }
 

@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 
+#include <folly/io/async/Request.h>
 #include <glog/logging.h>
 
 namespace apache {
@@ -37,6 +38,13 @@ ThriftClientCallback::ThriftClientCallback(
       isSecurityActive_(isSecurityActive),
       protoId_(protoId) {}
 
+void ThriftClientCallback::onThriftRequestSent() {
+  if (cb_) {
+    folly::RequestContextScopeGuard rctx(cb_->context_);
+    cb_->requestSent();
+  }
+}
+
 void ThriftClientCallback::onThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
@@ -48,6 +56,7 @@ void ThriftClientCallback::onThriftResponse(
     if (metadata->__isset.otherMetadata) {
       tHeader->setReadHeaders(std::move(metadata->otherMetadata));
     }
+    folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->replyReceived(ClientReceiveState(
         protoId_,
         std::move(payload),
