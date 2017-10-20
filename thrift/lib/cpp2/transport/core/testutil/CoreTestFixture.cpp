@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <string>
 
 namespace apache {
@@ -111,6 +112,7 @@ bool CoreTestFixture::deserializeException(
     int32_t protoSeqId;
     reader->setInput(buf);
     reader->readMessageBegin(fname, mtype, protoSeqId);
+    EXPECT_EQ(T_EXCEPTION, mtype);
     tae->read(reader.get());
     return true;
   } catch (...) {

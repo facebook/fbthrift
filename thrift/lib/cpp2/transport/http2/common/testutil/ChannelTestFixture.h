@@ -18,6 +18,7 @@
 
 #include <gtest/gtest.h>
 
+#include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
@@ -52,11 +53,13 @@ class ChannelTestFixture : public testing::Test {
       const std::string& inputPayload,
       std::string::size_type chunkSize,
       std::unordered_map<std::string, std::string>*& outputHeaders,
-      std::string& outputPayload);
+      folly::IOBuf*& outputPayload);
 
  protected:
   std::unique_ptr<folly::EventBase> eventBase_;
   std::unique_ptr<FakeResponseHandler> responseHandler_;
+
+  std::string toString(folly::IOBuf* buf);
 };
 
 } // namespace thrift

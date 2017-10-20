@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
@@ -86,6 +87,11 @@ TEST_F(CoreTestFixture, SendErrorWrapped) {
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
     processor_.onThriftRequest(std::move(metadata), request.move(), channel);
   });
+
+  ResponseRpcMetadata* metadata = channel_->getMetadata();
+  auto iter = metadata->otherMetadata.find("ex");
+  EXPECT_NE(metadata->otherMetadata.end(), iter);
+  EXPECT_EQ(kQueueOverloadedErrorCode, iter->second);
 
   TApplicationException tae;
   EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
