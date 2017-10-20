@@ -31,7 +31,7 @@ namespace thrift {
 namespace {
 
 // Class for managing lifetime of objects supporting an HTTP2 session.
-class HTTP2RoutingSessionManager : public proxygen::EmptyInfoCallback {
+class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback {
  public:
   ~HTTP2RoutingSessionManager() = default;
   proxygen::HTTPDownstreamSession* CreateSession(
