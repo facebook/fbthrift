@@ -34,7 +34,8 @@ class RSClientConnection : public ClientConnectionIf {
   std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
   folly::EventBase* getEventBase() const override;
-  apache::thrift::async::TAsyncTransport* getTransport() override;
+  apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
+  getTransport() override;
   bool good() override;
   ClientChannel::SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* evb) override;

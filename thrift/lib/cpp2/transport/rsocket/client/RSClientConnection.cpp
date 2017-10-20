@@ -16,7 +16,9 @@
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h"
 
 #include <folly/io/async/EventBase.h>
+#include <rsocket/framing/FramedDuplexConnection.h>
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
+#include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 namespace apache {
@@ -48,13 +50,27 @@ folly::EventBase* RSClientConnection::getEventBase() const {
   return evb_;
 }
 
-apache::thrift::async::TAsyncTransport* RSClientConnection::getTransport() {
-  LOG(FATAL) << "not implemented";
+apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
+RSClientConnection::getTransport() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  if (rsRequester_) {
+    DuplexConnection* connection = rsRequester_->getConnection();
+    if (auto framedConnection =
+            dynamic_cast<FramedDuplexConnection*>(connection)) {
+      connection = framedConnection->getConnection();
+    }
+    auto* tcpConnection = dynamic_cast<TcpDuplexConnection*>(connection);
+    CHECK_NOTNULL(tcpConnection);
+    return dynamic_cast<apache::thrift::async::TAsyncTransport*>(
+        tcpConnection->getTransport());
+  }
+  return nullptr;
 }
 
 bool RSClientConnection::good() {
-  // TODO: Temporary implementation.
-  return rsClient_.get();
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  auto const socket = getTransport();
+  return socket && socket->good();
 }
 
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
