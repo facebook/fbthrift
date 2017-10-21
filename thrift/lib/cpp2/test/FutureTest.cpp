@@ -35,7 +35,7 @@
 
 #include <folly/Executor.h>
 #include <folly/MapUtil.h>
-#include <folly/futures/ManualExecutor.h>
+#include <folly/executors/ManualExecutor.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
