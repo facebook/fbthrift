@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 
 #include <glog/logging.h>
@@ -22,11 +21,11 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#include <folly/stats/BucketedTimeSeries-defs.h>
 #include <folly/Memory.h>
 #include <folly/String.h>
-#include <folly/ThreadName.h>
 #include <folly/portability/GFlags.h>
+#include <folly/stats/BucketedTimeSeries-defs.h>
+#include <folly/system/ThreadName.h>
 
 // DO NOT modify this flag from your application
 DEFINE_string(

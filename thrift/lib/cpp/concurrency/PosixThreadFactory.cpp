@@ -26,10 +26,10 @@
 #include <iostream>
 
 #include <folly/String.h>
-#include <folly/ThreadId.h>
-#include <folly/ThreadName.h>
 #include <folly/portability/PThread.h>
 #include <folly/portability/SysResource.h>
+#include <folly/system/ThreadId.h>
+#include <folly/system/ThreadName.h>
 #include <glog/logging.h>
 
 namespace apache { namespace thrift { namespace concurrency {

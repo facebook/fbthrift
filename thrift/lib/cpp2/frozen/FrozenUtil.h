@@ -18,8 +18,8 @@
 #include <stdexcept>
 
 #include <folly/File.h>
-#include <folly/MemoryMapping.h>
 #include <folly/portability/GFlags.h>
+#include <folly/system/MemoryMapping.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/thrift/gen-cpp/frozen_constants.h>
