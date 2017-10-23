@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <iostream>
 #include <gtest/gtest.h>
 
 #include <fatal/test/random_data.h>
+#include <folly/container/Foreach.h>
 #include <thrift/lib/cpp2/util/MapCopy.h>
-#include <folly/Foreach.h>
 
 #include <map>
 #include <vector>
