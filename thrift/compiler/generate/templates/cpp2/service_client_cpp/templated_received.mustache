@@ -87,81 +87,21 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:stream?%>
 <%/type:void?%>
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-<%^service:frozen2?%>
-      x.read(prot);
-<%/service:frozen2?%>
-<%#service:frozen2?%>
-      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
-<%/service:frozen2?%>
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("<%function:name%>") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    <%service:name%>_<%function:name%>_presult result;
 <%#type:stream?%>
-  assert(false); // we're a stream
+  return apache::thrift::detail::ac::recv_wrapped_void_return<
+      <%service:name%>_<%function:name%>_presult>(
+          "<%function:name%>", prot, state);
 <%/type:stream?%>
-<%^type:stream?%>
-<%^type:void?%>
-    result.get<0>().value = &_return;
+<%#type:void?%>
+  return apache::thrift::detail::ac::recv_wrapped_void_return<
+      <%service:name%>_<%function:name%>_presult>(
+          "<%function:name%>", prot, state);
 <%/type:void?%>
-<%/type:stream?%>
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-<%^type:void?%>
-    if (result.getIsSet(0)) {
-      // _return pointer has been filled
-      return; // from try_and_catch
-    }
-<%/type:void?%>
-<%#function:exceptions%>
-    if (result.getIsSet(<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>)) {
-      interior_ew = folly::make_exception_wrapper<<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>>(result.get<<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>>().ref());
-      return; // from try_and_catch
-    }
-<%/function:exceptions%>
-<%^type:void?%>
-    else {
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
-      return; // from try_and_catch
-    }
-<%/type:void?%>
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
+<%^type:void?%><%^type:stream?%>
+  return apache::thrift::detail::ac::recv_wrapped<
+      <%service:name%>_<%function:name%>_presult>(
+          "<%function:name%>", prot, state, _return);
+<%/type:stream?%><%/type:void?%>
 }
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

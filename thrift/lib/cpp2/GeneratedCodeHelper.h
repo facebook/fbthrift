@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
@@ -244,6 +245,7 @@ class ThriftPresult : private std::tuple<Field...>,
   typedef detail::IsSetHelper<hasIsSet, sizeof...(Field)> CurIsSetHelper;
 
  public:
+  using size = std::tuple_size<Fields>;
 
   CurIsSetHelper& isSet() { return *this; }
   const CurIsSetHelper& isSet() const { return *this; }
@@ -592,6 +594,129 @@ class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
 //  AsyncClient helpers
 namespace detail {
 namespace ac {
+
+template <typename IntegerSequence>
+struct foreach_index_;
+
+template <std::size_t... Ints>
+struct foreach_index_<folly::index_sequence<Ints...>> {
+  template <typename F>
+  FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN static void go(F&& f) {
+    using _ = int[];
+    void(_{(void(f(std::integral_constant<std::size_t, Ints>{})), 0)...});
+  }
+};
+
+template <std::size_t Size, typename F>
+FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach_index(F&& f) {
+  foreach_index_<folly::make_index_sequence<Size>>::go(std::forward<F>(f));
+}
+
+template <bool HasReturnType, typename PResult>
+folly::exception_wrapper extract_exn(PResult& result) {
+  auto ew = folly::exception_wrapper();
+  if (HasReturnType && result.getIsSet(0)) {
+    return ew;
+  }
+  foreach_index<PResult::size::value - (HasReturnType ? 1 : 0)>([&](auto _) {
+    constexpr auto const kIndex = _.value + (HasReturnType ? 1 : 0);
+    if (!ew && result.getIsSet(kIndex)) {
+      auto& fdata = result.template get<kIndex>();
+      ew = folly::exception_wrapper(std::move(fdata.ref()));
+    }
+  });
+  if (!ew && HasReturnType) {
+    ew = folly::make_exception_wrapper<TApplicationException>(
+        TApplicationException::TApplicationExceptionType::MISSING_RESULT,
+        "failed: unknown result");
+  }
+  return ew;
+}
+
+template <typename Protocol, typename PResult>
+folly::exception_wrapper recv_wrapped_helper(
+    const char* method,
+    Protocol* prot,
+    ClientReceiveState& state,
+    PResult& result) {
+  ContextStack* ctx = state.ctx();
+  std::string fname;
+  int32_t protoSeqId = 0;
+  MessageType mtype;
+  ctx->preRead();
+  try {
+    prot->readMessageBegin(fname, mtype, protoSeqId);
+    if (mtype == T_EXCEPTION) {
+      TApplicationException x;
+      detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      return folly::exception_wrapper(std::move(x));
+    }
+    if (mtype != T_REPLY) {
+      prot->skip(protocol::T_STRUCT);
+      prot->readMessageEnd();
+      return folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::TApplicationExceptionType::
+              INVALID_MESSAGE_TYPE);
+    }
+    if (fname.compare(method) != 0) {
+      prot->skip(protocol::T_STRUCT);
+      prot->readMessageEnd();
+      return folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+    }
+    SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    return folly::exception_wrapper();
+  } catch (TException& e) {
+    return folly::exception_wrapper(std::current_exception(), e);
+  }
+}
+
+template <typename PResult, typename Protocol>
+folly::exception_wrapper recv_wrapped_void_return(
+    const char* method,
+    Protocol* prot,
+    ClientReceiveState& state) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+  PResult result;
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<false>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
+}
+
+template <typename PResult, typename Protocol, typename ReturnT>
+folly::exception_wrapper recv_wrapped(
+    const char* method,
+    Protocol* prot,
+    ClientReceiveState& state,
+    ReturnT& _return) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+  PResult result;
+  result.template get<0>().value = &_return;
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<true>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
+}
 
 [[noreturn]] void throw_app_exn(char const* msg);
 } // namespace ac
