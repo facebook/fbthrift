@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
@@ -248,7 +249,13 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     return;
   }
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (!headers_->count(kHttpClientChannelKey)) {
+  if (headers_->count(kHttpClientChannelKey)) {
+    // Legacy support for JiaJie's code.
+    if (!stripEnvelope(metadata.get(), contents_)) {
+      sendThriftErrorResponse("Invalid envelope: see logs for error");
+      return;
+    }
+  } else {
     if (!extractEnvelopeInfoFromHeader(metadata.get())) {
       // sendThriftErrorResponse() will have been called from
       // extractEnvelopeInfoFromHeader().

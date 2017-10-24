@@ -327,21 +327,11 @@ class RpcOptions {
     writeHeaders_.swap(headers);
     return headers;
   }
-
-  // internal use only
-  const char* getMethodName() {
-    return methodName_;
-  }
-  void setMethodName(const char* name) {
-    methodName_ = name;
-  }
-
  private:
   std::chrono::milliseconds timeout_;
   PRIORITY priority_;
   std::chrono::milliseconds chunkTimeout_;
   std::chrono::milliseconds queueTimeout_;
-  const char* methodName_{nullptr};
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
@@ -428,12 +418,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   virtual folly::EventBase* getEventBase() const = 0;
 
   virtual uint16_t getProtocolId() = 0;
-
-  // does this request channel send RequestRpcMetadata before the request
-  // payload, or does it communicate metadata via {read,write}MessageBegin
-  virtual bool sendsRpcMetadata() const {
-    return false;
-  }
 };
 
 class ClientSyncCallback : public RequestCallback {
@@ -492,28 +476,16 @@ void clientSendT(
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
     bool oneway,
     bool sync) {
-  const bool sendsRpcMetadata = channel->sendsRpcMetadata();
-
   size_t bufSize = sizefunc(prot);
-  if (!sendsRpcMetadata) {
-    bufSize += prot->serializedMessageSize(methodName);
-  }
-
+  bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   prot->setOutput(&queue, bufSize);
   auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
-
   try {
     ctx->preWrite();
-
-    if (sendsRpcMetadata) {
-      writefunc(prot);
-    } else {
-      prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
-      writefunc(prot);
-      prot->writeMessageEnd();
-    }
-
+    prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
+    writefunc(prot);
+    prot->writeMessageEnd();
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
     smsg.buffer = queue.front();
@@ -526,8 +498,6 @@ void clientSendT(
     throw;
   }
 
-  // so the channel can access the method name
-  rpcOptions.setMethodName(methodName);
   if (sync) {
     channel->sendRequestSync(
         rpcOptions, std::move(callback), std::move(ctx), queue.move(), header);

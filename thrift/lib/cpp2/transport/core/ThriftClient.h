@@ -80,12 +80,6 @@ class ThriftClient : public ClientChannel {
 
   void setProtocolId(uint16_t protocolId);
 
-  // new client will use RequestRpcMetadata for communicating information
-  // previously held in the envelope (through {read,write}MessageBegin)
-  bool sendsRpcMetadata() const final {
-    return true;
-  }
-
   // begin RequestChannel methods
 
   uint32_t sendRequestSync(

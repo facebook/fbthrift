@@ -171,9 +171,6 @@ void RSClientThriftChannel::sendThriftRequest(
     return;
   }
 
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
-
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestResponse(
