@@ -863,26 +863,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
       std::shared_ptr<AsyncProcessorFactory> pFac) override {
     CHECK(configMutable());
     BaseThriftServer::setProcessorFactory(pFac);
-    thriftProcessor_.reset(new ThriftProcessor(getCpp2Processor()));
-    thriftProcessor_->setRequestExpirationFunction(
-        [this](
-            const RequestRpcMetadata& metadata,
-            std::chrono::milliseconds& queueTimeout,
-            std::chrono::milliseconds& taskTimeout) -> bool {
-          uint32_t clientQueueTimeoutMs = 0;
-          if (metadata.__isset.queueTimeoutMs) {
-            clientQueueTimeoutMs = metadata.queueTimeoutMs;
-          }
-          uint32_t clientTimeoutMs = 0;
-          if (metadata.__isset.clientTimeoutMs) {
-            clientTimeoutMs = metadata.clientTimeoutMs;
-          }
-          return this->getTaskExpireTimeForRequest(
-              std::chrono::milliseconds(clientQueueTimeoutMs),
-              std::chrono::milliseconds(clientTimeoutMs),
-              queueTimeout,
-              taskTimeout);
-        });
+    thriftProcessor_.reset(new ThriftProcessor(getCpp2Processor(), *this));
   }
 
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's

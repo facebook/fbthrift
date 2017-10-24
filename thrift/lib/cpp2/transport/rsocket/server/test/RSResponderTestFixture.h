@@ -17,6 +17,7 @@
 #include <folly/io/async/EventBase.h>
 #include <gtest/gtest.h>
 
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 
@@ -31,7 +32,8 @@ class RSResponderTestFixture : public testing::Test {
     threadManager_->start();
 
     auto cpp2Processor = service_.getProcessor();
-    processor_ = std::make_unique<ThriftProcessor>(std::move(cpp2Processor));
+    processor_ = std::make_unique<ThriftProcessor>(
+        std::move(cpp2Processor), serverConfigs_);
     processor_->setThreadManager(threadManager_.get());
 
     responder_ = std::make_unique<RSResponder>(processor_.get(), &eventBase_);
@@ -41,6 +43,7 @@ class RSResponderTestFixture : public testing::Test {
   ~RSResponderTestFixture() override = default;
 
  protected:
+  apache::thrift::server::ServerConfigsMock serverConfigs_;
   testing::StrictMock<testutil::testservice::TestServiceMock> service_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   std::unique_ptr<ThriftProcessor> processor_;

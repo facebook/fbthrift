@@ -21,6 +21,7 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 #include <thrift/lib/cpp2/transport/inmemory/test/gen-cpp2/Division.h>
 #include <memory>
@@ -98,7 +99,8 @@ void testClientWithHandler() {
   auto handler = std::make_shared<Handler>();
   auto pFac =
       std::make_shared<ThriftServerAsyncProcessorFactory<Handler>>(handler);
-  auto connection = std::make_shared<InMemoryConnection>(pFac);
+  apache::thrift::server::ServerConfigsMock serverConfigs;
+  auto connection = std::make_shared<InMemoryConnection>(pFac, serverConfigs);
   auto thriftClient = ThriftClient::Ptr(new ThriftClient(connection));
   thriftClient->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   auto divisionClient =

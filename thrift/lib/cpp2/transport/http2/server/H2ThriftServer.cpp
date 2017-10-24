@@ -69,7 +69,8 @@ uint64_t H2ThriftServer::getNumDroppedConnections() const {
 void H2ThriftServer::setup() {
   CHECK(cpp2Pfac_);
   initializeThreadManager();
-  processor_ = std::make_unique<ThriftProcessor>(cpp2Pfac_->getProcessor());
+  processor_ =
+      std::make_unique<ThriftProcessor>(cpp2Pfac_->getProcessor(), *this);
   processor_->setThreadManager(threadManager_.get());
 
   // Set the Proxygen server options.

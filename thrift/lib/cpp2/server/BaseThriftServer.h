@@ -24,14 +24,15 @@
 #include <vector>
 
 #include <folly/Memory.h>
+#include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 
 namespace apache {
 namespace thrift {
@@ -63,7 +64,8 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  *   Base class for thrift servers using cpp2 style generated code.
  */
 
-class BaseThriftServer : public apache::thrift::server::TServer {
+class BaseThriftServer : public apache::thrift::server::TServer,
+                         public apache::thrift::server::ServerConfigs {
  protected:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -307,7 +309,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return current setting.
    */
-  uint32_t getMaxRequests() const { return maxRequests_; }
+  uint32_t getMaxRequests() const {
+    return maxRequests_;
+  }
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
@@ -316,7 +320,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   void setMaxRequests(uint32_t maxRequests) { maxRequests_ = maxRequests; }
 
-  uint64_t getMaxResponseSize() const { return maxResponseSize_; }
+  uint64_t getMaxResponseSize() const override {
+    return maxResponseSize_;
+  }
 
   void setMaxResponseSize(uint64_t size) { maxResponseSize_ = size; }
 
@@ -645,7 +651,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
       std::chrono::milliseconds clientQueueTimeoutMs,
       std::chrono::milliseconds clientTimeoutMs,
       std::chrono::milliseconds& queueTimeout,
-      std::chrono::milliseconds& taskTimeout) const;
+      std::chrono::milliseconds& taskTimeout) const override;
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
 #include <folly/io/async/EventBase.h>
@@ -36,11 +37,12 @@ class EchoProcessor : public ThriftProcessor {
   // payload data that is sent back, as well as the event base in
   // which to schedule the callbacks.
   EchoProcessor(
+      const apache::thrift::server::ServerConfigs& serverConfigs,
       const std::string& key,
       const std::string& value,
       const std::string& trailer,
       folly::EventBase* evb)
-      : ThriftProcessor(std::unique_ptr<AsyncProcessor>()),
+      : ThriftProcessor(std::unique_ptr<AsyncProcessor>(), serverConfigs),
         key_(key),
         value_(value),
         trailer_(trailer),

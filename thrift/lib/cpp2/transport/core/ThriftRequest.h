@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
@@ -44,9 +45,11 @@ namespace thrift {
 class ThriftRequest : public ResponseChannel::Request {
  public:
   ThriftRequest(
+      const apache::thrift::server::ServerConfigs& serverConfigs,
       std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<RequestRpcMetadata> metadata)
-      : channel_(channel),
+      : serverConfigs_(serverConfigs),
+        channel_(channel),
         name_(metadata->name),
         kind_(metadata->kind),
         seqId_(metadata->seqId),
@@ -74,23 +77,7 @@ class ThriftRequest : public ResponseChannel::Request {
     reqContext_.setMethodName(metadata->name);
     reqContext_.setProtoSeqId(metadata->seqId);
 
-    // Server side timeouts
-    queueTimeout_.request_ = this;
-    taskTimeout_.request_ = this;
-  }
-
-  void scheduleTimeouts(
-      bool differentTimeouts,
-      std::chrono::milliseconds queueTimeout,
-      std::chrono::milliseconds taskTimeout) {
-    if (differentTimeouts) {
-      if (queueTimeout > std::chrono::milliseconds(0)) {
-        timer_.scheduleTimeout(&queueTimeout_, queueTimeout);
-      }
-    }
-    if (taskTimeout > std::chrono::milliseconds(0)) {
-      timer_.scheduleTimeout(&taskTimeout_, taskTimeout);
-    }
+    scheduleTimeouts(*metadata);
   }
 
   bool isActive() override {
@@ -162,6 +149,40 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
  private:
+  void scheduleTimeouts(RequestRpcMetadata& metadata) {
+    queueTimeout_.request_ = this;
+    taskTimeout_.request_ = this;
+
+    uint32_t clientQueueTimeoutMs = 0;
+    if (metadata.__isset.queueTimeoutMs) {
+      clientQueueTimeoutMs = metadata.queueTimeoutMs;
+    }
+    uint32_t clientTimeoutMs = 0;
+    if (metadata.__isset.clientTimeoutMs) {
+      clientTimeoutMs = metadata.clientTimeoutMs;
+    }
+    std::chrono::milliseconds queueTimeout;
+    std::chrono::milliseconds taskTimeout;
+    auto differentTimeouts = serverConfigs_.getTaskExpireTimeForRequest(
+        std::chrono::milliseconds(clientQueueTimeoutMs),
+        std::chrono::milliseconds(clientTimeoutMs),
+        queueTimeout,
+        taskTimeout);
+
+    // TODO: What does this do?
+    //  auto reqContext = request->getContext();
+    //  reqContext->setRequestTimeout(taskTimeout);
+
+    if (differentTimeouts) {
+      if (queueTimeout > std::chrono::milliseconds(0)) {
+        timer_.scheduleTimeout(&queueTimeout_, queueTimeout);
+      }
+    }
+    if (taskTimeout > std::chrono::milliseconds(0)) {
+      timer_.scheduleTimeout(&taskTimeout_, taskTimeout);
+    }
+  }
+
   class QueueTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequest* request_;
     void timeoutExpired() noexcept override {
@@ -204,6 +225,7 @@ class ThriftRequest : public ResponseChannel::Request {
   friend class TaskTimeout;
   friend class ThriftProcessor;
 
+  const apache::thrift::server::ServerConfigs& serverConfigs_;
   std::shared_ptr<ThriftChannelIf> channel_;
   std::string name_;
   RpcKind kind_;

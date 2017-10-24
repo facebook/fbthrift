@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
@@ -38,7 +39,9 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  explicit ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor);
+  explicit ThriftProcessor(
+      std::unique_ptr<AsyncProcessor> cpp2Processor,
+      const apache::thrift::server::ServerConfigs& serverConfigs);
 
   virtual ~ThriftProcessor() = default;
 
@@ -64,26 +67,14 @@ class ThriftProcessor {
     tm_ = tm;
   }
 
-  void setRequestExpirationFunction(
-      folly::Function<bool(
-          const RequestRpcMetadata& metadata,
-          std::chrono::milliseconds& queueTimeout,
-          std::chrono::milliseconds& taskTimeout)> func) {
-    getTaskExpireTimeForRequest_ = std::move(func);
-  }
-
  private:
   // Object of the generated AsyncProcessor subclass.
   std::unique_ptr<AsyncProcessor> cpp2Processor_;
+  // To access server specific fields.
+  const apache::thrift::server::ServerConfigs& serverConfigs_;
   // Thread manager that is used to run thrift handlers.
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;
-
-  folly::Function<bool(
-      const RequestRpcMetadata& metadata,
-      std::chrono::milliseconds& queueTimeout,
-      std::chrono::milliseconds& taskTimeout)>
-      getTaskExpireTimeForRequest_;
 
   // Schedule timeout for a request
   void scheduleTimeout(

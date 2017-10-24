@@ -26,12 +26,14 @@ namespace apache {
 namespace thrift {
 
 InMemoryConnection::InMemoryConnection(
-    std::shared_ptr<AsyncProcessorFactory> pFac) {
+    std::shared_ptr<AsyncProcessorFactory> pFac,
+    const apache::thrift::server::ServerConfigs& serverConfigs) {
   CHECK(FLAGS_num_cpu_threads > 0);
   threadManager_ =
       PriorityThreadManager::newPriorityThreadManager(FLAGS_num_cpu_threads);
   threadManager_->start();
-  processor_ = std::make_unique<ThriftProcessor>(pFac->getProcessor());
+  processor_ =
+      std::make_unique<ThriftProcessor>(pFac->getProcessor(), serverConfigs);
   processor_->setThreadManager(threadManager_.get());
 }
 

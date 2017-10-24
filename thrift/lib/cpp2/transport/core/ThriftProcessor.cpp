@@ -29,21 +29,10 @@ namespace thrift {
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
-ThriftProcessor::ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor)
-    : cpp2Processor_(std::move(cpp2Processor)) {
-  getTaskExpireTimeForRequest_ =
-      [](const RequestRpcMetadata&,
-         std::chrono::milliseconds& queueTimeout,
-         std::chrono::milliseconds& taskTimeout) -> bool {
-    // Dummy implementation
-    LOG(ERROR)
-        << "Call setRequestExpirationFunction function with the appropriate "
-           " lambda function.";
-    queueTimeout = std::chrono::milliseconds(0u);
-    taskTimeout = std::chrono::milliseconds(0u);
-    return true;
-  };
-}
+ThriftProcessor::ThriftProcessor(
+    std::unique_ptr<AsyncProcessor> cpp2Processor,
+    const apache::thrift::server::ServerConfigs& serverConfigs)
+    : cpp2Processor_(std::move(cpp2Processor)), serverConfigs_(serverConfigs) {}
 
 void ThriftProcessor::onThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
@@ -58,17 +47,8 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(metadata->__isset.seqId);
   DCHECK(metadata->__isset.kind);
 
-  std::chrono::milliseconds queueTimeout;
-  std::chrono::milliseconds taskTimeout;
-  auto differentTimeouts =
-      getTaskExpireTimeForRequest_(*metadata, queueTimeout, taskTimeout);
-  std::unique_ptr<ThriftRequest> request =
-      std::make_unique<ThriftRequest>(channel, std::move(metadata));
-  request->scheduleTimeouts(differentTimeouts, queueTimeout, taskTimeout);
-
-  // TODO: What does this do?
-  //  auto reqContext = request->getContext();
-  //  reqContext->setRequestTimeout(taskTimeout);
+  std::unique_ptr<ThriftRequest> request = std::make_unique<ThriftRequest>(
+      serverConfigs_, channel, std::move(metadata));
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();

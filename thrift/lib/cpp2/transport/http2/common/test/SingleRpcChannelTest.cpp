@@ -18,6 +18,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <memory>
@@ -34,7 +35,9 @@ class SingleRpcChannelTest
       public testing::WithParamInterface<string::size_type> {};
 
 TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
 
   // The following header settings can be removed once we serialize
@@ -70,7 +73,9 @@ INSTANTIATE_TEST_CASE_P(
     testing::Values(0, 1, 2, 4, 10));
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   string inputPayload = "";
@@ -88,7 +93,9 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoProtocol) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders[kRpcNameKey] = "foo";
   inputHeaders[kRpcKindKey] = "0";
@@ -107,7 +114,9 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoProtocol) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorBadProtocol) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders[kProtocolKey] = "bad";
   inputHeaders[kRpcNameKey] = "foo";
@@ -127,7 +136,9 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorBadProtocol) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoName) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders[kProtocolKey] = "2";
   inputHeaders[kRpcKindKey] = "0";
@@ -146,7 +157,9 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoName) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoKind) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders[kProtocolKey] = "2";
   inputHeaders[kRpcNameKey] = "foo";
@@ -165,7 +178,9 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoKind) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorBadKind) {
-  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders[kProtocolKey] = "2";
   inputHeaders[kRpcNameKey] = "foo";

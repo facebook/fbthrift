@@ -24,9 +24,9 @@
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeThreadManager.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <memory>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 
 namespace apache {
@@ -68,6 +68,7 @@ class CoreTestFixture : public testing::Test {
       TApplicationException* tae);
 
  protected:
+  apache::thrift::server::ServerConfigsMock serverConfigs_;
   testing::StrictMock<testutil::testservice::TestServiceMock> service_;
   std::shared_ptr<FakeThreadManager> threadManager_;
   ThriftProcessor processor_;

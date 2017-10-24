@@ -176,7 +176,6 @@ void TransportCompatibilityTest::callSleep(
     TestServiceAsyncClient* client,
     int32_t timeoutMs,
     int32_t sleepMs) {
-  // EXPECT_CALL(*handler_.get(), sleep_(sleepMs));
   auto cb = std::make_unique<TimeoutTestCallback>(timeoutMs < sleepMs);
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));

@@ -19,6 +19,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
@@ -42,7 +43,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     EventBaseManager::get()->setEventBase(eventBase_.get(), true);
     responseHandler_ = std::make_unique<FakeResponseHandler>(eventBase_.get());
     processor_ = std::make_unique<EchoProcessor>(
-        "extrakey", "extravalue", "<eom>", eventBase_.get());
+        serverConfigs_, "extrakey", "extravalue", "<eom>", eventBase_.get());
     // requestHandler_ deletes itself.
     requestHandler_ = new ThriftRequestHandler(processor_.get());
     requestHandler_->setResponseHandler(responseHandler_.get());
@@ -60,6 +61,7 @@ class ThriftRequestHandlerTest : public testing::Test {
   }
 
  protected:
+  apache::thrift::server::ServerConfigsMock serverConfigs_;
   std::unique_ptr<folly::EventBase> eventBase_;
   std::unique_ptr<FakeResponseHandler> responseHandler_;
   std::unique_ptr<EchoProcessor> processor_;

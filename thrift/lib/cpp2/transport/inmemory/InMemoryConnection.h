@@ -28,7 +28,9 @@ namespace thrift {
 
 class InMemoryConnection : public ClientConnectionIf {
  public:
-  InMemoryConnection(std::shared_ptr<AsyncProcessorFactory> pFac);
+  InMemoryConnection(
+      std::shared_ptr<AsyncProcessorFactory> pFac,
+      const apache::thrift::server::ServerConfigs& serverConfigs);
   virtual ~InMemoryConnection() override = default;
 
   InMemoryConnection(const InMemoryConnection&) = delete;
