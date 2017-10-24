@@ -338,9 +338,6 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
 
     def guessTypeIdFromFirstByte(self):
         self.skipWhitespace()
-        self.readJSONSyntaxChar(JSON_PAIR_SEPARATOR)
-        self.context.skipColon = True
-        self.skipWhitespace()
         byte = self.reader.peek()
         if byte == JSON_OBJECT_END or byte == JSON_ARRAY_END:
             return TType.STOP
@@ -504,7 +501,7 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
                     data = self.trans.read(2)
                     if sys.version_info[0] >= 3 and isinstance(data, bytes):
                         ch = json.JSONDecoder().decode(
-                                '"\\u00%s"' % str(data, 'utf-8'))
+                            '"\\u00%s"' % str(data, 'utf-8')).encode('utf-8')
                     else:
                         ch = json.JSONDecoder().decode('"\\u00%s"' % data)
                 else:
@@ -765,6 +762,20 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
             indentLevel=len(self.contexts)))
         self.skipWhitespace()
         fname = self.readJSONString()
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_PAIR_SEPARATOR)
+        self.context.skipColon = True
+        self.skipWhitespace()
+        if self.reader.peek() == b'n':
+            for i in range(4):
+                if self.reader.read() != b'null'[i:i + 1]:
+                    raise TProtocolException(
+                        TProtocolException.INVALID_DATA,
+                        "Bad data encountered in null",
+                    )
+
+            self.context.read(self.reader)  # "consume" the colon we skipped
+            return self.readFieldBegin()
 
         assert isinstance(self.spec, StructSpec)
         return self.spec.readFieldBegin(

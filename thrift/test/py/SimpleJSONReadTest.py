@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 import unittest
 import math
 
-from thrift.protocol import TSimpleJSONProtocol
+from thrift.protocol import TSimpleJSONProtocol, TProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 from thrift.util import Serializer
 
@@ -63,7 +63,6 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertTrue(math.isnan(stuff_read.aListOfDouble[2]))
 
     def test_unexpected_field(self):
-        ss = SomeStruct(anInteger=1)
         j = '{ "anInteger": 101, "unexpected": 111.1}'
         struct_read = readStuffFromJSON(j, struct_type=SomeStruct)
         self.assertEqual(struct_read.anInteger, 101)
@@ -139,6 +138,30 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff.aShort, 1)
         self.assertEqual(stuff.anInteger, 2)
         self.assertEqual(stuff.aLong, 3)
+
+    def test_foreign_json(self):
+        """
+        Not all JSON that we decode will be encoded by this python thrift
+        protocol implementation.  E.g. this encode implementation stuffs raw
+        unicode into the output, but we may use this implementation to decode
+        JSON from other implementations, which escape unicode (sometimes
+        incorrectly e.g. PHP).  And we may use this implementation to decode
+        JSON that was not encoded by thrift at all, which may contain nulls.
+        """
+        s = "a fancy e looks like \u00e9"
+        j = '{"aString": "a fancy e looks like \\u00e9", "anotherString": null, "anInteger": 10, "unknownField": null}'
+        stuff = Stuff()
+        Serializer.deserialize(
+            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+        self.assertEqual(stuff.aString, s)
+
+        def should_throw():
+            j = '{"aString": "foo", "anotherString": nullcorrupt}'
+            stuff = Stuff()
+            Serializer.deserialize(
+                TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+        self.assertRaises(TProtocol.TProtocolException, should_throw)
+
 
 if __name__ == '__main__':
     unittest.main()
