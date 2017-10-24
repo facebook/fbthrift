@@ -112,6 +112,8 @@ struct Writer {
   Writer(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
+    using Ops = Cpp2Ops<typename FieldData::ref_type>;
+
     if (!isset_.getIsSet(index)) {
       return 0;
     }
@@ -120,8 +122,8 @@ struct Writer {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot_->writeFieldBegin("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::write(prot_, &ex);
+    xfer += prot_->writeFieldBegin("", Ops::thriftType(), fid);
+    xfer += Ops::write(prot_, &ex);
     xfer += prot_->writeFieldEnd();
     return xfer;
   }
@@ -135,6 +137,8 @@ struct Sizer {
   Sizer(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
+    using Ops = Cpp2Ops<typename FieldData::ref_type>;
+
     if (!isset_.getIsSet(index)) {
       return 0;
     }
@@ -143,8 +147,8 @@ struct Sizer {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot_->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSize(prot_, &ex);
+    xfer += prot_->serializedFieldSize("", Ops::thriftType(), fid);
+    xfer += Ops::serializedSize(prot_, &ex);
     return xfer;
   }
  private:
@@ -157,6 +161,8 @@ struct SizerZC {
   SizerZC(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
+    using Ops = Cpp2Ops<typename FieldData::ref_type>;
+
     if (!isset_.getIsSet(index)) {
       return 0;
     }
@@ -165,8 +171,8 @@ struct SizerZC {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot_->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSizeZC(prot_, &ex);
+    xfer += prot_->serializedFieldSize("", Ops::thriftType(), fid);
+    xfer += Ops::serializedSizeZC(prot_, &ex);
     return xfer;
   }
  private:
@@ -181,7 +187,9 @@ struct Reader {
   {}
   template <typename FieldData>
   uint32_t operator()(FieldData& fieldData, int index) {
-    if (ftype_ != Cpp2Ops<typename FieldData::ref_type>::thriftType()) {
+    using Ops = Cpp2Ops<typename FieldData::ref_type>;
+
+    if (ftype_ != Ops::thriftType()) {
       return 0;
     }
 
@@ -193,7 +201,7 @@ struct Reader {
 
     success_ = true;
     isset_.setIsSet(index);
-    return Cpp2Ops<typename FieldData::ref_type>::read(prot_, &ex);
+    return Ops::read(prot_, &ex);
   }
  private:
   Protocol* prot_;
