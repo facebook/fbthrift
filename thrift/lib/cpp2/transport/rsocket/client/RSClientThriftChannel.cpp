@@ -15,7 +15,6 @@
  */
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h"
 
-#include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RPCSubscriber.h>
 
@@ -26,7 +25,6 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift::detail;
 using namespace rsocket;
 using namespace yarpl::single;
-using proxygen::WheelTimerInstance;
 
 std::unique_ptr<folly::IOBuf> RSClientThriftChannel::serializeMetadata(
     const RequestRpcMetadata& requestMetadata) {
@@ -47,6 +45,7 @@ std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
 }
 
 namespace {
+
 // This default value should match with the
 // H2ClientConnection::kDefaultTransactionTimeout's value.
 static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
@@ -55,17 +54,17 @@ static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
 // Adds a timer that timesout if the observer could not get its onSuccess or
 // onError methods being called in a specified time range, which causes onError
 // method to be called.
-class TimedSingleObserver : public SingleObserverBase<Payload>,
+class TimedSingleObserver : public SingleObserver<Payload>,
                             public folly::HHWheelTimer::Callback {
  public:
   TimedSingleObserver(
       std::unique_ptr<ThriftClientCallback> callback,
       std::chrono::milliseconds timeout,
       ChannelCounters& counters)
-      : timeout_(timeout),
-        timer_(timeout, callback->getEventBase()),
-        callback_(std::move(callback)),
-        counters_(counters) {}
+      : callback_(std::move(callback)),
+        counters_(counters),
+        timeout_(timeout),
+        timer_(callback_->getEventBase()->timer()) {}
 
   virtual ~TimedSingleObserver() {
     complete();
@@ -76,9 +75,8 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
   }
 
  protected:
-  void onSubscribe(Reference<SingleSubscription> subscription) override {
-    auto ref = this->ref_from_this(this);
-    SingleObserverBase<Payload>::onSubscribe(std::move(subscription));
+  void onSubscribe(Reference<SingleSubscription>) override {
+    // Note that we don't need the Subscription object.
 
     auto evb = callback_->getEventBase();
     evb->runInEventBaseThread([this]() {
@@ -101,10 +99,6 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
             std::move(payload.data));
       }
     });
-    if (SingleObserverBase<Payload>::subscription()) {
-      // TODO: can we get rid of calling the parent functions
-      SingleObserverBase<Payload>::onSuccess({});
-    }
   }
 
   void onError(folly::exception_wrapper ew) override {
@@ -119,10 +113,6 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
         // 2- time outs
       }
     });
-    if (SingleObserverBase<Payload>::subscription()) {
-      // TODO: can we get rid of calling the parent functions
-      SingleObserverBase<Payload>::onError({});
-    }
   }
 
   void timeoutExpired() noexcept override {
@@ -140,7 +130,6 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
     }
     alreadySignalled_ = true;
 
-    cancelTimeout();
     if (decrementPendingRequestCounter_) {
       counters_.decPendingRequests();
       decrementPendingRequestCounter_ = false;
@@ -149,11 +138,11 @@ class TimedSingleObserver : public SingleObserverBase<Payload>,
   }
 
  private:
-  std::chrono::milliseconds timeout_;
-  // TODO: WheelTimerInstance is part of Proxygen, we need to use another timer.
-  WheelTimerInstance timer_;
   std::unique_ptr<ThriftClientCallback> callback_;
   apache::thrift::detail::ChannelCounters& counters_;
+
+  std::chrono::milliseconds timeout_;
+  folly::HHWheelTimer& timer_;
 
   bool alreadySignalled_{false};
   bool decrementPendingRequestCounter_{false};
