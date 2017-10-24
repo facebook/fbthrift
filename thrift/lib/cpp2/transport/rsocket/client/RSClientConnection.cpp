@@ -107,6 +107,7 @@ void RSClientConnection::closeNow() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   if (rsClient_) {
     rsClient_->disconnect().get();
+    rsRequester_->closeSocket();
     rsRequester_.reset();
     rsClient_.reset();
   }
