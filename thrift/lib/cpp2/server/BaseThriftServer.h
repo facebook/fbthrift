@@ -617,6 +617,15 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
+   * Calls the twin function getTaskExpireTimeForRequest with the
+   * clientQueueTimeoutMs and clientTimeoutMs fields retrieved from the THeader.
+   */
+  bool getTaskExpireTimeForRequest(
+      const apache::thrift::transport::THeader& header,
+      std::chrono::milliseconds& queueTimeout,
+      std::chrono::milliseconds& taskTimeout) const;
+
+  /**
    * A task has two timeouts:
    *
    * If the task hasn't started processing the request by the time the soft
@@ -633,7 +642,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * @returns whether or not the soft and hard timeouts are different
    */
   bool getTaskExpireTimeForRequest(
-      const apache::thrift::transport::THeader& header,
+      std::chrono::milliseconds clientQueueTimeoutMs,
+      std::chrono::milliseconds clientTimeoutMs,
       std::chrono::milliseconds& queueTimeout,
       std::chrono::milliseconds& taskTimeout) const;
 

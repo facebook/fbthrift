@@ -51,7 +51,8 @@ class ThriftRequest : public ResponseChannel::Request {
         kind_(metadata->kind),
         seqId_(metadata->seqId),
         active_(true),
-        reqContext_(&connContext_, &header_) {
+        reqContext_(&connContext_, &header_),
+        timer_(channel_->getEventBase()->timer()) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -72,6 +73,24 @@ class ThriftRequest : public ResponseChannel::Request {
     reqContext_.setMessageBeginSize(0);
     reqContext_.setMethodName(metadata->name);
     reqContext_.setProtoSeqId(metadata->seqId);
+
+    // Server side timeouts
+    queueTimeout_.request_ = this;
+    taskTimeout_.request_ = this;
+  }
+
+  void scheduleTimeouts(
+      bool differentTimeouts,
+      std::chrono::milliseconds queueTimeout,
+      std::chrono::milliseconds taskTimeout) {
+    if (differentTimeouts) {
+      if (queueTimeout > std::chrono::milliseconds(0)) {
+        timer_.scheduleTimeout(&queueTimeout_, queueTimeout);
+      }
+    }
+    if (taskTimeout > std::chrono::milliseconds(0)) {
+      timer_.scheduleTimeout(&taskTimeout_, taskTimeout);
+    }
   }
 
   bool isActive() override {
@@ -80,6 +99,7 @@ class ThriftRequest : public ResponseChannel::Request {
 
   void cancel() override {
     active_ = false;
+    cancelTimeout();
   }
 
   bool isOneway() override {
@@ -98,39 +118,43 @@ class ThriftRequest : public ResponseChannel::Request {
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::MessageChannel::SendCallback* /*cb*/ = nullptr) override {
-    auto metadata = std::make_unique<ResponseRpcMetadata>();
-    metadata->seqId = seqId_;
-    metadata->__isset.seqId = true;
-    metadata->otherMetadata = header_.releaseWriteHeaders();
-    auto* eh = header_.getExtraWriteHeaders();
-    if (eh) {
-      metadata->otherMetadata.insert(eh->begin(), eh->end());
+    if (isActive()) {
+      auto metadata = std::make_unique<ResponseRpcMetadata>();
+      metadata->seqId = seqId_;
+      metadata->__isset.seqId = true;
+      metadata->otherMetadata = header_.releaseWriteHeaders();
+      auto* eh = header_.getExtraWriteHeaders();
+      if (eh) {
+        metadata->otherMetadata.insert(eh->begin(), eh->end());
+      }
+      if (!metadata->otherMetadata.empty()) {
+        metadata->__isset.otherMetadata = true;
+      }
+      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
     }
-    if (!metadata->otherMetadata.empty()) {
-      metadata->__isset.otherMetadata = true;
-    }
-    channel_->sendThriftResponse(std::move(metadata), std::move(buf));
   }
 
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
       apache::thrift::MessageChannel::SendCallback* /*cb*/ = nullptr) override {
-    DCHECK(ew.is_compatible_with<TApplicationException>());
-    header_.setHeader("ex", exCode);
-    ew.with_exception([&](TApplicationException& tae) {
-      std::unique_ptr<folly::IOBuf> exbuf;
-      auto proto = header_.getProtocolId();
-      try {
-        exbuf = serializeError(proto, tae, name_, seqId_);
-      } catch (const protocol::TProtocolException& pe) {
-        // Should never happen.  Log an error and return an empty
-        // payload.
-        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
-                   << " what()=" << pe.what();
-      }
-      sendReply(std::move(exbuf));
-    });
+    if (isActive()) {
+      DCHECK(ew.is_compatible_with<TApplicationException>());
+      header_.setHeader("ex", exCode);
+      ew.with_exception([&](TApplicationException& tae) {
+        std::unique_ptr<folly::IOBuf> exbuf;
+        auto proto = header_.getProtocolId();
+        try {
+          exbuf = serializeError(proto, tae, name_, seqId_);
+        } catch (const protocol::TProtocolException& pe) {
+          // Should never happen.  Log an error and return an empty
+          // payload.
+          LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+                     << " what()=" << pe.what();
+        }
+        sendReply(std::move(exbuf));
+      });
+    }
   }
 
   std::shared_ptr<ThriftChannelIf> getChannel() {
@@ -138,6 +162,48 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
  private:
+  class QueueTimeout : public folly::HHWheelTimer::Callback {
+    ThriftRequest* request_;
+    void timeoutExpired() noexcept override {
+      if (!request_->reqContext_.getStartedProcessing()) {
+        request_->cancel();
+        if (!request_->isOneway()) {
+          request_->channel_->getEventBase()->runInEventBaseThread([this]() {
+            request_->sendErrorWrapped(
+                TApplicationException(
+                    TApplicationException::TApplicationExceptionType::TIMEOUT,
+                    "Queue Timeout"),
+                kTaskExpiredErrorCode,
+                nullptr);
+          });
+        }
+        cancelTimeout();
+      }
+    }
+    friend class ThriftRequest;
+  };
+  class TaskTimeout : public folly::HHWheelTimer::Callback {
+    ThriftRequest* request_;
+    void timeoutExpired() noexcept override {
+      request_->cancel();
+      if (!request_->isOneway()) {
+        request_->channel_->getEventBase()->runInEventBaseThread([this]() {
+          request_->sendErrorWrapped(
+              TApplicationException(
+                  TApplicationException::TApplicationExceptionType::TIMEOUT,
+                  "Task expired"),
+              kTaskExpiredErrorCode,
+              nullptr);
+        });
+      }
+      cancelTimeout();
+    }
+    friend class ThriftRequest;
+  };
+  friend class QueueTimeout;
+  friend class TaskTimeout;
+  friend class ThriftProcessor;
+
   std::shared_ptr<ThriftChannelIf> channel_;
   std::string name_;
   RpcKind kind_;
@@ -146,7 +212,16 @@ class ThriftRequest : public ResponseChannel::Request {
   transport::THeader header_;
   Cpp2ConnContext connContext_;
   Cpp2RequestContext reqContext_;
-};
 
+  // Timer is from channel_'s EventBase.
+  folly::HHWheelTimer& timer_;
+  QueueTimeout queueTimeout_;
+  TaskTimeout taskTimeout_;
+
+  void cancelTimeout() {
+    queueTimeout_.cancelTimeout();
+    taskTimeout_.cancelTimeout();
+  }
+};
 } // namespace thrift
 } // namespace apache

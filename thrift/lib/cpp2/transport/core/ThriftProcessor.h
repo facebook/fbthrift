@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <stdint.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
@@ -37,8 +38,7 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  explicit ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor)
-      : cpp2Processor_(std::move(cpp2Processor)) {}
+  explicit ThriftProcessor(std::unique_ptr<AsyncProcessor> cpp2Processor);
 
   virtual ~ThriftProcessor() = default;
 
@@ -64,12 +64,31 @@ class ThriftProcessor {
     tm_ = tm;
   }
 
+  void setRequestExpirationFunction(
+      folly::Function<bool(
+          const RequestRpcMetadata& metadata,
+          std::chrono::milliseconds& queueTimeout,
+          std::chrono::milliseconds& taskTimeout)> func) {
+    getTaskExpireTimeForRequest_ = std::move(func);
+  }
+
  private:
   // Object of the generated AsyncProcessor subclass.
   std::unique_ptr<AsyncProcessor> cpp2Processor_;
   // Thread manager that is used to run thrift handlers.
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;
+
+  folly::Function<bool(
+      const RequestRpcMetadata& metadata,
+      std::chrono::milliseconds& queueTimeout,
+      std::chrono::milliseconds& taskTimeout)>
+      getTaskExpireTimeForRequest_;
+
+  // Schedule timeout for a request
+  void scheduleTimeout(
+      folly::HHWheelTimer::Callback* callback,
+      std::chrono::milliseconds timeout);
 };
 
 } // namespace thrift

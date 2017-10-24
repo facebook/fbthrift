@@ -92,9 +92,21 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
     const apache::thrift::transport::THeader& requestHeader,
     std::chrono::milliseconds& queueTimeout,
     std::chrono::milliseconds& taskTimeout) const {
+  return getTaskExpireTimeForRequest(
+      requestHeader.getClientQueueTimeout(),
+      requestHeader.getClientTimeout(),
+      queueTimeout,
+      taskTimeout);
+}
+
+bool BaseThriftServer::getTaskExpireTimeForRequest(
+    std::chrono::milliseconds clientQueueTimeoutMs,
+    std::chrono::milliseconds clientTimeoutMs,
+    std::chrono::milliseconds& queueTimeout,
+    std::chrono::milliseconds& taskTimeout) const {
   taskTimeout = getTaskExpireTime();
 
-  queueTimeout = requestHeader.getClientQueueTimeout();
+  queueTimeout = clientQueueTimeoutMs;
   if (queueTimeout == std::chrono::milliseconds(0)) {
     queueTimeout = getQueueTimeout();
   }
@@ -103,8 +115,8 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
     // we add 10% to the client timeout so that the request is much more likely
     // to timeout on the client side than to read the timeout from the server
     // as a TApplicationException (which can be confusing)
-    taskTimeout = std::chrono::milliseconds(
-        (uint32_t)(requestHeader.getClientTimeout().count() * 1.1));
+    taskTimeout =
+        std::chrono::milliseconds((uint32_t)(clientTimeoutMs.count() * 1.1));
   }
   // Queue timeout shouldn't be greater than task timeout
   if (taskTimeout < queueTimeout &&

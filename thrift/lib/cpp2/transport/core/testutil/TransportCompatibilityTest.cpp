@@ -33,6 +33,7 @@ using namespace testing;
 DEFINE_string(host, "::1", "host to connect to");
 
 using namespace apache::thrift;
+using namespace apache::thrift::transport;
 using namespace testutil::testservice;
 
 TransportCompatibilityTest::TransportCompatibilityTest()
@@ -156,9 +157,7 @@ class TimeoutTestCallback : public RequestCallback {
   void requestError(ClientReceiveState&& crs) override {
     EXPECT_TRUE(requestSentCalled_);
     EXPECT_TRUE(crs.isException());
-    EXPECT_TRUE(crs.exception()
-                    .is_compatible_with<
-                        apache::thrift::transport::TTransportException>());
+    EXPECT_TRUE(crs.exception().is_compatible_with<TTransportException>());
     EXPECT_FALSE(callbackReceived_);
     EXPECT_TRUE(shouldTimeout_);
     callbackReceived_ = true;
@@ -177,6 +176,7 @@ void TransportCompatibilityTest::callSleep(
     TestServiceAsyncClient* client,
     int32_t timeoutMs,
     int32_t sleepMs) {
+  // EXPECT_CALL(*handler_.get(), sleep_(sleepMs));
   auto cb = std::make_unique<TimeoutTestCallback>(timeoutMs < sleepMs);
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));
@@ -435,8 +435,7 @@ void TransportCompatibilityTest::TestRequestResponse_Saturation() {
     // note that no EXPECT_CALL for add_(5)
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
-    EXPECT_THROW(
-        client->sync_add(5), apache::thrift::transport::TTransportException);
+    EXPECT_THROW(client->sync_add(5), TTransportException);
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(1u); });
@@ -457,11 +456,60 @@ void TransportCompatibilityTest::TestRequestResponse_Connection_CloseNow() {
     try {
       client->sync_add(3);
       EXPECT_TRUE(false) << "sync_add should have thrown";
-    } catch (apache::thrift::transport::TTransportException& ex) {
-      EXPECT_EQ(
-          apache::thrift::transport::TTransportException::NOT_OPEN,
-          ex.getType());
+    } catch (TTransportException& ex) {
+      EXPECT_EQ(TTransportException::NOT_OPEN, ex.getType());
     }
+  });
+}
+
+void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
+  connectToServer([this](
+                      std::unique_ptr<TestServiceAsyncClient> client) mutable {
+    int32_t numCores = sysconf(_SC_NPROCESSORS_ONLN);
+    int callCount = numCores + 1; // more than the core count!
+    // EXPECT_CALL(*handler_.get(), sleep_(1000)).Times(AtMost(198));
+
+    // Queue expiration - executes some of the tasks ( = thread count)
+    server_->setQueueTimeout(std::chrono::milliseconds(10));
+    std::vector<folly::Future<folly::Unit>> futures(callCount);
+    for (int i = 0; i < callCount; ++i) {
+      futures[i] = client->future_sleep(100);
+    }
+    int taskTimeoutCount = 0;
+    int successCount = 0;
+    for (auto& future : futures) {
+      auto& waitedFuture = future.wait();
+      auto& triedFuture = waitedFuture.getTry();
+      if (triedFuture.withException([](TTransportException& ex) {
+            EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
+          })) {
+        ++taskTimeoutCount;
+      } else {
+        ++successCount;
+      }
+    }
+    EXPECT_LE(1, taskTimeoutCount) << "at least 1 task is expected to timeout";
+    EXPECT_LE(1, successCount) << "at least 1 task is expected to succeed";
+
+    // Task expires - even though starts executing the tasks, all expires
+    server_->setQueueTimeout(std::chrono::milliseconds(1000));
+    server_->setUseClientTimeout(false);
+    server_->setTaskExpireTime(std::chrono::milliseconds(1));
+    for (int i = 0; i < callCount; ++i) {
+      futures[i] = client->future_sleep(100 + i);
+    }
+    taskTimeoutCount = 0;
+    for (auto& future : futures) {
+      auto& waitedFuture = future.wait();
+      auto& triedFuture = waitedFuture.getTry();
+      if (triedFuture.withException([](TTransportException& ex) {
+            EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
+          })) {
+        ++taskTimeoutCount;
+      }
+    }
+    EXPECT_EQ(callCount, taskTimeoutCount)
+        << "all tasks are expected to be timed out";
   });
 }
 
@@ -542,6 +590,33 @@ void TransportCompatibilityTest::TestOneway_Connection_CloseNow() {
 
     EXPECT_NO_THROW(client->sync_addAfterDelay(0, 5));
   });
+}
+
+void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
+  // TODO: Even though we observe that the timeout functionality works fine for
+  // Oneway PRC calls, the AsyncProcesor still executes the `cancelled`
+  // requests.
+  connectToServer(
+      [this](std::unique_ptr<TestServiceAsyncClient> client) mutable {
+        int32_t numCores = sysconf(_SC_NPROCESSORS_ONLN);
+        int callCount = numCores + 1; // more than the core count!
+
+        // TODO: fixme T22871783: Oneway tasks don't get cancelled
+        EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5))
+            .Times(AtMost(2 * callCount));
+
+        server_->setQueueTimeout(std::chrono::milliseconds(1));
+        for (int i = 0; i < callCount; ++i) {
+          EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
+        }
+
+        server_->setQueueTimeout(std::chrono::milliseconds(1000));
+        server_->setUseClientTimeout(false);
+        server_->setTaskExpireTime(std::chrono::milliseconds(1));
+        for (int i = 0; i < callCount; ++i) {
+          EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
+        }
+      });
 }
 
 } // namespace thrift

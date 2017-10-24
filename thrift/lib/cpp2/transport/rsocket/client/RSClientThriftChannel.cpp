@@ -47,9 +47,10 @@ std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
 }
 
 namespace {
-// Never timeout in the default
+// This default value should match with the
+// H2ClientConnection::kDefaultTransactionTimeout's value.
 static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
-    std::chrono::milliseconds(5000);
+    std::chrono::milliseconds(500);
 
 // Adds a timer that timesout if the observer could not get its onSuccess or
 // onError methods being called in a specified time range, which causes onError
