@@ -840,7 +840,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
+    $this->eventHandler_->preRead($handler_ctx, 'ping', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_ping_args');
@@ -884,7 +884,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
+    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_getRandomData_args');
@@ -928,7 +928,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_hasDataById_args');
@@ -972,7 +972,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'getDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_getDataById_args');
@@ -1016,7 +1016,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
@@ -1060,7 +1060,7 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_lobDataById_args');
@@ -1093,7 +1093,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
+    $this->eventHandler_->preRead($handler_ctx, 'ping', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_ping_args');
@@ -1137,7 +1137,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
+    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_getRandomData_args');
@@ -1181,7 +1181,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_hasDataById_args');
@@ -1225,7 +1225,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'getDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_getDataById_args');
@@ -1269,7 +1269,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
@@ -1313,7 +1313,7 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
+    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyService_lobDataById_args');
@@ -1347,8 +1347,8 @@ class MyServiceProcessor extends MyServiceSyncProcessor {}
 class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -1364,7 +1364,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1385,8 +1385,8 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1403,8 +1403,8 @@ class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
 class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
@@ -1420,7 +1420,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1441,12 +1441,12 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    0 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1465,12 +1465,12 @@ class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishS
 class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
@@ -1494,7 +1494,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1524,12 +1524,12 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    0 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    0 => dict[
       'var' => 'success',
       'type' => \TType::BOOL,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1548,12 +1548,12 @@ class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStr
 class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
@@ -1577,7 +1577,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1607,12 +1607,12 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    0 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
@@ -1631,16 +1631,16 @@ class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStr
 class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'data',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
     'data' => 2,
@@ -1672,7 +1672,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1711,8 +1711,8 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
 class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1729,16 +1729,16 @@ class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStr
 class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'data',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
     'data' => 2,
@@ -1770,7 +1770,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 

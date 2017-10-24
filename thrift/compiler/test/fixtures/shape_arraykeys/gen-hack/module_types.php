@@ -22,12 +22,12 @@ type EnumType = Enum;
 class A implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
   };
@@ -55,7 +55,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -97,372 +97,372 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 class B implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 'list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    4 => array(
+      ],
+    4 => dict[
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    5 => array(
+      ],
+    5 => dict[
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    6 => array(
+      ],
+    6 => dict[
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    7 => array(
+      ],
+    7 => dict[
       'var' => 'map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    8 => array(
+      ],
+    8 => dict[
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    9 => array(
+      ],
+    9 => dict[
       'var' => 'map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    10 => array(
+      ],
+    10 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::I32,
-        'key' => array(
+        'key' => dict[
           'type' => \TType::STRING,
-        ),
-        'val' => array(
+        ],
+        'val' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    11 => array(
+      ],
+    11 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => array(
+        'key' => dict[
           'type' => \TType::STRING,
-        ),
-        'val' => array(
+        ],
+        'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    12 => array(
+      ],
+    12 => dict[
       'var' => 'list_of_set_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::SET,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    13 => array(
+      ],
+    13 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::LST,
-        'key' => array(
+        'key' => dict[
           'type' => \TType::STRING,
-        ),
-        'val' => array(
+        ],
+        'val' => dict[
           'type' => \TType::LST,
           'etype' => \TType::STRUCT,
-          'elem' => array(
+          'elem' => dict[
             'type' => \TType::STRUCT,
             'class' => 'A',
-            ),
+            ],
             'format' => 'collection',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    14 => array(
+      ],
+    14 => dict[
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => array(
+        'key' => dict[
           'type' => \TType::STRING,
-        ),
-        'val' => array(
+        ],
+        'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    15 => array(
+      ],
+    15 => dict[
       'var' => 'list_of_self',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    16 => array(
+      ],
+    16 => dict[
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    17 => array(
+      ],
+    17 => dict[
       'var' => 'just_an_enum',
       'type' => \TType::I32,
       'enum' => 'Enum',
-      ),
-    51 => array(
+      ],
+    51 => dict[
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      ),
-    52 => array(
+      ],
+    52 => dict[
       'var' => 'optional_set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    53 => array(
+      ],
+    53 => dict[
       'var' => 'optional_list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    54 => array(
+      ],
+    54 => dict[
       'var' => 'optional_list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    55 => array(
+      ],
+    55 => dict[
       'var' => 'optional_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    56 => array(
+      ],
+    56 => dict[
       'var' => 'optional_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    57 => array(
+      ],
+    57 => dict[
       'var' => 'optional_map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    58 => array(
+      ],
+    58 => dict[
       'var' => 'optional_map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    59 => array(
+      ],
+    59 => dict[
       'var' => 'optional_map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::STRING,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    60 => array(
+      ],
+    60 => dict[
       'var' => 'optional_enum',
       'type' => \TType::I32,
       'enum' => 'Enum',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'just_an_A' => 1,
     'set_of_i32' => 2,
@@ -494,31 +494,31 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   };
   const type TShape = shape(
     ?'just_an_A' => ?A::TShape,
-    'set_of_i32' => array<int, bool>,
-    'list_of_i32' => array<int>,
-    'list_of_string' => array<string>,
-    'map_of_string_to_i32' => array<arraykey, int>,
-    'map_of_string_to_A' => array<arraykey, A::TShape>,
-    'map_of_string_to_list_of_i32' => array<arraykey, array<int>>,
-    'map_of_string_to_list_of_A' => array<arraykey, array<A::TShape>>,
-    'map_of_string_to_set_of_i32' => array<arraykey, array<int, bool>>,
-    'map_of_string_to_map_of_string_to_i32' => array<arraykey, array<arraykey, int>>,
-    'map_of_string_to_map_of_string_to_A' => array<arraykey, array<arraykey, A::TShape>>,
-    'list_of_set_of_i32' => array<array<int, bool>>,
-    'list_of_map_of_string_to_list_of_A' => array<array<arraykey, array<A::TShape>>>,
-    'list_of_map_of_string_to_A' => array<array<arraykey, A::TShape>>,
-    'list_of_self' => array<B::TShape>,
-    'map_of_string_to_self' => array<arraykey, B::TShape>,
+    'set_of_i32' => dict<int, bool>,
+    'list_of_i32' => vec<int>,
+    'list_of_string' => vec<string>,
+    'map_of_string_to_i32' => dict<arraykey, int>,
+    'map_of_string_to_A' => dict<arraykey, A::TShape>,
+    'map_of_string_to_list_of_i32' => dict<arraykey, vec<int>>,
+    'map_of_string_to_list_of_A' => dict<arraykey, vec<A::TShape>>,
+    'map_of_string_to_set_of_i32' => dict<arraykey, dict<int, bool>>,
+    'map_of_string_to_map_of_string_to_i32' => dict<arraykey, dict<arraykey, int>>,
+    'map_of_string_to_map_of_string_to_A' => dict<arraykey, dict<arraykey, A::TShape>>,
+    'list_of_set_of_i32' => vec<dict<int, bool>>,
+    'list_of_map_of_string_to_list_of_A' => vec<dict<arraykey, vec<A::TShape>>>,
+    'list_of_map_of_string_to_A' => vec<dict<arraykey, A::TShape>>,
+    'list_of_self' => vec<B::TShape>,
+    'map_of_string_to_self' => dict<arraykey, B::TShape>,
     ?'just_an_enum' => ?Enum,
     ?'optional_just_an_A' => ?A::TShape,
-    ?'optional_set_of_i32' => ?array<int, bool>,
-    ?'optional_list_of_i32' => ?array<int>,
-    ?'optional_list_of_string' => ?array<string>,
-    ?'optional_map_of_string_to_i32' => ?array<arraykey, int>,
-    ?'optional_map_of_string_to_A' => ?array<arraykey, A::TShape>,
-    ?'optional_map_of_string_to_list_of_i32' => ?array<arraykey, array<int>>,
-    ?'optional_map_of_string_to_list_of_A' => ?array<arraykey, array<A::TShape>>,
-    ?'optional_map_of_string_to_set_of_i32' => ?array<arraykey, array<int, bool>>,
+    ?'optional_set_of_i32' => ?dict<int, bool>,
+    ?'optional_list_of_i32' => ?vec<int>,
+    ?'optional_list_of_string' => ?vec<string>,
+    ?'optional_map_of_string_to_i32' => ?dict<arraykey, int>,
+    ?'optional_map_of_string_to_A' => ?dict<arraykey, A::TShape>,
+    ?'optional_map_of_string_to_list_of_i32' => ?dict<arraykey, vec<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?dict<arraykey, vec<A::TShape>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?dict<arraykey, dict<int, bool>>,
     ?'optional_enum' => ?Enum,
     ...
   );
@@ -754,7 +754,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -774,7 +774,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     if (!is_array($shape_data['set_of_i32'])) {
       return null;
     }
-    $the_set2 = array();
+    $the_set2 = dict[];
     foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32'] as $key0 => $shape_data1) {
       if (!is_int($shape_data1)) {
         return null;
@@ -925,7 +925,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($value20)) {
         return null;
       }
-      $the_set23 = array();
+      $the_set23 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value20 as $key21 => $shape_data22) {
         if (!is_int($shape_data22)) {
           return null;
@@ -1009,7 +1009,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($value33)) {
         return null;
       }
-      $the_set36 = array();
+      $the_set36 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value33 as $key34 => $shape_data35) {
         if (!is_int($shape_data35)) {
           return null;
@@ -1150,7 +1150,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       if (!is_array($shape_data['optional_set_of_i32'])) {
         return null;
       }
-      $the_set53 = array();
+      $the_set53 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
         if (!is_int($shape_data52)) {
           return null;
@@ -1315,7 +1315,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         if (!is_array($value71)) {
           return null;
         }
-        $the_set74 = array();
+        $the_set74 = dict[];
         foreach (/* HH_IGNORE_ERROR[4110] */ $value71 as $key72 => $shape_data73) {
           if (!is_int($shape_data73)) {
             return null;

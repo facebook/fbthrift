@@ -45,21 +45,21 @@ type CompanyType = Company;
 class Internship implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'weeks',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'title',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'weeks' => 1,
     'title' => 2,
@@ -109,13 +109,13 @@ class Internship implements \IThriftStruct {
 class UnEnumStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'city',
       'type' => \TType::I32,
       'enum' => 'City',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'city' => 1,
   };
@@ -147,16 +147,16 @@ class UnEnumStruct implements \IThriftStruct {
 class Range implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'min',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'max',
       'type' => \TType::I32,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'min' => 1,
     'max' => 2,
@@ -199,16 +199,16 @@ class Range implements \IThriftStruct {
 class struct1 implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'b',
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
@@ -251,30 +251,30 @@ class struct1 implements \IThriftStruct {
 class struct2 implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'b',
       'type' => \TType::STRING,
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-      ),
-    4 => array(
+      ],
+    4 => dict[
       'var' => 'd',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I32,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
@@ -335,21 +335,21 @@ class struct2 implements \IThriftStruct {
 class struct3 implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'b',
       'type' => \TType::I32,
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct2',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
@@ -405,18 +405,18 @@ enum union1Enum: int {
 class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   use \ThriftUnionSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'i' => 1,
     'd' => 2,
@@ -501,30 +501,30 @@ enum union2Enum: int {
 class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   use \ThriftUnionSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 's',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-      ),
-    4 => array(
+      ],
+    4 => dict[
       'var' => 'u',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'union1',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'i' => 1,
     'd' => 2,

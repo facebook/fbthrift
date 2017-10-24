@@ -16,13 +16,13 @@ newtype MyEnumType = int;
 final class MyEnum extends Enum<MyEnumType> {
   const MyEnumType   MyValue1 = 0;
   const MyEnumType   MyValue2 = 1;
-  public static array<int, string> $__names = array(
+  public static dict<int, string> $__names = dict[
     0 => 'MyValue1',
     1 => 'MyValue2',
-  );
-  public static array<string, int> $__values = array(
+  ];
+  public static dict<string, int> $__values = dict[
     'MyValue1' => 0,
     'MyValue2' => 1,
-  );
+  ];
 }
 

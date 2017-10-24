@@ -23,57 +23,57 @@ enum ComplexUnionEnum: int {
 class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-      ),
-    5 => array(
+      ],
+    5 => dict[
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'intListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::I64,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::I64,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    3 => array(
+      ],
+    3 => dict[
       'var' => 'stringListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    9 => array(
+      ],
+    9 => dict[
       'var' => 'typedefValue',
       'union' => true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::STRING,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::I16,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::STRING,
-        ),
+        ],
         'format' => 'collection',
-      ),
-    14 => array(
+      ],
+    14 => dict[
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'intValue' => 1,
     'stringValue' => 5,
@@ -256,18 +256,18 @@ enum FinalComplexUnionEnum: int {
 class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'thingOne',
       'union' => true,
       'type' => \TType::STRING,
-      ),
-    2 => array(
+      ],
+    2 => dict[
       'var' => 'thingTwo',
       'union' => true,
       'type' => \TType::STRING,
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'thingOne' => 1,
     'thingTwo' => 2,

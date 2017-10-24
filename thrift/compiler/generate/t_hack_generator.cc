@@ -53,12 +53,15 @@ class t_hack_generator : public t_oop_generator {
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
     shape_unsafe_json_ = option_is_specified(parsed_options, "shape_unsafe_json");
     lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
+    array_migration_ = option_is_specified(parsed_options, "array_migration");
     arrays_ = option_is_specified(parsed_options, "arrays");
     generate_legacy_read_write_ = option_is_specified(parsed_options, "generate_legacy_read_write");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
     out_dir_base_ = "gen-hack";
+
+    array_keyword_ = array_migration_ ? "darray" : "dict";
   }
 
   /**
@@ -395,6 +398,9 @@ class t_hack_generator : public t_oop_generator {
                                        const std::string& typehint,
                                        const std::string& rendered_value);
 
+  std::string generate_array_typehint(const std::string& key_type,
+                                      const std::string& value_type);
+
  private:
 
   /**
@@ -489,6 +495,11 @@ class t_hack_generator : public t_oop_generator {
   bool lazy_constants_;
 
   /**
+   * True to use darrays instead of dicts for internal constructs
+   */
+  bool array_migration_;
+
+  /**
    * True to use Hack arrays instead of collections
    */
   bool arrays_;
@@ -497,6 +508,8 @@ class t_hack_generator : public t_oop_generator {
    * True to use generate the legacy read and write methods
    */
   bool generate_legacy_read_write_;
+
+  std::string array_keyword_;
 };
 
 void t_hack_generator::generate_json_enum(
@@ -631,7 +644,7 @@ void t_hack_generator::generate_json_container(std::ofstream& out,
     if (arrays_) {
       indent(out) << container << " = keyset[];" << endl;
     } else if (arraysets_) {
-      indent(out) << container << " = array();" << endl;
+      indent(out) << container << " = " << array_keyword_ << "[];" << endl;
     } else {
       indent(out) << container << " = Set {};" << endl;
     }
@@ -819,23 +832,29 @@ void t_hack_generator::close_generator() {
     indent_up();
     f_consts_ << endl;
     if (!lazy_constants_) {
-      indent(f_consts_)
-          << "public static array<string, mixed> $__values = array(" << endl;
+      indent(f_consts_) << "public static "
+                        << generate_array_typehint("string", "mixed")
+                        << " $__values = "
+                        << array_keyword_ << "["
+                        << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(f_consts_, ",\n"));
-      indent(f_consts_) << ");" << endl;
+      indent(f_consts_) << "];" << endl;
     } else {
       stringstream oss(stringstream::out);
-      oss << "array(" << endl;
+      oss << array_keyword_ << "[" << endl;
       std::copy(constants_values_.begin(),
                 constants_values_.end(),
                 std::ostream_iterator<string>(oss, ",\n"));
-      indent(oss) << "    )";
+      indent(oss) << "    ]";
 
       string rendered_value = oss.str();
       generate_lazy_init_for_constant(
-          f_consts_, "__values", "array<string, mixed>", rendered_value);
+          f_consts_,
+          "__values",
+          generate_array_typehint("string", "mixed"),
+          rendered_value);
     }
     indent_down();
     // close constants class
@@ -896,7 +915,10 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
   if (oldenum_) {
     // names
-    indent(f_types_) << "public static array<int, string> $__names = array("
+    indent(f_types_) << "public static "
+                     << generate_array_typehint("int", "string")
+                     << " $__names = "
+                     << array_keyword_ << "["
                      << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
@@ -905,9 +927,12 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         "  " << value << " => '" << (*c_iter)->get_name() << "'," << endl;
     }
     indent(f_types_) <<
-      ");" << endl;
+      "];" << endl;
     // values
-    indent(f_types_) << "public static array<string, int> $__values = array("
+    indent(f_types_) << "public static "
+                     << generate_array_typehint("string", "int")
+                     << " $__values = "
+                     << array_keyword_ << "["
                      << endl;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t value = (*c_iter)->get_value();
@@ -916,7 +941,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         "  '" << (*c_iter)->get_name() << "' => " << value << "," << endl;
     }
     indent(f_types_) <<
-      ");" << endl;
+      "];" << endl;
   }
 
   indent_down();
@@ -1012,6 +1037,16 @@ void t_hack_generator::generate_lazy_init_for_constant(
   indent(out) << "  }" << endl;
   indent(out) << "  return self::$" << name_internal << ";" << endl;
   indent(out) << "}" << endl << endl;
+}
+
+std::string t_hack_generator::generate_array_typehint(
+    const std::string& key_type,
+    const std::string& value_type) {
+  std::ostringstream stream;
+  stream
+    << array_keyword_
+    << "<" << key_type << ", " << value_type << ">";
+  return stream.str();
 }
 
 string t_hack_generator::render_string(string value) {
@@ -1195,7 +1230,7 @@ string t_hack_generator::render_const_value(
       indent_down();
       indent(out) << "]";
     } else if (arraysets_) {
-      out << "array(" << endl;
+      out << array_keyword_ << "[" << endl;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
         out << render_const_value(etype, *v_iter);
@@ -1203,7 +1238,7 @@ string t_hack_generator::render_const_value(
         out << "," << endl;
       }
       indent_down();
-      indent(out) << ")";
+      indent(out) << "]";
     } else {
       out << "Set {" << endl;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1269,7 +1304,7 @@ string t_hack_generator::render_default_value(t_type* type) {
     if (arrays_) {
       dval = "keyset[]";
     } else if (arraysets_) {
-      dval = "array()";
+      dval = array_keyword_ + "[]";
     } else {
       dval = "Set {}";
     }
@@ -1319,15 +1354,15 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     t_type* vtype = get_true_type(((t_map*)t)->get_val_type());
     indent(out) << "'ktype' => " << type_to_enum(ktype) << "," << endl;
     indent(out) << "'vtype' => " << type_to_enum(vtype) << "," << endl;
-    indent(out) << "'key' => array(" << endl;
+    indent(out) << "'key' => " << array_keyword_ << "[" << endl;
     indent_up();
     generate_php_type_spec(out, ktype);
     indent_down();
-    indent(out) << ")," << endl;
-    indent(out) << "'val' => array(" << endl;
+    indent(out) << "]," << endl;
+    indent(out) << "'val' => " << array_keyword_ << "[" << endl;
     indent_up();
     generate_php_type_spec(out, vtype);
-    indent(out) << ")," << endl;
+    indent(out) << "]," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else {
@@ -1337,10 +1372,10 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_list()) {
     t_type* etype = get_true_type(((t_list*)t)->get_elem_type());
     indent(out) << "'etype' => " << type_to_enum(etype) <<"," << endl;
-    indent(out) << "'elem' => array(" << endl;
+    indent(out) << "'elem' => " << array_keyword_ << "[" << endl;
     indent_up();
     generate_php_type_spec(out, etype);
-    indent(out) << ")," << endl;
+    indent(out) << "]," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else {
@@ -1350,10 +1385,10 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_set()) {
     t_type* etype = get_true_type(((t_set*)t)->get_elem_type());
     indent(out) << "'etype' => " << type_to_enum(etype) <<"," << endl;
-    indent(out) << "'elem' => array(" << endl;
+    indent(out) << "'elem' => " << array_keyword_ << "[" << endl;
     indent_up();
     generate_php_type_spec(out, etype);
-    indent(out) << ")," << endl;
+    indent(out) << "]," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
     } else if (arraysets_) {
@@ -1374,16 +1409,18 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
  */
 void t_hack_generator::generate_php_struct_spec(ofstream& out,
                                                t_struct* tstruct) {
-  indent(out)
-      << "public static array<int, array<string, mixed>> $_TSPEC = array("
-      << endl;
+  indent(out) << "public static "
+              << generate_array_typehint("int", generate_array_typehint("string", "mixed"))
+              << " $_TSPEC = "
+              << array_keyword_ << "["
+              << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
-    indent(out) << (*m_iter)->get_key() << " => array(" << endl;
+    indent(out) << (*m_iter)->get_key() << " => " << array_keyword_ << "[" << endl;
     indent_up();
     out <<
       indent() << "'var' => '" << (*m_iter)->get_name() << "'," << endl;
@@ -1396,12 +1433,12 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
       out << indent() << "'union' => true," << endl;
     }
     generate_php_type_spec(out, t);
-    indent(out) << ")," << endl;
+    indent(out) << "]," << endl;
     indent_down();
   }
 
   indent_down();
-  indent(out) << "  );" << endl;
+  indent(out) << "  ];" << endl;
 
   indent(out) << "public static Map<string, int> $_TFIELDMAP = Map {" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -1631,7 +1668,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
     }
     t_type* val_type = get_true_type(((t_set*)t)->get_elem_type());
     string the_set = "$" + namer("the_set");
-    indent(out) << the_set << " = array();" << endl;
+    indent(out) << the_set << " = " << array_keyword_ << "[];" << endl;
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data << " as "
                 << k << " => " << v << ") {" << endl;
     if (!shape_unsafe_json_) {
@@ -1777,7 +1814,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
 void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
                                                          t_struct* tstruct) {
   indent(out) << "public static function __jsonArrayToShape(" << endl;
-  indent(out) << "  array<arraykey, mixed> $json_data," << endl;
+  indent(out) << "  " << generate_array_typehint("arraykey", "mixed") << " $json_data," << endl;
   indent(out) << "): ?self::TShape {" << endl;
   indent_up();
   indent(out) << "$shape_data = $json_data;"<<endl;
@@ -2295,7 +2332,7 @@ void t_hack_generator::_generate_php_struct_definition(
     } else {
       // Generate constructor from Indexish
       out <<
-        indent() << "public function __construct(@\\Indexish<string, mixed> $vals = array()) {" << endl;
+        indent() << "public function __construct(@\\Indexish<string, mixed> $vals = " << array_keyword_ << "[]) {" << endl;
     }
     out <<
       indent() << "  // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)" << endl;
@@ -2874,7 +2911,7 @@ void t_hack_generator::generate_process_function(t_service* tservice,
     indent() << "$reply_type = \\TMessageType::REPLY;" << endl
              << endl <<
     indent() << "$this->eventHandler_->preRead($handler_ctx, '"
-             << fn_name << "', array());" << endl
+             << fn_name << "', " << array_keyword_ << "[]);" << endl
              << endl <<
     indent() << "if ($input instanceof \\TBinaryProtocolAccelerated) {" << endl <<
     indent() << "  $args = thrift_protocol_read_binary_struct("
@@ -3360,10 +3397,24 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
   } else if (ttype->is_list()) {
-    string prefix = arrays_ ? "vec" : (shape ? "array" : "Vector");
+    string prefix;
+    if (arrays_) {
+      prefix = "vec";
+    } else if (shape) {
+      prefix = array_migration_ ? "varray" : "vec";
+    } else {
+      prefix = "Vector";
+    }
     return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
   } else if (ttype->is_map()) {
-    string prefix = arrays_ ? "dict" : (shape ? "array" : "Map");
+    string prefix;
+    if (arrays_) {
+      prefix = "dict";
+    } else if (shape) {
+      prefix = array_keyword_;
+    } else {
+      prefix = "Map";
+    }
     string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape);
     if (shape &&
         shape_arraykeys_ &&
@@ -3372,7 +3423,16 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     }
     return prefix + "<" + key_type + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
   } else if (ttype->is_set()) {
-    string prefix = arraysets_ ? "array" : (arrays_ ? "keyset" : (shape ? "array" : "Set"));
+    string prefix;
+    if (arraysets_) {
+      prefix = array_keyword_;
+    } else if (arrays_) {
+      prefix = "keyset";
+    } else if (shape) {
+      prefix = array_keyword_;
+    } else {
+      prefix = "Set";
+    }
     string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
     return prefix + "<" + type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape) + suffix;
   } else {
@@ -4222,7 +4282,7 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
     if (arrays_) {
       out << indent() << "$" << val << " = keyset[];" << endl;
     } else if (arraysets_) {
-      out << indent() << "$" << val << " = array();" << endl;
+      out << indent() << "$" << val << " = " << array_keyword_ << "[];" << endl;
     } else {
       out << indent() << "$" << val << " = Set{};" << endl;
     }
@@ -4621,7 +4681,7 @@ string t_hack_generator::declare_field(t_field* tfield, bool init,
       if (arrays_) {
         result += " = keyset[]";
       } else if (arraysets_) {
-        result += " = array()";
+        result += " = " + array_keyword_ + "[]";
       } else {
         result += " = Set {}";
       }

@@ -744,7 +744,7 @@ abstract class NestedContainersAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapList');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'mapList', array());
+    $this->eventHandler_->preRead($handler_ctx, 'mapList', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_mapList_args');
@@ -788,7 +788,7 @@ abstract class NestedContainersAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapSet');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'mapSet', array());
+    $this->eventHandler_->preRead($handler_ctx, 'mapSet', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_mapSet_args');
@@ -832,7 +832,7 @@ abstract class NestedContainersAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('listMap');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'listMap', array());
+    $this->eventHandler_->preRead($handler_ctx, 'listMap', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_listMap_args');
@@ -876,7 +876,7 @@ abstract class NestedContainersAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('listSet');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'listSet', array());
+    $this->eventHandler_->preRead($handler_ctx, 'listSet', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_listSet_args');
@@ -920,7 +920,7 @@ abstract class NestedContainersAsyncProcessorBase extends ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('turtles');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'turtles', array());
+    $this->eventHandler_->preRead($handler_ctx, 'turtles', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_turtles_args');
@@ -971,7 +971,7 @@ abstract class NestedContainersSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapList');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'mapList', array());
+    $this->eventHandler_->preRead($handler_ctx, 'mapList', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_mapList_args');
@@ -1015,7 +1015,7 @@ abstract class NestedContainersSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('mapSet');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'mapSet', array());
+    $this->eventHandler_->preRead($handler_ctx, 'mapSet', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_mapSet_args');
@@ -1059,7 +1059,7 @@ abstract class NestedContainersSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('listMap');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'listMap', array());
+    $this->eventHandler_->preRead($handler_ctx, 'listMap', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_listMap_args');
@@ -1103,7 +1103,7 @@ abstract class NestedContainersSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('listSet');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'listSet', array());
+    $this->eventHandler_->preRead($handler_ctx, 'listSet', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_listSet_args');
@@ -1147,7 +1147,7 @@ abstract class NestedContainersSyncProcessorBase extends ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('turtles');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'turtles', array());
+    $this->eventHandler_->preRead($handler_ctx, 'turtles', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'NestedContainers_turtles_args');
@@ -1199,31 +1199,31 @@ class NestedContainersProcessor extends NestedContainersSyncProcessor {}
 class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'foo',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::LST,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::I32,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
   const type TShape = shape(
-    'foo' => array<int, array<int>>,
+    'foo' => dict<int, vec<int>>,
     ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
@@ -1242,7 +1242,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1296,8 +1296,8 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1314,31 +1314,31 @@ class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapish
 class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'foo',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::SET,
-      'key' => array(
+      'key' => dict[
         'type' => \TType::I32,
-      ),
-      'val' => array(
+      ],
+      'val' => dict[
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
   const type TShape = shape(
-    'foo' => array<int, array<int, bool>>,
+    'foo' => dict<int, dict<int, bool>>,
     ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
@@ -1357,7 +1357,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1374,7 +1374,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
       if (!is_array($value1)) {
         return null;
       }
-      $the_set4 = array();
+      $the_set4 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
         if (!is_int($shape_data3)) {
           return null;
@@ -1409,8 +1409,8 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
 class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1427,31 +1427,31 @@ class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishS
 class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'foo',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::MAP,
         'ktype' => \TType::I32,
         'vtype' => \TType::I32,
-        'key' => array(
+        'key' => dict[
           'type' => \TType::I32,
-        ),
-        'val' => array(
+        ],
+        'val' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
   const type TShape = shape(
-    'foo' => array<array<int, int>>,
+    'foo' => vec<dict<int, int>>,
     ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
@@ -1470,7 +1470,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1524,8 +1524,8 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1542,27 +1542,27 @@ class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapish
 class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'foo',
       'type' => \TType::LST,
       'etype' => \TType::SET,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::I32,
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
   const type TShape = shape(
-    'foo' => array<array<int, bool>>,
+    'foo' => vec<dict<int, bool>>,
     ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
@@ -1581,7 +1581,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1598,7 +1598,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
       if (!is_array($value1)) {
         return null;
       }
-      $the_set4 = array();
+      $the_set4 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
         if (!is_int($shape_data3)) {
           return null;
@@ -1633,8 +1633,8 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;
@@ -1651,50 +1651,50 @@ class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapish
 class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    1 => array(
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
       'var' => 'foo',
       'type' => \TType::LST,
       'etype' => \TType::LST,
-      'elem' => array(
+      'elem' => dict[
         'type' => \TType::LST,
         'etype' => \TType::MAP,
-        'elem' => array(
+        'elem' => dict[
           'type' => \TType::MAP,
           'ktype' => \TType::I32,
           'vtype' => \TType::MAP,
-          'key' => array(
+          'key' => dict[
             'type' => \TType::I32,
-          ),
-          'val' => array(
+          ],
+          'val' => dict[
             'type' => \TType::MAP,
             'ktype' => \TType::I32,
             'vtype' => \TType::SET,
-            'key' => array(
+            'key' => dict[
               'type' => \TType::I32,
-            ),
-            'val' => array(
+            ],
+            'val' => dict[
               'type' => \TType::SET,
               'etype' => \TType::I32,
-              'elem' => array(
+              'elem' => dict[
                 'type' => \TType::I32,
-                ),
+                ],
                 'format' => 'collection',
-              ),
+              ],
               'format' => 'collection',
-            ),
+            ],
             'format' => 'collection',
-          ),
+          ],
           'format' => 'collection',
-        ),
+        ],
         'format' => 'collection',
-      ),
-    );
+      ],
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
   const type TShape = shape(
-    'foo' => array<array<array<int, array<int, array<int, bool>>>>>,
+    'foo' => vec<vec<dict<int, dict<int, dict<int, bool>>>>>,
     ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
@@ -1713,7 +1713,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __jsonArrayToShape(
-    array<arraykey, mixed> $json_data,
+    dict<arraykey, mixed> $json_data,
   ): ?self::TShape {
     $shape_data = $json_data;
 
@@ -1751,7 +1751,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
             if (!is_array($value7)) {
               return null;
             }
-            $the_set10 = array();
+            $the_set10 = dict[];
             foreach (/* HH_IGNORE_ERROR[4110] */ $value7 as $key8 => $shape_data9) {
               if (!is_int($shape_data9)) {
                 return null;
@@ -1807,8 +1807,8 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_turtles_result implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static array<int, array<string, mixed>> $_TSPEC = array(
-    );
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const int STRUCTURAL_ID = 957977401221134810;

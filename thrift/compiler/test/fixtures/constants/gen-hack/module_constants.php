@@ -720,10 +720,10 @@ class module_CONSTANTS {
   }
 
 
-  private static ?array<string, mixed> $____values = null;
-  public static function __values(): array<string, mixed> {
+  private static ?dict<string, mixed> $____values = null;
+  public static function __values(): dict<string, mixed> {
     if (self::$____values === null) {
-      self::$____values = array(
+      self::$____values = dict[
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",
         "states" => Vector {
@@ -920,7 +920,7 @@ class module_CONSTANTS {
         },
         "empty_string_string_map" => Map {
         },
-      );
+      ];
     }
     return self::$____values;
   }
