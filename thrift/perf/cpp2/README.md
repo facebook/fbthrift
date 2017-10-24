@@ -29,12 +29,11 @@ own thread (to maximize throughput).
 
 ### Async
 
-To maximize throughput, it needs to perform asynchronous calls.
-This is done by setting the `--async` flag. In order to avoid dropped
-calls, or overflowing the server - we set a max number of outstanding
-operations that a Client can have. That is, setting 50 Clients with a
-max outstanding connections of 100 means that at most, it will have
-5000 outstanding connections on the server side.
+To maximize throughput, by default, this benchmark performs asynchronous calls.
+A max number of outstanding opertion is set to avoid having the Client
+overflow the server. That is, setting 50 Clients with a
+max outstanding operations of 100 means that at most, the Server will have
+5000 outstanding operations.
 
 ### Weights
 

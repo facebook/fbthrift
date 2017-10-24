@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#pragma once
+
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -33,10 +35,10 @@ template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr) {
-    auto sock = TAsyncSocket::newSocket(evb, addr);
-    auto chan = HeaderClientChannel::newChannel(std::move(sock));
-    chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-    return std::make_unique<AsyncClient>(std::move(chan));
+  auto sock = TAsyncSocket::newSocket(evb, addr);
+  auto chan = HeaderClientChannel::newChannel(std::move(sock));
+  chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+  return std::make_unique<AsyncClient>(std::move(chan));
 }
 
 template <typename AsyncClient>

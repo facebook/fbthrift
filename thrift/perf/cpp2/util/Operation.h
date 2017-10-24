@@ -14,27 +14,58 @@
  * limitations under the License.
  */
 
-#include <thrift/perf/cpp2/if/gen-cpp2/Benchmark.h>
-#include <thrift/perf/cpp2/util/QPSStats.h>
+#pragma once
+
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/perf/cpp2/util/QPSStats.h>
+#include <thrift/perf/cpp2/util/SimpleOps.h>
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
-using facebook::thrift::benchmarks::BenchmarkAsyncClient;
 using facebook::thrift::benchmarks::QPSStats;
 
+enum OP_TYPE {
+  NOOP = 0,
+  SUM = 1,
+};
+
+template <typename AsyncClient>
 class Operation {
  public:
-  Operation(QPSStats* stats) : stats_(stats) {}
-  virtual ~Operation() = default;
-  virtual void async(
-      BenchmarkAsyncClient* client,
-      std::unique_ptr<RequestCallback> cb) = 0;
+  Operation(std::unique_ptr<AsyncClient> client, QPSStats* stats)
+      : client_(std::move(client)),
+        noop_(std::make_unique<Noop<AsyncClient>>(stats)),
+        sum_(std::make_unique<Sum<AsyncClient>>(stats)) {}
+  ~Operation() = default;
 
-  virtual void asyncReceived(
-      BenchmarkAsyncClient* client,
-      ClientReceiveState&& rstate) = 0;
+  void async(OP_TYPE op, std::unique_ptr<RequestCallback> cb) {
+    switch (op) {
+      case NOOP:
+        noop_->async(client_.get(), std::move(cb));
+        break;
+      case SUM:
+        sum_->async(client_.get(), std::move(cb));
+        break;
+      default:
+        break;
+    }
+  }
 
- protected:
-  QPSStats* stats_;
+  void asyncReceived(OP_TYPE op, ClientReceiveState&& rstate) {
+    switch (op) {
+      case NOOP:
+        noop_->asyncReceived(client_.get(), std::move(rstate));
+        break;
+      case SUM:
+        sum_->asyncReceived(client_.get(), std::move(rstate));
+        break;
+      default:
+        break;
+    }
+  }
+
+ private:
+  std::unique_ptr<AsyncClient> client_;
+  std::unique_ptr<Noop<AsyncClient>> noop_;
+  std::unique_ptr<Sum<AsyncClient>> sum_;
 };

@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-include "thrift/perf/cpp2/if/ApiBase.thrift"
-
 namespace cpp2 facebook.thrift.benchmarks
 
-service Benchmark {
-  void noop();
-  ApiBase.TwoInts sum(1: ApiBase.TwoInts input);
+struct TwoInts {
+  1: optional i32 x;
+  2: optional i32 y;
 }

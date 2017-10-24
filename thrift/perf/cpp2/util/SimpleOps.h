@@ -14,45 +14,63 @@
  * limitations under the License.
  */
 
-#include <thrift/perf/cpp2/util/Operation.h>
+#pragma once
+
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
+#include <thrift/perf/cpp2/util/QPSStats.h>
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
-using facebook::thrift::benchmarks::BenchmarkAsyncClient;
 using facebook::thrift::benchmarks::QPSStats;
 using facebook::thrift::benchmarks::TwoInts;
 
-class Noop : public Operation {
+template <typename AsyncClient>
+class Noop {
  public:
-  Noop(QPSStats* stats);
-  virtual ~Noop() = default;
+  Noop(QPSStats* stats) : stats_(stats) {
+    stats_->registerCounter(op_name_);
+  }
+  ~Noop() = default;
 
-  virtual void async(
-      BenchmarkAsyncClient* client,
-      std::unique_ptr<RequestCallback> cb) override;
+  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    client->noop(std::move(cb));
+  }
 
-  virtual void asyncReceived(
-      BenchmarkAsyncClient* client,
-      ClientReceiveState&& rstate) override;
+  void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
+    stats_->add(op_name_);
+    client->recv_noop(rstate);
+  }
 
  private:
+  QPSStats* stats_;
   std::string op_name_ = "noop";
 };
 
-class Sum : public Operation {
+template <typename AsyncClient>
+class Sum {
  public:
-  Sum(QPSStats* stats);
-  virtual ~Sum() = default;
+  Sum(QPSStats* stats) : stats_(stats) {
+    // TODO: Perform different additions per call and verify correctness
+    stats_->registerCounter(op_name_);
+    request_.x = 0;
+    request_.__isset.x = true;
+    request_.y = 0;
+    request_.__isset.y = true;
+  }
+  ~Sum() = default;
 
-  virtual void async(
-      BenchmarkAsyncClient* client,
-      std::unique_ptr<RequestCallback> cb) override;
+  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    client->sum(std::move(cb), request_);
+  }
 
-  virtual void asyncReceived(
-      BenchmarkAsyncClient* client,
-      ClientReceiveState&& rstate) override;
+  void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
+    stats_->add(op_name_);
+    client->recv_sum(response_, rstate);
+  }
 
  private:
+  QPSStats* stats_;
   std::string op_name_ = "sum";
   TwoInts request_;
   TwoInts response_;

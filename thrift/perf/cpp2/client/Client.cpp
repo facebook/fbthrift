@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-#include <thrift/perf/cpp2/client/Client.h>
+#include <thrift/perf/cpp2/if/gen-cpp2/Benchmark.h>
+#include <thrift/perf/cpp2/util/Operation.h>
+#include <thrift/perf/cpp2/util/QPSStats.h>
+#include <thrift/perf/cpp2/util/Runner.h>
+#include <thrift/perf/cpp2/util/Util.h>
+
+using facebook::thrift::benchmarks::BenchmarkAsyncClient;
 
 // Server Settings
 DEFINE_string(host, "::1", "Server host");
@@ -28,62 +34,13 @@ DEFINE_string(transport, "header", "Transport to use: header, rsocket, http2");
 DEFINE_int32(stats_interval_sec, 1, "Seconds between stats");
 DEFINE_int32(terminate_sec, 0, "How long to run client (0 means forever)");
 
-// Async Operations Settings
-DEFINE_bool(async, false, "Perform asynchronous calls to the server");
+// Operations Settings
+DEFINE_bool(sync, false, "Perform synchronous calls to the server");
 DEFINE_int32(max_outstanding_ops, 100, "Max number of outstanding async ops");
 
-// Operations
+// Operations - Match with OP_TYPE enum
 DEFINE_int32(noop_weight, 0, "Test with a no operation");
 DEFINE_int32(sum_weight, 0, "Test with a sum operation");
-
-Runner::Runner(QPSStats* stats, int32_t max_outstanding_ops)
-    : stats_(stats), max_outstanding_ops_(max_outstanding_ops) {
-  auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-  client_ = newClient<BenchmarkAsyncClient>(&eb_, addr, FLAGS_transport);
-
-  // Add every Operation object here
-  std::vector<int32_t> weights;
-  operations_.push_back(std::make_unique<Noop>(stats_));
-  weights.push_back(FLAGS_noop_weight);
-  operations_.push_back(std::make_unique<Sum>(stats_));
-  weights.push_back(FLAGS_sum_weight);
-
-  d_ = std::make_unique<std::discrete_distribution<int32_t>>(
-      weights.begin(), weights.end());
-}
-
-void Runner::run() {
-  // TODO: Implement sync calls.
-  // Currently you can "simulate" sync calls by only creating 1 client.
-  if (FLAGS_async) {
-    while (outstanding_ops_ < max_outstanding_ops_) {
-      asyncCalls();
-    }
-  }
-}
-
-void Runner::asyncCalls() {
-  // Get a random operation given the operator weights
-  auto op = operations_[(*d_)(gen_)].get();
-  op->async(
-      client_.get(), std::make_unique<LoadCallback>(this, client_.get(), op));
-  ++outstanding_ops_;
-}
-
-void Runner::loopEventBase() {
-  eb_.loopForever();
-}
-
-void Runner::finishCall() {
-  --outstanding_ops_;
-  // Attempt to perform more async calls
-  run();
-}
-
-void LoadCallback::replyReceived(ClientReceiveState&& rstate) {
-  op_->asyncReceived(client_, std::move(rstate));
-  runner_->finishCall();
-}
 
 /*
  * This starts num_clients threads with a unique client in each thread.
@@ -102,10 +59,31 @@ int main(int argc, char** argv) {
   std::vector<std::thread> threads;
   for (int i = 0; i < FLAGS_num_clients; ++i) {
     threads.push_back(std::thread([&]() {
-      auto r = std::make_unique<Runner>(&stats, FLAGS_max_outstanding_ops);
+      // Create Thrift Async Client
+      auto evb = std::make_shared<folly::EventBase>();
+      auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
+      auto client =
+          newClient<BenchmarkAsyncClient>(evb.get(), addr, FLAGS_transport);
+
+      // Create the Operations and their Discrete Distributions
+      // Every time a new operation is added, the distribution needs to
+      // be updated. Otherwise, it will never be chosen.
+      auto ops = std::make_unique<Operation<BenchmarkAsyncClient>>(
+          std::move(client), &stats);
+      auto distribution = std::make_unique<std::discrete_distribution<int32_t>>(
+          FLAGS_noop_weight, FLAGS_sum_weight);
+
+      // Create the runner and execute multiple operations
+      auto r = std::make_unique<Runner<BenchmarkAsyncClient>>(
+          evb,
+          std::move(ops),
+          std::move(distribution),
+          FLAGS_max_outstanding_ops);
       r->run();
-      if (FLAGS_async) {
-        r->loopEventBase();
+
+      // Run eventbase loop for async operations
+      if (!FLAGS_sync) {
+        evb->loopForever();
       }
     }));
   }
