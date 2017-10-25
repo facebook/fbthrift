@@ -282,7 +282,14 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   if (!callback_) {
     return;
   }
-  DCHECK(contents_);
+  // TODO: contents_ should never be empty. For some reason, once the number
+  // of queries starts going past 1.5MQPS, this contents_ will not get set.
+  // For now, just drop if contents_ is null. However, this should be
+  // investigated further to figure out why contents_ is not being set.
+  if (!contents_) {
+    VLOG(2) << "Contents has not been set.";
+    return;
+  }
   auto evb = callback_->getEventBase();
   auto metadata = std::make_unique<ResponseRpcMetadata>();
   if (!headers_->empty()) {
