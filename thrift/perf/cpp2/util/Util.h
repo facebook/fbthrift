@@ -18,6 +18,7 @@
 
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -104,3 +105,26 @@ static std::unique_ptr<AsyncClient> newClient(
   }
   return nullptr;
 }
+
+template <typename AsyncClient>
+class ConnectionThread : public folly::ScopedEventBaseThread {
+ public:
+  ~ConnectionThread() {
+    getEventBase()->runInEventBaseThreadAndWait([&] { connection_.reset(); });
+  }
+
+  std::shared_ptr<AsyncClient> newSyncClient(
+      folly::SocketAddress const& addr,
+      folly::StringPiece transport,
+      bool encrypted = false) {
+    DCHECK(connection_ == nullptr);
+    getEventBase()->runInEventBaseThreadAndWait([&]() {
+      connection_ =
+          newClient<AsyncClient>(getEventBase(), addr, transport, encrypted);
+    });
+    return connection_;
+  }
+
+ private:
+  std::shared_ptr<AsyncClient> connection_;
+};

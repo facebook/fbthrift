@@ -29,15 +29,24 @@ using example::chatroom::EchoAsyncClient;
 int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
+
+  // Create a thrift client
+  auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
+  auto ct = std::make_shared<ConnectionThread<EchoAsyncClient>>();
+  auto client = ct->newSyncClient(addr, FLAGS_transport);
+
+  // For header transport
   folly::EventBase evb;
+  if (FLAGS_transport == "header") {
+    client = newHeaderClient<EchoAsyncClient>(&evb, addr);
+  }
 
+  // Prepare thrift request
+  std::string message = "Ping this back";
+  std::string response;
+
+  // Get an echo'd message
   try {
-    auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-    auto client = newClient<EchoAsyncClient>(&evb, addr, FLAGS_transport);
-
-    // Get an echo'd message
-    std::string message = "Ping this back";
-    std::string response;
     client->sync_echo(response, message);
     LOG(INFO) << response;
   } catch (apache::thrift::transport::TTransportException& ex) {

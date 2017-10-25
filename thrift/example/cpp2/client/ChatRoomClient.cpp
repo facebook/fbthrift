@@ -29,22 +29,30 @@ using example::chatroom::ChatRoomServiceAsyncClient;
 int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
+
+  // Create a thrift client
+  auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
+  auto ct = std::make_shared<ConnectionThread<ChatRoomServiceAsyncClient>>();
+  auto client = ct->newSyncClient(addr, FLAGS_transport);
+
+  // For header transport
   folly::EventBase evb;
+  if (FLAGS_transport == "header") {
+    client = newHeaderClient<ChatRoomServiceAsyncClient>(&evb, addr);
+  }
 
+  // Prepare thrift request
+  example::chatroom::SendMessageRequest sendRequest;
+  sendRequest.message = "This is an example!";
+  sendRequest.sender = getenv("USER");
+
+  // Prepare thrift response
+  example::chatroom::GetMessagesRequest getRequest;
+  example::chatroom::GetMessagesResponse response;
+
+  // Send and receive a message
   try {
-    auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-    auto client =
-        newClient<ChatRoomServiceAsyncClient>(&evb, addr, FLAGS_transport);
-
-    // Send a message
-    example::chatroom::SendMessageRequest sendRequest;
-    sendRequest.message = "This is an example!";
-    sendRequest.sender = getenv("USER");
     client->sync_sendMessage(sendRequest);
-
-    // Get all the messages
-    example::chatroom::GetMessagesRequest getRequest;
-    example::chatroom::GetMessagesResponse response;
     client->sync_getMessages(response, getRequest);
 
     // Print all the messages so far
