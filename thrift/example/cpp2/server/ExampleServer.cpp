@@ -14,36 +14,70 @@
  * limitations under the License.
  */
 
-#include "thrift/example/cpp2/server/ChatRoomService.h"
-#include "thrift/example/cpp2/server/EchoService.h"
-
 #include <folly/init/Init.h>
+#include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <proxygen/httpserver/HTTPServerOptions.h>
+#include <thrift/example/cpp2/server/ChatRoomService.h>
+#include <thrift/example/cpp2/server/EchoService.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
+#include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandlerFactory.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+
+DEFINE_int32(chatroom_port, 7777, "Chatroom Server port");
+DEFINE_int32(echo_port, 7778, "Echo Server port");
+
+using apache::thrift::HTTP2RoutingHandler;
+using apache::thrift::ThriftRequestHandlerFactory;
+using apache::thrift::ThriftServer;
+using apache::thrift::ThriftServerAsyncProcessorFactory;
+using example::chatroom::ChatRoomServiceHandler;
+using example::chatroom::EchoHandler;
+using proxygen::HTTPServerOptions;
+using proxygen::RequestHandlerChain;
+
+std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
+    std::shared_ptr<ThriftServer> server) {
+  auto h2_options = std::make_unique<HTTPServerOptions>();
+  h2_options->threads = static_cast<size_t>(server->getNumIOWorkerThreads());
+  h2_options->idleTimeout = server->getIdleTimeout();
+  h2_options->shutdownOn = {SIGINT, SIGTERM};
+  h2_options->handlerFactories =
+      RequestHandlerChain()
+          .addThen<ThriftRequestHandlerFactory>(server->getThriftProcessor())
+          .build();
+  return std::make_unique<HTTP2RoutingHandler>(std::move(h2_options));
+}
+
+template <typename ServiceHandler>
+std::shared_ptr<ThriftServer> newServer(int32_t port) {
+  auto handler = std::make_shared<ServiceHandler>();
+  auto proc_factory =
+      std::make_shared<ThriftServerAsyncProcessorFactory<ServiceHandler>>(
+          handler);
+  auto server = std::make_shared<ThriftServer>();
+  server->setPort(port);
+  server->setProcessorFactory(proc_factory);
+  server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
+      server->getThriftProcessor()));
+  server->addRoutingHandler(createHTTP2RoutingHandler(server));
+  return server;
+}
 
 int main(int argc, char** argv) {
   FLAGS_logtostderr = 1;
   folly::init(&argc, &argv);
 
-  auto chatroom_handler =
-      std::make_shared<example::chatroom::ChatRoomServiceHandler>();
-  auto chatroom_server = std::make_shared<apache::thrift::ThriftServer>();
-  chatroom_server->setPort(7777);
-  chatroom_server->setInterface(chatroom_handler);
-
-  LOG(INFO) << "ChatRoom Server running on port: " << 7777;
+  auto chatroom_server = newServer<ChatRoomServiceHandler>(FLAGS_chatroom_port);
   std::thread t([&] {
+    LOG(INFO) << "ChatRoom Server running on port: " << FLAGS_chatroom_port;
     chatroom_server->serve();
   });
 
-  auto echo_handler = std::make_shared<example::chatroom::EchoHandler>();
-  auto echo_server = std::make_shared<apache::thrift::ThriftServer>();
-  echo_server->setPort(7778);
-  echo_server->setInterface(echo_handler);
-
-  LOG(INFO) << "Echo Server running on port: " << 7778;
-
+  auto echo_server = newServer<EchoHandler>(FLAGS_echo_port);
+  LOG(INFO) << "Echo Server running on port: " << FLAGS_echo_port;
   echo_server->serve();
 
   return 0;

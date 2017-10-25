@@ -17,8 +17,8 @@
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/example/cpp2/util/Util.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
+#include <thrift/perf/cpp2/util/Util.h>
 
 DEFINE_string(host, "::1", "ChatroomServer host");
 DEFINE_int32(port, 7777, "ChatRoomServer port");
@@ -26,15 +26,15 @@ DEFINE_string(transport, "header", "Transport to use: header, rsocket, http2");
 
 using example::chatroom::ChatRoomServiceAsyncClient;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
   folly::EventBase evb;
 
   try {
     auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-    auto client = newClient<ChatRoomServiceAsyncClient>(
-        &evb, addr, FLAGS_transport);
+    auto client =
+        newClient<ChatRoomServiceAsyncClient>(&evb, addr, FLAGS_transport);
 
     // Send a message
     example::chatroom::SendMessageRequest sendRequest;
