@@ -746,12 +746,9 @@ cdef class List__i16:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -894,12 +891,9 @@ cdef class List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -1042,12 +1036,9 @@ cdef class List__i64:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -1190,12 +1181,9 @@ cdef class List__string:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return bytes(citem).decode('UTF-8')
 
@@ -1338,12 +1326,9 @@ cdef class List__SimpleStruct:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
@@ -2195,12 +2180,9 @@ cdef class List__List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return List__i32.create(
     make_shared[vector[int32_t]](citem))
@@ -2576,12 +2558,9 @@ cdef class List__Set__string:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Set__string.create(
     make_shared[cset[string]](citem))
@@ -2844,12 +2823,9 @@ cdef class List__List__string:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return List__string.create(
     make_shared[vector[string]](citem))
@@ -2995,12 +2971,9 @@ cdef class List__Set__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Set__i32.create(
     make_shared[cset[int32_t]](citem))
@@ -3146,12 +3119,9 @@ cdef class List__Map__string_string:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Map__string_string.create(
     make_shared[cmap[string,string]](citem))
@@ -3297,12 +3267,9 @@ cdef class List__binary:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return bytes(citem)
 
@@ -3630,12 +3597,9 @@ cdef class List__AnEnum:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return AnEnum(<int> citem)
 
@@ -3891,12 +3855,9 @@ cdef class List__Map__i32_double:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Map__i32_double.create(
     make_shared[cmap[int32_t,double]](citem))

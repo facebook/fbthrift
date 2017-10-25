@@ -693,12 +693,9 @@ cdef class List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -841,12 +838,9 @@ cdef class std_list__List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -989,12 +983,9 @@ cdef class std_deque__List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -1137,12 +1128,9 @@ cdef class folly_fbvector__List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -1285,12 +1273,9 @@ cdef class folly_small_vector__List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 

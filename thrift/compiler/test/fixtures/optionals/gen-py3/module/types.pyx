@@ -1227,12 +1227,9 @@ cdef class List__Vehicle:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Vehicle.create(make_shared[cVehicle](citem))
 

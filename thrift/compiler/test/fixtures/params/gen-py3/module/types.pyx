@@ -95,12 +95,9 @@ cdef class List__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return citem
 
@@ -775,12 +772,9 @@ cdef class List__Map__i32_i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Map__i32_i32.create(
     make_shared[cmap[int32_t,int32_t]](citem))
@@ -926,12 +920,9 @@ cdef class List__Set__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Set__i32.create(
     make_shared[cset[int32_t]](citem))
@@ -1194,12 +1185,9 @@ cdef class List__Map__i32_Map__i32_Set__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return Map__i32_Map__i32_Set__i32.create(
     make_shared[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](citem))
@@ -1345,12 +1333,9 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return List__Map__i32_Map__i32_Set__i32.create(
     make_shared[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](citem))

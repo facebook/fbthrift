@@ -95,12 +95,9 @@ cdef class List__string:
             size = len(self)
             # Convert a negative index
             if index < 0:
-                index = size - index
-            if index >= size:
+                index = size + index
+            if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
             citem = deref(self._cpp_obj.get())[index]
             return bytes(citem).decode('UTF-8')
 
