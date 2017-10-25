@@ -27,13 +27,18 @@ namespace thrift {
 using namespace rsocket;
 
 RSClientConnection::RSClientConnection(
-    folly::AsyncSocket::UniquePtr socket,
+    apache::thrift::async::TAsyncTransport::UniquePtr socket,
     folly::EventBase* evb,
     bool isSecure)
     : evb_(evb), isSecure_(isSecure) {
   rsClient_ = RSocket::createClientFromConnection(
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
-      *evb);
+      *evb,
+      SetupParameters(),
+      nullptr, /* ConnectionFactory */
+      std::make_shared<RSocketResponder>(),
+      std::chrono::milliseconds{0} /* no keepalive timeout */
+  );
   rsRequester_ = rsClient_->getRequester();
 }
 
@@ -79,12 +84,12 @@ ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
       counters_.getPendingRequests(), counters_.getMaxPendingRequests());
 }
 
-void RSClientConnection::attachEventBase(folly::EventBase*) {
-  DLOG(FATAL) << "not implemented, just ignore";
+void RSClientConnection::attachEventBase(folly::EventBase* /*evb*/) {
+  LOG(FATAL) << "RSClientConnection::attachEventBase()";
 }
 
 void RSClientConnection::detachEventBase() {
-  DLOG(FATAL) << "not implemented, just ignore";
+  LOG(FATAL) << "RSClientConnection::detachEventBase()";
 }
 
 bool RSClientConnection::isDetachable() {

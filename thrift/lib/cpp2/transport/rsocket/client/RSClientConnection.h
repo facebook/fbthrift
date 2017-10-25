@@ -17,6 +17,7 @@
 #pragma once
 
 #include <rsocket/RSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
@@ -27,7 +28,7 @@ namespace thrift {
 class RSClientConnection : public ClientConnectionIf {
  public:
   RSClientConnection(
-      folly::AsyncSocket::UniquePtr socket,
+      apache::thrift::async::TAsyncTransport::UniquePtr socket,
       folly::EventBase* evb,
       bool isSecure = false);
 
