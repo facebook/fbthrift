@@ -24,6 +24,7 @@
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
+#include <thrift/lib/cpp2/transport/http2/common/MetadataInBodySingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <wangle/acceptor/TransportInfo.h>
 
@@ -32,12 +33,12 @@ namespace thrift {
 
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::TTransportException;
-using std::string;
 using folly::EventBase;
 using proxygen::HTTPSession;
 using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
+using std::string;
 
 const std::chrono::milliseconds H2ClientConnection::kDefaultTransactionTimeout =
     std::chrono::milliseconds(500);
@@ -92,7 +93,12 @@ H2ClientConnection::~H2ClientConnection() {
 }
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
-  return std::make_shared<SingleRpcChannel>(this, httpHost_, httpUrl_);
+  if (FLAGS_thrift_cpp2_metadata_in_body) {
+    return std::make_shared<MetadataInBodySingleRpcChannel>(
+        this, httpHost_, httpUrl_);
+  } else {
+    return std::make_shared<SingleRpcChannel>(this, httpHost_, httpUrl_);
+  }
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
