@@ -1,5 +1,5 @@
 from types import TracebackType
-from typing import TypeVar, Optional, Type, Dict
+from typing import TypeVar, Optional, Type, Dict, Callable, Any
 
 cT = TypeVar('cT', bound='Client')
 
@@ -23,3 +23,8 @@ def get_client(
     timeout: float = ...,
     headers: Dict[str, str] = None
 ) -> cT: ...
+
+
+def install_proxy_factory(
+    Optional[Callable(Type[Client], Callable(cT, Any))] factory
+) -> None: ...
