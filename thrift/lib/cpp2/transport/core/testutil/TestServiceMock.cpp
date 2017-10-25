@@ -89,5 +89,12 @@ void TestServiceMock::headers() {
   }
 }
 
+void TestServiceMock::hello(
+    std::string& result,
+    std::unique_ptr<std::string> name) {
+  hello_(*name);
+  result = "Hello, " + *name;
+}
+
 } // namespace testservice
 } // namespace testutil

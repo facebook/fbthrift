@@ -512,6 +512,23 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
   });
 }
 
+void TransportCompatibilityTest::TestRequestResponse_ResponseSizeTooBig() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    // Execute the function, but fail when sending the response
+    EXPECT_CALL(*handler_.get(), hello_(_));
+
+    server_->setMaxResponseSize(1);
+    try {
+      std::string longName(1, 'f');
+      std::string result;
+      client->sync_hello(result, longName);
+      EXPECT_TRUE(false) << "sync_hello should have thrown";
+    } catch (TApplicationException& ex) {
+      EXPECT_EQ(TApplicationException::INTERNAL_ERROR, ex.getType());
+    }
+  });
+}
+
 void TransportCompatibilityTest::TestOneway_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), add_(0));

@@ -99,6 +99,10 @@ TEST_F(H2CompatibilityTest, RequestResponse_ServerQueueTimeout) {
   compatibilityTest_->TestRequestResponse_ServerQueueTimeout();
 }
 
+TEST_F(H2CompatibilityTest, RequestResponse_ResponseSizeTooBig) {
+  compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
+}
+
 TEST_F(H2CompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }

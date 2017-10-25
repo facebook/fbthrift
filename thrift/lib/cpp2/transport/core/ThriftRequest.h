@@ -104,20 +104,30 @@ class ThriftRequest : public ResponseChannel::Request {
 
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback* /*cb*/ = nullptr) override {
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
     if (isActive()) {
-      auto metadata = std::make_unique<ResponseRpcMetadata>();
-      metadata->seqId = seqId_;
-      metadata->__isset.seqId = true;
-      metadata->otherMetadata = header_.releaseWriteHeaders();
-      auto* eh = header_.getExtraWriteHeaders();
-      if (eh) {
-        metadata->otherMetadata.insert(eh->begin(), eh->end());
+      if (checkResponseSize(*buf)) {
+        auto metadata = std::make_unique<ResponseRpcMetadata>();
+        metadata->seqId = seqId_;
+        metadata->__isset.seqId = true;
+        metadata->otherMetadata = header_.releaseWriteHeaders();
+        auto* eh = header_.getExtraWriteHeaders();
+        if (eh) {
+          metadata->otherMetadata.insert(eh->begin(), eh->end());
+        }
+        if (!metadata->otherMetadata.empty()) {
+          metadata->__isset.otherMetadata = true;
+        }
+        channel_->sendThriftResponse(std::move(metadata), std::move(buf));
+      } else {
+        sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(
+                TApplicationException::TApplicationExceptionType::
+                    INTERNAL_ERROR,
+                "Response size too big"),
+            kResponseTooBigErrorCode,
+            cb);
       }
-      if (!metadata->otherMetadata.empty()) {
-        metadata->__isset.otherMetadata = true;
-      }
-      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
     }
   }
 
@@ -149,6 +159,11 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
  private:
+  void cancelTimeout() {
+    queueTimeout_.cancelTimeout();
+    taskTimeout_.cancelTimeout();
+  }
+
   void scheduleTimeouts(RequestRpcMetadata& metadata) {
     queueTimeout_.request_ = this;
     taskTimeout_.request_ = this;
@@ -181,6 +196,17 @@ class ThriftRequest : public ResponseChannel::Request {
     if (taskTimeout > std::chrono::milliseconds(0)) {
       timer_.scheduleTimeout(&taskTimeout_, taskTimeout);
     }
+  }
+
+  bool checkResponseSize(const folly::IOBuf& buf) {
+    if (responseSizeChecked_) {
+      return true;
+    }
+    responseSizeChecked_ = true;
+
+    auto maxResponseSize = serverConfigs_.getMaxResponseSize();
+    return maxResponseSize == 0 ||
+        buf.computeChainDataLength() <= maxResponseSize;
   }
 
   class QueueTimeout : public folly::HHWheelTimer::Callback {
@@ -239,11 +265,7 @@ class ThriftRequest : public ResponseChannel::Request {
   folly::HHWheelTimer& timer_;
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;
-
-  void cancelTimeout() {
-    queueTimeout_.cancelTimeout();
-    taskTimeout_.cancelTimeout();
-  }
+  bool responseSizeChecked_{false};
 };
 } // namespace thrift
 } // namespace apache

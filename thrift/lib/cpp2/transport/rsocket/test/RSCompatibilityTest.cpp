@@ -89,6 +89,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_ServerQueueTimeout) {
   compatibilityTest_->TestRequestResponse_ServerQueueTimeout();
 }
 
+TEST_F(RSCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
+  compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
+}
+
 TEST_F(RSCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }

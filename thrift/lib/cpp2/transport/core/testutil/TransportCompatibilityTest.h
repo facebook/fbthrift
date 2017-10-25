@@ -50,6 +50,7 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Saturation();
   void TestRequestResponse_Connection_CloseNow();
   void TestRequestResponse_ServerQueueTimeout();
+  void TestRequestResponse_ResponseSizeTooBig();
 
   void TestOneway_Simple();
   void TestOneway_WithDelay();
