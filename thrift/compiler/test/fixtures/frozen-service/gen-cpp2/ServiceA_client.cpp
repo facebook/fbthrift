@@ -59,9 +59,50 @@ void ServiceAAsyncClient::moduleAMethodT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleAMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_moduleAMethod_presult>(
-          "moduleAMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("moduleAMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_moduleAMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::moduleBMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleB& modArg) {
@@ -80,9 +121,50 @@ void ServiceAAsyncClient::moduleBMethodT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleBMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_moduleBMethod_presult>(
-          "moduleBMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("moduleBMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_moduleBMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::i32StrDoubleMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg) {
@@ -103,9 +185,50 @@ void ServiceAAsyncClient::i32StrDoubleMethodT(Protocol_* prot, bool useSync, apa
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_i32StrDoubleMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_i32StrDoubleMethod_presult>(
-          "i32StrDoubleMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("i32StrDoubleMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_i32StrDoubleMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::versioningMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg, const std::string& strArg, double doubleArg) {
@@ -126,9 +249,50 @@ void ServiceAAsyncClient::versioningMethodT(Protocol_* prot, bool useSync, apach
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_versioningMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_versioningMethod_presult>(
-          "versioningMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("versioningMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_versioningMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::retI32MethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -146,9 +310,59 @@ void ServiceAAsyncClient::retI32MethodT(Protocol_* prot, bool useSync, apache::t
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_retI32MethodT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped<
-      ServiceA_retI32Method_presult>(
-          "retI32Method", prot, state, _return);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("retI32Method") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_retI32Method_presult result;
+    result.get<0>().value = &_return;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      // _return pointer has been filled
+      return; // from try_and_catch
+    }
+    else {
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::retModAMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -166,9 +380,59 @@ void ServiceAAsyncClient::retModAMethodT(Protocol_* prot, bool useSync, apache::
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_retModAMethodT(Protocol_* prot,  ::some::ns::ModuleA& _return, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped<
-      ServiceA_retModAMethod_presult>(
-          "retModAMethod", prot, state, _return);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("retModAMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_retModAMethod_presult result;
+    result.get<0>().value = &_return;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      // _return pointer has been filled
+      return; // from try_and_catch
+    }
+    else {
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::throwMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -186,9 +450,54 @@ void ServiceAAsyncClient::throwMethodT(Protocol_* prot, bool useSync, apache::th
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_throwMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_throwMethod_presult>(
-          "throwMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("throwMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_throwMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionA>(result.get<0>().ref());
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::multiThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -206,9 +515,58 @@ void ServiceAAsyncClient::multiThrowMethodT(Protocol_* prot, bool useSync, apach
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_multiThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_multiThrowMethod_presult>(
-          "multiThrowMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("multiThrowMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_multiThrowMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionA>(result.get<0>().ref());
+      return; // from try_and_catch
+    }
+    if (result.getIsSet(1)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionB>(result.get<1>().ref());
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::i32ThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32Arg) {
@@ -227,9 +585,54 @@ void ServiceAAsyncClient::i32ThrowMethodT(Protocol_* prot, bool useSync, apache:
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_i32ThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_i32ThrowMethod_presult>(
-          "i32ThrowMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("i32ThrowMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_i32ThrowMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionA>(result.get<0>().ref());
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::moduleAThrowMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::ns::ModuleA& modArg) {
@@ -248,9 +651,54 @@ void ServiceAAsyncClient::moduleAThrowMethodT(Protocol_* prot, bool useSync, apa
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleAThrowMethodT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped_void_return<
-      ServiceA_moduleAThrowMethod_presult>(
-          "moduleAThrowMethod", prot, state);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("moduleAThrowMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_moduleAThrowMethod_presult result;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionA>(result.get<0>().ref());
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 template <typename Protocol_>
 void ServiceAAsyncClient::mixedMethodT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
@@ -271,9 +719,67 @@ void ServiceAAsyncClient::mixedMethodT(Protocol_* prot, bool useSync, apache::th
 
 template <typename Protocol_>
 folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_mixedMethodT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  return apache::thrift::detail::ac::recv_wrapped<
-      ServiceA_mixedMethod_presult>(
-          "mixedMethod", prot, state, _return);
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
+  apache::thrift::ContextStack* ctx = state.ctx();
+  std::string _fname;
+  int32_t protoSeqId = 0;
+  apache::thrift::MessageType mtype;
+  ctx->preRead();
+  folly::exception_wrapper interior_ew;
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+    prot->readMessageBegin(_fname, mtype, protoSeqId);
+    if (mtype == apache::thrift::T_EXCEPTION) {
+      apache::thrift::TApplicationException x;
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
+      return; // from try_and_catch
+    }
+    if (mtype != apache::thrift::T_REPLY) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
+      return; // from try_and_catch
+    }
+    if (_fname.compare("mixedMethod") != 0) {
+      prot->skip(apache::thrift::protocol::T_STRUCT);
+      prot->readMessageEnd();
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+      return; // from try_and_catch
+    }
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = state.buf();
+    ctx->onReadData(smsg);
+    ServiceA_mixedMethod_presult result;
+    result.get<0>().value = &_return;
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+    prot->readMessageEnd();
+    ctx->postRead(state.header(), state.buf()->length());
+    if (result.getIsSet(0)) {
+      // _return pointer has been filled
+      return; // from try_and_catch
+    }
+    if (result.getIsSet(1)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionA>(result.get<1>().ref());
+      return; // from try_and_catch
+    }
+    if (result.getIsSet(2)) {
+      interior_ew = folly::make_exception_wrapper< ::some::ns::ExceptionB>(result.get<2>().ref());
+      return; // from try_and_catch
+    }
+    else {
+      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
+      return; // from try_and_catch
+    }
+  }
+  );
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+  return ew;
 }
 
 
