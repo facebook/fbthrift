@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -125,41 +126,43 @@ cdef class MyService(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._service_MyService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def query(
             MyService self,
-            arg_s,
-            arg_i):
+            s,
+            i):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).query(
-                deref((<module.types.MyStruct>arg_s)._cpp_obj),
-                deref((<includes.types.Included>arg_i)._cpp_obj),
+                deref((<module.types.MyStruct>s)._cpp_obj),
+                deref((<includes.types.Included>i)._cpp_obj),
             ),
             MyService_query_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def has_arg_docs(
             MyService self,
-            arg_s,
-            arg_i):
+            s,
+            i):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).has_arg_docs(
-                deref((<module.types.MyStruct>arg_s)._cpp_obj),
-                deref((<includes.types.Included>arg_i)._cpp_obj),
+                deref((<module.types.MyStruct>s)._cpp_obj),
+                deref((<includes.types.Included>i)._cpp_obj),
             ),
             MyService_has_arg_docs_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

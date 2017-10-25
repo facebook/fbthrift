@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -645,643 +646,683 @@ cdef class SimpleService(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_SimpleService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def get_five(
             SimpleService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).get_five(
             ),
             SimpleService_get_five_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def add_five(
             SimpleService self,
-            arg_num):
+            num):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).add_five(
-                arg_num,
+                num,
             ),
             SimpleService_add_five_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def do_nothing(
             SimpleService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_SimpleService_client).do_nothing(
             ),
             SimpleService_do_nothing_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def concat(
             SimpleService self,
-            arg_first,
-            arg_second):
+            first,
+            second):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).concat(
-                arg_first.encode('UTF-8'),
-                arg_second.encode('UTF-8'),
+                first.encode('UTF-8'),
+                second.encode('UTF-8'),
             ),
             SimpleService_concat_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def get_value(
             SimpleService self,
-            arg_simple_struct):
+            simple_struct):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).get_value(
-                deref((<module.types.SimpleStruct>arg_simple_struct)._cpp_obj),
+                deref((<module.types.SimpleStruct>simple_struct)._cpp_obj),
             ),
             SimpleService_get_value_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def negate(
             SimpleService self,
-            arg_input):
+            input):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_SimpleService_client).negate(
-                arg_input,
+                input,
             ),
             SimpleService_negate_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def tiny(
             SimpleService self,
-            arg_input):
+            input):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int8_t](
             self._executor,
             deref(self._module_SimpleService_client).tiny(
-                arg_input,
+                input,
             ),
             SimpleService_tiny_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def small(
             SimpleService self,
-            arg_input):
+            input):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).small(
-                arg_input,
+                input,
             ),
             SimpleService_small_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def big(
             SimpleService self,
-            arg_input):
+            input):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int64_t](
             self._executor,
             deref(self._module_SimpleService_client).big(
-                arg_input,
+                input,
             ),
             SimpleService_big_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def two(
             SimpleService self,
-            arg_input):
+            input):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[double](
             self._executor,
             deref(self._module_SimpleService_client).two(
-                arg_input,
+                input,
             ),
             SimpleService_two_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def expected_exception(
             SimpleService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_SimpleService_client).expected_exception(
             ),
             SimpleService_expected_exception_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def unexpected_exception(
             SimpleService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).unexpected_exception(
             ),
             SimpleService_unexpected_exception_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def sum_i16_list(
             SimpleService self,
-            arg_numbers):
+            numbers):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i16_list(
-                vector[int16_t](deref(module.types.List__i16(arg_numbers)._cpp_obj.get())),
+                vector[int16_t](deref(module.types.List__i16(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i16_list_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def sum_i32_list(
             SimpleService self,
-            arg_numbers):
+            numbers):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i32_list(
-                vector[int32_t](deref(module.types.List__i32(arg_numbers)._cpp_obj.get())),
+                vector[int32_t](deref(module.types.List__i32(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i32_list_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def sum_i64_list(
             SimpleService self,
-            arg_numbers):
+            numbers):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i64_list(
-                vector[int64_t](deref(module.types.List__i64(arg_numbers)._cpp_obj.get())),
+                vector[int64_t](deref(module.types.List__i64(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i64_list_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def concat_many(
             SimpleService self,
-            arg_words):
+            words):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).concat_many(
-                vector[string](deref(module.types.List__string(arg_words)._cpp_obj.get())),
+                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_concat_many_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def count_structs(
             SimpleService self,
-            arg_items):
+            items):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).count_structs(
-                vector[module.types.cSimpleStruct](deref(module.types.List__SimpleStruct(arg_items)._cpp_obj.get())),
+                vector[module.types.cSimpleStruct](deref(module.types.List__SimpleStruct(items)._cpp_obj.get())),
             ),
             SimpleService_count_structs_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def sum_set(
             SimpleService self,
-            arg_numbers):
+            numbers):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_set(
-                cset[int32_t](deref(module.types.Set__i32(arg_numbers)._cpp_obj.get())),
+                cset[int32_t](deref(module.types.Set__i32(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_set_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def contains_word(
             SimpleService self,
-            arg_words,
-            arg_word):
+            words,
+            word):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_SimpleService_client).contains_word(
-                cset[string](deref(module.types.Set__string(arg_words)._cpp_obj.get())),
-                arg_word.encode('UTF-8'),
+                cset[string](deref(module.types.Set__string(words)._cpp_obj.get())),
+                word.encode('UTF-8'),
             ),
             SimpleService_contains_word_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def get_map_value(
             SimpleService self,
-            arg_words,
-            arg_key):
+            words,
+            key):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).get_map_value(
-                cmap[string,string](deref(module.types.Map__string_string(arg_words)._cpp_obj.get())),
-                arg_key.encode('UTF-8'),
+                cmap[string,string](deref(module.types.Map__string_string(words)._cpp_obj.get())),
+                key.encode('UTF-8'),
             ),
             SimpleService_get_map_value_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def map_length(
             SimpleService self,
-            arg_items):
+            items):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).map_length(
-                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._cpp_obj.get())),
+                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(items)._cpp_obj.get())),
             ),
             SimpleService_map_length_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def sum_map_values(
             SimpleService self,
-            arg_items):
+            items):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_map_values(
-                cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._cpp_obj.get())),
+                cmap[string,int16_t](deref(module.types.Map__string_i16(items)._cpp_obj.get())),
             ),
             SimpleService_sum_map_values_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def complex_sum_i32(
             SimpleService self,
-            arg_counter):
+            counter):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).complex_sum_i32(
-                deref((<module.types.ComplexStruct>arg_counter)._cpp_obj),
+                deref((<module.types.ComplexStruct>counter)._cpp_obj),
             ),
             SimpleService_complex_sum_i32_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def repeat_name(
             SimpleService self,
-            arg_counter):
+            counter):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).repeat_name(
-                deref((<module.types.ComplexStruct>arg_counter)._cpp_obj),
+                deref((<module.types.ComplexStruct>counter)._cpp_obj),
             ),
             SimpleService_repeat_name_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def get_struct(
             SimpleService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[module.types.cSimpleStruct](
             self._executor,
             deref(self._module_SimpleService_client).get_struct(
             ),
             SimpleService_get_struct_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def fib(
             SimpleService self,
-            arg_n):
+            n):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[vector[int32_t]](
             self._executor,
             deref(self._module_SimpleService_client).fib(
-                arg_n,
+                n,
             ),
             SimpleService_fib_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def unique_words(
             SimpleService self,
-            arg_words):
+            words):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).unique_words(
-                vector[string](deref(module.types.List__string(arg_words)._cpp_obj.get())),
+                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_unique_words_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def words_count(
             SimpleService self,
-            arg_words):
+            words):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cmap[string,int16_t]](
             self._executor,
             deref(self._module_SimpleService_client).words_count(
-                vector[string](deref(module.types.List__string(arg_words)._cpp_obj.get())),
+                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_words_count_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def set_enum(
             SimpleService self,
-            arg_in_enum):
+            in_enum):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[module.types.cAnEnum](
             self._executor,
             deref(self._module_SimpleService_client).set_enum(
-                module.types.AnEnum_to_cpp(arg_in_enum),
+                module.types.AnEnum_to_cpp(in_enum),
             ),
             SimpleService_set_enum_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def list_of_lists(
             SimpleService self,
-            arg_num_lists,
-            arg_num_items):
+            num_lists,
+            num_items):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[vector[vector[int32_t]]](
             self._executor,
             deref(self._module_SimpleService_client).list_of_lists(
-                arg_num_lists,
-                arg_num_items,
+                num_lists,
+                num_items,
             ),
             SimpleService_list_of_lists_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def word_character_frequency(
             SimpleService self,
-            arg_sentence):
+            sentence):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cmap[string,cmap[string,int32_t]]](
             self._executor,
             deref(self._module_SimpleService_client).word_character_frequency(
-                arg_sentence.encode('UTF-8'),
+                sentence.encode('UTF-8'),
             ),
             SimpleService_word_character_frequency_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def list_of_sets(
             SimpleService self,
-            arg_some_words):
+            some_words):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[vector[cset[string]]](
             self._executor,
             deref(self._module_SimpleService_client).list_of_sets(
-                arg_some_words.encode('UTF-8'),
+                some_words.encode('UTF-8'),
             ),
             SimpleService_list_of_sets_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def nested_map_argument(
             SimpleService self,
-            arg_struct_map):
+            struct_map):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).nested_map_argument(
-                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._cpp_obj.get())),
+                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(struct_map)._cpp_obj.get())),
             ),
             SimpleService_nested_map_argument_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def make_sentence(
             SimpleService self,
-            arg_word_chars):
+            word_chars):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).make_sentence(
-                vector[vector[string]](deref(module.types.List__List__string(arg_word_chars)._cpp_obj.get())),
+                vector[vector[string]](deref(module.types.List__List__string(word_chars)._cpp_obj.get())),
             ),
             SimpleService_make_sentence_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def get_union(
             SimpleService self,
-            arg_sets):
+            sets):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cset[int32_t]](
             self._executor,
             deref(self._module_SimpleService_client).get_union(
-                vector[cset[int32_t]](deref(module.types.List__Set__i32(arg_sets)._cpp_obj.get())),
+                vector[cset[int32_t]](deref(module.types.List__Set__i32(sets)._cpp_obj.get())),
             ),
             SimpleService_get_union_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def get_keys(
             SimpleService self,
-            arg_string_map):
+            string_map):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).get_keys(
-                vector[cmap[string,string]](deref(module.types.List__Map__string_string(arg_string_map)._cpp_obj.get())),
+                vector[cmap[string,string]](deref(module.types.List__Map__string_string(string_map)._cpp_obj.get())),
             ),
             SimpleService_get_keys_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def lookup_double(
             SimpleService self,
-            arg_key):
+            key):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[double](
             self._executor,
             deref(self._module_SimpleService_client).lookup_double(
-                arg_key,
+                key,
             ),
             SimpleService_lookup_double_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def retrieve_binary(
             SimpleService self,
-            arg_something):
+            something):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).retrieve_binary(
-                arg_something,
+                something,
             ),
             SimpleService_retrieve_binary_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def contain_binary(
             SimpleService self,
-            arg_binaries):
+            binaries):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).contain_binary(
-                vector[string](deref(module.types.List__binary(arg_binaries)._cpp_obj.get())),
+                vector[string](deref(module.types.List__binary(binaries)._cpp_obj.get())),
             ),
             SimpleService_contain_binary_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def contain_enum(
             SimpleService self,
-            arg_the_enum):
+            the_enum):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[vector[module.types.cAnEnum]](
             self._executor,
             deref(self._module_SimpleService_client).contain_enum(
-                vector[module.types.cAnEnum](deref(module.types.List__AnEnum(arg_the_enum)._cpp_obj.get())),
+                vector[module.types.cAnEnum](deref(module.types.List__AnEnum(the_enum)._cpp_obj.get())),
             ),
             SimpleService_contain_enum_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -1353,19 +1394,20 @@ cdef class DerivedService(SimpleService):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_DerivedService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def get_six(
             DerivedService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_DerivedService_client).get_six(
             ),
             DerivedService_get_six_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -1437,19 +1479,20 @@ cdef class RederivedService(DerivedService):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_RederivedService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def get_seven(
             RederivedService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_RederivedService_client).get_seven(
             ),
             RederivedService_get_seven_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

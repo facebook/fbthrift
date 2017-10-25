@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -108,21 +109,22 @@ cdef class SomeService(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_SomeService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def bounce_map(
             SomeService self,
-            arg_m):
+            m):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[module.types.std_unordered_map[int32_t,string]](
             self._executor,
             deref(self._module_SomeService_client).bounce_map(
-                module.types.std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(arg_m)._cpp_obj.get())),
+                module.types.std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
             ),
             SomeService_bounce_map_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

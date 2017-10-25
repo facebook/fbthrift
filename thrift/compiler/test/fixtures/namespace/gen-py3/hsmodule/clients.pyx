@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -108,21 +109,22 @@ cdef class HsTestService(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._hsmodule_HsTestService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def init(
             HsTestService self,
-            arg_int1):
+            int1):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[int64_t](
             self._executor,
             deref(self._hsmodule_HsTestService_client).init(
-                arg_int1,
+                int1,
             ),
             HsTestService_init_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

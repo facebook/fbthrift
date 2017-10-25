@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -294,101 +295,107 @@ cdef class MyService(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyService_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def ping(
             MyService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyService_client).ping(
             ),
             MyService_ping_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def getRandomData(
             MyService self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_MyService_client).getRandomData(
             ),
             MyService_getRandomData_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def hasDataById(
             MyService self,
-            arg_id):
+            id):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_MyService_client).hasDataById(
-                arg_id,
+                id,
             ),
             MyService_hasDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def getDataById(
             MyService self,
-            arg_id):
+            id):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_MyService_client).getDataById(
-                arg_id,
+                id,
             ),
             MyService_getDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def putDataById(
             MyService self,
-            arg_id,
-            arg_data):
+            id,
+            data):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyService_client).putDataById(
-                arg_id,
-                arg_data.encode('UTF-8'),
+                id,
+                data.encode('UTF-8'),
             ),
             MyService_putDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def lobDataById(
             MyService self,
-            arg_id,
-            arg_data):
+            id,
+            data):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyService_client).lobDataById(
-                arg_id,
-                arg_data.encode('UTF-8'),
+                id,
+                data.encode('UTF-8'),
             ),
             MyService_lobDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -458,101 +465,107 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServiceFast_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def ping(
             MyServiceFast self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServiceFast_client).ping(
             ),
             MyServiceFast_ping_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def getRandomData(
             MyServiceFast self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_MyServiceFast_client).getRandomData(
             ),
             MyServiceFast_getRandomData_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def hasDataById(
             MyServiceFast self,
-            arg_id):
+            id):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_MyServiceFast_client).hasDataById(
-                arg_id,
+                id,
             ),
             MyServiceFast_hasDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def getDataById(
             MyServiceFast self,
-            arg_id):
+            id):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_MyServiceFast_client).getDataById(
-                arg_id,
+                id,
             ),
             MyServiceFast_getDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def putDataById(
             MyServiceFast self,
-            arg_id,
-            arg_data):
+            id,
+            data):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServiceFast_client).putDataById(
-                arg_id,
-                arg_data.encode('UTF-8'),
+                id,
+                data.encode('UTF-8'),
             ),
             MyServiceFast_putDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def lobDataById(
             MyServiceFast self,
-            arg_id,
-            arg_data):
+            id,
+            data):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServiceFast_client).lobDataById(
-                arg_id,
-                arg_data.encode('UTF-8'),
+                id,
+                data.encode('UTF-8'),
             ),
             MyServiceFast_lobDataById_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -690,33 +703,35 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServicePrioParent_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def ping(
             MyServicePrioParent self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServicePrioParent_client).ping(
             ),
             MyServicePrioParent_ping_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def pong(
             MyServicePrioParent self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServicePrioParent_client).pong(
             ),
             MyServicePrioParent_pong_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -788,19 +803,20 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServicePrioChild_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def pang(
             MyServicePrioChild self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyServicePrioChild_client).pang(
             ),
             MyServicePrioChild_pang_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

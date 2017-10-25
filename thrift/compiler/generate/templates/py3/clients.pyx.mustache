@@ -42,6 +42,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -141,24 +142,26 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
     def set_persistent_header({{service:name}} self, str key, str value):
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
+        {{! TODO fried: Fix this null ptr deref T22991526}}
         deref(self._{{program:name}}_{{service:name}}_client).setPersistentHeader(ckey, cvalue)
 
     {{#service:functions}}
+    @cython.always_allow_keywords(True)
     async def {{function:name}}(
             {{service:name}} self{{#function:args}},
-            arg_{{field:name}}{{/function:args}}):
+            {{field:name}}{{/function:args}}):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}](
             self._executor,
             deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             ),
             {{service:name}}_{{function:name}}_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
     {{/service:functions}}
 

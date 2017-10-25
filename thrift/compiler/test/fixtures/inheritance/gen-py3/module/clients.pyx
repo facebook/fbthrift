@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -136,19 +137,20 @@ cdef class MyRoot(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyRoot_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def do_root(
             MyRoot self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyRoot_client).do_root(
             ),
             MyRoot_do_root_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -220,19 +222,20 @@ cdef class MyNode(MyRoot):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyNode_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def do_mid(
             MyNode self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyNode_client).do_mid(
             ),
             MyNode_do_mid_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
@@ -304,19 +307,20 @@ cdef class MyLeaf(MyNode):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyLeaf_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def do_leaf(
             MyLeaf self):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyLeaf_client).do_leaf(
             ),
             MyLeaf_do_leaf_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 

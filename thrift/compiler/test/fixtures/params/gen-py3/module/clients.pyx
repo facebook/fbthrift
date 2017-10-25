@@ -23,6 +23,7 @@ import thrift.py3.client
 cimport thrift.py3.client
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport cython
 
 import asyncio
 import sys
@@ -160,85 +161,90 @@ cdef class NestedContainers(thrift.py3.client.Client):
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_NestedContainers_client).setPersistentHeader(ckey, cvalue)
 
+    @cython.always_allow_keywords(True)
     async def mapList(
             NestedContainers self,
-            arg_foo):
+            foo):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).mapList(
-                cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(arg_foo)._cpp_obj.get())),
+                cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapList_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def mapSet(
             NestedContainers self,
-            arg_foo):
+            foo):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).mapSet(
-                cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(arg_foo)._cpp_obj.get())),
+                cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapSet_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def listMap(
             NestedContainers self,
-            arg_foo):
+            foo):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listMap(
-                vector[cmap[int32_t,int32_t]](deref(module.types.List__Map__i32_i32(arg_foo)._cpp_obj.get())),
+                vector[cmap[int32_t,int32_t]](deref(module.types.List__Map__i32_i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listMap_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def listSet(
             NestedContainers self,
-            arg_foo):
+            foo):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listSet(
-                vector[cset[int32_t]](deref(module.types.List__Set__i32(arg_foo)._cpp_obj.get())),
+                vector[cset[int32_t]](deref(module.types.List__Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listSet_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
+    @cython.always_allow_keywords(True)
     async def turtles(
             NestedContainers self,
-            arg_foo):
+            foo):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
-        future = loop.create_future()
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).turtles(
-                vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._cpp_obj.get())),
+                vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(module.types.List__List__Map__i32_Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_turtles_callback,
-            <PyObject *> future
+            <PyObject *> __future
         )
-        return await future
+        return await __future
 
 
 
