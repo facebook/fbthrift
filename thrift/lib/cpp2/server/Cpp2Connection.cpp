@@ -192,6 +192,23 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
   }
 }
 
+void Cpp2Connection::setLoadHeader(
+    HeaderServerChannel::HeaderRequest& request) {
+  const auto& headers = request.getHeader()->getHeaders();
+  std::string loadHeader;
+  auto it = headers.find(Cpp2Connection::loadHeader);
+  if (it != headers.end()) {
+    loadHeader = it->second;
+  } else {
+    return;
+  }
+
+  auto load = getWorker()->getServer()->getLoad(loadHeader);
+
+  request.getHeader()->setHeader(
+      Cpp2Connection::loadHeader, folly::to<std::string>(load));
+}
+
 void Cpp2Connection::requestTimeoutExpired() {
   VLOG(1) << "ERROR: Task expired on channel: " <<
     context_.getPeerAddress()->describe();
@@ -239,6 +256,7 @@ void Cpp2Connection::killRequest(
   }
 
   auto header_req = static_cast<HeaderServerChannel::HeaderRequest*>(&req);
+  setLoadHeader(*header_req);
 
   // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
   // may end up here. No need to send error back for such requests
@@ -444,12 +462,6 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   , reqContext_(&con->context_, req_->getHeader()) {
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
-
-  const auto& headers = req_->getHeader()->getHeaders();
-  auto it = headers.find(Cpp2Connection::loadHeader);
-  if (it != headers.end()) {
-    loadHeader_ = it->second;
-  }
 }
 
 MessageChannel::SendCallback*
@@ -473,15 +485,7 @@ Cpp2Connection::Cpp2Request::prepareSendCallback(
 }
 
 void Cpp2Connection::Cpp2Request::setLoadHeader() {
-  // Set load header, based on the received load header
-  if (!loadHeader_) {
-    return;
-  }
-
-  auto load =
-      connection_->getWorker()->getServer()->getLoad(*loadHeader_);
-  req_->getHeader()->setHeader(Cpp2Connection::loadHeader,
-                               folly::to<std::string>(load));
+  connection_->setLoadHeader(*req_);
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
@@ -534,11 +538,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
   HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
   auto observer = connection_->getWorker()->getServer()->getObserver().get();
   std::map<std::string, std::string> headers;
-  if (loadHeader_) {
-    auto load =
-      connection_->getWorker()->getServer()->getLoad(*loadHeader_);
-    headers[Cpp2Connection::loadHeader] = folly::to<std::string>(load);
-  }
+  setLoadHeader();
   req_->sendTimeoutResponse(reqContext_.getMethodName(),
                             reqContext_.getProtoSeqId(),
                             prepareSendCallback(nullptr, observer),

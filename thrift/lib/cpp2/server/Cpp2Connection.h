@@ -183,7 +183,6 @@ class Cpp2Connection
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
-    folly::Optional<std::string> loadHeader_;
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
 
@@ -220,6 +219,8 @@ class Cpp2Connection
                    const std::string& errorCode,
                    const char* comment);
   void disconnect(const char* comment) noexcept;
+
+  void setLoadHeader(HeaderServerChannel::HeaderRequest& request);
 
   friend class Cpp2Request;
 

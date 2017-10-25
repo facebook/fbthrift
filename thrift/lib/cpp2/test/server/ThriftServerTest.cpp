@@ -318,15 +318,35 @@ TEST(ThriftServer, LoadHeaderTest) {
   folly::EventBase base;
   auto client = runner.newClient<TestServiceAsyncClient>(&base);
 
-  client->voidResponse(std::make_unique<Callback>(false));
+  {
+    LOG(ERROR) << "========= no load header ==========";
+    client->voidResponse(std::make_unique<Callback>(false));
+  }
 
-  RpcOptions emptyLoadOptions;
-  emptyLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "");
-  client->voidResponse(emptyLoadOptions, std::make_unique<Callback>(true));
+  {
+    LOG(ERROR) << "========= empty load header ==========";
+    RpcOptions emptyLoadOptions;
+    emptyLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "");
+    client->voidResponse(emptyLoadOptions, std::make_unique<Callback>(true));
+  }
 
-  RpcOptions customLoadOptions;
-  customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
-  client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
+  {
+    LOG(ERROR) << "========= foo load header ==========";
+    RpcOptions customLoadOptions;
+    customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
+    client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
+  }
+
+  {
+    LOG(ERROR) << "========= server overloaded ==========";
+    RpcOptions customLoadOptions;
+    // force overloaded
+    runner.getThriftServer().setIsOverloaded(
+        [](const THeader*) { return true; });
+    runner.getThriftServer().setGetLoad([](const std::string&) { return 1; });
+    customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
+    client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
+  }
 
   base.loop();
 }
