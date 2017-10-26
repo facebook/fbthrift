@@ -211,14 +211,6 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
               std::move(socket), "localhost", "/"));
 
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
-    } else if (config->useHTTP2Protocol()) {
-      TAsyncTransport::UniquePtr socket(
-          new TAsyncSocket(&eb_, config->server(), config->port(), kTimeout));
-      auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
-      channel->setHTTPHost("localhost6");
-      channel->setHTTPUrl("/");
-      channel->setProtocolId(T_COMPACT_PROTOCOL);
-      return std::make_shared<LoadTestAsyncClient>(std::move(channel));
     }
 
     std::shared_ptr<TAsyncSocket> socket;

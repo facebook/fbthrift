@@ -28,7 +28,6 @@ DEFINE_int32(port, 1234, "server port");
 DEFINE_bool(framed, true, "use TFramedTransport");
 DEFINE_bool(header, false, "use THeaderProtocol");
 DEFINE_bool(http1, false, "use Proxygen HTTP Protocol");
-DEFINE_bool(http2, false, "use Proxygen HTTP2 Protocol");
 DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(ssl, false, "Use SSL");
 DEFINE_bool(sr, false, "Use Service Router");
@@ -216,10 +215,6 @@ bool ClientLoadConfig::useHeaderProtocol() const {
 
 bool ClientLoadConfig::useHTTP1Protocol() const {
   return FLAGS_http1;
-}
-
-bool ClientLoadConfig::useHTTP2Protocol() const {
-  return FLAGS_http2;
 }
 
 bool ClientLoadConfig::useAsync() const {

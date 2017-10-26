@@ -125,8 +125,6 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useHTTP1Protocol() const;
 
-  bool useHTTP2Protocol() const;
-
   bool useAsync() const;
 
   bool useSSL() const;
