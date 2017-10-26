@@ -70,7 +70,7 @@ class BaseThriftServer : public apache::thrift::server::TServer,
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
 
-  static const uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 0xffffffff;
+  static const uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 4096;
 
   static const std::chrono::milliseconds DEFAULT_TIMEOUT;
 

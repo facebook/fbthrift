@@ -371,6 +371,8 @@ void ThriftServer::setup() {
     if (!serverChannel_) {
 
       ServerBootstrap::socketConfig.acceptBacklog = listenBacklog_;
+      ServerBootstrap::socketConfig.maxNumPendingConnectionsPerWorker =
+          maxNumPendingConnectionsPerWorker_;
       if (reusePort_) {
         ServerBootstrap::setReusePort(true);
       }
@@ -414,7 +416,6 @@ void ThriftServer::setup() {
 
       for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(wShutdownSocketSet_);
-        socket->setMaxNumMessagesInQueue(maxNumPendingConnectionsPerWorker_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
       }
 
