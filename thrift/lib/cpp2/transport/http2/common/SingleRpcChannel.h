@@ -49,13 +49,13 @@ class SingleRpcChannel : public H2ChannelIf {
       const std::string& httpHost,
       const std::string& httpUrl);
 
-  ~SingleRpcChannel() override;
+  virtual ~SingleRpcChannel() override;
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
 
-  void sendThriftRequest(
+  virtual void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
@@ -75,17 +75,9 @@ class SingleRpcChannel : public H2ChannelIf {
 
   void onH2StreamClosed(proxygen::ProxygenError) noexcept override;
 
- private:
+ protected:
   // The service side handling code for onH2StreamEnd().
-  void onThriftRequest() noexcept;
-
-  // The client side handling code for onH2StreamEnd().
-  void onThriftResponse() noexcept;
-
-  // TODO: This method will go away once we serialize the metadata directly.
-  bool extractEnvelopeInfoFromHeader(RequestRpcMetadata* metadata) noexcept;
-
-  void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
+  virtual void onThriftRequest() noexcept;
 
   // Called from onThriftRequest() to send an error response.
   void sendThriftErrorResponse(
@@ -97,21 +89,35 @@ class SingleRpcChannel : public H2ChannelIf {
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_{nullptr};
 
+  // Event base on which all methods in this object must be invoked.
+  folly::EventBase* evb_;
+
   // Header information for RPCs (client side only).
   std::string httpHost_;
   std::string httpUrl_;
-  // Callback for client side.
-  std::unique_ptr<ThriftClientCallback> callback_;
+
   // Transaction object for use on client side to communicate with the
   // Proxygen layer.
   proxygen::HTTPTransaction* httpTransaction_;
 
+  // Callback for client side.
+  std::unique_ptr<ThriftClientCallback> callback_;
+
   std::unique_ptr<std::map<std::string, std::string>> headers_;
   std::unique_ptr<folly::IOBuf> contents_;
-  bool receivedH2Stream_{false};
+
   bool receivedThriftRPC_{false};
-  // Event base on which all methods in this object must be invoked.
-  folly::EventBase* evb_;
+
+ private:
+  // The client side handling code for onH2StreamEnd().
+  void onThriftResponse() noexcept;
+
+  // TODO: This method will go away once we serialize the metadata directly.
+  bool extractEnvelopeInfoFromHeader(RequestRpcMetadata* metadata) noexcept;
+
+  void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
+
+  bool receivedH2Stream_{false};
 };
 
 } // namespace thrift
