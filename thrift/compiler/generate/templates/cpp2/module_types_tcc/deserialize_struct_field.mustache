@@ -1,0 +1,64 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#field:optionals?%><%!
+%>this-><%field:name%> = <% > types/type%>();<%!
+%><%#type:resolves_to_base?%>
+xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>.value()<%type:cpp_indirection%>);<%!
+%><%/type:resolves_to_base?%><%!
+%><%#type:resolves_to_container_or_enum?%>
+xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
+%><%/type:resolves_to_container_or_enum?%><%!
+%><%#type:struct?%>
+xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>.value());<%!
+%><%/type:struct?%><%!
+%><%/field:optionals?%><%!
+
+%><%#field:cpp_ref?%><%!
+%>std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
+%><%#type:resolves_to_base?%>
+xfer += iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:name%><%type:cpp_indirection%>));<%!
+%><%/type:resolves_to_base?%><%!
+%><%#type:resolves_to_container_or_enum?%>
+xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, *ptr);<%!
+%><%/type:resolves_to_container_or_enum?%><%!
+%><%#type:struct?%>
+xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, ptr.get());<%!
+%><%/type:struct?%>
+this-><%field:name%> = std::move(ptr);<%!
+%><%/field:cpp_ref?%><%!
+
+%><%^field:cpp_ref?%><%^field:optionals?%><%!
+%><%#type:resolves_to_base?%><%!
+%>xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%><%type:cpp_indirection%>);<%!
+%><%/type:resolves_to_base?%><%!
+%><%#type:resolves_to_container_or_enum?%><%!
+%><%^type:enum?%><%!
+%>this-><%field:name%> = <% > types/type%>();
+<%/type:enum?%>
+xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
+%><%/type:resolves_to_container_or_enum?%><%!
+%><%#type:struct?%><%!
+%>xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>);<%!
+%><%/type:struct?%><%!
+%><%/field:optionals?%><%/field:cpp_ref?%><%!
+
+%><%#field:required?%>
+isset_<%field:name%> = true;<%!
+%><%/field:required?%><%!
+%><%^field:required?%><%^struct:optionals?%><%^field:cpp_ref?%>
+this->__isset.<%field:name%> = true;<%!
+%><%/field:cpp_ref?%><%/struct:optionals?%><%/field:required?%>
