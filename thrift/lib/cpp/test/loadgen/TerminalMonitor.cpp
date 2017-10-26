@@ -49,15 +49,12 @@ int32_t TerminalMonitor::getScreenHeight() {
     return -1;
   }
 
-  struct {
-    uint16_t rows;
-    uint16_t columns;
-  } size;
+  struct winsize size;
   if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &size) != 0) {
     return -1;
   }
 
-  return size.rows;
+  return size.ws_row;
 }
 
 }}} // apache::thrift::loadgen
