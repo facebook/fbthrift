@@ -122,7 +122,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return securityProtocol_;
   }
 
-  bool isTls() const {
+  virtual bool isTls() const {
     return securityProtocol_ == "TLS";
   }
 
