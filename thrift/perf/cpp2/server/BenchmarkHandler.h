@@ -24,6 +24,7 @@ namespace thrift {
 namespace benchmarks {
 
 using apache::thrift::HandlerCallback;
+using apache::thrift::HandlerCallbackBase;
 
 class BenchmarkHandler : virtual public BenchmarkSvIf {
  public:
@@ -35,6 +36,10 @@ class BenchmarkHandler : virtual public BenchmarkSvIf {
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override {
     stats_->add(kNoop_);
     callback->done();
+  }
+
+  void async_eb_onewayNoop(std::unique_ptr<HandlerCallbackBase>) override {
+    stats_->add(kNoop_);
   }
 
   void async_eb_sum(

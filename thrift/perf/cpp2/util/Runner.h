@@ -82,8 +82,17 @@ class LoadCallback : public RequestCallback {
       OP_TYPE op)
       : runner_(runner), ops_(ops), op_(op) {}
 
+  void setIsOneway() {
+    isOneway_ = true;
+  }
+
   // TODO: Properly handle errors and exceptions
-  void requestSent() override {}
+  void requestSent() override {
+    if (isOneway_) {
+      ops_->onewaySent(op_);
+      runner_->finishCall();
+    }
+  }
   void replyReceived(ClientReceiveState&& rstate) override {
     ops_->asyncReceived(op_, std::move(rstate));
     runner_->finishCall();
@@ -94,4 +103,5 @@ class LoadCallback : public RequestCallback {
   Runner<AsyncClient>* runner_;
   Operation<AsyncClient>* ops_;
   OP_TYPE op_;
+  bool isOneway_{false};
 };

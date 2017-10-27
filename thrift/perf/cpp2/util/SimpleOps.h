@@ -37,9 +37,17 @@ class Noop {
     client->noop(std::move(cb));
   }
 
+  void onewayAsync(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    client->onewayNoop(std::move(cb));
+  }
+
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
     stats_->add(op_name_);
     client->recv_noop(rstate);
+  }
+
+  void onewaySent() {
+    stats_->add(op_name_);
   }
 
  private:

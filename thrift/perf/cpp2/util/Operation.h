@@ -24,6 +24,9 @@ using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
 using facebook::thrift::benchmarks::QPSStats;
 
+template <typename AsyncClient>
+class LoadCallback;
+
 enum OP_TYPE {
   NOOP = 0,
   NOOP_ONEWAY = 1,
@@ -39,15 +42,30 @@ class Operation {
         sum_(std::make_unique<Sum<AsyncClient>>(stats)) {}
   ~Operation() = default;
 
-  void async(OP_TYPE op, std::unique_ptr<RequestCallback> cb) {
+  void async(OP_TYPE op, std::unique_ptr<LoadCallback<AsyncClient>> cb) {
     switch (op) {
       case NOOP:
         noop_->async(client_.get(), std::move(cb));
+        break;
+      case NOOP_ONEWAY:
+        cb->setIsOneway();
+        noop_->onewayAsync(client_.get(), std::move(cb));
         break;
       case SUM:
         sum_->async(client_.get(), std::move(cb));
         break;
       default:
+        break;
+    }
+  }
+
+  void onewaySent(OP_TYPE op) {
+    switch (op) {
+      case NOOP_ONEWAY:
+        noop_->onewaySent();
+        break;
+      default:
+        LOG(ERROR) << "Should send oneway calls";
         break;
     }
   }
@@ -61,6 +79,7 @@ class Operation {
         sum_->asyncReceived(client_.get(), std::move(rstate));
         break;
       default:
+        LOG(ERROR) << "Should not have async callback";
         break;
     }
   }
