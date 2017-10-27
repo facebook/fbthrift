@@ -22,17 +22,23 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
 
 using apache::thrift::ClientConnectionIf;
 using apache::thrift::H2ClientConnection;
 using apache::thrift::HeaderClientChannel;
+using apache::thrift::InMemoryConnection;
 using apache::thrift::RSClientConnection;
 using apache::thrift::ThriftClient;
+using apache::thrift::ThriftServerAsyncProcessorFactory;
 using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TAsyncSocket;
+using apache::thrift::server::ServerConfigsMock;
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
@@ -84,6 +90,19 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
   std::shared_ptr<ClientConnectionIf> conn =
       std::make_shared<RSClientConnection>(std::move(sock), evb);
   auto client = ThriftClient::Ptr(new ThriftClient(conn, evb));
+  client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+  return std::make_unique<AsyncClient>(std::move(client));
+}
+
+template <typename AsyncClient, typename ServiceHandler>
+static std::unique_ptr<AsyncClient> newInMemoryClient(
+    std::shared_ptr<ServiceHandler> handler,
+    ServerConfigsMock& serverConfigs) {
+  auto pFac =
+      std::make_shared<ThriftServerAsyncProcessorFactory<ServiceHandler>>(
+          handler);
+  auto conn = std::make_shared<InMemoryConnection>(pFac, serverConfigs);
+  auto client = ThriftClient::Ptr(new ThriftClient(conn));
   client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(client));
 }

@@ -17,14 +17,21 @@
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/example/cpp2/server/EchoService.h>
 #include <thrift/example/if/gen-cpp2/Echo.h>
+#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/perf/cpp2/util/Util.h>
 
 DEFINE_string(host, "::1", "EchoServer host");
 DEFINE_int32(port, 7778, "EchoServer port");
-DEFINE_string(transport, "header", "Transport to use: header, rsocket, http2");
+DEFINE_string(
+    transport,
+    "header",
+    "Transport to use: header, rsocket, http2, or inmemory");
 
+using apache::thrift::server::ServerConfigsMock;
 using example::chatroom::EchoAsyncClient;
+using example::chatroom::EchoHandler;
 
 int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
@@ -39,6 +46,14 @@ int main(int argc, char* argv[]) {
   folly::EventBase evb;
   if (FLAGS_transport == "header") {
     client = newHeaderClient<EchoAsyncClient>(&evb, addr);
+  }
+
+  // For inmemory transport
+  auto handler = std::make_shared<EchoHandler>();
+  ServerConfigsMock serverConfigs;
+  if (FLAGS_transport == "inmemory") {
+    client =
+        newInMemoryClient<EchoAsyncClient, EchoHandler>(handler, serverConfigs);
   }
 
   // Prepare thrift request
