@@ -20,11 +20,13 @@
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache {
 namespace thrift {
 
 using namespace rsocket;
+using apache::thrift::transport::TTransportException;
 
 RSClientConnection::RSClientConnection(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
@@ -40,10 +42,15 @@ RSClientConnection::RSClientConnection(
       std::chrono::milliseconds{0} /* no keepalive timeout */
   );
   rsRequester_ = rsClient_->getRequester();
+  channel_ = std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
 }
 
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel() {
-  return std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
+  if (!channel_) {
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Connection is not open");
+  }
+  return channel_;
 }
 
 void RSClientConnection::setMaxPendingRequests(uint32_t count) {
@@ -75,7 +82,7 @@ RSClientConnection::getTransport() {
 bool RSClientConnection::good() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto const socket = getTransport();
-  return socket && socket->good();
+  return channel_ && socket && socket->good();
 }
 
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
@@ -111,6 +118,7 @@ void RSClientConnection::setTimeout(uint32_t ms) {
 void RSClientConnection::closeNow() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   if (rsClient_) {
+    channel_.reset();
     rsClient_->disconnect().get();
     rsRequester_->closeSocket();
     rsRequester_.reset();

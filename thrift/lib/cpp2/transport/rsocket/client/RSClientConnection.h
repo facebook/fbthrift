@@ -53,6 +53,7 @@ class RSClientConnection : public ClientConnectionIf {
 
   std::shared_ptr<rsocket::RSocketClient> rsClient_;
   std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
+  std::shared_ptr<RSClientThriftChannel> channel_;
 
   std::chrono::milliseconds timeout_;
   bool isSecure_;
