@@ -124,7 +124,14 @@ void HTTPClientChannel::closeNow() {
 void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
   assert(eventBase->isInEventBaseThread());
   if (httpSession_) {
-    httpSession_->attachEventBase(eventBase, timeout_);
+    httpSession_->attachThreadLocals(
+        eventBase,
+        nullptr,
+        WheelTimerInstance(timeout_, eventBase),
+        nullptr,
+        [](proxygen::HTTPCodecFilter*) {},
+        nullptr,
+        nullptr);
   }
   evb_ = eventBase;
 }
@@ -133,7 +140,7 @@ void HTTPClientChannel::detachEventBase() {
   assert(evb_->isInEventBaseThread());
   assert(isDetachable());
   if (httpSession_) {
-    httpSession_->detachEventBase();
+    httpSession_->detachThreadLocals();
   }
   evb_ = nullptr;
 }

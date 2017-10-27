@@ -170,7 +170,14 @@ ClientChannel::SaturationStatus H2ClientConnection::getSaturationStatus() {
 void H2ClientConnection::attachEventBase(EventBase* evb) {
   DCHECK(evb->isInEventBaseThread());
   if (httpSession_) {
-    httpSession_->attachEventBase(evb, timeout_);
+    httpSession_->attachThreadLocals(
+        evb,
+        nullptr,
+        WheelTimerInstance(timeout_, evb),
+        nullptr,
+        [](proxygen::HTTPCodecFilter*) {},
+        nullptr,
+        nullptr);
   }
   evb_ = evb;
 }
@@ -179,7 +186,7 @@ void H2ClientConnection::detachEventBase() {
   DCHECK(evb_->isInEventBaseThread());
   DCHECK(isDetachable());
   if (httpSession_) {
-    httpSession_->detachEventBase();
+    httpSession_->detachThreadLocals();
   }
   evb_ = nullptr;
 }
