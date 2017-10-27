@@ -20,5 +20,6 @@ namespace cpp2 facebook.thrift.benchmarks
 
 service Benchmark {
   void noop();
+  oneway void onewayNoop();
   ApiBase.TwoInts sum(1: ApiBase.TwoInts input);
 }

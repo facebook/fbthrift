@@ -26,7 +26,8 @@ using facebook::thrift::benchmarks::QPSStats;
 
 enum OP_TYPE {
   NOOP = 0,
-  SUM = 1,
+  NOOP_ONEWAY = 1,
+  SUM = 2,
 };
 
 template <typename AsyncClient>

@@ -40,6 +40,7 @@ DEFINE_int32(max_outstanding_ops, 100, "Max number of outstanding async ops");
 
 // Operations - Match with OP_TYPE enum
 DEFINE_int32(noop_weight, 0, "Test with a no operation");
+DEFINE_int32(noop_oneway_weight, 0, "Test with a oneway no operation");
 DEFINE_int32(sum_weight, 0, "Test with a sum operation");
 
 /*
@@ -70,8 +71,10 @@ int main(int argc, char** argv) {
       // be updated. Otherwise, it will never be chosen.
       auto ops = std::make_unique<Operation<BenchmarkAsyncClient>>(
           std::move(client), &stats);
+      auto weights = std::vector<int32_t>{
+          FLAGS_noop_weight, FLAGS_noop_oneway_weight, FLAGS_sum_weight};
       auto distribution = std::make_unique<std::discrete_distribution<int32_t>>(
-          FLAGS_noop_weight, FLAGS_sum_weight);
+          weights.begin(), weights.end());
 
       // Create the runner and execute multiple operations
       auto r = std::make_unique<Runner<BenchmarkAsyncClient>>(
