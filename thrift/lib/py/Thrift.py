@@ -179,7 +179,12 @@ class TProcessor:
         'success' field set indicating the call succeeded, or a field set
         indicating the exception thrown.
         """
-        for field, value in result.__dict__.items():
+        fields = (
+            result.__dict__.keys()
+            if hasattr(result, "__dict__") else result.__slots__
+        )
+        for field in fields:
+            value = getattr(result, field)
             if value is None:
                 continue
             elif field == 'success':
