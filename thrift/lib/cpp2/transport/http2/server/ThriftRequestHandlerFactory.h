@@ -44,6 +44,7 @@ class ThriftRequestHandlerFactory : public proxygen::RequestHandlerFactory {
 
   proxygen::RequestHandler* onRequest(
       proxygen::RequestHandler*, proxygen::HTTPMessage*) noexcept override {
+    LOG(FATAL) << "This method is now deprecated";
     return new ThriftRequestHandler(processor_);
   }
 

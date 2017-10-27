@@ -17,6 +17,7 @@
 #pragma once
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
 namespace apache {
@@ -29,8 +30,9 @@ namespace thrift {
 class HTTP2RoutingHandler : public TransportRoutingHandler {
  public:
   explicit HTTP2RoutingHandler(
-      std::unique_ptr<proxygen::HTTPServerOptions> options)
-      : options_(std::move(options)) {}
+      std::unique_ptr<proxygen::HTTPServerOptions> options,
+      ThriftProcessor* processor)
+      : options_(std::move(options)), processor_(processor) {}
   virtual ~HTTP2RoutingHandler() = default;
   HTTP2RoutingHandler(const HTTP2RoutingHandler&) = delete;
 
@@ -48,6 +50,8 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   // we need to set this object as a unique_ptr as well in order to properly
   // move it into the class.
   std::unique_ptr<proxygen::HTTPServerOptions> options_;
+
+  ThriftProcessor* processor_;
 };
 
 } // namspace thrift

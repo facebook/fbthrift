@@ -53,7 +53,8 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
       RequestHandlerChain()
           .addThen<ThriftRequestHandlerFactory>(server->getThriftProcessor())
           .build();
-  return std::make_unique<HTTP2RoutingHandler>(std::move(h2_options));
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server->getThriftProcessor());
 }
 
 int main(int argc, char** argv) {

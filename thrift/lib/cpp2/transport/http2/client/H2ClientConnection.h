@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 
 #include <proxygen/lib/http/codec/HTTPCodec.h>
+#include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 #include <chrono>
@@ -87,9 +88,15 @@ class H2ClientConnection : public ClientConnectionIf,
   // begin HTTPSession::InfoCallback methods
 
   void onDestroy(const proxygen::HTTPSession&) override;
+  void onSettings(
+      const proxygen::HTTPSession&,
+      const proxygen::SettingsList& settings) override;
+
+  // end HTTPSession::InfoCallback methods
 
  private:
-  static const std::chrono::milliseconds kDefaultTransactionTimeout;
+  // The default timeout for a Thrift RPC.
+  static const std::chrono::milliseconds kDefaultRpcTimeout;
 
   H2ClientConnection(
       async::TAsyncTransport::UniquePtr transport,
@@ -99,7 +106,11 @@ class H2ClientConnection : public ClientConnectionIf,
   folly::EventBase* evb_{nullptr};
   std::string httpHost_;
   std::string httpUrl_;
-  std::chrono::milliseconds timeout_{kDefaultTransactionTimeout};
+  std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
+
+  // The negotiated channel version - 0 means settings frame has not
+  // yet arrived and negotiation has not taken place yet.
+  uint32_t negotiatedChannelVersion_;
 };
 
 } // namespace thrift

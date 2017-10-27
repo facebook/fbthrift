@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 
 #include <folly/Baton.h>
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/async/Request.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>

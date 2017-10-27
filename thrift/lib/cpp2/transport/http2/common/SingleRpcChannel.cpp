@@ -15,6 +15,7 @@
  */
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <glog/logging.h>
 #include <proxygen/lib/http/HTTPHeaders.h>
@@ -29,6 +30,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <chrono>
 
 namespace apache {
@@ -38,6 +40,7 @@ using apache::thrift::protocol::TProtocolException;
 using apache::thrift::transport::TTransportException;
 using std::map;
 using std::string;
+using folly::EventBase;
 using folly::EventBaseManager;
 using folly::IOBuf;
 using proxygen::HTTPHeaderCode;
@@ -126,10 +129,14 @@ void SingleRpcChannel::sendThriftRequest(
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
   msg.setURL(httpUrl_);
+  auto& msgHeaders = msg.getHeaders();
   if (!httpHost_.empty()) {
-    auto& msgHeaders = msg.getHeaders();
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
+  // Sending channel version to server.  Once server is able to use
+  // negotiated channel version, we do not have to do this.
+  // TODO: remove when server side negotiation has been implemented.
+  msgHeaders.set(kChannelVersionKey, "1");
   // This channel does not require seqId so we do not ship it to the server.
   metadata->otherMetadata[kProtocolKey] = folly::to<string>(metadata->protocol);
   metadata->otherMetadata[kRpcNameKey] = folly::to<string>(metadata->name);
@@ -173,7 +180,7 @@ void SingleRpcChannel::sendThriftRequest(
   receivedThriftRPC_ = true;
 }
 
-folly::EventBase* SingleRpcChannel::getEventBase() noexcept {
+EventBase* SingleRpcChannel::getEventBase() noexcept {
   return evb_;
 }
 
@@ -413,7 +420,7 @@ void SingleRpcChannel::sendThriftErrorResponse(
   // Not setting the "ex" header since these errors do not fit into any
   // of the existing error categories.
   TApplicationException tae(message);
-  std::unique_ptr<folly::IOBuf> payload;
+  std::unique_ptr<IOBuf> payload;
   auto proto = static_cast<int16_t>(protoId);
   try {
     payload = serializeError(proto, tae, name, 0);

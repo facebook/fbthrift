@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 
-#include <thrift/lib/cpp2/transport/http2/common/MetadataInBodySingleRpcChannel.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 namespace apache {
 namespace thrift {
@@ -27,19 +27,6 @@ using proxygen::ProxygenError;
 using proxygen::RequestHandler;
 using proxygen::UpgradeProtocol;
 
-// TODO:
-//
-// For now we hard wire to using SingleRpcChannel.  Going forward we
-// will have different channel implementations and need to be able to
-// choose which one to use.
-//
-// Ideally we will use a single kind of channel for each connection.
-// This may be negotiated via SETTINGS frames for the connection.
-//
-// Alternatively, we can be more flexible and allow a different choice
-// of channel for each stream, in which case the stream header has to
-// specify this choice.
-
 ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
     : processor_(processor) {}
 
@@ -47,13 +34,14 @@ ThriftRequestHandler::~ThriftRequestHandler() {}
 
 void ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  if (FLAGS_thrift_cpp2_metadata_in_body) {
-    channel_ = std::make_shared<MetadataInBodySingleRpcChannel>(
-        downstream_, processor_);
-
-  } else {
-    channel_ = std::make_shared<SingleRpcChannel>(downstream_, processor_);
+  auto val = headers->getHeaders().rawGet(kChannelVersionKey);
+  int version = 1;
+  try {
+    version = folly::to<int>(val);
+  } catch (const std::exception& ex) {
+    LOG(ERROR) << "Channel version not set properly in header: " << val;
   }
+  channel_ = H2ChannelFactory::createChannel(version, downstream_, processor_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 

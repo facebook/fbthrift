@@ -18,42 +18,41 @@
 
 #include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <proxygen/httpserver/RequestHandler.h>
+#include <proxygen/httpserver/RequestHandlerAdaptor.h>
+#include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPDefaultSessionCodecFactory.h>
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
 #include <proxygen/lib/http/session/HTTPSession.h>
 #include <proxygen/lib/http/session/SimpleController.h>
-
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
+#include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 #include <wangle/acceptor/ManagedConnection.h>
 
 namespace apache {
 namespace thrift {
 
 namespace {
-
 // Class for managing lifetime of objects supporting an HTTP2 session.
-class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback {
+class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
+                                   public proxygen::SimpleController {
  public:
+  HTTP2RoutingSessionManager(
+      std::unique_ptr<proxygen::HTTPServerAcceptor> acceptor,
+      ThriftProcessor* processor)
+      : proxygen::HTTPSession::InfoCallback(),
+        proxygen::SimpleController(acceptor.get()),
+        processor_(processor) {
+    acceptor_ = std::move(acceptor);
+  }
+
   ~HTTP2RoutingSessionManager() = default;
-  proxygen::HTTPDownstreamSession* CreateSession(
-      proxygen::HTTPServerOptions* options,
+
+  proxygen::HTTPDownstreamSession* createSession(
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
+      std::unique_ptr<proxygen::HTTPCodec> h2codec,
       wangle::TransportInfo const& tinfo) {
-    // Create the SimpleController
-    auto ipConfig = proxygen::HTTPServer::IPConfig(
-        *peerAddress, proxygen::HTTPServer::Protocol::HTTP2);
-    auto acceptorConfig =
-        proxygen::HTTPServerAcceptor::makeConfig(ipConfig, *options);
-    serverAcceptor_ =
-        proxygen::HTTPServerAcceptor::make(acceptorConfig, *options);
-    controller_ = new proxygen::SimpleController(serverAcceptor_.get());
-
-    // Get the HTTP2 Codec
-    auto codecFactory =
-        proxygen::HTTPDefaultSessionCodecFactory(acceptorConfig);
-    auto h2codec =
-        codecFactory.getCodec("h2", proxygen::TransportDirection::DOWNSTREAM);
-
     // Obtain the proper routing address
     folly::SocketAddress localAddress;
     try {
@@ -64,51 +63,76 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback {
     }
     VLOG(4) << "Created new session for peer " << *peerAddress;
 
-    // Create the DownstreamSession
+    // Create the DownstreamSession.  Note that "this" occurs twice
+    // because it acts as both a controller as well as a info
+    // callback.
     auto session = new proxygen::HTTPDownstreamSession(
         proxygen::WheelTimerInstance(std::chrono::milliseconds(5)),
         std::move(sock),
         localAddress,
         *peerAddress,
-        controller_,
+        this,
         std::move(h2codec),
         tinfo,
         this);
-    /*
-    if (acceptorConfig.maxConcurrentIncomingStreams) {
-      session->setMaxConcurrentIncomingStreams(
-          acceptorConfig.maxConcurrentIncomingStreams);
-    }
-    */
-    // TODO: Improve the way max incoming streams is set
-    session->setMaxConcurrentIncomingStreams(100000);
-
-    // Set HTTP2 priorities flag on session object.
-    session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
-
-    // Set flow control parameters.
-    session->setFlowControl(
-        acceptorConfig.initialReceiveWindow,
-        acceptorConfig.receiveStreamWindowSize,
-        acceptorConfig.receiveSessionWindowSize);
-    if (acceptorConfig.writeBufferLimit > 0) {
-      session->setWriteBufferLimit(acceptorConfig.writeBufferLimit);
-    }
 
     return session;
   }
 
-  void onDestroy(const proxygen::HTTPSession&) override {
-    VLOG(4) << "HTTP2RoutingSessionManager::onDestroy";
+  // begin HTTPSession::InfoCallback methods
+
+  // We do not override onDestroy() to self destroy because this object
+  // doubles as both the InfoCallback and the SimpleController.  The
+  // session destructor calls onDestroy() first and then detachSession()
+  // so we self destron at detachSession().
+
+  void onSettings(
+      const proxygen::HTTPSession&,
+      const proxygen::SettingsList& settings) override {
+    // TODO: Right now the settings are not handled at the server.
+    // Instead we send the negotiated setting values in every header.
+    // So this loop does not do anything.  This should be fixed.
+    for (auto& setting : settings) {
+      if (setting.id == kChannelSettingId) {
+        VLOG(2) << "Peer channel version is " << setting.value;
+      }
+    }
+  }
+
+  // end HTTPSession::InfoCallback methods
+
+  // begin SimpleController methods
+
+  proxygen::HTTPTransactionHandler* getRequestHandler(
+      proxygen::HTTPTransaction& txn,
+      proxygen::HTTPMessage* msg) override {
+    folly::SocketAddress clientAddr, vipAddr;
+    txn.getPeerAddress(clientAddr);
+    txn.getLocalAddress(vipAddr);
+    msg->setClientAddress(clientAddr);
+    msg->setDstAddress(vipAddr);
+    proxygen::RequestHandler* handler = new ThriftRequestHandler(processor_);
+    return new proxygen::RequestHandlerAdaptor(handler);
+  }
+
+  void detachSession(const proxygen::HTTPSession*) override {
+    VLOG(4) << "HTTP2RoutingSessionManager::detachSession";
     // Session destroyed, so self destroy.
     delete this;
   }
 
+  // end SimpleController methods
+
  private:
   // Supporting objects for HTTP2 session managed by the callback.
-  std::unique_ptr<proxygen::HTTPServerAcceptor> serverAcceptor_;
-  // The controller should only be destroyed once onDestroy is called.
-  proxygen::SimpleController* controller_;
+  std::unique_ptr<proxygen::HTTPServerAcceptor> acceptor_;
+
+  ThriftProcessor* processor_;
+
+  // The negotiated channel version - 0 means negotiation has not
+  // taken place yet.  Negotiation is completed when the server
+  // receives a header with a non-zero channel version.
+  uint32_t negotiatedChannelVersion_;
 };
 
 } // anonymous namespace
@@ -151,14 +175,44 @@ void HTTP2RoutingHandler::handleConnection(
     folly::SocketAddress* peerAddress,
     wangle::TransportInfo const& tinfo) {
   // Create the DownstreamSession manager.
-  std::unique_ptr<HTTP2RoutingSessionManager> sessionManager(
-      new HTTP2RoutingSessionManager);
+  auto ipConfig = proxygen::HTTPServer::IPConfig(
+      *peerAddress, proxygen::HTTPServer::Protocol::HTTP2);
+  auto acceptorConfig =
+      proxygen::HTTPServerAcceptor::makeConfig(ipConfig, *options_);
+  auto acceptor = proxygen::HTTPServerAcceptor::make(acceptorConfig, *options_);
+  auto sessionManager =
+      new HTTP2RoutingSessionManager(std::move(acceptor), processor_);
+  // Get the HTTP2 Codec
+  auto codecFactory = proxygen::HTTPDefaultSessionCodecFactory(acceptorConfig);
+  auto h2codec =
+      codecFactory.getCodec("h2", proxygen::TransportDirection::DOWNSTREAM);
   // Create the DownstreamSession
-  auto session = sessionManager->CreateSession(
-      options_.get(), std::move(sock), peerAddress, tinfo);
+  auto session = sessionManager->createSession(
+      std::move(sock), peerAddress, std::move(h2codec), tinfo);
+  // Set HTTP2 priorities flag on session object.
+  session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
+  /*
+  if (acceptorConfig.maxConcurrentIncomingStreams) {
+    session->setMaxConcurrentIncomingStreams(
+        acceptorConfig.maxConcurrentIncomingStreams);
+  }
+  */
+  // TODO: Improve the way max incoming streams is set
+  session->setMaxConcurrentIncomingStreams(100000);
+
+  // Set flow control parameters.
+  session->setFlowControl(
+      acceptorConfig.initialReceiveWindow,
+      acceptorConfig.receiveStreamWindowSize,
+      acceptorConfig.receiveSessionWindowSize);
+  if (acceptorConfig.writeBufferLimit > 0) {
+    session->setWriteBufferLimit(acceptorConfig.writeBufferLimit);
+  }
+  session->setEgressSettings(
+      {{kChannelSettingId, kMaxSupportedChannelVersion}});
+
   // Route the connection.
   connectionManager->addConnection(session);
-  sessionManager.release();
   session->startNow();
 }
 

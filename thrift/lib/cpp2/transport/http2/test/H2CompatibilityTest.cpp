@@ -20,8 +20,8 @@
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandlerFactory.h>
 
+DECLARE_int32(force_channel_version);
 DECLARE_int32(num_client_connections);
-DECLARE_bool(thrift_cpp2_metadata_in_body);
 
 namespace apache {
 namespace thrift {
@@ -39,12 +39,14 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
           .addThen<ThriftRequestHandlerFactory>(server->getThriftProcessor())
           .build();
 
-  return std::make_unique<HTTP2RoutingHandler>(std::move(h2_options));
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server->getThriftProcessor());
 }
 
 enum ChannelType {
-  SingleRPC = 0,
-  MetadataInBody = 1,
+  Default,
+  SingleRPC,
+  MetadataInBody,
 };
 
 class H2CompatibilityTest : public testing::Test,
@@ -52,11 +54,15 @@ class H2CompatibilityTest : public testing::Test,
  public:
   H2CompatibilityTest() {
     switch (GetParam()) {
+      case Default:
+        // Default behavior is to let the negotiation happen as normal.
+        FLAGS_force_channel_version = 0;
+        break;
       case SingleRPC:
-        FLAGS_thrift_cpp2_metadata_in_body = false;
+        FLAGS_force_channel_version = 1;
         break;
       case MetadataInBody:
-        FLAGS_thrift_cpp2_metadata_in_body = true;
+        FLAGS_force_channel_version = 2;
         break;
     }
 
@@ -148,7 +154,10 @@ TEST_P(H2CompatibilityTest, Oneway_ServerQueueTimeout) {
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     H2CompatibilityTest,
-    testing::Values(ChannelType::SingleRPC, ChannelType::MetadataInBody));
+    testing::Values(
+        ChannelType::Default,
+        ChannelType::SingleRPC,
+        ChannelType::MetadataInBody));
 
 } // namespace thrift
 } // namespace apache

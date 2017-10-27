@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
+#include <folly/Likely.h>
+#include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
@@ -24,9 +26,14 @@
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
-#include <thrift/lib/cpp2/transport/http2/common/MetadataInBodySingleRpcChannel.h>
-#include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <wangle/acceptor/TransportInfo.h>
+#include <algorithm>
+
+DEFINE_int32(
+    force_channel_version,
+    0,
+    "Set to a positive number to force that as the channel version");
 
 namespace apache {
 namespace thrift {
@@ -35,12 +42,13 @@ using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
 using proxygen::HTTPSession;
+using proxygen::SettingsList;
 using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
 using std::string;
 
-const std::chrono::milliseconds H2ClientConnection::kDefaultTransactionTimeout =
+const std::chrono::milliseconds H2ClientConnection::kDefaultRpcTimeout =
     std::chrono::milliseconds(500);
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP1xConnection(
@@ -72,7 +80,8 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
 H2ClientConnection::H2ClientConnection(
     TAsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
-    : evb_(transport->getEventBase()) {
+    : evb_(transport->getEventBase()),
+      negotiatedChannelVersion_(FLAGS_force_channel_version) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
@@ -86,6 +95,8 @@ H2ClientConnection::H2ClientConnection(
       this);
   // TODO: Improve the way max outging streams is set
   setMaxPendingRequests(100000);
+  httpSession_->setEgressSettings(
+      {{kChannelSettingId, kMaxSupportedChannelVersion}});
 }
 
 H2ClientConnection::~H2ClientConnection() {
@@ -93,12 +104,8 @@ H2ClientConnection::~H2ClientConnection() {
 }
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
-  if (FLAGS_thrift_cpp2_metadata_in_body) {
-    return std::make_shared<MetadataInBodySingleRpcChannel>(
-        this, httpHost_, httpUrl_);
-  } else {
-    return std::make_shared<SingleRpcChannel>(this, httpHost_, httpUrl_);
-  }
+  return H2ChannelFactory::createChannel(
+      negotiatedChannelVersion_, this, httpHost_, httpUrl_);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
@@ -207,9 +214,30 @@ CLIENT_TYPE H2ClientConnection::getClientType() {
   return THRIFT_HTTP_CLIENT_TYPE;
 }
 
-void H2ClientConnection::onDestroy(const HTTPSession& /*session*/) {
+void H2ClientConnection::onDestroy(const HTTPSession&) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   httpSession_ = nullptr;
+}
+
+void H2ClientConnection::onSettings(
+    const HTTPSession&,
+    const SettingsList& settings) {
+  if (FLAGS_force_channel_version > 0) {
+    // Do not use the negotiated settings.
+    return;
+  }
+  for (auto& setting : settings) {
+    if (setting.id == kChannelSettingId) {
+      negotiatedChannelVersion_ =
+          std::min(setting.value, kMaxSupportedChannelVersion);
+      VLOG(2) << "Peer channel version is " << setting.value;
+      VLOG(2) << "Negotiated channel version is " << negotiatedChannelVersion_;
+    }
+  }
+  if (negotiatedChannelVersion_ == 0) {
+    // Did not receive a channel version, assuming legacy peer.
+    negotiatedChannelVersion_ = 1;
+  }
 }
 
 } // namespace thrift

@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 using apache::thrift::transport::TTransportException;
 using folly::IOBufQueue;
@@ -30,11 +31,6 @@ using proxygen::HTTPMessage;
 using proxygen::HTTPMethod;
 using proxygen::IOBufPrinter;
 using std::string;
-
-DEFINE_bool(
-    thrift_cpp2_metadata_in_body,
-    false,
-    "Serialize metadata in request body");
 
 namespace apache {
 namespace thrift {
@@ -80,10 +76,14 @@ void MetadataInBodySingleRpcChannel::sendThriftRequest(
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
   msg.setURL(httpUrl_);
+  auto& msgHeaders = msg.getHeaders();
   if (!httpHost_.empty()) {
-    auto& msgHeaders = msg.getHeaders();
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
+  // Sending channel version to server.  Once server is able to use
+  // negotiated channel version, we do not have to do this.
+  // TODO: remove when server side negotiation has been implemented.
+  msgHeaders.set(kChannelVersionKey, "2");
   if (metadata->__isset.clientTimeoutMs) {
     DCHECK(metadata->clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(

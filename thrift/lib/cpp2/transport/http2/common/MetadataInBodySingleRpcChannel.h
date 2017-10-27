@@ -17,8 +17,6 @@
 
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
-DECLARE_bool(thrift_cpp2_metadata_in_body);
-
 namespace apache {
 namespace thrift {
 
