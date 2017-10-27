@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
+#include <thrift/perf/cpp2/util/Util.h>
 #include "thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h"
 
 namespace apache {
@@ -633,6 +634,48 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
           EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
         }
       });
+}
+
+void TransportCompatibilityTest::TestRequestContextIsPreserved() {
+  auto intermServer = std::make_shared<apache::thrift::ThriftServer>();
+  uint16_t intermPort;
+
+  EXPECT_CALL(*handler_.get(), add_(5)).Times(1);
+
+  // A separate server/client is spun up to verify that a client backed by a new
+  // transport behaves correctly and does not trample the currently set
+  // RequestContext. In this case, a THeader server is spun up, which is known
+  // to correctly set RequestContext. A request/response is made through the
+  // transport being tested, and it's verified that the RequestContext doesn't
+  // change.
+
+  auto intermEventHandler =
+      std::make_shared<TransportCompatibilityTestEventHandler>();
+
+  auto serverThread = std::thread([&] {
+    auto intermHandler =
+        std::make_shared<IntermHeaderService>(FLAGS_host, port_);
+    intermServer->setInterface(intermHandler);
+    auto cpp2PFac = std::make_shared<
+        ThriftServerAsyncProcessorFactory<IntermHeaderService>>(intermHandler);
+
+    intermServer->setPort(0);
+    intermServer->setProcessorFactory(cpp2PFac);
+
+    intermServer->setServerEventHandler(intermEventHandler);
+    intermServer->setup();
+  });
+
+  intermPort = intermEventHandler->waitForPortAssignment();
+
+  auto addr = folly::SocketAddress(FLAGS_host, intermPort);
+  auto client = newClient<IntermHeaderServiceAsyncClient>(
+      folly::EventBaseManager::get()->getEventBase(), addr, "header");
+
+  EXPECT_EQ(5, client->sync_callAdd(5));
+
+  intermServer->cleanUp();
+  serverThread.join();
 }
 
 } // namespace thrift

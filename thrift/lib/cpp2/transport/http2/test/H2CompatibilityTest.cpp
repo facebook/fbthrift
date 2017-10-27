@@ -159,5 +159,9 @@ INSTANTIATE_TEST_CASE_P(
         ChannelType::SingleRPC,
         ChannelType::MetadataInBody));
 
+TEST_P(H2CompatibilityTest, RequestContextIsPreserved) {
+  compatibilityTest_->TestRequestContextIsPreserved();
+}
+
 } // namespace thrift
 } // namespace apache

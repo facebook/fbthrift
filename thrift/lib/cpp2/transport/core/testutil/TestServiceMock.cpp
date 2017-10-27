@@ -15,6 +15,8 @@
  */
 
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClient.h>
+#include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
 #include <chrono>
 #include <thread>
@@ -94,6 +96,23 @@ void TestServiceMock::hello(
     std::unique_ptr<std::string> name) {
   hello_(*name);
   result = "Hello, " + *name;
+}
+
+IntermHeaderService::IntermHeaderService(std::string const& host, int16_t port)
+    : clientWorkerThread_{"CompatIntermServerWorker"} {
+  auto mgr = ConnectionManager::getInstance();
+  auto connection = mgr->getConnection(host, port);
+  auto channel = ThriftClient::Ptr(
+      new ThriftClient(connection, clientWorkerThread_.getEventBase()));
+  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+  client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+}
+
+int32_t IntermHeaderService::callAdd(int32_t x) {
+  auto rq = folly::RequestContext::get();
+  auto ret = client_->sync_add(x);
+  EXPECT_EQ(rq, folly::RequestContext::get());
+  return ret;
 }
 
 } // namespace testservice

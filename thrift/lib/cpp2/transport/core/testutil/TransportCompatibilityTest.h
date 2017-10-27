@@ -59,6 +59,8 @@ class TransportCompatibilityTest {
   void TestOneway_Connection_CloseNow();
   void TestOneway_ServerQueueTimeout();
 
+  void TestRequestContextIsPreserved();
+
  protected:
   void setupServer();
   void stopServer();

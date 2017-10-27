@@ -16,8 +16,10 @@
 
 #pragma once
 
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
 #include <atomic>
+#include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/IntermHeaderService.tcc>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 
 namespace testutil {
@@ -54,6 +56,17 @@ class TestServiceMock : public TestServiceSvIf {
 
  protected:
   std::atomic<int32_t> sum{0};
+};
+
+class IntermHeaderService : public IntermHeaderServiceSvIf {
+ public:
+  IntermHeaderService(std::string const& host, int16_t port);
+
+  int32_t callAdd(int32_t) override;
+
+ private:
+  std::unique_ptr<TestServiceAsyncClient> client_;
+  folly::ScopedEventBaseThread clientWorkerThread_;
 };
 
 } // namespace testservice

@@ -117,5 +117,9 @@ TEST_F(RSCompatibilityTest, Oneway_ServerQueueTimeout) {
   compatibilityTest_->TestOneway_ServerQueueTimeout();
 }
 
+TEST_F(RSCompatibilityTest, RequestContextIsPreserved) {
+  compatibilityTest_->TestRequestContextIsPreserved();
+}
+
 } // namespace thrift
 } // namespace apache

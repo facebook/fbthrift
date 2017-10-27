@@ -4,6 +4,10 @@ exception TestServiceException {
   1: string message
 }
 
+service IntermHeaderService {
+  i32 callAdd(1: i32 x); // forwards to TestService::add()
+}
+
 service TestService {
   i32 sumTwoNumbers(1: i32 x, 2: i32 y),
 
