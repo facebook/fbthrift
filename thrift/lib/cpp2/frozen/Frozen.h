@@ -31,7 +31,7 @@
 
 #include <folly/Bits.h>
 #include <folly/Demangle.h>
-#include <folly/Hash.h>
+#include <folly/hash/Hash.h>
 #include <folly/MapUtil.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
