@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 #include <folly/Range.h>
 #include <proxygen/lib/utils/Base64.h>
+#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 namespace apache {
 namespace thrift {
@@ -25,7 +27,7 @@ using std::map;
 using std::string;
 using proxygen::HTTPMessage;
 
-void H2ChannelIf::encodeHeaders(
+void H2Channel::encodeHeaders(
     const map<string, string>& source,
     HTTPMessage& dest) noexcept {
   auto& msgHeaders = dest.getHeaders();
@@ -44,16 +46,16 @@ void H2ChannelIf::encodeHeaders(
     if (it->first.find(":") != string::npos) {
       auto name = proxygen::Base64::urlEncode(folly::StringPiece(it->first));
       auto value = proxygen::Base64::urlEncode(folly::StringPiece(it->second));
-      msgHeaders.rawSet(
+      msgHeaders.set(
           folly::to<std::string>("encode_", name),
           folly::to<std::string>(name, "_", value));
     } else {
-      msgHeaders.rawSet(it->first, it->second);
+      msgHeaders.set(it->first, it->second);
     }
   }
 }
 
-void H2ChannelIf::decodeHeaders(
+void H2Channel::decodeHeaders(
     const HTTPMessage& source,
     map<string, string>& dest) noexcept {
   auto decodeAndCopyKeyValue = [&](const string& key, const string& val) {
@@ -76,6 +78,14 @@ void H2ChannelIf::decodeHeaders(
     }
   };
   source.getHeaders().forEach(decodeAndCopyKeyValue);
+}
+
+void H2Channel::maybeAddChannelVersionHeader(
+    HTTPMessage& msg,
+    const string& version) noexcept {
+  if (UNLIKELY(!h2ClientConnection_->isStable())) {
+    msg.getHeaders().set(kChannelVersionKey, version);
+  }
 }
 
 } // namespace thrift

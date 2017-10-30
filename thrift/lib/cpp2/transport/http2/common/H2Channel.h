@@ -57,9 +57,9 @@ class ThriftProcessor;
  * Channel object methods must always be invoked on the event base
  * (thread) that manages the underlying connection.
  */
-class H2ChannelIf : public ThriftChannelIf {
+class H2Channel : public ThriftChannelIf {
  public:
-  virtual ~H2ChannelIf() = default;
+  virtual ~H2Channel() = default;
 
   // Called from Proxygen at the beginning of the stream.
   virtual void onH2StreamBegin(
@@ -87,14 +87,14 @@ class H2ChannelIf : public ThriftChannelIf {
  protected:
   // Constructor for server side that uses a ResponseHandler object
   // to write to the HTTP/2 stream.
-  explicit H2ChannelIf(proxygen::ResponseHandler* toHttp2)
+  explicit H2Channel(proxygen::ResponseHandler* toHttp2)
       : responseHandler_(toHttp2), h2ClientConnection_(nullptr) {}
 
   // Constructor for client side that uses a HTTPTransaction object to
   // write to the HTTP/2 stream.  The HTTPTransaction object is
   // obtained from the H2ClientConnection object provided to this
   // constructor just before sending the header frame to the server.
-  explicit H2ChannelIf(H2ClientConnection* toHttp2)
+  explicit H2Channel(H2ClientConnection* toHttp2)
       : responseHandler_(nullptr), h2ClientConnection_(toHttp2) {}
 
   // Encodes Thrift headers to be HTTP compliant.
@@ -107,6 +107,10 @@ class H2ChannelIf : public ThriftChannelIf {
   void decodeHeaders(
       const proxygen::HTTPMessage& source,
       std::map<std::string, std::string>& dest) noexcept;
+
+  void maybeAddChannelVersionHeader(
+      proxygen::HTTPMessage& msg,
+      const std::string& version) noexcept;
 
   // Used to write messages to HTTP/2 on the server side.
   // Owned by H2RequestHandler.  Should not be used after

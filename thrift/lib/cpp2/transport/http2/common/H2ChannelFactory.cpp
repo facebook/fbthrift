@@ -21,7 +21,7 @@
 namespace apache {
 namespace thrift {
 
-std::shared_ptr<H2ChannelIf> H2ChannelFactory::createChannel(
+std::shared_ptr<H2Channel> H2ChannelFactory::createChannel(
     int32_t version,
     proxygen::ResponseHandler* toHttp2,
     ThriftProcessor* processor) {
@@ -33,7 +33,7 @@ std::shared_ptr<H2ChannelIf> H2ChannelFactory::createChannel(
   }
 }
 
-std::shared_ptr<H2ChannelIf> H2ChannelFactory::createChannel(
+std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
     int32_t version,
     H2ClientConnection* toHttp2,
     const std::string& httpHost,
@@ -43,7 +43,11 @@ std::shared_ptr<H2ChannelIf> H2ChannelFactory::createChannel(
         toHttp2, httpHost, httpUrl);
   } else {
     DCHECK(version == 0 || version == 1);
-    return std::make_shared<SingleRpcChannel>(toHttp2, httpHost, httpUrl);
+    auto ch = std::make_shared<SingleRpcChannel>(toHttp2, httpHost, httpUrl);
+    if (version == 0) {
+      ch->setNotYetStable();
+    }
+    return ch;
   }
 }
 

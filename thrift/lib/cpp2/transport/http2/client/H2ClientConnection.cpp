@@ -26,7 +26,6 @@
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <wangle/acceptor/TransportInfo.h>
 #include <algorithm>
 
@@ -81,7 +80,8 @@ H2ClientConnection::H2ClientConnection(
     TAsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
     : evb_(transport->getEventBase()),
-      negotiatedChannelVersion_(FLAGS_force_channel_version) {
+      negotiatedChannelVersion_(FLAGS_force_channel_version),
+      stable_(FLAGS_force_channel_version != 0) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
@@ -104,8 +104,8 @@ H2ClientConnection::~H2ClientConnection() {
 }
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
-  return H2ChannelFactory::createChannel(
-      negotiatedChannelVersion_, this, httpHost_, httpUrl_);
+  return channelFactory_.getChannel(
+      negotiatedChannelVersion_.load(), this, httpHost_, httpUrl_);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
@@ -119,7 +119,7 @@ EventBase* H2ClientConnection::getEventBase() const {
   return evb_;
 }
 
-HTTPTransaction* H2ClientConnection::newTransaction(H2ChannelIf* channel) {
+HTTPTransaction* H2ClientConnection::newTransaction(H2Channel* channel) {
   if (!httpSession_) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "HTTPSession is not open");
@@ -137,8 +137,16 @@ HTTPTransaction* H2ClientConnection::newTransaction(H2ChannelIf* channel) {
     throw ex;
   }
   handler->setChannel(
-      std::dynamic_pointer_cast<H2ChannelIf>(channel->shared_from_this()));
+      std::dynamic_pointer_cast<H2Channel>(channel->shared_from_this()));
   return txn;
+}
+
+bool H2ClientConnection::isStable() {
+  return stable_;
+}
+
+void H2ClientConnection::setIsStable() {
+  stable_ = true;
 }
 
 TAsyncTransport* H2ClientConnection::getTransport() {

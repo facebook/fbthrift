@@ -34,8 +34,7 @@ ThriftTransactionHandler::~ThriftTransactionHandler() {
   }
 }
 
-void ThriftTransactionHandler::setChannel(
-    std::shared_ptr<H2ChannelIf> channel) {
+void ThriftTransactionHandler::setChannel(std::shared_ptr<H2Channel> channel) {
   channel_ = channel;
 }
 

@@ -54,7 +54,7 @@ using proxygen::ResponseHandler;
 SingleRpcChannel::SingleRpcChannel(
     ResponseHandler* toHttp2,
     ThriftProcessor* processor)
-    : H2ChannelIf(toHttp2), processor_(processor) {
+    : H2Channel(toHttp2), processor_(processor) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -62,7 +62,10 @@ SingleRpcChannel::SingleRpcChannel(
     H2ClientConnection* toHttp2,
     const string& httpHost,
     const string& httpUrl)
-    : H2ChannelIf(toHttp2), httpHost_(httpHost), httpUrl_(httpUrl) {
+    : H2Channel(toHttp2),
+      httpHost_(httpHost),
+      httpUrl_(httpUrl),
+      shouldMakeStable_(!toHttp2->isStable()) {
   evb_ = toHttp2->getEventBase();
 }
 
@@ -133,10 +136,7 @@ void SingleRpcChannel::sendThriftRequest(
   if (!httpHost_.empty()) {
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
-  // Sending channel version to server.  Once server is able to use
-  // negotiated channel version, we do not have to do this.
-  // TODO: remove when server side negotiation has been implemented.
-  msgHeaders.set(kChannelVersionKey, "1");
+  maybeAddChannelVersionHeader(msg, "1");
   // This channel does not require seqId so we do not ship it to the server.
   metadata->otherMetadata[kProtocolKey] = folly::to<string>(metadata->protocol);
   metadata->otherMetadata[kRpcNameKey] = folly::to<string>(metadata->name);
@@ -247,7 +247,11 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
           std::move(*evbEx)));
     });
   }
-  H2ChannelIf::onH2StreamClosed(error);
+  H2Channel::onH2StreamClosed(error);
+}
+
+void SingleRpcChannel::setNotYetStable() noexcept {
+  shouldMakeStable_ = false;
 }
 
 void SingleRpcChannel::onThriftRequest() noexcept {
@@ -286,6 +290,9 @@ void SingleRpcChannel::onThriftRequest() noexcept {
 
 void SingleRpcChannel::onThriftResponse() noexcept {
   DCHECK(httpTransaction_);
+  if (shouldMakeStable_) {
+    h2ClientConnection_->setIsStable();
+  }
   if (!callback_) {
     return;
   }

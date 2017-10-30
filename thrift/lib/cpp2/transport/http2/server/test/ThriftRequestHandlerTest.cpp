@@ -44,8 +44,10 @@ class ThriftRequestHandlerTest : public testing::Test {
     responseHandler_ = std::make_unique<FakeResponseHandler>(eventBase_.get());
     processor_ = std::make_unique<EchoProcessor>(
         serverConfigs_, "extrakey", "extravalue", "<eom>", eventBase_.get());
+    // This test assumes metadata is passed in the header, so we need
+    // to use SingleRpcChannel.  The second parameter 1 enables this.
     // requestHandler_ deletes itself.
-    requestHandler_ = new ThriftRequestHandler(processor_.get());
+    requestHandler_ = new ThriftRequestHandler(processor_.get(), 1);
     requestHandler_->setResponseHandler(responseHandler_.get());
   }
 

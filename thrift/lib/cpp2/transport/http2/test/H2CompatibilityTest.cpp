@@ -18,7 +18,6 @@
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
-#include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandlerFactory.h>
 
 DECLARE_int32(force_channel_version);
 DECLARE_int32(num_client_connections);
@@ -34,10 +33,6 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
   h2_options->threads = static_cast<size_t>(server->getNumIOWorkerThreads());
   h2_options->idleTimeout = server->getIdleTimeout();
   h2_options->shutdownOn = {SIGINT, SIGTERM};
-  h2_options->handlerFactories =
-      RequestHandlerChain()
-          .addThen<ThriftRequestHandlerFactory>(server->getThriftProcessor())
-          .build();
 
   return std::make_unique<HTTP2RoutingHandler>(
       std::move(h2_options), server->getThriftProcessor());

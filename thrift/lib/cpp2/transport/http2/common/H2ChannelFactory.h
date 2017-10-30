@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/codec/SettingsId.h>
@@ -24,40 +24,78 @@
 namespace apache {
 namespace thrift {
 
-// We send the channel version in the header of each stream to the
-// server using this key.  The server uses this to construct the
-// correct channel object.
-// TODO: Once we figure out how to pass the negotiated channel version
-// to the RequestHandler object, we can stop using this strategy (of
-// using headers).
-constexpr auto kChannelVersionKey = folly::makeFixedString("cv");
+// We support multiple strategies for HTTP2 communication.  Each
+// strategy has an associated version id, the greater the value of the
+// version id, the more preferred it is.  The base strategy is the
+// legacy approach - that the previous implementations support.  This
+// is assigned version 1.  We use the HTTP2 SETTINGS frame exchanged
+// during connection setup to handshake on the channel version for the
+// connection.
+//
+// Both the client and the server send the maximum version it can
+// handle in its SETTINGS frame to the other side
+// (kMaxSupportedChannelVersion).  kChannelSettingId is used as the
+// SETTINGS id to send this version number.
+//
+// When the SETTINGS frame is received, the lesser of the maximum
+// version values of the client and server is chosen as the negotiated
+// version.  If the SETTINGS frame does not contain the maximum
+// version number, it is assumed to be a legacy implementation and
+// version 1 is assumed for this case.
+//
+// On the server side, the negotiated version is determined before it
+// receives the first RPC.  However, on the client side, it may send
+// RPCs to the server before it determines the negotiated version.
+// These RPCs are sent using version number 1.  This version number is
+// also included as a HTTP2 header with key kChannelVersionKey.
+// Legacy clients will send version 1 RPCs also, but without the HTTP2
+// header.
+//
+// The client moves to the negotiated version immediately after
+// negotiation and includes the negotiated version in the HTTP2 header
+// (with key kChannelVersionKey).  The client stops including the
+// negotiated version in the header after it receives a response from
+// the server for a RPC sent using the negotiated version.  On the
+// server side, once it receives the first RPC with the negotiated
+// version, it registers the stream id for this RPC and assumes that
+// all future RPCs (with greater stream ids) will be performed using
+// the negotiated version.  It does not inspect the header for these
+// future RPCs.
+//
+// If the flag "force_channel_version" is set to a positive value,
+// that version is used for all RPCs and the HTTP2 header is not
+// set/inspected.
 
-// The maximum channel version supported.  During negotiation, the
-// smaller of these two values of the client and server is selected.
-// So the largest channel version is preferred.
+constexpr auto kChannelVersionKey = folly::makeFixedString("cv");
+constexpr auto kChannelSettingId = static_cast<proxygen::SettingsId>(100);
+
+// The maximum channel version supported.
 //
 // Channel version 1:
 // Provides legacy functionality (compatible with HTTPClientChannel)
 // using SingleRpcChannel.
 //
 // Channel version 2:
-// The standard functionality supported by SingleRpcChannel.
+// The metadata is serialized into the body instead of placing them
+// in headers as is the case for version 1.  Implemented by
+// MetadataInBodySingleRpcChannel.
 constexpr uint32_t kMaxSupportedChannelVersion = 2;
-
-// The settings id used to send kMaxSupportedChannelVersion to the
-// peer.
-constexpr auto kChannelSettingId = static_cast<proxygen::SettingsId>(100);
 
 class H2ChannelFactory {
  public:
   // Creates a channel on the server based on negotiated version.
-  static std::shared_ptr<H2ChannelIf> createChannel(
+  // This is called from the RequestHandler object when a new stream
+  // is received from the client.
+  static std::shared_ptr<H2Channel> createChannel(
       int32_t version,
       proxygen::ResponseHandler* toHttp2,
       ThriftProcessor* processor);
 
-  // Creates a channel on the client based on negotiated version.
-  static std::shared_ptr<H2ChannelIf> createChannel(
+  // Gets a channel on the client based on negotiated version.  This
+  // is called at the beginning of each RPC.  Depending on the
+  // strategy used, it is possible that a previously created channel
+  // will be reused.
+  std::shared_ptr<H2Channel> getChannel(
       int32_t version,
       H2ClientConnection* toHttp2,
       const std::string& httpHost,

@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 
 #include <glog/logging.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
 
 namespace apache {
 namespace thrift {

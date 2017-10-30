@@ -16,10 +16,12 @@
 
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
+#include <gflags/gflags.h>
 #include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <proxygen/httpserver/RequestHandler.h>
 #include <proxygen/httpserver/RequestHandlerAdaptor.h>
+#include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPDefaultSessionCodecFactory.h>
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
@@ -28,6 +30,9 @@
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 #include <wangle/acceptor/ManagedConnection.h>
+#include <limits>
+
+DECLARE_int32(force_channel_version);
 
 namespace apache {
 namespace thrift {
@@ -42,8 +47,16 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
       ThriftProcessor* processor)
       : proxygen::HTTPSession::InfoCallback(),
         proxygen::SimpleController(acceptor.get()),
-        processor_(processor) {
+        processor_(processor),
+        negotiatedChannelVersion_(FLAGS_force_channel_version) {
     acceptor_ = std::move(acceptor);
+    if (FLAGS_force_channel_version > 0) {
+      // This prevents the inspection of the HTTP2 header for the channel
+      // version.
+      stableId_ = 0;
+    } else {
+      stableId_ = std::numeric_limits<proxygen::HTTPCodec::StreamID>::max();
+    }
   }
 
   ~HTTP2RoutingSessionManager() = default;
@@ -84,18 +97,27 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // We do not override onDestroy() to self destroy because this object
   // doubles as both the InfoCallback and the SimpleController.  The
   // session destructor calls onDestroy() first and then detachSession()
-  // so we self destron at detachSession().
+  // so we self destroy at detachSession().
 
   void onSettings(
       const proxygen::HTTPSession&,
       const proxygen::SettingsList& settings) override {
-    // TODO: Right now the settings are not handled at the server.
-    // Instead we send the negotiated setting values in every header.
-    // So this loop does not do anything.  This should be fixed.
+    if (FLAGS_force_channel_version > 0) {
+      // Do not use the negotiated settings.
+      return;
+    }
     for (auto& setting : settings) {
       if (setting.id == kChannelSettingId) {
+        negotiatedChannelVersion_ =
+            std::min(setting.value, kMaxSupportedChannelVersion);
         VLOG(2) << "Peer channel version is " << setting.value;
+        VLOG(2) << "Negotiated channel version is "
+                << negotiatedChannelVersion_;
       }
+    }
+    if (negotiatedChannelVersion_ == 0) {
+      // Did not receive a channel version, assuming legacy peer.
+      negotiatedChannelVersion_ = 1;
     }
   }
 
@@ -111,7 +133,29 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     txn.getLocalAddress(vipAddr);
     msg->setClientAddress(clientAddr);
     msg->setDstAddress(vipAddr);
-    proxygen::RequestHandler* handler = new ThriftRequestHandler(processor_);
+
+    // This checks that the SETTINGS frame arrives before the first RPC.
+    DCHECK(negotiatedChannelVersion_ > 0);
+
+    // Determine channel version for this HTTP2 stream.
+    uint32_t version = negotiatedChannelVersion_;
+    if (UNLIKELY(txn.getID() < stableId_)) {
+      auto val = msg->getHeaders().rawGet(kChannelVersionKey);
+      try {
+        version = folly::to<int>(val);
+      } catch (const std::exception& ex) {
+        LOG(WARNING) << "Channel version not set properly in header: " << val;
+        // This could be from a legacy client.
+        version = 1;
+      }
+      DCHECK(version == 1 || version == negotiatedChannelVersion_);
+      if (version == negotiatedChannelVersion_) {
+        stableId_ = txn.getID();
+      }
+    }
+
+    proxygen::RequestHandler* handler =
+        new ThriftRequestHandler(processor_, version);
     return new proxygen::RequestHandlerAdaptor(handler);
   }
 
@@ -133,6 +177,10 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // taken place yet.  Negotiation is completed when the server
   // receives a header with a non-zero channel version.
   uint32_t negotiatedChannelVersion_;
+
+  // The stream id after which the server can assume that the channel
+  // version will be the negotiated version.
+  proxygen::HTTPCodec::StreamID stableId_;
 };
 
 } // anonymous namespace

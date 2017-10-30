@@ -35,7 +35,7 @@ ChannelTestFixture::ChannelTestFixture() {
 }
 
 void ChannelTestFixture::sendAndReceiveStream(
-    std::shared_ptr<H2ChannelIf> channel,
+    std::shared_ptr<H2Channel> channel,
     const unordered_map<string, string>& inputHeaders,
     const string& inputPayload,
     string::size_type chunkSize,

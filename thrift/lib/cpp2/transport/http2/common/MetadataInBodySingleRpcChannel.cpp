@@ -80,10 +80,7 @@ void MetadataInBodySingleRpcChannel::sendThriftRequest(
   if (!httpHost_.empty()) {
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
-  // Sending channel version to server.  Once server is able to use
-  // negotiated channel version, we do not have to do this.
-  // TODO: remove when server side negotiation has been implemented.
-  msgHeaders.set(kChannelVersionKey, "2");
+  maybeAddChannelVersionHeader(msg, "2");
   if (metadata->__isset.clientTimeoutMs) {
     DCHECK(metadata->clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(

@@ -21,7 +21,9 @@
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
+#include <atomic>
 #include <chrono>
 #include <string>
 
@@ -71,7 +73,10 @@ class H2ClientConnection : public ClientConnectionIf,
 
   // Returns a new transaction that is bound to the channel parameter.
   // Throws TTransportException if unable to create a new transaction.
-  proxygen::HTTPTransaction* newTransaction(H2ChannelIf* channel);
+  proxygen::HTTPTransaction* newTransaction(H2Channel* channel);
+
+  bool isStable();
+  void setIsStable();
 
   apache::thrift::async::TAsyncTransport* getTransport() override;
   bool good() override;
@@ -110,7 +115,13 @@ class H2ClientConnection : public ClientConnectionIf,
 
   // The negotiated channel version - 0 means settings frame has not
   // yet arrived and negotiation has not taken place yet.
-  uint32_t negotiatedChannelVersion_;
+  std::atomic<uint32_t> negotiatedChannelVersion_;
+
+  // This is true once negotiation has completed and we no longer have
+  // to send the channel version in the HTTP2 header.
+  bool stable_;
+
+  H2ChannelFactory channelFactory_;
 };
 
 } // namespace thrift

@@ -20,7 +20,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 #include <memory>
 #include <string>
@@ -31,7 +31,7 @@ namespace thrift {
 
 /**
  * For testing of a single HTTP/2 stream of activity.  Mimics how a
- * proxygen::RequestHandler object interacts with an H2ChannelIf
+ * proxygen::RequestHandler object interacts with an H2Channel
  * object.
  */
 class ChannelTestFixture : public testing::Test {
@@ -48,7 +48,7 @@ class ChannelTestFixture : public testing::Test {
   // the channel in chunks as specified by the chunkSize.  If
   // chunkSize is 0, the entire payload is sent as a single chunk.
   void sendAndReceiveStream(
-      std::shared_ptr<H2ChannelIf> channel,
+      std::shared_ptr<H2Channel> channel,
       const std::unordered_map<std::string, std::string>& inputHeaders,
       const std::string& inputPayload,
       std::string::size_type chunkSize,

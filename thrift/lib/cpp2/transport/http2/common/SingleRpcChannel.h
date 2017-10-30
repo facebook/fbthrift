@@ -16,11 +16,12 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <atomic>
 #include <string>
 
 namespace apache {
@@ -38,7 +39,7 @@ constexpr auto kRpcKindKey = folly::makeFixedString("src_rpc_kind");
 constexpr auto kHttpClientChannelKey =
     folly::makeFixedString("src_httpclientchannel");
 
-class SingleRpcChannel : public H2ChannelIf {
+class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
       proxygen::ResponseHandler* toHttp2,
@@ -74,6 +75,8 @@ class SingleRpcChannel : public H2ChannelIf {
   void onH2StreamEnd() noexcept override;
 
   void onH2StreamClosed(proxygen::ProxygenError) noexcept override;
+
+  void setNotYetStable() noexcept;
 
  protected:
   // The service side handling code for onH2StreamEnd().
@@ -112,12 +115,22 @@ class SingleRpcChannel : public H2ChannelIf {
   // The client side handling code for onH2StreamEnd().
   void onThriftResponse() noexcept;
 
-  // TODO: This method will go away once we serialize the metadata directly.
   bool extractEnvelopeInfoFromHeader(RequestRpcMetadata* metadata) noexcept;
 
   void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
 
   bool receivedH2Stream_{false};
+
+  // This flag is initialized when the channel is constructed to
+  // decide whether or not the connection should be set to stable
+  // (i.e., we know that the server does not have to read the header
+  // any more to determine the channel version).  This flag is set to
+  // true if the connection is not yet stable and negotiation has
+  // completed on the client side.  If this channel completes a
+  // successful RPC, it means the server now knows that the client has
+  // completed negotiation, and so it can set the connection to be
+  // stable.
+  std::atomic<bool> shouldMakeStable_;
 };
 
 } // namespace thrift

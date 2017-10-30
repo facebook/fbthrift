@@ -17,7 +17,7 @@
 #pragma once
 
 #include <proxygen/lib/http/session/HTTPTransaction.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 namespace apache {
 namespace thrift {
@@ -31,7 +31,7 @@ class ThriftTransactionHandler : public proxygen::HTTPTransactionHandler {
   ThriftTransactionHandler(const ThriftTransactionHandler&) = delete;
   ThriftTransactionHandler& operator=(const ThriftTransactionHandler&) = delete;
 
-  void setChannel(std::shared_ptr<H2ChannelIf> channel);
+  void setChannel(std::shared_ptr<H2Channel> channel);
 
   void setTransaction(proxygen::HTTPTransaction* txn) noexcept override;
 
@@ -78,7 +78,7 @@ class ThriftTransactionHandler : public proxygen::HTTPTransactionHandler {
       proxygen::HTTPTransaction* /*txn*/) noexcept override {}
 
  private:
-  std::shared_ptr<H2ChannelIf> channel_;
+  std::shared_ptr<H2Channel> channel_;
   proxygen::HTTPTransaction* txn_;
 };
 

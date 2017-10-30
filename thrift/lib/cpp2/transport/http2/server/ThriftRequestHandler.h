@@ -23,7 +23,7 @@
 #include <proxygen/lib/http/HTTPMessage.h>
 #include <proxygen/lib/http/ProxygenErrorEnum.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelIf.h>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <memory>
 
 namespace apache {
@@ -38,7 +38,9 @@ namespace thrift {
  */
 class ThriftRequestHandler : public proxygen::RequestHandler {
  public:
-  explicit ThriftRequestHandler(ThriftProcessor* processor);
+  explicit ThriftRequestHandler(
+      ThriftProcessor* processor,
+      uint32_t channelVersion);
 
   ~ThriftRequestHandler() override;
 
@@ -59,9 +61,11 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
   // There is a single ThriftProcessor object which is used for all requests.
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_;
+  // The channel version for this request.
+  uint32_t channelVersion_;
   // The channel used with this request handler.  The request handler
   // creates the channel object.
-  std::shared_ptr<H2ChannelIf> channel_;
+  std::shared_ptr<H2Channel> channel_;
 };
 
 } // namespace thrift

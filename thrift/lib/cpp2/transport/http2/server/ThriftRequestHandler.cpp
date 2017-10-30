@@ -27,21 +27,17 @@ using proxygen::ProxygenError;
 using proxygen::RequestHandler;
 using proxygen::UpgradeProtocol;
 
-ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
-    : processor_(processor) {}
+ThriftRequestHandler::ThriftRequestHandler(
+    ThriftProcessor* processor,
+    uint32_t channelVersion)
+    : processor_(processor), channelVersion_(channelVersion) {}
 
 ThriftRequestHandler::~ThriftRequestHandler() {}
 
 void ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  auto val = headers->getHeaders().rawGet(kChannelVersionKey);
-  int version = 1;
-  try {
-    version = folly::to<int>(val);
-  } catch (const std::exception& ex) {
-    LOG(ERROR) << "Channel version not set properly in header: " << val;
-  }
-  channel_ = H2ChannelFactory::createChannel(version, downstream_, processor_);
+  channel_ =
+      H2ChannelFactory::createChannel(channelVersion_, downstream_, processor_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 
