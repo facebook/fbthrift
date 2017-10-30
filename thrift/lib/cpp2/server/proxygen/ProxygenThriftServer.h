@@ -228,7 +228,7 @@ class ProxygenThriftServer : public BaseThriftServer,
 
   class ConnectionContext : public apache::thrift::server::TConnectionContext {
    public:
-    explicit ConnectionContext(const proxygen::HTTPSession& session)
+    explicit ConnectionContext(const proxygen::HTTPSessionBase& session)
         : apache::thrift::server::TConnectionContext() {
       peerAddress_ = session.getPeerAddress();
     }
@@ -244,14 +244,14 @@ class ProxygenThriftServer : public BaseThriftServer,
   uint64_t getNumDroppedConnections() const override;
 
   // proxygen::HTTPSession::InfoCallback methods
-  void onCreate(const proxygen::HTTPSession& session) override {
+  void onCreate(const proxygen::HTTPSessionBase& session) override {
     auto ctx = std::make_unique<ConnectionContext>(session);
     if (eventHandler_) {
       eventHandler_->newConnection(ctx.get());
     }
     connectionMap_[&session] = std::move(ctx);
   }
-  void onDestroy(const proxygen::HTTPSession& session) override {
+  void onDestroy(const proxygen::HTTPSessionBase& session) override {
     auto itr = connectionMap_.find(&session);
     DCHECK(itr != connectionMap_.end());
     if (eventHandler_) {
@@ -264,8 +264,10 @@ class ProxygenThriftServer : public BaseThriftServer,
 
   size_t initialReceiveWindow_{65536};
 
-  std::unordered_map<const proxygen::HTTPSession*,
-                     std::unique_ptr<ConnectionContext>> connectionMap_;
+  std::unordered_map<
+      const proxygen::HTTPSessionBase*,
+      std::unique_ptr<ConnectionContext>>
+      connectionMap_;
 
  public:
   void setInitialReceiveWindow(size_t window) {

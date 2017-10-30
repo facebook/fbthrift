@@ -100,7 +100,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // so we self destroy at detachSession().
 
   void onSettings(
-      const proxygen::HTTPSession&,
+      const proxygen::HTTPSessionBase&,
       const proxygen::SettingsList& settings) override {
     if (FLAGS_force_channel_version > 0) {
       // Do not use the negotiated settings.

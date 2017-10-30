@@ -261,7 +261,7 @@ uint32_t HTTPClientChannel::sendRequest_(
 
 // HTTPSession::InfoCallback methods
 
-void HTTPClientChannel::onDestroy(const proxygen::HTTPSession&) {
+void HTTPClientChannel::onDestroy(const proxygen::HTTPSessionBase&) {
   if (closeCallback_) {
     closeCallback_->channelClosed();
   }

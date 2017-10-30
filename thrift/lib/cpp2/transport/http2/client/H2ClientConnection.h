@@ -92,9 +92,9 @@ class H2ClientConnection : public ClientConnectionIf,
 
   // begin HTTPSession::InfoCallback methods
 
-  void onDestroy(const proxygen::HTTPSession&) override;
+  void onDestroy(const proxygen::HTTPSessionBase&) override;
   void onSettings(
-      const proxygen::HTTPSession&,
+      const proxygen::HTTPSessionBase&,
       const proxygen::SettingsList& settings) override;
 
   // end HTTPSession::InfoCallback methods

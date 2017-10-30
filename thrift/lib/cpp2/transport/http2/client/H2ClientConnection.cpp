@@ -40,7 +40,7 @@ namespace thrift {
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
-using proxygen::HTTPSession;
+using proxygen::HTTPSessionBase;
 using proxygen::SettingsList;
 using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
@@ -229,13 +229,13 @@ CLIENT_TYPE H2ClientConnection::getClientType() {
   return THRIFT_HTTP_CLIENT_TYPE;
 }
 
-void H2ClientConnection::onDestroy(const HTTPSession&) {
+void H2ClientConnection::onDestroy(const HTTPSessionBase& /*session*/) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   httpSession_ = nullptr;
 }
 
 void H2ClientConnection::onSettings(
-    const HTTPSession&,
+    const HTTPSessionBase&,
     const SettingsList& settings) {
   if (FLAGS_force_channel_version > 0) {
     // Do not use the negotiated settings.
