@@ -15,7 +15,10 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.exceptions cimport (
+    cTApplicationException,
+    ApplicationError as __ApplicationError,
+    cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
 from thrift.py3.server import RequestContext
 from folly cimport (
@@ -127,13 +130,18 @@ async def MyRoot_do_root_coro(
             result = await self.do_root(ctx,)
         else:
             result = await self.do_root()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler do_root:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -167,13 +175,18 @@ async def MyNode_do_mid_coro(
             result = await self.do_mid(ctx,)
         else:
             result = await self.do_mid()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler do_mid:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -207,13 +220,18 @@ async def MyLeaf_do_leaf_coro(
             result = await self.do_leaf(ctx,)
         else:
             result = await self.do_leaf()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler do_leaf:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)

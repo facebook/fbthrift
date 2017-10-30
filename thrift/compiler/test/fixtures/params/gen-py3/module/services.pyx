@@ -15,7 +15,10 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.exceptions cimport (
+    cTApplicationException,
+    ApplicationError as __ApplicationError,
+    cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
 from thrift.py3.server import RequestContext
 from folly cimport (
@@ -128,13 +131,18 @@ async def NestedContainers_mapList_coro(
         else:
             result = await self.mapList(
                       foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler mapList:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -174,13 +182,18 @@ async def NestedContainers_mapSet_coro(
         else:
             result = await self.mapSet(
                       foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler mapSet:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -220,13 +233,18 @@ async def NestedContainers_listMap_coro(
         else:
             result = await self.listMap(
                       foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler listMap:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -266,13 +284,18 @@ async def NestedContainers_listSet_coro(
         else:
             result = await self.listSet(
                       foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler listSet:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -312,13 +335,18 @@ async def NestedContainers_turtles_coro(
         else:
             result = await self.turtles(
                       foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler turtles:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)

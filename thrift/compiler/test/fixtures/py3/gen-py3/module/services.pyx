@@ -15,7 +15,10 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.exceptions cimport (
+    cTApplicationException,
+    ApplicationError as __ApplicationError,
+    cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
 from thrift.py3.server import RequestContext
 from folly cimport (
@@ -566,13 +569,18 @@ async def SimpleService_get_five_coro(
             result = await self.get_five(ctx,)
         else:
             result = await self.get_five()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_five:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -612,13 +620,18 @@ async def SimpleService_add_five_coro(
         else:
             result = await self.add_five(
                       num)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler add_five:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -652,13 +665,18 @@ async def SimpleService_do_nothing_coro(
             result = await self.do_nothing(ctx,)
         else:
             result = await self.do_nothing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler do_nothing:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -704,13 +722,18 @@ async def SimpleService_concat_coro(
             result = await self.concat(
                       first,
                       second)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler concat:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -750,13 +773,18 @@ async def SimpleService_get_value_coro(
         else:
             result = await self.get_value(
                       simple_struct)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_value:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -796,13 +824,18 @@ async def SimpleService_negate_coro(
         else:
             result = await self.negate(
                       input)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler negate:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<cbool> result)
@@ -842,13 +875,18 @@ async def SimpleService_tiny_coro(
         else:
             result = await self.tiny(
                       input)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler tiny:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int8_t> result)
@@ -888,13 +926,18 @@ async def SimpleService_small_coro(
         else:
             result = await self.small(
                       input)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler small:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int16_t> result)
@@ -934,13 +977,18 @@ async def SimpleService_big_coro(
         else:
             result = await self.big(
                       input)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler big:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int64_t> result)
@@ -980,13 +1028,18 @@ async def SimpleService_two_coro(
         else:
             result = await self.two(
                       input)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler two:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<double> result)
@@ -1022,13 +1075,18 @@ async def SimpleService_expected_exception_coro(
             result = await self.expected_exception()
     except module.types.SimpleException as ex:
         promise.cPromise.setException(deref((<module.types.SimpleException> ex)._cpp_obj.get()))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler expected_exception:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -1062,13 +1120,18 @@ async def SimpleService_unexpected_exception_coro(
             result = await self.unexpected_exception(ctx,)
         else:
             result = await self.unexpected_exception()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler unexpected_exception:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1108,13 +1171,18 @@ async def SimpleService_sum_i16_list_coro(
         else:
             result = await self.sum_i16_list(
                       numbers)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler sum_i16_list:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1154,13 +1222,18 @@ async def SimpleService_sum_i32_list_coro(
         else:
             result = await self.sum_i32_list(
                       numbers)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler sum_i32_list:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1200,13 +1273,18 @@ async def SimpleService_sum_i64_list_coro(
         else:
             result = await self.sum_i64_list(
                       numbers)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler sum_i64_list:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1246,13 +1324,18 @@ async def SimpleService_concat_many_coro(
         else:
             result = await self.concat_many(
                       words)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler concat_many:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -1292,13 +1375,18 @@ async def SimpleService_count_structs_coro(
         else:
             result = await self.count_structs(
                       items)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler count_structs:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1338,13 +1426,18 @@ async def SimpleService_sum_set_coro(
         else:
             result = await self.sum_set(
                       numbers)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler sum_set:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1390,13 +1483,18 @@ async def SimpleService_contains_word_coro(
             result = await self.contains_word(
                       words,
                       word)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler contains_word:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<cbool> result)
@@ -1442,13 +1540,18 @@ async def SimpleService_get_map_value_coro(
             result = await self.get_map_value(
                       words,
                       key)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_map_value:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -1488,13 +1591,18 @@ async def SimpleService_map_length_coro(
         else:
             result = await self.map_length(
                       items)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler map_length:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int16_t> result)
@@ -1534,13 +1642,18 @@ async def SimpleService_sum_map_values_coro(
         else:
             result = await self.sum_map_values(
                       items)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler sum_map_values:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int16_t> result)
@@ -1580,13 +1693,18 @@ async def SimpleService_complex_sum_i32_coro(
         else:
             result = await self.complex_sum_i32(
                       counter)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler complex_sum_i32:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -1626,13 +1744,18 @@ async def SimpleService_repeat_name_coro(
         else:
             result = await self.repeat_name(
                       counter)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler repeat_name:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -1666,13 +1789,18 @@ async def SimpleService_get_struct_coro(
             result = await self.get_struct(ctx,)
         else:
             result = await self.get_struct()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_struct:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result)._cpp_obj)))
@@ -1713,13 +1841,18 @@ async def SimpleService_fib_coro(
             result = await self.fib(
                       n)
         result = module.types.List__i32(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler fib:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._cpp_obj)))
@@ -1760,13 +1893,18 @@ async def SimpleService_unique_words_coro(
             result = await self.unique_words(
                       words)
         result = module.types.Set__string(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler unique_words:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
@@ -1807,13 +1945,18 @@ async def SimpleService_words_count_coro(
             result = await self.words_count(
                       words)
         result = module.types.Map__string_i16(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler words_count:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._cpp_obj)))
@@ -1853,13 +1996,18 @@ async def SimpleService_set_enum_coro(
         else:
             result = await self.set_enum(
                       in_enum)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler set_enum:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(module.types.AnEnum_to_cpp(result))
@@ -1906,13 +2054,18 @@ async def SimpleService_list_of_lists_coro(
                       num_lists,
                       num_items)
         result = module.types.List__List__i32(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler list_of_lists:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._cpp_obj)))
@@ -1953,13 +2106,18 @@ async def SimpleService_word_character_frequency_coro(
             result = await self.word_character_frequency(
                       sentence)
         result = module.types.Map__string_Map__string_i32(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler word_character_frequency:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._cpp_obj)))
@@ -2000,13 +2158,18 @@ async def SimpleService_list_of_sets_coro(
             result = await self.list_of_sets(
                       some_words)
         result = module.types.List__Set__string(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler list_of_sets:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._cpp_obj)))
@@ -2046,13 +2209,18 @@ async def SimpleService_nested_map_argument_coro(
         else:
             result = await self.nested_map_argument(
                       struct_map)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler nested_map_argument:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -2092,13 +2260,18 @@ async def SimpleService_make_sentence_coro(
         else:
             result = await self.make_sentence(
                       word_chars)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler make_sentence:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -2139,13 +2312,18 @@ async def SimpleService_get_union_coro(
             result = await self.get_union(
                       sets)
         result = module.types.Set__i32(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_union:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._cpp_obj)))
@@ -2186,13 +2364,18 @@ async def SimpleService_get_keys_coro(
             result = await self.get_keys(
                       string_map)
         result = module.types.Set__string(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_keys:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
@@ -2232,13 +2415,18 @@ async def SimpleService_lookup_double_coro(
         else:
             result = await self.lookup_double(
                       key)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler lookup_double:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<double> result)
@@ -2278,13 +2466,18 @@ async def SimpleService_retrieve_binary_coro(
         else:
             result = await self.retrieve_binary(
                       something)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler retrieve_binary:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result))
@@ -2325,13 +2518,18 @@ async def SimpleService_contain_binary_coro(
             result = await self.contain_binary(
                       binaries)
         result = module.types.Set__binary(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler contain_binary:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._cpp_obj)))
@@ -2372,13 +2570,18 @@ async def SimpleService_contain_enum_coro(
             result = await self.contain_enum(
                       the_enum)
         result = module.types.List__AnEnum(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler contain_enum:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._cpp_obj)))
@@ -2412,13 +2615,18 @@ async def DerivedService_get_six_coro(
             result = await self.get_six(ctx,)
         else:
             result = await self.get_six()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_six:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)
@@ -2452,13 +2660,18 @@ async def RederivedService_get_seven_coro(
             result = await self.get_seven(ctx,)
         else:
             result = await self.get_seven()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get_seven:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(<int32_t> result)

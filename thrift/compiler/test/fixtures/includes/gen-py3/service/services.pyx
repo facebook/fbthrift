@@ -15,7 +15,10 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.exceptions cimport (
+    cTApplicationException,
+    ApplicationError as __ApplicationError,
+    cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
 from thrift.py3.server import RequestContext
 from folly cimport (
@@ -122,13 +125,18 @@ async def MyService_query_coro(
             result = await self.query(
                       s,
                       i)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler query:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -174,13 +182,18 @@ async def MyService_has_arg_docs_coro(
             result = await self.has_arg_docs(
                       s,
                       i)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler has_arg_docs:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)

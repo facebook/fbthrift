@@ -14,7 +14,8 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -42,7 +43,7 @@ cdef void Raiser_doBland_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -54,12 +55,12 @@ cdef void Raiser_doRaise_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException[module.types.cBanal]():
-        pyfuture.set_exception(module.types.Banal.create(py3_get_exception[module.types.cBanal](result.exception())))
+        pyfuture.set_exception(module.types.Banal.create(try_make_shared_exception[module.types.cBanal](result.exception())))
     elif result.hasException[module.types.cFiery]():
-        pyfuture.set_exception(module.types.Fiery.create(py3_get_exception[module.types.cFiery](result.exception())))
+        pyfuture.set_exception(module.types.Fiery.create(try_make_shared_exception[module.types.cFiery](result.exception())))
     elif result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -72,7 +73,7 @@ cdef void Raiser_get200_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -84,12 +85,12 @@ cdef void Raiser_get500_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException[module.types.cFiery]():
-        pyfuture.set_exception(module.types.Fiery.create(py3_get_exception[module.types.cFiery](result.exception())))
+        pyfuture.set_exception(module.types.Fiery.create(try_make_shared_exception[module.types.cFiery](result.exception())))
     elif result.hasException[module.types.cBanal]():
-        pyfuture.set_exception(module.types.Banal.create(py3_get_exception[module.types.cBanal](result.exception())))
+        pyfuture.set_exception(module.types.Banal.create(try_make_shared_exception[module.types.cBanal](result.exception())))
     elif result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

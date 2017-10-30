@@ -14,7 +14,8 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -42,7 +43,7 @@ cdef void TestService_init_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

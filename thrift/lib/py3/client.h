@@ -16,7 +16,9 @@
 
 #pragma once
 
-#include <folly/ExceptionWrapper.h>
+#include <cstdint>
+#include <functional>
+
 #include <folly/Try.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
@@ -25,9 +27,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
-#include <cstdint>
-#include <exception>
-#include <functional>
 
 namespace thrift {
 namespace py3 {
@@ -47,30 +46,12 @@ folly::Future<RequestChannel_ptr> createThriftChannel(
     const std::string& host,
     const uint16_t port,
     const uint32_t connect_timeout) {
-  return folly::via(
-    folly::getEventBase(),
-    [=] {
-      RequestChannel_ptr channel = std::move(
-        apache::thrift::HeaderClientChannel::newChannel(
-          apache::thrift::async::TAsyncSocket::newSocket(
-            folly::getEventBase(),
-            host,
-            port,
-            connect_timeout)));
-      return channel;
-    });
-}
-
-// The only place this function is used it needs a shared_ptr, so may as
-// well just return one instead of a unique_ptr
-template <class T>
-std::shared_ptr<T> py3_get_exception(
-    const folly::exception_wrapper& exception) {
-  try {
-    exception.throw_exception();
-  } catch (const T& typed_exception) {
-    return std::make_shared<T>(typed_exception);
-  }
+  auto eb = folly::getEventBase();
+  return folly::via(eb, [=] {
+    return apache::thrift::HeaderClientChannel::newChannel(
+        apache::thrift::async::TAsyncSocket::newSocket(
+            eb, host, port, connect_timeout));
+  });
 }
 
 } // namespace py3

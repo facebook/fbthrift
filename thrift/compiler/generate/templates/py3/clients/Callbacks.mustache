@@ -36,12 +36,12 @@ cdef void {{service:name}}_{{function:name}}_callback(
     }}result.hasException[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}]():
         {{#field:type}}pyfuture.set_exception({{!
         }}{{> types/CythonPythonType}}.create({{!
-        }}py3_get_exception[{{> types/CythonCppType}}](result.exception()){{!
+        }}try_make_shared_exception[{{> types/CythonCppType}}](result.exception()){{!
         }})){{/field:type}}
     elif {{/function:exceptions}}{{!
     }}result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

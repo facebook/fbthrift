@@ -15,7 +15,10 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.exceptions cimport (
+    cTApplicationException,
+    ApplicationError as __ApplicationError,
+    cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
 from thrift.py3.server import RequestContext
 from folly cimport (
@@ -121,13 +124,18 @@ async def Raiser_doBland_coro(
             result = await self.doBland(ctx,)
         else:
             result = await self.doBland()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler doBland:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -165,13 +173,18 @@ async def Raiser_doRaise_coro(
         promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
     except module.types.Fiery as ex:
         promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler doRaise:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(c_unit)
@@ -205,13 +218,18 @@ async def Raiser_get200_coro(
             result = await self.get200(ctx,)
         else:
             result = await self.get200()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get200:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
@@ -249,13 +267,18 @@ async def Raiser_get500_coro(
         promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
     except module.types.Banal as ex:
         promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
     except Exception as ex:
         print(
             "Unexpected error in service handler get500:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
