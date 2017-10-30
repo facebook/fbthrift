@@ -54,6 +54,7 @@ cdef class HsTestService(thrift.py3.client.Client):
 
     def __cinit__(HsTestService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -85,6 +86,9 @@ cdef class HsTestService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(HsTestService self, *exc):
@@ -106,6 +110,10 @@ cdef class HsTestService(thrift.py3.client.Client):
         self._hsmodule_HsTestService_reset_client()
 
     def set_persistent_header(HsTestService self, str key, str value):
+        if not self._hsmodule_HsTestService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._hsmodule_HsTestService_client).setPersistentHeader(ckey, cvalue)

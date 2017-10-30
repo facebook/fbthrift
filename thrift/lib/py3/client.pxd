@@ -27,6 +27,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
 cdef class Client:
     cdef object __weakref__
     cdef object _connect_future
+    cdef object _deferred_headers
     cdef cFollyExecutor* _executor
     cdef cRequestChannel_ptr _cRequestChannel
     cdef inline _check_connect_future(self):

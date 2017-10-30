@@ -591,6 +591,7 @@ cdef class SimpleService(thrift.py3.client.Client):
 
     def __cinit__(SimpleService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -622,6 +623,9 @@ cdef class SimpleService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(SimpleService self, *exc):
@@ -643,6 +647,10 @@ cdef class SimpleService(thrift.py3.client.Client):
         self._module_SimpleService_reset_client()
 
     def set_persistent_header(SimpleService self, str key, str value):
+        if not self._module_SimpleService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_SimpleService_client).setPersistentHeader(ckey, cvalue)
@@ -1337,6 +1345,7 @@ cdef class DerivedService(SimpleService):
 
     def __cinit__(DerivedService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -1370,6 +1379,9 @@ cdef class DerivedService(SimpleService):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(DerivedService self, *exc):
@@ -1391,6 +1403,10 @@ cdef class DerivedService(SimpleService):
         self._module_DerivedService_reset_client()
 
     def set_persistent_header(DerivedService self, str key, str value):
+        if not self._module_DerivedService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_DerivedService_client).setPersistentHeader(ckey, cvalue)
@@ -1422,6 +1438,7 @@ cdef class RederivedService(DerivedService):
 
     def __cinit__(RederivedService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -1455,6 +1472,9 @@ cdef class RederivedService(DerivedService):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(RederivedService self, *exc):
@@ -1476,6 +1496,10 @@ cdef class RederivedService(DerivedService):
         self._module_RederivedService_reset_client()
 
     def set_persistent_header(RederivedService self, str key, str value):
+        if not self._module_RederivedService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_RederivedService_client).setPersistentHeader(ckey, cvalue)

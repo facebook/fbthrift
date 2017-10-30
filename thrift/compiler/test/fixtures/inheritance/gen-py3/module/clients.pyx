@@ -82,6 +82,7 @@ cdef class MyRoot(thrift.py3.client.Client):
 
     def __cinit__(MyRoot self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -113,6 +114,9 @@ cdef class MyRoot(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyRoot self, *exc):
@@ -134,6 +138,10 @@ cdef class MyRoot(thrift.py3.client.Client):
         self._module_MyRoot_reset_client()
 
     def set_persistent_header(MyRoot self, str key, str value):
+        if not self._module_MyRoot_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyRoot_client).setPersistentHeader(ckey, cvalue)
@@ -165,6 +173,7 @@ cdef class MyNode(MyRoot):
 
     def __cinit__(MyNode self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -198,6 +207,9 @@ cdef class MyNode(MyRoot):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyNode self, *exc):
@@ -219,6 +231,10 @@ cdef class MyNode(MyRoot):
         self._module_MyNode_reset_client()
 
     def set_persistent_header(MyNode self, str key, str value):
+        if not self._module_MyNode_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyNode_client).setPersistentHeader(ckey, cvalue)
@@ -250,6 +266,7 @@ cdef class MyLeaf(MyNode):
 
     def __cinit__(MyLeaf self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -283,6 +300,9 @@ cdef class MyLeaf(MyNode):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyLeaf self, *exc):
@@ -304,6 +324,10 @@ cdef class MyLeaf(MyNode):
         self._module_MyLeaf_reset_client()
 
     def set_persistent_header(MyLeaf self, str key, str value):
+        if not self._module_MyLeaf_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyLeaf_client).setPersistentHeader(ckey, cvalue)

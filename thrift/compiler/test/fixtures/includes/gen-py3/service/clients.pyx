@@ -71,6 +71,7 @@ cdef class MyService(thrift.py3.client.Client):
 
     def __cinit__(MyService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -102,6 +103,9 @@ cdef class MyService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyService self, *exc):
@@ -123,6 +127,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._service_MyService_reset_client()
 
     def set_persistent_header(MyService self, str key, str value):
+        if not self._service_MyService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._service_MyService_client).setPersistentHeader(ckey, cvalue)

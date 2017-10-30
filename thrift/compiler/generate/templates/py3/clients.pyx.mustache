@@ -81,6 +81,7 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
 
     def __cinit__({{service:name}} self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -118,6 +119,10 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        {{!Replay setting persistent_headers after the C++ client is ready}}
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__({{service:name}} self, *exc):
@@ -141,9 +146,13 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
         self._{{program:name}}_{{service:name}}_reset_client()
 
     def set_persistent_header({{service:name}} self, str key, str value):
+        {{! If we are called before aenter then save the header for later}}
+        if not self._{{program:name}}_{{service:name}}_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
-        {{! TODO fried: Fix this null ptr deref T22991526}}
         deref(self._{{program:name}}_{{service:name}}_client).setPersistentHeader(ckey, cvalue)
 
     {{#service:functions}}

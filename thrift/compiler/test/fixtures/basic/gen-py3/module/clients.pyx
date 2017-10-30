@@ -240,6 +240,7 @@ cdef class MyService(thrift.py3.client.Client):
 
     def __cinit__(MyService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -271,6 +272,9 @@ cdef class MyService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyService self, *exc):
@@ -292,6 +296,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._module_MyService_reset_client()
 
     def set_persistent_header(MyService self, str key, str value):
+        if not self._module_MyService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyService_client).setPersistentHeader(ckey, cvalue)
@@ -410,6 +418,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     def __cinit__(MyServiceFast self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -441,6 +450,9 @@ cdef class MyServiceFast(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyServiceFast self, *exc):
@@ -462,6 +474,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._module_MyServiceFast_reset_client()
 
     def set_persistent_header(MyServiceFast self, str key, str value):
+        if not self._module_MyServiceFast_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServiceFast_client).setPersistentHeader(ckey, cvalue)
@@ -580,6 +596,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
 
     def __cinit__(MyServiceEmpty self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -611,6 +628,9 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyServiceEmpty self, *exc):
@@ -632,6 +652,10 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         self._module_MyServiceEmpty_reset_client()
 
     def set_persistent_header(MyServiceEmpty self, str key, str value):
+        if not self._module_MyServiceEmpty_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServiceEmpty_client).setPersistentHeader(ckey, cvalue)
@@ -648,6 +672,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     def __cinit__(MyServicePrioParent self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -679,6 +704,9 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyServicePrioParent self, *exc):
@@ -700,6 +728,10 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         self._module_MyServicePrioParent_reset_client()
 
     def set_persistent_header(MyServicePrioParent self, str key, str value):
+        if not self._module_MyServicePrioParent_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServicePrioParent_client).setPersistentHeader(ckey, cvalue)
@@ -746,6 +778,7 @@ cdef class MyServicePrioChild(MyServicePrioParent):
 
     def __cinit__(MyServicePrioChild self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -779,6 +812,9 @@ cdef class MyServicePrioChild(MyServicePrioParent):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(MyServicePrioChild self, *exc):
@@ -800,6 +836,10 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         self._module_MyServicePrioChild_reset_client()
 
     def set_persistent_header(MyServicePrioChild self, str key, str value):
+        if not self._module_MyServicePrioChild_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_MyServicePrioChild_client).setPersistentHeader(ckey, cvalue)
