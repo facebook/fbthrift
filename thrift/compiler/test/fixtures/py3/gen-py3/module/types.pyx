@@ -24,6 +24,7 @@ cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 
 import sys
+import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
@@ -703,6 +704,9 @@ cdef class List__i16:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[int16_t]] c_inst
         cdef int16_t citem
@@ -847,6 +851,9 @@ cdef class List__i32:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[int32_t]] c_inst
@@ -993,6 +1000,9 @@ cdef class List__i64:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[int64_t]] c_inst
         cdef int64_t citem
@@ -1138,6 +1148,9 @@ cdef class List__string:
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[string]] c_inst
         cdef string citem
@@ -1282,6 +1295,9 @@ cdef class List__SimpleStruct:
             for item in items:
                 deref(c_inst).push_back(deref((<SimpleStruct>item)._cpp_obj))
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cSimpleStruct]] c_inst
@@ -2137,6 +2153,9 @@ cdef class List__List__i32:
                 deref(c_inst).push_back(vector[int32_t](deref(List__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[vector[int32_t]]] c_inst
         cdef vector[int32_t] citem
@@ -2515,6 +2534,9 @@ cdef class List__Set__string:
                 deref(c_inst).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cset[string]]] c_inst
         cdef cset[string] citem
@@ -2780,6 +2802,9 @@ cdef class List__List__string:
                 deref(c_inst).push_back(vector[string](deref(List__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[vector[string]]] c_inst
         cdef vector[string] citem
@@ -2927,6 +2952,9 @@ cdef class List__Set__i32:
             for item in items:
                 deref(c_inst).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cset[int32_t]]] c_inst
@@ -3076,6 +3104,9 @@ cdef class List__Map__string_string:
                 deref(c_inst).push_back(cmap[string,string](deref(Map__string_string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cmap[string,string]]] c_inst
         cdef cmap[string,string] citem
@@ -3223,6 +3254,9 @@ cdef class List__binary:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[string]] c_inst
@@ -3554,6 +3588,9 @@ cdef class List__AnEnum:
                 deref(c_inst).push_back(AnEnum_to_cpp(item))
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cAnEnum]] c_inst
         cdef cAnEnum citem
@@ -3811,6 +3848,9 @@ cdef class List__Map__i32_double:
             for item in items:
                 deref(c_inst).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get())))
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cmap[int32_t,double]]] c_inst

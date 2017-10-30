@@ -24,6 +24,7 @@ cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 
 import sys
+import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings

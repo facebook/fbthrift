@@ -24,6 +24,7 @@ cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 
 import sys
+import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
@@ -650,6 +651,9 @@ cdef class List__i32:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[int32_t]] c_inst
         cdef int32_t citem
@@ -794,6 +798,9 @@ cdef class std_list__List__i32:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[std_list[int32_t]] c_inst
@@ -940,6 +947,9 @@ cdef class std_deque__List__i32:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[std_deque[int32_t]] c_inst
         cdef int32_t citem
@@ -1085,6 +1095,9 @@ cdef class folly_fbvector__List__i32:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
     def __getitem__(self, object index_obj):
         cdef shared_ptr[folly_fbvector[int32_t]] c_inst
         cdef int32_t citem
@@ -1229,6 +1242,9 @@ cdef class folly_small_vector__List__i32:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[folly_small_vector[int32_t]] c_inst

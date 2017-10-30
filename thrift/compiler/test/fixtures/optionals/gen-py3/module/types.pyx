@@ -24,6 +24,7 @@ cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 
 import sys
+import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
@@ -1183,6 +1184,9 @@ cdef class List__Vehicle:
             for item in items:
                 deref(c_inst).push_back(deref((<Vehicle>item)._cpp_obj))
         return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cVehicle]] c_inst
