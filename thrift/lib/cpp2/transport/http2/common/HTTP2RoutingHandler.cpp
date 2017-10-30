@@ -159,7 +159,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     return new proxygen::RequestHandlerAdaptor(handler);
   }
 
-  void detachSession(const proxygen::HTTPSession*) override {
+  void detachSession(const proxygen::HTTPSessionBase*) override {
     VLOG(4) << "HTTP2RoutingSessionManager::detachSession";
     // Session destroyed, so self destroy.
     delete this;
