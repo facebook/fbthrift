@@ -78,7 +78,7 @@ void ConnectionThread::maybeCreateConnection(
       }
       if (FLAGS_transport == "rsocket") {
         connection = std::make_shared<RSClientConnection>(
-            std::move(socket), getEventBase(), FLAGS_use_ssl);
+            std::move(socket), FLAGS_use_ssl);
       } else if (FLAGS_transport == "http1") {
         connection = H2ClientConnection::newHTTP1xConnection(
             std::move(socket), addr, "/");

@@ -29,7 +29,6 @@ class RSClientConnection : public ClientConnectionIf {
  public:
   RSClientConnection(
       apache::thrift::async::TAsyncTransport::UniquePtr socket,
-      folly::EventBase* evb,
       bool isSecure = false);
 
   std::shared_ptr<ThriftChannelIf> getChannel() override;

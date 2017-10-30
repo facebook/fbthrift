@@ -30,12 +30,11 @@ using apache::thrift::transport::TTransportException;
 
 RSClientConnection::RSClientConnection(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
-    folly::EventBase* evb,
     bool isSecure)
-    : evb_(evb), isSecure_(isSecure) {
+    : evb_(socket->getEventBase()), isSecure_(isSecure) {
   rsClient_ = RSocket::createClientFromConnection(
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
-      *evb,
+      *evb_,
       SetupParameters(),
       nullptr, /* ConnectionFactory */
       std::make_shared<RSocketResponder>(),
