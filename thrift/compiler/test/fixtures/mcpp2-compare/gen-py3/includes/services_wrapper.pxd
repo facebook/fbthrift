@@ -14,5 +14,5 @@ from folly cimport cFollyExecutor
 
 
 
-cdef extern from "src/gen-py3/includes/services_wrapper.h" namespace "a::different::ns":
+cdef extern from "gen-py3/includes/services_wrapper.h" namespace "a::different::ns":
     pass

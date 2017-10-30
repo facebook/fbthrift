@@ -19,5 +19,5 @@ from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport includes.types
 
 
-cdef extern from "src/gen-py3/includes/clients_wrapper.h" namespace "a::different::ns":
+cdef extern from "gen-py3/includes/clients_wrapper.h" namespace "a::different::ns":
   pass

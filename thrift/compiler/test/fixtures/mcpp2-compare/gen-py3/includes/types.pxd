@@ -19,7 +19,7 @@ cimport thrift.py3.types
 cdef extern from "folly/sorted_vector_types.h":
   pass
 
-cdef extern from "src/gen-cpp2/includes_types.h" namespace "a::different::ns":
+cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
     cdef cppclass cAnEnum "a::different::ns::AnEnum":
         bint operator==(cAnEnum&)
     cAnEnum AnEnum__FIELDA "a::different::ns::AnEnum::FIELDA"
@@ -27,13 +27,13 @@ cdef extern from "src/gen-cpp2/includes_types.h" namespace "a::different::ns":
 
 cdef cAnEnum AnEnum_to_cpp(value)
 
-cdef extern from "src/gen-cpp2/includes_types_custom_protocol.h" namespace "a::different::ns":
+cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "a::different::ns":
     # Forward Declaration
     cdef cppclass cAStruct "a::different::ns::AStruct"
     # Forward Declaration
     cdef cppclass cAStructB "a::different::ns::AStructB"
 
-cdef extern from "src/gen-cpp2/includes_types.h" namespace "a::different::ns":
+cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
     cdef cppclass cAStruct__isset "a::different::ns::AStruct::__isset":
         bint FieldA
 
@@ -106,5 +106,5 @@ cdef class AStructB(thrift.py3.types.Struct):
 
 
 
-cdef extern from "src/gen-cpp2/includes_constants.h" namespace "a::different::ns":
+cdef extern from "gen-cpp2/includes_constants.h" namespace "a::different::ns":
     cdef int64_t cIncludedConstant "a::different::ns::includes_constants::IncludedConstant"

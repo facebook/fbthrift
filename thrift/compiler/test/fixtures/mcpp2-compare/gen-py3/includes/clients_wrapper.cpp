@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <src/gen-py3/includes/clients_wrapper.h>
+#include <gen-py3/includes/clients_wrapper.h>
 
 namespace a {
 namespace different {
