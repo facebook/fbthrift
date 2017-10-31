@@ -135,7 +135,7 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
   parser.setDataBuffer(&memBuffer);
   const IOBuf* headBuf = queue->front();
   const IOBuf* nextBuf = headBuf;
-  bool success = false;
+  uint32_t bytesParsed = 0;
   do {
     auto remainingDataLen = nextBuf->length();
     size_t offset = 0;
@@ -146,24 +146,21 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
       parser.getReadBuffer(&parserBuf, &parserBufLen);
       size_t toCopyLen = std::min(parserBufLen, size_t(remainingDataLen));
       memcpy(parserBuf, ioBufData + offset, toCopyLen);
-      success |= parser.readDataAvailable(toCopyLen);
+      bytesParsed += toCopyLen;
+      if (parser.readDataAvailable(toCopyLen)) {
+        queue->trimStart(bytesParsed - parser.getUnparsedDataLen());
+        readHeaders_ = parser.moveReadHeaders();
+        return memBuffer.cloneBufferAsIOBuf();
+      }
       remainingDataLen -= toCopyLen;
       offset += toCopyLen;
     } while (remainingDataLen > 0);
     nextBuf = nextBuf->next();
   } while (nextBuf != headBuf);
-  if (!success) {
-    // We don't have full data yet and we don't know how many bytes we need,
-    // but it is at least 1.
-    needed = parser.getMinBytesRequired();
-    return nullptr;
-  }
-
-  // Empty the queue
-  queue->move();
-  readHeaders_ = parser.moveReadHeaders();
-
-  return memBuffer.cloneBufferAsIOBuf();
+  // We don't have full data yet and we don't know how many bytes we need,
+  // but it is at least 1.
+  needed = parser.getMinBytesRequired();
+  return nullptr;
 }
 
 unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {

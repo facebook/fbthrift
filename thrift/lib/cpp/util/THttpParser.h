@@ -46,6 +46,9 @@ class THttpParser {
   void getReadBuffer(void** bufReturn, size_t* lenReturn);
   bool readDataAvailable(size_t len);
   int getMinBytesRequired();
+  uint32_t getUnparsedDataLen() const {
+    return httpBufLen_ - httpPos_;
+  }
   void setDataBuffer(apache::thrift::transport::TMemoryBuffer* buffer) {
     dataBuf_ = buffer;
   }

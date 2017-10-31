@@ -522,6 +522,12 @@ void HeaderClientChannel::messageReceived(
 
   if (header->getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
       header->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    if (header->getClientType() == THRIFT_HTTP_CLIENT_TYPE &&
+        buf->computeChainDataLength() == 0) {
+      // HTTP/1.x Servers must send a response, even for oneway requests.
+      // Ignore these responses.
+      return;
+    }
     // Non-header clients will always be in order.
     // Note that for non-header clients, getSequenceNumber()
     // will return garbage.
