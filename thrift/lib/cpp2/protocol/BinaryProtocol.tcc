@@ -472,13 +472,17 @@ uint32_t BinaryProtocolReader::readSetEnd() {
 }
 
 uint32_t BinaryProtocolReader::readBool(bool& value) {
-  value = in_.read<bool>();
+  auto byte = in_.read<uint8_t>();
+  if (byte >= 2) {
+    TProtocolException::throwBoolValueOutOfRange(byte);
+  }
+  value = static_cast<bool>(byte);
   return 1;
 }
 
 uint32_t BinaryProtocolReader::readBool(std::vector<bool>::reference value) {
   bool ret = false;
-  ret = in_.read<bool>();
+  readBool(ret);
   value = ret;
   return 1;
 }

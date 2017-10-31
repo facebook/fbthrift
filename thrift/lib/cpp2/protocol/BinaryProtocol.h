@@ -282,6 +282,9 @@ class BinaryProtocolReader {
 
   template<typename T> friend class ProtocolReaderWithRefill;
   friend class BinaryProtocolReaderWithRefill;
+
+ private:
+  inline bool readBoolSafe();
 };
 
 }} // apache::thrift

@@ -105,6 +105,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
   [[noreturn]] static void throwMissingRequiredField(
       folly::StringPiece field,
       folly::StringPiece type);
+  [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
 
  protected:
   /**
