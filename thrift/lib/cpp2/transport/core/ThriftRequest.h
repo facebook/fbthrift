@@ -184,9 +184,8 @@ class ThriftRequest : public ResponseChannel::Request {
         queueTimeout,
         taskTimeout);
 
-    // TODO: What does this do?
-    //  auto reqContext = request->getContext();
-    //  reqContext->setRequestTimeout(taskTimeout);
+    auto reqContext = getRequestContext();
+    reqContext->setRequestTimeout(taskTimeout);
 
     if (differentTimeouts) {
       if (queueTimeout > std::chrono::milliseconds(0)) {
