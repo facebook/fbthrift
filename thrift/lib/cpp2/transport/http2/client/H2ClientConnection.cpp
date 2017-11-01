@@ -104,8 +104,9 @@ H2ClientConnection::~H2ClientConnection() {
 }
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   return channelFactory_.getChannel(
-      negotiatedChannelVersion_.load(), this, httpHost_, httpUrl_);
+      negotiatedChannelVersion_, this, httpHost_, httpUrl_);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
@@ -120,6 +121,7 @@ EventBase* H2ClientConnection::getEventBase() const {
 }
 
 HTTPTransaction* H2ClientConnection::newTransaction(H2Channel* channel) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
   if (!httpSession_) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "HTTPSession is not open");

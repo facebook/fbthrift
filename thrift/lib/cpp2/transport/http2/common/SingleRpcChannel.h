@@ -21,7 +21,6 @@
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <atomic>
 #include <string>
 
 namespace apache {
@@ -130,7 +129,7 @@ class SingleRpcChannel : public H2Channel {
   // successful RPC, it means the server now knows that the client has
   // completed negotiation, and so it can set the connection to be
   // stable.
-  std::atomic<bool> shouldMakeStable_;
+  bool shouldMakeStable_;
 };
 
 } // namespace thrift

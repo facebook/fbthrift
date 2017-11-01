@@ -49,8 +49,8 @@ namespace thrift {
  * time, each will manage a separate network connection and are
  * generally on different event bases (threads).
  *
- * All method, excepting getChannel() must be called on the same event
- * base that manages the connection.
+ * All methods must be called on the same event base that manages the
+ * connection.
  */
 class ClientConnectionIf {
  protected:
@@ -62,9 +62,8 @@ class ClientConnectionIf {
   ClientConnectionIf(const ClientConnectionIf&) = delete;
   ClientConnectionIf& operator=(const ClientConnectionIf&) = delete;
 
-  // Returns a channel object for use on a single RPC.  This can be
-  // called from any thread.  Throws TTransportException if a channel
-  // object cannot be returned.
+  // Returns a channel object for use on a single RPC.  Throws
+  // TTransportException if a channel object cannot be returned.
   virtual std::shared_ptr<ThriftChannelIf> getChannel() = 0;
 
   // Sets the maximum pending outgoing requests allowed on this
