@@ -122,6 +122,10 @@ void MetadataInBodySingleRpcChannel::onThriftRequest() noexcept {
   CompactProtocolReader reader;
   reader.setInput(contents_.get());
   auto sz = metadata->read(&reader);
+  while (contents_->length() < sz) {
+    sz -= contents_->length();
+    contents_ = contents_->pop();
+  }
   contents_->trimStart(sz);
 
   if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {

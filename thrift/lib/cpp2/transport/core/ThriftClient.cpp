@@ -161,20 +161,9 @@ uint32_t ThriftClient::sendRequestHelper(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header,
-    EventBase* callbackEvb) {
+    EventBase* callbackEvb) noexcept {
   DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
-  std::shared_ptr<ThriftChannelIf> channel;
-  try {
-    channel = connection_->getChannel();
-  } catch (TTransportException& te) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestError(ClientReceiveState(
-        folly::make_exception_wrapper<TTransportException>(std::move(te)),
-        std::move(ctx),
-        isSecurityActive()));
-    return 0;
-  }
   auto metadata = std::make_unique<RequestRpcMetadata>();
   if (!stripEnvelope(metadata.get(), buf)) {
     LOG(FATAL) << "Unexpected problem stripping envelope";
@@ -216,15 +205,38 @@ uint32_t ThriftClient::sendRequestHelper(
       std::move(ctx),
       isSecurityActive(),
       protocolId_);
-  connection_->getEventBase()->runInEventBaseThread(
-      [evbChannel = channel,
-       evbMetadata = std::move(metadata),
-       evbBuf = std::move(buf),
-       evbCallback = std::move(callback)]() mutable {
-        evbChannel->sendThriftRequest(
-            std::move(evbMetadata), std::move(evbBuf), std::move(evbCallback));
-      });
+  auto conn = connection_;
+  connection_->getEventBase()->runInEventBaseThread([conn = std::move(conn),
+                                                     metadata =
+                                                         std::move(metadata),
+                                                     buf = std::move(buf),
+                                                     callback = std::move(
+                                                         callback)]() mutable {
+    getChannelAndSendThriftRequest(
+        conn.get(), std::move(metadata), std::move(buf), std::move(callback));
+  });
   return 0;
+}
+
+void ThriftClient::getChannelAndSendThriftRequest(
+    ClientConnectionIf* connection,
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<IOBuf> payload,
+    std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  DCHECK(connection->getEventBase()->isInEventBaseThread());
+  try {
+    auto channel = connection->getChannel();
+    channel->sendThriftRequest(
+        std::move(metadata), std::move(payload), std::move(callback));
+  } catch (TTransportException& te) {
+    auto callbackEvb = callback->getEventBase();
+    callbackEvb->runInEventBaseThread([callback = std::move(callback),
+                                       te = std::move(te)]() mutable {
+      callback->onError(
+          folly::make_exception_wrapper<TTransportException>(std::move(te)));
+    });
+    return;
+  }
 }
 
 EventBase* ThriftClient::getEventBase() const {

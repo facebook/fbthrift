@@ -135,7 +135,7 @@ class ThriftClient : public ClientChannel {
 
   // end ClientChannel methods
 
- protected:
+ private:
   std::shared_ptr<ClientConnectionIf> connection_;
   folly::EventBase* callbackEvb_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
@@ -151,7 +151,20 @@ class ThriftClient : public ClientChannel {
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header,
-      folly::EventBase* callbackEvb);
+      folly::EventBase* callbackEvb) noexcept;
+
+  // Scheduled by sendRequestHelper in the connection thread.  Both
+  // operations getChannel() and sendThriftRequest() can be scheduled
+  // together to avoid scheduling two operations.  Also keeping these
+  // two operations together is useful in HTTP2 because the stream id
+  // is generated when sendThriftRequest is called, and we would like
+  // the stream id to be increasing for more recently created
+  // channels.
+  static void getChannelAndSendThriftRequest(
+      ClientConnectionIf* connection,
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload,
+      std::unique_ptr<ThriftClientCallback> callback) noexcept;
 };
 
 } // namespace thrift
