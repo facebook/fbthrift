@@ -38,8 +38,11 @@ RSClientConnection::RSClientConnection(
       SetupParameters(),
       nullptr, /* ConnectionFactory */
       std::make_shared<RSocketResponder>(),
-      std::chrono::milliseconds{0} /* no keepalive timeout */
-  );
+      std::chrono::milliseconds{0}, /* no keepalive timeout */
+      RSocketStats::noop(),
+      std::shared_ptr<RSocketConnectionEvents>(),
+      nullptr /* resumeManager */,
+      nullptr /* coldResumeHandler */);
   rsRequester_ = rsClient_->getRequester();
   channel_ = std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
 }
