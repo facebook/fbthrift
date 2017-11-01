@@ -135,7 +135,7 @@ class ThriftClient : public ClientChannel {
 
   // end ClientChannel methods
 
- private:
+ protected:
   std::shared_ptr<ClientConnectionIf> connection_;
   folly::EventBase* callbackEvb_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
