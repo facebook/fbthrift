@@ -21,4 +21,28 @@
 
 #pragma once
 
+/* avoid problems when included in Cython files */
+#ifdef T_BOOL
+#pragma push_macro("T_BOOL")
+#pragma push_macro("T_BYTE")
+#pragma push_macro("T_DOUBLE")
+#pragma push_macro("T_FLOAT")
+#pragma push_macro("T_STRING")
+#undef T_BOOL
+#undef T_BYTE
+#undef T_DOUBLE
+#undef T_FLOAT
+#undef T_STRING
+#define CPP2_SERIALIZER_PYTHON_SAVE 1
+#endif
+
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+
+#ifdef CPP2_SERIALIZER_PYTHON_SAVE
+#pragma pop_macro("T_BOOL")
+#pragma pop_macro("T_BYTE")
+#pragma pop_macro("T_DOUBLE")
+#pragma pop_macro("T_FLOAT")
+#pragma pop_macro("T_STRING")
+#undef CPP2_SERIALIZED_PYTHON_SAVE
+#endif
