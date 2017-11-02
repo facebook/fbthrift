@@ -30,6 +30,8 @@ class Noop {
  public:
   Noop(QPSStats* stats) : stats_(stats) {
     stats_->registerCounter(op_name_);
+    stats_->registerCounter(error_);
+    stats_->registerCounter(fatal_);
   }
   ~Noop() = default;
 
@@ -43,7 +45,16 @@ class Noop {
 
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
     stats_->add(op_name_);
-    client->recv_noop(rstate);
+    try {
+      client->recv_noop(rstate);
+    } catch (apache::thrift::TApplicationException) {
+      LOG(ERROR) << "Error should have caused error() function to be called.";
+      stats_->add(fatal_);
+    }
+  }
+
+  void error(AsyncClient*, ClientReceiveState&&) {
+    stats_->add(error_);
   }
 
   void onewaySent() {
@@ -53,6 +64,8 @@ class Noop {
  private:
   QPSStats* stats_;
   std::string op_name_ = "noop";
+  std::string error_ = "error";
+  std::string fatal_ = "fatal";
 };
 
 template <typename AsyncClient>
@@ -61,6 +74,8 @@ class Sum {
   Sum(QPSStats* stats) : stats_(stats) {
     // TODO: Perform different additions per call and verify correctness
     stats_->registerCounter(op_name_);
+    stats_->registerCounter(error_);
+    stats_->registerCounter(fatal_);
     request_.x = 0;
     request_.__isset.x = true;
     request_.y = 0;
@@ -74,12 +89,23 @@ class Sum {
 
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
     stats_->add(op_name_);
-    client->recv_sum(response_, rstate);
+    try {
+      client->recv_sum(response_, rstate);
+    } catch (apache::thrift::TApplicationException) {
+      LOG(ERROR) << "Error should have caused error() function to be called.";
+      stats_->add(fatal_);
+    }
+  }
+
+  void error(AsyncClient*, ClientReceiveState&&) {
+    stats_->add(error_);
   }
 
  private:
   QPSStats* stats_;
   std::string op_name_ = "sum";
+  std::string error_ = "error";
+  std::string fatal_ = "fatal";
   TwoInts request_;
   TwoInts response_;
 };

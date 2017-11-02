@@ -84,6 +84,20 @@ class Operation {
     }
   }
 
+  void asyncErrorReceived(OP_TYPE op, ClientReceiveState&& rstate) {
+    switch (op) {
+      case NOOP:
+        noop_->error(client_.get(), std::move(rstate));
+        break;
+      case SUM:
+        sum_->error(client_.get(), std::move(rstate));
+        break;
+      default:
+        LOG(ERROR) << "Should not have async callback";
+        break;
+    }
+  }
+
  private:
   std::unique_ptr<AsyncClient> client_;
   std::unique_ptr<Noop<AsyncClient>> noop_;

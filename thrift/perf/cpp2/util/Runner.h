@@ -97,7 +97,10 @@ class LoadCallback : public RequestCallback {
     ops_->asyncReceived(op_, std::move(rstate));
     runner_->finishCall();
   }
-  void requestError(ClientReceiveState&&) override {}
+  void requestError(ClientReceiveState&& rstate) override {
+    ops_->asyncErrorReceived(op_, std::move(rstate));
+    runner_->finishCall();
+  }
 
  private:
   Runner<AsyncClient>* runner_;

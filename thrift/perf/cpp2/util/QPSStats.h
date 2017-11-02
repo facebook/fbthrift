@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <algorithm>
 #include <folly/ThreadCachedInt.h>
 #include <glog/logging.h>
+#include <algorithm>
 #include <map>
 #include <string>
 #include <utility>
