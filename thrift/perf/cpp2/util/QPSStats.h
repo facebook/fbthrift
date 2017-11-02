@@ -72,6 +72,12 @@ class QPSStats {
   }
 
   void registerCounter(std::string name) {
+    // TODO: Each thread in the Runner creates an instance of an Operation.
+    // Each instance of the operation calls registerCounter with given name.
+    // So this function is being called as the number of threads.
+    // We should make this function to be called per type of the Operation, not
+    // per instance.
+    std::lock_guard<std::mutex> guard(mutex_);
     counters_.emplace(name, std::make_unique<Counter>(name));
   }
 
@@ -81,6 +87,7 @@ class QPSStats {
 
  private:
   std::map<std::string, std::unique_ptr<Counter>> counters_;
+  std::mutex mutex_;
 };
 
 } // namespace benchmarks

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Logging.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
@@ -47,8 +48,13 @@ class Noop {
     stats_->add(op_name_);
     try {
       client->recv_noop(rstate);
-    } catch (apache::thrift::TApplicationException) {
-      LOG(ERROR) << "Error should have caused error() function to be called.";
+    } catch (const apache::thrift::TApplicationException& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000)
+          << "Error should have caused error() function to be called: "
+          << ex.what();
+      stats_->add(fatal_);
+    } catch (const std::exception& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
     }
   }
@@ -91,8 +97,13 @@ class Sum {
     stats_->add(op_name_);
     try {
       client->recv_sum(response_, rstate);
-    } catch (apache::thrift::TApplicationException) {
-      LOG(ERROR) << "Error should have caused error() function to be called.";
+    } catch (const apache::thrift::TApplicationException& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000)
+          << "Error should have caused error() function to be called: "
+          << ex.what();
+      stats_->add(fatal_);
+    } catch (const std::exception& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
     }
   }
