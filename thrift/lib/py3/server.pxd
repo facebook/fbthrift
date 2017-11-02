@@ -64,7 +64,7 @@ cdef class ServiceInterface:
 
 
 cdef class ThriftServer:
-    cdef unique_ptr[cThriftServer] server
+    cdef shared_ptr[cThriftServer] server
     cdef ServiceInterface handler
     cdef object loop
 

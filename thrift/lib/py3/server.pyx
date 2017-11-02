@@ -1,4 +1,4 @@
-from libcpp.memory cimport unique_ptr, make_unique, shared_ptr
+from libcpp.memory cimport unique_ptr, shared_ptr, make_shared
 from libc.string cimport const_uchar
 from cython.operator cimport dereference as deref
 from libc.stdint cimport uint64_t
@@ -45,7 +45,7 @@ cdef class ServiceInterface:
 
 cdef class ThriftServer:
     def __cinit__(self):
-        self.server = make_unique[cThriftServer]()
+        self.server = make_shared[cThriftServer]()
 
     def __init__(self, ServiceInterface handler, port):
         self.loop = asyncio.get_event_loop()
