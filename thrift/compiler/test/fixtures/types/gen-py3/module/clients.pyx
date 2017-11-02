@@ -122,6 +122,10 @@ cdef class SomeService(thrift.py3.client.Client):
     async def bounce_map(
             SomeService self,
             m):
+        if m is None:
+            raise TypeError('m can not be None')
+        if not isinstance(m, module.types.std_unordered_map__Map__i32_string):
+            m = module.types.std_unordered_map__Map__i32_string(m)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

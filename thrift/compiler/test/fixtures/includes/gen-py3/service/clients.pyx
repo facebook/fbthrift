@@ -138,8 +138,12 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def query(
             MyService self,
-            s,
-            i):
+            module.types.MyStruct s,
+            includes.types.Included i):
+        if s is None:
+            raise TypeError('s can not be None')
+        if i is None:
+            raise TypeError('i can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -157,8 +161,12 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def has_arg_docs(
             MyService self,
-            s,
-            i):
+            module.types.MyStruct s,
+            includes.types.Included i):
+        if s is None:
+            raise TypeError('s can not be None')
+        if i is None:
+            raise TypeError('i can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

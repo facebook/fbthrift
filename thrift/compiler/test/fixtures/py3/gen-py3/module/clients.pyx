@@ -673,7 +673,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def add_five(
             SimpleService self,
-            num):
+            int num):
+        if num is None:
+            raise TypeError('num can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -705,8 +707,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def concat(
             SimpleService self,
-            first,
-            second):
+            str first,
+            str second):
+        if first is None:
+            raise TypeError('first can not be None')
+        if second is None:
+            raise TypeError('second can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -724,7 +730,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def get_value(
             SimpleService self,
-            simple_struct):
+            module.types.SimpleStruct simple_struct):
+        if simple_struct is None:
+            raise TypeError('simple_struct can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -741,7 +749,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def negate(
             SimpleService self,
-            input):
+            pbool input):
+        if input is None:
+            raise TypeError('input can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -758,7 +768,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def tiny(
             SimpleService self,
-            input):
+            int input):
+        if input is None:
+            raise TypeError('input can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -775,7 +787,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def small(
             SimpleService self,
-            input):
+            int input):
+        if input is None:
+            raise TypeError('input can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -792,7 +806,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def big(
             SimpleService self,
-            input):
+            int input):
+        if input is None:
+            raise TypeError('input can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -809,7 +825,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def two(
             SimpleService self,
-            input):
+            float input):
+        if input is None:
+            raise TypeError('input can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -857,6 +875,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def sum_i16_list(
             SimpleService self,
             numbers):
+        if numbers is None:
+            raise TypeError('numbers can not be None')
+        if not isinstance(numbers, module.types.List__i16):
+            numbers = module.types.List__i16(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -874,6 +896,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def sum_i32_list(
             SimpleService self,
             numbers):
+        if numbers is None:
+            raise TypeError('numbers can not be None')
+        if not isinstance(numbers, module.types.List__i32):
+            numbers = module.types.List__i32(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -891,6 +917,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def sum_i64_list(
             SimpleService self,
             numbers):
+        if numbers is None:
+            raise TypeError('numbers can not be None')
+        if not isinstance(numbers, module.types.List__i64):
+            numbers = module.types.List__i64(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -908,6 +938,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def concat_many(
             SimpleService self,
             words):
+        if words is None:
+            raise TypeError('words can not be None')
+        if not isinstance(words, module.types.List__string):
+            words = module.types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -925,6 +959,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def count_structs(
             SimpleService self,
             items):
+        if items is None:
+            raise TypeError('items can not be None')
+        if not isinstance(items, module.types.List__SimpleStruct):
+            items = module.types.List__SimpleStruct(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -942,6 +980,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def sum_set(
             SimpleService self,
             numbers):
+        if numbers is None:
+            raise TypeError('numbers can not be None')
+        if not isinstance(numbers, module.types.Set__i32):
+            numbers = module.types.Set__i32(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -959,7 +1001,13 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def contains_word(
             SimpleService self,
             words,
-            word):
+            str word):
+        if words is None:
+            raise TypeError('words can not be None')
+        if not isinstance(words, module.types.Set__string):
+            words = module.types.Set__string(words)
+        if word is None:
+            raise TypeError('word can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -978,7 +1026,13 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def get_map_value(
             SimpleService self,
             words,
-            key):
+            str key):
+        if words is None:
+            raise TypeError('words can not be None')
+        if not isinstance(words, module.types.Map__string_string):
+            words = module.types.Map__string_string(words)
+        if key is None:
+            raise TypeError('key can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -997,6 +1051,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def map_length(
             SimpleService self,
             items):
+        if items is None:
+            raise TypeError('items can not be None')
+        if not isinstance(items, module.types.Map__string_SimpleStruct):
+            items = module.types.Map__string_SimpleStruct(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1014,6 +1072,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def sum_map_values(
             SimpleService self,
             items):
+        if items is None:
+            raise TypeError('items can not be None')
+        if not isinstance(items, module.types.Map__string_i16):
+            items = module.types.Map__string_i16(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1030,7 +1092,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def complex_sum_i32(
             SimpleService self,
-            counter):
+            module.types.ComplexStruct counter):
+        if counter is None:
+            raise TypeError('counter can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1047,7 +1111,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def repeat_name(
             SimpleService self,
-            counter):
+            module.types.ComplexStruct counter):
+        if counter is None:
+            raise TypeError('counter can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1079,7 +1145,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def fib(
             SimpleService self,
-            n):
+            int n):
+        if n is None:
+            raise TypeError('n can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1097,6 +1165,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def unique_words(
             SimpleService self,
             words):
+        if words is None:
+            raise TypeError('words can not be None')
+        if not isinstance(words, module.types.List__string):
+            words = module.types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1114,6 +1186,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def words_count(
             SimpleService self,
             words):
+        if words is None:
+            raise TypeError('words can not be None')
+        if not isinstance(words, module.types.List__string):
+            words = module.types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1131,6 +1207,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def set_enum(
             SimpleService self,
             in_enum):
+        if in_enum is None:
+            raise TypeError('in_enum can not be None')
+        if not isinstance(in_enum, module.types.AnEnum):
+            raise ValueError('in_enum is not of the enum type { module.types.AnEnum }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1147,8 +1227,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def list_of_lists(
             SimpleService self,
-            num_lists,
-            num_items):
+            int num_lists,
+            int num_items):
+        if num_lists is None:
+            raise TypeError('num_lists can not be None')
+        if num_items is None:
+            raise TypeError('num_items can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1166,7 +1250,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def word_character_frequency(
             SimpleService self,
-            sentence):
+            str sentence):
+        if sentence is None:
+            raise TypeError('sentence can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1183,7 +1269,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def list_of_sets(
             SimpleService self,
-            some_words):
+            str some_words):
+        if some_words is None:
+            raise TypeError('some_words can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1201,6 +1289,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def nested_map_argument(
             SimpleService self,
             struct_map):
+        if struct_map is None:
+            raise TypeError('struct_map can not be None')
+        if not isinstance(struct_map, module.types.Map__string_List__SimpleStruct):
+            struct_map = module.types.Map__string_List__SimpleStruct(struct_map)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1218,6 +1310,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def make_sentence(
             SimpleService self,
             word_chars):
+        if word_chars is None:
+            raise TypeError('word_chars can not be None')
+        if not isinstance(word_chars, module.types.List__List__string):
+            word_chars = module.types.List__List__string(word_chars)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1235,6 +1331,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def get_union(
             SimpleService self,
             sets):
+        if sets is None:
+            raise TypeError('sets can not be None')
+        if not isinstance(sets, module.types.List__Set__i32):
+            sets = module.types.List__Set__i32(sets)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1252,6 +1352,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def get_keys(
             SimpleService self,
             string_map):
+        if string_map is None:
+            raise TypeError('string_map can not be None')
+        if not isinstance(string_map, module.types.List__Map__string_string):
+            string_map = module.types.List__Map__string_string(string_map)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1268,7 +1372,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lookup_double(
             SimpleService self,
-            key):
+            int key):
+        if key is None:
+            raise TypeError('key can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1285,7 +1391,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def retrieve_binary(
             SimpleService self,
-            something):
+            bytes something):
+        if something is None:
+            raise TypeError('something can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1303,6 +1411,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def contain_binary(
             SimpleService self,
             binaries):
+        if binaries is None:
+            raise TypeError('binaries can not be None')
+        if not isinstance(binaries, module.types.List__binary):
+            binaries = module.types.List__binary(binaries)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1320,6 +1432,10 @@ cdef class SimpleService(thrift.py3.client.Client):
     async def contain_enum(
             SimpleService self,
             the_enum):
+        if the_enum is None:
+            raise TypeError('the_enum can not be None')
+        if not isinstance(the_enum, module.types.List__AnEnum):
+            the_enum = module.types.List__AnEnum(the_enum)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

@@ -3,6 +3,7 @@ import asyncio
 import unittest
 
 from testing.clients import TestingService
+from testing.types import I32List, Color
 from thrift.py3 import TransportError, get_client
 
 
@@ -44,3 +45,28 @@ class ClientTests(unittest.TestCase):
                 pass
 
         loop.run_until_complete(test())
+
+    def test_rpc_container_autoboxing(self):
+        client = TestingService()
+        client.takes_a_list([1, 2, 3])
+        client.takes_a_list(I32List([1, 2, 3]))
+        loop = asyncio.get_event_loop()
+        with self.assertRaises(TypeError):
+            # This is safe because we do type checks before we touch
+            # state checks
+            loop.run_until_complete(client.takes_a_list([1, 'b', 'three']))
+
+    def test_rpc_non_container_types(self):
+        client = TestingService()
+        with self.assertRaises(TypeError):
+            client.complex_action(b'foo', 'bar', 'nine', fourth='baz')
+
+
+    def test_rpc_enum_args(self):
+        client = TestingService()
+        loop = asyncio.get_event_loop()
+        with self.assertRaises(ValueError):
+            loop.run_until_complete(client.pick_a_color(0))
+
+        with self.assertRaises(asyncio.InvalidStateError):
+            loop.run_until_complete(client.pick_a_color(Color.red))

@@ -128,7 +128,9 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
     @cython.always_allow_keywords(True)
     async def check(
             ExtendTestService self,
-            struct1):
+            hsmodule.types.HsFoo struct1):
+        if struct1 is None:
+            raise TypeError('struct1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

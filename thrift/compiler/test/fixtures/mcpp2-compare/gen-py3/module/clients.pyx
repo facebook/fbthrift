@@ -14,7 +14,8 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -46,7 +47,7 @@ cdef void ReturnService_noReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -59,7 +60,7 @@ cdef void ReturnService_boolReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -72,7 +73,7 @@ cdef void ReturnService_i16Return_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -85,7 +86,7 @@ cdef void ReturnService_i32Return_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -98,7 +99,7 @@ cdef void ReturnService_i64Return_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -111,7 +112,7 @@ cdef void ReturnService_floatReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -124,7 +125,7 @@ cdef void ReturnService_doubleReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -137,7 +138,7 @@ cdef void ReturnService_stringReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -150,7 +151,7 @@ cdef void ReturnService_binaryReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -163,7 +164,7 @@ cdef void ReturnService_mapReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -176,7 +177,7 @@ cdef void ReturnService_simpleTypedefReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -189,7 +190,7 @@ cdef void ReturnService_complexTypedefReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -202,7 +203,7 @@ cdef void ReturnService_list_mostComplexTypedefReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -215,7 +216,7 @@ cdef void ReturnService_enumReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -228,7 +229,7 @@ cdef void ReturnService_list_EnumReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -241,7 +242,7 @@ cdef void ReturnService_structReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -254,7 +255,7 @@ cdef void ReturnService_set_StructReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -267,7 +268,7 @@ cdef void ReturnService_unionReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -280,7 +281,7 @@ cdef void ReturnService_list_UnionReturn_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -293,7 +294,7 @@ cdef void ReturnService_readDataEb_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -306,7 +307,7 @@ cdef void ReturnService_readData_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -319,7 +320,7 @@ cdef void ParamService_void_ret_i16_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -332,7 +333,7 @@ cdef void ParamService_void_ret_byte_i16_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -345,7 +346,7 @@ cdef void ParamService_void_ret_map_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -358,7 +359,7 @@ cdef void ParamService_void_ret_map_setlist_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -371,7 +372,7 @@ cdef void ParamService_void_ret_map_typedef_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -384,7 +385,7 @@ cdef void ParamService_void_ret_enum_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -397,7 +398,7 @@ cdef void ParamService_void_ret_struct_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -410,7 +411,7 @@ cdef void ParamService_void_ret_listunion_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -423,7 +424,7 @@ cdef void ParamService_bool_ret_i32_i64_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -436,7 +437,7 @@ cdef void ParamService_bool_ret_map_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -449,7 +450,7 @@ cdef void ParamService_bool_ret_union_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -462,7 +463,7 @@ cdef void ParamService_i64_ret_float_double_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -475,7 +476,7 @@ cdef void ParamService_i64_ret_string_typedef_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -488,7 +489,7 @@ cdef void ParamService_i64_ret_i32_i32_i32_i32_i32_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -501,7 +502,7 @@ cdef void ParamService_double_ret_setstruct_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -514,7 +515,7 @@ cdef void ParamService_string_ret_string_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -527,7 +528,7 @@ cdef void ParamService_binary_ret_binary_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -540,7 +541,7 @@ cdef void ParamService_map_ret_bool_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -553,7 +554,7 @@ cdef void ParamService_list_ret_map_setlist_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -566,7 +567,7 @@ cdef void ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -579,7 +580,7 @@ cdef void ParamService_typedef_ret_i32_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -592,7 +593,7 @@ cdef void ParamService_listtypedef_ret_typedef_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -605,7 +606,7 @@ cdef void ParamService_enum_ret_double_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -618,7 +619,7 @@ cdef void ParamService_enum_ret_double_enum_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -631,7 +632,7 @@ cdef void ParamService_listenum_ret_map_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -644,7 +645,7 @@ cdef void ParamService_struct_ret_i16_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -657,7 +658,7 @@ cdef void ParamService_setstruct_ret_set_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -670,7 +671,7 @@ cdef void ParamService_union_ret_i32_i32_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -683,7 +684,7 @@ cdef void ParamService_listunion_string_param_callback(
     cdef object pyfuture = <object> future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -694,6 +695,7 @@ cdef class EmptyService(thrift.py3.client.Client):
 
     def __cinit__(EmptyService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -725,6 +727,9 @@ cdef class EmptyService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(EmptyService self, *exc):
@@ -746,6 +751,10 @@ cdef class EmptyService(thrift.py3.client.Client):
         self._module_EmptyService_reset_client()
 
     def set_persistent_header(EmptyService self, str key, str value):
+        if not self._module_EmptyService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_EmptyService_client).setPersistentHeader(ckey, cvalue)
@@ -762,6 +771,7 @@ cdef class ReturnService(thrift.py3.client.Client):
 
     def __cinit__(ReturnService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -793,6 +803,9 @@ cdef class ReturnService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(ReturnService self, *exc):
@@ -814,6 +827,10 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._module_ReturnService_reset_client()
 
     def set_persistent_header(ReturnService self, str key, str value):
+        if not self._module_ReturnService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_ReturnService_client).setPersistentHeader(ckey, cvalue)
@@ -1106,7 +1123,9 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readDataEb(
             ReturnService self,
-            size):
+            int size):
+        if size is None:
+            raise TypeError('size can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1123,7 +1142,9 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readData(
             ReturnService self,
-            size):
+            int size):
+        if size is None:
+            raise TypeError('size can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1149,6 +1170,7 @@ cdef class ParamService(thrift.py3.client.Client):
 
     def __cinit__(ParamService self):
         loop = asyncio.get_event_loop()
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
         self._executor = get_executor()
 
@@ -1180,6 +1202,9 @@ cdef class ParamService(thrift.py3.client.Client):
             self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
         return self
 
     async def __aexit__(ParamService self, *exc):
@@ -1201,6 +1226,10 @@ cdef class ParamService(thrift.py3.client.Client):
         self._module_ParamService_reset_client()
 
     def set_persistent_header(ParamService self, str key, str value):
+        if not self._module_ParamService_client:
+            self._deferred_headers[key] = value
+            return
+
         cdef string ckey = <bytes> key.encode('utf-8')
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._module_ParamService_client).setPersistentHeader(ckey, cvalue)
@@ -1208,7 +1237,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_i16_param(
             ParamService self,
-            param1):
+            int param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1225,8 +1256,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_byte_i16_param(
             ParamService self,
-            param1,
-            param2):
+            int param1,
+            int param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1245,6 +1280,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def void_ret_map_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Map__string_i64):
+            param1 = module.types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1263,6 +1302,14 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             param1,
             param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Map__string_i64):
+            param1 = module.types.Map__string_i64(param1)
+        if param2 is None:
+            raise TypeError('param2 can not be None')
+        if not isinstance(param2, module.types.Set__List__string):
+            param2 = module.types.Set__List__string(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1280,7 +1327,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_map_typedef_param(
             ParamService self,
-            param1):
+            int param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1298,6 +1347,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def void_ret_enum_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.MyEnumA):
+            raise ValueError('param1 is not of the enum type { module.types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1314,7 +1367,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_struct_param(
             ParamService self,
-            param1):
+            module.types.MyStruct param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1332,6 +1387,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def void_ret_listunion_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.List__ComplexUnion):
+            param1 = module.types.List__ComplexUnion(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1348,8 +1407,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_i32_i64_param(
             ParamService self,
-            param1,
-            param2):
+            int param1,
+            int param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1368,6 +1431,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def bool_ret_map_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Map__string_i64):
+            param1 = module.types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1384,7 +1451,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_union_param(
             ParamService self,
-            param1):
+            module.types.ComplexUnion param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1401,8 +1470,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_float_double_param(
             ParamService self,
-            param1,
-            param2):
+            float param1,
+            float param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1420,8 +1493,14 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_string_typedef_param(
             ParamService self,
-            param1,
+            str param1,
             param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
+        if not isinstance(param2, module.types.Set__List__List__Map__Empty_MyStruct):
+            param2 = module.types.Set__List__List__Map__Empty_MyStruct(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1439,11 +1518,21 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_i32_i32_i32_i32_i32_param(
             ParamService self,
-            param1,
-            param2,
-            param3,
-            param4,
-            param5):
+            int param1,
+            int param2,
+            int param3,
+            int param4,
+            int param5):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
+        if param3 is None:
+            raise TypeError('param3 can not be None')
+        if param4 is None:
+            raise TypeError('param4 can not be None')
+        if param5 is None:
+            raise TypeError('param5 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1465,6 +1554,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def double_ret_setstruct_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Set__MyStruct):
+            param1 = module.types.Set__MyStruct(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1481,7 +1574,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def string_ret_string_param(
             ParamService self,
-            param1):
+            str param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1498,7 +1593,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def binary_ret_binary_param(
             ParamService self,
-            param1):
+            bytes param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1515,7 +1612,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def map_ret_bool_param(
             ParamService self,
-            param1):
+            pbool param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1534,6 +1633,14 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             param1,
             param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Map__i32_List__string):
+            param1 = module.types.Map__i32_List__string(param1)
+        if param2 is None:
+            raise TypeError('param2 can not be None')
+        if not isinstance(param2, module.types.List__string):
+            param2 = module.types.List__string(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1552,6 +1659,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def mapsetlistmapliststring_ret_listlistlist_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.List__List__List__List__i32):
+            param1 = module.types.List__List__List__List__i32(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1568,7 +1679,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def typedef_ret_i32_param(
             ParamService self,
-            param1):
+            int param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1586,6 +1699,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def listtypedef_ret_typedef_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.List__Map__Empty_MyStruct):
+            param1 = module.types.List__Map__Empty_MyStruct(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1602,7 +1719,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def enum_ret_double_param(
             ParamService self,
-            param1):
+            float param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1619,8 +1738,14 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def enum_ret_double_enum_param(
             ParamService self,
-            param1,
+            float param1,
             param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
+        if not isinstance(param2, module.types.MyEnumA):
+            raise ValueError('param2 is not of the enum type { module.types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1639,6 +1764,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def listenum_ret_map_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Map__string_i64):
+            param1 = module.types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1655,7 +1784,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def struct_ret_i16_param(
             ParamService self,
-            param1):
+            int param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1673,6 +1804,10 @@ cdef class ParamService(thrift.py3.client.Client):
     async def setstruct_ret_set_param(
             ParamService self,
             param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if not isinstance(param1, module.types.Set__string):
+            param1 = module.types.Set__string(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1689,8 +1824,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def union_ret_i32_i32_param(
             ParamService self,
-            param1,
-            param2):
+            int param1,
+            int param2):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
+        if param2 is None:
+            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1708,7 +1847,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listunion_string_param(
             ParamService self,
-            param1):
+            str param1):
+        if param1 is None:
+            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

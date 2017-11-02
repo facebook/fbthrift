@@ -34,7 +34,7 @@ def get_client(clientKlass, *, str host='::1', int port, float timeout=1, header
     loop = asyncio.get_event_loop()
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
-    assert issubclass(clientKlass, Client), "Must by a py3 thrift client"
+    assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
     cdef string chost = <bytes> host.encode('idna')
     cdef int _timeout = int(timeout * 1000)
     client = clientKlass()

@@ -174,6 +174,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
     async def mapList(
             NestedContainers self,
             foo):
+        if foo is None:
+            raise TypeError('foo can not be None')
+        if not isinstance(foo, module.types.Map__i32_List__i32):
+            foo = module.types.Map__i32_List__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -191,6 +195,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
     async def mapSet(
             NestedContainers self,
             foo):
+        if foo is None:
+            raise TypeError('foo can not be None')
+        if not isinstance(foo, module.types.Map__i32_Set__i32):
+            foo = module.types.Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -208,6 +216,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
     async def listMap(
             NestedContainers self,
             foo):
+        if foo is None:
+            raise TypeError('foo can not be None')
+        if not isinstance(foo, module.types.List__Map__i32_i32):
+            foo = module.types.List__Map__i32_i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -225,6 +237,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
     async def listSet(
             NestedContainers self,
             foo):
+        if foo is None:
+            raise TypeError('foo can not be None')
+        if not isinstance(foo, module.types.List__Set__i32):
+            foo = module.types.List__Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -242,6 +258,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
     async def turtles(
             NestedContainers self,
             foo):
+        if foo is None:
+            raise TypeError('foo can not be None')
+        if not isinstance(foo, module.types.List__List__Map__i32_Map__i32_Set__i32):
+            foo = module.types.List__List__Map__i32_Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

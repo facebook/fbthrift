@@ -121,7 +121,9 @@ cdef class TestService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def init(
             TestService self,
-            int1):
+            int int1):
+        if int1 is None:
+            raise TypeError('int1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

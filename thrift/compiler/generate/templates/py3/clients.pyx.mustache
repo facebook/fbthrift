@@ -159,7 +159,21 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
     @cython.always_allow_keywords(True)
     async def {{function:name}}(
             {{service:name}} self{{#function:args}},
-            {{field:name}}{{/function:args}}):
+            {{#field:type}}{{^type:enum?}}{{^type:container?}}{{> types/CythonPythonType}} {{/type:container?}}{{/type:enum?}}{{/field:type}}{{field:name}}{{/function:args}}):
+        {{#function:args}}
+        if {{field:name}} is None:
+            raise TypeError('{{field:name}} can not be None')
+        {{#field:type}}
+        {{#type:container?}}
+        if not isinstance({{field:name}}, {{> types/CythonPythonType}}):
+            {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
+        {{/type:container?}}
+        {{#type:enum?}}
+        if not isinstance({{field:name}}, {{> types/CythonPythonType}}):
+            raise ValueError('{{field:name}} is not of the enum type { {{> types/CythonPythonType}} }.')
+        {{/type:enum?}}
+        {{/field:type}}
+        {{/function:args}}
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

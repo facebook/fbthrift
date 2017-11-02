@@ -2,7 +2,7 @@
 import unittest
 import itertools
 
-from testing.types import int_list
+from testing.types import int_list, I32List
 
 
 class ListTests(unittest.TestCase):
@@ -28,3 +28,8 @@ class ListTests(unittest.TestCase):
         self.assertEquals(new_list, list(itertools.chain(other_list, int_list)))
         new_list = tuple(other_list) + int_list
         self.assertIsInstance(new_list, tuple)
+
+    def test_list_creation(self):
+        I32List(range(10))
+        with self.assertRaises(TypeError):
+            I32List([1, 'b', 'c', 'four'])
