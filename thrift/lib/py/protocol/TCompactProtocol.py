@@ -24,16 +24,23 @@ CONTAINER_READ = 6
 VALUE_READ = 7
 BOOL_READ = 8
 
+
 def make_helper(v_from, container):
     def helper(func):
         def nested(self, *args, **kwargs):
-            assert self.state in (v_from, container), \
-                    (self.state, v_from, container)
+            container.append(v_from)
+            assert self.state in container, \
+                    (self.state, container)
             return func(self, *args, **kwargs)
         return nested
     return helper
-writer = make_helper(VALUE_WRITE, CONTAINER_WRITE)
-reader = make_helper(VALUE_READ, CONTAINER_READ)
+
+
+writer = make_helper(VALUE_WRITE, [CONTAINER_WRITE, CLEAR])
+
+
+reader = make_helper(VALUE_READ, [CONTAINER_READ, CLEAR])
+
 
 def makeZigZag(n, bits):
     return (n << 1) ^ (n >> (bits - 1))
