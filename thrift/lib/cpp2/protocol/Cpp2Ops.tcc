@@ -27,53 +27,28 @@ namespace thrift {
 
 namespace detail {
 
-FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(push_back_checker, push_back);
-FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(insert_checker, insert);
-FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(op_bracket_checker, operator[]);
-FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(reserve_checker, reserve);
+template <typename C>
+using push_back_result = decltype(
+    std::declval<C&>().push_back(std::declval<typename C::value_type>()));
 
-// The std::vector<bool> specialization in gcc provides a push_back(bool)
-// method, rather than a push_back(bool&&) like the generic std::vector<T>
-template <class C>
-using is_vector_like = std::integral_constant<
-    bool,
-    push_back_checker<C, void(typename C::value_type&&)>::value ||
-        push_back_checker<C, void(typename C::value_type)>::value>;
+template <typename C>
+using insert_key_result =
+    decltype(std::declval<C&>().insert(std::declval<typename C::key_type>()));
 
-template <class C>
-using op_bracket_of_key_signature =
-    typename C::mapped_type&(const typename C::key_type&);
+template <typename C>
+using subscript_key_result =
+    decltype(std::declval<C&>()[std::declval<typename C::key_type>()]);
 
-template <class C>
-using has_op_bracket_of_key = std::integral_constant<
-    bool,
-    op_bracket_checker<C, op_bracket_of_key_signature<C>>::value>;
-
-template <class C>
-using has_insert = insert_checker<
-    C,
-    std::pair<typename C::iterator, bool>(typename C::value_type&&)>;
-
-template <class C>
-using is_set_like = std::integral_constant<
-    bool,
-    has_insert<C>::value &&
-        std::is_same<typename C::key_type, typename C::value_type>::value>;
-
-template <class C>
-using is_map_like = has_op_bracket_of_key<C>;
-
-template <class T, class = void>
+template <typename C>
+using reserve_result =
+    decltype(std::declval<C&>().reserve(std::declval<typename C::size_type>()));
+template <typename C, typename = void>
 struct Reserver {
-  static void reserve(T&, typename T::size_type) {}
+  static void reserve(C&, typename C::size_type) {}
 };
-
-template <class C>
-using has_reserve = reserve_checker<C, void(typename C::size_type)>;
-
-template <class T>
-struct Reserver<T, typename std::enable_if<has_reserve<T>::value>::type> {
-  static void reserve(T& container, typename T::size_type size) {
+template <typename C>
+struct Reserver<C, folly::void_t<reserve_result<C>>> {
+  static void reserve(C& container, typename C::size_type size) {
     container.reserve(size);
   }
 };
@@ -361,9 +336,7 @@ uint32_t readIntoVector(Protocol* prot, std::vector<bool>& vec) {
 } // namespace detail
 
 template <class L>
-class Cpp2Ops<
-    L,
-    typename std::enable_if<detail::is_vector_like<L>::value>::type> {
+class Cpp2Ops<L, folly::void_t<detail::push_back_result<L>>> {
  public:
   typedef L Type;
   static constexpr protocol::TType thriftType() {
@@ -420,7 +393,7 @@ class Cpp2Ops<
 };
 
 template <class S>
-class Cpp2Ops<S, typename std::enable_if<detail::is_set_like<S>::value>::type> {
+class Cpp2Ops<S, folly::void_t<detail::insert_key_result<S>>> {
  public:
   typedef S Type;
   static constexpr protocol::TType thriftType() {
@@ -481,7 +454,7 @@ class Cpp2Ops<S, typename std::enable_if<detail::is_set_like<S>::value>::type> {
 };
 
 template <class M>
-class Cpp2Ops<M, typename std::enable_if<detail::is_map_like<M>::value>::type> {
+class Cpp2Ops<M, folly::void_t<detail::subscript_key_result<M>>> {
  public:
   typedef M Type;
   static constexpr protocol::TType thriftType() {
