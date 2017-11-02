@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryChannel.h>
 
 #include <glog/logging.h>
+#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
@@ -53,6 +54,9 @@ void InMemoryChannel::sendThriftRequest(
   CHECK(evb_->isInEventBaseThread());
   CHECK(metadata);
   CHECK(payload);
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
+    LOG(FATAL) << "Unexpected problem stripping envelope";
+  }
   CHECK(metadata->__isset.kind);
   if (metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
       metadata->kind == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {

@@ -21,17 +21,24 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <gtest/gtest.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 #include <thrift/perf/cpp2/util/Util.h>
 #include "thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h"
 
+DECLARE_bool(use_ssl);
+DECLARE_string(transport);
+
+DEFINE_string(host, "::1", "host to connect to");
+
 namespace apache {
 namespace thrift {
 
 using namespace testing;
-
-DEFINE_string(host, "::1", "host to connect to");
 
 using namespace apache::thrift;
 using namespace apache::thrift::transport;
@@ -127,16 +134,32 @@ void TransportCompatibilityTest::connectToServer(
     folly::Function<void(
         std::unique_ptr<TestServiceAsyncClient>,
         std::shared_ptr<ClientConnectionIf>)> callMe) {
-  auto mgr = ConnectionManager::getInstance();
   CHECK_GT(port_, 0) << "Check if the server has started already";
-  auto connection = mgr->getConnection(FLAGS_host, port_);
-  auto channel = ThriftClient::Ptr(
-      new ThriftClient(connection, workerThread_.getEventBase()));
-  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-
-  auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
-
-  callMe(std::move(client), std::move(connection));
+  if (FLAGS_transport == "legacy-http2") {
+    // We setup legacy http2 for synchronous calls only - we do not
+    // drive this event base.
+    folly::EventBase evb;
+    TAsyncSocket::UniquePtr socket(new TAsyncSocket(&evb, FLAGS_host, port_));
+    if (FLAGS_use_ssl) {
+      auto sslContext = std::make_shared<folly::SSLContext>();
+      sslContext->setAdvertisedNextProtocols({"h2", "http"});
+      auto sslSocket =
+          new TAsyncSSLSocket(sslContext, &evb, socket->detachFd(), false);
+      sslSocket->sslConn(nullptr);
+      socket.reset(sslSocket);
+    }
+    auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
+    auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+    callMe(std::move(client), std::unique_ptr<ClientConnectionIf>());
+  } else {
+    auto mgr = ConnectionManager::getInstance();
+    auto connection = mgr->getConnection(FLAGS_host, port_);
+    auto channel = ThriftClient::Ptr(
+        new ThriftClient(connection, workerThread_.getEventBase()));
+    channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+    auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+    callMe(std::move(client), std::move(connection));
+  }
 }
 
 class TimeoutTestCallback : public RequestCallback {
@@ -197,6 +220,22 @@ void TransportCompatibilityTest::TestRequestResponse_Simple() {
     auto future = client->future_add(2);
     EXPECT_EQ(3, future.get());
 
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(8, client->sync_add(5));
+  });
+}
+
+void TransportCompatibilityTest::TestRequestResponse_Sync() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2);
+    EXPECT_CALL(*handler_.get(), add_(1));
+    EXPECT_CALL(*handler_.get(), add_(2));
+    EXPECT_CALL(*handler_.get(), add_(5));
+
+    // Send a message
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(1, client->sync_add(1));
+    EXPECT_EQ(3, client->sync_add(2));
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
     EXPECT_EQ(8, client->sync_add(5));
   });
@@ -568,7 +607,9 @@ void TransportCompatibilityTest::TestOneway_Saturation() {
     EXPECT_CALL(*handler_.get(), add_(3));
     // note that no EXPECT_CALL for addAfterDelay_(0, 5)
     EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5));
-    EXPECT_CALL(*handler_.get(), addAfterDelay_(50, 5));
+    if (FLAGS_transport == "rsocket") {
+      EXPECT_CALL(*handler_.get(), addAfterDelay_(50, 5));
+    }
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
@@ -582,7 +623,11 @@ void TransportCompatibilityTest::TestOneway_Saturation() {
     // Client should be able to issue both of these functions as
     // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
     client->sync_addAfterDelay(100, 5);
-    client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
+    if (FLAGS_transport == "rsocket") {
+      // http2 will fail this because the underlying stream is still twoway.
+      // So we don't test this for http2.
+      client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
+    }
   });
 }
 

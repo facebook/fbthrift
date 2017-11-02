@@ -18,6 +18,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <glog/logging.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -26,59 +27,64 @@
 namespace apache {
 namespace thrift {
 
-// Strips the envelope out of the payload and moves the information
-// contained in it into metadata.  This function is temporary to
-// maintain legacy compatibility.  Eventually, the envelope will only
-// be used with the header transport (i.e., not even created in the
-// first place), at which point this function will be deprecated.
-static bool stripEnvelope(
-    RequestRpcMetadata* metadata,
-    std::unique_ptr<folly::IOBuf>& payload) noexcept {
-  MessageType mtype;
-  uint64_t sz;
-  while (payload->length() == 0) {
-    if (payload->next() != payload.get()) {
-      payload = payload->pop();
-    } else {
-      LOG(ERROR) << "Payload is empty";
+class EnvelopeUtil {
+ public:
+  // Strips the envelope out of the payload and moves the information
+  // contained in it into metadata.  This function is required to
+  // maintain legacy compatibility.  Eventually, the envelope should
+  // only be used with the header transport (i.e., not even created in
+  // the first place), at which point this function will be
+  // deprecated.
+  static bool stripEnvelope(
+      RequestRpcMetadata* metadata,
+      std::unique_ptr<folly::IOBuf>& payload) noexcept {
+    MessageType mtype;
+    uint64_t sz;
+    while (payload->length() == 0) {
+      if (payload->next() != payload.get()) {
+        payload = payload->pop();
+      } else {
+        LOG(ERROR) << "Payload is empty";
+        return false;
+      }
+    }
+    try {
+      // Sequence id is always 0 in the envelope.  So we ignore it.
+      int32_t seqId;
+      auto protByte = payload->data()[0];
+      switch (protByte) {
+        case 0x80: {
+          BinaryProtocolReader reader;
+          metadata->protocol = ProtocolId::BINARY;
+          reader.setInput(payload.get());
+          sz = reader.readMessageBegin(metadata->name, mtype, seqId);
+        } break;
+        case 0x82: {
+          metadata->protocol = ProtocolId::COMPACT;
+          CompactProtocolReader reader;
+          reader.setInput(payload.get());
+          sz = reader.readMessageBegin(metadata->name, mtype, seqId);
+        } break;
+        // TODO: Add Frozen2 case.
+        default:
+          LOG(ERROR) << "Unknown protocol: " << protByte;
+          return false;
+      }
+    } catch (const TException& ex) {
+      LOG(ERROR) << "Invalid envelope: " << ex.what();
       return false;
     }
-  }
-  try {
-    auto protByte = payload->data()[0];
-    switch (protByte) {
-      case 0x80: {
-        BinaryProtocolReader reader;
-        metadata->protocol = ProtocolId::BINARY;
-        reader.setInput(payload.get());
-        sz = reader.readMessageBegin(metadata->name, mtype, metadata->seqId);
-      } break;
-      case 0x82: {
-        metadata->protocol = ProtocolId::COMPACT;
-        CompactProtocolReader reader;
-        reader.setInput(payload.get());
-        sz = reader.readMessageBegin(metadata->name, mtype, metadata->seqId);
-      } break;
-      // TODO: Add Frozen2 case.
-      default:
-        LOG(ERROR) << "Unknown protocol: " << protByte;
-        return false;
+    // Remove the envelope.
+    while (payload->length() < sz) {
+      sz -= payload->length();
+      payload = payload->pop();
     }
-  } catch (const TException& ex) {
-    LOG(ERROR) << "Invalid envelope: " << ex.what();
-    return false;
+    payload->trimStart(sz);
+    metadata->__isset.protocol = true;
+    metadata->__isset.name = true;
+    return true;
   }
-  // Remove the envelope.
-  while (payload->length() < sz) {
-    sz -= payload->length();
-    payload = payload->pop();
-  }
-  payload->trimStart(sz);
-  metadata->__isset.protocol = true;
-  metadata->__isset.name = true;
-  metadata->__isset.seqId = true;
-  return true;
-}
+};
 
 } // namespace thrift
 } // namespace apache

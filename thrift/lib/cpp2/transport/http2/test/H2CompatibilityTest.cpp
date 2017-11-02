@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
 DECLARE_int32(force_channel_version);
-DECLARE_int32(num_client_connections);
+DECLARE_string(transport);
 
 namespace apache {
 namespace thrift {
@@ -48,6 +48,7 @@ class H2CompatibilityTest : public testing::Test,
                             public testing::WithParamInterface<ChannelType> {
  public:
   H2CompatibilityTest() {
+    FLAGS_transport = "http2"; // client's transport
     switch (GetParam()) {
       case Default:
         // Default behavior is to let the negotiation happen as normal.
@@ -73,6 +74,10 @@ class H2CompatibilityTest : public testing::Test,
 
 TEST_P(H2CompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
+}
+
+TEST_P(H2CompatibilityTest, RequestResponse_Sync) {
+  compatibilityTest_->TestRequestResponse_Sync();
 }
 
 TEST_P(H2CompatibilityTest, RequestResponse_MultipleClients) {
@@ -128,11 +133,9 @@ TEST_P(H2CompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
 }
 
-/* TODO: Uncomment when H2 part is updated
 TEST_P(H2CompatibilityTest, Oneway_Saturation) {
   compatibilityTest_->TestOneway_Saturation();
 }
-*/
 
 TEST_P(H2CompatibilityTest, Oneway_UnexpectedException) {
   compatibilityTest_->TestOneway_UnexpectedException();
@@ -146,6 +149,10 @@ TEST_P(H2CompatibilityTest, Oneway_ServerQueueTimeout) {
   compatibilityTest_->TestOneway_ServerQueueTimeout();
 }
 
+TEST_P(H2CompatibilityTest, RequestContextIsPreserved) {
+  compatibilityTest_->TestRequestContextIsPreserved();
+}
+
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     H2CompatibilityTest,
@@ -153,10 +160,6 @@ INSTANTIATE_TEST_CASE_P(
         ChannelType::Default,
         ChannelType::SingleRPC,
         ChannelType::MetadataInBody));
-
-TEST_P(H2CompatibilityTest, RequestContextIsPreserved) {
-  compatibilityTest_->TestRequestContextIsPreserved();
-}
 
 } // namespace thrift
 } // namespace apache

@@ -22,7 +22,6 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -165,18 +164,12 @@ uint32_t ThriftClient::sendRequestHelper(
   DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (!stripEnvelope(metadata.get(), buf)) {
-    LOG(FATAL) << "Unexpected problem stripping envelope";
-  }
-  // The envelope does not say whether or not the call is oneway - so
-  // we set it here.
   if (oneway) {
     metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   } else {
     metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   }
   metadata->__isset.kind = true;
-  DCHECK(static_cast<ProtocolId>(protocolId_) == metadata->protocol);
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
     metadata->__isset.clientTimeoutMs = true;

@@ -20,6 +20,7 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 #include <memory>
@@ -48,12 +49,13 @@ class ChannelTestFixture : public testing::Test {
   // the channel in chunks as specified by the chunkSize.  If
   // chunkSize is 0, the entire payload is sent as a single chunk.
   void sendAndReceiveStream(
-      std::shared_ptr<H2Channel> channel,
+      ThriftProcessor* processor,
       const std::unordered_map<std::string, std::string>& inputHeaders,
       const std::string& inputPayload,
       std::string::size_type chunkSize,
       std::unordered_map<std::string, std::string>*& outputHeaders,
-      folly::IOBuf*& outputPayload);
+      folly::IOBuf*& outputPayload,
+      bool omitEnvelope = false);
 
  protected:
   std::unique_ptr<folly::EventBase> eventBase_;

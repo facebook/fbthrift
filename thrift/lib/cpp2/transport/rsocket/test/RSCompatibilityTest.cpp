@@ -48,6 +48,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
 }
 
+TEST_F(RSCompatibilityTest, RequestResponse_Sync) {
+  compatibilityTest_->TestRequestResponse_Sync();
+}
+
 TEST_F(RSCompatibilityTest, RequestResponse_MultipleClients) {
   compatibilityTest_->TestRequestResponse_MultipleClients();
 }

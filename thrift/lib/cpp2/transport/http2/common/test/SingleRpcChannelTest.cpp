@@ -39,22 +39,13 @@ TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
   EchoProcessor processor(
       server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
-
-  // The following header settings can be removed once we serialize
-  // metadata directly.
-  inputHeaders[kProtocolKey] = "0";
-  inputHeaders[kRpcNameKey] = "foo";
-  inputHeaders[kRpcKindKey] = "0";
-
   inputHeaders["key1"] = "value1";
   inputHeaders["key2"] = "value2";
   string inputPayload = "single stream payload";
   unordered_map<string, string>* outputHeaders;
   IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
   sendAndReceiveStream(
-      channel,
+      &processor,
       inputHeaders,
       inputPayload,
       GetParam(),
@@ -81,10 +72,14 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
   string inputPayload = "";
   unordered_map<string, string>* outputHeaders;
   IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
   sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
+      &processor,
+      inputHeaders,
+      inputPayload,
+      0,
+      outputHeaders,
+      outputPayload,
+      true);
   EXPECT_EQ(0, outputHeaders->size());
   TApplicationException tae;
   EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
@@ -92,111 +87,28 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
   EXPECT_EQ("Proxygen stream has no body", tae.getMessage());
 }
 
-TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoProtocol) {
+TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
   apache::thrift::server::ServerConfigsMock server;
   EchoProcessor processor(
       server, "extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
-  inputHeaders[kRpcNameKey] = "foo";
-  inputHeaders[kRpcKindKey] = "0";
+  inputHeaders["key1"] = "value1";
   string inputPayload = "notempty";
   unordered_map<string, string>* outputHeaders;
   IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
   sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
+      &processor,
+      inputHeaders,
+      inputPayload,
+      0,
+      outputHeaders,
+      outputPayload,
+      true);
   EXPECT_EQ(0, outputHeaders->size());
   TApplicationException tae;
   EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
   EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-  EXPECT_EQ("Protocol not in header", tae.getMessage());
-}
-
-TEST_F(ChannelTestFixture, SingleRpcChannelErrorBadProtocol) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
-  unordered_map<string, string> inputHeaders;
-  inputHeaders[kProtocolKey] = "bad";
-  inputHeaders[kRpcNameKey] = "foo";
-  inputHeaders[kRpcKindKey] = "0";
-  string inputPayload = "notempty";
-  unordered_map<string, string>* outputHeaders;
-  IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
-  sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
-  EXPECT_EQ(0, outputHeaders->size());
-  TApplicationException tae;
-  EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
-  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-  EXPECT_EQ("Bad protocol value", tae.getMessage());
-}
-
-TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoName) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
-  unordered_map<string, string> inputHeaders;
-  inputHeaders[kProtocolKey] = "2";
-  inputHeaders[kRpcKindKey] = "0";
-  string inputPayload = "notempty";
-  unordered_map<string, string>* outputHeaders;
-  IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
-  sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
-  EXPECT_EQ(0, outputHeaders->size());
-  TApplicationException tae;
-  EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
-  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-  EXPECT_EQ("RPC name not in header", tae.getMessage());
-}
-
-TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoKind) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
-  unordered_map<string, string> inputHeaders;
-  inputHeaders[kProtocolKey] = "2";
-  inputHeaders[kRpcNameKey] = "foo";
-  string inputPayload = "notempty";
-  unordered_map<string, string>* outputHeaders;
-  IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
-  sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
-  EXPECT_EQ(0, outputHeaders->size());
-  TApplicationException tae;
-  EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
-  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-  EXPECT_EQ("RPC kind not in header", tae.getMessage());
-}
-
-TEST_F(ChannelTestFixture, SingleRpcChannelErrorBadKind) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
-  unordered_map<string, string> inputHeaders;
-  inputHeaders[kProtocolKey] = "2";
-  inputHeaders[kRpcNameKey] = "foo";
-  inputHeaders[kRpcKindKey] = "bad";
-  string inputPayload = "notempty";
-  unordered_map<string, string>* outputHeaders;
-  IOBuf* outputPayload;
-  std::shared_ptr<SingleRpcChannel> channel =
-      std::make_shared<SingleRpcChannel>(responseHandler_.get(), &processor);
-  sendAndReceiveStream(
-      channel, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
-  EXPECT_EQ(0, outputHeaders->size());
-  TApplicationException tae;
-  EXPECT_TRUE(CoreTestFixture::deserializeException(outputPayload, &tae));
-  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-  EXPECT_EQ("Bad RPC kind value", tae.getMessage());
+  EXPECT_EQ("Invalid envelope: see logs for error", tae.getMessage());
 }
 
 } // namespace thrift

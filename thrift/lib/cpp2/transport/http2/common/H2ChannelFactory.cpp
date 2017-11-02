@@ -15,7 +15,6 @@
  */
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
-#include <thrift/lib/cpp2/transport/http2/common/MetadataInBodySingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
 namespace apache {
@@ -26,10 +25,10 @@ std::shared_ptr<H2Channel> H2ChannelFactory::createChannel(
     proxygen::ResponseHandler* toHttp2,
     ThriftProcessor* processor) {
   if (version == 2) {
-    return std::make_shared<MetadataInBodySingleRpcChannel>(toHttp2, processor);
+    return std::make_shared<SingleRpcChannel>(toHttp2, processor, false);
   } else {
     DCHECK(version == 0 || version == 1);
-    return std::make_shared<SingleRpcChannel>(toHttp2, processor);
+    return std::make_shared<SingleRpcChannel>(toHttp2, processor, true);
   }
 }
 
@@ -39,11 +38,12 @@ std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
     const std::string& httpHost,
     const std::string& httpUrl) {
   if (version == 2) {
-    return std::make_shared<MetadataInBodySingleRpcChannel>(
-        toHttp2, httpHost, httpUrl);
+    return std::make_shared<SingleRpcChannel>(
+        toHttp2, httpHost, httpUrl, false);
   } else {
     DCHECK(version == 0 || version == 1);
-    auto ch = std::make_shared<SingleRpcChannel>(toHttp2, httpHost, httpUrl);
+    auto ch =
+        std::make_shared<SingleRpcChannel>(toHttp2, httpHost, httpUrl, true);
     if (version == 0) {
       ch->setNotYetStable();
     }

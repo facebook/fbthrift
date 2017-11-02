@@ -16,6 +16,7 @@
 #include "thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h"
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RPCSubscriber.h>
 
 namespace apache {
@@ -158,6 +159,11 @@ void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
+    LOG(FATAL) << "Unexpected problem stripping envelope";
+  }
+  metadata->seqId = 0;
+  metadata->__isset.seqId = true;
   DCHECK(metadata->__isset.kind);
   switch (metadata->kind) {
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:

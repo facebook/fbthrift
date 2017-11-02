@@ -40,6 +40,7 @@ class TransportCompatibilityTest {
   ThriftServer* getServer();
 
   void TestRequestResponse_Simple();
+  void TestRequestResponse_Sync();
   void TestRequestResponse_MultipleClients();
   void TestRequestResponse_ExpectedException();
   void TestRequestResponse_UnexpectedException();

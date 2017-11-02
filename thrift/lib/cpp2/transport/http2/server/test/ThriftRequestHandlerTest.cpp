@@ -19,6 +19,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
@@ -54,12 +56,13 @@ class ThriftRequestHandlerTest : public testing::Test {
   // Tears down after the test.
   ~ThriftRequestHandlerTest() override {}
 
-  // This method can be removed once we serialize metadata directly.
-  void setEnvelopeHeaders(HTTPMessage* msg) {
-    auto& headers = msg->getHeaders();
-    headers.rawSet(kProtocolKey, "0");
-    headers.rawSet(kRpcNameKey, "foo");
-    headers.rawSet(kRpcKindKey, "0");
+  std::unique_ptr<IOBuf> makeBody() {
+    auto queue = std::make_unique<IOBufQueue>();
+    CompactProtocolWriter writer;
+    writer.setOutput(queue.get());
+    writer.writeMessageBegin("dummy", T_CALL, 0);
+    queue->append("payload");
+    return queue->move();
   }
 
  protected:
@@ -74,13 +77,11 @@ class ThriftRequestHandlerTest : public testing::Test {
 // SingleRpcChannel without any errors.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
   auto msg = std::make_unique<HTTPMessage>();
-  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
   requestHandler_->onRequest(std::move(msg));
-  auto iobuf = IOBuf::copyBuffer("payload");
-  requestHandler_->onBody(std::move(iobuf));
+  requestHandler_->onBody(makeBody());
   requestHandler_->onEOM();
   eventBase_->loopOnce();
   requestHandler_->requestComplete();
@@ -98,13 +99,11 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
 // processed.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
   auto msg = std::make_unique<HTTPMessage>();
-  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
   requestHandler_->onRequest(std::move(msg));
-  auto iobuf = IOBuf::copyBuffer("payload");
-  requestHandler_->onBody(std::move(iobuf));
+  requestHandler_->onBody(makeBody());
   requestHandler_->onEOM();
   eventBase_->loopOnce();
   requestHandler_->onError(proxygen::kErrorNone);
@@ -122,13 +121,11 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
 // callbacks take place.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
   auto msg = std::make_unique<HTTPMessage>();
-  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
   requestHandler_->onRequest(std::move(msg));
-  auto iobuf = IOBuf::copyBuffer("payload");
-  requestHandler_->onBody(std::move(iobuf));
+  requestHandler_->onBody(makeBody());
   requestHandler_->onEOM();
   requestHandler_->onError(proxygen::kErrorNone);
   eventBase_->loopOnce();
@@ -142,13 +139,11 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
 // SingleRpcChannel with an error before onEOM().
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
   auto msg = std::make_unique<HTTPMessage>();
-  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
   requestHandler_->onRequest(std::move(msg));
-  auto iobuf = IOBuf::copyBuffer("payload");
-  requestHandler_->onBody(std::move(iobuf));
+  requestHandler_->onBody(makeBody());
   requestHandler_->onError(proxygen::kErrorNone);
   eventBase_->loopOnce();
   auto outputHeaders = responseHandler_->getHeaders();
@@ -161,7 +156,6 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
 // SingleRpcChannel with an error before onBody().
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
   auto msg = std::make_unique<HTTPMessage>();
-  setEnvelopeHeaders(msg.get());
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");

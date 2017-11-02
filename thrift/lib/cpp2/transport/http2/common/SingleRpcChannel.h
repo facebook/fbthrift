@@ -26,28 +26,18 @@
 namespace apache {
 namespace thrift {
 
-// These will go away once we sent the RPC metadata directly.  "src"
-// stands for SingleRpcChannel.
-constexpr auto kProtocolKey = folly::makeFixedString("src_protocol");
-constexpr auto kRpcNameKey = folly::makeFixedString("src_rpc_name");
-constexpr auto kRpcKindKey = folly::makeFixedString("src_rpc_kind");
-
-// This will go away once we have deprecated all uses of the existing
-// HTTP2 support (HTTPClientChannel and the matching server
-// implementation).
-constexpr auto kHttpClientChannelKey =
-    folly::makeFixedString("src_httpclientchannel");
-
 class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
       proxygen::ResponseHandler* toHttp2,
-      ThriftProcessor* processor);
+      ThriftProcessor* processor,
+      bool legacySupport);
 
   SingleRpcChannel(
       H2ClientConnection* toHttp2,
       const std::string& httpHost,
-      const std::string& httpUrl);
+      const std::string& httpUrl,
+      bool legacySupport);
 
   virtual ~SingleRpcChannel() override;
 
@@ -77,9 +67,14 @@ class SingleRpcChannel : public H2Channel {
 
   void setNotYetStable() noexcept;
 
- protected:
-  // The service side handling code for onH2StreamEnd().
+ private:
+  // The server side handling code for onH2StreamEnd().
   virtual void onThriftRequest() noexcept;
+
+  // The client side handling code for onH2StreamEnd().
+  void onThriftResponse() noexcept;
+
+  void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
 
   // Called from onThriftRequest() to send an error response.
   void sendThriftErrorResponse(
@@ -94,6 +89,9 @@ class SingleRpcChannel : public H2Channel {
   // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_;
 
+  // Set to true to support the legacy HTTP2 protocol.
+  bool legacySupport_;
+
   // Header information for RPCs (client side only).
   std::string httpHost_;
   std::string httpUrl_;
@@ -105,19 +103,10 @@ class SingleRpcChannel : public H2Channel {
   // Callback for client side.
   std::unique_ptr<ThriftClientCallback> callback_;
 
-  std::unique_ptr<std::map<std::string, std::string>> headers_;
+  std::unique_ptr<proxygen::HTTPMessage> headers_;
   std::unique_ptr<folly::IOBuf> contents_;
 
   bool receivedThriftRPC_{false};
-
- private:
-  // The client side handling code for onH2StreamEnd().
-  void onThriftResponse() noexcept;
-
-  bool extractEnvelopeInfoFromHeader(RequestRpcMetadata* metadata) noexcept;
-
-  void extractHeaderInfo(RequestRpcMetadata* metadata) noexcept;
-
   bool receivedH2Stream_{false};
 
   // This flag is initialized when the channel is constructed to

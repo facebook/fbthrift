@@ -16,6 +16,7 @@
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <glog/logging.h>
 #include <proxygen/lib/http/HTTPHeaders.h>
@@ -25,6 +26,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
@@ -53,16 +55,19 @@ using proxygen::ResponseHandler;
 
 SingleRpcChannel::SingleRpcChannel(
     ResponseHandler* toHttp2,
-    ThriftProcessor* processor)
-    : H2Channel(toHttp2), processor_(processor) {
+    ThriftProcessor* processor,
+    bool legacySupport)
+    : H2Channel(toHttp2), processor_(processor), legacySupport_(legacySupport) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
 SingleRpcChannel::SingleRpcChannel(
     H2ClientConnection* toHttp2,
     const string& httpHost,
-    const string& httpUrl)
+    const string& httpUrl,
+    bool legacySupport)
     : H2Channel(toHttp2),
+      legacySupport_(legacySupport),
       httpHost_(httpHost),
       httpUrl_(httpUrl),
       shouldMakeStable_(!toHttp2->isStable()) {
@@ -92,10 +97,19 @@ void SingleRpcChannel::sendThriftResponse(
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    if (metadata->__isset.otherMetadata) {
-      encodeHeaders(std::move(metadata->otherMetadata), msg);
+    if (legacySupport_) {
+      if (metadata->__isset.otherMetadata) {
+        encodeHeaders(std::move(metadata->otherMetadata), msg);
+      }
+      responseHandler_->sendHeaders(msg);
+    } else {
+      auto metadataBuf = std::make_unique<IOBufQueue>();
+      CompactProtocolWriter writer;
+      writer.setOutput(metadataBuf.get());
+      metadata->write(&writer);
+      responseHandler_->sendHeaders(msg);
+      responseHandler_->sendBody(metadataBuf->move());
     }
-    responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
     responseHandler_->sendEOM();
   }
@@ -108,8 +122,6 @@ void SingleRpcChannel::sendThriftRequest(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(evb_->isInEventBaseThread());
   DCHECK(metadata);
-  DCHECK(metadata->__isset.protocol);
-  DCHECK(metadata->__isset.name);
   DCHECK(metadata->__isset.kind);
   DCHECK(
       metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
@@ -136,31 +148,42 @@ void SingleRpcChannel::sendThriftRequest(
   if (!httpHost_.empty()) {
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   }
-  maybeAddChannelVersionHeader(msg, "1");
-  // This channel does not require seqId so we do not ship it to the server.
-  metadata->otherMetadata[kProtocolKey] = folly::to<string>(metadata->protocol);
-  metadata->otherMetadata[kRpcNameKey] = folly::to<string>(metadata->name);
-  metadata->otherMetadata[kRpcKindKey] = folly::to<string>(metadata->kind);
   if (metadata->__isset.clientTimeoutMs) {
     DCHECK(metadata->clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(
         std::chrono::milliseconds(metadata->clientTimeoutMs));
-    metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
-        folly::to<string>(metadata->clientTimeoutMs);
   }
-  if (metadata->__isset.queueTimeoutMs) {
-    DCHECK(metadata->queueTimeoutMs > 0);
-    metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
-        folly::to<string>(metadata->queueTimeoutMs);
+  if (legacySupport_) {
+    maybeAddChannelVersionHeader(msg, "1");
+    if (metadata->__isset.clientTimeoutMs) {
+      metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
+          folly::to<string>(metadata->clientTimeoutMs);
+    }
+    if (metadata->__isset.queueTimeoutMs) {
+      DCHECK(metadata->queueTimeoutMs > 0);
+      metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
+          folly::to<string>(metadata->queueTimeoutMs);
+    }
+    if (metadata->__isset.priority) {
+      metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
+          folly::to<string>(metadata->priority);
+    }
+    encodeHeaders(std::move(metadata->otherMetadata), msg);
+    httpTransaction_->sendHeaders(msg);
+  } else {
+    maybeAddChannelVersionHeader(msg, "2");
+    if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
+      LOG(FATAL) << "Unexpected problem stripping envelope";
+    }
+    DCHECK(metadata->__isset.protocol);
+    DCHECK(metadata->__isset.name);
+    auto metadataBuf = std::make_unique<IOBufQueue>();
+    CompactProtocolWriter writer;
+    writer.setOutput(metadataBuf.get());
+    metadata->write(&writer);
+    httpTransaction_->sendHeaders(msg);
+    httpTransaction_->sendBody(metadataBuf->move());
   }
-  if (metadata->__isset.priority) {
-    metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
-        folly::to<string>(metadata->priority);
-  }
-  // TODO: We've left out a few header settings when copying from
-  // HTTPClientChannel.  Verify that this is OK.
-  encodeHeaders(std::move(metadata->otherMetadata), msg);
-  httpTransaction_->sendHeaders(msg);
   httpTransaction_->sendBody(std::move(payload));
   httpTransaction_->sendEOM();
   // For oneway calls, we move "callback" to "callbackEvb" since we do
@@ -195,8 +218,7 @@ ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(int32_t) noexcept {
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
   VLOG(2) << "onH2StreamBegin";
-  headers_ = std::make_unique<map<string, string>>();
-  decodeHeaders(*headers, *headers_);
+  headers_ = std::move(headers);
 }
 
 void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
@@ -260,20 +282,29 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     return;
   }
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (headers_->count(kHttpClientChannelKey)) {
-    // Legacy support for JiaJie's code.
-    if (!stripEnvelope(metadata.get(), contents_)) {
+  if (legacySupport_) {
+    if (!EnvelopeUtil::stripEnvelope(metadata.get(), contents_)) {
       sendThriftErrorResponse("Invalid envelope: see logs for error");
       return;
     }
+    // I don't think there is a way to indicate the kind of call in
+    // legacy mode.  So we just set it to twoway.
+    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+    metadata->__isset.kind = true;
+    extractHeaderInfo(metadata.get());
   } else {
-    if (!extractEnvelopeInfoFromHeader(metadata.get())) {
-      // sendThriftErrorResponse() will have been called from
-      // extractEnvelopeInfoFromHeader().
-      return;
+    CompactProtocolReader reader;
+    reader.setInput(contents_.get());
+    auto sz = metadata->read(&reader);
+    while (contents_->length() < sz) {
+      sz -= contents_->length();
+      contents_ = contents_->pop();
     }
+    contents_->trimStart(sz);
   }
-  extractHeaderInfo(metadata.get());
+  DCHECK(metadata->__isset.protocol);
+  DCHECK(metadata->__isset.name);
+  DCHECK(metadata->__isset.kind);
   if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     // Send a dummy response for the oneway call since we need to do
     // this with HTTP2.
@@ -302,13 +333,31 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   // investigated further to figure out why contents_ is not being set.
   if (!contents_) {
     VLOG(2) << "Contents has not been set.";
+    auto evb = callback_->getEventBase();
+    evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
+      evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
+          TTransportException::NETWORK_ERROR));
+    });
     return;
   }
   auto evb = callback_->getEventBase();
   auto metadata = std::make_unique<ResponseRpcMetadata>();
-  if (!headers_->empty()) {
-    metadata->otherMetadata = std::move(*headers_);
-    metadata->__isset.otherMetadata = true;
+  if (legacySupport_) {
+    map<string, string> headers;
+    decodeHeaders(*headers_, headers);
+    if (!headers.empty()) {
+      metadata->otherMetadata = std::move(headers);
+      metadata->__isset.otherMetadata = true;
+    }
+  } else {
+    CompactProtocolReader reader;
+    reader.setInput(contents_.get());
+    auto sz = metadata->read(&reader);
+    while (contents_->length() < sz) {
+      sz -= contents_->length();
+      contents_ = contents_->pop();
+    }
+    contents_->trimStart(sz);
   }
   // We don't need to set any of the other fields in metadata currently.
   evb->runInEventBaseThread([evbCallback = std::move(callback_),
@@ -319,85 +368,32 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   });
 }
 
-bool SingleRpcChannel::extractEnvelopeInfoFromHeader(
-    RequestRpcMetadata* metadata) noexcept {
-  auto iter = headers_->find(kProtocolKey);
-  if (iter == headers_->end()) {
-    LOG(ERROR) << "Protocol not in header";
-    sendThriftErrorResponse("Protocol not in header");
-    return false;
-  }
-  try {
-    metadata->protocol = folly::to<ProtocolId>(iter->second);
-    metadata->__isset.protocol = true;
-  } catch (const std::range_error&) {
-    LOG(ERROR) << "Bad protocol value: " << iter->second;
-    sendThriftErrorResponse("Bad protocol value");
-    return false;
-  }
-  headers_->erase(iter);
-
-  iter = headers_->find(kRpcNameKey);
-  if (iter == headers_->end()) {
-    LOG(ERROR) << "RPC name not in header";
-    sendThriftErrorResponse("RPC name not in header", metadata->protocol);
-    return false;
-  }
-  metadata->name = iter->second;
-  metadata->__isset.name = true;
-  headers_->erase(iter);
-
-  iter = headers_->find(kRpcKindKey);
-  if (iter == headers_->end()) {
-    LOG(ERROR) << "RPC kind not in header";
-    sendThriftErrorResponse(
-        "RPC kind not in header", metadata->protocol, metadata->name);
-    return false;
-  }
-  try {
-    metadata->kind = folly::to<RpcKind>(iter->second);
-    if (metadata->kind != RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE &&
-        metadata->kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-      LOG(ERROR) << "Unexpected RPC kind: " << iter->second;
-      sendThriftErrorResponse(
-          "Bad RPC kind for this channel", metadata->protocol, metadata->name);
-      return false;
-    }
-    metadata->__isset.kind = true;
-  } catch (const std::range_error&) {
-    LOG(ERROR) << "Bad RPC kind value: " << iter->second;
-    sendThriftErrorResponse(
-        "Bad RPC kind value", metadata->protocol, metadata->name);
-    return false;
-  }
-  headers_->erase(iter);
-  return true;
-}
-
 void SingleRpcChannel::extractHeaderInfo(
     RequestRpcMetadata* metadata) noexcept {
-  auto iter = headers_->find(transport::THeader::CLIENT_TIMEOUT_HEADER);
-  if (iter != headers_->end()) {
+  map<string, string> headers;
+  decodeHeaders(*headers_, headers);
+  auto iter = headers.find(transport::THeader::CLIENT_TIMEOUT_HEADER);
+  if (iter != headers.end()) {
     try {
       metadata->clientTimeoutMs = folly::to<int64_t>(iter->second);
       metadata->__isset.clientTimeoutMs = true;
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad client timeout " << iter->second;
     }
-    headers_->erase(iter);
+    headers.erase(iter);
   }
-  iter = headers_->find(transport::THeader::QUEUE_TIMEOUT_HEADER);
-  if (iter != headers_->end()) {
+  iter = headers.find(transport::THeader::QUEUE_TIMEOUT_HEADER);
+  if (iter != headers.end()) {
     try {
       metadata->queueTimeoutMs = folly::to<int64_t>(iter->second);
       metadata->__isset.queueTimeoutMs = true;
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad client timeout " << iter->second;
     }
-    headers_->erase(iter);
+    headers.erase(iter);
   }
-  iter = headers_->find(transport::THeader::PRIORITY_HEADER);
-  if (iter != headers_->end()) {
+  iter = headers.find(transport::THeader::PRIORITY_HEADER);
+  if (iter != headers.end()) {
     try {
       auto pr = static_cast<RpcPriority>(folly::to<int32_t>(iter->second));
       if (pr < RpcPriority::N_PRIORITIES) {
@@ -409,10 +405,10 @@ void SingleRpcChannel::extractHeaderInfo(
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad method priority " << iter->second;
     }
-    headers_->erase(iter);
+    headers.erase(iter);
   }
-  if (!headers_->empty()) {
-    metadata->otherMetadata = std::move(*headers_);
+  if (!headers.empty()) {
+    metadata->otherMetadata = std::move(headers);
     metadata->__isset.otherMetadata = true;
   }
 }
