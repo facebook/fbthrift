@@ -305,7 +305,7 @@ func TestHeaderZlib(t *testing.T) {
 	n := 1
 	tmb := NewTMemoryBuffer()
 	trans := NewTHeaderTransport(tmb)
-	data := []byte("ASDFASDFASDF")
+	data := []byte("ASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDFASDF")
 	uncompressedlen := 30
 
 	err := trans.AddTransform(TransformSnappy)
@@ -346,7 +346,6 @@ func TestHeaderZlib(t *testing.T) {
 	if len(frame) == uncompressedlen {
 		t.Fatalf("data sent was not compressed on frame %d", n)
 	}
-
 }
 
 func testRWOnce(t *testing.T, n int, data []byte, trans *THeaderTransport) {

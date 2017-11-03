@@ -219,7 +219,7 @@ func (t *THeaderTransport) applyUntransform() error {
 		return err
 	}
 	t.frameSize = uint64(len(out))
-	t.framebuf = newLimitedByteReader(bytes.NewBuffer(out), int64(t.readHeader.payloadLen))
+	t.framebuf = newLimitedByteReader(bytes.NewBuffer(out), int64(len(out)))
 	return nil
 }
 
