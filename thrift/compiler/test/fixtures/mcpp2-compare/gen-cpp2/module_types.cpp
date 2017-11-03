@@ -2514,3 +2514,129 @@ template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONPr
 template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+void FloatStruct::__clear() {
+  // clear all fields
+  floatField = 0;
+  doubleField = 0;
+  __isset.__clear();
+}
+
+bool FloatStruct::operator==(const FloatStruct& rhs) const {
+  if (!((floatField == rhs.floatField))) {
+    return false;
+  }
+  if (!((doubleField == rhs.doubleField))) {
+    return false;
+  }
+  return true;
+}
+
+void FloatStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "floatField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_FLOAT;
+  }
+  else if (_fname == "doubleField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
+void swap(FloatStruct& a, FloatStruct& b) {
+  using ::std::swap;
+  swap(a.floatField, b.floatField);
+  swap(a.doubleField, b.doubleField);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t FloatStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t FloatStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t FloatStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FloatStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t FloatStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t FloatStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FloatStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t FloatStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t FloatStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+void FloatUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::floatSide:
+    {
+      destruct(value_.floatSide);
+      break;
+    }
+    case Type::doubleSide:
+    {
+      destruct(value_.doubleSide);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool FloatUnion::operator==(const FloatUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::floatSide:
+    {
+      return value_.floatSide == rhs.value_.floatSide;
+    }
+    case Type::doubleSide:
+    {
+      return value_.doubleSide == rhs.value_.doubleSide;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+void FloatUnion::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "floatSide") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_FLOAT;
+  }
+  else if (_fname == "doubleSide") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+}
+
+void swap(FloatUnion& a, FloatUnion& b) {
+  FloatUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t FloatUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t FloatUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t FloatUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FloatUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t FloatUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t FloatUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FloatUnion::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t FloatUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns

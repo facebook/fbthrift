@@ -195,6 +195,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "some::
     cdef cppclass cMyIncludedStruct "some::valid::ns::MyIncludedStruct"
     # Forward Declaration
     cdef cppclass cAnnotatedStruct "some::valid::ns::AnnotatedStruct"
+    # Forward Declaration
+    cdef cppclass cFloatStruct "some::valid::ns::FloatStruct"
+    # Forward Declaration
+    cdef cppclass cFloatUnion "some::valid::ns::FloatUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef cppclass cEmpty__isset "some::valid::ns::Empty::__isset":
@@ -616,6 +620,33 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         ccontainerStruct struct_struct
         cAnnotatedStruct__isset __isset
 
+    cdef cppclass cFloatStruct__isset "some::valid::ns::FloatStruct::__isset":
+        bint floatField
+        bint doubleField
+
+    cdef cppclass cFloatStruct "some::valid::ns::FloatStruct":
+        cFloatStruct() except +
+        cFloatStruct(const cFloatStruct&) except +
+        bint operator==(cFloatStruct&)
+        float floatField
+        double doubleField
+        cFloatStruct__isset __isset
+
+    cdef enum cFloatUnion__type "some::valid::ns::FloatUnion::Type":
+        cFloatUnion__type___EMPTY__ "some::valid::ns::FloatUnion::Type::__EMPTY__",
+        cFloatUnion__type_floatSide "some::valid::ns::FloatUnion::Type::floatSide",
+        cFloatUnion__type_doubleSide "some::valid::ns::FloatUnion::Type::doubleSide",
+
+    cdef cppclass cFloatUnion "some::valid::ns::FloatUnion":
+        cFloatUnion() except +
+        cFloatUnion(const cFloatUnion&) except +
+        bint operator==(cFloatUnion&)
+        cFloatUnion__type getType() const
+        const float& get_floatSide() const
+        float& set_floatSide(const float&)
+        const double& get_doubleSide() const
+        double& set_doubleSide(const double&)
+
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field2 "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
     cdef shared_ptr[includes.types.cAStruct] aliasing_constructor_ARefField "std::shared_ptr<a::different::ns::AStruct>"(shared_ptr[cMyIncludedStruct]&, includes.types.cAStruct*)
@@ -669,6 +700,12 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAnnotatedStruct] move(unique_ptr[cAnnotatedStruct])
     cdef shared_ptr[cAnnotatedStruct] move_shared "std::move"(shared_ptr[cAnnotatedStruct])
     cdef unique_ptr[cAnnotatedStruct] move_unique "std::move"(unique_ptr[cAnnotatedStruct])
+    cdef shared_ptr[cFloatStruct] move(unique_ptr[cFloatStruct])
+    cdef shared_ptr[cFloatStruct] move_shared "std::move"(shared_ptr[cFloatStruct])
+    cdef unique_ptr[cFloatStruct] move_unique "std::move"(unique_ptr[cFloatStruct])
+    cdef shared_ptr[cFloatUnion] move(unique_ptr[cFloatUnion])
+    cdef shared_ptr[cFloatUnion] move_shared "std::move"(shared_ptr[cFloatUnion])
+    cdef unique_ptr[cFloatUnion] move_unique "std::move"(unique_ptr[cFloatUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::Empty>"(shared_ptr[cEmpty])
@@ -681,6 +718,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::containerStruct>"(shared_ptr[ccontainerStruct])
     cdef shared_ptr[const cMyIncludedStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::MyIncludedStruct>"(shared_ptr[cMyIncludedStruct])
     cdef shared_ptr[const cAnnotatedStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::AnnotatedStruct>"(shared_ptr[cAnnotatedStruct])
+    cdef shared_ptr[const cFloatStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatStruct>"(shared_ptr[cFloatStruct])
+    cdef shared_ptr[const cFloatUnion] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatUnion>"(shared_ptr[cFloatUnion])
 
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
@@ -1076,6 +1115,45 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
+
+# Forward Definition of the cython struct
+cdef class FloatStruct(thrift.py3.types.Struct)
+
+cdef class FloatStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cFloatStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cFloatStruct] _make_instance(
+        cFloatStruct* base_instance,
+        object floatField,
+        object doubleField
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cFloatStruct])
+
+# Forward Definition of the cython struct
+cdef class FloatUnion(thrift.py3.types.Struct)
+
+cdef class FloatUnion(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cFloatUnion] _cpp_obj
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(FloatUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cFloatUnion] _make_instance(
+        cFloatUnion* base_instance,
+        object floatSide,
+        object doubleSide
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cFloatUnion])
 
 
 cdef class Map__string_i64:

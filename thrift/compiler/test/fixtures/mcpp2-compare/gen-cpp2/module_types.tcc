@@ -4455,3 +4455,239 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
+uint32_t FloatStruct::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (_ftype == apache::thrift::protocol::T_FLOAT) {
+          xfer += iprot->readFloat(this->floatField);
+          this->__isset.floatField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->doubleField);
+          this->__isset.doubleField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(_ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FloatStruct");
+  xfer += prot_->serializedFieldSize("floatField", apache::thrift::protocol::T_FLOAT, 1);
+  xfer += prot_->serializedSizeFloat(this->floatField);
+  xfer += prot_->serializedFieldSize("doubleField", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->serializedSizeDouble(this->doubleField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FloatStruct");
+  xfer += prot_->serializedFieldSize("floatField", apache::thrift::protocol::T_FLOAT, 1);
+  xfer += prot_->serializedSizeFloat(this->floatField);
+  xfer += prot_->serializedFieldSize("doubleField", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->serializedSizeDouble(this->doubleField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FloatStruct");
+  xfer += prot_->writeFieldBegin("floatField", apache::thrift::protocol::T_FLOAT, 1);
+  xfer += prot_->writeFloat(this->floatField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("doubleField", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->writeDouble(this->doubleField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
+uint32_t FloatUnion::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (_fname == "floatSide") {
+        fid = 1;
+        _ftype = apache::thrift::protocol::T_FLOAT;
+      }
+      else if (_fname == "doubleSide") {
+        fid = 2;
+        _ftype = apache::thrift::protocol::T_DOUBLE;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (_ftype == apache::thrift::protocol::T_FLOAT) {
+          this->set_floatSide();
+          xfer += iprot->readFloat(this->mutable_floatSide());
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
+          this->set_doubleSide();
+          xfer += iprot->readDouble(this->mutable_doubleSide());
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(_ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FloatUnion");
+  switch(this->getType()) {
+    case FloatUnion::Type::floatSide:
+    {
+      xfer += prot_->serializedFieldSize("floatSide", apache::thrift::protocol::T_FLOAT, 1);
+      xfer += prot_->serializedSizeFloat(this->get_floatSide());
+      break;
+    }
+    case FloatUnion::Type::doubleSide:
+    {
+      xfer += prot_->serializedFieldSize("doubleSide", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->serializedSizeDouble(this->get_doubleSide());
+      break;
+    }
+    case FloatUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FloatUnion");
+  switch(this->getType()) {
+    case FloatUnion::Type::floatSide:
+    {
+      xfer += prot_->serializedFieldSize("floatSide", apache::thrift::protocol::T_FLOAT, 1);
+      xfer += prot_->serializedSizeFloat(this->get_floatSide());
+      break;
+    }
+    case FloatUnion::Type::doubleSide:
+    {
+      xfer += prot_->serializedFieldSize("doubleSide", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->serializedSizeDouble(this->get_doubleSide());
+      break;
+    }
+    case FloatUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FloatUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FloatUnion");
+  switch(this->getType()) {
+    case FloatUnion::Type::floatSide:
+    {
+      xfer += prot_->writeFieldBegin("floatSide", apache::thrift::protocol::T_FLOAT, 1);
+      xfer += prot_->writeFloat(this->get_floatSide());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case FloatUnion::Type::doubleSide:
+    {
+      xfer += prot_->writeFieldBegin("doubleSide", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += prot_->writeDouble(this->get_doubleSide());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case FloatUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns

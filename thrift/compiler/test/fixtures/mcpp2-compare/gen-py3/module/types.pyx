@@ -4439,6 +4439,297 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         return (deserialize, (AnnotatedStruct, serialize(self)))
 
 
+cdef cFloatStruct _FloatStruct_defaults = cFloatStruct()
+
+cdef class FloatStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        FloatStruct self,
+        floatField=None,
+        doubleField=None
+    ):
+        self._cpp_obj = move(FloatStruct._make_instance(
+          NULL,
+          floatField,
+          doubleField,
+        ))
+
+    def __call__(
+        FloatStruct self,
+        floatField=NOTSET,
+        doubleField=NOTSET
+    ):
+        changes = any((
+            floatField is not NOTSET,
+
+            doubleField is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <FloatStruct>FloatStruct.__new__(FloatStruct)
+        inst._cpp_obj = move(FloatStruct._make_instance(
+          self._cpp_obj.get(),
+          floatField,
+          doubleField,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cFloatStruct] _make_instance(
+        cFloatStruct* base_instance,
+        object floatField,
+        object doubleField
+    ) except *:
+        cdef unique_ptr[cFloatStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cFloatStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cFloatStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if floatField is None:
+                deref(c_inst).floatField = _FloatStruct_defaults.floatField
+                deref(c_inst).__isset.floatField = False
+            elif floatField is NOTSET:
+                floatField = None
+
+            if doubleField is None:
+                deref(c_inst).doubleField = _FloatStruct_defaults.doubleField
+                deref(c_inst).__isset.doubleField = False
+            elif doubleField is NOTSET:
+                doubleField = None
+
+        if floatField is not None:
+            deref(c_inst).floatField = floatField
+            deref(c_inst).__isset.floatField = True
+
+        if doubleField is not None:
+            deref(c_inst).doubleField = doubleField
+            deref(c_inst).__isset.doubleField = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'floatField', self.floatField
+        yield 'doubleField', self.doubleField
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.floatField or deref(self._cpp_obj).__isset.doubleField
+
+    @staticmethod
+    cdef create(shared_ptr[cFloatStruct] cpp_obj):
+        inst = <FloatStruct>FloatStruct.__new__(FloatStruct)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def floatField(self):
+        if not deref(self._cpp_obj).__isset.floatField:
+            return None
+
+        return self._cpp_obj.get().floatField
+
+    @property
+    def doubleField(self):
+        if not deref(self._cpp_obj).__isset.doubleField:
+            return None
+
+        return self._cpp_obj.get().doubleField
+
+
+    def __hash__(FloatStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.floatField,
+            self.doubleField,
+            ))
+        return self.__hash
+
+    def __repr__(FloatStruct self):
+        return f'FloatStruct(floatField={repr(self.floatField)}, doubleField={repr(self.doubleField)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, FloatStruct) and
+                isinstance(other, FloatStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cFloatStruct cself = deref((<FloatStruct>self)._cpp_obj)
+        cdef cFloatStruct cother = deref((<FloatStruct>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(FloatStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cFloatStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cFloatStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cFloatStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(FloatStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cFloatStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cFloatStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cFloatStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (FloatStruct, serialize(self)))
+
+
+class FloatUnionType(Enum):
+    EMPTY = <int>cFloatUnion__type___EMPTY__
+    floatSide = <int>cFloatUnion__type_floatSide
+    doubleSide = <int>cFloatUnion__type_doubleSide
+
+cdef class FloatUnion(thrift.py3.types.Struct):
+    def __init__(
+        FloatUnion self,
+        floatSide=None,
+        doubleSide=None
+    ):
+        self._cpp_obj = move(FloatUnion._make_instance(
+          NULL,
+          floatSide,
+          doubleSide,
+        ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cFloatUnion] _make_instance(
+        cFloatUnion* base_instance,
+        floatSide,
+        doubleSide
+    ) except *:
+        cdef unique_ptr[cFloatUnion] c_inst = make_unique[cFloatUnion]()
+        cdef bint any_set = False
+        if floatSide is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_floatSide(floatSide)
+            any_set = True
+        if doubleSide is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_doubleSide(doubleSide)
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != FloatUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cFloatUnion] cpp_obj):
+        inst = <FloatUnion>FloatUnion.__new__(FloatUnion)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    @property
+    def floatSide(self):
+        if self.__type != FloatUnionType.floatSide:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not floatSide')
+        return self.__cached
+
+    @property
+    def doubleSide(self):
+        if self.__type != FloatUnionType.doubleSide:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not doubleSide')
+        return self.__cached
+
+
+    def __hash__(FloatUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(FloatUnion self):
+        return f'FloatUnion(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(FloatUnion self):
+        if self.__type is not None:
+            return
+
+        self.__type = FloatUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == FloatUnionType.EMPTY:
+            self.__cached = None
+        elif self.__type == FloatUnionType.floatSide:
+            self.__cached = deref(self._cpp_obj).get_floatSide()
+        elif self.__type == FloatUnionType.doubleSide:
+            self.__cached = deref(self._cpp_obj).get_doubleSide()
+
+    def get_type(FloatUnion self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, FloatUnion) and
+                isinstance(other, FloatUnion)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cFloatUnion cself = deref((<FloatUnion>self)._cpp_obj)
+        cdef cFloatUnion cother = deref((<FloatUnion>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(FloatUnion self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cFloatUnion](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cFloatUnion](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cFloatUnion](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(FloatUnion self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cFloatUnion](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cFloatUnion](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cFloatUnion](buf, deref(self._cpp_obj.get()))
+        # force a cache reload since the underlying data's changed
+        self.__type = None
+        self._load_cache()
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (FloatUnion, serialize(self)))
+
+
 cdef class Map__string_i64:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i64):

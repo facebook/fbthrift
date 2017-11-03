@@ -363,3 +363,13 @@ service ParamService {
 
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
+
+struct FloatStruct {
+  1: float floatField,
+  2: double doubleField,
+}
+
+union FloatUnion {
+  1: float floatSide,
+  2: double doubleSide,
+}

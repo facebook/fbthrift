@@ -312,6 +312,8 @@ class AnotherException;
 class containerStruct;
 class MyIncludedStruct;
 class AnnotatedStruct;
+class FloatStruct;
+class FloatUnion;
 }}} // some::valid::ns
 // END forward_declare
 // BEGIN typedefs
@@ -5781,6 +5783,408 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Annot
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+class FloatStruct : private apache::thrift::detail::st::ComparisonOperators<FloatStruct> {
+ public:
+
+  FloatStruct() :
+      floatField(0),
+      doubleField(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg) :
+      floatField(std::move(floatField__arg)),
+      doubleField(std::move(doubleField__arg)) {
+    __isset.floatField = true;
+    __isset.doubleField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  FloatStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    FloatStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    floatField = arg.move();
+    __isset.floatField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  FloatStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    FloatStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    doubleField = arg.move();
+    __isset.doubleField = true;
+  }
+
+  FloatStruct(FloatStruct&&) = default;
+
+  FloatStruct(const FloatStruct&) = default;
+
+  FloatStruct& operator=(FloatStruct&&) = default;
+
+  FloatStruct& operator=(const FloatStruct&) = default;
+  void __clear();
+
+  virtual ~FloatStruct() {}
+
+  float floatField;
+  double doubleField;
+
+  struct __isset {
+    void __clear() {
+      floatField = false;
+      doubleField = false;
+    }
+
+    bool floatField = false;
+    bool doubleField = false;
+  } __isset;
+  bool operator==(const FloatStruct& rhs) const;
+
+  bool operator < (const FloatStruct& rhs) const {
+    if (!(floatField == rhs.floatField)) {
+      return floatField < rhs.floatField;
+    }
+    if (!(doubleField == rhs.doubleField)) {
+      return doubleField < rhs.doubleField;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  float get_floatField() const {
+    return floatField;
+  }
+
+  float& set_floatField(float floatField_) {
+    floatField = floatField_;
+    __isset.floatField = true;
+    return floatField;
+  }
+
+  double get_doubleField() const {
+    return doubleField;
+  }
+
+  double& set_doubleField(double doubleField_) {
+    doubleField = doubleField_;
+    __isset.doubleField = true;
+    return doubleField;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+};
+
+void swap(FloatStruct& a, FloatStruct& b);
+extern template uint32_t FloatStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t FloatStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t FloatStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FloatStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t FloatStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t FloatStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FloatStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t FloatStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t FloatStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::FloatStruct>::clear( ::some::valid::ns::FloatStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::FloatStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::write(Protocol* proto,  ::some::valid::ns::FloatStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::read(Protocol* proto,  ::some::valid::ns::FloatStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::FloatStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::FloatStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+class FloatUnion : private apache::thrift::detail::st::ComparisonOperators<FloatUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    floatSide = 1,
+    doubleSide = 2,
+  } ;
+
+  FloatUnion() :
+      type_(Type::__EMPTY__) {}
+
+  FloatUnion(FloatUnion&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::floatSide:
+      {
+        set_floatSide(std::move(rhs.value_.floatSide));
+        break;
+      }
+      case Type::doubleSide:
+      {
+        set_doubleSide(std::move(rhs.value_.doubleSide));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  FloatUnion(const FloatUnion& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::floatSide:
+      {
+        set_floatSide(rhs.value_.floatSide);
+        break;
+      }
+      case Type::doubleSide:
+      {
+        set_doubleSide(rhs.value_.doubleSide);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  FloatUnion& operator=(FloatUnion&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::floatSide:
+      {
+        set_floatSide(std::move(rhs.value_.floatSide));
+        break;
+      }
+      case Type::doubleSide:
+      {
+        set_doubleSide(std::move(rhs.value_.doubleSide));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  FloatUnion& operator=(const FloatUnion& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::floatSide:
+      {
+        set_floatSide(rhs.value_.floatSide);
+        break;
+      }
+      case Type::doubleSide:
+      {
+        set_doubleSide(rhs.value_.doubleSide);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  FloatUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_floatSide(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  FloatUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_doubleSide(arg.move());
+  }
+  void __clear();
+
+  virtual ~FloatUnion() {
+    __clear();
+  }
+
+  union storage_type {
+    float floatSide;
+    double doubleSide;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const FloatUnion& rhs) const;
+
+  bool operator < (const FloatUnion& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::floatSide:
+      {
+        return value_.floatSide < rhs.value_.floatSide;
+      }
+      case Type::doubleSide:
+      {
+        return value_.doubleSide < rhs.value_.doubleSide;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  float& set_floatSide(float t = float()) {
+    __clear();
+    type_ = Type::floatSide;
+    ::new (std::addressof(value_.floatSide)) float(t);
+    return value_.floatSide;
+  }
+
+  double& set_doubleSide(double t = double()) {
+    __clear();
+    type_ = Type::doubleSide;
+    ::new (std::addressof(value_.doubleSide)) double(t);
+    return value_.doubleSide;
+  }
+
+  float const & get_floatSide() const {
+    assert(type_ == Type::floatSide);
+    return value_.floatSide;
+  }
+
+  double const & get_doubleSide() const {
+    assert(type_ == Type::doubleSide);
+    return value_.doubleSide;
+  }
+
+  float & mutable_floatSide() {
+    assert(type_ == Type::floatSide);
+    return value_.floatSide;
+  }
+
+  double & mutable_doubleSide() {
+    assert(type_ == Type::doubleSide);
+    return value_.doubleSide;
+  }
+
+  float move_floatSide() {
+    assert(type_ == Type::floatSide);
+    return std::move(value_.floatSide);
+  }
+
+  double move_doubleSide() {
+    assert(type_ == Type::doubleSide);
+    return std::move(value_.doubleSide);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+};
+
+void swap(FloatUnion& a, FloatUnion& b);
+extern template uint32_t FloatUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t FloatUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t FloatUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FloatUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t FloatUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t FloatUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FloatUnion::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t FloatUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::FloatUnion>::clear( ::some::valid::ns::FloatUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::FloatUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::write(Protocol* proto,  ::some::valid::ns::FloatUnion const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::read(Protocol* proto,  ::some::valid::ns::FloatUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::FloatUnion const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::FloatUnion const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
