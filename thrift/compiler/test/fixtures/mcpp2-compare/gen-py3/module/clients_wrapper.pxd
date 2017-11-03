@@ -75,9 +75,9 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[cset[module.types.cMyStruct]] set_StructReturn()
     cFollyFuture[module.types.cComplexUnion] unionReturn()
     cFollyFuture[vector[module.types.cComplexUnion]] list_UnionReturn()
-    cFollyFuture[string] readDataEb(
+    cFollyFuture[module.types.folly_IOBuf] readDataEb(
       int64_t arg_size,)
-    cFollyFuture[string] readData(
+    cFollyFuture[module.types.std_unique_ptr_folly_IOBuf] readData(
       int64_t arg_size,)
 
 

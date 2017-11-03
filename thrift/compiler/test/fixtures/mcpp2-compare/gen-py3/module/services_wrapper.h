@@ -56,10 +56,10 @@ class ReturnServiceWrapper : virtual public ReturnServiceSvIf {
     folly::Future<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> future_set_StructReturn() override;
     folly::Future<std::unique_ptr<some::valid::ns::ComplexUnion>> future_unionReturn() override;
     folly::Future<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> future_list_UnionReturn() override;
-    folly::Future<std::unique_ptr<std::string>> future_readDataEb(
+    folly::Future<std::unique_ptr<folly::IOBuf>> future_readDataEb(
         int64_t size
     ) override;
-    folly::Future<std::unique_ptr<std::string>> future_readData(
+    folly::Future<std::unique_ptr<std::unique_ptr<folly::IOBuf>>> future_readData(
         int64_t size
     ) override;
 };

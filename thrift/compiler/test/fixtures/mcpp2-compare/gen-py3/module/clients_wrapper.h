@@ -71,9 +71,9 @@ class ReturnServiceClientWrapper {
     folly::Future<std::set<some::valid::ns::MyStruct>> set_StructReturn();
     folly::Future<some::valid::ns::ComplexUnion> unionReturn();
     folly::Future<std::vector<some::valid::ns::ComplexUnion>> list_UnionReturn();
-    folly::Future<std::string> readDataEb(
+    folly::Future<folly::IOBuf> readDataEb(
       int64_t arg_size);
-    folly::Future<std::string> readData(
+    folly::Future<std::unique_ptr<folly::IOBuf>> readData(
       int64_t arg_size);
 };
 

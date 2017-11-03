@@ -67,6 +67,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
       std::set<string> container_names;
       vector<const t_type*> custom_templates;
       std::set<string> custom_template_names;
+      vector<const t_type*> custom_types;
+      std::set<string> custom_type_names;
     };
     void visit_type(t_type* type, type_data& data);
     void visit_single_type(const t_type& type, type_data& data);
@@ -75,6 +77,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
     string to_cython_template(const string& cpp_template) const;
     bool is_default_template(const string& cpp_template, const t_type& type)
         const;
+    string get_cpp_type(const t_type& type) const;
+    string to_cython_type(const string& cpp_template) const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
@@ -176,6 +180,10 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   string cython_template = this->to_cython_template(cpp_template);
   bool is_default_template = this->is_default_template(cpp_template, type);
 
+  string cpp_type = this->get_cpp_type(type);
+  bool has_custom_type = (cpp_type != "");
+  string cython_type = this->to_cython_type(cpp_type);
+
   mstch::map result{
       {"modulePath", modulePath},
       {"externalProgram?", externalProgram},
@@ -184,6 +192,9 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"cppTemplate", cpp_template},
       {"cythonTemplate", cython_template},
       {"defaultTemplate?", is_default_template},
+      {"cppCustomType", cpp_type},
+      {"cythonCustomType", cython_type},
+      {"hasCustomType?", has_custom_type},
   };
   return result;
 }
@@ -236,6 +247,53 @@ bool t_mstch_py3_generator::is_default_template(
       (type.is_list() && cpp_template == "std::vector") ||
       (type.is_set() && cpp_template == "std::set") ||
       (type.is_map() && cpp_template == "std::map");
+}
+
+string t_mstch_py3_generator::get_cpp_type(const t_type& type) const {
+  auto& annotations = type.annotations_;
+
+  auto it = annotations.find("cpp.type");
+  if (it == annotations.end()) {
+    it = annotations.find("cpp2.type");
+  }
+
+  if (it != annotations.end()) {
+    return it->second;
+  } else {
+    return "";
+  }
+}
+
+string strip_comments(const string& str) {
+  string s = str;
+  while (true) {
+    size_t comment_idx = s.find("/*");
+    if (comment_idx == string::npos) {
+      return s;
+    }
+
+    size_t end_comment_idx = s.find("*/", comment_idx);
+    if (end_comment_idx != string::npos) {
+      end_comment_idx += 2;
+    }
+
+    s = s.substr(0, comment_idx) + s.substr(end_comment_idx);
+  }
+}
+
+string t_mstch_py3_generator::to_cython_type(const string& cpp_type) const {
+  if (cpp_type == "") {
+    return "";
+  }
+
+  string cython_type = cpp_type;
+  cython_type = strip_comments(cython_type);
+  boost::algorithm::replace_all(cython_type, "::", "_");
+  boost::algorithm::replace_all(cython_type, "<", "_");
+  boost::algorithm::replace_all(cython_type, ">", "");
+  boost::algorithm::replace_all(cython_type, ", ", "_");
+  boost::algorithm::replace_all(cython_type, ",", "_");
+  return cython_type;
 }
 
 mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
@@ -408,6 +466,7 @@ void t_mstch_py3_generator::add_per_type_data(
 
   results.emplace("containerTypes", dump_elems(data.containers));
   results.emplace("customTemplates", dump_elems(data.custom_templates));
+  results.emplace("customTypes", dump_elems(data.custom_types));
 
   // create second set of container types that treats strings and binaries
   // the same
@@ -477,6 +536,12 @@ void t_mstch_py3_generator::visit_single_type(
       !data.custom_template_names.count(cpp_template)) {
     data.custom_template_names.insert(cpp_template);
     data.custom_templates.push_back(&type);
+  }
+
+  string cpp_type = this->get_cpp_type(type);
+  if (cpp_type != "" && !data.custom_type_names.count(cpp_type)) {
+    data.custom_type_names.insert(cpp_type);
+    data.custom_types.push_back(&type);
   }
 }
 

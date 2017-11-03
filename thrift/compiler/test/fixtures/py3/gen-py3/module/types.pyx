@@ -609,7 +609,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return self._cpp_obj.get().name.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
 
     @property
     def an_enum(self):

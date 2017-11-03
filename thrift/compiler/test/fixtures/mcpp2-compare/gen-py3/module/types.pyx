@@ -573,14 +573,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyStringField(self):
-        return self._cpp_obj.get().MyStringField.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().MyStringField)).decode('UTF-8')
 
     @property
     def MyStringField2(self):
         if not deref(self._cpp_obj).__isset.MyStringField2:
             return None
 
-        return self._cpp_obj.get().MyStringField2.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().MyStringField2)).decode('UTF-8')
 
     @property
     def MyBinaryField(self):
@@ -1627,11 +1627,11 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.message2:
             return None
 
-        return self._cpp_obj.get().message2.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().message2)).decode('UTF-8')
 
     @property
     def req_message(self):
-        return self._cpp_obj.get().req_message.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().req_message)).decode('UTF-8')
 
     @property
     def exception_list(self):
@@ -1824,7 +1824,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.message:
             return None
 
-        return self._cpp_obj.get().message.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().message)).decode('UTF-8')
 
 
     def __hash__(AnotherException self):
@@ -2619,7 +2619,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.fieldAA = True
 
         if fieldAB is not None:
-            deref(c_inst).fieldAB = <cmap[double,int32_t]>deref(Map__double_i32(fieldAB)._cpp_obj)
+            deref(c_inst).fieldAB = <cmap[Bar,Baz]>deref(Map__double_i32(fieldAB)._cpp_obj)
             deref(c_inst).__isset.fieldAB = True
 
         if fieldAC is not None:
@@ -2759,19 +2759,19 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldD:
             return None
 
-        return self._cpp_obj.get().fieldD.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().fieldD)).decode('UTF-8')
 
     @property
     def fieldE(self):
-        return self._cpp_obj.get().fieldE.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().fieldE)).decode('UTF-8')
 
     @property
     def req_fieldE(self):
-        return self._cpp_obj.get().req_fieldE.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().req_fieldE)).decode('UTF-8')
 
     @property
     def opt_fieldE(self):
-        return self._cpp_obj.get().opt_fieldE.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().opt_fieldE)).decode('UTF-8')
 
     @property
     def fieldF(self):
@@ -2987,7 +2987,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__fieldAB is None:
-            self.__fieldAB = Map__double_i32.create(make_shared[cmap[double,int32_t]](deref(self._cpp_obj).fieldAB))
+            self.__fieldAB = Map__double_i32.create(make_shared[cmap[Bar,Baz]](deref(self._cpp_obj).fieldAB))
         return self.__fieldAB
 
     @property
@@ -3892,19 +3892,19 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.base_type = True
 
         if list_type is not None:
-            deref(c_inst).list_type = <vector[int64_t]>deref(List__i64(list_type)._cpp_obj)
+            deref(c_inst).list_type = <folly_small_vector_int64_t_8 >deref(List__i64(list_type)._cpp_obj)
             deref(c_inst).__isset.list_type = True
 
         if set_type is not None:
-            deref(c_inst).set_type = <cset[string]>deref(Set__string(set_type)._cpp_obj)
+            deref(c_inst).set_type = <folly_sorted_vector_set_std_string>deref(Set__string(set_type)._cpp_obj)
             deref(c_inst).__isset.set_type = True
 
         if map_type is not None:
-            deref(c_inst).map_type = <cmap[int64_t,double]>deref(Map__i64_double(map_type)._cpp_obj)
+            deref(c_inst).map_type = <FakeMap>deref(Map__i64_double(map_type)._cpp_obj)
             deref(c_inst).__isset.map_type = True
 
         if map_struct_type is not None:
-            deref(c_inst).map_struct_type = <cmap[string,ccontainerStruct]>deref(Map__string_containerStruct(map_struct_type)._cpp_obj)
+            deref(c_inst).map_struct_type = <std_unordered_map_std_string_containerStruct>deref(Map__string_containerStruct(map_struct_type)._cpp_obj)
             deref(c_inst).__isset.map_struct_type = True
 
         if iobuf_type is not None:
@@ -3952,11 +3952,11 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.indirection_a = True
 
         if indirection_b is not None:
-            deref(c_inst).indirection_b = <vector[double]>deref(List__double(indirection_b)._cpp_obj)
+            deref(c_inst).indirection_b = <vector[Bar]>deref(List__double(indirection_b)._cpp_obj)
             deref(c_inst).__isset.indirection_b = True
 
         if indirection_c is not None:
-            deref(c_inst).indirection_c = <cset[int32_t]>deref(Set__i32(indirection_c)._cpp_obj)
+            deref(c_inst).indirection_c = <cset[Baz]>deref(Set__i32(indirection_c)._cpp_obj)
             deref(c_inst).__isset.indirection_c = True
 
         if iobuf_type_val is not None:
@@ -4192,7 +4192,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__list_type is None:
-            self.__list_type = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).list_type))
+            self.__list_type = List__i64.create(make_shared[folly_small_vector_int64_t_8 ](deref(self._cpp_obj).list_type))
         return self.__list_type
 
     @property
@@ -4201,7 +4201,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__set_type is None:
-            self.__set_type = Set__string.create(make_shared[cset[string]](deref(self._cpp_obj).set_type))
+            self.__set_type = Set__string.create(make_shared[folly_sorted_vector_set_std_string](deref(self._cpp_obj).set_type))
         return self.__set_type
 
     @property
@@ -4210,7 +4210,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__map_type is None:
-            self.__map_type = Map__i64_double.create(make_shared[cmap[int64_t,double]](deref(self._cpp_obj).map_type))
+            self.__map_type = Map__i64_double.create(make_shared[FakeMap](deref(self._cpp_obj).map_type))
         return self.__map_type
 
     @property
@@ -4219,7 +4219,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__map_struct_type is None:
-            self.__map_struct_type = Map__string_containerStruct.create(make_shared[cmap[string,ccontainerStruct]](deref(self._cpp_obj).map_struct_type))
+            self.__map_struct_type = Map__string_containerStruct.create(make_shared[std_unordered_map_std_string_containerStruct](deref(self._cpp_obj).map_struct_type))
         return self.__map_struct_type
 
     @property
@@ -4321,7 +4321,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__indirection_b is None:
-            self.__indirection_b = List__double.create(make_shared[vector[double]](deref(self._cpp_obj).indirection_b))
+            self.__indirection_b = List__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).indirection_b))
         return self.__indirection_b
 
     @property
@@ -4330,7 +4330,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__indirection_c is None:
-            self.__indirection_c = Set__i32.create(make_shared[cset[int32_t]](deref(self._cpp_obj).indirection_c))
+            self.__indirection_c = Set__i32.create(make_shared[cset[Baz]](deref(self._cpp_obj).indirection_c))
         return self.__indirection_c
 
     @property
@@ -10147,28 +10147,28 @@ cdef class Map__double_i32:
             self._cpp_obj = move(Map__double_i32._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[double,int32_t]] c_items):
+    cdef create(shared_ptr[cmap[Bar,Baz]] c_items):
         inst = <Map__double_i32>Map__double_i32.__new__(Map__double_i32)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[cmap[double,int32_t]] _make_instance(object items) except *:
-        cdef unique_ptr[cmap[double,int32_t]] c_inst = make_unique[cmap[double,int32_t]]()
+    cdef unique_ptr[cmap[Bar,Baz]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[Bar,Baz]] c_inst = make_unique[cmap[Bar,Baz]]()
         if items:
             for key, item in items.items():
-                deref(c_inst).insert(cpair[double,int32_t](key,item))
+                deref(c_inst).insert(cpair[Bar,Baz](key,item))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
             raise KeyError(f'{key}')
-        cdef double ckey = key
-        cdef cmap[double,int32_t].iterator iter = deref(
+        cdef Bar ckey = key
+        cdef cmap[Bar,Baz].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
-        cdef int32_t citem = deref(iter).second
+        cdef Baz citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -10177,7 +10177,7 @@ cdef class Map__double_i32:
     def __iter__(self):
         if not self:
             raise StopIteration
-        cdef double citem
+        cdef Bar citem
         for pair in deref(self._cpp_obj):
             citem = pair.first
             yield citem
@@ -10212,18 +10212,18 @@ cdef class Map__double_i32:
 
 
     def __contains__(self, key):
-        cdef double ckey = key
+        cdef Bar ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
-        cdef double ckey = key
-        cdef cmap[double,int32_t].iterator iter = \
+        cdef Bar ckey = key
+        cdef cmap[Bar,Baz].iterator iter = \
             deref(self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             return default
-        cdef int32_t citem = deref(iter).second
+        cdef Baz citem = deref(iter).second
         return citem
 
     def keys(self):
@@ -10232,7 +10232,7 @@ cdef class Map__double_i32:
     def values(self):
         if not self:
             raise StopIteration
-        cdef int32_t citem
+        cdef Baz citem
         for pair in deref(self._cpp_obj):
             citem = pair.second
             yield citem
@@ -10240,8 +10240,8 @@ cdef class Map__double_i32:
     def items(self):
         if not self:
             raise StopIteration
-        cdef double ckey
-        cdef int32_t citem
+        cdef Bar ckey
+        cdef Baz citem
         for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
@@ -10260,14 +10260,14 @@ cdef class List__i64:
             self._cpp_obj = move(List__i64._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[vector[int64_t]] c_items):
+    cdef create(shared_ptr[folly_small_vector_int64_t_8 ] c_items):
         inst = <List__i64>List__i64.__new__(List__i64)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *:
-        cdef unique_ptr[vector[int64_t]] c_inst = make_unique[vector[int64_t]]()
+    cdef unique_ptr[folly_small_vector_int64_t_8 ] _make_instance(object items) except *:
+        cdef unique_ptr[folly_small_vector_int64_t_8 ] c_inst = make_unique[folly_small_vector_int64_t_8 ]()
         if items:
             for item in items:
                 deref(c_inst).push_back(item)
@@ -10277,10 +10277,10 @@ cdef class List__i64:
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[int64_t]] c_inst
+        cdef shared_ptr[folly_small_vector_int64_t_8 ] c_inst
         cdef int64_t citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[int64_t]]()
+            c_inst = make_shared[folly_small_vector_int64_t_8 ]()
             start_val = index_obj.start
             stop_val = index_obj.stop
             step_val = index_obj.step
@@ -10352,7 +10352,7 @@ cdef class List__i64:
         if not self:
             return False
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(
+        cdef folly_small_vector_int64_t_8  vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
@@ -10372,9 +10372,9 @@ cdef class List__i64:
         if not self:
             raise StopIteration
         cdef int64_t citem
-        cdef vector[int64_t] vec = deref(
+        cdef folly_small_vector_int64_t_8  vec = deref(
             self._cpp_obj.get())
-        cdef vector[int64_t].reverse_iterator loc = vec.rbegin()
+        cdef folly_small_vector_int64_t_8 .reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
             yield citem
@@ -10384,8 +10384,8 @@ cdef class List__i64:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(self._cpp_obj.get())
-        cdef vector[int64_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        cdef folly_small_vector_int64_t_8  vec = deref(self._cpp_obj.get())
+        cdef folly_small_vector_int64_t_8 .iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError(f'{item} is not in list')
@@ -10394,7 +10394,7 @@ cdef class List__i64:
         if not self:
             return 0
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(self._cpp_obj.get())
+        cdef folly_small_vector_int64_t_8  vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -10408,14 +10408,14 @@ cdef class Map__i64_double:
             self._cpp_obj = move(Map__i64_double._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[int64_t,double]] c_items):
+    cdef create(shared_ptr[FakeMap] c_items):
         inst = <Map__i64_double>Map__i64_double.__new__(Map__i64_double)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *:
-        cdef unique_ptr[cmap[int64_t,double]] c_inst = make_unique[cmap[int64_t,double]]()
+    cdef unique_ptr[FakeMap] _make_instance(object items) except *:
+        cdef unique_ptr[FakeMap] c_inst = make_unique[FakeMap]()
         if items:
             for key, item in items.items():
                 deref(c_inst).insert(cpair[int64_t,double](key,item))
@@ -10425,7 +10425,7 @@ cdef class Map__i64_double:
         if not self:
             raise KeyError(f'{key}')
         cdef int64_t ckey = key
-        cdef cmap[int64_t,double].iterator iter = deref(
+        cdef FakeMap.iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
@@ -10480,7 +10480,7 @@ cdef class Map__i64_double:
         if not self:
             return default
         cdef int64_t ckey = key
-        cdef cmap[int64_t,double].iterator iter = \
+        cdef FakeMap.iterator iter = \
             deref(self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             return default
@@ -10521,14 +10521,14 @@ cdef class Map__string_containerStruct:
             self._cpp_obj = move(Map__string_containerStruct._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,ccontainerStruct]] c_items):
+    cdef create(shared_ptr[std_unordered_map_std_string_containerStruct] c_items):
         inst = <Map__string_containerStruct>Map__string_containerStruct.__new__(Map__string_containerStruct)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[cmap[string,ccontainerStruct]] _make_instance(object items) except *:
-        cdef unique_ptr[cmap[string,ccontainerStruct]] c_inst = make_unique[cmap[string,ccontainerStruct]]()
+    cdef unique_ptr[std_unordered_map_std_string_containerStruct] _make_instance(object items) except *:
+        cdef unique_ptr[std_unordered_map_std_string_containerStruct] c_inst = make_unique[std_unordered_map_std_string_containerStruct]()
         if items:
             for key, item in items.items():
                 deref(c_inst).insert(cpair[string,ccontainerStruct](key.encode('UTF-8'),deref((<containerStruct>item)._cpp_obj)))
@@ -10538,7 +10538,7 @@ cdef class Map__string_containerStruct:
         if not self:
             raise KeyError(f'{key}')
         cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,ccontainerStruct].iterator iter = deref(
+        cdef std_unordered_map_std_string_containerStruct.iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
@@ -10593,7 +10593,7 @@ cdef class Map__string_containerStruct:
         if not self:
             return default
         cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,ccontainerStruct].iterator iter = \
+        cdef std_unordered_map_std_string_containerStruct.iterator iter = \
             deref(self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             return default
@@ -11228,14 +11228,14 @@ cdef class List__double:
             self._cpp_obj = move(List__double._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[vector[double]] c_items):
+    cdef create(shared_ptr[vector[Bar]] c_items):
         inst = <List__double>List__double.__new__(List__double)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[vector[double]] _make_instance(object items) except *:
-        cdef unique_ptr[vector[double]] c_inst = make_unique[vector[double]]()
+    cdef unique_ptr[vector[Bar]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[Bar]] c_inst = make_unique[vector[Bar]]()
         if items:
             for item in items:
                 deref(c_inst).push_back(item)
@@ -11245,10 +11245,10 @@ cdef class List__double:
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[double]] c_inst
-        cdef double citem
+        cdef shared_ptr[vector[Bar]] c_inst
+        cdef Bar citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[double]]()
+            c_inst = make_shared[vector[Bar]]()
             start_val = index_obj.start
             stop_val = index_obj.stop
             step_val = index_obj.step
@@ -11319,15 +11319,15 @@ cdef class List__double:
     def __contains__(self, item):
         if not self:
             return False
-        cdef double citem = item
-        cdef vector[double] vec = deref(
+        cdef Bar citem = item
+        cdef vector[Bar] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
-        cdef double citem
+        cdef Bar citem
         for citem in deref(self._cpp_obj):
             yield citem
 
@@ -11339,10 +11339,10 @@ cdef class List__double:
     def __reversed__(self):
         if not self:
             raise StopIteration
-        cdef double citem
-        cdef vector[double] vec = deref(
+        cdef Bar citem
+        cdef vector[Bar] vec = deref(
             self._cpp_obj.get())
-        cdef vector[double].reverse_iterator loc = vec.rbegin()
+        cdef vector[Bar].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
             yield citem
@@ -11351,9 +11351,9 @@ cdef class List__double:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef double citem = item
-        cdef vector[double] vec = deref(self._cpp_obj.get())
-        cdef vector[double].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        cdef Bar citem = item
+        cdef vector[Bar] vec = deref(self._cpp_obj.get())
+        cdef vector[Bar].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError(f'{item} is not in list')
@@ -11361,8 +11361,8 @@ cdef class List__double:
     def count(self, item):
         if not self:
             return 0
-        cdef double citem = item
-        cdef vector[double] vec = deref(self._cpp_obj.get())
+        cdef Bar citem = item
+        cdef vector[Bar] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 

@@ -1461,7 +1461,7 @@ async def ReturnService_list_UnionReturn_coro(
 cdef api void call_cy_ReturnService_readDataEb(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[string]] cPromise,
+    cFollyPromise[unique_ptr[module.types.folly_IOBuf]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface iface
@@ -1512,7 +1512,7 @@ async def ReturnService_readDataEb_coro(
 cdef api void call_cy_ReturnService_readData(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[string]] cPromise,
+    cFollyPromise[unique_ptr[module.types.std_unique_ptr_folly_IOBuf]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface iface

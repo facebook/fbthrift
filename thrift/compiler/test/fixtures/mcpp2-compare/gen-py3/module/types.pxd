@@ -137,6 +137,17 @@ cdef extern from * nogil:
         void clear()
         bint empty()
 
+cdef extern from *:
+  ctypedef string folly_IOBuf "folly::IOBuf"
+  ctypedef string std_unique_ptr_folly_IOBuf "std::unique_ptr<folly::IOBuf>"
+  ctypedef double Bar "Bar"
+  ctypedef int32_t Baz "Baz"
+  ctypedef int32_t CppFakeI32 "CppFakeI32"
+  ctypedef vector[int64_t] folly_small_vector_int64_t_8  "folly::small_vector<int64_t, 8 /* maxInline */>"
+  ctypedef cset[string] folly_sorted_vector_set_std_string "folly::sorted_vector_set<std::string>"
+  ctypedef cmap[int64_t,double] FakeMap "FakeMap"
+  ctypedef cmap[string,ccontainerStruct] std_unordered_map_std_string_containerStruct "std::unordered_map<std::string, containerStruct>"
+  ctypedef int64_t Foo "Foo"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef cppclass cMyEnumA "some::valid::ns::MyEnumA":
@@ -495,7 +506,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         vector[cComplexUnion] fieldY
         cset[cSimpleUnion] fieldZ
         vector[cset[cSimpleUnion]] fieldAA
-        cmap[double,int32_t] fieldAB
+        cmap[Bar,Baz] fieldAB
         cMyEnumB fieldAC
         includes.types.cAnEnum fieldAD
         cmap[string,int32_t] fieldAE
@@ -582,13 +593,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         shared_ptr[const ccontainerStruct] opt_ref_type_const
         unique_ptr[ccontainerStruct] opt_ref_type_unique
         shared_ptr[cset[int32_t]] opt_ref_type_shared
-        int32_t base_type
-        vector[int64_t] list_type
-        cset[string] set_type
-        cmap[int64_t,double] map_type
-        cmap[string,ccontainerStruct] map_struct_type
-        string iobuf_type
-        string iobuf_ptr
+        CppFakeI32 base_type
+        folly_small_vector_int64_t_8  list_type
+        folly_sorted_vector_set_std_string set_type
+        FakeMap map_type
+        std_unordered_map_std_string_containerStruct map_struct_type
+        folly_IOBuf iobuf_type
+        std_unique_ptr_folly_IOBuf iobuf_ptr
         std_list[int32_t] list_i32_template
         std_deque[string] list_string_template
         folly_sorted_vector_set[string] set_template
@@ -597,11 +608,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         std_deque[string] typedef_deque_template
         folly_sorted_vector_set[string] typedef_set_template
         folly_sorted_vector_map[int64_t,string] typedef_map_template
-        int64_t indirection_a
-        vector[double] indirection_b
-        cset[int32_t] indirection_c
-        string iobuf_type_val
-        string iobuf_ptr_val
+        Foo indirection_a
+        vector[Bar] indirection_b
+        cset[Baz] indirection_c
+        folly_IOBuf iobuf_type_val
+        std_unique_ptr_folly_IOBuf iobuf_ptr_val
         ccontainerStruct struct_struct
         cAnnotatedStruct__isset __isset
 
@@ -1412,38 +1423,38 @@ cdef class Set__Set__Set__bool:
 cdef class Map__double_i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[double,int32_t]] _cpp_obj
+    cdef shared_ptr[cmap[Bar,Baz]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[double,int32_t]])
+    cdef create(shared_ptr[cmap[Bar,Baz]])
     @staticmethod
-    cdef unique_ptr[cmap[double,int32_t]] _make_instance(object items) except *
+    cdef unique_ptr[cmap[Bar,Baz]] _make_instance(object items) except *
 
 cdef class List__i64:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[int64_t]] _cpp_obj
+    cdef shared_ptr[folly_small_vector_int64_t_8 ] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[int64_t]])
+    cdef create(shared_ptr[folly_small_vector_int64_t_8 ])
     @staticmethod
-    cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *
+    cdef unique_ptr[folly_small_vector_int64_t_8 ] _make_instance(object items) except *
 
 cdef class Map__i64_double:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[int64_t,double]] _cpp_obj
+    cdef shared_ptr[FakeMap] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[int64_t,double]])
+    cdef create(shared_ptr[FakeMap])
     @staticmethod
-    cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *
+    cdef unique_ptr[FakeMap] _make_instance(object items) except *
 
 cdef class Map__string_containerStruct:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,ccontainerStruct]] _cpp_obj
+    cdef shared_ptr[std_unordered_map_std_string_containerStruct] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,ccontainerStruct]])
+    cdef create(shared_ptr[std_unordered_map_std_string_containerStruct])
     @staticmethod
-    cdef unique_ptr[cmap[string,ccontainerStruct]] _make_instance(object items) except *
+    cdef unique_ptr[std_unordered_map_std_string_containerStruct] _make_instance(object items) except *
 
 cdef class std_list__List__i32:
     cdef object __hash
@@ -1484,11 +1495,11 @@ cdef class folly_sorted_vector_map__Map__i64_string:
 cdef class List__double:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[double]] _cpp_obj
+    cdef shared_ptr[vector[Bar]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[double]])
+    cdef create(shared_ptr[vector[Bar]])
     @staticmethod
-    cdef unique_ptr[vector[double]] _make_instance(object items) except *
+    cdef unique_ptr[vector[Bar]] _make_instance(object items) except *
 
 cdef class Map__i32_string:
     cdef object __hash
@@ -1610,14 +1621,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cset[cset[cbool]]] move_unique "std::move"(unique_ptr[cset[cset[cbool]]])
     cdef shared_ptr[cset[cset[cset[cbool]]]] move(unique_ptr[cset[cset[cset[cbool]]]])
     cdef unique_ptr[cset[cset[cset[cbool]]]] move_unique "std::move"(unique_ptr[cset[cset[cset[cbool]]]])
-    cdef shared_ptr[cmap[double,int32_t]] move(unique_ptr[cmap[double,int32_t]])
-    cdef unique_ptr[cmap[double,int32_t]] move_unique "std::move"(unique_ptr[cmap[double,int32_t]])
-    cdef shared_ptr[vector[int64_t]] move(unique_ptr[vector[int64_t]])
-    cdef unique_ptr[vector[int64_t]] move_unique "std::move"(unique_ptr[vector[int64_t]])
-    cdef shared_ptr[cmap[int64_t,double]] move(unique_ptr[cmap[int64_t,double]])
-    cdef unique_ptr[cmap[int64_t,double]] move_unique "std::move"(unique_ptr[cmap[int64_t,double]])
-    cdef shared_ptr[cmap[string,ccontainerStruct]] move(unique_ptr[cmap[string,ccontainerStruct]])
-    cdef unique_ptr[cmap[string,ccontainerStruct]] move_unique "std::move"(unique_ptr[cmap[string,ccontainerStruct]])
+    cdef shared_ptr[cmap[Bar,Baz]] move(unique_ptr[cmap[Bar,Baz]])
+    cdef unique_ptr[cmap[Bar,Baz]] move_unique "std::move"(unique_ptr[cmap[Bar,Baz]])
+    cdef shared_ptr[folly_small_vector_int64_t_8 ] move(unique_ptr[folly_small_vector_int64_t_8 ])
+    cdef unique_ptr[folly_small_vector_int64_t_8 ] move_unique "std::move"(unique_ptr[folly_small_vector_int64_t_8 ])
+    cdef shared_ptr[FakeMap] move(unique_ptr[FakeMap])
+    cdef unique_ptr[FakeMap] move_unique "std::move"(unique_ptr[FakeMap])
+    cdef shared_ptr[std_unordered_map_std_string_containerStruct] move(unique_ptr[std_unordered_map_std_string_containerStruct])
+    cdef unique_ptr[std_unordered_map_std_string_containerStruct] move_unique "std::move"(unique_ptr[std_unordered_map_std_string_containerStruct])
     cdef shared_ptr[std_list[int32_t]] move(unique_ptr[std_list[int32_t]])
     cdef unique_ptr[std_list[int32_t]] move_unique "std::move"(unique_ptr[std_list[int32_t]])
     cdef shared_ptr[std_deque[string]] move(unique_ptr[std_deque[string]])
@@ -1626,8 +1637,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[folly_sorted_vector_set[string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_set[string]])
     cdef shared_ptr[folly_sorted_vector_map[int64_t,string]] move(unique_ptr[folly_sorted_vector_map[int64_t,string]])
     cdef unique_ptr[folly_sorted_vector_map[int64_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int64_t,string]])
-    cdef shared_ptr[vector[double]] move(unique_ptr[vector[double]])
-    cdef unique_ptr[vector[double]] move_unique "std::move"(unique_ptr[vector[double]])
+    cdef shared_ptr[vector[Bar]] move(unique_ptr[vector[Bar]])
+    cdef unique_ptr[vector[Bar]] move_unique "std::move"(unique_ptr[vector[Bar]])
     cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
     cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
@@ -1713,13 +1724,13 @@ cdef extern from "<memory>" namespace "std" nogil:
 
     cdef shared_ptr[const cset[cset[cset[cbool]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cset[cset[cbool]]]])
 
-    cdef shared_ptr[const cmap[double,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[double,int32_t]])
+    cdef shared_ptr[const cmap[Bar,Baz]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[Bar,Baz]])
 
-    cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int64_t]])
+    cdef shared_ptr[const folly_small_vector_int64_t_8 ] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_small_vector_int64_t_8 ])
 
-    cdef shared_ptr[const cmap[int64_t,double]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int64_t,double]])
+    cdef shared_ptr[const FakeMap] const_pointer_cast "std::const_pointer_cast"(shared_ptr[FakeMap])
 
-    cdef shared_ptr[const cmap[string,ccontainerStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,ccontainerStruct]])
+    cdef shared_ptr[const std_unordered_map_std_string_containerStruct] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_unordered_map_std_string_containerStruct])
 
     cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_list[int32_t]])
 
@@ -1729,7 +1740,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
     cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
 
-    cdef shared_ptr[const vector[double]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[double]])
+    cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[Bar]])
 
     cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,string]])
 

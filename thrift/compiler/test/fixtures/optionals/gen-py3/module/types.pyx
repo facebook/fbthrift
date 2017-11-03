@@ -417,21 +417,21 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.licensePlate:
             return None
 
-        return self._cpp_obj.get().licensePlate.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().licensePlate)).decode('UTF-8')
 
     @property
     def description(self):
         if not deref(self._cpp_obj).__isset.description:
             return None
 
-        return self._cpp_obj.get().description.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().description)).decode('UTF-8')
 
     @property
     def name(self):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return self._cpp_obj.get().name.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
 
     @property
     def hasAC(self):
@@ -738,7 +738,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return self._cpp_obj.get().name.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
 
     @property
     def age(self):
@@ -752,7 +752,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.address:
             return None
 
-        return self._cpp_obj.get().address.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().address)).decode('UTF-8')
 
     @property
     def favoriteColor(self):

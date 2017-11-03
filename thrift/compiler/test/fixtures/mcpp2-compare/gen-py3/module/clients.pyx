@@ -288,7 +288,7 @@ cdef void ReturnService_list_UnionReturn_callback(
         pyfuture.set_result(module.types.List__ComplexUnion.create(make_shared[vector[module.types.cComplexUnion]](result.value())))
 
 cdef void ReturnService_readDataEb_callback(
-    cFollyTry[string]&& result,
+    cFollyTry[module.types.folly_IOBuf]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -301,7 +301,7 @@ cdef void ReturnService_readDataEb_callback(
         pyfuture.set_result(result.value())
 
 cdef void ReturnService_readData_callback(
-    cFollyTry[string]&& result,
+    cFollyTry[module.types.std_unique_ptr_folly_IOBuf]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -1129,7 +1129,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[string](
+        bridgeFutureWith[module.types.folly_IOBuf](
             self._executor,
             deref(self._module_ReturnService_client).readDataEb(
                 size,
@@ -1148,7 +1148,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[string](
+        bridgeFutureWith[module.types.std_unique_ptr_folly_IOBuf](
             self._executor,
             deref(self._module_ReturnService_client).readData(
                 size,

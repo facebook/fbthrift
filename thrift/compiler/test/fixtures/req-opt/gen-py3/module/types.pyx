@@ -159,7 +159,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.myString:
             return None
 
-        return self._cpp_obj.get().myString.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().myString)).decode('UTF-8')
 
     @property
     def myBools(self):

@@ -17,51 +17,14 @@
 }}{{!
 
 This is used to declare a cython type that is referring to or wrapping a
-c++ object. Most of the values are direct references to variables imported
-from libcpp and friends. Structs are the special case, as they refer to the
-struct by name as defined in the pxd file, with a 'c' prefix.
+c++ object. The work is mostly done in CythonCppBasicType, but this file handles
+custom type overrides from the cpp.type annotation.
 
-Structs and enums will be namespaced appropriately if they are either defined
-in a different thrift file, or defined in the same thrift file but this is
-in the client or server source rather than the type definition source.
-
-}}{{#type:bool?}}cbool{{/type:bool?}}{{!
-}}{{#type:byte?}}int8_t{{/type:byte?}}{{!
-}}{{#type:i16?}}int16_t{{/type:i16?}}{{!
-}}{{#type:i32?}}int32_t{{/type:i32?}}{{!
-}}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:double?}}double{{/type:double?}}{{!
-}}{{#type:float?}}float{{/type:float?}}{{!
-}}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:binary?}}string{{/type:binary?}}{{!
-}}{{#type:struct}}{{!
+}}{{#type:hasCustomType?}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
     }}{{> common/ModulePath}}.{{!
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}c{{struct:name}}{{!
-}}{{/type:struct}}{{!
-}}{{#type:container?}}{{^type:defaultTemplate?}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-}}{{/type:defaultTemplate?}}{{/type:container?}}{{!
-}}{{#type:list?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
-}}]{{/type:list?}}{{!
-}}{{#type:set?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-}}]{{/type:set?}}{{!
-}}{{#type:map?}}{{type:cythonTemplate}}[{{!
-  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-}}]{{/type:map?}}{{!
-}}{{#type:enum}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}c{{enum:name}}{{!
-}}{{/type:enum}}{{!
-}}{{#type:void?}}cFollyUnit{{/type:void?}}
+}}{{type:cythonCustomType}}{{!
+}}{{/type:hasCustomType?}}{{!
+}}{{^type:hasCustomType?}}{{> types/CythonCppBasicType}}{{/type:hasCustomType?}}

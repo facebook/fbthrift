@@ -173,7 +173,7 @@ ReturnServiceClientWrapper::list_UnionReturn() {
  );
 }
 
-folly::Future<std::string>
+folly::Future<folly::IOBuf>
 ReturnServiceClientWrapper::readDataEb(
     int64_t arg_size) {
  return async_client->future_readDataEb(
@@ -181,7 +181,7 @@ ReturnServiceClientWrapper::readDataEb(
  );
 }
 
-folly::Future<std::string>
+folly::Future<std::unique_ptr<folly::IOBuf>>
 ReturnServiceClientWrapper::readData(
     int64_t arg_size) {
  return async_client->future_readData(

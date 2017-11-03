@@ -134,7 +134,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.field:
             return None
 
-        return self._cpp_obj.get().field.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().field)).decode('UTF-8')
 
 
     def __hash__(decorated_struct self):

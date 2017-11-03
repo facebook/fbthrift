@@ -363,10 +363,10 @@ folly::Future<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> Retur
   return future;
 }
 
-folly::Future<std::unique_ptr<std::string>> ReturnServiceWrapper::future_readDataEb(
+folly::Future<std::unique_ptr<folly::IOBuf>> ReturnServiceWrapper::future_readDataEb(
   int64_t size
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
+  folly::Promise<std::unique_ptr<folly::IOBuf>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -384,10 +384,10 @@ size    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::string>> ReturnServiceWrapper::future_readData(
+folly::Future<std::unique_ptr<std::unique_ptr<folly::IOBuf>>> ReturnServiceWrapper::future_readData(
   int64_t size
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
+  folly::Promise<std::unique_ptr<std::unique_ptr<folly::IOBuf>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(

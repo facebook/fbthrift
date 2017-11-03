@@ -205,7 +205,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.title:
             return None
 
-        return self._cpp_obj.get().title.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().title)).decode('UTF-8')
 
     @property
     def employer(self):
@@ -634,7 +634,7 @@ cdef class struct1(thrift.py3.types.Struct):
 
     @property
     def b(self):
-        return self._cpp_obj.get().b.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().b)).decode('UTF-8')
 
 
     def __hash__(struct1 self):
@@ -826,7 +826,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.b:
             return None
 
-        return self._cpp_obj.get().b.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().b)).decode('UTF-8')
 
     @property
     def c(self):
@@ -1013,7 +1013,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.a:
             return None
 
-        return self._cpp_obj.get().a.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().a)).decode('UTF-8')
 
     @property
     def b(self):

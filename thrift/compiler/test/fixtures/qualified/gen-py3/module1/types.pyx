@@ -153,7 +153,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.second:
             return None
 
-        return self._cpp_obj.get().second.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().second)).decode('UTF-8')
 
 
     def __hash__(Struct self):

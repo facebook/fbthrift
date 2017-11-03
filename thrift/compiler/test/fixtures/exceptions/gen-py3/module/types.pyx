@@ -138,7 +138,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @property
     def message(self):
-        return self._cpp_obj.get().message.decode('UTF-8')
+        return (<bytes>(self._cpp_obj.get().message)).decode('UTF-8')
 
 
     def __hash__(Fiery self):
