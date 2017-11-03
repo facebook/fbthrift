@@ -36,6 +36,7 @@ RSRoutingHandler::RSRoutingHandler(
   });
 
   rsocketServer_ = RSocket::createServer(nullptr);
+  rsocketServer_->setSingleThreadedResponder();
 }
 
 RSRoutingHandler::~RSRoutingHandler() {
