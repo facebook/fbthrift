@@ -40,11 +40,24 @@ using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::server::ServerConfigsMock;
 
+namespace apache {
+namespace thrift {
+namespace perf {
+TAsyncSocket::UniquePtr getSocket(
+    folly::EventBase* evb,
+    folly::SocketAddress const& addr,
+    bool encrypted,
+    std::list<std::string> advertizedProtocols = {});
+
+} // namespace perf
+} // namespace thrift
+} // namespace apache
+
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr) {
-  auto sock = TAsyncSocket::newSocket(evb, addr);
+  auto sock = apache::thrift::perf::getSocket(evb, addr, false);
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
   chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(chan));
@@ -55,16 +68,7 @@ static std::unique_ptr<AsyncClient> newHTTP2Client(
     folly::EventBase* evb,
     folly::SocketAddress const& addr,
     bool encrypted) {
-  TAsyncSocket::UniquePtr sock(new TAsyncSocket(evb, addr));
-  if (encrypted) {
-    auto sslContext = std::make_shared<folly::SSLContext>();
-    sslContext->setAdvertisedNextProtocols({"h2"});
-    auto sslSock =
-        new TAsyncSSLSocket(sslContext, evb, sock->detachFd(), false);
-    sslSock->sslConn(nullptr);
-    sock.reset(sslSock);
-  }
-  auto sslContext = std::make_shared<folly::SSLContext>();
+  auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"h2"});
   std::shared_ptr<ClientConnectionIf> conn =
       H2ClientConnection::newHTTP2Connection(std::move(sock));
   auto client = ThriftClient::Ptr(new ThriftClient(conn, evb));
@@ -78,15 +82,7 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr,
     bool encrypted) {
-  TAsyncSocket::UniquePtr sock(new TAsyncSocket(evb, addr));
-  if (encrypted) {
-    auto sslContext = std::make_shared<folly::SSLContext>();
-    sslContext->setAdvertisedNextProtocols({"rs"});
-    auto sslSock =
-        new TAsyncSSLSocket(sslContext, evb, sock->detachFd(), false);
-    sslSock->sslConn(nullptr);
-    sock.reset(sslSock);
-  }
+  auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs"});
   std::shared_ptr<ClientConnectionIf> conn =
       std::make_shared<RSClientConnection>(std::move(sock), evb);
   auto client = ThriftClient::Ptr(new ThriftClient(conn, evb));
