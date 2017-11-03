@@ -65,7 +65,7 @@ func (t *testHandler) DoTestMap(thing map[int32]int32) (map[int32]int32, error) 
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestSet(thing map[int32]bool) (map[int32]bool, error) {
+func (t *testHandler) DoTestSet(thing []int32) ([]int32, error) {
 	return thing, t.ReturnError
 }
 

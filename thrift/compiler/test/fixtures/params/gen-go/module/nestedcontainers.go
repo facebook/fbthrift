@@ -21,16 +21,16 @@ type NestedContainers interface {
   MapList(foo map[int32][]int32) (err error)
   // Parameters:
   //  - Foo
-  MapSet(foo map[int32]map[int32]bool) (err error)
+  MapSet(foo map[int32][]int32) (err error)
   // Parameters:
   //  - Foo
   ListMap(foo []map[int32]int32) (err error)
   // Parameters:
   //  - Foo
-  ListSet(foo []map[int32]bool) (err error)
+  ListSet(foo [][]int32) (err error)
   // Parameters:
   //  - Foo
-  Turtles(foo [][]map[int32]map[int32]map[int32]bool) (err error)
+  Turtles(foo [][]map[int32]map[int32][]int32) (err error)
 }
 
 type NestedContainersClient struct {
@@ -136,12 +136,12 @@ func (p *NestedContainersClient) recvMapList() (err error) {
 
 // Parameters:
 //  - Foo
-func (p *NestedContainersClient) MapSet(foo map[int32]map[int32]bool) (err error) {
+func (p *NestedContainersClient) MapSet(foo map[int32][]int32) (err error) {
   if err = p.sendMapSet(foo); err != nil { return }
   return p.recvMapSet()
 }
 
-func (p *NestedContainersClient) sendMapSet(foo map[int32]map[int32]bool)(err error) {
+func (p *NestedContainersClient) sendMapSet(foo map[int32][]int32)(err error) {
   oprot := p.OutputProtocol
   if oprot == nil {
     oprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -286,12 +286,12 @@ func (p *NestedContainersClient) recvListMap() (err error) {
 
 // Parameters:
 //  - Foo
-func (p *NestedContainersClient) ListSet(foo []map[int32]bool) (err error) {
+func (p *NestedContainersClient) ListSet(foo [][]int32) (err error) {
   if err = p.sendListSet(foo); err != nil { return }
   return p.recvListSet()
 }
 
-func (p *NestedContainersClient) sendListSet(foo []map[int32]bool)(err error) {
+func (p *NestedContainersClient) sendListSet(foo [][]int32)(err error) {
   oprot := p.OutputProtocol
   if oprot == nil {
     oprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -361,12 +361,12 @@ func (p *NestedContainersClient) recvListSet() (err error) {
 
 // Parameters:
 //  - Foo
-func (p *NestedContainersClient) Turtles(foo [][]map[int32]map[int32]map[int32]bool) (err error) {
+func (p *NestedContainersClient) Turtles(foo [][]map[int32]map[int32][]int32) (err error) {
   if err = p.sendTurtles(foo); err != nil { return }
   return p.recvTurtles()
 }
 
-func (p *NestedContainersClient) sendTurtles(foo [][]map[int32]map[int32]map[int32]bool)(err error) {
+func (p *NestedContainersClient) sendTurtles(foo [][]map[int32]map[int32][]int32)(err error) {
   oprot := p.OutputProtocol
   if oprot == nil {
     oprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -893,7 +893,7 @@ func (p *NestedContainersMapListResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersMapSetArgs struct {
-  Foo map[int32]map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
+  Foo map[int32][]int32 `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersMapSetArgs() *NestedContainersMapSetArgs {
@@ -901,7 +901,7 @@ func NewNestedContainersMapSetArgs() *NestedContainersMapSetArgs {
 }
 
 
-func (p *NestedContainersMapSetArgs) GetFoo() map[int32]map[int32]bool {
+func (p *NestedContainersMapSetArgs) GetFoo() map[int32][]int32 {
   return p.Foo
 }
 func (p *NestedContainersMapSetArgs) Read(iprot thrift.TProtocol) error {
@@ -941,7 +941,7 @@ func (p *NestedContainersMapSetArgs)  ReadField1(iprot thrift.TProtocol) error {
   if err != nil {
     return thrift.PrependError("error reading map begin: ", err)
   }
-  tMap := make(map[int32]map[int32]bool, size)
+  tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
 var _key15 int32
@@ -954,7 +954,7 @@ var _key15 int32
     if err != nil {
       return thrift.PrependError("error reading set begin: ", err)
     }
-    tSet := make(map[int32]bool, size)
+    tSet := make([]int32, 0, size)
     _val16 :=  tSet
     for i := 0; i < size; i ++ {
 var _elem17 int32
@@ -963,7 +963,7 @@ var _elem17 int32
 } else {
       _elem17 = v
 }
-      _val16[_elem17] = true
+      _val16 = append(_val16, _elem17)
     }
     if err := iprot.ReadSetEnd(); err != nil {
       return thrift.PrependError("error reading set end: ", err)
@@ -999,7 +999,14 @@ func (p *NestedContainersMapSetArgs) writeField1(oprot thrift.TProtocol) (err er
     if err := oprot.WriteSetBegin(thrift.I32, len(v)); err != nil {
       return thrift.PrependError("error writing set begin: ", err)
     }
-    for v, _ := range v {
+    set := make(map[int32]bool, len(v))
+    for _, v := range v {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range v {
       if err := oprot.WriteI32(int32(v)); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
     }
@@ -1255,7 +1262,7 @@ func (p *NestedContainersListMapResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersListSetArgs struct {
-  Foo []map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
+  Foo [][]int32 `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersListSetArgs() *NestedContainersListSetArgs {
@@ -1263,7 +1270,7 @@ func NewNestedContainersListSetArgs() *NestedContainersListSetArgs {
 }
 
 
-func (p *NestedContainersListSetArgs) GetFoo() []map[int32]bool {
+func (p *NestedContainersListSetArgs) GetFoo() [][]int32 {
   return p.Foo
 }
 func (p *NestedContainersListSetArgs) Read(iprot thrift.TProtocol) error {
@@ -1303,14 +1310,14 @@ func (p *NestedContainersListSetArgs)  ReadField1(iprot thrift.TProtocol) error 
   if err != nil {
     return thrift.PrependError("error reading list begin: ", err)
   }
-  tSlice := make([]map[int32]bool, 0, size)
+  tSlice := make([][]int32, 0, size)
   p.Foo =  tSlice
   for i := 0; i < size; i ++ {
     _, size, err := iprot.ReadSetBegin()
     if err != nil {
       return thrift.PrependError("error reading set begin: ", err)
     }
-    tSet := make(map[int32]bool, size)
+    tSet := make([]int32, 0, size)
     _elem21 :=  tSet
     for i := 0; i < size; i ++ {
 var _elem22 int32
@@ -1319,7 +1326,7 @@ var _elem22 int32
 } else {
       _elem22 = v
 }
-      _elem21[_elem22] = true
+      _elem21 = append(_elem21, _elem22)
     }
     if err := iprot.ReadSetEnd(); err != nil {
       return thrift.PrependError("error reading set end: ", err)
@@ -1353,7 +1360,14 @@ func (p *NestedContainersListSetArgs) writeField1(oprot thrift.TProtocol) (err e
     if err := oprot.WriteSetBegin(thrift.I32, len(v)); err != nil {
       return thrift.PrependError("error writing set begin: ", err)
     }
-    for v, _ := range v {
+    set := make(map[int32]bool, len(v))
+    for _, v := range v {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range v {
       if err := oprot.WriteI32(int32(v)); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
     }
@@ -1428,7 +1442,7 @@ func (p *NestedContainersListSetResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersTurtlesArgs struct {
-  Foo [][]map[int32]map[int32]map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
+  Foo [][]map[int32]map[int32][]int32 `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersTurtlesArgs() *NestedContainersTurtlesArgs {
@@ -1436,7 +1450,7 @@ func NewNestedContainersTurtlesArgs() *NestedContainersTurtlesArgs {
 }
 
 
-func (p *NestedContainersTurtlesArgs) GetFoo() [][]map[int32]map[int32]map[int32]bool {
+func (p *NestedContainersTurtlesArgs) GetFoo() [][]map[int32]map[int32][]int32 {
   return p.Foo
 }
 func (p *NestedContainersTurtlesArgs) Read(iprot thrift.TProtocol) error {
@@ -1476,21 +1490,21 @@ func (p *NestedContainersTurtlesArgs)  ReadField1(iprot thrift.TProtocol) error 
   if err != nil {
     return thrift.PrependError("error reading list begin: ", err)
   }
-  tSlice := make([][]map[int32]map[int32]map[int32]bool, 0, size)
+  tSlice := make([][]map[int32]map[int32][]int32, 0, size)
   p.Foo =  tSlice
   for i := 0; i < size; i ++ {
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
     }
-    tSlice := make([]map[int32]map[int32]map[int32]bool, 0, size)
+    tSlice := make([]map[int32]map[int32][]int32, 0, size)
     _elem23 :=  tSlice
     for i := 0; i < size; i ++ {
       _, _, size, err := iprot.ReadMapBegin()
       if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
       }
-      tMap := make(map[int32]map[int32]map[int32]bool, size)
+      tMap := make(map[int32]map[int32][]int32, size)
       _elem24 :=  tMap
       for i := 0; i < size; i ++ {
 var _key25 int32
@@ -1503,7 +1517,7 @@ var _key25 int32
         if err != nil {
           return thrift.PrependError("error reading map begin: ", err)
         }
-        tMap := make(map[int32]map[int32]bool, size)
+        tMap := make(map[int32][]int32, size)
         _val26 :=  tMap
         for i := 0; i < size; i ++ {
 var _key27 int32
@@ -1516,7 +1530,7 @@ var _key27 int32
           if err != nil {
             return thrift.PrependError("error reading set begin: ", err)
           }
-          tSet := make(map[int32]bool, size)
+          tSet := make([]int32, 0, size)
           _val28 :=  tSet
           for i := 0; i < size; i ++ {
 var _elem29 int32
@@ -1525,7 +1539,7 @@ var _elem29 int32
 } else {
             _elem29 = v
 }
-            _val28[_elem29] = true
+            _val28 = append(_val28, _elem29)
           }
           if err := iprot.ReadSetEnd(); err != nil {
             return thrift.PrependError("error reading set end: ", err)
@@ -1590,7 +1604,14 @@ func (p *NestedContainersTurtlesArgs) writeField1(oprot thrift.TProtocol) (err e
           if err := oprot.WriteSetBegin(thrift.I32, len(v)); err != nil {
             return thrift.PrependError("error writing set begin: ", err)
           }
-          for v, _ := range v {
+          set := make(map[int32]bool, len(v))
+          for _, v := range v {
+            if ok := set[v]; ok {
+              return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+            }
+            set[v] = true
+          }
+          for _, v := range v {
             if err := oprot.WriteI32(int32(v)); err != nil {
             return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
           }

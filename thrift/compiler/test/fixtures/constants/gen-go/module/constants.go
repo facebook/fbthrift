@@ -56,8 +56,8 @@ const ZeroDotZero = 0
 const EmptyString = ""
 var EmptyIntList []int32
 var EmptyStringList []string
-var EmptyIntSet map[int32]bool
-var EmptyStringSet map[string]bool
+var EmptyIntSet []int32
+var EmptyStringSet []string
 var EmptyIntIntMap map[int32]int32
 var EmptyIntStringMap map[int32]string
 var EmptyStringIntMap map[string]int32
@@ -219,10 +219,10 @@ EmptyIntList = []int32{
 EmptyStringList = []string{
 }
 
-EmptyIntSet = map[int32]bool{
+EmptyIntSet = []int32{
 }
 
-EmptyStringSet = map[string]bool{
+EmptyStringSet = []string{
 }
 
 EmptyIntIntMap = map[int32]int32{

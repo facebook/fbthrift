@@ -490,7 +490,7 @@ type Person struct {
   Age *int16 `thrift:"age,3" db:"age" json:"age,omitempty"`
   Address *string `thrift:"address,4" db:"address" json:"address,omitempty"`
   FavoriteColor *Color `thrift:"favoriteColor,5" db:"favoriteColor" json:"favoriteColor,omitempty"`
-  Friends map[int64]bool `thrift:"friends,6" db:"friends" json:"friends,omitempty"`
+  Friends []PersonID `thrift:"friends,6" db:"friends" json:"friends,omitempty"`
   BestFriend *PersonID `thrift:"bestFriend,7" db:"bestFriend" json:"bestFriend,omitempty"`
   PetNames map[Animal]string `thrift:"petNames,8" db:"petNames" json:"petNames,omitempty"`
   AfraidOfAnimal *Animal `thrift:"afraidOfAnimal,9" db:"afraidOfAnimal" json:"afraidOfAnimal,omitempty"`
@@ -530,9 +530,9 @@ func (p *Person) GetFavoriteColor() *Color {
   }
 return p.FavoriteColor
 }
-var Person_Friends_DEFAULT map[int64]bool
+var Person_Friends_DEFAULT []PersonID
 
-func (p *Person) GetFriends() map[int64]bool {
+func (p *Person) GetFriends() []PersonID {
   return p.Friends
 }
 var Person_BestFriend_DEFAULT PersonID
@@ -709,7 +709,7 @@ func (p *Person)  ReadField6(iprot thrift.TProtocol) error {
   if err != nil {
     return thrift.PrependError("error reading set begin: ", err)
   }
-  tSet := make(map[int64]bool, size)
+  tSet := make([]PersonID, 0, size)
   p.Friends =  tSet
   for i := 0; i < size; i ++ {
 var _elem0 int64
@@ -718,7 +718,7 @@ var _elem0 int64
 } else {
     _elem0 = v
 }
-    p.Friends[_elem0] = true
+    p.Friends = append(p.Friends, _elem0)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -879,7 +879,14 @@ func (p *Person) writeField6(oprot thrift.TProtocol) (err error) {
     if err := oprot.WriteSetBegin(thrift.I64, len(p.Friends)); err != nil {
       return thrift.PrependError("error writing set begin: ", err)
     }
-    for v, _ := range p.Friends {
+    set := make(map[PersonID]bool, len(p.Friends))
+    for _, v := range p.Friends {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range p.Friends {
       if err := oprot.WriteI64(int64(v)); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
     }
