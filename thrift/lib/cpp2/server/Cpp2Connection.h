@@ -173,7 +173,7 @@ class Cpp2Connection
       return req_->getTimestamps();
     }
 
-    void setLoadHeader();
+    void setServerHeaders();
 
    private:
     MessageChannel::SendCallback* prepareSendCallback(
@@ -220,7 +220,7 @@ class Cpp2Connection
                    const char* comment);
   void disconnect(const char* comment) noexcept;
 
-  void setLoadHeader(HeaderServerChannel::HeaderRequest& request);
+  void setServerHeaders(HeaderServerChannel::HeaderRequest& request);
 
   friend class Cpp2Request;
 

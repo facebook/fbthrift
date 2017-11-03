@@ -192,8 +192,12 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
   }
 }
 
-void Cpp2Connection::setLoadHeader(
+void Cpp2Connection::setServerHeaders(
     HeaderServerChannel::HeaderRequest& request) {
+  if (getWorker()->stopping_) {
+    request.getHeader()->setHeader("connection", "goaway");
+  }
+
   const auto& headers = request.getHeader()->getHeaders();
   std::string loadHeader;
   auto it = headers.find(Cpp2Connection::loadHeader);
@@ -256,7 +260,7 @@ void Cpp2Connection::killRequest(
   }
 
   auto header_req = static_cast<HeaderServerChannel::HeaderRequest*>(&req);
-  setLoadHeader(*header_req);
+  setServerHeaders(*header_req);
 
   // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
   // may end up here. No need to send error back for such requests
@@ -362,6 +366,14 @@ void Cpp2Connection::requestReceived(
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
         server->getOverloadedErrorCode(),
         "loadshedding request");
+    return;
+  }
+  if (worker_->stopping_) {
+    killRequest(
+        *req,
+        TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+        kQueueOverloadedErrorCode,
+        "server shutting down");
     return;
   }
 
@@ -484,15 +496,15 @@ Cpp2Connection::Cpp2Request::prepareSendCallback(
   return cb;
 }
 
-void Cpp2Connection::Cpp2Request::setLoadHeader() {
-  connection_->setLoadHeader(*req_);
+void Cpp2Connection::Cpp2Request::setServerHeaders() {
+  connection_->setServerHeaders(*req_);
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
-    setLoadHeader();
+    setServerHeaders();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     auto maxResponseSize =
       connection_->getWorker()->getServer()->getMaxResponseSize();
@@ -523,7 +535,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     std::string exCode,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
-    setLoadHeader();
+    setServerHeaders();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendErrorWrapped(std::move(ew),
                            std::move(exCode),
@@ -538,7 +550,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
   HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
   auto observer = connection_->getWorker()->getServer()->getObserver().get();
   std::map<std::string, std::string> headers;
-  setLoadHeader();
+  setServerHeaders();
   req_->sendTimeoutResponse(reqContext_.getMethodName(),
                             reqContext_.getProtoSeqId(),
                             prepareSendCallback(nullptr, observer),
@@ -566,7 +578,10 @@ void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
 Cpp2Connection::Cpp2Request::~Cpp2Request() {
   connection_->removeRequest(this);
   cancelTimeout();
-  connection_->getWorker()->activeRequests_--;
+  if (--connection_->getWorker()->activeRequests_ == 0 &&
+      connection_->getWorker()->stopping_) {
+    connection_->getWorker()->stopBaton_.post();
+  }
   connection_->getWorker()->getServer()->decActiveRequests();
 }
 

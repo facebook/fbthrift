@@ -541,6 +541,19 @@ void ThriftServer::stopListening() {
 }
 
 void ThriftServer::stopWorkers() {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
+      worker->requestStop();
+    }
+  });
+  constexpr std::chrono::seconds kWorkersJoinTimeout{30};
+  auto deadline = std::chrono::system_clock::now() + kWorkersJoinTimeout;
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
+      worker->waitForStop(deadline);
+    }
+  });
+
   if (serverChannel_) {
     return;
   }

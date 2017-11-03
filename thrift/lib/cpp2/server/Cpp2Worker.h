@@ -165,6 +165,10 @@ class Cpp2Worker
       wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo& tinfo) override;
 
+  void requestStop();
+
+  void waitForStop(std::chrono::system_clock::time_point deadline);
+
  private:
   /// The mother ship.
   ThriftServer* server_;
@@ -200,6 +204,8 @@ class Cpp2Worker
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
   uint32_t activeRequests_;
+  bool stopping_{false};
+  folly::Baton<> stopBaton_;
 
   int pendingCount_;
   std::chrono::steady_clock::time_point pendingTime_;

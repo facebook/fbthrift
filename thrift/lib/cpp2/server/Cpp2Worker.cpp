@@ -232,5 +232,23 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
   }
 }
 
+void Cpp2Worker::requestStop() {
+  getEventBase()->runInEventBaseThreadAndWait([&] {
+    if (stopping_) {
+      return;
+    }
+    stopping_ = true;
+    if (activeRequests_ == 0) {
+      stopBaton_.post();
+    }
+  });
+}
+
+void Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
+  if (!stopBaton_.timed_wait(deadline)) {
+    LOG(ERROR) << "Failed to join outstanding requests.";
+  }
+}
+
 } // namespace thrift
 } // namespace apache
