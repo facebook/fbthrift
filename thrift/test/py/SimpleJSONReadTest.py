@@ -3,9 +3,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-# @lint-avoid-pyflakes2
-# @lint-avoid-pyflakes3
-
 import unittest
 import math
 

@@ -1,5 +1,3 @@
-# @lint-avoid-pyflakes2
-
 from argparse import ArgumentParser
 import asyncio
 import sys

@@ -1,5 +1,3 @@
-# @lint-avoid-pyflakes2
-
 from apache.thrift.test.asyncio.load import LoadTest
 from apache.thrift.test.asyncio.load.ttypes import LoadError
 import asyncio
