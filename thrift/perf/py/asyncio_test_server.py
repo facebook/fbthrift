@@ -1,4 +1,3 @@
-# @lint-avoid-python-3-compatibility-imports
 # @lint-avoid-pyflakes2
 
 from argparse import ArgumentParser

@@ -16,7 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# @lint-avoid-python-3-compatibility-imports
 
 from ThriftTest.ttypes import *
 from thrift.transport import TTransport
