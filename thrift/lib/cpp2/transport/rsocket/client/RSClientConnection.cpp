@@ -69,6 +69,13 @@ RSClientConnection::getTransport() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   if (rsRequester_) {
     DuplexConnection* connection = rsRequester_->getConnection();
+    if (!connection) {
+      LOG(ERROR) << "Connection is already closed. May be protocol mismatch.";
+      channel_.reset();
+      rsRequester_.reset();
+      rsClient_.reset();
+      return nullptr;
+    }
     if (auto framedConnection =
             dynamic_cast<FramedDuplexConnection*>(connection)) {
       connection = framedConnection->getConnection();
