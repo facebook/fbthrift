@@ -18,8 +18,8 @@
 
 #include <folly/Baton.h>
 #include <folly/ExceptionWrapper.h>
+#include <folly/Logging.h>
 #include <folly/io/async/Request.h>
-#include <glog/logging.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
@@ -175,7 +175,7 @@ uint32_t ThriftClient::sendRequestHelper(
     metadata->__isset.clientTimeoutMs = true;
   }
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    metadata->queueTimeoutMs = rpcOptions.getTimeout().count();
+    metadata->queueTimeoutMs = rpcOptions.getQueueTimeout().count();
     metadata->__isset.queueTimeoutMs = true;
   }
   if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
