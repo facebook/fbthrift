@@ -673,7 +673,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def add_five(
             SimpleService self,
-            int num):
+            int32_t num):
         if num is None:
             raise TypeError('num can not be None')
         self._check_connect_future()
@@ -768,7 +768,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def tiny(
             SimpleService self,
-            int input):
+            int8_t input):
         if input is None:
             raise TypeError('input can not be None')
         self._check_connect_future()
@@ -787,7 +787,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def small(
             SimpleService self,
-            int input):
+            int16_t input):
         if input is None:
             raise TypeError('input can not be None')
         self._check_connect_future()
@@ -806,7 +806,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def big(
             SimpleService self,
-            int input):
+            int64_t input):
         if input is None:
             raise TypeError('input can not be None')
         self._check_connect_future()
@@ -825,7 +825,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def two(
             SimpleService self,
-            float input):
+            double input):
         if input is None:
             raise TypeError('input can not be None')
         self._check_connect_future()
@@ -1145,7 +1145,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def fib(
             SimpleService self,
-            int n):
+            int16_t n):
         if n is None:
             raise TypeError('n can not be None')
         self._check_connect_future()
@@ -1227,8 +1227,8 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def list_of_lists(
             SimpleService self,
-            int num_lists,
-            int num_items):
+            int16_t num_lists,
+            int16_t num_items):
         if num_lists is None:
             raise TypeError('num_lists can not be None')
         if num_items is None:
@@ -1372,7 +1372,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lookup_double(
             SimpleService self,
-            int key):
+            int32_t key):
         if key is None:
             raise TypeError('key can not be None')
         self._check_connect_future()

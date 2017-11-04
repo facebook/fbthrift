@@ -61,7 +61,6 @@ class ClientTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.complex_action(b'foo', 'bar', 'nine', fourth='baz')
 
-
     def test_rpc_enum_args(self):
         client = TestingService()
         loop = asyncio.get_event_loop()
@@ -70,3 +69,22 @@ class ClientTests(unittest.TestCase):
 
         with self.assertRaises(asyncio.InvalidStateError):
             loop.run_until_complete(client.pick_a_color(Color.red))
+
+    def test_rpc_int_sizes(self):
+        one = 2 ** 7 - 1
+        two = 2 ** 15 - 1
+        three = 2 ** 31 - 1
+        four = 2 ** 63 - 1
+        client = TestingService()
+        client.int_sizes(one, two, three, four)
+        with self.assertRaises(OverflowError):
+            client.int_sizes(two, two, three, four)
+
+        with self.assertRaises(OverflowError):
+            client.int_sizes(one, three, three, four)
+
+        with self.assertRaises(OverflowError):
+            client.int_sizes(one, two, four, four)
+
+        with self.assertRaises(OverflowError):
+            client.int_sizes(one, two, three, four * 10)

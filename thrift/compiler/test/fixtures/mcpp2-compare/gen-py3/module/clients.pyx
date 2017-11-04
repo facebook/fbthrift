@@ -1123,7 +1123,7 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readDataEb(
             ReturnService self,
-            int size):
+            int64_t size):
         if size is None:
             raise TypeError('size can not be None')
         self._check_connect_future()
@@ -1142,7 +1142,7 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readData(
             ReturnService self,
-            int size):
+            int64_t size):
         if size is None:
             raise TypeError('size can not be None')
         self._check_connect_future()
@@ -1237,7 +1237,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_i16_param(
             ParamService self,
-            int param1):
+            int16_t param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1256,8 +1256,8 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_byte_i16_param(
             ParamService self,
-            int param1,
-            int param2):
+            int8_t param1,
+            int16_t param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
         if param2 is None:
@@ -1327,7 +1327,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_map_typedef_param(
             ParamService self,
-            int param1):
+            int32_t param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1407,8 +1407,8 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_i32_i64_param(
             ParamService self,
-            int param1,
-            int param2):
+            int32_t param1,
+            int64_t param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
         if param2 is None:
@@ -1471,7 +1471,7 @@ cdef class ParamService(thrift.py3.client.Client):
     async def i64_ret_float_double_param(
             ParamService self,
             float param1,
-            float param2):
+            double param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
         if param2 is None:
@@ -1518,11 +1518,11 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_i32_i32_i32_i32_i32_param(
             ParamService self,
-            int param1,
-            int param2,
-            int param3,
-            int param4,
-            int param5):
+            int32_t param1,
+            int32_t param2,
+            int32_t param3,
+            int32_t param4,
+            int32_t param5):
         if param1 is None:
             raise TypeError('param1 can not be None')
         if param2 is None:
@@ -1679,7 +1679,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def typedef_ret_i32_param(
             ParamService self,
-            int param1):
+            int32_t param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1719,7 +1719,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def enum_ret_double_param(
             ParamService self,
-            float param1):
+            double param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1738,7 +1738,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def enum_ret_double_enum_param(
             ParamService self,
-            float param1,
+            double param1,
             param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
@@ -1784,7 +1784,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def struct_ret_i16_param(
             ParamService self,
-            int param1):
+            int16_t param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1824,8 +1824,8 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def union_ret_i32_i32_param(
             ParamService self,
-            int param1,
-            int param2):
+            int32_t param1,
+            int32_t param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
         if param2 is None:

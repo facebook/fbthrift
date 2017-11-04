@@ -337,7 +337,7 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyService self,
-            int id):
+            int64_t id):
         if id is None:
             raise TypeError('id can not be None')
         self._check_connect_future()
@@ -356,7 +356,7 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyService self,
-            int id):
+            int64_t id):
         if id is None:
             raise TypeError('id can not be None')
         self._check_connect_future()
@@ -375,7 +375,7 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def putDataById(
             MyService self,
-            int id,
+            int64_t id,
             str data):
         if id is None:
             raise TypeError('id can not be None')
@@ -398,7 +398,7 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lobDataById(
             MyService self,
-            int id,
+            int64_t id,
             str data):
         if id is None:
             raise TypeError('id can not be None')
@@ -527,7 +527,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyServiceFast self,
-            int id):
+            int64_t id):
         if id is None:
             raise TypeError('id can not be None')
         self._check_connect_future()
@@ -546,7 +546,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyServiceFast self,
-            int id):
+            int64_t id):
         if id is None:
             raise TypeError('id can not be None')
         self._check_connect_future()
@@ -565,7 +565,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def putDataById(
             MyServiceFast self,
-            int id,
+            int64_t id,
             str data):
         if id is None:
             raise TypeError('id can not be None')
@@ -588,7 +588,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lobDataById(
             MyServiceFast self,
-            int id,
+            int64_t id,
             str data):
         if id is None:
             raise TypeError('id can not be None')

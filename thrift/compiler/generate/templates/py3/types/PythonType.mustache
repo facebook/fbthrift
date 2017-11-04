@@ -16,19 +16,18 @@
 
 }}{{!
 
-This is used to declare a cython type that is referring to a Python value (ie,
-something that will be returned to external Python code or just used in Cython).
+This is for python types, used for typedefs aliases for use in python. 
 
 Structs and enums will be namespaced appropriately if they are either defined
 in a different thrift file, or defined in the same thrift file but this is
 in the client or server source rather than the type definition source.
 
-}}{{#type:bool?}}pbool{{/type:bool?}}{{!
-}}{{#type:byte?}}int8_t{{/type:byte?}}{{!
-}}{{#type:i16?}}int16_t{{/type:i16?}}{{!
-}}{{#type:i32?}}int32_t{{/type:i32?}}{{!
-}}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:double?}}double{{/type:double?}}{{!
+}}{{#type:bool?}}bool{{/type:bool?}}{{!
+}}{{#type:byte?}}int{{/type:byte?}}{{!
+}}{{#type:i16?}}int{{/type:i16?}}{{!
+}}{{#type:i32?}}int{{/type:i32?}}{{!
+}}{{#type:i64?}}int{{/type:i64?}}{{!
+}}{{#type:double?}}float{{/type:double?}}{{!
 }}{{#type:float?}}float{{/type:float?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
 }}{{#type:binary?}}bytes{{/type:binary?}}{{!
