@@ -23,12 +23,12 @@
 #include <memory>
 
 #include <folly/Executor.h>
-#include <folly/LifoSem.h>
 #include <folly/SharedMutex.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/Unistd.h>
+#include <folly/synchronization/LifoSem.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>

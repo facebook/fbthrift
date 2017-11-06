@@ -19,10 +19,10 @@
 #include <deque>
 #include <memory>
 
-#include <folly/LifoSem.h>
 #include <folly/PriorityMPMCQueue.h>
 #include <folly/SmallLocks.h>
 #include <folly/io/async/Request.h>
+#include <folly/synchronization/LifoSem.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 
 namespace apache { namespace thrift { namespace concurrency {
