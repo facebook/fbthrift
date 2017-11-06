@@ -22,4 +22,5 @@ service Benchmark {
   void noop();
   oneway void onewayNoop();
   ApiBase.TwoInts sum(1: ApiBase.TwoInts input);
+  void timeout();
 }

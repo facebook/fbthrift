@@ -89,3 +89,18 @@ On both on the client and the server side, the output will look like the followi
 This means that the current total throughput is 3.15MQPS, plus, it
 breaks down the QPS per operation type to get better insights on the
 operations that the client/server is preforming.
+
+## Timeout testing
+
+In the timeout testing the aim is not to force the server to its limits
+but to observe that server stays functional even though some of the tasks
+gets cancelled because of timing out.
+
+`./client --host="IP" --transport="header" --async --num_clients=100 --max_outstanding_ops=1 --timeout_weight=1`
+
+For example, the `timeout` function sleeps the worker thread for `1` ms.
+When the number of clients is 100, each client will sleep for `1` ms and
+if the number of threads is equal to 40, it will cause some of the threads
+to sleep for `2` ms or even `3` ms.
+The result should be some of the tasks getting cancelled while some of them
+get executed successfully.

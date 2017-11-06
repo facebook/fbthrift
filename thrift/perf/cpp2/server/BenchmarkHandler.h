@@ -31,6 +31,7 @@ class BenchmarkHandler : virtual public BenchmarkSvIf {
   explicit BenchmarkHandler(QPSStats* stats) : stats_(stats) {
     stats_->registerCounter(kNoop_);
     stats_->registerCounter(kSum_);
+    stats_->registerCounter(kTimeout_);
   }
 
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override {
@@ -40,6 +41,12 @@ class BenchmarkHandler : virtual public BenchmarkSvIf {
 
   void async_eb_onewayNoop(std::unique_ptr<HandlerCallbackBase>) override {
     stats_->add(kNoop_);
+  }
+
+  // Make the async/worker thread sleep
+  void timeout() override {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    stats_->add(kTimeout_);
   }
 
   void async_eb_sum(
@@ -58,6 +65,7 @@ class BenchmarkHandler : virtual public BenchmarkSvIf {
   QPSStats* stats_;
   std::string kNoop_ = "noop";
   std::string kSum_ = "sum";
+  std::string kTimeout_ = "timeout";
 };
 
 } // namespace benchmarks

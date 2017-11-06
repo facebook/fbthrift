@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
+#include <random>
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
@@ -45,21 +46,24 @@ class Noop {
   }
 
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
-    stats_->add(op_name_);
     try {
       client->recv_noop(rstate);
+      stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000)
           << "Error should have caused error() function to be called: "
           << ex.what();
-      stats_->add(fatal_);
+      stats_->add(error_);
     } catch (const std::exception& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
     }
   }
 
-  void error(AsyncClient*, ClientReceiveState&&) {
+  void error(AsyncClient*, ClientReceiveState&& state) {
+    if (state.isException()) {
+      FB_LOG_EVERY_MS(INFO, 1000) << "Error is: " << state.exception().what();
+    }
     stats_->add(error_);
   }
 
@@ -82,39 +86,94 @@ class Sum {
     stats_->registerCounter(op_name_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
-    request_.x = 0;
-    request_.__isset.x = true;
-    request_.y = 0;
-    request_.__isset.y = true;
   }
   ~Sum() = default;
 
   void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    request_.x = gen_();
+    request_.__isset.x = true;
+    request_.y = gen_();
+    request_.__isset.y = true;
+
     client->sum(std::move(cb), request_);
   }
 
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
-    stats_->add(op_name_);
     try {
       client->recv_sum(response_, rstate);
+      CHECK_EQ(request_.x + request_.y, response_.x);
+      CHECK_EQ(request_.x - request_.y, response_.y);
+      stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000)
           << "Error should have caused error() function to be called: "
           << ex.what();
-      stats_->add(fatal_);
+      stats_->add(error_);
     } catch (const std::exception& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
     }
   }
 
-  void error(AsyncClient*, ClientReceiveState&&) {
+  void error(AsyncClient*, ClientReceiveState&& state) {
+    if (state.isException()) {
+      FB_LOG_EVERY_MS(INFO, 1000) << "Error is: " << state.exception().what();
+    }
     stats_->add(error_);
   }
 
  private:
   QPSStats* stats_;
   std::string op_name_ = "sum";
+  std::string error_ = "error";
+  std::string fatal_ = "fatal";
+  TwoInts request_;
+  TwoInts response_;
+  std::mt19937 gen_{std::random_device()()};
+};
+
+template <typename AsyncClient>
+class Timeout {
+ public:
+  Timeout(QPSStats* stats) : stats_(stats) {
+    stats_->registerCounter(op_name_);
+    stats_->registerCounter(error_);
+    stats_->registerCounter(fatal_);
+  }
+  ~Timeout() = default;
+
+  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    apache::thrift::RpcOptions rpcOptions;
+    rpcOptions.setQueueTimeout(std::chrono::milliseconds(3));
+    rpcOptions.setTimeout(std::chrono::milliseconds(3));
+    client->timeout(rpcOptions, std::move(cb));
+  }
+
+  void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
+    try {
+      client->recv_timeout(rstate);
+      stats_->add(op_name_);
+    } catch (const apache::thrift::TApplicationException& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000)
+          << "Error should have caused error() function to be called: "
+          << ex.what();
+      stats_->add(error_);
+    } catch (const std::exception& ex) {
+      FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
+      stats_->add(fatal_);
+    }
+  }
+
+  void error(AsyncClient*, ClientReceiveState&& state) {
+    if (state.isException()) {
+      FB_LOG_EVERY_MS(INFO, 1000) << "Error is: " << state.exception().what();
+    }
+    stats_->add(error_);
+  }
+
+ private:
+  QPSStats* stats_;
+  std::string op_name_ = "timeout";
   std::string error_ = "error";
   std::string fatal_ = "fatal";
   TwoInts request_;

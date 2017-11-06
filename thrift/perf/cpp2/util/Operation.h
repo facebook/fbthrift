@@ -31,6 +31,7 @@ enum OP_TYPE {
   NOOP = 0,
   NOOP_ONEWAY = 1,
   SUM = 2,
+  TIMEOUT = 3,
 };
 
 template <typename AsyncClient>
@@ -39,7 +40,8 @@ class Operation {
   Operation(std::unique_ptr<AsyncClient> client, QPSStats* stats)
       : client_(std::move(client)),
         noop_(std::make_unique<Noop<AsyncClient>>(stats)),
-        sum_(std::make_unique<Sum<AsyncClient>>(stats)) {}
+        sum_(std::make_unique<Sum<AsyncClient>>(stats)),
+        timeout_(std::make_unique<Timeout<AsyncClient>>(stats)) {}
   ~Operation() = default;
 
   void async(OP_TYPE op, std::unique_ptr<LoadCallback<AsyncClient>> cb) {
@@ -53,6 +55,9 @@ class Operation {
         break;
       case SUM:
         sum_->async(client_.get(), std::move(cb));
+        break;
+      case TIMEOUT:
+        timeout_->async(client_.get(), std::move(cb));
         break;
       default:
         break;
@@ -78,6 +83,9 @@ class Operation {
       case SUM:
         sum_->asyncReceived(client_.get(), std::move(rstate));
         break;
+      case TIMEOUT:
+        timeout_->asyncReceived(client_.get(), std::move(rstate));
+        break;
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -92,6 +100,9 @@ class Operation {
       case SUM:
         sum_->error(client_.get(), std::move(rstate));
         break;
+      case TIMEOUT:
+        timeout_->error(client_.get(), std::move(rstate));
+        break;
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -102,4 +113,5 @@ class Operation {
   std::unique_ptr<AsyncClient> client_;
   std::unique_ptr<Noop<AsyncClient>> noop_;
   std::unique_ptr<Sum<AsyncClient>> sum_;
+  std::unique_ptr<Timeout<AsyncClient>> timeout_;
 };
