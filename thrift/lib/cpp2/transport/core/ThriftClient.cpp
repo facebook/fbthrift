@@ -164,6 +164,8 @@ uint32_t ThriftClient::sendRequestHelper(
   DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
   auto metadata = std::make_unique<RequestRpcMetadata>();
+  metadata->protocol = static_cast<apache::thrift::ProtocolId>(protocolId_);
+  metadata->__isset.protocol = true;
   if (oneway) {
     metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   } else {
