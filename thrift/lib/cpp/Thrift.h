@@ -92,8 +92,6 @@ struct TEnumTraits {
   static const std::size_t size;
   static const folly::Range<const T*> values;
   static const folly::Range<const folly::StringPiece*> names;
-  // only has data when generated with cpp:enum_struct:
-  static const folly::Range<const folly::StringPiece*> prefixed_names;
 
   /**
    * Return the minimum value.
