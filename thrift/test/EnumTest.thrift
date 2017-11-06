@@ -49,3 +49,8 @@ struct MyStruct {
 }
 
 const MyEnum4 c_me4_a = ME4_A
+
+enum MyEnumUnscoped {
+  MEU_A = 4,
+  MEU_B = 3,
+} (cpp.deprecated_enum_unscoped)

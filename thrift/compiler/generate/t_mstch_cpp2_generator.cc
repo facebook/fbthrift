@@ -23,6 +23,19 @@
 
 namespace {
 
+std::string const& map_find_first(
+    std::map<std::string, std::string> const& m,
+    std::initializer_list<char const*> keys) {
+  for (auto const& key : keys) {
+    auto const it = m.find(key);
+    if (it != m.end()) {
+      return it->second;
+    }
+  }
+  static auto const& empty = *new std::string();
+  return empty;
+}
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -60,6 +73,7 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:size", &mstch_cpp2_enum::size},
             {"enum:min", &mstch_cpp2_enum::min},
             {"enum:max", &mstch_cpp2_enum::max},
+            {"enum:cpp_is_unscoped", &mstch_cpp2_enum::cpp_is_unscoped},
             {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
             {"enum:cpp_declare_bitwise_ops",
              &mstch_cpp2_enum::cpp_declare_bitwise_ops},
@@ -97,11 +111,25 @@ class mstch_cpp2_enum : public mstch_enum {
     }
     return mstch::node();
   }
+  std::string const& cpp_is_unscoped_() {
+    return map_find_first(
+        enm_->annotations_,
+        {
+            "cpp2.deprecated_enum_unscoped",
+            "cpp.deprecated_enum_unscoped",
+        });
+  }
+  mstch::node cpp_is_unscoped() {
+    return cpp_is_unscoped_();
+  }
   mstch::node cpp_enum_type() {
     if (enm_->annotations_.count("cpp.enum_type")) {
       return enm_->annotations_.at("cpp.enum_type");
     } else if (enm_->annotations_.count("cpp2.enum_type")) {
       return enm_->annotations_.at("cpp2.enum_type");
+    }
+    if (!cpp_is_unscoped_().empty()) {
+      return std::string("int");
     }
     return std::string();
   }

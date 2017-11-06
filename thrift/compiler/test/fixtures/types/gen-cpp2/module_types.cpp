@@ -39,6 +39,31 @@ template <> bool TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES = _is_unscoped_EnumMapFactory::makeValuesToNamesMap();
+const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES = _is_unscoped_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size = 2;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::names);
+template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findName( ::apache::thrift::fixtures::types::is_unscoped value) {
+  static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(const char* name,  ::apache::thrift::fixtures::types::is_unscoped* outValue) {
+  static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 void decorated_struct::__clear() {
   // clear all fields
   field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");

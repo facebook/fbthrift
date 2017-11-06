@@ -26,6 +26,11 @@ enum has_bitwise_ops {
   three = 8,
 } (cpp.declare_bitwise_ops)
 
+enum is_unscoped {
+  hello = 0,
+  world = 1,
+} (cpp.deprecated_enum_unscoped)
+
 service SomeService {
   include.SomeMap bounce_map(1: include.SomeMap m)
 }

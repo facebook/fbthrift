@@ -84,12 +84,27 @@ inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
   return static_cast<E>(~static_cast<U>(a));
 }
 
+enum is_unscoped : int {
+  hello = 0,
+  world = 1
+};
+
+using _is_unscoped_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<is_unscoped, is_unscoped>;
+extern const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES;
+extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES;
+
+
+
 }}}} // apache::thrift::fixtures::types
 namespace std {
 
 
 template<> struct hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
 template<> struct equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
+
+
+template<> struct hash<typename  ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::is_unscoped> {};
+template<> struct equal_to<typename  ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::is_unscoped> {};
 
 
 } // std
@@ -110,6 +125,22 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops
 
 template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::max() {
   return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
+}
+
+
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped>;
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names;
+template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findName( ::apache::thrift::fixtures::types::is_unscoped value);
+template <> bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(const char* name,  ::apache::thrift::fixtures::types::is_unscoped* outValue);
+
+template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::min() {
+  return  ::apache::thrift::fixtures::types::is_unscoped::hello;
+}
+
+template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::max() {
+  return  ::apache::thrift::fixtures::types::is_unscoped::world;
 }
 
 

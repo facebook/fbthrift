@@ -57,6 +57,24 @@ cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value):
         return has_bitwise_ops__two
     elif value == has_bitwise_ops.three:
         return has_bitwise_ops__three
+class is_unscoped(Enum):
+    hello = <int> (is_unscoped__hello)
+    world = <int> (is_unscoped__world)
+
+    __hash__ = Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
+
+cdef cis_unscoped is_unscoped_to_cpp(value):
+    if value == is_unscoped.hello:
+        return is_unscoped__hello
+    elif value == is_unscoped.world:
+        return is_unscoped__world
 
 
 cdef cdecorated_struct _decorated_struct_defaults = cdecorated_struct()

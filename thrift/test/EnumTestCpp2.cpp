@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,4 +101,14 @@ TEST(EnumTestCpp2, test_hash_specialization) {
 TEST(EnumTestCpp2, test_equal_to_specialization) {
   EXPECT_TRUE((std::equal_to<MyEnum2>()(MyEnum2::ME2_0, MyEnum2::ME2_0)));
   EXPECT_FALSE((std::equal_to<MyEnum2>()(MyEnum2::ME2_0, MyEnum2::ME2_1)));
+}
+
+TEST(EnumTestCpp2, test_unscoped) {
+  using MyEnumUnscopedUnderlying =
+      typename std::underlying_type<MyEnumUnscoped>::type;
+  EXPECT_TRUE((std::is_same<MyEnumUnscopedUnderlying, int>::value));
+  MyEnumUnscoped value = {};
+  EXPECT_TRUE(tryParseEnum("MEU_A", &value));
+  EXPECT_EQ(MEU_A, value) << "unscoped usage";
+  EXPECT_EQ(int(MEU_A), value) << "implicit conversion";
 }

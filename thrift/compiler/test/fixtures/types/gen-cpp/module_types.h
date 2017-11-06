@@ -49,6 +49,33 @@ return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+enum is_unscoped {
+  hello = 0,
+  world = 1,
+};
+
+using _is_unscoped_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<is_unscoped, int>;
+
+extern const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES;
+
+extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES;
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped>;
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names;
+template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::min() {
+return  ::apache::thrift::fixtures::types::is_unscoped::hello;
+}
+template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::max() {
+return  ::apache::thrift::fixtures::types::is_unscoped::world;
+}
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class decorated_struct;
 
 class ContainerStruct;

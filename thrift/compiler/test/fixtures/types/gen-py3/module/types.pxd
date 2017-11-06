@@ -233,8 +233,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
     chas_bitwise_ops has_bitwise_ops__one "apache::thrift::fixtures::types::has_bitwise_ops::one"
     chas_bitwise_ops has_bitwise_ops__two "apache::thrift::fixtures::types::has_bitwise_ops::two"
     chas_bitwise_ops has_bitwise_ops__three "apache::thrift::fixtures::types::has_bitwise_ops::three"
+    cdef cppclass cis_unscoped "apache::thrift::fixtures::types::is_unscoped":
+        bint operator==(cis_unscoped&)
+    cis_unscoped is_unscoped__hello "apache::thrift::fixtures::types::is_unscoped::hello"
+    cis_unscoped is_unscoped__world "apache::thrift::fixtures::types::is_unscoped::world"
 
 cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value)
+cdef cis_unscoped is_unscoped_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache::thrift::fixtures::types":
     # Forward Declaration

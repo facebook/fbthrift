@@ -41,4 +41,27 @@ template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitw
 };
 
 }} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+struct _is_unscopedEnumDataStorage {
+  using type = is_unscoped;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<is_unscoped, 2> values = {{
+    is_unscoped::hello,
+    is_unscoped::world,
+  }};
+  static constexpr const std::array<folly::StringPiece, 2> names = {{
+    "hello",
+    "world",
+  }};
+};
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped> {
+  using storage_type =  ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage;
+};
+
+}} // apache::thrift
 

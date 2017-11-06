@@ -40,6 +40,30 @@ bool TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+const typename _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES = _is_unscoped_EnumMapFactory::makeValuesToNamesMap();
+
+const typename _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES = _is_unscoped_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <>const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size = 2;
+template <>const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::names);
+
+template<>
+const char* TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findName( ::apache::thrift::fixtures::types::is_unscoped value) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template<>
+bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(const char* name,  ::apache::thrift::fixtures::types::is_unscoped* out) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
+}
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 const uint64_t decorated_struct::_reflection_id;
 void decorated_struct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_2133116297910176940(schema);
