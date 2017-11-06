@@ -145,10 +145,10 @@ void SingleRpcChannel::sendThriftRequest(
   msg.setMethod(HTTPMethod::POST);
   msg.setURL(httpUrl_);
   auto& msgHeaders = msg.getHeaders();
-  if (!httpHost_.empty()) {
-    msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
-    msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
-  }
+  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
+  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
+  msgHeaders.set(
+      HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
   if (metadata->__isset.clientTimeoutMs) {
     DCHECK(metadata->clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(
