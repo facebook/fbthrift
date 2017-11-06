@@ -15,16 +15,29 @@
  */
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
+#include <gflags/gflags.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
+#include <cstdlib>
+
+DEFINE_int32(
+    timeout_fudge_factor_ms,
+    5,
+    "Fudge factor allowed for timeout expiration");
 
 namespace apache {
 namespace thrift {
+
+using std::chrono::duration_cast;
+using std::chrono::milliseconds;
+using std::chrono::steady_clock;
 
 std::shared_ptr<H2Channel> H2ChannelFactory::createChannel(
     int32_t version,
     proxygen::ResponseHandler* toHttp2,
     ThriftProcessor* processor) {
-  if (version == 2) {
+  if (version == 3) {
+    return std::make_shared<MultiRpcChannel>(toHttp2, processor);
+  } else if (version == 2) {
     return std::make_shared<SingleRpcChannel>(toHttp2, processor, false);
   } else {
     DCHECK(version == 0 || version == 1);
@@ -36,8 +49,27 @@ std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
     int32_t version,
     H2ClientConnection* toHttp2,
     const std::string& httpHost,
-    const std::string& httpUrl) {
-  if (version == 2) {
+    const std::string& httpUrl,
+    RequestRpcMetadata* metadata) {
+  if (version == 3) {
+    DCHECK(metadata->__isset.clientTimeoutMs);
+    milliseconds timeout(metadata->clientTimeoutMs);
+    auto currentTime =
+        duration_cast<milliseconds>(steady_clock::now().time_since_epoch());
+    auto expiration = currentTime + timeout;
+    if (!(multiRpcChannel_ &&
+          std::abs(expiration.count() - multiRpcChannelExpiration_.count()) <=
+              FLAGS_timeout_fudge_factor_ms &&
+          multiRpcChannel_->canDoRpcs())) {
+      if (multiRpcChannel_) {
+        multiRpcChannel_->closeClientSide();
+      }
+      multiRpcChannel_.reset(new MultiRpcChannel(toHttp2, httpHost, httpUrl));
+      multiRpcChannel_->initialize(timeout);
+      multiRpcChannelExpiration_ = expiration;
+    }
+    return multiRpcChannel_;
+  } else if (version == 2) {
     return std::make_shared<SingleRpcChannel>(
         toHttp2, httpHost, httpUrl, false);
   } else {

@@ -298,11 +298,7 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     CompactProtocolReader reader;
     reader.setInput(contents_.get());
     auto sz = metadata->read(&reader);
-    while (contents_->length() < sz) {
-      sz -= contents_->length();
-      contents_ = contents_->pop();
-    }
-    contents_->trimStart(sz);
+    EnvelopeUtil::removePrefix(contents_, sz);
   }
   DCHECK(metadata->__isset.protocol);
   DCHECK(metadata->__isset.name);
@@ -355,11 +351,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
     CompactProtocolReader reader;
     reader.setInput(contents_.get());
     auto sz = metadata->read(&reader);
-    while (contents_->length() < sz) {
-      sz -= contents_->length();
-      contents_ = contents_->pop();
-    }
-    contents_->trimStart(sz);
+    EnvelopeUtil::removePrefix(contents_, sz);
   }
   // We don't need to set any of the other fields in metadata currently.
   evb->runInEventBaseThread([evbCallback = std::move(callback_),

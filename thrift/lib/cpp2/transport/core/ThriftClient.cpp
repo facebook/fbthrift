@@ -79,6 +79,9 @@ class WaitableRequestCallback final : public RequestCallback {
 
 } // namespace
 
+const std::chrono::milliseconds ThriftClient::kDefaultRpcTimeout =
+    std::chrono::milliseconds(500);
+
 ThriftClient::ThriftClient(
     std::shared_ptr<ClientConnectionIf> connection,
     folly::EventBase* callbackEvb)
@@ -172,8 +175,10 @@ uint32_t ThriftClient::sendRequestHelper(
   metadata->__isset.kind = true;
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
-    metadata->__isset.clientTimeoutMs = true;
+  } else {
+    metadata->clientTimeoutMs = kDefaultRpcTimeout.count();
   }
+  metadata->__isset.clientTimeoutMs = true;
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
     metadata->queueTimeoutMs = rpcOptions.getQueueTimeout().count();
     metadata->__isset.queueTimeoutMs = true;
@@ -219,7 +224,7 @@ void ThriftClient::getChannelAndSendThriftRequest(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(connection->getEventBase()->isInEventBaseThread());
   try {
-    auto channel = connection->getChannel();
+    auto channel = connection->getChannel(metadata.get());
     channel->sendThriftRequest(
         std::move(metadata), std::move(payload), std::move(callback));
   } catch (TTransportException& te) {
@@ -278,7 +283,7 @@ uint32_t ThriftClient::getTimeout() {
 }
 
 void ThriftClient::setTimeout(uint32_t ms) {
-  return connection_->setTimeout(ms);
+  connection_->setTimeout(ms);
 }
 
 void ThriftClient::closeNow() {

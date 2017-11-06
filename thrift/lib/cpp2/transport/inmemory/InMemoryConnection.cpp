@@ -37,7 +37,8 @@ InMemoryConnection::InMemoryConnection(
   processor_->setThreadManager(threadManager_.get());
 }
 
-std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel() {
+std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel(
+    RequestRpcMetadata*) {
   return std::make_shared<InMemoryChannel>(
       processor_.get(), runner_.getEventBase());
 }

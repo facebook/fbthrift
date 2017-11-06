@@ -66,7 +66,8 @@ class H2ClientConnection : public ClientConnectionIf,
   H2ClientConnection(const H2ClientConnection&) = delete;
   H2ClientConnection& operator=(const H2ClientConnection&) = delete;
 
-  std::shared_ptr<ThriftChannelIf> getChannel() override;
+  std::shared_ptr<ThriftChannelIf> getChannel(
+      RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;
   folly::EventBase* getEventBase() const override;
 
@@ -100,7 +101,7 @@ class H2ClientConnection : public ClientConnectionIf,
 
  private:
   // The default timeout for a Thrift RPC.
-  static const std::chrono::milliseconds kDefaultRpcTimeout;
+  static const std::chrono::milliseconds kDefaultTimeout;
 
   H2ClientConnection(
       async::TAsyncTransport::UniquePtr transport,
@@ -110,7 +111,7 @@ class H2ClientConnection : public ClientConnectionIf,
   folly::EventBase* evb_{nullptr};
   std::string httpHost_;
   std::string httpUrl_;
-  std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
+  std::chrono::milliseconds timeout_{kDefaultTimeout};
 
   // The negotiated channel version - 0 means settings frame has not
   // yet arrived and negotiation has not taken place yet.

@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
+#include <chrono>
 #include <memory>
 
 namespace apache {
@@ -139,6 +140,9 @@ class ThriftClient : public ClientChannel {
   std::shared_ptr<ClientConnectionIf> connection_;
   folly::EventBase* callbackEvb_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
+
+  // The default timeout for a Thrift RPC.
+  static const std::chrono::milliseconds kDefaultRpcTimeout;
 
   // Destructor is private because this class inherits from
   // folly:DelayedDestruction.

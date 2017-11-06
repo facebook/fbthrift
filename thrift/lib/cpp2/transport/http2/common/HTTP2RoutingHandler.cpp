@@ -32,10 +32,14 @@
 #include <wangle/acceptor/ManagedConnection.h>
 #include <limits>
 
-DECLARE_int32(force_channel_version);
+DECLARE_uint32(force_channel_version);
+
+DEFINE_uint32(stream_timeout_ms, 1000, "Stream timeout in milliseconds");
 
 namespace apache {
 namespace thrift {
+
+using std::chrono::milliseconds;
 
 namespace {
 // Class for managing lifetime of objects supporting an HTTP2 session.
@@ -80,7 +84,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     // because it acts as both a controller as well as a info
     // callback.
     auto session = new proxygen::HTTPDownstreamSession(
-        proxygen::WheelTimerInstance(std::chrono::milliseconds(5)),
+        proxygen::WheelTimerInstance(milliseconds(FLAGS_stream_timeout_ms)),
         std::move(sock),
         localAddress,
         *peerAddress,

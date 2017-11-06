@@ -29,10 +29,16 @@
 #include <wangle/acceptor/TransportInfo.h>
 #include <algorithm>
 
-DEFINE_int32(
+// This flag is only used on the client side.
+DEFINE_uint32(
+    max_channel_version,
+    3,
+    "Maximum channel version to use for negotiation");
+
+DEFINE_uint32(
     force_channel_version,
     0,
-    "Set to a positive number to force that as the channel version");
+    "Set to a positive number to force this as the channel version");
 
 namespace apache {
 namespace thrift {
@@ -47,7 +53,7 @@ using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
 using std::string;
 
-const std::chrono::milliseconds H2ClientConnection::kDefaultRpcTimeout =
+const std::chrono::milliseconds H2ClientConnection::kDefaultTimeout =
     std::chrono::milliseconds(500);
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP1xConnection(
@@ -96,17 +102,19 @@ H2ClientConnection::H2ClientConnection(
   // TODO: Improve the way max outging streams is set
   setMaxPendingRequests(100000);
   httpSession_->setEgressSettings(
-      {{kChannelSettingId, kMaxSupportedChannelVersion}});
+      {{kChannelSettingId,
+        std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)}});
 }
 
 H2ClientConnection::~H2ClientConnection() {
   closeNow();
 }
 
-std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
+std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel(
+    RequestRpcMetadata* metadata) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   return channelFactory_.getChannel(
-      negotiatedChannelVersion_, this, httpHost_, httpUrl_);
+      negotiatedChannelVersion_, this, httpHost_, httpUrl_, metadata);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
@@ -245,8 +253,9 @@ void H2ClientConnection::onSettings(
   }
   for (auto& setting : settings) {
     if (setting.id == kChannelSettingId) {
-      negotiatedChannelVersion_ =
-          std::min(setting.value, kMaxSupportedChannelVersion);
+      negotiatedChannelVersion_ = std::min(
+          setting.value,
+          std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version));
       VLOG(2) << "Peer channel version is " << setting.value;
       VLOG(2) << "Negotiated channel version is " << negotiatedChannelVersion_;
     }

@@ -47,7 +47,8 @@ RSClientConnection::RSClientConnection(
   channel_ = std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
 }
 
-std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel() {
+std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel(
+    RequestRpcMetadata*) {
   if (!channel_) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "Connection is not open");

@@ -20,6 +20,10 @@
 
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/codec/SettingsId.h>
+#include <thrift/lib/cpp2/transport/http2/common/MultiRpcChannel.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#include <chrono>
+#include <memory>
 
 namespace apache {
 namespace thrift {
@@ -78,11 +82,18 @@ constexpr auto kChannelSettingId = static_cast<proxygen::SettingsId>(100);
 // Channel version 2:
 // The metadata is serialized into the body instead of placing them
 // in headers as is the case for version 1.  Implemented by
-// MetadataInBodySingleRpcChannel.
-constexpr uint32_t kMaxSupportedChannelVersion = 2;
+// SingleRpcChannel.
+//
+// Channel version 3:
+// A single HTTP2 stream can be used for multiple RPCs so long as they
+// all timeout at the same time.
+constexpr uint32_t kMaxSupportedChannelVersion = 3;
 
 class H2ChannelFactory {
  public:
+  H2ChannelFactory() = default;
+  ~H2ChannelFactory() = default;
+
   // Creates a channel on the server based on negotiated version.
   // This is called from the RequestHandler object when a new stream
   // is received from the client.
@@ -99,7 +110,15 @@ class H2ChannelFactory {
       int32_t version,
       H2ClientConnection* toHttp2,
       const std::string& httpHost,
-      const std::string& httpUrl);
+      const std::string& httpUrl,
+      RequestRpcMetadata* metadata);
+
+ private:
+  // The current MultiRpcChannel in use by the client (if this is the
+  // kind of channel the client is using).
+  std::shared_ptr<MultiRpcChannel> multiRpcChannel_;
+  // The common expiration time for all the RPCs in multiRpcChannel_.
+  std::chrono::milliseconds multiRpcChannelExpiration_;
 };
 
 } // namespace thrift

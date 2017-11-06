@@ -75,14 +75,18 @@ class EnvelopeUtil {
       return false;
     }
     // Remove the envelope.
-    while (payload->length() < sz) {
-      sz -= payload->length();
-      payload = payload->pop();
-    }
-    payload->trimStart(sz);
+    removePrefix(payload, sz);
     metadata->__isset.protocol = true;
     metadata->__isset.name = true;
     return true;
+  }
+
+  static void removePrefix(std::unique_ptr<folly::IOBuf>& buf, uint32_t size) {
+    while (buf->length() < size) {
+      size -= buf->length();
+      buf = buf->pop();
+    }
+    buf->trimStart(size);
   }
 };
 

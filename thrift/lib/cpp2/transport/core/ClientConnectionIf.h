@@ -18,10 +18,11 @@
 
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <memory>
 
 namespace apache {
@@ -64,7 +65,8 @@ class ClientConnectionIf {
 
   // Returns a channel object for use on a single RPC.  Throws
   // TTransportException if a channel object cannot be returned.
-  virtual std::shared_ptr<ThriftChannelIf> getChannel() = 0;
+  virtual std::shared_ptr<ThriftChannelIf> getChannel(
+      RequestRpcMetadata* metadata) = 0;
 
   // Sets the maximum pending outgoing requests allowed on this
   // connection.  Subject to negotiation with the server, which may
