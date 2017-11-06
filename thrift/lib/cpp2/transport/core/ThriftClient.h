@@ -146,7 +146,7 @@ class ThriftClient : public ClientChannel {
 
   uint32_t sendRequestHelper(
       RpcOptions& rpcOptions,
-      bool oneway,
+      RpcKind kind,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,

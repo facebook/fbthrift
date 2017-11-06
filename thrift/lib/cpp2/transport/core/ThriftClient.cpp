@@ -106,11 +106,13 @@ uint32_t ThriftClient::sendRequestSync(
   folly::Baton<> baton;
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
   bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
+  auto kind = oneway ? RpcKind::SINGLE_REQUEST_NO_RESPONSE
+                     : RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   auto scb =
       std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
   int result = sendRequestHelper(
       rpcOptions,
-      oneway,
+      kind,
       std::move(scb),
       std::move(ctx),
       std::move(buf),
@@ -128,7 +130,7 @@ uint32_t ThriftClient::sendRequest(
     std::shared_ptr<THeader> header) {
   return sendRequestHelper(
       rpcOptions,
-      false,
+      RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       std::move(cb),
       std::move(ctx),
       std::move(buf),
@@ -144,7 +146,7 @@ uint32_t ThriftClient::sendOnewayRequest(
     std::shared_ptr<THeader> header) {
   sendRequestHelper(
       rpcOptions,
-      true,
+      RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       std::move(cb),
       std::move(ctx),
       std::move(buf),
@@ -155,7 +157,7 @@ uint32_t ThriftClient::sendOnewayRequest(
 
 uint32_t ThriftClient::sendRequestHelper(
     RpcOptions& rpcOptions,
-    bool oneway,
+    RpcKind kind,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
@@ -166,11 +168,7 @@ uint32_t ThriftClient::sendRequestHelper(
   auto metadata = std::make_unique<RequestRpcMetadata>();
   metadata->protocol = static_cast<apache::thrift::ProtocolId>(protocolId_);
   metadata->__isset.protocol = true;
-  if (oneway) {
-    metadata->kind = RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  } else {
-    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  }
+  metadata->kind = kind;
   metadata->__isset.kind = true;
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
@@ -194,6 +192,7 @@ uint32_t ThriftClient::sendRequestHelper(
   if (!metadata->otherMetadata.empty()) {
     metadata->__isset.otherMetadata = true;
   }
+
   auto callback = std::make_unique<ThriftClientCallback>(
       callbackEvb,
       std::move(cb),
