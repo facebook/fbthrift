@@ -321,6 +321,8 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
 
   headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
   headers.set(
+      proxygen::HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
+  headers.set(
       proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
       "application/x-thrift");
 
