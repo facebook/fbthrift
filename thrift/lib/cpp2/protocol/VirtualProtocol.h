@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ class VirtualReaderBase {
   virtual ~VirtualReaderBase() {}
 
   virtual ProtocolType protocolType() const = 0;
+  virtual bool kUsesFieldNames() const = 0;
 
   virtual void setInput(const folly::io::Cursor& cursor) = 0;
   void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
@@ -183,6 +184,10 @@ class VirtualReader : public VirtualReaderBase {
 
   ProtocolType protocolType() const override {
     return protocol_.protocolType();
+  }
+
+  bool kUsesFieldNames() const override {
+    return protocol_.kUsesFieldNames();
   }
 
   using VirtualReaderBase::setInput;

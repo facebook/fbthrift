@@ -254,6 +254,10 @@ class CompactProtocolReader {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
+  static constexpr bool kUsesFieldNames() {
+    return false;
+  }
+
   void setStringSizeLimit(int32_t string_limit) {
     string_limit_ = string_limit;
   }

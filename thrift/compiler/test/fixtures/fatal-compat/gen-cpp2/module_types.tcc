@@ -36,7 +36,7 @@ uint32_t union1_read(Protocol_* iprot, union1* obj) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     obj->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -234,7 +234,7 @@ uint32_t union2_read(Protocol_* iprot, union2* obj) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     obj->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -432,7 +432,7 @@ uint32_t union3_read(Protocol_* iprot, union3* obj) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     obj->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -631,7 +631,7 @@ uint32_t structA_read(Protocol_* iprot, structA* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -733,7 +733,7 @@ uint32_t unionA_read(Protocol_* iprot, unionA* obj) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     obj->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -961,7 +961,7 @@ uint32_t structB_read(Protocol_* iprot, structB* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1064,7 +1064,7 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1666,7 +1666,7 @@ uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1855,7 +1855,7 @@ uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2043,7 +2043,7 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2429,7 +2429,7 @@ uint32_t struct4_read(Protocol_* iprot, struct4* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2576,7 +2576,7 @@ uint32_t struct5_read(Protocol_* iprot, struct5* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2739,7 +2739,7 @@ uint32_t struct_binary_read(Protocol_* iprot, struct_binary* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2825,7 +2825,7 @@ uint32_t annotated_read(Protocol_* iprot, annotated* obj) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2910,7 +2910,7 @@ uint32_t union_with_special_names_read(Protocol_* iprot, union_with_special_name
   if (_ftype == apache::thrift::protocol::T_STOP) {
     obj->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3747,7 +3747,7 @@ uint32_t struct_with_special_names_read(Protocol_* iprot, struct_with_special_na
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -4258,7 +4258,7 @@ uint32_t struct_with_indirections_read(Protocol_* iprot, struct_with_indirection
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {

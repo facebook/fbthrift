@@ -35,7 +35,7 @@ uint32_t service_with_special_names_get_pargs_read(Protocol_* iprot, service_wit
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -98,7 +98,7 @@ uint32_t service_with_special_names_get_presult_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -184,7 +184,7 @@ uint32_t service_with_special_names_getter_pargs_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -247,7 +247,7 @@ uint32_t service_with_special_names_getter_presult_read(Protocol_* iprot, servic
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -333,7 +333,7 @@ uint32_t service_with_special_names_lists_pargs_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -396,7 +396,7 @@ uint32_t service_with_special_names_lists_presult_read(Protocol_* iprot, service
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -482,7 +482,7 @@ uint32_t service_with_special_names_maps_pargs_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -545,7 +545,7 @@ uint32_t service_with_special_names_maps_presult_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -631,7 +631,7 @@ uint32_t service_with_special_names_name_pargs_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -694,7 +694,7 @@ uint32_t service_with_special_names_name_presult_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -780,7 +780,7 @@ uint32_t service_with_special_names_name_to_value_pargs_read(Protocol_* iprot, s
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -843,7 +843,7 @@ uint32_t service_with_special_names_name_to_value_presult_read(Protocol_* iprot,
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -929,7 +929,7 @@ uint32_t service_with_special_names_names_pargs_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -992,7 +992,7 @@ uint32_t service_with_special_names_names_presult_read(Protocol_* iprot, service
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1078,7 +1078,7 @@ uint32_t service_with_special_names_prefix_tree_pargs_read(Protocol_* iprot, ser
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1141,7 +1141,7 @@ uint32_t service_with_special_names_prefix_tree_presult_read(Protocol_* iprot, s
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1227,7 +1227,7 @@ uint32_t service_with_special_names_sets_pargs_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1290,7 +1290,7 @@ uint32_t service_with_special_names_sets_presult_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1376,7 +1376,7 @@ uint32_t service_with_special_names_setter_pargs_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1439,7 +1439,7 @@ uint32_t service_with_special_names_setter_presult_read(Protocol_* iprot, servic
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1525,7 +1525,7 @@ uint32_t service_with_special_names_str_pargs_read(Protocol_* iprot, service_wit
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1588,7 +1588,7 @@ uint32_t service_with_special_names_str_presult_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1674,7 +1674,7 @@ uint32_t service_with_special_names_strings_pargs_read(Protocol_* iprot, service
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1737,7 +1737,7 @@ uint32_t service_with_special_names_strings_presult_read(Protocol_* iprot, servi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1823,7 +1823,7 @@ uint32_t service_with_special_names_type_pargs_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1886,7 +1886,7 @@ uint32_t service_with_special_names_type_presult_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -1972,7 +1972,7 @@ uint32_t service_with_special_names_value_pargs_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2035,7 +2035,7 @@ uint32_t service_with_special_names_value_presult_read(Protocol_* iprot, service
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2121,7 +2121,7 @@ uint32_t service_with_special_names_value_to_name_pargs_read(Protocol_* iprot, s
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2184,7 +2184,7 @@ uint32_t service_with_special_names_value_to_name_presult_read(Protocol_* iprot,
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2270,7 +2270,7 @@ uint32_t service_with_special_names_values_pargs_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2333,7 +2333,7 @@ uint32_t service_with_special_names_values_presult_read(Protocol_* iprot, servic
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2419,7 +2419,7 @@ uint32_t service_with_special_names_id_pargs_read(Protocol_* iprot, service_with
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2482,7 +2482,7 @@ uint32_t service_with_special_names_id_presult_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2568,7 +2568,7 @@ uint32_t service_with_special_names_ids_pargs_read(Protocol_* iprot, service_wit
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2631,7 +2631,7 @@ uint32_t service_with_special_names_ids_presult_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2717,7 +2717,7 @@ uint32_t service_with_special_names_descriptor_pargs_read(Protocol_* iprot, serv
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2780,7 +2780,7 @@ uint32_t service_with_special_names_descriptor_presult_read(Protocol_* iprot, se
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2866,7 +2866,7 @@ uint32_t service_with_special_names_descriptors_pargs_read(Protocol_* iprot, ser
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -2929,7 +2929,7 @@ uint32_t service_with_special_names_descriptors_presult_read(Protocol_* iprot, s
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3015,7 +3015,7 @@ uint32_t service_with_special_names_key_pargs_read(Protocol_* iprot, service_wit
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3078,7 +3078,7 @@ uint32_t service_with_special_names_key_presult_read(Protocol_* iprot, service_w
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3164,7 +3164,7 @@ uint32_t service_with_special_names_keys_pargs_read(Protocol_* iprot, service_wi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3227,7 +3227,7 @@ uint32_t service_with_special_names_keys_presult_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3313,7 +3313,7 @@ uint32_t service_with_special_names_annotation_pargs_read(Protocol_* iprot, serv
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3376,7 +3376,7 @@ uint32_t service_with_special_names_annotation_presult_read(Protocol_* iprot, se
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3462,7 +3462,7 @@ uint32_t service_with_special_names_annotations_pargs_read(Protocol_* iprot, ser
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3525,7 +3525,7 @@ uint32_t service_with_special_names_annotations_presult_read(Protocol_* iprot, s
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3611,7 +3611,7 @@ uint32_t service_with_special_names_member_pargs_read(Protocol_* iprot, service_
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3674,7 +3674,7 @@ uint32_t service_with_special_names_member_presult_read(Protocol_* iprot, servic
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3760,7 +3760,7 @@ uint32_t service_with_special_names_members_pargs_read(Protocol_* iprot, service
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -3823,7 +3823,7 @@ uint32_t service_with_special_names_members_presult_read(Protocol_* iprot, servi
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {

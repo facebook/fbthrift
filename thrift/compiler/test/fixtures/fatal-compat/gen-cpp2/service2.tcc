@@ -35,7 +35,7 @@ uint32_t service2_methodA_pargs_read(Protocol_* iprot, service2_methodA_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -98,7 +98,7 @@ uint32_t service2_methodA_presult_read(Protocol_* iprot, service2_methodA_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -161,7 +161,7 @@ uint32_t service2_methodB_pargs_read(Protocol_* iprot, service2_methodB_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -272,7 +272,7 @@ uint32_t service2_methodB_presult_read(Protocol_* iprot, service2_methodB_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -335,7 +335,7 @@ uint32_t service2_methodC_pargs_read(Protocol_* iprot, service2_methodC_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -398,7 +398,7 @@ uint32_t service2_methodC_presult_read(Protocol_* iprot, service2_methodC_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -484,7 +484,7 @@ uint32_t service2_methodD_pargs_read(Protocol_* iprot, service2_methodD_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -595,7 +595,7 @@ uint32_t service2_methodD_presult_read(Protocol_* iprot, service2_methodD_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -681,7 +681,7 @@ uint32_t service2_methodE_pargs_read(Protocol_* iprot, service2_methodE_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -744,7 +744,7 @@ uint32_t service2_methodE_presult_read(Protocol_* iprot, service2_methodE_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -830,7 +830,7 @@ uint32_t service2_methodF_pargs_read(Protocol_* iprot, service2_methodF_pargs* o
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -941,7 +941,7 @@ uint32_t service2_methodF_presult_read(Protocol_* iprot, service2_methodF_presul
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       obj->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {

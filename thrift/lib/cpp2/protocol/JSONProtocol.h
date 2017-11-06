@@ -93,6 +93,10 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
     return ProtocolType::T_JSON_PROTOCOL;
   }
 
+  static constexpr bool kUsesFieldNames() {
+    return false;
+  }
+
   inline uint32_t readStructBegin(std::string& name);
   inline uint32_t readStructEnd();
   inline uint32_t readFieldBegin(std::string& name,

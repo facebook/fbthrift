@@ -41,7 +41,7 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
@@ -137,7 +137,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {

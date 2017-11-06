@@ -3329,7 +3329,7 @@ class CppGenerator(t_generator.Generator):
                 out('break;')
             fields_scope = s
 
-        with s1('if (fid == std::numeric_limits<int16_t>::min())'):
+        with s1('if (iprot->kUsesFieldNames())'):
             s1(this + '->translateFieldName(_fname, fid, _ftype);')
 
         # Switch statement on the field we are reading

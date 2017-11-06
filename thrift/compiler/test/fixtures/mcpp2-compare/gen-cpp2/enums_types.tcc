@@ -78,7 +78,7 @@ uint32_t SomeStruct::read(Protocol_* iprot) {
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
-    if (fid == std::numeric_limits<int16_t>::min()) {
+    if (iprot->kUsesFieldNames()) {
       this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {

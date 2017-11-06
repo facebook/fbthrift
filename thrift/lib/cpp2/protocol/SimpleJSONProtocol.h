@@ -103,6 +103,10 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
+  static constexpr bool kUsesFieldNames() {
+    return true;
+  }
+
   /**
    * Reading functions
    */
