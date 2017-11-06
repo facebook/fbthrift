@@ -147,6 +147,7 @@ void SingleRpcChannel::sendThriftRequest(
   auto& msgHeaders = msg.getHeaders();
   if (!httpHost_.empty()) {
     msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
+    msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   }
   if (metadata->__isset.clientTimeoutMs) {
     DCHECK(metadata->clientTimeoutMs > 0);
@@ -217,7 +218,8 @@ ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(int32_t) noexcept {
 
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  VLOG(2) << "onH2StreamBegin";
+  VLOG(2) << "onH2StreamBegin: " << headers->getStatusCode() << " "
+          << headers->getStatusMessage();
   headers_ = std::move(headers);
 }
 
