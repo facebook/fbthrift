@@ -80,13 +80,20 @@ class ThriftRequest : public ResponseChannel::Request {
     scheduleTimeouts(*metadata);
   }
 
+  virtual ~ThriftRequest() {
+    // Cancel the timers before getting destroyed
+    cancelTimeout();
+  }
+
   bool isActive() override {
     return active_;
   }
 
   void cancel() override {
-    active_ = false;
-    cancelTimeout();
+    if (active_) {
+      active_ = false;
+      cancelTimeout();
+    }
   }
 
   bool isOneway() override {
@@ -105,52 +112,21 @@ class ThriftRequest : public ResponseChannel::Request {
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
-    if (isActive()) {
-      if (checkResponseSize(*buf)) {
-        auto metadata = std::make_unique<ResponseRpcMetadata>();
-        metadata->seqId = seqId_;
-        metadata->__isset.seqId = true;
-        metadata->otherMetadata = header_.releaseWriteHeaders();
-        auto* eh = header_.getExtraWriteHeaders();
-        if (eh) {
-          metadata->otherMetadata.insert(eh->begin(), eh->end());
-        }
-        if (!metadata->otherMetadata.empty()) {
-          metadata->__isset.otherMetadata = true;
-        }
-        channel_->sendThriftResponse(std::move(metadata), std::move(buf));
-      } else {
-        sendErrorWrapped(
-            folly::make_exception_wrapper<TApplicationException>(
-                TApplicationException::TApplicationExceptionType::
-                    INTERNAL_ERROR,
-                "Response size too big"),
-            kResponseTooBigErrorCode,
-            cb);
-      }
+    if (active_) {
+      active_ = false;
+      cancelTimeout();
+      sendReplyInternal(std::move(buf), cb);
     }
   }
 
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* /*cb*/ = nullptr) override {
-    if (isActive()) {
-      DCHECK(ew.is_compatible_with<TApplicationException>());
-      header_.setHeader("ex", exCode);
-      ew.with_exception([&](TApplicationException& tae) {
-        std::unique_ptr<folly::IOBuf> exbuf;
-        auto proto = header_.getProtocolId();
-        try {
-          exbuf = serializeError(proto, tae, name_, seqId_);
-        } catch (const protocol::TProtocolException& pe) {
-          // Should never happen.  Log an error and return an empty
-          // payload.
-          LOG(ERROR) << "serializeError failed. type=" << pe.getType()
-                     << " what()=" << pe.what();
-        }
-        sendReply(std::move(exbuf));
-      });
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
+    if (active_) {
+      active_ = false;
+      cancelTimeout();
+      sendErrorWrappedInternal(std::move(ew), exCode, cb);
     }
   }
 
@@ -159,7 +135,56 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
  private:
+  void sendReplyInternal(
+      std::unique_ptr<folly::IOBuf>&& buf,
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
+    if (checkResponseSize(*buf)) {
+      auto metadata = std::make_unique<ResponseRpcMetadata>();
+      metadata->seqId = seqId_;
+      metadata->__isset.seqId = true;
+      metadata->otherMetadata = header_.releaseWriteHeaders();
+      auto* eh = header_.getExtraWriteHeaders();
+      if (eh) {
+        metadata->otherMetadata.insert(eh->begin(), eh->end());
+      }
+      if (!metadata->otherMetadata.empty()) {
+        metadata->__isset.otherMetadata = true;
+      }
+      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
+    } else {
+      sendErrorWrappedInternal(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+              "Response size too big"),
+          kResponseTooBigErrorCode,
+          cb);
+    }
+  }
+
+  void sendErrorWrappedInternal(
+      folly::exception_wrapper ew,
+      const std::string& exCode,
+      apache::thrift::MessageChannel::SendCallback* /*cb*/) {
+    DCHECK(ew.is_compatible_with<TApplicationException>());
+    header_.setHeader("ex", exCode);
+    ew.with_exception([&](TApplicationException& tae) {
+      std::unique_ptr<folly::IOBuf> exbuf;
+      auto proto = header_.getProtocolId();
+      try {
+        exbuf = serializeError(proto, tae, name_, seqId_);
+      } catch (const protocol::TProtocolException& pe) {
+        // Should never happen.  Log an error and return an empty
+        // payload.
+        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+                   << " what()=" << pe.what();
+      }
+      sendReplyInternal(std::move(exbuf));
+    });
+  }
+
   void cancelTimeout() {
+    queueTimeout_.canceled_ = true;
+    taskTimeout_.canceled_ = true;
     queueTimeout_.cancelTimeout();
     taskTimeout_.cancelTimeout();
   }
@@ -210,39 +235,34 @@ class ThriftRequest : public ResponseChannel::Request {
 
   class QueueTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequest* request_;
+    bool canceled_{false};
     void timeoutExpired() noexcept override {
-      if (!request_->reqContext_.getStartedProcessing()) {
-        request_->cancel();
-        if (!request_->isOneway()) {
-          request_->channel_->getEventBase()->runInEventBaseThread([this]() {
-            request_->sendErrorWrapped(
-                TApplicationException(
-                    TApplicationException::TApplicationExceptionType::TIMEOUT,
-                    "Queue Timeout"),
-                kTaskExpiredErrorCode,
-                nullptr);
-          });
-        }
-        cancelTimeout();
+      if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
+          request_->active_ && !request_->isOneway()) {
+        request_->active_ = false;
+        request_->sendErrorWrappedInternal(
+            TApplicationException(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                "Queue Timeout"),
+            kTaskExpiredErrorCode,
+            nullptr);
       }
     }
     friend class ThriftRequest;
   };
   class TaskTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequest* request_;
+    bool canceled_{false};
     void timeoutExpired() noexcept override {
-      request_->cancel();
-      if (!request_->isOneway()) {
-        request_->channel_->getEventBase()->runInEventBaseThread([this]() {
-          request_->sendErrorWrapped(
-              TApplicationException(
-                  TApplicationException::TApplicationExceptionType::TIMEOUT,
-                  "Task expired"),
-              kTaskExpiredErrorCode,
-              nullptr);
-        });
+      if (!canceled_ && request_->active_ && !request_->isOneway()) {
+        request_->active_ = false;
+        request_->sendErrorWrappedInternal(
+            TApplicationException(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                "Task expired"),
+            kTaskExpiredErrorCode,
+            nullptr);
       }
-      cancelTimeout();
     }
     friend class ThriftRequest;
   };

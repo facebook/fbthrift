@@ -105,7 +105,6 @@ void TransportCompatibilityTest::setupServer() {
 
 void TransportCompatibilityTest::startServer() {
   DCHECK(server_) << "First call setupServer() function";
-
   auto eventHandler =
       std::make_shared<TransportCompatibilityTestEventHandler>();
   server_->setServerEventHandler(eventHandler);
@@ -172,7 +171,7 @@ class TimeoutTestCallback : public RequestCallback {
     EXPECT_FALSE(requestSentCalled_);
     requestSentCalled_ = true;
   }
-  void replyReceived(ClientReceiveState&& /*crs*/) override {
+  void replyReceived(ClientReceiveState&&) override {
     EXPECT_TRUE(requestSentCalled_);
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(shouldTimeout_);
@@ -506,12 +505,14 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
                       std::unique_ptr<TestServiceAsyncClient> client) mutable {
     int32_t numCores = sysconf(_SC_NPROCESSORS_ONLN);
     int callCount = numCores + 1; // more than the core count!
-    // EXPECT_CALL(*handler_.get(), sleep_(1000)).Times(AtMost(198));
 
     // Queue expiration - executes some of the tasks ( = thread count)
     server_->setQueueTimeout(std::chrono::milliseconds(10));
+    server_->setTaskExpireTime(std::chrono::milliseconds(10));
     std::vector<folly::Future<folly::Unit>> futures(callCount);
     for (int i = 0; i < callCount; ++i) {
+      RpcOptions opts;
+      opts.setTimeout(std::chrono::milliseconds(10));
       futures[i] = client->future_sleep(100);
     }
     int taskTimeoutCount = 0;
@@ -519,11 +520,14 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     for (auto& future : futures) {
       auto& waitedFuture = future.wait();
       auto& triedFuture = waitedFuture.getTry();
-      if (triedFuture.withException([](TTransportException& ex) {
-            EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
+      if (triedFuture.withException([](TApplicationException& ex) {
+            EXPECT_EQ(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                ex.getType());
           })) {
         ++taskTimeoutCount;
       } else {
+        CHECK(!triedFuture.hasException());
         ++successCount;
       }
     }
@@ -541,10 +545,14 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     for (auto& future : futures) {
       auto& waitedFuture = future.wait();
       auto& triedFuture = waitedFuture.getTry();
-      if (triedFuture.withException([](TTransportException& ex) {
-            EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
+      if (triedFuture.withException([](TApplicationException& ex) {
+            EXPECT_EQ(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                ex.getType());
           })) {
         ++taskTimeoutCount;
+      } else {
+        CHECK(!triedFuture.hasException());
       }
     }
     EXPECT_EQ(callCount, taskTimeoutCount)
@@ -606,8 +614,8 @@ void TransportCompatibilityTest::TestOneway_Saturation() {
                       std::shared_ptr<ClientConnectionIf> connection) {
     EXPECT_CALL(*handler_.get(), add_(3));
     // note that no EXPECT_CALL for addAfterDelay_(0, 5)
-    EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5));
     if (FLAGS_transport == "rsocket") {
+      EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5));
       EXPECT_CALL(*handler_.get(), addAfterDelay_(50, 5));
     }
 
@@ -622,10 +630,10 @@ void TransportCompatibilityTest::TestOneway_Saturation() {
 
     // Client should be able to issue both of these functions as
     // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
-    client->sync_addAfterDelay(100, 5);
     if (FLAGS_transport == "rsocket") {
       // http2 will fail this because the underlying stream is still twoway.
       // So we don't test this for http2.
+      client->sync_addAfterDelay(100, 5);
       client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
     }
   });
