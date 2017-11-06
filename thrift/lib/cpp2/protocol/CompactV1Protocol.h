@@ -101,6 +101,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::CompactProtocolReader;
   using CompactProtocolReader::protocolType;
   using CompactProtocolReader::kUsesFieldNames;
+  using CompactProtocolReader::kOmitsContainerSizes;
 
   using CompactProtocolReader::setStringSizeLimit;
   using CompactProtocolReader::setContainerSizeLimit;

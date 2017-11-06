@@ -97,6 +97,10 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
     return false;
   }
 
+  static constexpr bool kOmitsContainerSizes() {
+    return false;
+  }
+
   inline uint32_t readStructBegin(std::string& name);
   inline uint32_t readStructEnd();
   inline uint32_t readFieldBegin(std::string& name,

@@ -107,6 +107,10 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
     return true;
   }
 
+  static constexpr bool kOmitsContainerSizes() {
+    return true;
+  }
+
   /**
    * Reading functions
    */

@@ -38,6 +38,7 @@ class VirtualReaderBase {
 
   virtual ProtocolType protocolType() const = 0;
   virtual bool kUsesFieldNames() const = 0;
+  virtual bool kOmitsContainerSizes() const = 0;
 
   virtual void setInput(const folly::io::Cursor& cursor) = 0;
   void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
@@ -188,6 +189,10 @@ class VirtualReader : public VirtualReaderBase {
 
   bool kUsesFieldNames() const override {
     return protocol_.kUsesFieldNames();
+  }
+
+  virtual bool kOmitsContainerSizes() const override {
+    return protocol_.kOmitsContainerSizes();
   }
 
   using VirtualReaderBase::setInput;

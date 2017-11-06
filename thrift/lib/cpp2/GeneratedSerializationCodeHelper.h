@@ -64,10 +64,6 @@ namespace thrift {
 namespace detail {
 namespace pm {
 
-inline bool is_unknown_container_size(uint32_t const size) {
-  return size == std::numeric_limits<decltype(size)>::max();
-}
-
 template <typename T>
 inline auto reserve_if_possible(T* t, std::uint32_t size)
     -> decltype(t->reserve(size), void()) {
@@ -231,7 +227,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     TType reported_type = protocol::T_STOP;
 
     xfer += protocol.readListBegin(reported_type, list_size);
-    if (is_unknown_container_size(list_size)) {
+    if (protocol.kOmitsContainerSizes()) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
@@ -313,7 +309,7 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
     TType reported_type = protocol::T_STOP;
 
     xfer += protocol.readListBegin(reported_type, list_size);
-    if (is_unknown_container_size(list_size)) {
+    if (protocol.kOmitsContainerSizes()) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
@@ -395,7 +391,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     TType reported_type = protocol::T_STOP;
 
     xfer += protocol.readSetBegin(reported_type, set_size);
-    if (is_unknown_container_size(set_size)) {
+    if (protocol.kOmitsContainerSizes()) {
       while (protocol.peekSet()) {
         xfer += consume_elem(protocol, out);
       }
@@ -475,7 +471,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
 
     xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-    if (is_unknown_container_size(map_size)) {
+    if (protocol.kOmitsContainerSizes()) {
       while (protocol.peekMap()) {
         xfer += consume_elem(protocol, out);
       }
@@ -676,7 +672,7 @@ struct protocol_methods<
     TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
 
     xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-    if (is_unknown_container_size(map_size)) {
+    if (protocol.kOmitsContainerSizes()) {
       // SimpleJSONProtocol do not save types and map length.
       if (rpt_key_type != protocol::T_STOP &&
           rpt_mapped_type != protocol::T_STOP) {
