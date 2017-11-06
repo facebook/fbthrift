@@ -28,16 +28,16 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
-using std::unique_ptr;
-using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
 using folly::RequestContext;
 using std::make_unique;
+using std::pair;
+using std::unique_ptr;
 using namespace apache::thrift::transport;
-using folly::EventBase;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
+using folly::EventBase;
 using HResClock = std::chrono::high_resolution_clock;
 using Us = std::chrono::microseconds;
 using apache::thrift::transport::TTransportException;
@@ -168,12 +168,13 @@ uint32_t HTTPClientChannel::sendOnewayRequest(
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header) {
-  sendRequest_(rpcOptions,
-               true,
-               std::move(cb),
-               std::move(ctx),
-               std::move(buf),
-               std::move(header));
+  sendRequest_(
+      rpcOptions,
+      true,
+      std::move(cb),
+      std::move(ctx),
+      std::move(buf),
+      std::move(header));
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
@@ -211,16 +212,12 @@ uint32_t HTTPClientChannel::sendRequest_(
   // Do not try to keep the raw pointer of this out of this function,
   // it is a self-destruct-object, it can dangle at some time later,
   // instead, only react to its callback
-  auto httpCallback =
-      new HTTPTransactionCallback(oneway,
-                                  std::move(cb),
-                                  std::move(ctx),
-                                  isSecurityActive(),
-                                  protocolId_);
+  auto httpCallback = new HTTPTransactionCallback(
+      oneway, std::move(cb), std::move(ctx), isSecurityActive(), protocolId_);
 
   if (!httpSession_) {
-    TTransportException ex(TTransportException::NOT_OPEN,
-                           "HTTPSession is not open");
+    TTransportException ex(
+        TTransportException::NOT_OPEN, "HTTPSession is not open");
     httpCallback->messageSendError(
         folly::make_exception_wrapper<TTransportException>(std::move(ex)));
     delete httpCallback;
@@ -230,8 +227,9 @@ uint32_t HTTPClientChannel::sendRequest_(
   auto txn = httpSession_->newTransaction(httpCallback);
 
   if (!txn) {
-    TTransportException ex(TTransportException::NOT_OPEN,
-                           "Too many active requests on connection");
+    TTransportException ex(
+        TTransportException::NOT_OPEN,
+        "Too many active requests on connection");
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
     httpCallback->messageSendError(
@@ -322,25 +320,27 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
   }
 
   headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
-  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
-              "application/x-thrift");
+  headers.set(
+      proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
+      "application/x-thrift");
 
   switch (protocolId_) {
     case protocol::T_BINARY_PROTOCOL:
-      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                  "binary");
+      headers.set(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "binary");
       break;
     case protocol::T_COMPACT_PROTOCOL:
-      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                  "compact");
+      headers.set(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "compact");
       break;
     case protocol::T_JSON_PROTOCOL:
-      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                  "json");
+      headers.set(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "json");
       break;
     case protocol::T_SIMPLE_JSON_PROTOCOL:
-      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                  "simplejson");
+      headers.set(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+          "simplejson");
       break;
     default:
       // Do nothing
@@ -350,13 +350,15 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
   return msg;
 }
 
-void HTTPClientChannel::setFlowControl(size_t initialReceiveWindow,
-                                       size_t receiveStreamWindowSize,
-                                       size_t receiveSessionWindowSize) {
+void HTTPClientChannel::setFlowControl(
+    size_t initialReceiveWindow,
+    size_t receiveStreamWindowSize,
+    size_t receiveSessionWindowSize) {
   if (httpSession_) {
-    httpSession_->setFlowControl(initialReceiveWindow,
-                                 receiveStreamWindowSize,
-                                 receiveSessionWindowSize);
+    httpSession_->setFlowControl(
+        initialReceiveWindow,
+        receiveStreamWindowSize,
+        receiveSessionWindowSize);
   }
 }
 
@@ -373,8 +375,7 @@ HTTPClientChannel::HTTPTransactionCallback::HTTPTransactionCallback(
       ctx_(std::move(ctx)),
       isSecurityActive_(isSecurityActive),
       protoId_(protoId),
-      txn_(nullptr) {
-}
+      txn_(nullptr) {}
 
 HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {
   if (txn_) {
@@ -401,8 +402,8 @@ void HTTPClientChannel::HTTPTransactionCallback::requestError(
     folly::exception_wrapper ex) {
   if (cb_) {
     folly::RequestContextScopeGuard rctx(cb_->context_);
-    cb_->requestError(ClientReceiveState(
-        std::move(ex), std::move(ctx_), isSecurityActive_));
+    cb_->requestError(
+        ClientReceiveState(std::move(ex), std::move(ctx_), isSecurityActive_));
     cb_ = nullptr;
   }
 }
@@ -458,19 +459,20 @@ void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
     header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
     apache::thrift::transport::THeader::StringToStringMap readHeaders;
     msg_->getHeaders().forEach(
-        [&readHeaders] (const std::string& key, const std::string& val) {
+        [&readHeaders](const std::string& key, const std::string& val) {
           readHeaders[key] = val;
         });
     header->setReadHeaders(std::move(readHeaders));
     folly::RequestContextScopeGuard rctx(cb_->context_);
     auto body = body_->move();
     body_.reset();
-    cb_->replyReceived(ClientReceiveState(protoId_,
-                                          std::move(body),
-                                          std::move(header),
-                                          std::move(ctx_),
-                                          isSecurityActive_,
-                                          true));
+    cb_->replyReceived(ClientReceiveState(
+        protoId_,
+        std::move(body),
+        std::move(header),
+        std::move(ctx_),
+        isSecurityActive_,
+        true));
     cb_ = nullptr;
   }
 }
@@ -504,5 +506,5 @@ void HTTPClientChannel::HTTPTransactionCallback::lastByteFlushed() noexcept {
 
 // end proxygen::HTTPTransaction::TransportCallback methods
 
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache
