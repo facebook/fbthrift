@@ -89,6 +89,8 @@ struct TEnumDataStorage;
  */
 template <typename T>
 struct TEnumTraits {
+  static_assert(std::is_enum<T>::value, "only works with enum types");
+
   static const std::size_t size;
   static const folly::Range<const T*> values;
   static const folly::Range<const folly::StringPiece*> names;
