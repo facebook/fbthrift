@@ -7,6 +7,7 @@
 namespace cpp apache.thrift
 namespace php thrift
 namespace py apache.thrift.dynamic
+namespace java.swift org.apache.thrift.dynamic
 
 cpp_include "thrift/lib/thrift/SerializableDynamic.h"
 
