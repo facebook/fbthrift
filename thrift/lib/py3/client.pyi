@@ -16,7 +16,7 @@ class Client:
 
 
 def get_client(
-    clientKlass: Type[Client],
+    clientKlass: Type[cT],
     *,
     host: str = ...,
     port: int,
@@ -26,5 +26,5 @@ def get_client(
 
 
 def install_proxy_factory(
-    Optional[Callable(Type[Client], Callable(cT, Any))] factory
+    factory: Optional[Callable[[Type[Client]], Callable[[cT], Any]]],
 ) -> None: ...
