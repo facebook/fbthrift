@@ -715,7 +715,9 @@ class CppGenerator(t_generator.Generator):
         return 'apache::thrift::protocol::' + suffix
 
     def _generate_data(self):
-        context = self._make_context(self._program.name + '_data')
+        context = self._make_context(
+            self._program.name + '_data',
+            is_types_context=True)
         sg = get_global_scope(CppPrimitiveFactory, context)
         if self.flag_compatibility:
             # Delegate to cpp1 data
@@ -4638,7 +4640,9 @@ class CppGenerator(t_generator.Generator):
     def _generate_consts(self, constants):
         name = self._program.name
         # build the const scope
-        context = self._make_context(self._program.name + '_constants')
+        context = self._make_context(
+            self._program.name + '_constants',
+            is_types_context=True)
         sg = get_global_scope(CppPrimitiveFactory, context)
         # Include the types header
         sg('#include "{0}"'.format(self._with_include_prefix(self._program,
@@ -4774,7 +4778,7 @@ class CppGenerator(t_generator.Generator):
 
         # Combo include: types
         context_cmb_types = self._make_context(
-            name + '_fatal_types', tcc=False, impl=False)
+            name + '_fatal_types', tcc=False, impl=False, is_types_context=True)
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5107,7 +5111,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_enum', tcc=False, impl=False)
+            name + '_fatal_enum', tcc=False, impl=False, is_types_context=True)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
@@ -5205,7 +5209,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_union', tcc=False, impl=False)
+            name + '_fatal_union', tcc=False, impl=False, is_types_context=True)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5346,7 +5350,7 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         context = self._make_context(
-            name + '_fatal_struct', tcc=False, impl=False)
+            name + '_fatal_struct', tcc=False, impl=False, is_types_context=True)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5630,7 +5634,8 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_constant', tcc=False, impl=False)
+            name + '_fatal_constant', tcc=False, impl=False,
+            is_types_context=True)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_fatal_types.h')))
@@ -5688,7 +5693,8 @@ class CppGenerator(t_generator.Generator):
                       processmap=False,
                       separateclient=False,
                       custom_protocol=False,
-                      impl=True):
+                      impl=True,
+                      is_types_context=False):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
@@ -5707,7 +5713,8 @@ class CppGenerator(t_generator.Generator):
 
         context = CppOutputContext(output_impl, output_h, output_tcc,
                                    header_path, additional_outputs,
-                                   custom_protocol_h)
+                                   custom_protocol_h,
+                                   is_types_context=is_types_context)
 
         print >>context.outputs, self._autogen_comment
         if context.custom_protocol_h is not None:
@@ -5767,7 +5774,8 @@ class CppGenerator(t_generator.Generator):
 
         # open files and instantiate outputs for types
         context = self._make_context(name + '_types', tcc=True,
-                                     custom_protocol=True)
+                                     custom_protocol=True,
+                                     is_types_context=True)
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
 
         self._types_out_impl = types_out_impl = context.impl
