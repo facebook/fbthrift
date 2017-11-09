@@ -780,7 +780,23 @@ class CppGenerator(t_generator.Generator):
     # SERVICE INTERFACE
     # =====================================================================
 
+    def _generate_async_client_h_shim(self, service):
+        context = self._make_context(service.name + 'AsyncClient', impl=False)
+        s = self._service_global = get_global_scope(CppPrimitiveFactory,
+                                                    context)
+        s.acquire()
+        s('// Simple wrapper header to make interoperating between mstch')
+        s('// and non mstch generated classes easier, without dependencies')
+        s('// between the client -> server and server -> client. This is')
+        s('// an internal implementation detail, and may be deleted at any')
+        s('// time.')
+        s('#include "{0}.h"'.format(
+            self._with_include_prefix(self._program, service.name)))
+        s.release()
+
     def _generate_service(self, service):
+        self._generate_async_client_h_shim(service)
+
         # open files and instantiate outputs
         context = self._make_context(service.name, True, True, True, True)
         self._out_tcc = context.tcc

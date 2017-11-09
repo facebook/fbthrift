@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include "src/gen-cpp2/module_types.h"
-#include "src/gen-cpp2/MyNode.h"
+#include "src/gen-cpp2/MyNodeAsyncClient.h"
 
 namespace folly {
   class IOBuf;

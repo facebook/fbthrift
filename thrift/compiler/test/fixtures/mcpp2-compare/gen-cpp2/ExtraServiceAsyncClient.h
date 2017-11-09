@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include "src/gen-cpp2/extra_services_types.h"
-#include "ParamService.h"
+#include "ParamServiceAsyncClient.h"
 #include "module_types.h"
 
 namespace folly {
