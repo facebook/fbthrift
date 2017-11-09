@@ -1073,7 +1073,11 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
     std::string& include_prefix) {
   auto prefix = program->get_include_prefix();
   if (prefix.empty()) {
-    return prefix;
+    if (include_prefix.empty()) {
+      return prefix;
+    } else {
+      return include_prefix + "/gen-cpp2/";
+    }
   }
   if (prefix[0] == '/') {
     return include_prefix + "/gen-cpp2/";
