@@ -141,15 +141,8 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
   Internship() :
       weeks(0),
       employer( ::cpp2::Company::FACEBOOK) {}
-  // FragileConstructor for use in initialization lists only
-
-  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg) :
-      weeks(std::move(weeks__arg)),
-      title(std::move(title__arg)),
-      employer(std::move(employer__arg)) {
-    __isset.title = true;
-    __isset.employer = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Internship(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -187,13 +180,15 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
    ::cpp2::Company employer;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       title = false;
       employer = false;
     }
 
-    bool title = false;
-    bool employer = false;
+    bool title;
+    bool employer;
   } __isset;
   bool operator==(const Internship& rhs) const;
   bool operator < (const Internship& rhs) const;
@@ -294,12 +289,8 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
 
   UnEnumStruct() :
       city(static_cast< ::cpp2::City>(-1)) {}
-  // FragileConstructor for use in initialization lists only
-
-  UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg) :
-      city(std::move(city__arg)) {
-    __isset.city = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   UnEnumStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     UnEnumStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -322,11 +313,13 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
    ::cpp2::City city;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       city = false;
     }
 
-    bool city = false;
+    bool city;
   } __isset;
   bool operator==(const UnEnumStruct& rhs) const;
 
@@ -406,11 +399,8 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
   Range() :
       min(0),
       max(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
-      min(std::move(min__arg)),
-      max(std::move(max__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Range(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Range(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -526,14 +516,8 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   struct1() :
       a(1234567),
       b(apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>")) {}
-  // FragileConstructor for use in initialization lists only
-
-  struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)) {
-    __isset.a = true;
-    __isset.b = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -564,13 +548,15 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   std::string b;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       a = false;
       b = false;
     }
 
-    bool a = false;
-    bool b = false;
+    bool a;
+    bool b;
   } __isset;
   bool operator==(const struct1& rhs) const;
 
@@ -667,18 +653,8 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
 
   struct2() :
       a(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)),
-      c(std::move(c__arg)),
-      d(std::move(d__arg)) {
-    __isset.a = true;
-    __isset.b = true;
-    __isset.c = true;
-    __isset.d = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -725,6 +701,8 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
   std::vector<int32_t> d;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       a = false;
       b = false;
@@ -732,10 +710,10 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
       d = false;
     }
 
-    bool a = false;
-    bool b = false;
-    bool c = false;
-    bool d = false;
+    bool a;
+    bool b;
+    bool c;
+    bool d;
   } __isset;
   bool operator==(const struct2& rhs) const;
 
@@ -856,16 +834,8 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
 
   struct3() :
       b(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)),
-      c(std::move(c__arg)) {
-    __isset.a = true;
-    __isset.b = true;
-    __isset.c = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -904,15 +874,17 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
    ::cpp2::struct2 c;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       a = false;
       b = false;
       c = false;
     }
 
-    bool a = false;
-    bool b = false;
-    bool c = false;
+    bool a;
+    bool b;
+    bool c;
   } __isset;
   bool operator==(const struct3& rhs) const;
 

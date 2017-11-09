@@ -14,25 +14,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  // FragileConstructor for use in initialization lists only
-
-<%^struct:fields?%>
-  <%struct:name%>(apache::thrift::FragileConstructor) {}
+%><%^struct:fields?%>
+<%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor) {}
 <%/struct:fields?%>
 <%#struct:fields?%>
-  <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
+<%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
 <%#struct:fields%>
 <%#struct:optionals?%>
-      <%field:name%>(std::move(<%field:name%>__arg))<%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
+    <%field:name%>(std::move(<%field:name%>__arg))<%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
 <%/struct:optionals?%>
 <%^struct:optionals?%>
-      <%field:name%>(std::move(<%field:name%>__arg))<%#last?%> {<%^struct:isset_fields?%>}<%/struct:isset_fields?%><%/last?%><%^last?%>,<%/last?%>
+    <%field:name%>(std::move(<%field:name%>__arg))<%#last?%> {<%^struct:isset_fields?%>}<%/struct:isset_fields?%><%/last?%><%^last?%>,<%/last?%>
 <%/struct:optionals?%>
 <%/struct:fields%>
 <%#struct:isset_fields%><%^struct:optionals?%>
-    __isset.<%field:name%> = true;
+  __isset.<%field:name%> = true;
 <%#last?%>
-  }
+}
 <%/last?%>
 <%/struct:optionals?%><%/struct:isset_fields%>
 <%/struct:fields?%>

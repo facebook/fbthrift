@@ -33,9 +33,8 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
-  // FragileConstructor for use in initialization lists only
-
-  Empty(apache::thrift::FragileConstructor) {}
+  // FragileConstructor for use in initialization lists only.
+  Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
 

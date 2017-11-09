@@ -361,15 +361,8 @@ class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField>
       opt_value(0),
       value(0),
       req_value(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg) :
-      opt_value(std::move(opt_value__arg)),
-      value(std::move(value__arg)),
-      req_value(std::move(req_value__arg)) {
-    __isset.opt_value = true;
-    __isset.value = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -407,13 +400,15 @@ class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField>
   int64_t req_value;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       opt_value = false;
       value = false;
     }
 
-    bool opt_value = false;
-    bool value = false;
+    bool opt_value;
+    bool value;
   } __isset;
   bool operator==(const MyField& rhs) const;
   bool operator < (const MyField& rhs) const;
@@ -508,12 +503,8 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
  public:
 
   MyStruct() {}
-  // FragileConstructor for use in initialization lists only
-
-  MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg) :
-      opt_ref(std::move(opt_ref__arg)),
-      ref(std::move(ref__arg)),
-      req_ref(std::move(req_ref__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -547,6 +538,8 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::unique_ptr< ::cpp2::MyField> req_ref;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -610,15 +603,8 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
 
   StructWithUnion() :
       aDouble(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg) :
-      u(std::move(u__arg)),
-      aDouble(std::move(aDouble__arg)),
-      f(std::move(f__arg)) {
-    __isset.aDouble = true;
-    __isset.f = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -654,13 +640,15 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
    ::cpp2::MyField f;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       aDouble = false;
       f = false;
     }
 
-    bool aDouble = false;
-    bool f = false;
+    bool aDouble;
+    bool f;
   } __isset;
   bool operator==(const StructWithUnion& rhs) const;
   bool operator < (const StructWithUnion& rhs) const;
@@ -740,12 +728,8 @@ class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<
  public:
 
   RecursiveStruct() {}
-  // FragileConstructor for use in initialization lists only
-
-  RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg) :
-      mes(std::move(mes__arg)) {
-    __isset.mes = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   RecursiveStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     RecursiveStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -768,11 +752,13 @@ class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::cpp2::RecursiveStruct> mes;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       mes = false;
     }
 
-    bool mes = false;
+    bool mes;
   } __isset;
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator < (const RecursiveStruct& rhs) const;
@@ -842,22 +828,10 @@ namespace cpp2 {
 class StructWithContainers : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
  public:
 
-  StructWithContainers() :
-      list_ref(std::make_unique<std::vector<int32_t>>()),
-      set_ref(std::make_unique<std::set<int32_t>>()),
-      map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
-      list_ref_unique(std::make_unique<std::vector<int32_t>>()),
-      set_ref_shared(std::make_shared<std::set<int32_t>>()),
-      list_ref_shared_const(std::make_shared<std::vector<int32_t>>()) {}
-  // FragileConstructor for use in initialization lists only
+  StructWithContainers();
 
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg) :
-      list_ref(std::move(list_ref__arg)),
-      set_ref(std::move(set_ref__arg)),
-      map_ref(std::move(map_ref__arg)),
-      list_ref_unique(std::move(list_ref_unique__arg)),
-      set_ref_shared(std::move(set_ref_shared__arg)),
-      list_ref_shared_const(std::move(list_ref_shared_const__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithContainers(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -912,6 +886,8 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -996,12 +972,8 @@ class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOper
  public:
 
   StructWithSharedConst() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg) :
-      opt_shared_const(std::move(opt_shared_const__arg)),
-      shared_const(std::move(shared_const__arg)),
-      req_shared_const(std::move(req_shared_const__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithSharedConst(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1037,6 +1009,8 @@ class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOper
   std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -1099,9 +1073,8 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
-  // FragileConstructor for use in initialization lists only
-
-  Empty(apache::thrift::FragileConstructor) {}
+  // FragileConstructor for use in initialization lists only.
+  Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
 
@@ -1177,12 +1150,8 @@ class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<St
  public:
 
   StructWithRef() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
-      def_field(std::move(def_field__arg)),
-      opt_field(std::move(opt_field__arg)),
-      req_field(std::move(req_field__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithRef(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1216,6 +1185,8 @@ class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<St
   std::unique_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -1278,12 +1249,8 @@ class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOp
  public:
 
   StructWithRefTypeUnique() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
-      def_field(std::move(def_field__arg)),
-      opt_field(std::move(opt_field__arg)),
-      req_field(std::move(req_field__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithRefTypeUnique(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1317,6 +1284,8 @@ class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOp
   std::unique_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -1379,12 +1348,8 @@ class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOp
  public:
 
   StructWithRefTypeShared() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg) :
-      def_field(std::move(def_field__arg)),
-      opt_field(std::move(opt_field__arg)),
-      req_field(std::move(req_field__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithRefTypeShared(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithRefTypeShared(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1420,6 +1385,8 @@ class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOp
   std::shared_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;
@@ -1482,12 +1449,8 @@ class StructWithRefTypeSharedConst : private apache::thrift::detail::st::Compari
  public:
 
   StructWithRefTypeSharedConst() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg) :
-      def_field(std::move(def_field__arg)),
-      opt_field(std::move(opt_field__arg)),
-      req_field(std::move(req_field__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithRefTypeSharedConst(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithRefTypeSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1523,6 +1486,8 @@ class StructWithRefTypeSharedConst : private apache::thrift::detail::st::Compari
   std::shared_ptr<const  ::cpp2::Empty> req_field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;

@@ -14,6 +14,13 @@
 
 namespace cpp2 {
 
+Included::Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
+    MyIntField(std::move(MyIntField__arg)),
+    MyTransitiveField(std::move(MyTransitiveField__arg)) {
+  __isset.MyIntField = true;
+  __isset.MyTransitiveField = true;
+}
+
 void Included::__clear() {
   // clear all fields
   MyIntField = 0LL;

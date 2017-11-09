@@ -18,6 +18,12 @@
 
 namespace cpp2 {
 
+OldStructure::OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
+    features(std::move(features__arg))
+ {
+  __isset.features = true;
+}
+
 void OldStructure::__clear() {
   // clear all fields
   features.clear();
@@ -71,6 +77,12 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+NewStructure::NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
+    features(std::move(features__arg))
+ {
+  __isset.features = true;
+}
 
 void NewStructure::__clear() {
   // clear all fields
@@ -126,6 +138,12 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+NewStructure2::NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg) :
+    features(std::move(features__arg))
+ {
+  __isset.features = true;
+}
+
 void NewStructure2::__clear() {
   // clear all fields
   features.clear();
@@ -179,6 +197,16 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+NewStructureNested::NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg) :
+    lst(std::move(lst__arg)),
+    mp(std::move(mp__arg)),
+    s(std::move(s__arg))
+ {
+  __isset.lst = true;
+  __isset.mp = true;
+  __isset.s = true;
+}
 
 void NewStructureNested::__clear() {
   // clear all fields
@@ -267,6 +295,12 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+NewStructureNestedField::NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg) :
+    f(std::move(f__arg))
+ {
+  __isset.f = true;
+}
 
 void NewStructureNestedField::__clear() {
   // clear all fields

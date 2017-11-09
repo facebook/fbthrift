@@ -89,6 +89,14 @@ template <> bool TEnumTraits< ::cpp2::Company>::findValue(const char* name,  ::c
 }} // apache::thrift
 namespace cpp2 {
 
+Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg) :
+    weeks(std::move(weeks__arg)),
+    title(std::move(title__arg)),
+    employer(std::move(employer__arg)) {
+  __isset.title = true;
+  __isset.employer = true;
+}
+
 void Internship::__clear() {
   // clear all fields
   weeks = 0;
@@ -149,6 +157,11 @@ template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocol
 } // cpp2
 namespace cpp2 {
 
+UnEnumStruct::UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg) :
+    city(std::move(city__arg)) {
+  __isset.city = true;
+}
+
 void UnEnumStruct::__clear() {
   // clear all fields
   city = static_cast< ::cpp2::City>(-1);
@@ -187,6 +200,10 @@ template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 } // cpp2
 namespace cpp2 {
+
+Range::Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
+    min(std::move(min__arg)),
+    max(std::move(max__arg)) {}
 
 void Range::__clear() {
   // clear all fields
@@ -233,6 +250,13 @@ template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 } // cpp2
 namespace cpp2 {
+
+struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+}
 
 void struct1::__clear() {
   // clear all fields
@@ -281,6 +305,17 @@ template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 } // cpp2
 namespace cpp2 {
+
+struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)),
+    c(std::move(c__arg)),
+    d(std::move(d__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+  __isset.c = true;
+  __isset.d = true;
+}
 
 void struct2::__clear() {
   // clear all fields
@@ -363,6 +398,15 @@ template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 } // cpp2
 namespace cpp2 {
+
+struct3::struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)),
+    c(std::move(c__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+  __isset.c = true;
+}
 
 void struct3::__clear() {
   // clear all fields

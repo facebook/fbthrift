@@ -35,16 +35,8 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct() :
       MyIncludedField( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>( ::cpp2::Foo(::apache::thrift::detail::wrap_argument<1>(2LL))))),
       MyIncludedInt(42LL) {}
-  // FragileConstructor for use in initialization lists only
-
-  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
-      MyIncludedField(std::move(MyIncludedField__arg)),
-      MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
-      MyIncludedInt(std::move(MyIncludedInt__arg)) {
-    __isset.MyIncludedField = true;
-    __isset.MyOtherIncludedField = true;
-    __isset.MyIncludedInt = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -83,15 +75,17 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
    ::cpp2::IncludedInt64 MyIncludedInt;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       MyIncludedField = false;
       MyOtherIncludedField = false;
       MyIncludedInt = false;
     }
 
-    bool MyIncludedField = false;
-    bool MyOtherIncludedField = false;
-    bool MyIncludedInt = false;
+    bool MyIncludedField;
+    bool MyOtherIncludedField;
+    bool MyIncludedInt;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;

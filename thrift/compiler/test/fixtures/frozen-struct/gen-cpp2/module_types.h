@@ -77,24 +77,10 @@ namespace some { namespace ns {
 class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
  public:
 
-  ModuleA() :
-      i32Field(0) {}
-  // FragileConstructor for use in initialization lists only
+  ModuleA();
 
-  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
-      i32Field(std::move(i32Field__arg)),
-      strField(std::move(strField__arg)),
-      listField(std::move(listField__arg)),
-      mapField(std::move(mapField__arg)),
-      inclAField(std::move(inclAField__arg)),
-      inclBField(std::move(inclBField__arg)) {
-    __isset.i32Field = true;
-    __isset.strField = true;
-    __isset.listField = true;
-    __isset.mapField = true;
-    __isset.inclAField = true;
-    __isset.inclBField = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ModuleA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -157,21 +143,16 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
    ::some::ns::IncludedB inclBField;
 
   struct __isset {
-    void __clear() {
-      i32Field = false;
-      strField = false;
-      listField = false;
-      mapField = false;
-      inclAField = false;
-      inclBField = false;
-    }
+    __isset() { __clear(); }
 
-    bool i32Field = false;
-    bool strField = false;
-    bool listField = false;
-    bool mapField = false;
-    bool inclAField = false;
-    bool inclBField = false;
+    void __clear();
+
+    bool i32Field;
+    bool strField;
+    bool listField;
+    bool mapField;
+    bool inclAField;
+    bool inclBField;
   } __isset;
   bool operator==(const ModuleA& rhs) const;
 
@@ -317,14 +298,8 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   ModuleB() :
       i32Field(0),
       inclEnumB(static_cast< ::some::ns::EnumB>(0)) {}
-  // FragileConstructor for use in initialization lists only
-
-  ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg) :
-      i32Field(std::move(i32Field__arg)),
-      inclEnumB(std::move(inclEnumB__arg)) {
-    __isset.i32Field = true;
-    __isset.inclEnumB = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ModuleB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ModuleB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -355,13 +330,15 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
    ::some::ns::EnumB inclEnumB;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       i32Field = false;
       inclEnumB = false;
     }
 
-    bool i32Field = false;
-    bool inclEnumB = false;
+    bool i32Field;
+    bool inclEnumB;
   } __isset;
   bool operator==(const ModuleB& rhs) const;
 

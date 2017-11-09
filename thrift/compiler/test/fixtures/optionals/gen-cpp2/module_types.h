@@ -71,12 +71,7 @@ class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
       blue(0),
       alpha(0) {}
   // FragileConstructor for use in initialization lists only
-
-  Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg) :
-      red(std::move(red__arg)),
-      green(std::move(green__arg)),
-      blue(std::move(blue__arg)),
-      alpha(std::move(alpha__arg)) {}
+  Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Color(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Color(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -192,16 +187,9 @@ namespace cpp2 {
 class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
  public:
 
-  Vehicle() :
-      hasAC(false) {}
+  Vehicle();
   // FragileConstructor for use in initialization lists only
-
-  Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg) :
-      color(std::move(color__arg)),
-      licensePlate(std::move(licensePlate__arg)),
-      description(std::move(description__arg)),
-      name(std::move(name__arg)),
-      hasAC(std::move(hasAC__arg)) {}
+  Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Vehicle(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -308,21 +296,9 @@ namespace cpp2 {
 class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
  public:
 
-  Person() :
-      id(0) {}
+  Person();
   // FragileConstructor for use in initialization lists only
-
-  Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg) :
-      id(std::move(id__arg)),
-      name(std::move(name__arg)),
-      age(std::move(age__arg)),
-      address(std::move(address__arg)),
-      favoriteColor(std::move(favoriteColor__arg)),
-      friends(std::move(friends__arg)),
-      bestFriend(std::move(bestFriend__arg)),
-      petNames(std::move(petNames__arg)),
-      afraidOfAnimal(std::move(afraidOfAnimal__arg)),
-      vehicles(std::move(vehicles__arg)) {}
+  Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Person(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)

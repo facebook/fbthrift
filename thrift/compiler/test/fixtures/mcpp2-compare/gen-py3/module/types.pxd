@@ -180,6 +180,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "some::
     # Forward Declaration
     cdef cppclass cASimpleStruct "some::valid::ns::ASimpleStruct"
     # Forward Declaration
+    cdef cppclass cASimpleStructNoexcept "some::valid::ns::ASimpleStructNoexcept"
+    # Forward Declaration
     cdef cppclass cMyStruct "some::valid::ns::MyStruct"
     # Forward Declaration
     cdef cppclass cSimpleUnion "some::valid::ns::SimpleUnion"
@@ -219,6 +221,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         bint operator==(cASimpleStruct&)
         int64_t boolField
         cASimpleStruct__isset __isset
+
+    cdef cppclass cASimpleStructNoexcept__isset "some::valid::ns::ASimpleStructNoexcept::__isset":
+        bint boolField
+
+    cdef cppclass cASimpleStructNoexcept "some::valid::ns::ASimpleStructNoexcept":
+        cASimpleStructNoexcept() except +
+        cASimpleStructNoexcept(const cASimpleStructNoexcept&) except +
+        bint operator==(cASimpleStructNoexcept&)
+        int64_t boolField
+        cASimpleStructNoexcept__isset __isset
 
     cdef cppclass cMyStruct__isset "some::valid::ns::MyStruct::__isset":
         bint MyBoolField
@@ -676,6 +688,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cASimpleStruct] move(unique_ptr[cASimpleStruct])
     cdef shared_ptr[cASimpleStruct] move_shared "std::move"(shared_ptr[cASimpleStruct])
     cdef unique_ptr[cASimpleStruct] move_unique "std::move"(unique_ptr[cASimpleStruct])
+    cdef shared_ptr[cASimpleStructNoexcept] move(unique_ptr[cASimpleStructNoexcept])
+    cdef shared_ptr[cASimpleStructNoexcept] move_shared "std::move"(shared_ptr[cASimpleStructNoexcept])
+    cdef unique_ptr[cASimpleStructNoexcept] move_unique "std::move"(unique_ptr[cASimpleStructNoexcept])
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
     cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
     cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
@@ -710,6 +725,7 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::Empty>"(shared_ptr[cEmpty])
     cdef shared_ptr[const cASimpleStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::ASimpleStruct>"(shared_ptr[cASimpleStruct])
+    cdef shared_ptr[const cASimpleStructNoexcept] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::ASimpleStructNoexcept>"(shared_ptr[cASimpleStructNoexcept])
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cSimpleUnion] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::SimpleUnion>"(shared_ptr[cSimpleUnion])
     cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::ComplexUnion>"(shared_ptr[cComplexUnion])
@@ -753,6 +769,23 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct])
+
+# Forward Definition of the cython struct
+cdef class ASimpleStructNoexcept(thrift.py3.types.Struct)
+
+cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cASimpleStructNoexcept] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
+        cASimpleStructNoexcept* base_instance,
+        object boolField
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cASimpleStructNoexcept])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)

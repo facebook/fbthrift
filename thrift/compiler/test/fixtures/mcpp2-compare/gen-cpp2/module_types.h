@@ -304,6 +304,7 @@ struct apache_thrift_indirection_module_IndirectionB {
 namespace some { namespace valid { namespace ns {
 class Empty;
 class ASimpleStruct;
+class ASimpleStructNoexcept;
 class MyStruct;
 class SimpleUnion;
 class ComplexUnion;
@@ -374,10 +375,8 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
-  // FragileConstructor for use in initialization lists only
-
-  Empty(apache::thrift::FragileConstructor) {}
-
+  // FragileConstructor for use in initialization lists only.
+  Empty(apache::thrift::FragileConstructor);
   Empty(Empty&& other) noexcept {}
 
   Empty(const Empty&) = default;
@@ -457,12 +456,8 @@ class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<AS
 
   ASimpleStruct() :
       boolField(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg) :
-      boolField(std::move(boolField__arg)) {
-    __isset.boolField = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ASimpleStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ASimpleStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -485,11 +480,13 @@ class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<AS
   int64_t boolField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       boolField = false;
     }
 
-    bool boolField = false;
+    bool boolField;
   } __isset;
   bool operator==(const ASimpleStruct& rhs) const;
   bool operator < (const ASimpleStruct& rhs) const;
@@ -560,37 +557,126 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimp
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
+class ASimpleStructNoexcept : private apache::thrift::detail::st::ComparisonOperators<ASimpleStructNoexcept> {
+ public:
+
+  ASimpleStructNoexcept() :
+      boolField(0) {}
+  // FragileConstructor for use in initialization lists only.
+  ASimpleStructNoexcept(apache::thrift::FragileConstructor, int64_t boolField__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ASimpleStructNoexcept(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ASimpleStructNoexcept(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    boolField = arg.move();
+    __isset.boolField = true;
+  }
+  ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
+      boolField(std::move(other.boolField)),
+      __isset(other.__isset) {}
+  ASimpleStructNoexcept(const ASimpleStructNoexcept&) = default;
+
+  ASimpleStructNoexcept& operator=(ASimpleStructNoexcept&&) = default;
+
+  ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
+  void __clear();
+
+  virtual ~ASimpleStructNoexcept() {}
+
+  int64_t boolField;
+
+  struct __isset {
+    __isset() { __clear(); }
+
+    void __clear() {
+      boolField = false;
+    }
+
+    bool boolField;
+  } __isset;
+  bool operator==(const ASimpleStructNoexcept& rhs) const;
+
+  bool operator < (const ASimpleStructNoexcept& rhs) const {
+    if (!(boolField == rhs.boolField)) {
+      return boolField < rhs.boolField;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int64_t get_boolField() const {
+    return boolField;
+  }
+
+  int64_t& set_boolField(int64_t boolField_) {
+    boolField = boolField_;
+    __isset.boolField = true;
+    return boolField;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+};
+
+void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
+extern template uint32_t ASimpleStructNoexcept::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ASimpleStructNoexcept::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ASimpleStructNoexcept::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::clear( ::some::valid::ns::ASimpleStructNoexcept* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::write(Protocol* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::read(Protocol* proto,  ::some::valid::ns::ASimpleStructNoexcept* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::serializedSize(Protocol const* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
 class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
-  MyStruct() :
-      MyBoolField(0),
-      MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::some::valid::ns::MyEnumA, std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
-  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
-  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
-  // FragileConstructor for use in initialization lists only
+  MyStruct();
 
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg, std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt__arg) :
-      MyBoolField(std::move(MyBoolField__arg)),
-      MyIntField(std::move(MyIntField__arg)),
-      MyStringField(std::move(MyStringField__arg)),
-      MyStringField2(std::move(MyStringField2__arg)),
-      MyBinaryField(std::move(MyBinaryField__arg)),
-      MyBinaryField2(std::move(MyBinaryField2__arg)),
-      MyBinaryField3(std::move(MyBinaryField3__arg)),
-      MyBinaryListField4(std::move(MyBinaryListField4__arg)),
-      MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
-    __isset.MyBoolField = true;
-    __isset.MyIntField = true;
-    __isset.MyStringField = true;
-    __isset.MyStringField2 = true;
-    __isset.MyBinaryField = true;
-    __isset.MyBinaryField2 = true;
-    __isset.MyBinaryListField4 = true;
-    __isset.MyMapEnumAndInt = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg, std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -653,18 +739,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     MyMapEnumAndInt = arg.move();
     __isset.MyMapEnumAndInt = true;
   }
-
-  MyStruct(MyStruct&& other) noexcept :
-      MyBoolField(std::move(other.MyBoolField)),
-      MyIntField(std::move(other.MyIntField)),
-      MyStringField(std::move(other.MyStringField)),
-      MyStringField2(std::move(other.MyStringField2)),
-      MyBinaryField(std::move(other.MyBinaryField)),
-      MyBinaryField2(std::move(other.MyBinaryField2)),
-      MyBinaryField3(std::move(other.MyBinaryField3)),
-      MyBinaryListField4(std::move(other.MyBinaryListField4)),
-      MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
-      __isset(other.__isset) {}
+  MyStruct(MyStruct&& other) noexcept;
 
   MyStruct(const MyStruct&) = default;
 
@@ -686,25 +761,18 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt;
 
   struct __isset {
-    void __clear() {
-      MyBoolField = false;
-      MyIntField = false;
-      MyStringField = false;
-      MyStringField2 = false;
-      MyBinaryField = false;
-      MyBinaryField2 = false;
-      MyBinaryListField4 = false;
-      MyMapEnumAndInt = false;
-    }
+    __isset() { __clear(); }
 
-    bool MyBoolField = false;
-    bool MyIntField = false;
-    bool MyStringField = false;
-    bool MyStringField2 = false;
-    bool MyBinaryField = false;
-    bool MyBinaryField2 = false;
-    bool MyBinaryListField4 = false;
-    bool MyMapEnumAndInt = false;
+    void __clear();
+
+    bool MyBoolField;
+    bool MyIntField;
+    bool MyStringField;
+    bool MyStringField2;
+    bool MyBinaryField;
+    bool MyBinaryField2;
+    bool MyBinaryListField4;
+    bool MyMapEnumAndInt;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
@@ -3201,50 +3269,16 @@ namespace some { namespace valid { namespace ns {
 class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
  public:
 
-  AnException() :
-      code(0),
-      req_code(0),
-      exception_list(std::initializer_list<int32_t>{1,
-  2,
-  3}),
-      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
+  AnException();
+
 
   explicit AnException(const std::string& __message) :
       message2(__message) {}
 
   explicit AnException(std::string&& __message) :
       message2(std::move(__message)) {}
-  // FragileConstructor for use in initialization lists only
-
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message2__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
-      code(std::move(code__arg)),
-      req_code(std::move(req_code__arg)),
-      message2(std::move(message2__arg)),
-      req_message(std::move(req_message__arg)),
-      exception_list(std::move(exception_list__arg)),
-      exception_set(std::move(exception_set__arg)),
-      exception_map(std::move(exception_map__arg)),
-      req_exception_map(std::move(req_exception_map__arg)),
-      enum_field(std::move(enum_field__arg)),
-      enum_container(std::move(enum_container__arg)),
-      a_struct(std::move(a_struct__arg)),
-      a_set_struct(std::move(a_set_struct__arg)),
-      a_union_list(std::move(a_union_list__arg)),
-      union_typedef(std::move(union_typedef__arg)),
-      a_union_typedef_list(std::move(a_union_typedef_list__arg)) {
-    __isset.code = true;
-    __isset.message2 = true;
-    __isset.exception_list = true;
-    __isset.exception_set = true;
-    __isset.exception_map = true;
-    __isset.enum_field = true;
-    __isset.enum_container = true;
-    __isset.a_struct = true;
-    __isset.a_set_struct = true;
-    __isset.a_union_list = true;
-    __isset.union_typedef = true;
-    __isset.a_union_typedef_list = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message2__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3376,33 +3410,22 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
   struct __isset {
-    void __clear() {
-      code = false;
-      message2 = false;
-      exception_list = false;
-      exception_set = false;
-      exception_map = false;
-      enum_field = false;
-      enum_container = false;
-      a_struct = false;
-      a_set_struct = false;
-      a_union_list = false;
-      union_typedef = false;
-      a_union_typedef_list = false;
-    }
+    __isset() { __clear(); }
 
-    bool code = false;
-    bool message2 = false;
-    bool exception_list = false;
-    bool exception_set = false;
-    bool exception_map = false;
-    bool enum_field = false;
-    bool enum_container = false;
-    bool a_struct = false;
-    bool a_set_struct = false;
-    bool a_union_list = false;
-    bool union_typedef = false;
-    bool a_union_typedef_list = false;
+    void __clear();
+
+    bool code;
+    bool message2;
+    bool exception_list;
+    bool exception_set;
+    bool exception_map;
+    bool enum_field;
+    bool enum_container;
+    bool a_struct;
+    bool a_set_struct;
+    bool a_union_list;
+    bool union_typedef;
+    bool a_union_typedef_list;
   } __isset;
   bool operator==(const AnException& rhs) const;
   bool operator < (const AnException& rhs) const;
@@ -3620,15 +3643,8 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   AnotherException() :
       code(0),
       req_code(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg) :
-      code(std::move(code__arg)),
-      req_code(std::move(req_code__arg)),
-      message(std::move(message__arg)) {
-    __isset.code = true;
-    __isset.message = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnotherException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AnotherException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3663,13 +3679,15 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   std::string message;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       code = false;
       message = false;
     }
 
-    bool code = false;
-    bool message = false;
+    bool code;
+    bool message;
   } __isset;
   bool operator==(const AnotherException& rhs) const;
 
@@ -3784,142 +3802,10 @@ namespace some { namespace valid { namespace ns {
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
-  containerStruct() :
-      fieldA(0),
-      req_fieldA(0),
-      opt_fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      req_fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      opt_fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      fieldF(std::initializer_list<std::vector<int32_t>>{std::initializer_list<int32_t>{1,
-  3,
-  5,
-  7,
-  9},
-  std::initializer_list<int32_t>{2,
-  4,
-  8,
-  10,
-  12}}),
-      fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const std::string, std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
-  4,
-  8,
-  12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
-  5,
-  9,
-  13}}}),
-      fieldN(0),
-      fieldQ(static_cast< ::some::valid::ns::MyEnumA>(0)),
-      fieldR( ::some::valid::ns::MyEnumA::fieldB),
-      req_fieldR( ::some::valid::ns::MyEnumA::fieldB),
-      opt_fieldR( ::some::valid::ns::MyEnumA::fieldB),
-      fieldS( ::some::valid::ns::MyEnumA::fieldB),
-      fieldU(std::initializer_list< ::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
-   ::some::valid::ns::MyEnumA::fieldB,
-   ::some::valid::ns::MyEnumA::fieldA}),
-      fieldAC( ::some::valid::ns::MyEnumB::AField),
-      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {}
-  // FragileConstructor for use in initialization lists only
+  containerStruct();
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg) :
-      fieldA(std::move(fieldA__arg)),
-      req_fieldA(std::move(req_fieldA__arg)),
-      opt_fieldA(std::move(opt_fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      req_fieldB(std::move(req_fieldB__arg)),
-      opt_fieldB(std::move(opt_fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      req_fieldC(std::move(req_fieldC__arg)),
-      opt_fieldC(std::move(opt_fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      req_fieldE(std::move(req_fieldE__arg)),
-      opt_fieldE(std::move(opt_fieldE__arg)),
-      fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)),
-      fieldH(std::move(fieldH__arg)),
-      fieldI(std::move(fieldI__arg)),
-      fieldJ(std::move(fieldJ__arg)),
-      fieldK(std::move(fieldK__arg)),
-      fieldL(std::move(fieldL__arg)),
-      fieldM(std::move(fieldM__arg)),
-      fieldN(std::move(fieldN__arg)),
-      fieldO(std::move(fieldO__arg)),
-      fieldP(std::move(fieldP__arg)),
-      fieldQ(std::move(fieldQ__arg)),
-      fieldR(std::move(fieldR__arg)),
-      req_fieldR(std::move(req_fieldR__arg)),
-      opt_fieldR(std::move(opt_fieldR__arg)),
-      fieldS(std::move(fieldS__arg)),
-      fieldT(std::move(fieldT__arg)),
-      fieldU(std::move(fieldU__arg)),
-      fieldV(std::move(fieldV__arg)),
-      req_fieldV(std::move(req_fieldV__arg)),
-      opt_fieldV(std::move(opt_fieldV__arg)),
-      fieldW(std::move(fieldW__arg)),
-      fieldX(std::move(fieldX__arg)),
-      req_fieldX(std::move(req_fieldX__arg)),
-      opt_fieldX(std::move(opt_fieldX__arg)),
-      fieldY(std::move(fieldY__arg)),
-      fieldZ(std::move(fieldZ__arg)),
-      fieldAA(std::move(fieldAA__arg)),
-      fieldAB(std::move(fieldAB__arg)),
-      fieldAC(std::move(fieldAC__arg)),
-      fieldAD(std::move(fieldAD__arg)),
-      fieldAE(std::move(fieldAE__arg)) {
-    __isset.fieldA = true;
-    __isset.opt_fieldA = true;
-    __isset.fieldB = true;
-    __isset.opt_fieldB = true;
-    __isset.fieldC = true;
-    __isset.opt_fieldC = true;
-    __isset.fieldD = true;
-    __isset.fieldE = true;
-    __isset.opt_fieldE = true;
-    __isset.fieldF = true;
-    __isset.fieldG = true;
-    __isset.fieldH = true;
-    __isset.fieldI = true;
-    __isset.fieldJ = true;
-    __isset.fieldK = true;
-    __isset.fieldL = true;
-    __isset.fieldM = true;
-    __isset.fieldN = true;
-    __isset.fieldO = true;
-    __isset.fieldP = true;
-    __isset.fieldQ = true;
-    __isset.fieldR = true;
-    __isset.opt_fieldR = true;
-    __isset.fieldS = true;
-    __isset.fieldT = true;
-    __isset.fieldU = true;
-    __isset.fieldV = true;
-    __isset.opt_fieldV = true;
-    __isset.fieldW = true;
-    __isset.fieldX = true;
-    __isset.opt_fieldX = true;
-    __isset.fieldY = true;
-    __isset.fieldZ = true;
-    __isset.fieldAA = true;
-    __isset.fieldAB = true;
-    __isset.fieldAC = true;
-    __isset.fieldAD = true;
-    __isset.fieldAE = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4283,85 +4169,48 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::map<std::string, int32_t> fieldAE;
 
   struct __isset {
-    void __clear() {
-      fieldA = false;
-      opt_fieldA = false;
-      fieldB = false;
-      opt_fieldB = false;
-      fieldC = false;
-      opt_fieldC = false;
-      fieldD = false;
-      fieldE = false;
-      opt_fieldE = false;
-      fieldF = false;
-      fieldG = false;
-      fieldH = false;
-      fieldI = false;
-      fieldJ = false;
-      fieldK = false;
-      fieldL = false;
-      fieldM = false;
-      fieldN = false;
-      fieldO = false;
-      fieldP = false;
-      fieldQ = false;
-      fieldR = false;
-      opt_fieldR = false;
-      fieldS = false;
-      fieldT = false;
-      fieldU = false;
-      fieldV = false;
-      opt_fieldV = false;
-      fieldW = false;
-      fieldX = false;
-      opt_fieldX = false;
-      fieldY = false;
-      fieldZ = false;
-      fieldAA = false;
-      fieldAB = false;
-      fieldAC = false;
-      fieldAD = false;
-      fieldAE = false;
-    }
+    __isset() { __clear(); }
 
-    bool fieldA = false;
-    bool opt_fieldA = false;
-    bool fieldB = false;
-    bool opt_fieldB = false;
-    bool fieldC = false;
-    bool opt_fieldC = false;
-    bool fieldD = false;
-    bool fieldE = false;
-    bool opt_fieldE = false;
-    bool fieldF = false;
-    bool fieldG = false;
-    bool fieldH = false;
-    bool fieldI = false;
-    bool fieldJ = false;
-    bool fieldK = false;
-    bool fieldL = false;
-    bool fieldM = false;
-    bool fieldN = false;
-    bool fieldO = false;
-    bool fieldP = false;
-    bool fieldQ = false;
-    bool fieldR = false;
-    bool opt_fieldR = false;
-    bool fieldS = false;
-    bool fieldT = false;
-    bool fieldU = false;
-    bool fieldV = false;
-    bool opt_fieldV = false;
-    bool fieldW = false;
-    bool fieldX = false;
-    bool opt_fieldX = false;
-    bool fieldY = false;
-    bool fieldZ = false;
-    bool fieldAA = false;
-    bool fieldAB = false;
-    bool fieldAC = false;
-    bool fieldAD = false;
-    bool fieldAE = false;
+    void __clear();
+
+    bool fieldA;
+    bool opt_fieldA;
+    bool fieldB;
+    bool opt_fieldB;
+    bool fieldC;
+    bool opt_fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool opt_fieldE;
+    bool fieldF;
+    bool fieldG;
+    bool fieldH;
+    bool fieldI;
+    bool fieldJ;
+    bool fieldK;
+    bool fieldL;
+    bool fieldM;
+    bool fieldN;
+    bool fieldO;
+    bool fieldP;
+    bool fieldQ;
+    bool fieldR;
+    bool opt_fieldR;
+    bool fieldS;
+    bool fieldT;
+    bool fieldU;
+    bool fieldV;
+    bool opt_fieldV;
+    bool fieldW;
+    bool fieldX;
+    bool opt_fieldX;
+    bool fieldY;
+    bool fieldZ;
+    bool fieldAA;
+    bool fieldAB;
+    bool fieldAC;
+    bool fieldAD;
+    bool fieldAE;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -4878,16 +4727,8 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
 
   MyIncludedStruct() :
       MyIncludedInt(42LL) {}
-  // FragileConstructor for use in initialization lists only
-
-  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg) :
-      MyIncludedInt(std::move(MyIncludedInt__arg)),
-      MyIncludedStruct(std::move(MyIncludedStruct__arg)),
-      ARefField(std::move(ARefField__arg)),
-      ARequiredField(std::move(ARequiredField__arg)) {
-    __isset.MyIncludedInt = true;
-    __isset.MyIncludedStruct = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyIncludedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyIncludedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4930,13 +4771,15 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
    ::some::valid::ns::AStruct ARequiredField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       MyIncludedInt = false;
       MyIncludedStruct = false;
     }
 
-    bool MyIncludedInt = false;
-    bool MyIncludedStruct = false;
+    bool MyIncludedInt;
+    bool MyIncludedStruct;
   } __isset;
   bool operator==(const MyIncludedStruct& rhs) const;
   bool operator < (const MyIncludedStruct& rhs) const;
@@ -5027,84 +4870,10 @@ namespace some { namespace valid { namespace ns {
 class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
 
-  AnnotatedStruct() :
-      container_with_ref(std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
-      req_container_with_ref(std::make_unique<std::vector<std::string>>()),
-      opt_container_with_ref(std::make_unique<std::set<int32_t>>()),
-      ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
-      req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
-      opt_ref_type_shared(std::make_shared<std::set<int32_t>>()),
-      base_type(0),
-      indirection_a(0),
-      iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
-      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct( ::some::valid::ns::containerStruct(::apache::thrift::detail::wrap_argument<4>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_argument<9>(false))) {}
-  // FragileConstructor for use in initialization lists only
+  AnnotatedStruct();
 
-  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg) :
-      no_annotation(std::move(no_annotation__arg)),
-      cpp_unique_ref(std::move(cpp_unique_ref__arg)),
-      cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
-      container_with_ref(std::move(container_with_ref__arg)),
-      req_cpp_unique_ref(std::move(req_cpp_unique_ref__arg)),
-      req_cpp2_unique_ref(std::move(req_cpp2_unique_ref__arg)),
-      req_container_with_ref(std::move(req_container_with_ref__arg)),
-      opt_cpp_unique_ref(std::move(opt_cpp_unique_ref__arg)),
-      opt_cpp2_unique_ref(std::move(opt_cpp2_unique_ref__arg)),
-      opt_container_with_ref(std::move(opt_container_with_ref__arg)),
-      ref_type_unique(std::move(ref_type_unique__arg)),
-      ref_type_shared(std::move(ref_type_shared__arg)),
-      ref_type_const(std::move(ref_type_const__arg)),
-      req_ref_type_shared(std::move(req_ref_type_shared__arg)),
-      req_ref_type_const(std::move(req_ref_type_const__arg)),
-      req_ref_type_unique(std::move(req_ref_type_unique__arg)),
-      opt_ref_type_const(std::move(opt_ref_type_const__arg)),
-      opt_ref_type_unique(std::move(opt_ref_type_unique__arg)),
-      opt_ref_type_shared(std::move(opt_ref_type_shared__arg)),
-      base_type(std::move(base_type__arg)),
-      list_type(std::move(list_type__arg)),
-      set_type(std::move(set_type__arg)),
-      map_type(std::move(map_type__arg)),
-      map_struct_type(std::move(map_struct_type__arg)),
-      iobuf_type(std::move(iobuf_type__arg)),
-      iobuf_ptr(std::move(iobuf_ptr__arg)),
-      list_i32_template(std::move(list_i32_template__arg)),
-      list_string_template(std::move(list_string_template__arg)),
-      set_template(std::move(set_template__arg)),
-      map_template(std::move(map_template__arg)),
-      typedef_list_template(std::move(typedef_list_template__arg)),
-      typedef_deque_template(std::move(typedef_deque_template__arg)),
-      typedef_set_template(std::move(typedef_set_template__arg)),
-      typedef_map_template(std::move(typedef_map_template__arg)),
-      indirection_a(std::move(indirection_a__arg)),
-      indirection_b(std::move(indirection_b__arg)),
-      indirection_c(std::move(indirection_c__arg)),
-      iobuf_type_val(std::move(iobuf_type_val__arg)),
-      iobuf_ptr_val(std::move(iobuf_ptr_val__arg)),
-      struct_struct(std::move(struct_struct__arg)) {
-    __isset.no_annotation = true;
-    __isset.base_type = true;
-    __isset.list_type = true;
-    __isset.set_type = true;
-    __isset.map_type = true;
-    __isset.map_struct_type = true;
-    __isset.iobuf_type = true;
-    __isset.iobuf_ptr = true;
-    __isset.list_i32_template = true;
-    __isset.list_string_template = true;
-    __isset.set_template = true;
-    __isset.map_template = true;
-    __isset.typedef_list_template = true;
-    __isset.typedef_deque_template = true;
-    __isset.typedef_set_template = true;
-    __isset.typedef_map_template = true;
-    __isset.indirection_a = true;
-    __isset.indirection_b = true;
-    __isset.indirection_c = true;
-    __isset.iobuf_type_val = true;
-    __isset.iobuf_ptr_val = true;
-    __isset.struct_struct = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnnotatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -5367,49 +5136,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     struct_struct = arg.move();
     __isset.struct_struct = true;
   }
-
-  AnnotatedStruct(AnnotatedStruct&& other) noexcept :
-      no_annotation(std::move(other.no_annotation)),
-      cpp_unique_ref(std::move(other.cpp_unique_ref)),
-      cpp2_unique_ref(std::move(other.cpp2_unique_ref)),
-      container_with_ref(std::move(other.container_with_ref)),
-      req_cpp_unique_ref(std::move(other.req_cpp_unique_ref)),
-      req_cpp2_unique_ref(std::move(other.req_cpp2_unique_ref)),
-      req_container_with_ref(std::move(other.req_container_with_ref)),
-      opt_cpp_unique_ref(std::move(other.opt_cpp_unique_ref)),
-      opt_cpp2_unique_ref(std::move(other.opt_cpp2_unique_ref)),
-      opt_container_with_ref(std::move(other.opt_container_with_ref)),
-      ref_type_unique(std::move(other.ref_type_unique)),
-      ref_type_shared(std::move(other.ref_type_shared)),
-      ref_type_const(std::move(other.ref_type_const)),
-      req_ref_type_shared(std::move(other.req_ref_type_shared)),
-      req_ref_type_const(std::move(other.req_ref_type_const)),
-      req_ref_type_unique(std::move(other.req_ref_type_unique)),
-      opt_ref_type_const(std::move(other.opt_ref_type_const)),
-      opt_ref_type_unique(std::move(other.opt_ref_type_unique)),
-      opt_ref_type_shared(std::move(other.opt_ref_type_shared)),
-      base_type(std::move(other.base_type)),
-      list_type(std::move(other.list_type)),
-      set_type(std::move(other.set_type)),
-      map_type(std::move(other.map_type)),
-      map_struct_type(std::move(other.map_struct_type)),
-      iobuf_type(std::move(other.iobuf_type)),
-      iobuf_ptr(std::move(other.iobuf_ptr)),
-      list_i32_template(std::move(other.list_i32_template)),
-      list_string_template(std::move(other.list_string_template)),
-      set_template(std::move(other.set_template)),
-      map_template(std::move(other.map_template)),
-      typedef_list_template(std::move(other.typedef_list_template)),
-      typedef_deque_template(std::move(other.typedef_deque_template)),
-      typedef_set_template(std::move(other.typedef_set_template)),
-      typedef_map_template(std::move(other.typedef_map_template)),
-      indirection_a(std::move(other.indirection_a)),
-      indirection_b(std::move(other.indirection_b)),
-      indirection_c(std::move(other.indirection_c)),
-      iobuf_type_val(std::move(other.iobuf_type_val)),
-      iobuf_ptr_val(std::move(other.iobuf_ptr_val)),
-      struct_struct(std::move(other.struct_struct)),
-      __isset(other.__isset) {}
+  AnnotatedStruct(AnnotatedStruct&& other) noexcept;
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
   void __clear();
@@ -5455,53 +5182,32 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::containerStruct struct_struct;
 
   struct __isset {
-    void __clear() {
-      no_annotation = false;
-      base_type = false;
-      list_type = false;
-      set_type = false;
-      map_type = false;
-      map_struct_type = false;
-      iobuf_type = false;
-      iobuf_ptr = false;
-      list_i32_template = false;
-      list_string_template = false;
-      set_template = false;
-      map_template = false;
-      typedef_list_template = false;
-      typedef_deque_template = false;
-      typedef_set_template = false;
-      typedef_map_template = false;
-      indirection_a = false;
-      indirection_b = false;
-      indirection_c = false;
-      iobuf_type_val = false;
-      iobuf_ptr_val = false;
-      struct_struct = false;
-    }
+    __isset() { __clear(); }
 
-    bool no_annotation = false;
-    bool base_type = false;
-    bool list_type = false;
-    bool set_type = false;
-    bool map_type = false;
-    bool map_struct_type = false;
-    bool iobuf_type = false;
-    bool iobuf_ptr = false;
-    bool list_i32_template = false;
-    bool list_string_template = false;
-    bool set_template = false;
-    bool map_template = false;
-    bool typedef_list_template = false;
-    bool typedef_deque_template = false;
-    bool typedef_set_template = false;
-    bool typedef_map_template = false;
-    bool indirection_a = false;
-    bool indirection_b = false;
-    bool indirection_c = false;
-    bool iobuf_type_val = false;
-    bool iobuf_ptr_val = false;
-    bool struct_struct = false;
+    void __clear();
+
+    bool no_annotation;
+    bool base_type;
+    bool list_type;
+    bool set_type;
+    bool map_type;
+    bool map_struct_type;
+    bool iobuf_type;
+    bool iobuf_ptr;
+    bool list_i32_template;
+    bool list_string_template;
+    bool set_template;
+    bool map_template;
+    bool typedef_list_template;
+    bool typedef_deque_template;
+    bool typedef_set_template;
+    bool typedef_map_template;
+    bool indirection_a;
+    bool indirection_b;
+    bool indirection_c;
+    bool iobuf_type_val;
+    bool iobuf_ptr_val;
+    bool struct_struct;
   } __isset;
   bool operator==(const AnnotatedStruct& rhs) const;
   bool operator < (const AnnotatedStruct& rhs) const;
@@ -5794,14 +5500,8 @@ class FloatStruct : private apache::thrift::detail::st::ComparisonOperators<Floa
   FloatStruct() :
       floatField(0),
       doubleField(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg) :
-      floatField(std::move(floatField__arg)),
-      doubleField(std::move(doubleField__arg)) {
-    __isset.floatField = true;
-    __isset.doubleField = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   FloatStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     FloatStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -5832,13 +5532,15 @@ class FloatStruct : private apache::thrift::detail::st::ComparisonOperators<Floa
   double doubleField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       floatField = false;
       doubleField = false;
     }
 
-    bool floatField = false;
-    bool doubleField = false;
+    bool floatField;
+    bool doubleField;
   } __isset;
   bool operator==(const FloatStruct& rhs) const;
 

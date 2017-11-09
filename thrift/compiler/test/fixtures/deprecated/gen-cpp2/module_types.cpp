@@ -18,6 +18,12 @@
 
 namespace cpp2 {
 
+House::House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg) :
+    id(std::move(id__arg)),
+    houseName(std::move(houseName__arg)),
+    houseColors(std::move(houseColors__arg))
+ {}
+
 void House::__clear() {
   // clear all fields
   id = 0;
@@ -75,6 +81,11 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+Field::Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
+    id(std::move(id__arg)),
+    fieldType(std::move(fieldType__arg))
+ {}
 
 void Field::__clear() {
   // clear all fields

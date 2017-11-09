@@ -33,9 +33,8 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
  public:
 
   Banal() {}
-  // FragileConstructor for use in initialization lists only
-
-  Banal(apache::thrift::FragileConstructor) {}
+  // FragileConstructor for use in initialization lists only.
+  Banal(apache::thrift::FragileConstructor);
 
   Banal(Banal&&) = default;
 
@@ -115,10 +114,8 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
  public:
 
   Fiery() {}
-  // FragileConstructor for use in initialization lists only
-
-  Fiery(apache::thrift::FragileConstructor, std::string message__arg) :
-      message(std::move(message__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  Fiery(apache::thrift::FragileConstructor, std::string message__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Fiery(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Fiery(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)

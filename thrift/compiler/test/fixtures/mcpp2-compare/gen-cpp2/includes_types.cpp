@@ -39,6 +39,11 @@ template <> bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(const char*
 }} // apache::thrift
 namespace a { namespace different { namespace ns {
 
+AStruct::AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
+    FieldA(std::move(FieldA__arg)) {
+  __isset.FieldA = true;
+}
+
 void AStruct::__clear() {
   // clear all fields
   FieldA = 0;
@@ -81,6 +86,9 @@ template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocol
 
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
+
+AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg) :
+    FieldA(std::move(FieldA__arg)) {}
 
 void AStructB::__clear() {
   // clear all fields

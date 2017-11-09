@@ -21,19 +21,26 @@
 <%#struct:non_req_fields?%>
 
   struct __isset {
+    __isset() { __clear(); }
+
 <%#struct:isset_fields?%>
+<%#struct:is_large?%>
+    void __clear();
+<%/struct:is_large?%>
+<%^struct:is_large?%>
     void __clear() {
 <%#struct:isset_fields%>
       <%field:name%> = false;
 <%/struct:isset_fields%>
     }
+<%/struct:is_large?%>
 <%/struct:isset_fields?%>
 <%^struct:isset_fields?%>
     void __clear() {}
 <%/struct:isset_fields?%>
 
 <%#struct:isset_fields%>
-    bool <%field:name%> = false;
+    bool <%field:name%>;
 <%/struct:isset_fields%>
   } __isset;
 <%/struct:non_req_fields?%>

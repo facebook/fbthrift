@@ -194,6 +194,85 @@ uint32_t ASimpleStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
+uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (_ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->boolField);
+          this->__isset.boolField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(_ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ASimpleStructNoexcept::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ASimpleStructNoexcept");
+  xfer += prot_->serializedFieldSize("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->boolField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ASimpleStructNoexcept::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ASimpleStructNoexcept");
+  xfer += prot_->serializedFieldSize("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->boolField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ASimpleStructNoexcept::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("ASimpleStructNoexcept");
+  xfer += prot_->writeFieldBegin("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->boolField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string _fname;

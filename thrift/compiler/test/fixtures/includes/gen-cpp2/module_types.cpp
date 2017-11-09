@@ -14,6 +14,15 @@
 
 namespace cpp2 {
 
+MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
+    MyIncludedField(std::move(MyIncludedField__arg)),
+    MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
+    MyIncludedInt(std::move(MyIncludedInt__arg)) {
+  __isset.MyIncludedField = true;
+  __isset.MyOtherIncludedField = true;
+  __isset.MyIncludedInt = true;
+}
+
 void MyStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);

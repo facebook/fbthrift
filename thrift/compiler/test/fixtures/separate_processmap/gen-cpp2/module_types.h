@@ -62,13 +62,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct() :
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only
-
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg) :
-      MyIntField(std::move(MyIntField__arg)),
-      MyStringField(std::move(MyStringField__arg)) {
-    __isset.MyIntField = true;
-    __isset.MyStringField = true;
-  }
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -99,13 +93,15 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::string MyStringField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       MyIntField = false;
       MyStringField = false;
     }
 
-    bool MyIntField = false;
-    bool MyStringField = false;
+    bool MyIntField;
+    bool MyStringField;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
 

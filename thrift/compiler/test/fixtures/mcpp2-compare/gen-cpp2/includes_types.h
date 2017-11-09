@@ -82,12 +82,8 @@ class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct>
 
   AStruct() :
       FieldA(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
-      FieldA(std::move(FieldA__arg)) {
-    __isset.FieldA = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -110,11 +106,13 @@ class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct>
   int32_t FieldA;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       FieldA = false;
     }
 
-    bool FieldA = false;
+    bool FieldA;
   } __isset;
   bool operator==(const AStruct& rhs) const;
 
@@ -196,10 +194,8 @@ class AStructB : private apache::thrift::detail::st::ComparisonOperators<AStruct
  public:
 
   AStructB() {}
-  // FragileConstructor for use in initialization lists only
-
-  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg) :
-      FieldA(std::move(FieldA__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AStructB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AStructB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -221,6 +217,8 @@ class AStructB : private apache::thrift::detail::st::ComparisonOperators<AStruct
   std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {}
 
   } __isset;

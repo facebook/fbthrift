@@ -36,18 +36,8 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
 
   ModuleA() :
       i32Field(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg) :
-      i32Field(std::move(i32Field__arg)),
-      strField(std::move(strField__arg)),
-      listField(std::move(listField__arg)),
-      mapField(std::move(mapField__arg)) {
-    __isset.i32Field = true;
-    __isset.strField = true;
-    __isset.listField = true;
-    __isset.mapField = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ModuleA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -94,6 +84,8 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   std::map<std::string, int32_t> mapField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       i32Field = false;
       strField = false;
@@ -101,10 +93,10 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
       mapField = false;
     }
 
-    bool i32Field = false;
-    bool strField = false;
-    bool listField = false;
-    bool mapField = false;
+    bool i32Field;
+    bool strField;
+    bool listField;
+    bool mapField;
   } __isset;
   bool operator==(const ModuleA& rhs) const;
 
@@ -225,12 +217,8 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
 
   ModuleB() :
       i32Field(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg) :
-      i32Field(std::move(i32Field__arg)) {
-    __isset.i32Field = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ModuleB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ModuleB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -253,11 +241,13 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   int32_t i32Field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       i32Field = false;
     }
 
-    bool i32Field = false;
+    bool i32Field;
   } __isset;
   bool operator==(const ModuleB& rhs) const;
 
@@ -336,14 +326,8 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
 
   ExceptionA() :
       code(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  ExceptionA(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg) :
-      code(std::move(code__arg)),
-      msg(std::move(msg__arg)) {
-    __isset.code = true;
-    __isset.msg = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ExceptionA(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ExceptionA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ExceptionA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -374,13 +358,15 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
   std::string msg;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       code = false;
       msg = false;
     }
 
-    bool code = false;
-    bool msg = false;
+    bool code;
+    bool msg;
   } __isset;
   bool operator==(const ExceptionA& rhs) const;
 
@@ -481,14 +467,8 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
 
   ExceptionB() :
       code(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  ExceptionB(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg) :
-      code(std::move(code__arg)),
-      msg(std::move(msg__arg)) {
-    __isset.code = true;
-    __isset.msg = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ExceptionB(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ExceptionB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ExceptionB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -519,13 +499,15 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
   std::string msg;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       code = false;
       msg = false;
     }
 
-    bool code = false;
-    bool msg = false;
+    bool code;
+    bool msg;
   } __isset;
   bool operator==(const ExceptionB& rhs) const;
 

@@ -109,6 +109,14 @@ template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
+MyField::MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg) :
+    opt_value(std::move(opt_value__arg)),
+    value(std::move(value__arg)),
+    req_value(std::move(req_value__arg)) {
+  __isset.opt_value = true;
+  __isset.value = true;
+}
+
 void MyField::__clear() {
   // clear all fields
   opt_value = 0;
@@ -181,6 +189,11 @@ MyStruct& MyStruct::operator=(const MyStruct& src) {
   return *this;
 }
 
+MyStruct::MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg) :
+    opt_ref(std::move(opt_ref__arg)),
+    ref(std::move(ref__arg)),
+    req_ref(std::move(req_ref__arg)) {}
+
 void MyStruct::__clear() {
   // clear all fields
   if (opt_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(opt_ref.get());
@@ -252,6 +265,14 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
   return *this;
 }
 
+StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg) :
+    u(std::move(u__arg)),
+    aDouble(std::move(aDouble__arg)),
+    f(std::move(f__arg)) {
+  __isset.aDouble = true;
+  __isset.f = true;
+}
+
 void StructWithUnion::__clear() {
   // clear all fields
   if (u) ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(u.get());
@@ -317,6 +338,11 @@ template uint32_t StructWithUnion::serializedSizeZC<>(apache::thrift::CompactPro
 } // cpp2
 namespace cpp2 {
 
+RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg) :
+    mes(std::move(mes__arg)) {
+  __isset.mes = true;
+}
+
 void RecursiveStruct::__clear() {
   // clear all fields
   mes.clear();
@@ -381,6 +407,24 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
   swap(*this, tmp);
   return *this;
 }
+
+
+StructWithContainers::
+  StructWithContainers() :
+      list_ref(std::make_unique<std::vector<int32_t>>()),
+      set_ref(std::make_unique<std::set<int32_t>>()),
+      map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
+      list_ref_unique(std::make_unique<std::vector<int32_t>>()),
+      set_ref_shared(std::make_shared<std::set<int32_t>>()),
+      list_ref_shared_const(std::make_shared<std::vector<int32_t>>()) {}
+
+StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg) :
+    list_ref(std::move(list_ref__arg)),
+    set_ref(std::move(set_ref__arg)),
+    map_ref(std::move(map_ref__arg)),
+    list_ref_unique(std::move(list_ref_unique__arg)),
+    set_ref_shared(std::move(set_ref_shared__arg)),
+    list_ref_shared_const(std::move(list_ref_shared_const__arg)) {}
 
 void StructWithContainers::__clear() {
   // clear all fields
@@ -466,6 +510,11 @@ template uint32_t StructWithContainers::serializedSizeZC<>(apache::thrift::Compa
 } // cpp2
 namespace cpp2 {
 
+StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg) :
+    opt_shared_const(std::move(opt_shared_const__arg)),
+    shared_const(std::move(shared_const__arg)),
+    req_shared_const(std::move(req_shared_const__arg)) {}
+
 void StructWithSharedConst::__clear() {
   // clear all fields
   opt_shared_const.reset();
@@ -523,6 +572,8 @@ template uint32_t StructWithSharedConst::serializedSizeZC<>(apache::thrift::Comp
 } // cpp2
 namespace cpp2 {
 
+Empty::Empty(apache::thrift::FragileConstructor) {}
+
 void Empty::__clear() {
   // clear all fields
 }
@@ -564,6 +615,11 @@ StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
   swap(*this, tmp);
   return *this;
 }
+
+StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
+    def_field(std::move(def_field__arg)),
+    opt_field(std::move(opt_field__arg)),
+    req_field(std::move(req_field__arg)) {}
 
 void StructWithRef::__clear() {
   // clear all fields
@@ -631,6 +687,11 @@ StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefT
   return *this;
 }
 
+StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
+    def_field(std::move(def_field__arg)),
+    opt_field(std::move(opt_field__arg)),
+    req_field(std::move(req_field__arg)) {}
+
 void StructWithRefTypeUnique::__clear() {
   // clear all fields
   __isset.__clear();
@@ -685,6 +746,11 @@ template uint32_t StructWithRefTypeUnique::serializedSizeZC<>(apache::thrift::Co
 } // cpp2
 namespace cpp2 {
 
+StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg) :
+    def_field(std::move(def_field__arg)),
+    opt_field(std::move(opt_field__arg)),
+    req_field(std::move(req_field__arg)) {}
+
 void StructWithRefTypeShared::__clear() {
   // clear all fields
   __isset.__clear();
@@ -738,6 +804,11 @@ template uint32_t StructWithRefTypeShared::serializedSizeZC<>(apache::thrift::Co
 
 } // cpp2
 namespace cpp2 {
+
+StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg) :
+    def_field(std::move(def_field__arg)),
+    opt_field(std::move(opt_field__arg)),
+    req_field(std::move(req_field__arg)) {}
 
 void StructWithRefTypeSharedConst::__clear() {
   // clear all fields

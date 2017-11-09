@@ -38,14 +38,8 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
   Included() :
       MyIntField(0LL),
       MyTransitiveField( ::cpp2::Foo(::apache::thrift::detail::wrap_argument<1>(2LL))) {}
-  // FragileConstructor for use in initialization lists only
-
-  Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
-      MyIntField(std::move(MyIntField__arg)),
-      MyTransitiveField(std::move(MyTransitiveField__arg)) {
-    __isset.MyIntField = true;
-    __isset.MyTransitiveField = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Included(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Included(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -76,13 +70,15 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
    ::cpp2::Foo MyTransitiveField;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       MyIntField = false;
       MyTransitiveField = false;
     }
 
-    bool MyIntField = false;
-    bool MyTransitiveField = false;
+    bool MyIntField;
+    bool MyTransitiveField;
   } __isset;
   bool operator==(const Included& rhs) const;
 

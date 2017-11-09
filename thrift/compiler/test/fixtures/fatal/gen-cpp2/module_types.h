@@ -1399,13 +1399,7 @@ class structA : private apache::thrift::detail::st::ComparisonOperators<structA>
   structA() :
       a(0) {}
   // FragileConstructor for use in initialization lists only
-
-  structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)) {
-    __isset.a = true;
-    __isset.b = true;
-  }
+  structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   structA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     structA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -1436,13 +1430,15 @@ class structA : private apache::thrift::detail::st::ComparisonOperators<structA>
   std::string b;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       a = false;
       b = false;
     }
 
-    bool a = false;
-    bool b = false;
+    bool a;
+    bool b;
   } __isset;
   bool operator==(const structA& rhs) const;
 
@@ -1990,13 +1986,7 @@ class structB : private apache::thrift::detail::st::ComparisonOperators<structB>
       c(0),
       d(0) {}
   // FragileConstructor for use in initialization lists only
-
-  structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
-      c(std::move(c__arg)),
-      d(std::move(d__arg)) {
-    __isset.c = true;
-    __isset.d = true;
-  }
+  structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   structB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     structB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -2027,13 +2017,15 @@ class structB : private apache::thrift::detail::st::ComparisonOperators<structB>
   bool d;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       c = false;
       d = false;
     }
 
-    bool c = false;
-    bool d = false;
+    bool c;
+    bool d;
   } __isset;
   bool operator==(const structB& rhs) const;
 
@@ -2124,76 +2116,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class structC : private apache::thrift::detail::st::ComparisonOperators<structC> {
  public:
 
-  structC() :
-      a(0),
-      c(0),
-      d(0),
-      e( ::test_cpp2::cpp_reflection::enum1::field0),
-      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+  structC();
   // FragileConstructor for use in initialization lists only
-
-  structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)),
-      c(std::move(c__arg)),
-      d(std::move(d__arg)),
-      e(std::move(e__arg)),
-      f(std::move(f__arg)),
-      g(std::move(g__arg)),
-      h(std::move(h__arg)),
-      i(std::move(i__arg)),
-      j(std::move(j__arg)),
-      j1(std::move(j1__arg)),
-      j2(std::move(j2__arg)),
-      j3(std::move(j3__arg)),
-      k(std::move(k__arg)),
-      k1(std::move(k1__arg)),
-      k2(std::move(k2__arg)),
-      k3(std::move(k3__arg)),
-      l(std::move(l__arg)),
-      l1(std::move(l1__arg)),
-      l2(std::move(l2__arg)),
-      l3(std::move(l3__arg)),
-      m1(std::move(m1__arg)),
-      m2(std::move(m2__arg)),
-      m3(std::move(m3__arg)),
-      n1(std::move(n1__arg)),
-      n2(std::move(n2__arg)),
-      n3(std::move(n3__arg)),
-      o1(std::move(o1__arg)),
-      o2(std::move(o2__arg)),
-      o3(std::move(o3__arg)) {
-    __isset.a = true;
-    __isset.b = true;
-    __isset.c = true;
-    __isset.d = true;
-    __isset.e = true;
-    __isset.f = true;
-    __isset.g = true;
-    __isset.h = true;
-    __isset.i = true;
-    __isset.j = true;
-    __isset.j1 = true;
-    __isset.j2 = true;
-    __isset.j3 = true;
-    __isset.k = true;
-    __isset.k1 = true;
-    __isset.k2 = true;
-    __isset.k3 = true;
-    __isset.l = true;
-    __isset.l1 = true;
-    __isset.l2 = true;
-    __isset.l3 = true;
-    __isset.m1 = true;
-    __isset.m2 = true;
-    __isset.m3 = true;
-    __isset.n1 = true;
-    __isset.n2 = true;
-    __isset.n3 = true;
-    __isset.o1 = true;
-    __isset.o2 = true;
-    __isset.o3 = true;
-  }
+  structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   structC(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -2448,69 +2373,39 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
   std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3;
 
   struct __isset {
-    void __clear() {
-      a = false;
-      b = false;
-      c = false;
-      d = false;
-      e = false;
-      f = false;
-      g = false;
-      h = false;
-      i = false;
-      j = false;
-      j1 = false;
-      j2 = false;
-      j3 = false;
-      k = false;
-      k1 = false;
-      k2 = false;
-      k3 = false;
-      l = false;
-      l1 = false;
-      l2 = false;
-      l3 = false;
-      m1 = false;
-      m2 = false;
-      m3 = false;
-      n1 = false;
-      n2 = false;
-      n3 = false;
-      o1 = false;
-      o2 = false;
-      o3 = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool a = false;
-    bool b = false;
-    bool c = false;
-    bool d = false;
-    bool e = false;
-    bool f = false;
-    bool g = false;
-    bool h = false;
-    bool i = false;
-    bool j = false;
-    bool j1 = false;
-    bool j2 = false;
-    bool j3 = false;
-    bool k = false;
-    bool k1 = false;
-    bool k2 = false;
-    bool k3 = false;
-    bool l = false;
-    bool l1 = false;
-    bool l2 = false;
-    bool l3 = false;
-    bool m1 = false;
-    bool m2 = false;
-    bool m3 = false;
-    bool n1 = false;
-    bool n2 = false;
-    bool n3 = false;
-    bool o1 = false;
-    bool o2 = false;
-    bool o3 = false;
+    bool a;
+    bool b;
+    bool c;
+    bool d;
+    bool e;
+    bool f;
+    bool g;
+    bool h;
+    bool i;
+    bool j;
+    bool j1;
+    bool j2;
+    bool j3;
+    bool k;
+    bool k1;
+    bool k2;
+    bool k3;
+    bool l;
+    bool l1;
+    bool l2;
+    bool l3;
+    bool m1;
+    bool m2;
+    bool m3;
+    bool n1;
+    bool n2;
+    bool n3;
+    bool o1;
+    bool o2;
+    bool o3;
   } __isset;
   bool operator==(const structC& rhs) const;
 
@@ -2946,24 +2841,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
 
-  struct1() :
-      field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0),
-      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+  struct1();
   // FragileConstructor for use in initialization lists only
-
-  struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
-      field0(std::move(field0__arg)),
-      field1(std::move(field1__arg)),
-      field2(std::move(field2__arg)),
-      field3(std::move(field3__arg)),
-      field4(std::move(field4__arg)),
-      field5(std::move(field5__arg)) {
-    __isset.field1 = true;
-    __isset.field2 = true;
-    __isset.field4 = true;
-    __isset.field5 = true;
-  }
+  struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3024,17 +2904,13 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
    ::test_cpp2::cpp_reflection::union2 field5;
 
   struct __isset {
-    void __clear() {
-      field1 = false;
-      field2 = false;
-      field4 = false;
-      field5 = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool field1 = false;
-    bool field2 = false;
-    bool field4 = false;
-    bool field5 = false;
+    bool field1;
+    bool field2;
+    bool field4;
+    bool field5;
   } __isset;
   bool operator==(const struct1& rhs) const;
   bool operator < (const struct1& rhs) const;
@@ -3158,28 +3034,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
 
-  struct2() :
-      fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+  struct2();
   // FragileConstructor for use in initialization lists only
-
-  struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
-      fieldA(std::move(fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)) {
-    __isset.fieldA = true;
-    __isset.fieldB = true;
-    __isset.fieldC = true;
-    __isset.fieldD = true;
-    __isset.fieldE = true;
-    __isset.fieldF = true;
-    __isset.fieldG = true;
-  }
+  struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3250,23 +3107,16 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
    ::test_cpp2::cpp_reflection::struct1 fieldG;
 
   struct __isset {
-    void __clear() {
-      fieldA = false;
-      fieldB = false;
-      fieldC = false;
-      fieldD = false;
-      fieldE = false;
-      fieldF = false;
-      fieldG = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool fieldA = false;
-    bool fieldB = false;
-    bool fieldC = false;
-    bool fieldD = false;
-    bool fieldE = false;
-    bool fieldF = false;
-    bool fieldG = false;
+    bool fieldA;
+    bool fieldB;
+    bool fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool fieldF;
+    bool fieldG;
   } __isset;
   bool operator==(const struct2& rhs) const;
   bool operator < (const struct2& rhs) const;
@@ -3399,50 +3249,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
 
-  struct3() :
-      fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+  struct3();
   // FragileConstructor for use in initialization lists only
-
-  struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
-      fieldA(std::move(fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)),
-      fieldH(std::move(fieldH__arg)),
-      fieldI(std::move(fieldI__arg)),
-      fieldJ(std::move(fieldJ__arg)),
-      fieldK(std::move(fieldK__arg)),
-      fieldL(std::move(fieldL__arg)),
-      fieldM(std::move(fieldM__arg)),
-      fieldN(std::move(fieldN__arg)),
-      fieldO(std::move(fieldO__arg)),
-      fieldP(std::move(fieldP__arg)),
-      fieldQ(std::move(fieldQ__arg)),
-      fieldR(std::move(fieldR__arg)) {
-    __isset.fieldA = true;
-    __isset.fieldB = true;
-    __isset.fieldC = true;
-    __isset.fieldD = true;
-    __isset.fieldE = true;
-    __isset.fieldF = true;
-    __isset.fieldG = true;
-    __isset.fieldH = true;
-    __isset.fieldI = true;
-    __isset.fieldJ = true;
-    __isset.fieldK = true;
-    __isset.fieldL = true;
-    __isset.fieldM = true;
-    __isset.fieldN = true;
-    __isset.fieldO = true;
-    __isset.fieldP = true;
-    __isset.fieldQ = true;
-    __isset.fieldR = true;
-  }
+  struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3601,45 +3410,27 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
   std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR;
 
   struct __isset {
-    void __clear() {
-      fieldA = false;
-      fieldB = false;
-      fieldC = false;
-      fieldD = false;
-      fieldE = false;
-      fieldF = false;
-      fieldG = false;
-      fieldH = false;
-      fieldI = false;
-      fieldJ = false;
-      fieldK = false;
-      fieldL = false;
-      fieldM = false;
-      fieldN = false;
-      fieldO = false;
-      fieldP = false;
-      fieldQ = false;
-      fieldR = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool fieldA = false;
-    bool fieldB = false;
-    bool fieldC = false;
-    bool fieldD = false;
-    bool fieldE = false;
-    bool fieldF = false;
-    bool fieldG = false;
-    bool fieldH = false;
-    bool fieldI = false;
-    bool fieldJ = false;
-    bool fieldK = false;
-    bool fieldL = false;
-    bool fieldM = false;
-    bool fieldN = false;
-    bool fieldO = false;
-    bool fieldP = false;
-    bool fieldQ = false;
-    bool fieldR = false;
+    bool fieldA;
+    bool fieldB;
+    bool fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool fieldF;
+    bool fieldG;
+    bool fieldH;
+    bool fieldI;
+    bool fieldJ;
+    bool fieldK;
+    bool fieldL;
+    bool fieldM;
+    bool fieldN;
+    bool fieldO;
+    bool fieldP;
+    bool fieldQ;
+    bool fieldR;
   } __isset;
   bool operator==(const struct3& rhs) const;
   bool operator < (const struct3& rhs) const;
@@ -3875,15 +3666,7 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
   // FragileConstructor for use in initialization lists only
-
-  struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
-      field0(std::move(field0__arg)),
-      field1(std::move(field1__arg)),
-      field2(std::move(field2__arg)),
-      field3(std::move(field3__arg)) {
-    __isset.field1 = true;
-    __isset.field2 = true;
-  }
+  struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct4(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -3926,13 +3709,15 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
   std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       field1 = false;
       field2 = false;
     }
 
-    bool field1 = false;
-    bool field2 = false;
+    bool field1;
+    bool field2;
   } __isset;
   bool operator==(const struct4& rhs) const;
   bool operator < (const struct4& rhs) const;
@@ -4028,22 +3813,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct5 : private apache::thrift::detail::st::ComparisonOperators<struct5> {
  public:
 
-  struct5() :
-      field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
+  struct5();
   // FragileConstructor for use in initialization lists only
-
-  struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
-      field0(std::move(field0__arg)),
-      field1(std::move(field1__arg)),
-      field2(std::move(field2__arg)),
-      field3(std::move(field3__arg)),
-      field4(std::move(field4__arg)) {
-    __isset.field1 = true;
-    __isset.field2 = true;
-    __isset.field3 = true;
-    __isset.field4 = true;
-  }
+  struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct5(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4097,17 +3869,13 @@ class struct5 : private apache::thrift::detail::st::ComparisonOperators<struct5>
    ::test_cpp2::cpp_reflection::structB field4;
 
   struct __isset {
-    void __clear() {
-      field1 = false;
-      field2 = false;
-      field3 = false;
-      field4 = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool field1 = false;
-    bool field2 = false;
-    bool field3 = false;
-    bool field4 = false;
+    bool field1;
+    bool field2;
+    bool field3;
+    bool field4;
   } __isset;
   bool operator==(const struct5& rhs) const;
   bool operator < (const struct5& rhs) const;
@@ -4223,11 +3991,7 @@ class struct_binary : private apache::thrift::detail::st::ComparisonOperators<st
 
   struct_binary() {}
   // FragileConstructor for use in initialization lists only
-
-  struct_binary(apache::thrift::FragileConstructor, std::string bi__arg) :
-      bi(std::move(bi__arg)) {
-    __isset.bi = true;
-  }
+  struct_binary(apache::thrift::FragileConstructor, std::string bi__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct_binary(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct_binary(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4250,11 +4014,13 @@ class struct_binary : private apache::thrift::detail::st::ComparisonOperators<st
   std::string bi;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       bi = false;
     }
 
-    bool bi = false;
+    bool bi;
   } __isset;
   bool operator==(const struct_binary& rhs) const;
 
@@ -4340,15 +4106,7 @@ class dep_A_struct : private apache::thrift::detail::st::ComparisonOperators<dep
   dep_A_struct() :
       i_a(0) {}
   // FragileConstructor for use in initialization lists only
-
-  dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
-      b(std::move(b__arg)),
-      c(std::move(c__arg)),
-      i_a(std::move(i_a__arg)) {
-    __isset.b = true;
-    __isset.c = true;
-    __isset.i_a = true;
-  }
+  dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   dep_A_struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4387,15 +4145,17 @@ class dep_A_struct : private apache::thrift::detail::st::ComparisonOperators<dep
   int32_t i_a;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       b = false;
       c = false;
       i_a = false;
     }
 
-    bool b = false;
-    bool c = false;
-    bool i_a = false;
+    bool b;
+    bool c;
+    bool i_a;
   } __isset;
   bool operator==(const dep_A_struct& rhs) const;
 
@@ -4500,11 +4260,7 @@ class annotated : private apache::thrift::detail::st::ComparisonOperators<annota
   annotated() :
       a(0) {}
   // FragileConstructor for use in initialization lists only
-
-  annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
-      a(std::move(a__arg)) {
-    __isset.a = true;
-  }
+  annotated(apache::thrift::FragileConstructor, int32_t a__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   annotated(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     annotated(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4527,11 +4283,13 @@ class annotated : private apache::thrift::detail::st::ComparisonOperators<annota
   int32_t a;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       a = false;
     }
 
-    bool a = false;
+    bool a;
   } __isset;
   bool operator==(const annotated& rhs) const;
 
@@ -6271,95 +6029,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_special_names : private apache::thrift::detail::st::ComparisonOperators<struct_with_special_names> {
  public:
 
-  struct_with_special_names() :
-      get(0),
-      getter(0),
-      lists(0),
-      maps(0),
-      name(0),
-      name_to_value(0),
-      names(0),
-      prefix_tree(0),
-      sets(0),
-      setter(0),
-      str(0),
-      strings(0),
-      type(0),
-      value(0),
-      value_to_name(0),
-      values(0),
-      id(0),
-      ids(0),
-      descriptor(0),
-      descriptors(0),
-      key(0),
-      keys(0),
-      annotation(0),
-      annotations(0),
-      member(0),
-      members(0),
-      field(0),
-      fields(0) {}
+  struct_with_special_names();
   // FragileConstructor for use in initialization lists only
-
-  struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
-      get(std::move(get__arg)),
-      getter(std::move(getter__arg)),
-      lists(std::move(lists__arg)),
-      maps(std::move(maps__arg)),
-      name(std::move(name__arg)),
-      name_to_value(std::move(name_to_value__arg)),
-      names(std::move(names__arg)),
-      prefix_tree(std::move(prefix_tree__arg)),
-      sets(std::move(sets__arg)),
-      setter(std::move(setter__arg)),
-      str(std::move(str__arg)),
-      strings(std::move(strings__arg)),
-      type(std::move(type__arg)),
-      value(std::move(value__arg)),
-      value_to_name(std::move(value_to_name__arg)),
-      values(std::move(values__arg)),
-      id(std::move(id__arg)),
-      ids(std::move(ids__arg)),
-      descriptor(std::move(descriptor__arg)),
-      descriptors(std::move(descriptors__arg)),
-      key(std::move(key__arg)),
-      keys(std::move(keys__arg)),
-      annotation(std::move(annotation__arg)),
-      annotations(std::move(annotations__arg)),
-      member(std::move(member__arg)),
-      members(std::move(members__arg)),
-      field(std::move(field__arg)),
-      fields(std::move(fields__arg)) {
-    __isset.get = true;
-    __isset.getter = true;
-    __isset.lists = true;
-    __isset.maps = true;
-    __isset.name = true;
-    __isset.name_to_value = true;
-    __isset.names = true;
-    __isset.prefix_tree = true;
-    __isset.sets = true;
-    __isset.setter = true;
-    __isset.str = true;
-    __isset.strings = true;
-    __isset.type = true;
-    __isset.value = true;
-    __isset.value_to_name = true;
-    __isset.values = true;
-    __isset.id = true;
-    __isset.ids = true;
-    __isset.descriptor = true;
-    __isset.descriptors = true;
-    __isset.key = true;
-    __isset.keys = true;
-    __isset.annotation = true;
-    __isset.annotations = true;
-    __isset.member = true;
-    __isset.members = true;
-    __isset.field = true;
-    __isset.fields = true;
-  }
+  struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct_with_special_names(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -6598,65 +6270,37 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
   int32_t fields;
 
   struct __isset {
-    void __clear() {
-      get = false;
-      getter = false;
-      lists = false;
-      maps = false;
-      name = false;
-      name_to_value = false;
-      names = false;
-      prefix_tree = false;
-      sets = false;
-      setter = false;
-      str = false;
-      strings = false;
-      type = false;
-      value = false;
-      value_to_name = false;
-      values = false;
-      id = false;
-      ids = false;
-      descriptor = false;
-      descriptors = false;
-      key = false;
-      keys = false;
-      annotation = false;
-      annotations = false;
-      member = false;
-      members = false;
-      field = false;
-      fields = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool get = false;
-    bool getter = false;
-    bool lists = false;
-    bool maps = false;
-    bool name = false;
-    bool name_to_value = false;
-    bool names = false;
-    bool prefix_tree = false;
-    bool sets = false;
-    bool setter = false;
-    bool str = false;
-    bool strings = false;
-    bool type = false;
-    bool value = false;
-    bool value_to_name = false;
-    bool values = false;
-    bool id = false;
-    bool ids = false;
-    bool descriptor = false;
-    bool descriptors = false;
-    bool key = false;
-    bool keys = false;
-    bool annotation = false;
-    bool annotations = false;
-    bool member = false;
-    bool members = false;
-    bool field = false;
-    bool fields = false;
+    bool get;
+    bool getter;
+    bool lists;
+    bool maps;
+    bool name;
+    bool name_to_value;
+    bool names;
+    bool prefix_tree;
+    bool sets;
+    bool setter;
+    bool str;
+    bool strings;
+    bool type;
+    bool value;
+    bool value_to_name;
+    bool values;
+    bool id;
+    bool ids;
+    bool descriptor;
+    bool descriptors;
+    bool key;
+    bool keys;
+    bool annotation;
+    bool annotations;
+    bool member;
+    bool members;
+    bool field;
+    bool fields;
   } __isset;
   bool operator==(const struct_with_special_names& rhs) const;
 
@@ -7085,25 +6729,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_indirections : private apache::thrift::detail::st::ComparisonOperators<struct_with_indirections> {
  public:
 
-  struct_with_indirections() :
-      real(0),
-      fake(0),
-      number(0),
-      result(0) {}
+  struct_with_indirections();
   // FragileConstructor for use in initialization lists only
-
-  struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
-      real(std::move(real__arg)),
-      fake(std::move(fake__arg)),
-      number(std::move(number__arg)),
-      result(std::move(result__arg)),
-      phrase(std::move(phrase__arg)) {
-    __isset.real = true;
-    __isset.fake = true;
-    __isset.number = true;
-    __isset.result = true;
-    __isset.phrase = true;
-  }
+  struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct_with_indirections(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -7158,19 +6786,14 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
    ::test_cpp2::cpp_reflection::HasAPhrase phrase;
 
   struct __isset {
-    void __clear() {
-      real = false;
-      fake = false;
-      number = false;
-      result = false;
-      phrase = false;
-    }
+    __isset() { __clear(); }
+    void __clear();
 
-    bool real = false;
-    bool fake = false;
-    bool number = false;
-    bool result = false;
-    bool phrase = false;
+    bool real;
+    bool fake;
+    bool number;
+    bool result;
+    bool phrase;
   } __isset;
   bool operator==(const struct_with_indirections& rhs) const;
   bool operator < (const struct_with_indirections& rhs) const;

@@ -14,8 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  <%struct:name%>(<%struct:name%>&& other) noexcept :
+%><%struct:name%>::<%struct:name%>(<%struct:name%>&& other) noexcept :
 <%#struct:fields%>
-      <%field:name%>(std::move(other.<%field:name%>)),
+    <%field:name%>(std::move(other.<%field:name%>)),
 <%/struct:fields%>
-      __isset(other.__isset) {}
+    __isset(other.__isset) {}

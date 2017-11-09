@@ -78,6 +78,7 @@ class Definition(Primitive):
             txt = str(self)
         else:
             fields['name'] = self.name
+            fields['unqualified_name'] = self.name
             # if we're in a class, define the {class} field to its name
             if 'abspath' in self.parent.opts:
                 fields['class'] = self.parent.opts.abspath
@@ -130,6 +131,8 @@ class Definition(Primitive):
                 fields['name'] = ''.join((self.parent.opts.abspath,
                     '::', self.name))
                 txt = str(self).format(**fields)
+                if self.no_except:
+                    txt += ' noexcept'
             decl_output = self.output or context.impl
             # make sure this parameter is set and not assumed
             self.in_header = False
@@ -144,11 +147,11 @@ class Definition(Primitive):
                 raise AttributeError("Can't have both value and init_dict"
                     " in a defn. It's either a constructor"
                     " or it has a value.")
-            if not self.in_header:
-                raise AttributeError("Constructors (definitions that "
-                    "include init_dict) have to have in_header set.")
             init_txt = ' : \n    ' + ',\n    '.join("{0}({1})".format(*x)
                                 for x in self.init_dict.iteritems())
+            if not self.in_header:
+                decl_output.write(self.impl_signature)
+                self._opts['impl_signature'] = ''
             decl_output.write(init_txt)
         if 'value' in self:
             # well, we don't have to store the self.impl_signature
@@ -187,6 +190,8 @@ class Class(Primitive):
         if not m:
             raise SyntaxError("C++ class/struct incorrectly defined")
         self.name, self.abspath = m.group('name', 'abspath')
+        if 'abspath' in self.parent.opts and self.parent.opts.abspath:
+            self.abspath = '::'.join((self.parent.opts.abspath, self.abspath))
         # this is magic! Basically what it does it it checks if we're
         # already on an empty line. If we are not then we introduce a
         # newline before the class defn

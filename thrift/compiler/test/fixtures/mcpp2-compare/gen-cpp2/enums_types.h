@@ -197,12 +197,8 @@ class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeS
 
   SomeStruct() :
       fieldA(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
-      fieldA(std::move(fieldA__arg)) {
-    __isset.fieldA = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   SomeStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     SomeStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -225,11 +221,13 @@ class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeS
   int32_t fieldA;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       fieldA = false;
     }
 
-    bool fieldA = false;
+    bool fieldA;
   } __isset;
   bool operator==(const SomeStruct& rhs) const;
 

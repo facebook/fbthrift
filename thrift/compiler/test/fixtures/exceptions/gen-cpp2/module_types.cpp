@@ -14,6 +14,8 @@
 
 namespace cpp2 {
 
+Banal::Banal(apache::thrift::FragileConstructor) {}
+
 void Banal::__clear() {
   // clear all fields
 }
@@ -43,6 +45,9 @@ template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 } // cpp2
 namespace cpp2 {
+
+Fiery::Fiery(apache::thrift::FragileConstructor, std::string message__arg) :
+    message(std::move(message__arg)) {}
 
 void Fiery::__clear() {
   // clear all fields

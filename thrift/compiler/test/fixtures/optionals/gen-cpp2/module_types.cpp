@@ -43,6 +43,13 @@ template <> bool TEnumTraits< ::cpp2::Animal>::findValue(const char* name,  ::cp
 }} // apache::thrift
 namespace cpp2 {
 
+Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg) :
+    red(std::move(red__arg)),
+    green(std::move(green__arg)),
+    blue(std::move(blue__arg)),
+    alpha(std::move(alpha__arg))
+ {}
+
 void Color::__clear() {
   // clear all fields
   red = 0;
@@ -109,6 +116,18 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+Vehicle::Vehicle() :
+    hasAC(false)
+ {}
+
+Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg) :
+    color(std::move(color__arg)),
+    licensePlate(std::move(licensePlate__arg)),
+    description(std::move(description__arg)),
+    name(std::move(name__arg)),
+    hasAC(std::move(hasAC__arg))
+ {}
 
 void Vehicle::__clear() {
   // clear all fields
@@ -185,6 +204,23 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+Person::Person() :
+    id(0)
+ {}
+
+Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg) :
+    id(std::move(id__arg)),
+    name(std::move(name__arg)),
+    age(std::move(age__arg)),
+    address(std::move(address__arg)),
+    favoriteColor(std::move(favoriteColor__arg)),
+    friends(std::move(friends__arg)),
+    bestFriend(std::move(bestFriend__arg)),
+    petNames(std::move(petNames__arg)),
+    afraidOfAnimal(std::move(afraidOfAnimal__arg)),
+    vehicles(std::move(vehicles__arg))
+ {}
 
 void Person::__clear() {
   // clear all fields

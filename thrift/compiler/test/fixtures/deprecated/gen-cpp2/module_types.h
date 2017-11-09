@@ -31,11 +31,7 @@ class FOLLY_DEPRECATED(
   House() :
       id(0) {}
   // FragileConstructor for use in initialization lists only
-
-  House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg) :
-      id(std::move(id__arg)),
-      houseName(std::move(houseName__arg)),
-      houseColors(std::move(houseColors__arg)) {}
+  House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   House(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -136,10 +132,7 @@ class FOLLY_DEPRECATED(
       id(0),
       fieldType(5) {}
   // FragileConstructor for use in initialization lists only
-
-  Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
-      id(std::move(id__arg)),
-      fieldType(std::move(fieldType__arg)) {}
+  Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Field(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Field(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)

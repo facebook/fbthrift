@@ -65,6 +65,9 @@ struct ASimpleStruct {
   1: i64 boolField
 } (no_default_comparators)
 
+struct ASimpleStructNoexcept {
+  1: i64 boolField
+} (cpp.noexcept_move_ctor)
 
 struct MyStruct {
   1: bool MyBoolField,

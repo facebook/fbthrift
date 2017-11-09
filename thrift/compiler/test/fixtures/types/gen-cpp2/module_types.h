@@ -176,12 +176,8 @@ class decorated_struct : private apache::thrift::detail::st::ComparisonOperators
  public:
 
   decorated_struct() {}
-  // FragileConstructor for use in initialization lists only
-
-  decorated_struct(apache::thrift::FragileConstructor, std::string field__arg) :
-      field(std::move(field__arg)) {
-    __isset.field = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  decorated_struct(apache::thrift::FragileConstructor, std::string field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   decorated_struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     decorated_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -204,11 +200,13 @@ class decorated_struct : private apache::thrift::detail::st::ComparisonOperators
   std::string field;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       field = false;
     }
 
-    bool field = false;
+    bool field;
   } __isset;
   bool operator==(const decorated_struct& rhs) const;
 
@@ -290,27 +288,10 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
  public:
 
-  ContainerStruct() {}
-  // FragileConstructor for use in initialization lists only
+  ContainerStruct();
 
-  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
-      fieldA(std::move(fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)),
-      fieldH(std::move(fieldH__arg)) {
-    __isset.fieldA = true;
-    __isset.fieldB = true;
-    __isset.fieldC = true;
-    __isset.fieldD = true;
-    __isset.fieldE = true;
-    __isset.fieldF = true;
-    __isset.fieldG = true;
-    __isset.fieldH = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ContainerStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -389,25 +370,18 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::apache::thrift::fixtures::types::SomeMap fieldH;
 
   struct __isset {
-    void __clear() {
-      fieldA = false;
-      fieldB = false;
-      fieldC = false;
-      fieldD = false;
-      fieldE = false;
-      fieldF = false;
-      fieldG = false;
-      fieldH = false;
-    }
+    __isset() { __clear(); }
 
-    bool fieldA = false;
-    bool fieldB = false;
-    bool fieldC = false;
-    bool fieldD = false;
-    bool fieldE = false;
-    bool fieldF = false;
-    bool fieldG = false;
-    bool fieldH = false;
+    void __clear();
+
+    bool fieldA;
+    bool fieldB;
+    bool fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool fieldF;
+    bool fieldG;
+    bool fieldH;
   } __isset;
   bool operator==(const ContainerStruct& rhs) const;
   bool operator < (const ContainerStruct& rhs) const;

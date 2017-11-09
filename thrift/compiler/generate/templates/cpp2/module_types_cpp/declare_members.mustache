@@ -14,7 +14,32 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>void <%struct:name%>::__clear() {
+%><%#struct:is_large?%>
+<%^struct:optionals?%>
+<%#struct:non_req_fields?%>
+<%#struct:isset_fields?%>
+void <%struct:name%>::__isset::__clear() {
+<%#struct:isset_fields%>
+  <%field:name%> = false;
+<%/struct:isset_fields%>
+}
+<%/struct:isset_fields?%>
+<%/struct:non_req_fields?%>
+<%/struct:optionals?%>
+
+<%struct:name%>::
+<% > module_types_h/base_ctor%>
+
+<%#struct:cpp_noexcept_move_ctor%>
+<%#struct:fields?%>
+<% > module_types_cpp/move_ctor%>
+<%/struct:fields?%>
+<%/struct:cpp_noexcept_move_ctor%>
+
+<%/struct:is_large?%>
+<% > module_types_cpp/fragile_ctor%>
+
+void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
 <%#field:optionals?%>

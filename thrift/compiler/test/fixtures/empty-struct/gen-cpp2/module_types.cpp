@@ -14,6 +14,8 @@
 
 namespace cpp2 {
 
+Empty::Empty(apache::thrift::FragileConstructor) {}
+
 void Empty::__clear() {
   // clear all fields
 }

@@ -14,6 +14,8 @@
 
 namespace cpp2 {
 
+FooEx::FooEx(apache::thrift::FragileConstructor) {}
+
 void FooEx::__clear() {
   // clear all fields
 }

@@ -32,9 +32,8 @@ class FooEx : private apache::thrift::detail::st::ComparisonOperators<FooEx>, pu
  public:
 
   FooEx() {}
-  // FragileConstructor for use in initialization lists only
-
-  FooEx(apache::thrift::FragileConstructor) {}
+  // FragileConstructor for use in initialization lists only.
+  FooEx(apache::thrift::FragileConstructor);
 
   FooEx(FooEx&&) = default;
 

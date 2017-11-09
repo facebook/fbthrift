@@ -14,6 +14,11 @@
 
 namespace cpp2 {
 
+ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
+    fieldA(std::move(fieldA__arg)) {
+  __isset.fieldA = true;
+}
+
 void ReflectionStruct::__clear() {
   // clear all fields
   fieldA = 5;

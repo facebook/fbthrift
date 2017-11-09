@@ -43,6 +43,16 @@ template <> bool TEnumTraits< ::cpp2::MyEnum>::findValue(const char* name,  ::cp
 }} // apache::thrift
 namespace cpp2 {
 
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg) :
+    MyIntField(std::move(MyIntField__arg)),
+    MyStringField(std::move(MyStringField__arg)),
+    MyDataField(std::move(MyDataField__arg))
+ {
+  __isset.MyIntField = true;
+  __isset.MyStringField = true;
+  __isset.MyDataField = true;
+}
+
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
@@ -109,6 +119,8 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 void MyDataItem::__clear() {
   // clear all fields

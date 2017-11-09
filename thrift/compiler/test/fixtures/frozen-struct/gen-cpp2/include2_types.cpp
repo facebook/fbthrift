@@ -14,6 +14,13 @@
 
 namespace some { namespace ns {
 
+IncludedB::IncludedB(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg) :
+    i32Field(std::move(i32Field__arg)),
+    strField(std::move(strField__arg)) {
+  __isset.i32Field = true;
+  __isset.strField = true;
+}
+
 void IncludedB::__clear() {
   // clear all fields
   i32Field = 0;

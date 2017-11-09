@@ -30,11 +30,7 @@ class OldStructure : private apache::thrift::detail::st::ComparisonOperators<Old
 
   OldStructure() {}
   // FragileConstructor for use in initialization lists only
-
-  OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
-      features(std::move(features__arg)) {
-    __isset.features = true;
-  }
+  OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   OldStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     OldStructure(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -57,11 +53,13 @@ class OldStructure : private apache::thrift::detail::st::ComparisonOperators<Old
   std::map<int16_t, double> features;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       features = false;
     }
 
-    bool features = false;
+    bool features;
   } __isset;
   bool operator==(const OldStructure& rhs) const;
 
@@ -144,11 +142,7 @@ class NewStructure : private apache::thrift::detail::st::ComparisonOperators<New
 
   NewStructure() {}
   // FragileConstructor for use in initialization lists only
-
-  NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
-      features(std::move(features__arg)) {
-    __isset.features = true;
-  }
+  NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     NewStructure(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -171,11 +165,13 @@ class NewStructure : private apache::thrift::detail::st::ComparisonOperators<New
   std::map<int16_t, double> features;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       features = false;
     }
 
-    bool features = false;
+    bool features;
   } __isset;
   bool operator==(const NewStructure& rhs) const;
 
@@ -258,11 +254,7 @@ class NewStructure2 : private apache::thrift::detail::st::ComparisonOperators<Ne
 
   NewStructure2() {}
   // FragileConstructor for use in initialization lists only
-
-  NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg) :
-      features(std::move(features__arg)) {
-    __isset.features = true;
-  }
+  NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructure2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     NewStructure2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -285,11 +277,13 @@ class NewStructure2 : private apache::thrift::detail::st::ComparisonOperators<Ne
    ::cpp2::FloatFeatures features;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       features = false;
     }
 
-    bool features = false;
+    bool features;
   } __isset;
   bool operator==(const NewStructure2& rhs) const;
   bool operator < (const NewStructure2& rhs) const;
@@ -365,15 +359,7 @@ class NewStructureNested : private apache::thrift::detail::st::ComparisonOperato
 
   NewStructureNested() {}
   // FragileConstructor for use in initialization lists only
-
-  NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg) :
-      lst(std::move(lst__arg)),
-      mp(std::move(mp__arg)),
-      s(std::move(s__arg)) {
-    __isset.lst = true;
-    __isset.mp = true;
-    __isset.s = true;
-  }
+  NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructureNested(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     NewStructureNested(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -412,15 +398,17 @@ class NewStructureNested : private apache::thrift::detail::st::ComparisonOperato
   std::set< ::cpp2::FloatFeatures> s;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       lst = false;
       mp = false;
       s = false;
     }
 
-    bool lst = false;
-    bool mp = false;
-    bool s = false;
+    bool lst;
+    bool mp;
+    bool s;
   } __isset;
   bool operator==(const NewStructureNested& rhs) const;
   bool operator < (const NewStructureNested& rhs) const;
@@ -514,11 +502,7 @@ class NewStructureNestedField : private apache::thrift::detail::st::ComparisonOp
 
   NewStructureNestedField() {}
   // FragileConstructor for use in initialization lists only
-
-  NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg) :
-      f(std::move(f__arg)) {
-    __isset.f = true;
-  }
+  NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructureNestedField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     NewStructureNestedField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -541,11 +525,13 @@ class NewStructureNestedField : private apache::thrift::detail::st::ComparisonOp
    ::cpp2::NewStructureNested f;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       f = false;
     }
 
-    bool f = false;
+    bool f;
   } __isset;
   bool operator==(const NewStructureNestedField& rhs) const;
   bool operator < (const NewStructureNestedField& rhs) const;

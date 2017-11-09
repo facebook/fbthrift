@@ -139,6 +139,11 @@ template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findValue(const 
 }} // apache::thrift
 namespace facebook { namespace ns { namespace qwerty {
 
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
+    fieldA(std::move(fieldA__arg)) {
+  __isset.fieldA = true;
+}
+
 void SomeStruct::__clear() {
   // clear all fields
   fieldA = 0;

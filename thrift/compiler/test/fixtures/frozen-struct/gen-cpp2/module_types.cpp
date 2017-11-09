@@ -39,6 +39,34 @@ template <> bool TEnumTraits< ::some::ns::EnumB>::findValue(const char* name,  :
 }} // apache::thrift
 namespace some { namespace ns {
 
+void ModuleA::__isset::__clear() {
+  i32Field = false;
+  strField = false;
+  listField = false;
+  mapField = false;
+  inclAField = false;
+  inclBField = false;
+}
+
+ModuleA::
+  ModuleA() :
+      i32Field(0) {}
+
+ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
+    i32Field(std::move(i32Field__arg)),
+    strField(std::move(strField__arg)),
+    listField(std::move(listField__arg)),
+    mapField(std::move(mapField__arg)),
+    inclAField(std::move(inclAField__arg)),
+    inclBField(std::move(inclBField__arg)) {
+  __isset.i32Field = true;
+  __isset.strField = true;
+  __isset.listField = true;
+  __isset.mapField = true;
+  __isset.inclAField = true;
+  __isset.inclBField = true;
+}
+
 void ModuleA::__clear() {
   // clear all fields
   i32Field = 0;
@@ -154,6 +182,13 @@ template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 }} // some::ns
 namespace some { namespace ns {
+
+ModuleB::ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg) :
+    i32Field(std::move(i32Field__arg)),
+    inclEnumB(std::move(inclEnumB__arg)) {
+  __isset.i32Field = true;
+  __isset.inclEnumB = true;
+}
 
 void ModuleB::__clear() {
   // clear all fields

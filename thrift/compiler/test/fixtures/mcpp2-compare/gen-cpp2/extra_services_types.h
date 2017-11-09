@@ -33,35 +33,10 @@ namespace extra { namespace svc {
 class containerStruct2 : private apache::thrift::detail::st::ComparisonOperators<containerStruct2> {
  public:
 
-  containerStruct2() :
-      fieldA(0),
-      req_fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      req_fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")) {}
-  // FragileConstructor for use in initialization lists only
+  containerStruct2();
 
-  containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg) :
-      fieldA(std::move(fieldA__arg)),
-      req_fieldA(std::move(req_fieldA__arg)),
-      opt_fieldA(std::move(opt_fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      req_fieldB(std::move(req_fieldB__arg)),
-      opt_fieldB(std::move(opt_fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      req_fieldC(std::move(req_fieldC__arg)),
-      opt_fieldC(std::move(opt_fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      req_fieldE(std::move(req_fieldE__arg)),
-      opt_fieldE(std::move(opt_fieldE__arg)) {}
+  // FragileConstructor for use in initialization lists only.
+  containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)

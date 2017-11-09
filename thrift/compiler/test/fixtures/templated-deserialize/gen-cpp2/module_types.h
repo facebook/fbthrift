@@ -117,14 +117,8 @@ class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<Smal
   SmallStruct() :
       small_A(0),
       small_B(0) {}
-  // FragileConstructor for use in initialization lists only
-
-  SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg) :
-      small_A(std::move(small_A__arg)),
-      small_B(std::move(small_B__arg)) {
-    __isset.small_A = true;
-    __isset.small_B = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   SmallStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     SmallStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -155,13 +149,15 @@ class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<Smal
   int32_t small_B;
 
   struct __isset {
+    __isset() { __clear(); }
+
     void __clear() {
       small_A = false;
       small_B = false;
     }
 
-    bool small_A = false;
-    bool small_B = false;
+    bool small_A;
+    bool small_B;
   } __isset;
   bool operator==(const SmallStruct& rhs) const;
 
@@ -251,67 +247,10 @@ namespace cpp2 {
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
-  containerStruct() :
-      fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
-  2,
-  3,
-  4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const std::string, std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
-  4,
-  8,
-  12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
-  5,
-  9,
-  13}}}),
-      fieldQ(static_cast< ::cpp2::MyEnumA>(0)),
-      fieldR(std::make_unique<std::map<std::string, bool>>()) {}
-  // FragileConstructor for use in initialization lists only
+  containerStruct();
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg) :
-      fieldA(std::move(fieldA__arg)),
-      fieldB(std::move(fieldB__arg)),
-      fieldC(std::move(fieldC__arg)),
-      fieldD(std::move(fieldD__arg)),
-      fieldE(std::move(fieldE__arg)),
-      fieldF(std::move(fieldF__arg)),
-      fieldG(std::move(fieldG__arg)),
-      fieldH(std::move(fieldH__arg)),
-      fieldI(std::move(fieldI__arg)),
-      fieldJ(std::move(fieldJ__arg)),
-      fieldK(std::move(fieldK__arg)),
-      fieldL(std::move(fieldL__arg)),
-      fieldM(std::move(fieldM__arg)),
-      fieldN(std::move(fieldN__arg)),
-      fieldO(std::move(fieldO__arg)),
-      fieldP(std::move(fieldP__arg)),
-      fieldQ(std::move(fieldQ__arg)),
-      fieldR(std::move(fieldR__arg)),
-      fieldS(std::move(fieldS__arg)),
-      fieldT(std::move(fieldT__arg)),
-      fieldU(std::move(fieldU__arg)),
-      fieldX(std::move(fieldX__arg)) {
-    __isset.fieldA = true;
-    __isset.fieldB = true;
-    __isset.fieldC = true;
-    __isset.fieldD = true;
-    __isset.fieldE = true;
-    __isset.fieldF = true;
-    __isset.fieldG = true;
-    __isset.fieldH = true;
-    __isset.fieldI = true;
-    __isset.fieldJ = true;
-    __isset.fieldK = true;
-    __isset.fieldL = true;
-    __isset.fieldM = true;
-    __isset.fieldN = true;
-    __isset.fieldO = true;
-    __isset.fieldP = true;
-    __isset.fieldQ = true;
-  }
+  // FragileConstructor for use in initialization lists only.
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -495,43 +434,27 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::unique_ptr< ::cpp2::SmallStruct> fieldX;
 
   struct __isset {
-    void __clear() {
-      fieldA = false;
-      fieldB = false;
-      fieldC = false;
-      fieldD = false;
-      fieldE = false;
-      fieldF = false;
-      fieldG = false;
-      fieldH = false;
-      fieldI = false;
-      fieldJ = false;
-      fieldK = false;
-      fieldL = false;
-      fieldM = false;
-      fieldN = false;
-      fieldO = false;
-      fieldP = false;
-      fieldQ = false;
-    }
+    __isset() { __clear(); }
 
-    bool fieldA = false;
-    bool fieldB = false;
-    bool fieldC = false;
-    bool fieldD = false;
-    bool fieldE = false;
-    bool fieldF = false;
-    bool fieldG = false;
-    bool fieldH = false;
-    bool fieldI = false;
-    bool fieldJ = false;
-    bool fieldK = false;
-    bool fieldL = false;
-    bool fieldM = false;
-    bool fieldN = false;
-    bool fieldO = false;
-    bool fieldP = false;
-    bool fieldQ = false;
+    void __clear();
+
+    bool fieldA;
+    bool fieldB;
+    bool fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool fieldF;
+    bool fieldG;
+    bool fieldH;
+    bool fieldI;
+    bool fieldJ;
+    bool fieldK;
+    bool fieldL;
+    bool fieldM;
+    bool fieldN;
+    bool fieldO;
+    bool fieldP;
+    bool fieldQ;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;

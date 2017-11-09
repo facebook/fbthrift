@@ -97,7 +97,12 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%/struct:union?%>
 <%^struct:union?%>
 
+<%#struct:is_large?%>
+  <%struct:name%>();
+<%/struct:is_large?%>
+<%^struct:is_large?%>
 <% > module_types_h/base_ctor%>
+<%/struct:is_large?%>
 
 <%#struct:exception?%><%#struct:message%>
 
@@ -107,11 +112,21 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
   explicit <%struct:name%>(std::string&& __message) :
       <%struct:message%>(std::move(__message)) {}
 <%/struct:message%><%/struct:exception?%>
-<% > module_types_h/fragile_ctor%>
+  // FragileConstructor for use in initialization lists only.
+  <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
 <% > module_types_h/template_ctor%>
 <%#struct:cpp_noexcept_move_ctor%>
-
+<%^struct:fields?%>
+  <%struct:name%>(<%struct:name%>&& other) noexcept {}
+<%/struct:fields?%>
+<%#struct:fields?%>
+<%#struct:is_large?%>
+  <%struct:name%>(<%struct:name%>&& other) noexcept;
+<%/struct:is_large?%>
+<%^struct:is_large?%>
 <% > module_types_h/move_ctor%>
+<%/struct:is_large?%>
+<%/struct:fields?%>
 <%/struct:cpp_noexcept_move_ctor%>
 <%^struct:cpp_noexcept_move_ctor%>
 

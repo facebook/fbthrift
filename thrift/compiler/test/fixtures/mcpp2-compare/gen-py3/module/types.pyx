@@ -349,6 +349,136 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         return (deserialize, (ASimpleStruct, serialize(self)))
 
 
+cdef cASimpleStructNoexcept _ASimpleStructNoexcept_defaults = cASimpleStructNoexcept()
+
+cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
+
+    def __init__(
+        ASimpleStructNoexcept self,
+        boolField=None
+    ):
+        self._cpp_obj = move(ASimpleStructNoexcept._make_instance(
+          NULL,
+          boolField,
+        ))
+
+    def __call__(
+        ASimpleStructNoexcept self,
+        boolField=NOTSET
+    ):
+        changes = any((
+            boolField is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <ASimpleStructNoexcept>ASimpleStructNoexcept.__new__(ASimpleStructNoexcept)
+        inst._cpp_obj = move(ASimpleStructNoexcept._make_instance(
+          self._cpp_obj.get(),
+          boolField,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
+        cASimpleStructNoexcept* base_instance,
+        object boolField
+    ) except *:
+        cdef unique_ptr[cASimpleStructNoexcept] c_inst
+        if base_instance:
+            c_inst = make_unique[cASimpleStructNoexcept](deref(base_instance))
+        else:
+            c_inst = make_unique[cASimpleStructNoexcept]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if boolField is None:
+                deref(c_inst).boolField = _ASimpleStructNoexcept_defaults.boolField
+                deref(c_inst).__isset.boolField = False
+            elif boolField is NOTSET:
+                boolField = None
+
+        if boolField is not None:
+            deref(c_inst).boolField = boolField
+            deref(c_inst).__isset.boolField = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'boolField', self.boolField
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.boolField
+
+    @staticmethod
+    cdef create(shared_ptr[cASimpleStructNoexcept] cpp_obj):
+        inst = <ASimpleStructNoexcept>ASimpleStructNoexcept.__new__(ASimpleStructNoexcept)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def boolField(self):
+        if not deref(self._cpp_obj).__isset.boolField:
+            return None
+
+        return self._cpp_obj.get().boolField
+
+
+    def __hash__(ASimpleStructNoexcept self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.boolField,
+            ))
+        return self.__hash
+
+    def __repr__(ASimpleStructNoexcept self):
+        return f'ASimpleStructNoexcept(boolField={repr(self.boolField)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, ASimpleStructNoexcept) and
+                isinstance(other, ASimpleStructNoexcept)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cASimpleStructNoexcept cself = deref((<ASimpleStructNoexcept>self)._cpp_obj)
+        cdef cASimpleStructNoexcept cother = deref((<ASimpleStructNoexcept>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(ASimpleStructNoexcept self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cASimpleStructNoexcept](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cASimpleStructNoexcept](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cASimpleStructNoexcept](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(ASimpleStructNoexcept self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cASimpleStructNoexcept](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cASimpleStructNoexcept](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cASimpleStructNoexcept](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ASimpleStructNoexcept, serialize(self)))
+
+
 cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):

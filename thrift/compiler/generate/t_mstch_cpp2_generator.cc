@@ -388,6 +388,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:optionals?", &mstch_cpp2_struct::optionals},
+            {"struct:is_large?", &mstch_cpp2_struct::is_large},
         });
   }
   mstch::node getters_setters() {
@@ -582,6 +583,10 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
+  }
+  mstch::node is_large() {
+    constexpr size_t kLargeStructThreshold = 4;
+    return strct_->get_members().size() > kLargeStructThreshold;
   }
 };
 

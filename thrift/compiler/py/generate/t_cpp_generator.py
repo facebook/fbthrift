@@ -2566,6 +2566,7 @@ class CppGenerator(t_generator.Generator):
             ((not pointers) or read) and not obj.is_union \
             and not self.flag_optionals
         struct_options = self._get_serialized_fields_options(obj)
+        is_large = not obj.is_union and len(members) > 4
 
         # Type enum for unions
         if obj.is_union:
@@ -2587,7 +2588,8 @@ class CppGenerator(t_generator.Generator):
             else:
                 i['type_'] = 'Type::__EMPTY__'
             c = struct.defn('{name}()', name=obj.name,
-                                    in_header=True, init_dict=i).scope.empty()
+                            in_header=not is_large,
+                            init_dict=i).scope.empty()
 
             # generate from-string ctors for exceptions with message annotation
             if is_exception and 'message' in obj.annotations:
@@ -2624,9 +2626,9 @@ class CppGenerator(t_generator.Generator):
                 struct('// FragileConstructor for use in'
                        ' initialization lists only')
                 with struct.defn('{name}(' + ', '.join(init_vars) + ')',
-                                name=obj.name,
-                                in_header=True,
-                                init_dict=i).scope as c:
+                                 name=obj.name,
+                                 in_header=False,
+                                 init_dict=i).scope as c:
                     for member in members:
                         if self._has_isset(member) and not self.flag_optionals:
                             c("__isset.{0} = true;".format(member.name))
@@ -2676,13 +2678,13 @@ class CppGenerator(t_generator.Generator):
                             name=member.name)
                     if should_generate_isset:
                         i['__isset'] = 'other.__isset'
-                    c = struct.defn('{name}({name}&& other)',
+                    c = struct.defn('{name}({unqualified_name}&& other)',
                                     name=obj.name,
-                                    in_header=True,
+                                    in_header=not is_large,
                                     no_except=True,
                                     init_dict=i).scope.empty()
                 else:
-                    c = struct.defn('{name}({name}&&)',
+                    c = struct.defn('{name}({unqualified_name}&&)',
                                     name=obj.name, in_header=True, default=True)
                 if is_copyable:
                     needs_copy_constructor = False
@@ -2839,7 +2841,10 @@ class CppGenerator(t_generator.Generator):
         if should_generate_isset:
             struct()
             with struct.cls('struct __isset', epilogue=' __isset;') as ist:
-                with ist.defn('void __clear()', in_header=True):
+                out('__isset() { __clear(); }')
+                with ist.defn('void {name}()',
+                              name='__clear',
+                              in_header=not is_large):
                     for member in members:
                         if self._has_isset(member):
                             out("{0} = false;".format(member.name))
@@ -2847,7 +2852,7 @@ class CppGenerator(t_generator.Generator):
                 ist()
                 for member in members:
                     if self._has_isset(member):
-                        ist('bool {0} = false;'.format(member.name))
+                        ist('bool {0};'.format(member.name))
         if struct_options.has_serialized_fields:
             struct()
             struct('apache::thrift::ProtocolType {0};'.format(
