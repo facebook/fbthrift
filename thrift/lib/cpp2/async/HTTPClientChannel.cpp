@@ -271,7 +271,7 @@ void HTTPClientChannel::onDestroy(const proxygen::HTTPSessionBase&) {
 
 void HTTPClientChannel::setRequestHeaderOptions(THeader* header) {
   header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-  header->forceClientType(THRIFT_HTTP_CLIENT_TYPE);
+  header->forceClientType(true);
 }
 
 void HTTPClientChannel::setHeaders(
