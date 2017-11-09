@@ -21,3 +21,12 @@ struct NewStructureNested {
 struct NewStructureNestedField {
   1: NewStructureNested f,
 }
+
+typedef map<i64, double> DoubleMapType
+typedef map<i16, DoubleMapType> OldMapMap
+typedef map<i32, DoubleMapType>
+  (forward_compatibility) NewMapMap
+
+typedef map<i16, list<float>> OldMapList
+typedef map<i32, list<float>>
+  (forward_compatibility) NewMapList

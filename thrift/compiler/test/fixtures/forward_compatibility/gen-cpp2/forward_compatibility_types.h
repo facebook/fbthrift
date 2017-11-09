@@ -25,6 +25,16 @@ class NewStructureNested;
 class NewStructureNestedField;
 typedef std::map<int16_t, float> FloatFeatures;
 
+typedef std::map<int64_t, double> DoubleMapType;
+
+typedef std::map<int16_t,  ::cpp2::DoubleMapType> OldMapMap;
+
+typedef std::map<int32_t,  ::cpp2::DoubleMapType> NewMapMap;
+
+typedef std::map<int16_t, std::vector<float>> OldMapList;
+
+typedef std::map<int32_t, std::vector<float>> NewMapList;
+
 class OldStructure : private apache::thrift::detail::st::ComparisonOperators<OldStructure> {
  public:
 

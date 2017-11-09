@@ -30,6 +30,16 @@ class NewStructureNestedField;
 
 typedef std::map<int16_t, float>  FloatFeatures;
 
+typedef std::map<int64_t, double>  DoubleMapType;
+
+typedef std::map<int16_t, DoubleMapType>  OldMapMap;
+
+typedef std::map<int32_t, DoubleMapType>  NewMapMap;
+
+typedef std::map<int16_t, std::vector<float> >  OldMapList;
+
+typedef std::map<int32_t, std::vector<float> >  NewMapList;
+
 void swap(OldStructure &a, OldStructure &b);
 
 class OldStructure : public apache::thrift::TStructType<OldStructure> {

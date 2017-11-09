@@ -1428,4 +1428,738 @@ cdef class Set__Map__i16_float:
 
 Set.register(Set__Map__i16_float)
 
+cdef class Map__i64_double:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i64_double):
+            self._cpp_obj = (<Map__i64_double> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i64_double._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int64_t,double]] c_items):
+        inst = <Map__i64_double>Map__i64_double.__new__(Map__i64_double)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int64_t,double]] c_inst = make_unique[cmap[int64_t,double]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int64_t,double](key,item))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int64_t ckey = key
+        cdef cmap[int64_t,double].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef double citem = deref(iter).second
+        return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int64_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int64_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int64_t ckey = key
+        cdef cmap[int64_t,double].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef double citem = deref(iter).second
+        return citem
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef double citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield citem
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int64_t ckey
+        cdef double citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, citem)
+
+
+
+Mapping.register(Map__i64_double)
+
+cdef class Map__i16_Map__i64_double:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i16_Map__i64_double):
+            self._cpp_obj = (<Map__i16_Map__i64_double> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i16_Map__i64_double._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int16_t,cmap[int64_t,double]]] c_items):
+        inst = <Map__i16_Map__i64_double>Map__i16_Map__i64_double.__new__(Map__i16_Map__i64_double)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int16_t,cmap[int64_t,double]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int16_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,cmap[int64_t,double]].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef cmap[int64_t,double] citem = deref(iter).second
+        return Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int16_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,cmap[int64_t,double]].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef cmap[int64_t,double] citem = deref(iter).second
+        return Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef cmap[int64_t,double] citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t ckey
+        cdef cmap[int64_t,double] citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem)))
+
+
+
+Mapping.register(Map__i16_Map__i64_double)
+
+cdef class Map__i32_Map__i64_double:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i32_Map__i64_double):
+            self._cpp_obj = (<Map__i32_Map__i64_double> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i32_Map__i64_double._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,cmap[int64_t,double]]] c_items):
+        inst = <Map__i32_Map__i64_double>Map__i32_Map__i64_double.__new__(Map__i32_Map__i64_double)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int32_t,cmap[int64_t,double]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int32_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,cmap[int64_t,double]].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef cmap[int64_t,double] citem = deref(iter).second
+        return Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,cmap[int64_t,double]].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef cmap[int64_t,double] citem = deref(iter).second
+        return Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef cmap[int64_t,double] citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem))
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t ckey
+        cdef cmap[int64_t,double] citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, Map__i64_double.create(
+    make_shared[cmap[int64_t,double]](citem)))
+
+
+
+Mapping.register(Map__i32_Map__i64_double)
+
+cdef class List__float:
+    def __init__(self, items=None):
+        if isinstance(items, List__float):
+            self._cpp_obj = (<List__float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[float]] c_items):
+        inst = <List__float>List__float.__new__(List__float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[float]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[float]] c_inst = make_unique[vector[float]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[float]] c_inst
+        cdef float citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[float]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__float.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef float citem = item
+        cdef vector[float] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef float citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef float citem
+        cdef vector[float] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[float].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef float citem = item
+        cdef vector[float] vec = deref(self._cpp_obj.get())
+        cdef vector[float].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef float citem = item
+        cdef vector[float] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__float)
+
+cdef class Map__i16_List__float:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i16_List__float):
+            self._cpp_obj = (<Map__i16_List__float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i16_List__float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int16_t,vector[float]]] c_items):
+        inst = <Map__i16_List__float>Map__i16_List__float.__new__(Map__i16_List__float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int16_t,vector[float]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int16_t,vector[float]]] c_inst = make_unique[cmap[int16_t,vector[float]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int16_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,vector[float]].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef vector[float] citem = deref(iter).second
+        return List__float.create(
+    make_shared[vector[float]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int16_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int16_t ckey = key
+        cdef cmap[int16_t,vector[float]].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef vector[float] citem = deref(iter).second
+        return List__float.create(
+    make_shared[vector[float]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef vector[float] citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield List__float.create(
+    make_shared[vector[float]](citem))
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int16_t ckey
+        cdef vector[float] citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, List__float.create(
+    make_shared[vector[float]](citem)))
+
+
+
+Mapping.register(Map__i16_List__float)
+
+cdef class Map__i32_List__float:
+    def __init__(self, items=None):
+        if isinstance(items, Map__i32_List__float):
+            self._cpp_obj = (<Map__i32_List__float> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__i32_List__float._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,vector[float]]] c_items):
+        inst = <Map__i32_List__float>Map__i32_List__float.__new__(Map__i32_List__float)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,vector[float]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int32_t,vector[float]]] c_inst = make_unique[cmap[int32_t,vector[float]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int32_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,vector[float]].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise KeyError(f'{key}')
+        cdef vector[float] citem = deref(iter).second
+        return List__float.create(
+    make_shared[vector[float]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+
+
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self:
+            return default
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,vector[float]].iterator iter = \
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            return default
+        cdef vector[float] citem = deref(iter).second
+        return List__float.create(
+    make_shared[vector[float]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef vector[float] citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield List__float.create(
+    make_shared[vector[float]](citem))
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t ckey
+        cdef vector[float] citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, List__float.create(
+    make_shared[vector[float]](citem)))
+
+
+
+Mapping.register(Map__i32_List__float)
+
 FloatFeatures = Map__i16_float
+DoubleMapType = Map__i64_double
+OldMapMap = Map__i16_Map__i64_double
+NewMapMap = Map__i32_Map__i64_double
+OldMapList = Map__i16_List__float
+NewMapList = Map__i32_List__float
