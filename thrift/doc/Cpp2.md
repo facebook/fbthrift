@@ -75,9 +75,6 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
 * setInterface(std::shared_ptr<ServerInterface>) - Your thrift handler
   interface that subclasses the generated code.
 
-* setMaxConnections(uint32_t) - The maximum number of connected
-  tcp streams.
-
 * setMaxRequests(uint32_t) - The maximum number of outstanding
   requests.
 

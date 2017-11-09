@@ -63,7 +63,7 @@ DEFINE_int32(
     "Default is 0, which is to not set a granular timeout for SSL handshakes. "
     "Connections that stall during handshakes may still be timed out "
     "with --idle_timeout");
-DEFINE_int32(max_connections, 0, "max active connections");
+DEFINE_int32(max_connections, 0, "DEPRECATED (REMOVE ME)");
 DEFINE_int32(max_requests, 0, "max active requests");
 DEFINE_string(cert, "", "server SSL certificate file");
 DEFINE_string(key, "", "server SSL private key file");
@@ -131,7 +131,6 @@ int main(int argc, char* argv[]) {
   server->setNumIOWorkerThreads(FLAGS_num_threads);
   server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
   server->setNumSSLHandshakeWorkerThreads(FLAGS_num_ssl_handshake_threads);
-  server->setMaxConnections(FLAGS_max_connections);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
   server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);
