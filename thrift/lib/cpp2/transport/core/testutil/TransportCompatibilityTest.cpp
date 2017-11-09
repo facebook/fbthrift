@@ -161,10 +161,11 @@ void TransportCompatibilityTest::connectToServer(
   }
 }
 
-class TimeoutTestCallback : public RequestCallback {
+class MockCallback : public RequestCallback {
  public:
-  TimeoutTestCallback(bool shouldTimeout) : shouldTimeout_(shouldTimeout) {}
-  virtual ~TimeoutTestCallback() {
+  MockCallback(bool clientError, bool serverError)
+      : clientError_(clientError), serverError_(serverError) {}
+  virtual ~MockCallback() {
     EXPECT_TRUE(callbackReceived_);
   }
   void requestSent() override {
@@ -174,15 +175,18 @@ class TimeoutTestCallback : public RequestCallback {
   void replyReceived(ClientReceiveState&&) override {
     EXPECT_TRUE(requestSentCalled_);
     EXPECT_FALSE(callbackReceived_);
-    EXPECT_FALSE(shouldTimeout_);
+    EXPECT_FALSE(clientError_);
+    EXPECT_FALSE(serverError_);
     callbackReceived_ = true;
   }
   void requestError(ClientReceiveState&& crs) override {
-    EXPECT_TRUE(requestSentCalled_);
+    // If clientError_ is expected, then request should not be send!
+    EXPECT_NE(clientError_, requestSentCalled_);
     EXPECT_TRUE(crs.isException());
     EXPECT_TRUE(crs.exception().is_compatible_with<TTransportException>());
     EXPECT_FALSE(callbackReceived_);
-    EXPECT_TRUE(shouldTimeout_);
+    EXPECT_TRUE(clientError_ || serverError_);
+    EXPECT_NE(clientError_, requestSentCalled_);
     callbackReceived_ = true;
   }
   bool callbackReceived() {
@@ -190,7 +194,8 @@ class TimeoutTestCallback : public RequestCallback {
   }
 
  private:
-  bool shouldTimeout_;
+  bool clientError_;
+  bool serverError_;
   bool requestSentCalled_{false};
   bool callbackReceived_{false};
 };
@@ -199,7 +204,7 @@ void TransportCompatibilityTest::callSleep(
     TestServiceAsyncClient* client,
     int32_t timeoutMs,
     int32_t sleepMs) {
-  auto cb = std::make_unique<TimeoutTestCallback>(timeoutMs < sleepMs);
+  auto cb = std::make_unique<MockCallback>(false, timeoutMs < sleepMs);
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));
   client->sleep(opts, std::move(cb), sleepMs);
@@ -729,6 +734,29 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
 
   intermServer->cleanUp();
   serverThread.join();
+}
+
+void TransportCompatibilityTest::TestBadPayload() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient>,
+                     std::shared_ptr<ClientConnectionIf> connection) {
+    auto cb = std::make_unique<MockCallback>(true, false);
+    connection->getEventBase()->runInEventBaseThreadAndWait([&]() {
+      auto metadata = std::make_unique<RequestRpcMetadata>();
+      metadata->set_clientTimeoutMs(10000);
+      auto channel = connection->getChannel(metadata.get());
+
+      auto evb = folly::EventBaseManager::get()->getEventBase();
+      auto callback = std::make_unique<ThriftClientCallback>(
+          evb, std::move(cb), nullptr, false, (uint16_t)ProtocolId::BINARY);
+
+      // Put a bad payload!
+      auto payload = std::make_unique<folly::IOBuf>();
+      // TODO - make payload bad!
+
+      channel->sendThriftRequest(
+          std::move(metadata), std::move(payload), std::move(callback));
+    });
+  });
 }
 
 } // namespace thrift

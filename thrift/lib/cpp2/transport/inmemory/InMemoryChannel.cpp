@@ -55,7 +55,13 @@ void InMemoryChannel::sendThriftRequest(
   CHECK(metadata);
   CHECK(payload);
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
-    LOG(FATAL) << "Unexpected problem stripping envelope";
+    LOG(ERROR) << "Unexpected problem stripping envelope";
+    auto evb = callback->getEventBase();
+    evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
+      cb->onError(folly::exception_wrapper(
+          std::runtime_error("Unexpected problem stripping envelope")));
+    });
+    return;
   }
   CHECK(metadata->__isset.kind);
   if (metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||

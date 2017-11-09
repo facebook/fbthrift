@@ -160,7 +160,13 @@ void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
-    LOG(FATAL) << "Unexpected problem stripping envelope";
+    LOG(ERROR) << "Unexpected problem stripping envelope";
+    auto evb = callback->getEventBase();
+    evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
+      cb->onError(folly::exception_wrapper(
+          TTransportException("Unexpected problem stripping envelope")));
+    });
+    return;
   }
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
@@ -177,8 +183,14 @@ void RSClientThriftChannel::sendThriftRequest(
     case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
       channelRequest(std::move(metadata), std::move(payload));
       break;
-    default:
-      LOG(FATAL) << "not implemented";
+    default: {
+      LOG(ERROR) << "Unknown RpcKind value in the Metadata";
+      auto evb = callback->getEventBase();
+      evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
+        cb->onError(folly::exception_wrapper(
+            TTransportException("Unknown RpcKind value in the Metadata")));
+      });
+    }
   }
 }
 

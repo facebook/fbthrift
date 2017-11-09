@@ -62,6 +62,8 @@ class TransportCompatibilityTest {
 
   void TestRequestContextIsPreserved();
 
+  void TestBadPayload();
+
  protected:
   void setupServer();
   void stopServer();

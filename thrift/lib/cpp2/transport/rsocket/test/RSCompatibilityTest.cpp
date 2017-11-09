@@ -125,5 +125,9 @@ TEST_F(RSCompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }
 
+TEST_F(RSCompatibilityTest, BadPayload) {
+  compatibilityTest_->TestBadPayload();
+}
+
 } // namespace thrift
 } // namespace apache

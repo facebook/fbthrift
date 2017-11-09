@@ -130,7 +130,13 @@ void MultiRpcChannel::sendThriftRequest(
   VLOG(2) << "sendThriftRequest:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
-    LOG(FATAL) << "Unexpected problem stripping envelope";
+    LOG(ERROR) << "Unexpected problem stripping envelope";
+    auto evb = callback->getEventBase();
+    evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
+      cb->onError(folly::exception_wrapper(
+          TTransportException("Unexpected problem stripping envelope")));
+    });
+    return;
   }
   DCHECK(metadata->__isset.protocol);
   DCHECK(metadata->__isset.name);
