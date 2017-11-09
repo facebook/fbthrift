@@ -148,6 +148,12 @@ class ThriftClient : public ClientChannel {
   // folly:DelayedDestruction.
   virtual ~ThriftClient() = default;
 
+  std::unique_ptr<RequestRpcMetadata> createRequestRpcMetadata(
+      RpcOptions& rpcOptions,
+      RpcKind kind,
+      apache::thrift::ProtocolId protocolId,
+      transport::THeader* header);
+
   uint32_t sendRequestHelper(
       RpcOptions& rpcOptions,
       RpcKind kind,

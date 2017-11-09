@@ -75,11 +75,6 @@ class ThriftProcessor {
   // Thread manager that is used to run thrift handlers.
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;
-
-  // Schedule timeout for a request
-  void scheduleTimeout(
-      folly::HHWheelTimer::Callback* callback,
-      std::chrono::milliseconds timeout);
 };
 
 } // namespace thrift

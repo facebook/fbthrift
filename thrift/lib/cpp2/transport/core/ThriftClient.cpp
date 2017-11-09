@@ -158,18 +158,13 @@ uint32_t ThriftClient::sendOnewayRequest(
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
-uint32_t ThriftClient::sendRequestHelper(
+std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
     RpcOptions& rpcOptions,
     RpcKind kind,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header,
-    EventBase* callbackEvb) noexcept {
-  DestructorGuard dg(this);
-  cb->context_ = RequestContext::saveContext();
+    apache::thrift::ProtocolId protocolId,
+    THeader* header) {
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol = static_cast<apache::thrift::ProtocolId>(protocolId_);
+  metadata->protocol = protocolId;
   metadata->__isset.protocol = true;
   metadata->kind = kind;
   metadata->__isset.kind = true;
@@ -197,7 +192,24 @@ uint32_t ThriftClient::sendRequestHelper(
   if (!metadata->otherMetadata.empty()) {
     metadata->__isset.otherMetadata = true;
   }
+  return metadata;
+}
 
+uint32_t ThriftClient::sendRequestHelper(
+    RpcOptions& rpcOptions,
+    RpcKind kind,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<ContextStack> ctx,
+    std::unique_ptr<IOBuf> buf,
+    std::shared_ptr<THeader> header,
+    EventBase* callbackEvb) noexcept {
+  DestructorGuard dg(this);
+  cb->context_ = RequestContext::saveContext();
+  auto metadata = createRequestRpcMetadata(
+      rpcOptions,
+      kind,
+      static_cast<apache::thrift::ProtocolId>(protocolId_),
+      header.get());
   auto callback = std::make_unique<ThriftClientCallback>(
       callbackEvb,
       std::move(cb),
@@ -228,13 +240,13 @@ void ThriftClient::getChannelAndSendThriftRequest(
     channel->sendThriftRequest(
         std::move(metadata), std::move(payload), std::move(callback));
   } catch (TTransportException& te) {
+    // sendThriftRequest is noexcept, so callback will never be nullptr in here
     auto callbackEvb = callback->getEventBase();
     callbackEvb->runInEventBaseThread([callback = std::move(callback),
                                        te = std::move(te)]() mutable {
       callback->onError(
           folly::make_exception_wrapper<TTransportException>(std::move(te)));
     });
-    return;
   }
 }
 
