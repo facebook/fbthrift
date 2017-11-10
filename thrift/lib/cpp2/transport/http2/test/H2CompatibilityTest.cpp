@@ -171,6 +171,15 @@ TEST_P(H2CompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }
 
+TEST_P(H2CompatibilityTest, BadPayload) {
+  // Default and SingleRpc versions don't extract metadata from the payload, so
+  // they will just send the payload to the server.
+  if (GetParam() != ChannelType::Default &&
+      GetParam() != ChannelType::SingleRpc) {
+    compatibilityTest_->TestBadPayload();
+  }
+}
+
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     H2CompatibilityTest,

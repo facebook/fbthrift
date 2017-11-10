@@ -77,6 +77,23 @@ TEST_F(CoreTestFixture, BadPayload) {
   EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
 }
 
+TEST_F(CoreTestFixture, BadMetadata) {
+  runInEventBaseThread([&]() mutable {
+    auto metadata = makeMetadata("headers");
+    folly::IOBufQueue request;
+    serializeSumTwoNumbers(5, 10, false, &request, metadata.get());
+    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
+
+    metadata->__isset.kind = false; // make sure there is an error
+
+    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
+  });
+
+  TApplicationException tae;
+  EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
+  EXPECT_EQ(TApplicationException::UNSUPPORTED_CLIENT_TYPE, tae.getType());
+}
+
 // Forces calling sendErrorWrapped()
 TEST_F(CoreTestFixture, SendErrorWrapped) {
   threadManager_->setThrowOnAdd(true);

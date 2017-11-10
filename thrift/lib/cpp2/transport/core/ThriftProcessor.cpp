@@ -42,17 +42,29 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(payload);
   DCHECK(channel);
   DCHECK(tm_);
-  DCHECK(metadata->__isset.protocol);
-  DCHECK(metadata->__isset.name);
-  DCHECK(metadata->__isset.seqId);
-  DCHECK(metadata->__isset.kind);
 
-  std::unique_ptr<ThriftRequest> request = std::make_unique<ThriftRequest>(
+  bool invalidMetadata =
+      !(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId);
+
+  auto request = std::make_unique<ThriftRequest>(
       serverConfigs_, channel, std::move(metadata));
+
+  auto* evb = channel->getEventBase();
+  if (UNLIKELY(invalidMetadata)) {
+    LOG(ERROR) << "Invalid metadata object";
+    evb->runInEventBaseThread([request = std::move(request)]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+              "invalid metadata object"),
+          "corrupted metadata");
+    });
+    return;
+  }
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
-  auto* evb = channel->getEventBase();
   cpp2Processor_->process(
       std::move(request), std::move(payload), protoId, reqContext, evb, tm_);
 }

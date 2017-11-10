@@ -743,6 +743,10 @@ void TransportCompatibilityTest::TestBadPayload() {
     connection->getEventBase()->runInEventBaseThreadAndWait([&]() {
       auto metadata = std::make_unique<RequestRpcMetadata>();
       metadata->set_clientTimeoutMs(10000);
+      metadata->set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      metadata->set_name("name");
+      metadata->set_seqId(0);
+      metadata->set_protocol(ProtocolId::BINARY);
       auto channel = connection->getChannel(metadata.get());
 
       auto evb = folly::EventBaseManager::get()->getEventBase();
@@ -751,7 +755,6 @@ void TransportCompatibilityTest::TestBadPayload() {
 
       // Put a bad payload!
       auto payload = std::make_unique<folly::IOBuf>();
-      // TODO - make payload bad!
 
       channel->sendThriftRequest(
           std::move(metadata), std::move(payload), std::move(callback));
