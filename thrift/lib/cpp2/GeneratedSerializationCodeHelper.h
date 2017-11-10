@@ -595,22 +595,57 @@ uint32_t readFloatingPoint(Protocol_& prot, TType arg_type, T& out) {
   }
 }
 
-template <typename Protocol_, typename T>
+template <typename Protocol_, typename TypeClass_, typename TType_>
 struct ReadForwardCompatible {
-  static uint32_t read(Protocol_& prot, TType arg_type, T& out) {
+  static uint32_t read(Protocol_& prot, TType, TType_& out) {
+    return protocol_methods<TypeClass_, TType_>::read(prot, out);
+  }
+};
+
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, bool> {
+  static uint32_t read(Protocol_& prot, TType arg_type, bool& out) {
     return forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
-template <typename Protocol_>
-struct ReadForwardCompatible<Protocol_, float> {
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, int8_t> {
+  static uint32_t read(Protocol_& prot, TType arg_type, int8_t& out) {
+    return forward_compatibility::readIntegral(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, int16_t> {
+  static uint32_t read(Protocol_& prot, TType arg_type, int16_t& out) {
+    return forward_compatibility::readIntegral(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, int32_t> {
+  static uint32_t read(Protocol_& prot, TType arg_type, int32_t& out) {
+    return forward_compatibility::readIntegral(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, int64_t> {
+  static uint32_t read(Protocol_& prot, TType arg_type, int64_t& out) {
+    return forward_compatibility::readIntegral(prot, arg_type, out);
+  }
+};
+
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, float> {
   static uint32_t read(Protocol_& prot, TType arg_type, float& out) {
     return forward_compatibility::readFloatingPoint(prot, arg_type, out);
   }
 };
 
-template <typename Protocol_>
-struct ReadForwardCompatible<Protocol_, double> {
+template <typename Protocol_, typename TypeClass_>
+struct ReadForwardCompatible<Protocol_, TypeClass_, double> {
   static uint32_t read(Protocol_& prot, TType arg_type, double& out) {
     return forward_compatibility::readFloatingPoint(prot, arg_type, out);
   }
@@ -655,12 +690,12 @@ struct protocol_methods<
       Type& out) {
     std::size_t xfer = 0;
     key_type key_tmp;
-    xfer +=
-        forward_compatibility::ReadForwardCompatible<Protocol, key_type>::read(
+    xfer += forward_compatibility::
+        ReadForwardCompatible<Protocol, KeyClass, key_type>::read(
             protocol, keyType, key_tmp);
-    xfer +=
-        forward_compatibility::ReadForwardCompatible<Protocol, mapped_type>::
-            read(protocol, valueType, out[std::move(key_tmp)]);
+    xfer += forward_compatibility::
+        ReadForwardCompatible<Protocol, MappedClass, mapped_type>::read(
+            protocol, valueType, out[std::move(key_tmp)]);
     return xfer;
   }
 
@@ -687,13 +722,13 @@ struct protocol_methods<
       }
     } else {
       auto const kreader = [&xfer, &protocol, &rpt_key_type](auto& key) {
-        xfer +=
-            forward_compatibility::ReadForwardCompatible<Protocol, key_type>::
-                read(protocol, rpt_key_type, key);
+        xfer += forward_compatibility::
+            ReadForwardCompatible<Protocol, KeyClass, key_type>::read(
+                protocol, rpt_key_type, key);
       };
       auto const vreader = [&xfer, &protocol, &rpt_mapped_type](auto& value) {
         xfer += forward_compatibility::
-            ReadForwardCompatible<Protocol, mapped_type>::read(
+            ReadForwardCompatible<Protocol, MappedClass, mapped_type>::read(
                 protocol, rpt_mapped_type, value);
       };
       reserve_if_possible(&out, map_size);

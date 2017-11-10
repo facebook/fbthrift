@@ -104,6 +104,33 @@ void testForwardCompatibilityNested() {
   EXPECT_EQ(n.featuresList[0][100], 3.14f);
 }
 
+template <typename Reader, typename Writer>
+void testForwardCompatibilityComplexMap() {
+  OldMapMapStruct s;
+  s.features[1][2] = 3.14;
+  s.features[2][1] = 2.71;
+  auto n = easyDeserialize<NewMapMapStruct, Reader>(
+      easySerialize<OldMapMapStruct, Writer>(s));
+  EXPECT_EQ(n.features[1][2], 3.14);
+  EXPECT_EQ(n.features[2][1], 2.71);
+}
+
+template <typename Reader, typename Writer>
+void testForwardCompatibilityComplexList() {
+  OldMapListStruct s;
+  s.features[1].push_back(3.14);
+  s.features[1].push_back(2.71);
+  s.features[2];
+  s.features[3].push_back(12345.56);
+  auto n = easyDeserialize<NewMapListStruct, Reader>(
+      easySerialize<OldMapListStruct, Writer>(s));
+  EXPECT_NEAR(n.features.at(1).at(0), 3.14, 1e-3);
+  EXPECT_NEAR(n.features.at(1).at(1), 2.71, 1e-3);
+  EXPECT_EQ(n.features.at(2).size(), 0);
+  EXPECT_NEAR(n.features.at(3).at(0), 12345.56, 1e-3);
+  EXPECT_EQ(n.features.size(), 3);
+}
+
 class OldServerHandler : public OldServerSvIf {
  public:
   void get(OldStructure& s) override {
@@ -135,6 +162,30 @@ TEST(ForwardCompatibility, Nested) {
       CompactProtocolReader,
       CompactProtocolWriter>();
   testForwardCompatibilityNested<
+      SimpleJSONProtocolReader,
+      SimpleJSONProtocolWriter>();
+}
+
+TEST(ForwardCompatibility, MapMap) {
+  testForwardCompatibilityComplexMap<
+      BinaryProtocolReader,
+      BinaryProtocolWriter>();
+  testForwardCompatibilityComplexMap<
+      CompactProtocolReader,
+      CompactProtocolWriter>();
+  testForwardCompatibilityComplexMap<
+      SimpleJSONProtocolReader,
+      SimpleJSONProtocolWriter>();
+}
+
+TEST(ForwardCompatibility, MapList) {
+  testForwardCompatibilityComplexList<
+      BinaryProtocolReader,
+      BinaryProtocolWriter>();
+  testForwardCompatibilityComplexList<
+      CompactProtocolReader,
+      CompactProtocolWriter>();
+  testForwardCompatibilityComplexList<
       SimpleJSONProtocolReader,
       SimpleJSONProtocolWriter>();
 }

@@ -21,6 +21,31 @@ struct NewStructureNested {
   1: list<FCMap> featuresList,
 }
 
+typedef map<i64, double> DoubleMapType
+typedef map<i16, DoubleMapType> OldMapMap
+typedef map<i32, DoubleMapType>
+  (forward_compatibility) NewMapMap
+
+struct OldMapMapStruct {
+  1: OldMapMap features,
+}
+
+struct NewMapMapStruct {
+  1: NewMapMap features,
+}
+
+typedef map<i16, list<float>> OldMapList
+typedef map<i32, list<float>>
+  (forward_compatibility) NewMapList
+
+struct OldMapListStruct {
+  1: OldMapList features,
+}
+
+struct NewMapListStruct {
+  1: NewMapList features,
+}
+
 service OldServer {
   OldStructure get();
 }
