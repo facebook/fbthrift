@@ -64,8 +64,6 @@
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
 <%/function:oneway?%>
  public:
 <%/type:void?%>
@@ -88,8 +86,6 @@
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
  public:
 <%/function:oneway?%>
 <%/type:void?%>

@@ -27,32 +27,27 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = <%service:name%>_<%function:name%>_presult;
+  constexpr auto const fname = "<%function:name%>";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-<%#type:void?%>
-      return recv_wrapped_<%function:name%>T(&reader, state);
-<%/type:void?%>
-<%^type:void?%>
-      return recv_wrapped_<%function:name%>T(&reader, _return, state);
-<%/type:void?%>
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-<%#type:void?%>
-      return recv_wrapped_<%function:name%>T(&reader, state);
-<%/type:void?%>
-<%^type:void?%>
-      return recv_wrapped_<%function:name%>T(&reader, _return, state);
-<%/type:void?%>
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
     }
 <%#service:frozen2?%>
     case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
     {
       apache::thrift::Frozen2ProtocolReader reader;
-      return recv_wrapped_<%function:name%>T(&reader, <%^type:void?%>_return, <%/type:void?%>state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
     }
 <%/service:frozen2?%>
     default:

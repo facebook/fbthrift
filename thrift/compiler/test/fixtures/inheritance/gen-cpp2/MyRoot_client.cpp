@@ -35,53 +35,6 @@ void MyRootAsyncClient::do_rootT(Protocol_* prot, bool useSync, apache::thrift::
   connectionContext_->setRequestHeader(nullptr);
 }
 
-template <typename Protocol_>
-folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_rootT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("do_root") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    MyRoot_do_root_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
 
 
 void MyRootAsyncClient::do_root(std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -168,16 +121,20 @@ folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_root(::apache::thrif
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = MyRoot_do_root_presult;
+  constexpr auto const fname = "do_root";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_do_rootT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_do_rootT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {

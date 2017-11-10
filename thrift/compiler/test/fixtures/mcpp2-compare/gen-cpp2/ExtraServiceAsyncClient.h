@@ -54,8 +54,6 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
  private:
   template <typename Protocol_>
   void simple_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_simple_functionT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void throws_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throws_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -76,8 +74,6 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
  private:
   template <typename Protocol_>
   void throws_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_throws_functionT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void throws_function2(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
   virtual void throws_function2(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
@@ -98,8 +94,6 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
  private:
   template <typename Protocol_>
   void throws_function2T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_throws_function2T(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
   virtual void throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
@@ -120,8 +114,6 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
  private:
   template <typename Protocol_>
   void throws_function3T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_throws_function3T(Protocol_* prot, std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state);
  public:
   virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);

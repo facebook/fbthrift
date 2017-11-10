@@ -53,8 +53,6 @@ class MyNodeAsyncClient : public  ::cpp2::MyRootAsyncClient {
  private:
   template <typename Protocol_>
   void do_midT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_do_midT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  public:
 };
 

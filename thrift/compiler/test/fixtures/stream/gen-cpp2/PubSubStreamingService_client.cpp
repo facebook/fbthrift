@@ -68,53 +68,6 @@ void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, a
 }
 
 template <typename Protocol_>
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("client") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_client_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
-template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
@@ -150,57 +103,6 @@ void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, a
   connectionContext_->setRequestHeader(nullptr);
 }
 
-template <typename Protocol_>
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_serverT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("server") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_server_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-    if (result.getIsSet(0)) {
-      interior_ew = folly::make_exception_wrapper< ::cpp2::FooEx>(result.get<0>().ref());
-      return; // from try_and_catch
-    }
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -238,57 +140,6 @@ void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apa
 }
 
 template <typename Protocol_>
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_bothT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("both") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_both_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-    if (result.getIsSet(0)) {
-      interior_ew = folly::make_exception_wrapper< ::cpp2::FooEx>(result.get<0>().ref());
-      return; // from try_and_catch
-    }
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
-template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i32_from, int32_t i32_to) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
@@ -304,64 +155,6 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useS
   connectionContext_->setRequestHeader(nullptr);
 }
 
-template <typename Protocol_>
-// returning a stream should probably be closer to returning a void or a future; for now this'll just be a stub
-// folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstreamT(Protocol_* prot, yarpl::Reference<yarpl::flowable::Flowable<int32_t>>& /*_return*/, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("returnstream") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_returnstream_presult result;
-  assert(false); // we're a stream
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-    if (result.getIsSet(0)) {
-      // _return pointer has been filled
-      return; // from try_and_catch
-    }
-    else {
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
-      return; // from try_and_catch
-    }
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
 template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
@@ -400,53 +193,6 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
 }
 
 template <typename Protocol_>
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesstreamT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("takesstream") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_takesstream_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
-template <typename Protocol_>
 void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
@@ -482,53 +228,6 @@ void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useS
   connectionContext_->setRequestHeader(nullptr);
 }
 
-template <typename Protocol_>
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientthrowsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
-  apache::thrift::ContextStack* ctx = state.ctx();
-  std::string _fname;
-  int32_t protoSeqId = 0;
-  apache::thrift::MessageType mtype;
-  ctx->preRead();
-  folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    prot->readMessageBegin(_fname, mtype, protoSeqId);
-    if (mtype == apache::thrift::T_EXCEPTION) {
-      apache::thrift::TApplicationException x;
-      x.read(prot);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
-      return; // from try_and_catch
-    }
-    if (mtype != apache::thrift::T_REPLY) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE);
-      return; // from try_and_catch
-    }
-    if (_fname.compare("clientthrows") != 0) {
-      prot->skip(apache::thrift::protocol::T_STRUCT);
-      prot->readMessageEnd();
-      interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
-      return; // from try_and_catch
-    }
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
-    PubSubStreamingService_clientthrows_presult result;
-    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
-  }
-  );
-  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
 
 
 void PubSubStreamingServiceAsyncClient::client(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
@@ -615,16 +314,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_client(
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_client_presult;
+  constexpr auto const fname = "client";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_clientT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_clientT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {
@@ -732,16 +435,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_server(
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_server_presult;
+  constexpr auto const fname = "server";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_serverT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_serverT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {
@@ -849,16 +556,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_both(::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_both_presult;
+  constexpr auto const fname = "both";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_bothT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_bothT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {
@@ -947,16 +658,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_returnstream_presult;
+  constexpr auto const fname = "returnstream";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_returnstreamT(&reader, _return, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_returnstreamT(&reader, _return, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state, _return);
     }
     default:
     {
@@ -1066,16 +781,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_takesst
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_takesstream_presult;
+  constexpr auto const fname = "takesstream";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_takesstreamT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_takesstreamT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {
@@ -1183,16 +902,20 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_clientt
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  switch(state.protocolId()) {
+  using result = PubSubStreamingService_clientthrows_presult;
+  constexpr auto const fname = "clientthrows";
+  switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_clientthrowsT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_clientthrowsT(&reader, state);
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
     }
     default:
     {
