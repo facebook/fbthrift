@@ -6,7 +6,7 @@
  */
 class ThriftSerializationHelper {
   public static function readStruct(
-    $protocol,
+    TProtocol $protocol,
     $object,
   ): int {
     $field_name = '';
@@ -14,9 +14,13 @@ class ThriftSerializationHelper {
     $field_id = 0;
 
     $tspec = $object::$_TSPEC;
-    $xfer = $protocol->readStructBegin($field_name);
+    $xfer = $protocol->readStructBegin(&$field_name);
     while (true) {
-      $xfer += $protocol->readFieldBegin($field_name, $field_type, $field_id);
+      $xfer += $protocol->readFieldBegin(
+        &$field_name,
+        &$field_type,
+        &$field_id,
+      );
 
       // Break once we reach the end of the struct.
       if ($field_type === TType::STOP) {
@@ -70,7 +74,7 @@ class ThriftSerializationHelper {
   }
 
   public static function readUnion(
-    $protocol,
+    TProtocol $protocol,
     $object,
     &$union_enum,
   ): int {
@@ -81,9 +85,13 @@ class ThriftSerializationHelper {
     $tspec = $object::$_TSPEC;
     $union_enum_name = get_class($object) . "Enum";
     $union_enum = $union_enum_name::_EMPTY_;
-    $xfer = $protocol->readStructBegin($field_name);
+    $xfer = $protocol->readStructBegin(&$field_name);
     while (true) {
-      $xfer += $protocol->readFieldBegin($field_name, $field_type, $field_id);
+      $xfer += $protocol->readFieldBegin(
+        &$field_name,
+        &$field_type,
+        &$field_id,
+      );
 
       // Break once we reach the end of the struct.
       if ($field_type === TType::STOP) {
@@ -139,7 +147,7 @@ class ThriftSerializationHelper {
   }
 
   private static function readStructHelper(
-    $protocol,
+    TProtocol $protocol,
     $field_type,
     &$object,
     $tspec,
@@ -147,13 +155,13 @@ class ThriftSerializationHelper {
     $xfer = 0;
     switch ($field_type) {
       case TType::BOOL:
-        $xfer += $protocol->readBool($object);
+        $xfer += $protocol->readBool(&$object);
         break;
       case TType::BYTE:
-        $xfer += $protocol->readByte($object);
+        $xfer += $protocol->readByte(&$object);
         break;
       case TType::I16:
-        $xfer += $protocol->readI16($object);
+        $xfer += $protocol->readI16(&$object);
         break;
       case TType::I32:
         // Enums:
@@ -163,29 +171,29 @@ class ThriftSerializationHelper {
         // the tspec to avoid this if statement.
         if (isset($tspec['enum'])) {
           $val = null;
-          $xfer += $protocol->readI32($val);
+          $xfer += $protocol->readI32(&$val);
           $enum_class = $tspec['enum'];
           $object = $enum_class::coerce($val);
         } else {
-          $xfer += $protocol->readI32($object);
+          $xfer += $protocol->readI32(&$object);
         }
         break;
       case TType::I64:
-        $xfer += $protocol->readI64($object);
+        $xfer += $protocol->readI64(&$object);
         break;
       case TType::DOUBLE:
-        $xfer += $protocol->readDouble($object);
+        $xfer += $protocol->readDouble(&$object);
         break;
       case TType::FLOAT:
-        $xfer += $protocol->readFloat($object);
+        $xfer += $protocol->readFloat(&$object);
         break;
       case TType::STRING:
-        $xfer += $protocol->readString($object);
+        $xfer += $protocol->readString(&$object);
         break;
       case TType::LST:
         $size = 0;
         $element_type = 0;
-        $xfer += $protocol->readListBegin($element_type, $size);
+        $xfer += $protocol->readListBegin(&$element_type, &$size);
 
         // Use the correct collection.
         $list = null;
@@ -225,7 +233,7 @@ class ThriftSerializationHelper {
       case TType::SET:
         $size = 0;
         $element_type = 0;
-        $xfer += $protocol->readSetBegin($element_type, $size);
+        $xfer += $protocol->readSetBegin(&$element_type, &$size);
 
         // Use the correct collection.
         $set = null;
@@ -275,7 +283,7 @@ class ThriftSerializationHelper {
         $size = 0;
         $key_type = 0;
         $value_type = 0;
-        $xfer += $protocol->readMapBegin($key_type, $value_type, $size);
+        $xfer += $protocol->readMapBegin(&$key_type, &$value_type, &$size);
 
         // Use the correct collection.
         $map = null;
@@ -329,7 +337,7 @@ class ThriftSerializationHelper {
   }
 
   public static function writeStruct(
-    $protocol,
+    TProtocol $protocol,
     $object,
   ): int {
     $xfer = $protocol->writeStructBegin($object->getName());
@@ -361,7 +369,7 @@ class ThriftSerializationHelper {
   }
 
   private static function writeStructHelper(
-    $protocol,
+    TProtocol $protocol,
     $field_type,
     $object,
     $tspec,
@@ -393,7 +401,7 @@ class ThriftSerializationHelper {
         $xfer += $protocol->writeString($object);
         break;
       case TType::LST:
-        $xfer += $protocol->writeListBegin($tspec['etype'], count($object), 0);
+        $xfer += $protocol->writeListBegin($tspec['etype'], count($object));
         if ($object !== null) {
           foreach ($object as $iter) {
             $xfer += self::writeStructHelper(
@@ -407,7 +415,7 @@ class ThriftSerializationHelper {
         $xfer += $protocol->writeListEnd();
         break;
       case TType::SET:
-        $xfer += $protocol->writeSetBegin($tspec['etype'], count($object), 0);
+        $xfer += $protocol->writeSetBegin($tspec['etype'], count($object));
         if ($object !== null) {
           foreach ($object as $iter) {
             $xfer += self::writeStructHelper(
