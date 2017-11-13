@@ -34,3 +34,7 @@ enum is_unscoped {
 service SomeService {
   include.SomeMap bounce_map(1: include.SomeMap m)
 }
+
+struct FinalStruct {
+  1: i64 MyIntField,
+} (final)

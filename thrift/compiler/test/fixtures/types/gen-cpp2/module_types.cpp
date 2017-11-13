@@ -294,3 +294,47 @@ template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProto
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+FinalStruct::FinalStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg) :
+    MyIntField(std::move(MyIntField__arg)) {
+  __isset.MyIntField = true;
+}
+
+void FinalStruct::__clear() {
+  // clear all fields
+  MyIntField = 0;
+  __isset = {};
+}
+
+bool FinalStruct::operator==(const FinalStruct& rhs) const {
+  if (!((MyIntField == rhs.MyIntField))) {
+    return false;
+  }
+  return true;
+}
+
+void FinalStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+void swap(FinalStruct& a, FinalStruct& b) {
+  using ::std::swap;
+  swap(a.MyIntField, b.MyIntField);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t FinalStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t FinalStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t FinalStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FinalStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FinalStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t FinalStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t FinalStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FinalStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types

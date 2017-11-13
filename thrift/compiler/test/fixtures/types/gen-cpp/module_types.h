@@ -80,6 +80,8 @@ class decorated_struct;
 
 class ContainerStruct;
 
+class FinalStruct;
+
 void swap(decorated_struct &a, decorated_struct &b);
 
 class decorated_struct : public apache::thrift::TStructType<decorated_struct> {
@@ -328,5 +330,63 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
 class ContainerStruct;
 void merge(const ContainerStruct& from, ContainerStruct& to);
 void merge(ContainerStruct&& from, ContainerStruct& to);
+void swap(FinalStruct &a, FinalStruct &b);
+
+class FinalStruct : public apache::thrift::TStructType<FinalStruct> {
+ public:
+
+  static const uint64_t _reflection_id = 1276076876175970924U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  FinalStruct() : MyIntField(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit FinalStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    FinalStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIntField = arg.move();
+    __isset.MyIntField = true;
+  }
+
+  FinalStruct(const FinalStruct&) = default;
+  FinalStruct& operator=(const FinalStruct& src)= default;
+  FinalStruct(FinalStruct&&) = default;
+  FinalStruct& operator=(FinalStruct&&) = default;
+
+  void __clear();
+  int64_t MyIntField;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      MyIntField = false;
+    }
+    bool MyIntField;
+  } __isset;
+
+  bool operator == (const FinalStruct &) const;
+  bool operator != (const FinalStruct& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const FinalStruct & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+class FinalStruct;
+void merge(const FinalStruct& from, FinalStruct& to);
+void merge(FinalStruct&& from, FinalStruct& to);
 }}}} // namespace
 

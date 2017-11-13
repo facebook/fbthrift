@@ -133,6 +133,23 @@ void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Sc
   reflectionInitializer_673983474151144843(schema);  // map<i32, string>
 }
 
+// Reflection initializer for struct module.FinalStruct
+void reflectionInitializer_1276076876175970924(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1276076876175970924U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.FinalStruct";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 6U;
+    f.name = "MyIntField";
+    f.order = 0;
+  }
+}
+
 static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
 // Reflection initializer for struct module.SomeService_bounce_map_args
 void reflectionInitializer_8067468913239303596(::apache::thrift::reflection::Schema& schema) {

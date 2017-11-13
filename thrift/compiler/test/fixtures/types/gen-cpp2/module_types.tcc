@@ -316,3 +316,82 @@ uint32_t ContainerStruct::write(Protocol_* prot_) const {
 }
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+uint32_t FinalStruct::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (_ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->MyIntField);
+          this->__isset.MyIntField = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(_ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FinalStruct");
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FinalStruct");
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FinalStruct");
+  xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->MyIntField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}}} // apache::thrift::fixtures::types
