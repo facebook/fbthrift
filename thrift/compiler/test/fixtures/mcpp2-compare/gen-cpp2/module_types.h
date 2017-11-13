@@ -930,7 +930,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStr
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
+class SimpleUnion final : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -3617,7 +3617,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnExc
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
+class AnotherException final : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
  public:
 
   AnotherException() :
@@ -4829,7 +4829,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyInc
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
+class AnnotatedStruct final : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
 
   AnnotatedStruct();

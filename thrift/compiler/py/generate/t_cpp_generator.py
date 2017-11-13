@@ -2572,7 +2572,10 @@ class CppGenerator(t_generator.Generator):
         class_signature = 'class '
 
         deprecated = check_if_deprecated('class', obj.name, obj.annotations)
-        class_signature += deprecated + obj.name + extends
+        class_signature += deprecated + obj.name
+        if 'final' in obj.annotations:
+            class_signature += ' final'
+        class_signature += extends
         struct = s.cls(class_signature).scope
         struct.acquire()
         struct.label('public:')

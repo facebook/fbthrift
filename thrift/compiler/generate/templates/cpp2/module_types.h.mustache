@@ -44,7 +44,9 @@
 <%#program:structs%>
 <% > common/namespace_cpp2_begin%>
 
-class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
+class <%struct:name%> <%!
+%><%#struct:final%>final <%/struct:final%><%!
+%>: private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
 <%#struct:union?%>
 <% > module_types_h/union_enum%>

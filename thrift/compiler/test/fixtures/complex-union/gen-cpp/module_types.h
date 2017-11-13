@@ -486,7 +486,7 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
 
 };
 
-class FinalComplexUnion : public apache::thrift::TStructType<FinalComplexUnion> {
+class FinalComplexUnion final : public apache::thrift::TStructType<FinalComplexUnion> {
  public:
   enum class Type {
     __EMPTY__ = 0,

@@ -332,7 +332,7 @@ void merge(const ContainerStruct& from, ContainerStruct& to);
 void merge(ContainerStruct&& from, ContainerStruct& to);
 void swap(FinalStruct &a, FinalStruct &b);
 
-class FinalStruct : public apache::thrift::TStructType<FinalStruct> {
+class FinalStruct final : public apache::thrift::TStructType<FinalStruct> {
  public:
 
   static const uint64_t _reflection_id = 1276076876175970924U;

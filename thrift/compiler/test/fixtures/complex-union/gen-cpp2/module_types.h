@@ -542,7 +542,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::s
 
 }} // apache::thrift
 namespace cpp2 {
-class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperators<FinalComplexUnion> {
+class FinalComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<FinalComplexUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,

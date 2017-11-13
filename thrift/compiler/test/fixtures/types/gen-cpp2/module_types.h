@@ -501,7 +501,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class FinalStruct : private apache::thrift::detail::st::ComparisonOperators<FinalStruct> {
+class FinalStruct final : private apache::thrift::detail::st::ComparisonOperators<FinalStruct> {
  public:
 
   FinalStruct() :

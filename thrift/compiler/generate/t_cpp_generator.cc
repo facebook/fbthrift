@@ -1623,11 +1623,15 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
 void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   auto& out = f_types_;
   const vector<t_field*>& members = tstruct->get_members();
+  bool isFinal = tstruct->annotations_.count("final") != 0;
 
   // Open struct def
-  indent(out) << "class " << tstruct->get_name()
-              << " : public apache::thrift::TStructType<" << tstruct->get_name()
-              << "> {" << endl;
+  indent(out) << "class " << tstruct->get_name();
+  if (isFinal) {
+    out << " final";
+  }
+  out << " : public apache::thrift::TStructType<" << tstruct->get_name()
+      << "> {" << endl;
   indent(out) << " public:" << endl;
   indent_up();
 
@@ -1787,9 +1791,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent_down();
   indent(out) << "}" << endl;
 
-  bool virtDest =
-      tstruct->annotations_.find("final") == tstruct->annotations_.end();
-  indent(out) << (virtDest ? "virtual " : "") << "~" << tstruct->get_name()
+  indent(out) << (!isFinal ? "virtual " : "") << "~" << tstruct->get_name()
               << "() noexcept {" << endl;
   indent_up();
   indent(out) << "__clear();" << endl;
@@ -2369,6 +2371,8 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
                 + tstruct->get_name() + ">";
   }
 
+  bool isFinal = tstruct->annotations_.count("final") != 0;
+
   if (swap) {
     // Generate a namespace-scope swap() function
     out <<
@@ -2377,10 +2381,11 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       endl;
   }
   // Open struct def
-  out <<
-    indent() << "class " << tstruct->get_name() << extends << " {" << endl <<
-    indent() << " public:" << endl <<
-    endl;
+  out << indent() << "class " << tstruct->get_name();
+  if (isFinal) {
+    out << " final";
+  }
+  out << extends << " {" << endl << indent() << " public:" << endl << endl;
   indent_up();
 
   if (!bootstrap_) {
@@ -2542,7 +2547,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     out << endl << indent() << "void __clear();" << endl;
   }
 
-  if (tstruct->annotations_.find("final") == tstruct->annotations_.end()) {
+  if (!isFinal) {
     out << endl << indent() << "virtual ~" << tstruct->get_name()
         << "() noexcept {}" << endl << endl;
   }
