@@ -80,6 +80,8 @@ class ThriftClient : public ClientChannel {
   ThriftClient& operator=(const ThriftClient&) = delete;
 
   void setProtocolId(uint16_t protocolId);
+  void setHTTPHost(const std::string& host);
+  void setHTTPUrl(const std::string& url);
 
   // begin RequestChannel methods
 
@@ -139,7 +141,9 @@ class ThriftClient : public ClientChannel {
  protected:
   std::shared_ptr<ClientConnectionIf> connection_;
   folly::EventBase* callbackEvb_;
-  uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
+  std::string httpHost_;
+  std::string httpUrl_;
+  uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
 
   // The default timeout for a Thrift RPC.
   static const std::chrono::milliseconds kDefaultRpcTimeout;

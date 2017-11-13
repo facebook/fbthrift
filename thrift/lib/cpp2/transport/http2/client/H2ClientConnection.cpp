@@ -56,29 +56,12 @@ using std::string;
 const std::chrono::milliseconds H2ClientConnection::kDefaultTimeout =
     std::chrono::milliseconds(500);
 
-std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP1xConnection(
-    TAsyncTransport::UniquePtr transport,
-    const string& httpHost,
-    const string& httpUrl) {
-  std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(
-      std::move(transport),
-      std::make_unique<proxygen::HTTP1xCodec>(
-          proxygen::TransportDirection::UPSTREAM)));
-  connection->httpHost_ = httpHost;
-  connection->httpUrl_ = httpUrl;
-  return std::move(connection);
-}
-
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
-    TAsyncTransport::UniquePtr transport,
-    const string& httpHost,
-    const string& httpUrl) {
+    TAsyncTransport::UniquePtr transport) {
   std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(
       std::move(transport),
       std::make_unique<proxygen::HTTP2Codec>(
           proxygen::TransportDirection::UPSTREAM)));
-  connection->httpHost_ = httpHost;
-  connection->httpUrl_ = httpUrl;
   return std::move(connection);
 }
 
@@ -113,8 +96,7 @@ H2ClientConnection::~H2ClientConnection() {
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel(
     RequestRpcMetadata* metadata) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  return channelFactory_.getChannel(
-      negotiatedChannelVersion_, this, httpHost_, httpUrl_, metadata);
+  return channelFactory_.getChannel(negotiatedChannelVersion_, this, metadata);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {

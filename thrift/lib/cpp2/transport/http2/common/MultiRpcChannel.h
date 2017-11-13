@@ -33,10 +33,7 @@ class MultiRpcChannel : public H2Channel {
       proxygen::ResponseHandler* toHttp2,
       ThriftProcessor* processor);
 
-  MultiRpcChannel(
-      H2ClientConnection* toHttp2,
-      const std::string& httpHost,
-      const std::string& httpUrl);
+  explicit MultiRpcChannel(H2ClientConnection* toHttp2);
 
   virtual ~MultiRpcChannel() override;
 
@@ -107,10 +104,6 @@ class MultiRpcChannel : public H2Channel {
 
   // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_;
-
-  // Header information for RPCs (client side only).
-  std::string httpHost_;
-  std::string httpUrl_;
 
   // Transaction object for use on client side to communicate with the
   // Proxygen layer.

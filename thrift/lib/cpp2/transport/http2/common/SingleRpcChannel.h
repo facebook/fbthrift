@@ -35,8 +35,6 @@ class SingleRpcChannel : public H2Channel {
 
   SingleRpcChannel(
       H2ClientConnection* toHttp2,
-      const std::string& httpHost,
-      const std::string& httpUrl,
       bool legacySupport);
 
   virtual ~SingleRpcChannel() override;
@@ -91,10 +89,6 @@ class SingleRpcChannel : public H2Channel {
 
   // Set to true to support the legacy HTTP2 protocol.
   bool legacySupport_;
-
-  // Header information for RPCs (client side only).
-  std::string httpHost_;
-  std::string httpUrl_;
 
   // Transaction object for use on client side to communicate with the
   // Proxygen layer.

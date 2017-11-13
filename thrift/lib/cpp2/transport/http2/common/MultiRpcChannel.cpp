@@ -62,11 +62,8 @@ MultiRpcChannel::MultiRpcChannel(
   responseHandler_->sendHeaders(msg);
 }
 
-MultiRpcChannel::MultiRpcChannel(
-    H2ClientConnection* toHttp2,
-    const string& httpHost,
-    const string& httpUrl)
-    : H2Channel(toHttp2), httpHost_(httpHost), httpUrl_(httpUrl) {
+MultiRpcChannel::MultiRpcChannel(H2ClientConnection* toHttp2)
+    : H2Channel(toHttp2) {
   evb_ = toHttp2->getEventBase();
   callbacks_.reserve(kMaxRpcs);
 }
@@ -84,7 +81,7 @@ void MultiRpcChannel::initialize(std::chrono::milliseconds timeout) {
   httpTransaction_->setIdleTimeout(timeout);
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
-  msg.setURL(httpUrl_);
+  msg.setURL("/");
   msg.getHeaders().set(
       HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   maybeAddChannelVersionHeader(msg, "3");

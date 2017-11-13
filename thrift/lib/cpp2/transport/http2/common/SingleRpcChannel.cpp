@@ -63,13 +63,9 @@ SingleRpcChannel::SingleRpcChannel(
 
 SingleRpcChannel::SingleRpcChannel(
     H2ClientConnection* toHttp2,
-    const string& httpHost,
-    const string& httpUrl,
     bool legacySupport)
     : H2Channel(toHttp2),
       legacySupport_(legacySupport),
-      httpHost_(httpHost),
-      httpUrl_(httpUrl),
       shouldMakeStable_(!toHttp2->isStable()) {
   evb_ = toHttp2->getEventBase();
 }
@@ -143,9 +139,9 @@ void SingleRpcChannel::sendThriftRequest(
   }
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
-  msg.setURL(httpUrl_);
+  msg.setURL(metadata->url);
   auto& msgHeaders = msg.getHeaders();
-  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
+  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, metadata->host);
   msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
@@ -173,6 +169,8 @@ void SingleRpcChannel::sendThriftRequest(
     httpTransaction_->sendHeaders(msg);
   } else {
     maybeAddChannelVersionHeader(msg, "2");
+    metadata->__isset.url = false;
+    metadata->__isset.host = false;
     if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
       LOG(ERROR) << "Unexpected problem stripping envelope";
       auto evb = callback->getEventBase();

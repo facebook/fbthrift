@@ -109,8 +109,6 @@ class H2ChannelFactory {
   std::shared_ptr<H2Channel> getChannel(
       int32_t version,
       H2ClientConnection* toHttp2,
-      const std::string& httpHost,
-      const std::string& httpUrl,
       RequestRpcMetadata* metadata);
 
  private:

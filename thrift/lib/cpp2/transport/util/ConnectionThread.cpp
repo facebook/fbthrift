@@ -25,10 +25,7 @@
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
 
-DEFINE_string(
-    transport,
-    "http2",
-    "The transport to use (http1, http2, rsocket)");
+DEFINE_string(transport, "http2", "The transport to use (http2, rsocket)");
 DEFINE_bool(use_ssl, false, "Create an encrypted client connection");
 
 namespace apache {
@@ -66,8 +63,6 @@ void ConnectionThread::maybeCreateConnection(
         auto sslContext = std::make_shared<folly::SSLContext>();
         if (FLAGS_transport == "rsocket") {
           sslContext->setAdvertisedNextProtocols({"rs"});
-        } else if (FLAGS_transport == "http1") {
-          sslContext->setAdvertisedNextProtocols({"http"});
         } else {
           sslContext->setAdvertisedNextProtocols({"h2", "http"});
         }
@@ -79,16 +74,12 @@ void ConnectionThread::maybeCreateConnection(
       if (FLAGS_transport == "rsocket") {
         connection = std::make_shared<RSClientConnection>(
             std::move(socket), FLAGS_use_ssl);
-      } else if (FLAGS_transport == "http1") {
-        connection = H2ClientConnection::newHTTP1xConnection(
-            std::move(socket), addr, "/");
       } else {
         if (FLAGS_transport != "http2") {
           LOG(ERROR) << "Unknown transport " << FLAGS_transport
                      << ".  Will use http2.";
         }
-        connection = H2ClientConnection::newHTTP2Connection(
-            std::move(socket), addr, "/");
+        connection = H2ClientConnection::newHTTP2Connection(std::move(socket));
       }
     }
   });

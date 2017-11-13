@@ -51,15 +51,8 @@ namespace thrift {
 class H2ClientConnection : public ClientConnectionIf,
                            public proxygen::HTTPSession::InfoCallback {
  public:
-  static std::unique_ptr<ClientConnectionIf> newHTTP1xConnection(
-      async::TAsyncTransport::UniquePtr transport,
-      const std::string& httpHost = "",
-      const std::string& httpUrl = "/");
-
   static std::unique_ptr<ClientConnectionIf> newHTTP2Connection(
-      async::TAsyncTransport::UniquePtr transport,
-      const std::string& httpHost = "",
-      const std::string& httpUrl = "/");
+      async::TAsyncTransport::UniquePtr transport);
 
   virtual ~H2ClientConnection() override;
 
@@ -109,8 +102,6 @@ class H2ClientConnection : public ClientConnectionIf,
 
   proxygen::HTTPUpstreamSession* httpSession_;
   folly::EventBase* evb_{nullptr};
-  std::string httpHost_;
-  std::string httpUrl_;
   std::chrono::milliseconds timeout_{kDefaultTimeout};
 
   // The negotiated channel version - 0 means settings frame has not

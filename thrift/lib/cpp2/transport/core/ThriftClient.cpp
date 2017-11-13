@@ -94,6 +94,14 @@ void ThriftClient::setProtocolId(uint16_t protocolId) {
   protocolId_ = protocolId;
 }
 
+void ThriftClient::setHTTPHost(const std::string& host) {
+  httpHost_ = host;
+}
+
+void ThriftClient::setHTTPUrl(const std::string& url) {
+  httpUrl_ = url;
+}
+
 uint32_t ThriftClient::sendRequestSync(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
@@ -168,6 +176,14 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
   metadata->__isset.protocol = true;
   metadata->kind = kind;
   metadata->__isset.kind = true;
+  if (!httpHost_.empty()) {
+    metadata->host = httpHost_;
+    metadata->__isset.host = true;
+  }
+  if (!httpUrl_.empty()) {
+    metadata->url = httpUrl_;
+    metadata->__isset.url = true;
+  }
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
   } else {

@@ -48,8 +48,6 @@ std::shared_ptr<H2Channel> H2ChannelFactory::createChannel(
 std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
     int32_t version,
     H2ClientConnection* toHttp2,
-    const std::string& httpHost,
-    const std::string& httpUrl,
     RequestRpcMetadata* metadata) {
   if (version == 3) {
     DCHECK(metadata->__isset.clientTimeoutMs);
@@ -64,18 +62,16 @@ std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
       if (multiRpcChannel_) {
         multiRpcChannel_->closeClientSide();
       }
-      multiRpcChannel_.reset(new MultiRpcChannel(toHttp2, httpHost, httpUrl));
+      multiRpcChannel_.reset(new MultiRpcChannel(toHttp2));
       multiRpcChannel_->initialize(timeout);
       multiRpcChannelExpiration_ = expiration;
     }
     return multiRpcChannel_;
   } else if (version == 2) {
-    return std::make_shared<SingleRpcChannel>(
-        toHttp2, httpHost, httpUrl, false);
+    return std::make_shared<SingleRpcChannel>(toHttp2, false);
   } else {
     DCHECK(version == 0 || version == 1);
-    auto ch =
-        std::make_shared<SingleRpcChannel>(toHttp2, httpHost, httpUrl, true);
+    auto ch = std::make_shared<SingleRpcChannel>(toHttp2, true);
     if (version == 0) {
       ch->setNotYetStable();
     }
