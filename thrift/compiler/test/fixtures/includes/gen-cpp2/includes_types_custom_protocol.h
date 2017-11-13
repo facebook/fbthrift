@@ -16,4 +16,4 @@
 
 #include "src/gen-cpp2/includes_types.tcc"
 
-#include "transitive_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/transitive_types_custom_protocol.h"

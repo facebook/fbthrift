@@ -13,7 +13,7 @@
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/SomeServiceAsyncClient.h"
 #include "src/gen-cpp2/module_types.h"
-#include "include_types.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
 
 namespace folly {
   class IOBuf;

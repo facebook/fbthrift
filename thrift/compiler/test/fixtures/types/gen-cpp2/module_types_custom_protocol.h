@@ -16,4 +16,4 @@
 
 #include "src/gen-cpp2/module_types.tcc"
 
-#include "include_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types_custom_protocol.h"

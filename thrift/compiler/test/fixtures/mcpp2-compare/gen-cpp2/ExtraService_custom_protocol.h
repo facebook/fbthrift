@@ -15,5 +15,5 @@
 
 #include "src/gen-cpp2/ExtraService.tcc"
 #include "src/gen-cpp2/extra_services_types_custom_protocol.h"
-#include "ParamService_custom_protocol.h"
-#include "module_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types_custom_protocol.h"

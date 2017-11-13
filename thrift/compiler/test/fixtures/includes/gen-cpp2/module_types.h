@@ -10,7 +10,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "includes_types.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_types.h"
 
 // BEGIN declare_enums
 

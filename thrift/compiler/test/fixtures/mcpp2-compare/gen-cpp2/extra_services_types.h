@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 
 // BEGIN declare_enums
 

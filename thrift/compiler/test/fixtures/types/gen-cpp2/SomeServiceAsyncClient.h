@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include "src/gen-cpp2/module_types.h"
-#include "include_types.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
 
 namespace folly {
   class IOBuf;

@@ -10,7 +10,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "include_types.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
 
 // BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {

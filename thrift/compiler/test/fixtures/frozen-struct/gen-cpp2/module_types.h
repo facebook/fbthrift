@@ -10,8 +10,8 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "include1_types.h"
-#include "include2_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
 
 // BEGIN declare_enums
 namespace some { namespace ns {
