@@ -16,7 +16,8 @@
 #   @services  - A list of services that are declared in the thrift file
 #   @language  - The generator to use (cpp or cpp2)
 #   @options   - Extra options to pass to the generator
-#   @output_path - The directory where the thrift file lives
+#   @file_path - The directory where the thrift file lives
+#   @output_path - The directory where the thrift objects will be built
 #
 # Output:
 #  A object file named `${file-name}-${language}-obj` to include into your
@@ -31,7 +32,7 @@
 #     #services
 #     #language
 #     #options
-#     #output_path
+#     #file_path
 #     #output_path
 #   )
 #   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
@@ -39,12 +40,12 @@
 
 macro(thrift_object file_name services language options file_path output_path)
 thrift_generate(
-  "${file_name}"   #file_name
-  "${services}"    #services
-  "${language}"    #language
-  "${options}"     #options
-  "${file_path}"   #file_path
-  "${output_path}" #output_path
+  "${file_name}"
+  "${services}"
+  "${language}"
+  "${options}"
+  "${file_path}"
+  "${output_path}"
 )
 bypass_source_check(${${file_name}-${language}-SOURCES})
 add_library(
@@ -69,7 +70,8 @@ endmacro()
 #   @services  - A list of services that are declared in the thrift file
 #   @language  - The generator to use (cpp or cpp2)
 #   @options   - Extra options to pass to the generator
-#   @output_path - The directory where the thrift file lives
+#   @file_path - The directory where the thrift file lives
+#   @output_path - The directory where the thrift objects will be built
 #
 # Output:
 #  A library file named `${file-name}-${language}` to link against your
@@ -84,7 +86,7 @@ endmacro()
 #     #services
 #     #language
 #     #options
-#     #output_path
+#     #file_path
 #     #output_path
 #   )
 #   add_library(somelib ...)
@@ -195,7 +197,7 @@ foreach(service ${services})
   endif()
 endforeach()
 set(include_prefix "include_prefix=${output_path}")
-if(NOT ${options} STREQUAL "")
+if(NOT "${options}" STREQUAL "")
   set(include_prefix ",${include_prefix}")
 endif()
 set(gen_language ${language})
