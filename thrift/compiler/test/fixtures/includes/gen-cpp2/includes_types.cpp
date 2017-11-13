@@ -25,7 +25,7 @@ void Included::__clear() {
   // clear all fields
   MyIntField = 0LL;
   ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::clear(&MyTransitiveField);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool Included::operator==(const Included& rhs) const {

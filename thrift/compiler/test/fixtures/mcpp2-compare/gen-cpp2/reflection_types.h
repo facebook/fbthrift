@@ -57,14 +57,8 @@ class ReflectionStruct : private apache::thrift::detail::st::ComparisonOperators
   int32_t fieldA;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      fieldA = false;
-    }
-
     bool fieldA;
-  } __isset;
+  } __isset = {};
   bool operator==(const ReflectionStruct& rhs) const;
 
   bool operator < (const ReflectionStruct& rhs) const {

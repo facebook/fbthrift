@@ -221,14 +221,8 @@ class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeS
   int32_t fieldA;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      fieldA = false;
-    }
-
     bool fieldA;
-  } __isset;
+  } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
 
   bool operator < (const SomeStruct& rhs) const {

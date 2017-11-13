@@ -47,7 +47,7 @@ AStruct::AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
 void AStruct::__clear() {
   // clear all fields
   FieldA = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool AStruct::operator==(const AStruct& rhs) const {
@@ -93,7 +93,7 @@ AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::
 void AStructB::__clear() {
   // clear all fields
   FieldA.reset();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {

@@ -1381,16 +1381,10 @@ class structA : private apache::thrift::detail::st::ComparisonOperators<structA>
   std::string b;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      a = false;
-      b = false;
-    }
 
     bool a;
     bool b;
-  } __isset;
+  } __isset = {};
   bool operator==(const structA& rhs) const;
 
   bool operator < (const structA& rhs) const {
@@ -1968,16 +1962,10 @@ class structB : private apache::thrift::detail::st::ComparisonOperators<structB>
   bool d;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      c = false;
-      d = false;
-    }
 
     bool c;
     bool d;
-  } __isset;
+  } __isset = {};
   bool operator==(const structB& rhs) const;
 
   bool operator < (const structB& rhs) const {
@@ -2324,8 +2312,6 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
   std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3;
 
   struct __isset {
-    __isset() { __clear(); }
-    void __clear();
 
     bool a;
     bool b;
@@ -2357,7 +2343,7 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
     bool o1;
     bool o2;
     bool o3;
-  } __isset;
+  } __isset = {};
   bool operator==(const structC& rhs) const;
 
   bool operator < (const structC& rhs) const {
@@ -2855,14 +2841,12 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
    ::test_cpp2::cpp_reflection::union2 field5;
 
   struct __isset {
-    __isset() { __clear(); }
-    void __clear();
 
     bool field1;
     bool field2;
     bool field4;
     bool field5;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct1& rhs) const;
   bool operator < (const struct1& rhs) const;
 
@@ -3058,8 +3042,6 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
    ::test_cpp2::cpp_reflection::struct1 fieldG;
 
   struct __isset {
-    __isset() { __clear(); }
-    void __clear();
 
     bool fieldA;
     bool fieldB;
@@ -3068,7 +3050,7 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
     bool fieldE;
     bool fieldF;
     bool fieldG;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct2& rhs) const;
   bool operator < (const struct2& rhs) const;
 
@@ -3361,8 +3343,6 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
   std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR;
 
   struct __isset {
-    __isset() { __clear(); }
-    void __clear();
 
     bool fieldA;
     bool fieldB;
@@ -3382,7 +3362,7 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
     bool fieldP;
     bool fieldQ;
     bool fieldR;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct3& rhs) const;
   bool operator < (const struct3& rhs) const;
 
@@ -3660,16 +3640,10 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
   std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      field1 = false;
-      field2 = false;
-    }
 
     bool field1;
     bool field2;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct4& rhs) const;
   bool operator < (const struct4& rhs) const;
 
@@ -3789,14 +3763,9 @@ class struct_binary : private apache::thrift::detail::st::ComparisonOperators<st
   std::string bi;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      bi = false;
-    }
 
     bool bi;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct_binary& rhs) const;
 
   bool operator < (const struct_binary& rhs) const {
@@ -5657,8 +5626,6 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
   int32_t members;
 
   struct __isset {
-    __isset() { __clear(); }
-    void __clear();
 
     bool get;
     bool getter;
@@ -5686,7 +5653,7 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     bool annotations;
     bool member;
     bool members;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct_with_special_names& rhs) const;
 
   bool operator < (const struct_with_special_names& rhs) const {

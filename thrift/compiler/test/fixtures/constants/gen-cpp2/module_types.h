@@ -180,16 +180,9 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
    ::cpp2::Company employer;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      title = false;
-      employer = false;
-    }
-
     bool title;
     bool employer;
-  } __isset;
+  } __isset = {};
   bool operator==(const Internship& rhs) const;
   bool operator < (const Internship& rhs) const;
 
@@ -313,14 +306,8 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
    ::cpp2::City city;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      city = false;
-    }
-
     bool city;
-  } __isset;
+  } __isset = {};
   bool operator==(const UnEnumStruct& rhs) const;
 
   bool operator < (const UnEnumStruct& rhs) const {
@@ -548,16 +535,9 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   std::string b;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      a = false;
-      b = false;
-    }
-
     bool a;
     bool b;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct1& rhs) const;
 
   bool operator < (const struct1& rhs) const {
@@ -701,20 +681,11 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
   std::vector<int32_t> d;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      a = false;
-      b = false;
-      c = false;
-      d = false;
-    }
-
     bool a;
     bool b;
     bool c;
     bool d;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct2& rhs) const;
 
   bool operator < (const struct2& rhs) const {
@@ -874,18 +845,10 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
    ::cpp2::struct2 c;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      a = false;
-      b = false;
-      c = false;
-    }
-
     bool a;
     bool b;
     bool c;
-  } __isset;
+  } __isset = {};
   bool operator==(const struct3& rhs) const;
 
   bool operator < (const struct3& rhs) const {

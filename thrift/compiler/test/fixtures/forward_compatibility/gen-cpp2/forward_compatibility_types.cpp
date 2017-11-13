@@ -27,7 +27,7 @@ OldStructure::OldStructure(apache::thrift::FragileConstructor, std::map<int16_t,
 void OldStructure::__clear() {
   // clear all fields
   features.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool OldStructure::operator==(const OldStructure& rhs) const {
@@ -87,7 +87,7 @@ NewStructure::NewStructure(apache::thrift::FragileConstructor, std::map<int16_t,
 void NewStructure::__clear() {
   // clear all fields
   features.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool NewStructure::operator==(const NewStructure& rhs) const {
@@ -147,7 +147,7 @@ NewStructure2::NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatF
 void NewStructure2::__clear() {
   // clear all fields
   features.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool NewStructure2::operator==(const NewStructure2& rhs) const {
@@ -213,7 +213,7 @@ void NewStructureNested::__clear() {
   lst.clear();
   mp.clear();
   s.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
@@ -305,7 +305,7 @@ NewStructureNestedField::NewStructureNestedField(apache::thrift::FragileConstruc
 void NewStructureNestedField::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::NewStructureNested>::clear(&f);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) const {

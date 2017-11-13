@@ -102,18 +102,11 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
    ::cpp2::MyDataItem MyDataField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      MyIntField = false;
-      MyStringField = false;
-      MyDataField = false;
-    }
 
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
 

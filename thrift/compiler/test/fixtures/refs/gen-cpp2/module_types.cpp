@@ -122,7 +122,7 @@ void MyField::__clear() {
   opt_value = 0;
   value = 0;
   req_value = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyField::operator==(const MyField& rhs) const {
@@ -199,7 +199,7 @@ void MyStruct::__clear() {
   if (opt_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(opt_ref.get());
   if (ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(ref.get());
   if (req_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(req_ref.get());
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -278,7 +278,7 @@ void StructWithUnion::__clear() {
   if (u) ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(u.get());
   aDouble = 0;
   ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(&f);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
@@ -346,7 +346,7 @@ RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, std::vector
 void RecursiveStruct::__clear() {
   // clear all fields
   mes.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
@@ -408,7 +408,6 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
   return *this;
 }
 
-
 StructWithContainers::
   StructWithContainers() :
       list_ref(std::make_unique<std::vector<int32_t>>()),
@@ -434,7 +433,7 @@ void StructWithContainers::__clear() {
   list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
   set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
   list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -520,7 +519,7 @@ void StructWithSharedConst::__clear() {
   opt_shared_const.reset();
   shared_const.reset();
   req_shared_const.reset();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
@@ -623,7 +622,7 @@ StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr
 
 void StructWithRef::__clear() {
   // clear all fields
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithRef::operator==(const StructWithRef& rhs) const {
@@ -694,7 +693,7 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstruc
 
 void StructWithRefTypeUnique::__clear() {
   // clear all fields
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
@@ -753,7 +752,7 @@ StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstruc
 
 void StructWithRefTypeShared::__clear() {
   // clear all fields
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
@@ -812,7 +811,7 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::Fragi
 
 void StructWithRefTypeSharedConst::__clear() {
   // clear all fields
-  __isset.__clear();
+  __isset = {};
 }
 
 bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {

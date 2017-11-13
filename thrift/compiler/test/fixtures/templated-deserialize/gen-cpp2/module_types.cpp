@@ -50,7 +50,7 @@ void SmallStruct::__clear() {
   // clear all fields
   small_A = 0;
   small_B = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
@@ -142,26 +142,6 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
   return *this;
 }
 
-void containerStruct::__isset::__clear() {
-  fieldA = false;
-  fieldB = false;
-  fieldC = false;
-  fieldD = false;
-  fieldE = false;
-  fieldF = false;
-  fieldG = false;
-  fieldH = false;
-  fieldI = false;
-  fieldJ = false;
-  fieldK = false;
-  fieldL = false;
-  fieldM = false;
-  fieldN = false;
-  fieldO = false;
-  fieldP = false;
-  fieldQ = false;
-}
-
 containerStruct::
   containerStruct() :
       fieldA(0),
@@ -248,7 +228,7 @@ void containerStruct::__clear() {
   if (fieldT) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldT.get());
   fieldU.reset();
   if (fieldX) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldX.get());
-  __isset.__clear();
+  __isset = {};
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {

@@ -57,7 +57,7 @@ void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {

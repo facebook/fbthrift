@@ -28,7 +28,7 @@ void MyStruct::__clear() {
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyOtherIncludedField);
   MyIncludedInt = 42LL;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {

@@ -22,7 +22,7 @@ ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, int32_t f
 void ReflectionStruct::__clear() {
   // clear all fields
   fieldA = 5;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {

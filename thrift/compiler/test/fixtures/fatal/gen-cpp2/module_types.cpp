@@ -430,7 +430,7 @@ void structA::__clear() {
   // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool structA::operator==(const structA& rhs) const {
@@ -602,7 +602,7 @@ void structB::__clear() {
   // clear all fields
   c = 0;
   d = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool structB::operator==(const structB& rhs) const {
@@ -753,40 +753,7 @@ void structC::__clear() {
   o1.clear();
   o2.clear();
   o3.clear();
-  __isset.__clear();
-}
-
-void structC::__isset::__clear() {
-  a = false;
-  b = false;
-  c = false;
-  d = false;
-  e = false;
-  f = false;
-  g = false;
-  h = false;
-  i = false;
-  j = false;
-  j1 = false;
-  j2 = false;
-  j3 = false;
-  k = false;
-  k1 = false;
-  k2 = false;
-  k3 = false;
-  l = false;
-  l1 = false;
-  l2 = false;
-  l3 = false;
-  m1 = false;
-  m2 = false;
-  m3 = false;
-  n1 = false;
-  n2 = false;
-  n3 = false;
-  o1 = false;
-  o2 = false;
-  o3 = false;
+  __isset = {};
 }
 
 bool structC::operator==(const structC& rhs) const {
@@ -1277,14 +1244,7 @@ void struct1::__clear() {
   field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&field4);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&field5);
-  __isset.__clear();
-}
-
-void struct1::__isset::__clear() {
-  field1 = false;
-  field2 = false;
-  field4 = false;
-  field5 = false;
+  __isset = {};
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -1418,17 +1378,7 @@ void struct2::__clear() {
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
-  __isset.__clear();
-}
-
-void struct2::__isset::__clear() {
-  fieldA = false;
-  fieldB = false;
-  fieldC = false;
-  fieldD = false;
-  fieldE = false;
-  fieldF = false;
-  fieldG = false;
+  __isset = {};
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -1605,28 +1555,7 @@ void struct3::__clear() {
   fieldP.clear();
   fieldQ.clear();
   fieldR.clear();
-  __isset.__clear();
-}
-
-void struct3::__isset::__clear() {
-  fieldA = false;
-  fieldB = false;
-  fieldC = false;
-  fieldD = false;
-  fieldE = false;
-  fieldF = false;
-  fieldG = false;
-  fieldH = false;
-  fieldI = false;
-  fieldJ = false;
-  fieldK = false;
-  fieldL = false;
-  fieldM = false;
-  fieldN = false;
-  fieldO = false;
-  fieldP = false;
-  fieldQ = false;
-  fieldR = false;
+  __isset = {};
 }
 
 bool struct3::operator==(const struct3& rhs) const {
@@ -1944,7 +1873,7 @@ void struct4::__clear() {
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   if (field3) ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(field3.get());
-  __isset.__clear();
+  __isset = {};
 }
 
 bool struct4::operator==(const struct4& rhs) const {
@@ -2035,14 +1964,7 @@ void struct5::__clear() {
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(&field3);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::clear(&field4);
-  __isset.__clear();
-}
-
-void struct5::__isset::__clear() {
-  field1 = false;
-  field2 = false;
-  field3 = false;
-  field4 = false;
+  __isset = {};
 }
 
 bool struct5::operator==(const struct5& rhs) const {
@@ -2141,7 +2063,7 @@ struct_binary::struct_binary(apache::thrift::FragileConstructor, std::string bi_
 void struct_binary::__clear() {
   // clear all fields
   bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool struct_binary::operator==(const struct_binary& rhs) const {
@@ -2195,7 +2117,7 @@ void dep_A_struct::__clear() {
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
   i_a = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
@@ -2275,7 +2197,7 @@ annotated::annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
 void annotated::__clear() {
   // clear all fields
   a = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool annotated::operator==(const annotated& rhs) const {
@@ -2847,38 +2769,7 @@ void struct_with_special_names::__clear() {
   members = 0;
   field = 0;
   fields = 0;
-  __isset.__clear();
-}
-
-void struct_with_special_names::__isset::__clear() {
-  get = false;
-  getter = false;
-  lists = false;
-  maps = false;
-  name = false;
-  name_to_value = false;
-  names = false;
-  prefix_tree = false;
-  sets = false;
-  setter = false;
-  str = false;
-  strings = false;
-  type = false;
-  value = false;
-  value_to_name = false;
-  values = false;
-  id = false;
-  ids = false;
-  descriptor = false;
-  descriptors = false;
-  key = false;
-  keys = false;
-  annotation = false;
-  annotations = false;
-  member = false;
-  members = false;
-  field = false;
-  fields = false;
+  __isset = {};
 }
 
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
@@ -3161,15 +3052,7 @@ void struct_with_indirections::__clear() {
   number.number = 0;
   result.foo().result() = 0;
   phrase.phrase = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
-}
-
-void struct_with_indirections::__isset::__clear() {
-  real = false;
-  fake = false;
-  number = false;
-  result = false;
-  phrase = false;
+  __isset = {};
 }
 
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {

@@ -200,14 +200,8 @@ class decorated_struct : private apache::thrift::detail::st::ComparisonOperators
   std::string field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      field = false;
-    }
-
     bool field;
-  } __isset;
+  } __isset = {};
   bool operator==(const decorated_struct& rhs) const;
 
   bool operator < (const decorated_struct& rhs) const {
@@ -370,10 +364,6 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::apache::thrift::fixtures::types::SomeMap fieldH;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool fieldA;
     bool fieldB;
     bool fieldC;
@@ -382,7 +372,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldF;
     bool fieldG;
     bool fieldH;
-  } __isset;
+  } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
   bool operator < (const ContainerStruct& rhs) const;
   const std::vector<int32_t>& get_fieldA() const&;

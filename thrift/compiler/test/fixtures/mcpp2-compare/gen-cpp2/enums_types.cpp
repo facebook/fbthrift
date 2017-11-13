@@ -147,7 +147,7 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) 
 void SomeStruct::__clear() {
   // clear all fields
   fieldA = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {

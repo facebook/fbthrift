@@ -39,15 +39,6 @@ template <> bool TEnumTraits< ::some::ns::EnumB>::findValue(const char* name,  :
 }} // apache::thrift
 namespace some { namespace ns {
 
-void ModuleA::__isset::__clear() {
-  i32Field = false;
-  strField = false;
-  listField = false;
-  mapField = false;
-  inclAField = false;
-  inclBField = false;
-}
-
 ModuleA::
   ModuleA() :
       i32Field(0) {}
@@ -75,7 +66,7 @@ void ModuleA::__clear() {
   mapField.clear();
   ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::clear(&inclAField);
   ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedB>::clear(&inclBField);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
@@ -194,7 +185,7 @@ void ModuleB::__clear() {
   // clear all fields
   i32Field = 0;
   inclEnumB = static_cast< ::some::ns::EnumB>(0);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ModuleB::operator==(const ModuleB& rhs) const {

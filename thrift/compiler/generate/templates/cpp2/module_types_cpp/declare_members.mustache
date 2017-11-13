@@ -15,18 +15,6 @@
   limitations under the License.
 
 %><%#struct:is_large?%>
-<%^struct:optionals?%>
-<%#struct:non_req_fields?%>
-<%#struct:isset_fields?%>
-void <%struct:name%>::__isset::__clear() {
-<%#struct:isset_fields%>
-  <%field:name%> = false;
-<%/struct:isset_fields%>
-}
-<%/struct:isset_fields?%>
-<%/struct:non_req_fields?%>
-<%/struct:optionals?%>
-
 <%struct:name%>::
 <% > module_types_h/base_ctor%>
 
@@ -92,6 +80,6 @@ void <%struct:name%>::__clear() {
 <%/field:optionals?%>
 <%/field:type%><%/struct:fields%>
 <%^struct:optionals?%><%#struct:non_req_fields?%>
-  __isset.__clear();
+  __isset = {};
 <%/struct:non_req_fields?%><%/struct:optionals?%>
 }

@@ -158,7 +158,7 @@ ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolFie
 void ASimpleStruct::__clear() {
   // clear all fields
   boolField = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
@@ -206,7 +206,7 @@ ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor,
 void ASimpleStructNoexcept::__clear() {
   // clear all fields
   boolField = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
@@ -245,17 +245,6 @@ template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::Simp
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-
-void MyStruct::__isset::__clear() {
-  MyBoolField = false;
-  MyIntField = false;
-  MyStringField = false;
-  MyStringField2 = false;
-  MyBinaryField = false;
-  MyBinaryField2 = false;
-  MyBinaryListField4 = false;
-  MyMapEnumAndInt = false;
-}
 
 MyStruct::
   MyStruct() :
@@ -307,7 +296,7 @@ void MyStruct::__clear() {
   MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   MyBinaryListField4.clear();
   MyMapEnumAndInt.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -996,21 +985,6 @@ template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::SimpleJSONPro
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-void AnException::__isset::__clear() {
-  code = false;
-  message2 = false;
-  exception_list = false;
-  exception_set = false;
-  exception_map = false;
-  enum_field = false;
-  enum_container = false;
-  a_struct = false;
-  a_set_struct = false;
-  a_union_list = false;
-  union_typedef = false;
-  a_union_typedef_list = false;
-}
-
 AnException::
   AnException() :
       code(0),
@@ -1067,7 +1041,7 @@ void AnException::__clear() {
   a_union_list.clear();
   union_typedef.clear();
   a_union_typedef_list.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool AnException::operator==(const AnException& rhs) const {
@@ -1312,7 +1286,7 @@ void AnotherException::__clear() {
   code = 0;
   req_code = 0;
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool AnotherException::operator==(const AnotherException& rhs) const {
@@ -1367,47 +1341,6 @@ template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSO
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-
-void containerStruct::__isset::__clear() {
-  fieldA = false;
-  opt_fieldA = false;
-  fieldB = false;
-  opt_fieldB = false;
-  fieldC = false;
-  opt_fieldC = false;
-  fieldD = false;
-  fieldE = false;
-  opt_fieldE = false;
-  fieldF = false;
-  fieldG = false;
-  fieldH = false;
-  fieldI = false;
-  fieldJ = false;
-  fieldK = false;
-  fieldL = false;
-  fieldM = false;
-  fieldN = false;
-  fieldO = false;
-  fieldP = false;
-  fieldQ = false;
-  fieldR = false;
-  opt_fieldR = false;
-  fieldS = false;
-  fieldT = false;
-  fieldU = false;
-  fieldV = false;
-  opt_fieldV = false;
-  fieldW = false;
-  fieldX = false;
-  opt_fieldX = false;
-  fieldY = false;
-  fieldZ = false;
-  fieldAA = false;
-  fieldAB = false;
-  fieldAC = false;
-  fieldAD = false;
-  fieldAE = false;
-}
 
 containerStruct::
   containerStruct() :
@@ -1593,7 +1526,7 @@ void containerStruct::__clear() {
   fieldAC =  ::some::valid::ns::MyEnumB::AField;
   fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
   fieldAE.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
@@ -2268,7 +2201,7 @@ void MyIncludedStruct::__clear() {
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&MyIncludedStruct);
   if (ARefField) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(ARefField.get());
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&ARequiredField);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
@@ -2347,31 +2280,6 @@ template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSO
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-
-void AnnotatedStruct::__isset::__clear() {
-  no_annotation = false;
-  base_type = false;
-  list_type = false;
-  set_type = false;
-  map_type = false;
-  map_struct_type = false;
-  iobuf_type = false;
-  iobuf_ptr = false;
-  list_i32_template = false;
-  list_string_template = false;
-  set_template = false;
-  map_template = false;
-  typedef_list_template = false;
-  typedef_deque_template = false;
-  typedef_set_template = false;
-  typedef_map_template = false;
-  indirection_a = false;
-  indirection_b = false;
-  indirection_c = false;
-  iobuf_type_val = false;
-  iobuf_ptr_val = false;
-  struct_struct = false;
-}
 
 AnnotatedStruct::
   AnnotatedStruct() :
@@ -2535,7 +2443,7 @@ void AnnotatedStruct::__clear() {
   iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
   iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&struct_struct);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
@@ -3026,7 +2934,7 @@ void FloatStruct::__clear() {
   // clear all fields
   floatField = 0;
   doubleField = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool FloatStruct::operator==(const FloatStruct& rhs) const {

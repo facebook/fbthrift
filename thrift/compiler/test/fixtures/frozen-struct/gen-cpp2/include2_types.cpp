@@ -25,7 +25,7 @@ void IncludedB::__clear() {
   // clear all fields
   i32Field = 0;
   strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool IncludedB::operator==(const IncludedB& rhs) const {

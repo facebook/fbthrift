@@ -143,17 +143,13 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
    ::some::ns::IncludedB inclBField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool i32Field;
     bool strField;
     bool listField;
     bool mapField;
     bool inclAField;
     bool inclBField;
-  } __isset;
+  } __isset = {};
   bool operator==(const ModuleA& rhs) const;
 
   bool operator < (const ModuleA& rhs) const {
@@ -330,16 +326,9 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
    ::some::ns::EnumB inclEnumB;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      i32Field = false;
-      inclEnumB = false;
-    }
-
     bool i32Field;
     bool inclEnumB;
-  } __isset;
+  } __isset = {};
   bool operator==(const ModuleB& rhs) const;
 
   bool operator < (const ModuleB& rhs) const {

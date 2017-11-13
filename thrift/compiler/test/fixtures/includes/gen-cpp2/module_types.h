@@ -75,18 +75,10 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
    ::cpp2::IncludedInt64 MyIncludedInt;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      MyIncludedField = false;
-      MyOtherIncludedField = false;
-      MyIncludedInt = false;
-    }
-
     bool MyIncludedField;
     bool MyOtherIncludedField;
     bool MyIncludedInt;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
   const  ::cpp2::Included& get_MyIncludedField() const&;

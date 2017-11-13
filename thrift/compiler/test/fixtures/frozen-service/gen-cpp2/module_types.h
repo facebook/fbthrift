@@ -84,20 +84,11 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   std::map<std::string, int32_t> mapField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      i32Field = false;
-      strField = false;
-      listField = false;
-      mapField = false;
-    }
-
     bool i32Field;
     bool strField;
     bool listField;
     bool mapField;
-  } __isset;
+  } __isset = {};
   bool operator==(const ModuleA& rhs) const;
 
   bool operator < (const ModuleA& rhs) const {
@@ -241,14 +232,8 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   int32_t i32Field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      i32Field = false;
-    }
-
     bool i32Field;
-  } __isset;
+  } __isset = {};
   bool operator==(const ModuleB& rhs) const;
 
   bool operator < (const ModuleB& rhs) const {
@@ -358,16 +343,9 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
   std::string msg;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      code = false;
-      msg = false;
-    }
-
     bool code;
     bool msg;
-  } __isset;
+  } __isset = {};
   bool operator==(const ExceptionA& rhs) const;
 
   bool operator < (const ExceptionA& rhs) const {
@@ -499,16 +477,9 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
   std::string msg;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      code = false;
-      msg = false;
-    }
-
     bool code;
     bool msg;
-  } __isset;
+  } __isset = {};
   bool operator==(const ExceptionB& rhs) const;
 
   bool operator < (const ExceptionB& rhs) const {

@@ -102,7 +102,7 @@ void Internship::__clear() {
   weeks = 0;
   title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   employer =  ::cpp2::Company::FACEBOOK;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool Internship::operator==(const Internship& rhs) const {
@@ -165,7 +165,7 @@ UnEnumStruct::UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City cit
 void UnEnumStruct::__clear() {
   // clear all fields
   city = static_cast< ::cpp2::City>(-1);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
@@ -262,7 +262,7 @@ void struct1::__clear() {
   // clear all fields
   a = 1234567;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -323,7 +323,7 @@ void struct2::__clear() {
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::clear(&c);
   d.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -413,7 +413,7 @@ void struct3::__clear() {
   a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   b = 0;
   ::apache::thrift::Cpp2Ops<  ::cpp2::struct2>::clear(&c);
-  __isset.__clear();
+  __isset = {};
 }
 
 bool struct3::operator==(const struct3& rhs) const {

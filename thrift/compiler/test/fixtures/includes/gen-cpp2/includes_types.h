@@ -70,16 +70,9 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
    ::cpp2::Foo MyTransitiveField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      MyIntField = false;
-      MyTransitiveField = false;
-    }
-
     bool MyIntField;
     bool MyTransitiveField;
-  } __isset;
+  } __isset = {};
   bool operator==(const Included& rhs) const;
 
   bool operator < (const Included& rhs) const {

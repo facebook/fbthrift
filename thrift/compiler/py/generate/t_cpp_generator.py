@@ -2814,7 +2814,7 @@ class CppGenerator(t_generator.Generator):
                             raise TypeError('Unknown type for member:' +
                                             member.name)
                     if should_generate_isset:
-                        out('__isset.__clear();')
+                        out('__isset = {};')
                     if struct_options.has_serialized_fields:
                         out('{0}.reset();'.format(
                             self._serialized_fields_name))
@@ -2858,14 +2858,7 @@ class CppGenerator(t_generator.Generator):
         # Isset struct has boolean fields, but only for non-required fields
         if should_generate_isset:
             struct()
-            with struct.cls('struct __isset', epilogue=' __isset;') as ist:
-                out('__isset() { __clear(); }')
-                with ist.defn('void {name}()',
-                              name='__clear',
-                              in_header=not is_large):
-                    for member in members:
-                        if self._has_isset(member):
-                            out("{0} = false;".format(member.name))
+            with struct.cls('struct __isset', epilogue=' __isset = {};') as ist:
                 # Declare boolean fields
                 ist()
                 for member in members:

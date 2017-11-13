@@ -65,16 +65,9 @@ class IncludedA : private apache::thrift::detail::st::ComparisonOperators<Includ
   std::string strField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      i32Field = false;
-      strField = false;
-    }
-
     bool i32Field;
     bool strField;
-  } __isset;
+  } __isset = {};
   bool operator==(const IncludedA& rhs) const;
 
   bool operator < (const IncludedA& rhs) const {

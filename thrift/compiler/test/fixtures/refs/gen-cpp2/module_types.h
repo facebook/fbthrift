@@ -400,16 +400,9 @@ class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField>
   int64_t req_value;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      opt_value = false;
-      value = false;
-    }
-
     bool opt_value;
     bool value;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyField& rhs) const;
   bool operator < (const MyField& rhs) const;
 
@@ -538,11 +531,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::unique_ptr< ::cpp2::MyField> req_ref;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
 
@@ -640,16 +629,9 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
    ::cpp2::MyField f;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      aDouble = false;
-      f = false;
-    }
-
     bool aDouble;
     bool f;
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithUnion& rhs) const;
   bool operator < (const StructWithUnion& rhs) const;
 
@@ -752,14 +734,8 @@ class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::cpp2::RecursiveStruct> mes;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      mes = false;
-    }
-
     bool mes;
-  } __isset;
+  } __isset = {};
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator < (const RecursiveStruct& rhs) const;
   const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
@@ -886,11 +862,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithContainers& rhs) const;
 
   bool operator < (const StructWithContainers& rhs) const {
@@ -1009,11 +981,7 @@ class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOper
   std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithSharedConst& rhs) const;
   bool operator < (const StructWithSharedConst& rhs) const;
 
@@ -1185,11 +1153,7 @@ class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<St
   std::unique_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithRef& rhs) const;
   bool operator < (const StructWithRef& rhs) const;
 
@@ -1284,11 +1248,7 @@ class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOp
   std::unique_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithRefTypeUnique& rhs) const;
   bool operator < (const StructWithRefTypeUnique& rhs) const;
 
@@ -1385,11 +1345,7 @@ class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOp
   std::shared_ptr< ::cpp2::Empty> req_field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithRefTypeShared& rhs) const;
   bool operator < (const StructWithRefTypeShared& rhs) const;
 
@@ -1486,11 +1442,7 @@ class StructWithRefTypeSharedConst : private apache::thrift::detail::st::Compari
   std::shared_ptr<const  ::cpp2::Empty> req_field;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {}
-
-  } __isset;
+  } __isset = {};
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
   bool operator < (const StructWithRefTypeSharedConst& rhs) const;
 

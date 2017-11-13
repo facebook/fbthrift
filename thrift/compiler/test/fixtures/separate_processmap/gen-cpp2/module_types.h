@@ -93,16 +93,10 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::string MyStringField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      MyIntField = false;
-      MyStringField = false;
-    }
 
     bool MyIntField;
     bool MyStringField;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
 
   bool operator < (const MyStruct& rhs) const {

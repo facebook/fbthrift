@@ -72,7 +72,7 @@ decorated_struct::decorated_struct(apache::thrift::FragileConstructor, std::stri
 void decorated_struct::__clear() {
   // clear all fields
   field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool decorated_struct::operator==(const decorated_struct& rhs) const {
@@ -108,17 +108,6 @@ template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactPr
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-void ContainerStruct::__isset::__clear() {
-  fieldA = false;
-  fieldB = false;
-  fieldC = false;
-  fieldD = false;
-  fieldE = false;
-  fieldF = false;
-  fieldG = false;
-  fieldH = false;
-}
-
 ContainerStruct::
   ContainerStruct() {}
 
@@ -151,7 +140,7 @@ void ContainerStruct::__clear() {
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {

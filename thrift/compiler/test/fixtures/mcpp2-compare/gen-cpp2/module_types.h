@@ -480,14 +480,8 @@ class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<AS
   int64_t boolField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      boolField = false;
-    }
-
     bool boolField;
-  } __isset;
+  } __isset = {};
   bool operator==(const ASimpleStruct& rhs) const;
   bool operator < (const ASimpleStruct& rhs) const;
 
@@ -586,14 +580,8 @@ class ASimpleStructNoexcept : private apache::thrift::detail::st::ComparisonOper
   int64_t boolField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      boolField = false;
-    }
-
     bool boolField;
-  } __isset;
+  } __isset = {};
   bool operator==(const ASimpleStructNoexcept& rhs) const;
 
   bool operator < (const ASimpleStructNoexcept& rhs) const {
@@ -761,10 +749,6 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool MyBoolField;
     bool MyIntField;
     bool MyStringField;
@@ -773,7 +757,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     bool MyBinaryField2;
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator < (const MyStruct& rhs) const;
 
@@ -3410,10 +3394,6 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool code;
     bool message2;
     bool exception_list;
@@ -3426,7 +3406,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     bool a_union_list;
     bool union_typedef;
     bool a_union_typedef_list;
-  } __isset;
+  } __isset = {};
   bool operator==(const AnException& rhs) const;
   bool operator < (const AnException& rhs) const;
 
@@ -3679,16 +3659,9 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   std::string message;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      code = false;
-      message = false;
-    }
-
     bool code;
     bool message;
-  } __isset;
+  } __isset = {};
   bool operator==(const AnotherException& rhs) const;
 
   bool operator < (const AnotherException& rhs) const {
@@ -4169,10 +4142,6 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::map<std::string, int32_t> fieldAE;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool fieldA;
     bool opt_fieldA;
     bool fieldB;
@@ -4211,7 +4180,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldAC;
     bool fieldAD;
     bool fieldAE;
-  } __isset;
+  } __isset = {};
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
 
@@ -4771,16 +4740,9 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
    ::some::valid::ns::AStruct ARequiredField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      MyIncludedInt = false;
-      MyIncludedStruct = false;
-    }
-
     bool MyIncludedInt;
     bool MyIncludedStruct;
-  } __isset;
+  } __isset = {};
   bool operator==(const MyIncludedStruct& rhs) const;
   bool operator < (const MyIncludedStruct& rhs) const;
 
@@ -5182,10 +5144,6 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::containerStruct struct_struct;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool no_annotation;
     bool base_type;
     bool list_type;
@@ -5208,7 +5166,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool iobuf_type_val;
     bool iobuf_ptr_val;
     bool struct_struct;
-  } __isset;
+  } __isset = {};
   bool operator==(const AnnotatedStruct& rhs) const;
   bool operator < (const AnnotatedStruct& rhs) const;
   const  ::some::valid::ns::containerStruct& get_no_annotation() const&;
@@ -5532,16 +5490,9 @@ class FloatStruct : private apache::thrift::detail::st::ComparisonOperators<Floa
   double doubleField;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      floatField = false;
-      doubleField = false;
-    }
-
     bool floatField;
     bool doubleField;
-  } __isset;
+  } __isset = {};
   bool operator==(const FloatStruct& rhs) const;
 
   bool operator < (const FloatStruct& rhs) const {

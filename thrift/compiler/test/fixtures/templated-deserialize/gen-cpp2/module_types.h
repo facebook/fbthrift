@@ -149,16 +149,9 @@ class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<Smal
   int32_t small_B;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear() {
-      small_A = false;
-      small_B = false;
-    }
-
     bool small_A;
     bool small_B;
-  } __isset;
+  } __isset = {};
   bool operator==(const SmallStruct& rhs) const;
 
   bool operator < (const SmallStruct& rhs) const {
@@ -434,10 +427,6 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::unique_ptr< ::cpp2::SmallStruct> fieldX;
 
   struct __isset {
-    __isset() { __clear(); }
-
-    void __clear();
-
     bool fieldA;
     bool fieldB;
     bool fieldC;
@@ -455,7 +444,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldO;
     bool fieldP;
     bool fieldQ;
-  } __isset;
+  } __isset = {};
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
 

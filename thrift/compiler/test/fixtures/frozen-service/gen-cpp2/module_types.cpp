@@ -31,7 +31,7 @@ void ModuleA::__clear() {
   strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   listField.clear();
   mapField.clear();
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
@@ -115,7 +115,7 @@ ModuleB::ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg) :
 void ModuleB::__clear() {
   // clear all fields
   i32Field = 0;
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
@@ -162,7 +162,7 @@ void ExceptionA::__clear() {
   // clear all fields
   code = 0;
   msg = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ExceptionA::operator==(const ExceptionA& rhs) const {
@@ -217,7 +217,7 @@ void ExceptionB::__clear() {
   // clear all fields
   code = 0;
   msg = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  __isset.__clear();
+  __isset = {};
 }
 
 bool ExceptionB::operator==(const ExceptionB& rhs) const {

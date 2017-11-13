@@ -14,7 +14,6 @@
 
 namespace extra { namespace svc {
 
-
 containerStruct2::
   containerStruct2() :
       fieldA(0),
