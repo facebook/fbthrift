@@ -1,6 +1,7 @@
 from thrift.py3.client cimport (
     Client, cRequestChannel_ptr, createThriftChannel,
 )
+from thrift.py3.exceptions cimport raise_py_exception
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
@@ -61,7 +62,7 @@ cdef void requestchannel_callback(
     future = client._connect_future
     if result.hasException():
         try:
-            result.exception().throw_exception()
+            raise_py_exception(result.exception())
         except Exception as ex:
             future.set_exception(ex)
     else:

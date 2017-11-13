@@ -22,35 +22,10 @@
 #include "Python.h"
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/Function.h>
-#include <folly/Indestructible.h>
-#include <folly/Synchronized.h>
 
 namespace thrift {
 namespace py3 {
 namespace exception {
-
-typedef folly::Function<void(const folly::exception_wrapper& ex) const> Handler;
-
-folly::Synchronized<std::vector<Handler>>& getHandlers() {
-  static folly::Indestructible<folly::Synchronized<std::vector<Handler>>>
-      handlers;
-  return *handlers;
-}
-
-void addHandler(Handler handler) {
-  getHandlers().wlock()->push_back(std::move(handler));
-}
-
-void runHandlers(const folly::exception_wrapper& exception) {
-  auto locked = getHandlers().rlock();
-  for (auto const& handler : *locked) {
-    handler(exception);
-    if (PyErr_Occurred()) { // stop if an exception was raised (in python)
-      break;
-    }
-  }
-}
 
 // The only place this function is used it needs a shared_ptr, so may as
 // well just return one instead of a unique_ptr

@@ -1,6 +1,8 @@
 from cython.operator cimport dereference as deref
-from enum import Enum, Flag
+from cpython.exc cimport PyErr_Occurred
+from libcpp.vector cimport vector
 
+from enum import Enum, Flag
 
 class TransportErrorType(Enum):
     UNKNOWN = cTTransportExceptionType__UNKNOWN
@@ -90,7 +92,7 @@ cdef create_ApplicationError(shared_ptr[cTApplicationException] ex):
 cdef class LibraryError(Error):
     """Equivalent of a C++ TLibraryException"""
     def __init__(self, *args):
-        raise TypeError('Instancing LibraryError from Python')
+        raise TypeError('Creating LibraryError from Python')
 
 
 cdef create_LibraryError(shared_ptr[cTLibraryException] ex):
@@ -105,7 +107,7 @@ cdef class TransportError(LibraryError):
     """All Transport Level Errors (TTransportException)"""
 
     def __init__(self, *args):
-        raise TypeError('Instancing TransportError from Python')
+        raise TypeError('Creating TransportError from Python')
 
     @property
     def type(self):
@@ -141,6 +143,21 @@ cdef create_TransportError(shared_ptr[cTTransportException] ex):
         options,
     )
     return inst
+
+
+# Our Registry
+cdef vector[Handler] handlers;
+
+
+cdef void addHandler(Handler handler):
+    handlers.push_back(handler)
+
+
+cdef void runHandlers(const cFollyExceptionWrapper& ex) except *:
+    for handler in handlers:
+        handler(ex)
+        if PyErr_Occurred():
+            break
 
 
 cdef raise_py_exception(const cFollyExceptionWrapper& ex):
