@@ -71,12 +71,12 @@ func (p *MyStruct) GetMyIntField() int64 {
 func (p *MyStruct) GetMyStringField() string {
   return p.MyStringField
 }
-var MyStruct_MyDataField_DEFAULT MyDataItem
-func (p *MyStruct) GetMyDataField() MyDataItem {
+var MyStruct_MyDataField_DEFAULT *MyDataItem
+func (p *MyStruct) GetMyDataField() *MyDataItem {
   if !p.IsSetMyDataField() {
     return MyStruct_MyDataField_DEFAULT
   }
-return *p.MyDataField
+return p.MyDataField
 }
 func (p *MyStruct) IsSetMyDataField() bool {
   return p.MyDataField != nil

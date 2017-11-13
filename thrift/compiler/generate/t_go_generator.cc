@@ -3542,7 +3542,8 @@ string t_go_generator::type_to_go_type_with_opt(t_type* type,
     }
   } else if (type->is_enum()) {
     return maybe_pointer + publicize(type_name(type));
-  } else if (type->is_struct() || type->is_xception()) {
+  } else if (
+      get_true_type(type)->is_struct() || get_true_type(type)->is_xception()) {
     return "*" + publicize(type_name(type));
   } else if (type->is_map()) {
     t_map* t = (t_map*)type;

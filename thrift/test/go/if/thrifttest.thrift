@@ -200,3 +200,13 @@ struct WithAnnotations {
     }
   ",
 )
+
+// Test against failures where code is genereted differently when a struct
+// is used before it is defined in the thrift spec.
+struct PreDefinition {
+  1: map<string, PreDefStruct> m,
+}
+
+struct PreDefStruct {
+  1: string data;
+}
