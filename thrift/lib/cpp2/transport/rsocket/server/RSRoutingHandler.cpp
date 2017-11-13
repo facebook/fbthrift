@@ -27,7 +27,8 @@ namespace apache {
 namespace thrift {
 
 RSRoutingHandler::RSRoutingHandler(
-    apache::thrift::ThriftProcessor* thriftProcessor)
+    apache::thrift::ThriftProcessor* thriftProcessor,
+    std::shared_ptr<RSocketStats> stats)
     : thriftProcessor_(thriftProcessor) {
   serviceHandler_ = RSocketServiceHandler::create([&](auto&) {
     return std::make_shared<RSResponder>(
@@ -35,7 +36,7 @@ RSRoutingHandler::RSRoutingHandler(
         folly::EventBaseManager::get()->getExistingEventBase());
   });
 
-  rsocketServer_ = RSocket::createServer(nullptr);
+  rsocketServer_ = RSocket::createServer(nullptr, std::move(stats));
   rsocketServer_->setSingleThreadedResponder();
 }
 
@@ -98,5 +99,5 @@ void RSRoutingHandler::handleConnection(
   rsocketServer_->acceptConnection(
       std::move(connection), dummyEventBase_, serviceHandler_);
 }
-}
-}
+} // namespace thrift
+} // namespace apache

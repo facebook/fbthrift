@@ -18,6 +18,7 @@
 
 #include <rsocket/RSocketServer.h>
 #include <rsocket/RSocketServiceHandler.h>
+#include <rsocket/RSocketStats.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
@@ -26,7 +27,10 @@ namespace thrift {
 
 class RSRoutingHandler : public TransportRoutingHandler {
  public:
-  explicit RSRoutingHandler(apache::thrift::ThriftProcessor* thriftProcessor);
+  RSRoutingHandler(
+      apache::thrift::ThriftProcessor* thriftProcessor,
+      std::shared_ptr<rsocket::RSocketStats> stats =
+          rsocket::RSocketStats::noop());
   virtual ~RSRoutingHandler();
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
@@ -48,5 +52,5 @@ class RSRoutingHandler : public TransportRoutingHandler {
   std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
   ThriftProcessor* thriftProcessor_;
 };
-}
-}
+} // namespace thrift
+} // namespace apache
