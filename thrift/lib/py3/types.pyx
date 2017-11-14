@@ -1,6 +1,11 @@
+from enum import Enum
+
 __all__ = ['Struct', 'BadEnum', 'NOTSET']
 
-NOTSET = object()
+class NOTSETTYPE(Enum):
+    token = 0
+
+NOTSET = NOTSETTYPE.token
 
 
 cdef class Struct:
