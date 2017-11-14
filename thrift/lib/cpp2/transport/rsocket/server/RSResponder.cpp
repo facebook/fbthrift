@@ -21,6 +21,8 @@
 #include <thrift/lib/cpp2/transport/rsocket/server/StreamingInputOutput.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/StreamingOutput.h>
 
+#include <rsocket/internal/ScheduledSubscriber.h>
+
 namespace apache {
 namespace thrift {
 
@@ -73,25 +75,26 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
   // id that represents each RPC call - seqId.
 
   return yarpl::flowable::Flowables::fromPublisher<
-             std::unique_ptr<folly::IOBuf>>(
-             [this, request = std::move(request), streamId](
-                 auto subscriber) mutable {
-               VLOG(3) << "PointResponder.handleRequestStream : " << request
-                       << ", streamId: " << streamId;
+             std::unique_ptr<folly::IOBuf>>([this,
+                                             request = std::move(request),
+                                             streamId](
+                                                auto subscriber) mutable {
+           auto metadata = RequestResponseThriftChannel::deserializeMetadata(
+               *request.metadata);
+           DCHECK(metadata->__isset.kind);
+           DCHECK(metadata->__isset.seqId);
 
-               auto metadata =
-                   RequestResponseThriftChannel::deserializeMetadata(
-                       *request.metadata);
-               DCHECK(metadata->__isset.kind);
-               DCHECK(metadata->__isset.seqId);
-
-               auto channel = std::make_shared<StreamingOutput>(
-                   evb_, streamId, subscriber);
-               processor_->onThriftRequest(
-                   std::move(metadata),
-                   std::move(request.data),
-                   std::move(channel));
-             })
+           auto channel = std::make_shared<StreamingOutput>(
+               evb_,
+               streamId,
+               yarpl::make_ref<
+                   rsocket::ScheduledSubscriber<std::unique_ptr<folly::IOBuf>>>(
+                   std::move(subscriber), *evb_));
+           processor_->onThriftRequest(
+               std::move(metadata),
+               std::move(request.data),
+               std::move(channel));
+         })
       ->map([](auto buff) {
         VLOG(3) << "Sending mapped output buffer";
         return rsocket::Payload(std::move(buff));
@@ -103,31 +106,49 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
     FlowableRef requestStream,
     rsocket::StreamId streamId) {
   VLOG(3) << "RSResponder::handleRequestChannel";
+
+  // The execution of the user supplied service function will happen on the
+  // worker thread. So we use ScheduledSubscriber to perform the IO operations
+  // on the IO thread.
+
+  auto requestStreamFlowable =
+      yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
+          [requestStream = std::move(requestStream), evb = evb_](
+              yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
+                  subscriber) {
+            requestStream->subscribe(
+                yarpl::make_ref<
+                    rsocket::ScheduledSubscriptionSubscriber<rsocket::Payload>>(
+                    std::move(subscriber), *evb));
+          });
+
   return yarpl::flowable::Flowables::fromPublisher<
-             std::unique_ptr<folly::IOBuf>>(
-             [this,
-              request = std::move(request),
-              requestStream = std::move(requestStream),
-              streamId](auto subscriber) mutable {
-               VLOG(3) << "PointResponder.handleRequestChannel : " << request
-                       << ", streamId: " << streamId;
+             std::unique_ptr<folly::IOBuf>>([this,
+                                             request = std::move(request),
+                                             requestStream = std::move(
+                                                 requestStreamFlowable),
+                                             streamId](
+                                                auto subscriber) mutable {
+           auto metadata = RequestResponseThriftChannel::deserializeMetadata(
+               *request.metadata);
+           DCHECK(metadata->__isset.kind);
+           DCHECK(metadata->__isset.seqId);
 
-               auto metadata =
-                   RequestResponseThriftChannel::deserializeMetadata(
-                       *request.metadata);
-               DCHECK(metadata->__isset.kind);
-               DCHECK(metadata->__isset.seqId);
+           // TODO - STREAMING_REQUEST_NO_RESPONSE?
+           // TODO - STREAMING_REQUEST_SINGLE_RESPONSE?
 
-               // TODO - STREAMING_REQUEST_NO_RESPONSE?
-               // TODO - STREAMING_REQUEST_SINGLE_RESPONSE?
-
-               auto channel = std::make_shared<StreamingInputOutput>(
-                   evb_, requestStream, streamId, subscriber);
-               processor_->onThriftRequest(
-                   std::move(metadata),
-                   std::move(request.data),
-                   std::move(channel));
-             })
+           auto channel = std::make_shared<StreamingInputOutput>(
+               evb_,
+               requestStream,
+               streamId,
+               yarpl::make_ref<
+                   rsocket::ScheduledSubscriber<std::unique_ptr<folly::IOBuf>>>(
+                   std::move(subscriber), *evb_));
+           processor_->onThriftRequest(
+               std::move(metadata),
+               std::move(request.data),
+               std::move(channel));
+         })
       ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
 }
 } // namespace thrift

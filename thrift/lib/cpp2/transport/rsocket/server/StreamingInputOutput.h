@@ -44,8 +44,8 @@ class StreamingInputOutput : public RSThriftChannelBase {
       : RSThriftChannelBase(evb), streamId_(streamId) {
     VLOG(3) << "StreamingInputOutput::ctor";
     input_ = std::make_unique<StreamingInput>(
-        evb, input, streamId, std::make_unique<RSThriftChannelBase>(evb_));
-    output_ = std::make_unique<StreamingOutput>(evb, streamId, subscriber);
+        evb_, input, streamId, std::make_unique<RSThriftChannelBase>(evb_));
+    output_ = std::make_unique<StreamingOutput>(evb_, streamId, subscriber);
   }
 
   void sendThriftResponse(
