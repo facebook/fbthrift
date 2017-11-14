@@ -84,7 +84,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
     string oldError = "";
     while (true) {
-      MutexGuard l(manageThreadMutex_);
+      std::unique_lock<std::mutex> l(manageThreadMutex_);
       if (stopManageThread_) {
         break;
       }
@@ -189,7 +189,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 }
 
 Krb5CredentialsCacheManager::~Krb5CredentialsCacheManager() {
-  MutexGuard l(manageThreadMutex_);
+  std::unique_lock<std::mutex> l(manageThreadMutex_);
   stopManageThread_ = true;
   l.unlock();
   manageThreadCondVar_.notify_one();
@@ -216,7 +216,7 @@ bool Krb5CredentialsCacheManager::waitUntilCacheStoreInitialized(
       return false;
     }
     if (!store) {
-      MutexGuard l(manageThreadMutex_);
+      std::unique_lock<std::mutex> l(manageThreadMutex_);
       store = store_.get();
     }
     initialized = store && store->isInitialized();

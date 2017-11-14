@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,9 +50,6 @@ class Krb5CredentialsCacheManager {
       int maxCacheSize = -1);
 
   virtual ~Krb5CredentialsCacheManager();
-
-  typedef std::mutex Mutex;
-  typedef std::unique_lock<Mutex> MutexGuard;
 
   /**
    * Wait for a credentials cache object to become available. This will throw
@@ -125,7 +122,7 @@ class Krb5CredentialsCacheManager {
    * Members for controlling the manager thread
    */
   std::thread manageThread_;
-  Mutex manageThreadMutex_; // A lock for the two members below
+  std::mutex manageThreadMutex_; // A lock for the two members below
   bool stopManageThread_;
   std::condition_variable manageThreadCondVar_;
   std::shared_ptr<Krb5CredentialsCacheManagerLogger> logger_;

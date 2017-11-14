@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,9 +63,6 @@ class Krb5Tgts {
 
   bool isInitialized();
 
-  typedef std::mutex Mutex;
-  typedef std::unique_lock<Mutex> MutexGuard;
-
   typedef boost::shared_mutex Lock;
   typedef boost::unique_lock<Lock> WriteLock;
   typedef boost::shared_lock<Lock> ReadLock;
@@ -80,7 +77,7 @@ class Krb5Tgts {
 
   Krb5Context ctx_;
 
-  Mutex initLock_;
+  std::mutex initLock_;
   std::condition_variable initCondVar_;
   std::string initError_;
 

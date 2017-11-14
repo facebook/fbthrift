@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,13 +108,13 @@ void Krb5Tgts::kInit(const Krb5Principal& client) {
 }
 
 void Krb5Tgts::notifyOfError(const std::string& error) {
-  MutexGuard guard(initLock_);
+  std::unique_lock<std::mutex> guard(initLock_);
   initError_ = error;
   initCondVar_.notify_all();
 }
 
 void Krb5Tgts::notifyOfSuccess() {
-  MutexGuard guard(initLock_);
+  std::unique_lock<std::mutex> guard(initLock_);
   initError_.clear();
   initCondVar_.notify_all();
 }
@@ -209,7 +209,7 @@ std::map<std::string, Krb5Lifetime> Krb5Tgts::getLifetimes() {
 }
 
 void Krb5Tgts::waitForInit() {
-  MutexGuard guard(initLock_);
+  std::unique_lock<std::mutex> guard(initLock_);
   while (tgt_ == nullptr && initError_.empty()) {
     initCondVar_.wait(guard);
   }
