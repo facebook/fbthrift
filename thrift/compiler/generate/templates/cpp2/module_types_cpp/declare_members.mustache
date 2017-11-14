@@ -15,14 +15,15 @@
   limitations under the License.
 
 %><%#struct:is_large?%>
-<%struct:name%>::
-<% > module_types_h/base_ctor%>
+<%struct:name%>::<% > module_types_h/base_ctor%>
 
 <%#struct:cpp_noexcept_move_ctor%>
 <%#struct:fields?%>
 <% > module_types_cpp/move_ctor%>
 <%/struct:fields?%>
 <%/struct:cpp_noexcept_move_ctor%>
+
+<%struct:name%>::~<%struct:name%>() {}
 
 <%/struct:is_large?%>
 <% > module_types_cpp/fragile_ctor%>

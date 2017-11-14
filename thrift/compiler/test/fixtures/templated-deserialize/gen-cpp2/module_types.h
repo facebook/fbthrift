@@ -401,7 +401,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   containerStruct& operator=(const containerStruct& src);
   void __clear();
 
-  virtual ~containerStruct() {}
+  virtual ~containerStruct();
 
   bool fieldA;
   std::map<std::string, bool> fieldB;

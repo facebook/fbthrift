@@ -133,7 +133,7 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   ModuleA& operator=(const ModuleA&) = default;
   void __clear();
 
-  virtual ~ModuleA() {}
+  virtual ~ModuleA();
 
   int32_t i32Field;
   std::string strField;

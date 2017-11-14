@@ -757,6 +757,8 @@ void structC::__clear() {
   __isset = {};
 }
 
+structC::~structC() {}
+
 bool structC::operator==(const structC& rhs) const {
   if (!((a == rhs.a))) {
     return false;
@@ -1248,6 +1250,8 @@ void struct1::__clear() {
   __isset = {};
 }
 
+struct1::~struct1() {}
+
 bool struct1::operator==(const struct1& rhs) const {
   if (!((field0 == rhs.field0))) {
     return false;
@@ -1381,6 +1385,8 @@ void struct2::__clear() {
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
   __isset = {};
 }
+
+struct2::~struct2() {}
 
 bool struct2::operator==(const struct2& rhs) const {
   if (!((fieldA == rhs.fieldA))) {
@@ -1558,6 +1564,8 @@ void struct3::__clear() {
   fieldR.clear();
   __isset = {};
 }
+
+struct3::~struct3() {}
 
 bool struct3::operator==(const struct3& rhs) const {
   if (!((fieldA == rhs.fieldA))) {
@@ -2373,35 +2381,6 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
-
-struct_with_special_names::struct_with_special_names() :
-    get(0),
-    getter(0),
-    lists(0),
-    maps(0),
-    name(0),
-    name_to_value(0),
-    names(0),
-    prefix_tree(0),
-    sets(0),
-    setter(0),
-    str(0),
-    strings(0),
-    type(0),
-    value(0),
-    value_to_name(0),
-    values(0),
-    id(0),
-    ids(0),
-    descriptor(0),
-    descriptors(0),
-    key(0),
-    keys(0),
-    annotation(0),
-    annotations(0),
-    member(0),
-    members(0)
- {}
 
 struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg) :
     get(std::move(get__arg)),

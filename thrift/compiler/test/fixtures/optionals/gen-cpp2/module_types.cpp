@@ -138,6 +138,8 @@ void Vehicle::__clear() {
   hasAC.clear();
 }
 
+Vehicle::~Vehicle() {}
+
 bool Vehicle::operator==(const Vehicle& rhs) const {
   if (!((color == rhs.color))) {
     return false;
@@ -235,6 +237,8 @@ void Person::__clear() {
   afraidOfAnimal.clear();
   vehicles.clear();
 }
+
+Person::~Person() {}
 
 bool Person::operator==(const Person& rhs) const {
   if (!((id == rhs.id))) {

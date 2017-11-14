@@ -125,7 +125,7 @@ class containerStruct2 : private apache::thrift::detail::st::ComparisonOperators
   containerStruct2& operator=(const containerStruct2&) = default;
   void __clear();
 
-  virtual ~containerStruct2() {}
+  virtual ~containerStruct2();
 
   bool fieldA;
   bool req_fieldA;

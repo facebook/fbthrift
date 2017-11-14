@@ -39,9 +39,11 @@ template <> bool TEnumTraits< ::some::ns::EnumB>::findValue(const char* name,  :
 }} // apache::thrift
 namespace some { namespace ns {
 
-ModuleA::
-  ModuleA() :
+ModuleA::ModuleA() :
       i32Field(0) {}
+
+
+ModuleA::~ModuleA() {}
 
 ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
     i32Field(std::move(i32Field__arg)),

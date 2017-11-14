@@ -852,7 +852,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   StructWithContainers& operator=(const StructWithContainers& src);
   void __clear();
 
-  virtual ~StructWithContainers() {}
+  virtual ~StructWithContainers();
 
   std::unique_ptr<std::vector<int32_t>> list_ref;
   std::unique_ptr<std::set<int32_t>> set_ref;

@@ -2326,8 +2326,7 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
 
   structC& operator=(const structC&) = default;
   void __clear();
-
-  virtual ~structC() {}
+  virtual ~structC();
 
   int32_t a;
   std::string b;
@@ -2879,8 +2878,7 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
 
   struct1& operator=(const struct1&) = default;
   void __clear();
-
-  virtual ~struct1() {}
+  virtual ~struct1();
 
   int32_t field0;
   std::string field1;
@@ -3079,8 +3077,7 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
 
   struct2& operator=(const struct2&) = default;
   void __clear();
-
-  virtual ~struct2() {}
+  virtual ~struct2();
 
   int32_t fieldA;
   std::string fieldB;
@@ -3369,8 +3366,7 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
 
   struct3& operator=(const struct3&) = default;
   void __clear();
-
-  virtual ~struct3() {}
+  virtual ~struct3();
 
   int32_t fieldA;
   std::string fieldB;
@@ -3833,8 +3829,7 @@ class struct5 : private apache::thrift::detail::st::ComparisonOperators<struct5>
 
   struct5& operator=(const struct5&) = default;
   void __clear();
-
-  virtual ~struct5() {}
+  virtual ~struct5();
 
   int32_t field0;
   std::string field1;
@@ -5984,7 +5979,35 @@ namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_special_names : private apache::thrift::detail::st::ComparisonOperators<struct_with_special_names> {
  public:
 
-  struct_with_special_names();
+  struct_with_special_names() :
+      get(0),
+      getter(0),
+      lists(0),
+      maps(0),
+      name(0),
+      name_to_value(0),
+      names(0),
+      prefix_tree(0),
+      sets(0),
+      setter(0),
+      str(0),
+      strings(0),
+      type(0),
+      value(0),
+      value_to_name(0),
+      values(0),
+      id(0),
+      ids(0),
+      descriptor(0),
+      descriptors(0),
+      key(0),
+      keys(0),
+      annotation(0),
+      annotations(0),
+      member(0),
+      members(0),
+      field(0),
+      fields(0) {}
   // FragileConstructor for use in initialization lists only
   struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -6729,8 +6752,7 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
 
   struct_with_indirections& operator=(const struct_with_indirections&) = default;
   void __clear();
-
-  virtual ~struct_with_indirections() {}
+  virtual ~struct_with_indirections();
 
   int32_t real;
    ::test_cpp2::cpp_reflection::FakeI32 fake;

@@ -408,14 +408,16 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
   return *this;
 }
 
-StructWithContainers::
-  StructWithContainers() :
+StructWithContainers::StructWithContainers() :
       list_ref(std::make_unique<std::vector<int32_t>>()),
       set_ref(std::make_unique<std::set<int32_t>>()),
       map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
       list_ref_unique(std::make_unique<std::vector<int32_t>>()),
       set_ref_shared(std::make_shared<std::set<int32_t>>()),
       list_ref_shared_const(std::make_shared<std::vector<int32_t>>()) {}
+
+
+StructWithContainers::~StructWithContainers() {}
 
 StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg) :
     list_ref(std::move(list_ref__arg)),

@@ -108,8 +108,10 @@ template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactPr
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-ContainerStruct::
-  ContainerStruct() {}
+ContainerStruct::ContainerStruct() {}
+
+
+ContainerStruct::~ContainerStruct() {}
 
 ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
     fieldA(std::move(fieldA__arg)),

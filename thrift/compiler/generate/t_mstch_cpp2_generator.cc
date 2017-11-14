@@ -36,6 +36,15 @@ std::string const& map_find_first(
   return empty;
 }
 
+bool is_cpp_ref(const t_field* f) {
+  return f->annotations_.count("cpp.ref") ||
+      f->annotations_.count("cpp2.ref") ||
+      (f->annotations_.count("cpp.ref_type") &&
+       f->annotations_.at("cpp.ref_type") == "unique") ||
+      (f->annotations_.count("cpp2.ref_type") &&
+       f->annotations_.at("cpp2.ref_type") == "unique");
+}
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -492,12 +501,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_cpp_ref() {
     for (auto const* f : strct_->get_members()) {
-      if (f->annotations_.count("cpp.ref") ||
-          f->annotations_.count("cpp2.ref") ||
-          (f->annotations_.count("cpp.ref_type") &&
-           f->annotations_.at("cpp.ref_type") == "unique") ||
-          (f->annotations_.count("cpp2.ref_type") &&
-           f->annotations_.at("cpp2.ref_type") == "unique")) {
+      if (is_cpp_ref(f)) {
         return true;
       }
     }
@@ -585,8 +589,22 @@ class mstch_cpp2_struct : public mstch_struct {
     return cache_->parsed_options_.count("optionals") != 0;
   }
   mstch::node is_large() {
+    // Outline constructors and destructors if the struct has
+    // enough members and at least one has a non-trivial destructor
+    // (involving at least a branch and a likely deallocation).
+    // TODO(ott): Support unions.
     constexpr size_t kLargeStructThreshold = 4;
-    return strct_->get_members().size() > kLargeStructThreshold;
+    if (strct_->get_members().size() <= kLargeStructThreshold) {
+      return false;
+    }
+    for (auto const* field : strct_->get_members()) {
+      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      if (is_cpp_ref(field) || resolved_typedef->is_string() ||
+          resolved_typedef->is_container()) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 

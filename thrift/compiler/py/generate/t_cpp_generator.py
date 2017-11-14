@@ -2587,7 +2587,21 @@ class CppGenerator(t_generator.Generator):
             ((not pointers) or read) and not obj.is_union \
             and not self.flag_optionals
         struct_options = self._get_serialized_fields_options(obj)
-        is_large = not obj.is_union and len(members) > 4
+
+        def is_heap_allocated(member):
+            ttype = self._get_true_type(member.type)
+            return self._is_reference(member) or \
+                ttype.is_container or \
+                (ttype.is_base_type and
+                 ttype.as_base_type.base == frontend.t_base.string)
+
+        # Outline constructors and destructors if the struct has
+        # enough members and at least one has a non-trivial destructor
+        # (involving at least a branch and a likely deallocation).
+        # TODO(ott): Support unions.
+        is_large = (not obj.is_union and
+                    len(members) > 4 and
+                    any(is_heap_allocated(member) for member in members))
 
         # Type enum for unions
         if obj.is_union:
@@ -2823,14 +2837,17 @@ class CppGenerator(t_generator.Generator):
                             self._serialized_fields_name))
         # END if not pointers
 
-        if 'final' not in obj.annotations:
-            with struct.defn('~{name}()', name=obj.name,
-                             modifiers='virtual', in_header=True):
+        is_virtual = 'final' not in obj.annotations
+        if is_virtual or is_large:
+            with struct.defn('{name}()',
+                             name='~' + obj.name,
+                             modifiers='virtual' if is_virtual else '',
+                             in_header=not is_large):
                 if obj.is_union:
                     out('__clear();')
             struct()
         elif obj.is_union:
-            with struct.defn('~{name}()', name=obj.name,
+            with struct.defn('{name}()', name='~' + obj.name,
                              in_header=True):
                 out('__clear();')
 

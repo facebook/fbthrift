@@ -103,7 +103,7 @@ class <%struct:name%> <%!
   <%struct:name%>();
 <%/struct:is_large?%>
 <%^struct:is_large?%>
-<% > module_types_h/base_ctor%>
+  <% > module_types_h/base_ctor%>
 <%/struct:is_large?%>
 
 <%#struct:exception?%><%#struct:message%>
@@ -155,9 +155,21 @@ class <%struct:name%> <%!
 <%/struct:fields_contain_cpp_ref?%>
 <%/struct:cpp_noncopyable%>
   void __clear();
+<%#struct:final%>
+<%#struct:is_large?%>
+
+  ~<%struct:name%>();
+
+<%/struct:is_large?%>
+<%/struct:final%>
 <%^struct:final%>
 
+<%^struct:is_large?%>
   virtual ~<%struct:name%>() {}
+<%/struct:is_large?%>
+<%#struct:is_large?%>
+  virtual ~<%struct:name%>();
+<%/struct:is_large?%>
 
 <%/struct:final%>
 <%#struct:fields?%>

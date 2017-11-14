@@ -736,7 +736,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
 
-  virtual ~MyStruct() {}
+  virtual ~MyStruct();
 
   bool MyBoolField;
   int64_t MyIntField;
@@ -3375,7 +3375,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   AnException& operator=(const AnException&) = default;
   void __clear();
 
-  virtual ~AnException() {}
+  virtual ~AnException();
 
   int32_t code;
   int32_t req_code;
@@ -4093,7 +4093,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   containerStruct& operator=(containerStruct&&) = default;
   void __clear();
 
-  virtual ~containerStruct() {}
+  virtual ~containerStruct();
 
   bool fieldA;
   bool req_fieldA;
@@ -5102,6 +5102,9 @@ class AnnotatedStruct final : private apache::thrift::detail::st::ComparisonOper
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
   void __clear();
+
+  ~AnnotatedStruct();
+
    ::some::valid::ns::containerStruct no_annotation;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref;

@@ -353,7 +353,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
   ContainerStruct& operator=(const ContainerStruct&) = default;
   void __clear();
 
-  virtual ~ContainerStruct() {}
+  virtual ~ContainerStruct();
 
   std::vector<int32_t> fieldA;
   std::list<int32_t> fieldB;

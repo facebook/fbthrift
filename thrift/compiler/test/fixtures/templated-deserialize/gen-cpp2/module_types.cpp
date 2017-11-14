@@ -142,8 +142,7 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
   return *this;
 }
 
-containerStruct::
-  containerStruct() :
+containerStruct::containerStruct() :
       fieldA(0),
       fieldC(std::initializer_list<int32_t>{1,
   2,
@@ -161,6 +160,9 @@ containerStruct::
   13}}}),
       fieldQ(static_cast< ::cpp2::MyEnumA>(0)),
       fieldR(std::make_unique<std::map<std::string, bool>>()) {}
+
+
+containerStruct::~containerStruct() {}
 
 containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg) :
     fieldA(std::move(fieldA__arg)),
