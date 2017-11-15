@@ -31,7 +31,9 @@ using apache::thrift::transport::TTransportException;
 RSClientConnection::RSClientConnection(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
     bool isSecure)
-    : evb_(socket->getEventBase()), isSecure_(isSecure) {
+    : evb_(socket->getEventBase()),
+      isSecure_(isSecure),
+      connectionStatus_(std::make_shared<RSConnectionStatus>()) {
   rsClient_ = RSocket::createClientFromConnection(
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
       *evb_,
@@ -40,7 +42,7 @@ RSClientConnection::RSClientConnection(
       std::make_shared<RSocketResponder>(),
       std::chrono::milliseconds{0}, /* no keepalive timeout */
       RSocketStats::noop(),
-      std::shared_ptr<RSocketConnectionEvents>(),
+      connectionStatus_,
       nullptr /* resumeManager */,
       nullptr /* coldResumeHandler */);
   rsRequester_ = rsClient_->getRequester();
@@ -49,7 +51,8 @@ RSClientConnection::RSClientConnection(
 
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel(
     RequestRpcMetadata*) {
-  if (!channel_) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  if (!channel_ || !connectionStatus_->isConnected()) {
     throw TTransportException(
         TTransportException::NOT_OPEN, "Connection is not open");
   }

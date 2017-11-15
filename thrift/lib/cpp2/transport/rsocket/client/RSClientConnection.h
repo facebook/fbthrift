@@ -25,6 +25,30 @@
 namespace apache {
 namespace thrift {
 
+class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
+ public:
+  bool isConnected() const {
+    return isConnected_;
+  }
+
+ private:
+  void onConnected() override {
+    isConnected_ = true;
+  }
+
+  void onDisconnected(const folly::exception_wrapper& ew) override {
+    VLOG(1) << "Connection is disconnected: " << ew.what();
+    isConnected_ = false;
+  }
+
+  void onClosed(const folly::exception_wrapper& ew) override {
+    VLOG(1) << "Connection is closed: " << ew.what();
+    isConnected_ = false;
+  }
+
+  bool isConnected_{false};
+};
+
 class RSClientConnection : public ClientConnectionIf {
  public:
   RSClientConnection(
@@ -57,6 +81,7 @@ class RSClientConnection : public ClientConnectionIf {
 
   std::chrono::milliseconds timeout_;
   bool isSecure_;
+  std::shared_ptr<RSConnectionStatus> connectionStatus_;
 
   apache::thrift::detail::ChannelCounters counters_;
 };
