@@ -62,7 +62,7 @@ namespace cpp2 {
 
 typedef int64_t PersonID;
 
-class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
+class Color final : private apache::thrift::detail::st::ComparisonOperators<Color> {
  public:
 
   Color() :
@@ -105,9 +105,6 @@ class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
 
   Color& operator=(const Color&) = default;
   void __clear();
-
-  virtual ~Color() {}
-
   double red;
   double green;
   double blue;
@@ -184,7 +181,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::serializ
 }} // apache::thrift
 namespace cpp2 {
 
-class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
+class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
  public:
 
   Vehicle();
@@ -229,7 +226,7 @@ class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle>
 
   Vehicle& operator=(const Vehicle&) = default;
   void __clear();
-  virtual ~Vehicle();
+   ~Vehicle();
 
    ::cpp2::Color color;
   folly::Optional<std::string> licensePlate;
@@ -292,7 +289,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::serial
 }} // apache::thrift
 namespace cpp2 {
 
-class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
+class Person final : private apache::thrift::detail::st::ComparisonOperators<Person> {
  public:
 
   Person();
@@ -367,7 +364,7 @@ class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
 
   Person& operator=(const Person&) = default;
   void __clear();
-  virtual ~Person();
+   ~Person();
 
    ::cpp2::PersonID id;
   std::string name;

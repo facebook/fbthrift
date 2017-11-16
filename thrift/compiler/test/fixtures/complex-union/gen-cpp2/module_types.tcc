@@ -291,7 +291,7 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t FinalComplexUnion::read(Protocol_* iprot) {
+uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
@@ -356,71 +356,71 @@ uint32_t FinalComplexUnion::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t FinalComplexUnion::serializedSize(Protocol_ const* prot_) const {
+uint32_t VirtualComplexUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("FinalComplexUnion");
+  xfer += prot_->serializedStructSize("VirtualComplexUnion");
   switch(this->getType()) {
-    case FinalComplexUnion::Type::thingOne:
+    case VirtualComplexUnion::Type::thingOne:
     {
       xfer += prot_->serializedFieldSize("thingOne", apache::thrift::protocol::T_STRING, 1);
       xfer += prot_->serializedSizeString(this->get_thingOne());
       break;
     }
-    case FinalComplexUnion::Type::thingTwo:
+    case VirtualComplexUnion::Type::thingTwo:
     {
       xfer += prot_->serializedFieldSize("thingTwo", apache::thrift::protocol::T_STRING, 2);
       xfer += prot_->serializedSizeString(this->get_thingTwo());
       break;
     }
-    case FinalComplexUnion::Type::__EMPTY__:;
+    case VirtualComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t FinalComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t VirtualComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("FinalComplexUnion");
+  xfer += prot_->serializedStructSize("VirtualComplexUnion");
   switch(this->getType()) {
-    case FinalComplexUnion::Type::thingOne:
+    case VirtualComplexUnion::Type::thingOne:
     {
       xfer += prot_->serializedFieldSize("thingOne", apache::thrift::protocol::T_STRING, 1);
       xfer += prot_->serializedSizeString(this->get_thingOne());
       break;
     }
-    case FinalComplexUnion::Type::thingTwo:
+    case VirtualComplexUnion::Type::thingTwo:
     {
       xfer += prot_->serializedFieldSize("thingTwo", apache::thrift::protocol::T_STRING, 2);
       xfer += prot_->serializedSizeString(this->get_thingTwo());
       break;
     }
-    case FinalComplexUnion::Type::__EMPTY__:;
+    case VirtualComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t FinalComplexUnion::write(Protocol_* prot_) const {
+uint32_t VirtualComplexUnion::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("FinalComplexUnion");
+  xfer += prot_->writeStructBegin("VirtualComplexUnion");
   switch(this->getType()) {
-    case FinalComplexUnion::Type::thingOne:
+    case VirtualComplexUnion::Type::thingOne:
     {
       xfer += prot_->writeFieldBegin("thingOne", apache::thrift::protocol::T_STRING, 1);
       xfer += prot_->writeString(this->get_thingOne());
       xfer += prot_->writeFieldEnd();
       break;
     }
-    case FinalComplexUnion::Type::thingTwo:
+    case VirtualComplexUnion::Type::thingTwo:
     {
       xfer += prot_->writeFieldBegin("thingTwo", apache::thrift::protocol::T_STRING, 2);
       xfer += prot_->writeString(this->get_thingTwo());
       xfer += prot_->writeFieldEnd();
       break;
     }
-    case FinalComplexUnion::Type::__EMPTY__:;
+    case VirtualComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

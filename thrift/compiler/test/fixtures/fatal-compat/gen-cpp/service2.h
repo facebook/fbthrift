@@ -73,7 +73,7 @@ class service2Null : virtual public service2If {
   }
 };
 
-class service2_methodA_args : public apache::thrift::TStructType<service2_methodA_args> {
+class service2_methodA_args final : public apache::thrift::TStructType<service2_methodA_args> {
  public:
 
   static const uint64_t _reflection_id = 6566507961113636684U;
@@ -87,9 +87,6 @@ class service2_methodA_args : public apache::thrift::TStructType<service2_method
   service2_methodA_args& operator=(service2_methodA_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodA_args() noexcept {}
-
 
   bool operator == (const service2_methodA_args &) const;
   bool operator != (const service2_methodA_args& rhs) const {
@@ -112,15 +109,12 @@ class service2_methodA_args : public apache::thrift::TStructType<service2_method
 class service2_methodA_args;
 void merge(const service2_methodA_args& from, service2_methodA_args& to);
 void merge(service2_methodA_args&& from, service2_methodA_args& to);
-class service2_methodA_pargs : public apache::thrift::TStructType<service2_methodA_pargs> {
+class service2_methodA_pargs final : public apache::thrift::TStructType<service2_methodA_pargs> {
  public:
 
   static const uint64_t _reflection_id = 5719438048877717420U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodA_pargs() = default;
-
-  virtual ~service2_methodA_pargs() noexcept {}
-
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -135,15 +129,12 @@ class service2_methodA_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodA_pargs;
 void merge(const service2_methodA_pargs& from, service2_methodA_pargs& to);
 void merge(service2_methodA_pargs&& from, service2_methodA_pargs& to);
-class service2_methodA_presult : public apache::thrift::TStructType<service2_methodA_presult> {
+class service2_methodA_presult final : public apache::thrift::TStructType<service2_methodA_presult> {
  public:
 
   static const uint64_t _reflection_id = 3646851313577729228U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodA_presult() = default;
-
-  virtual ~service2_methodA_presult() noexcept {}
-
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -159,7 +150,7 @@ class service2_methodA_presult : public apache::thrift::TStructType<service2_met
 class service2_methodA_presult;
 void merge(const service2_methodA_presult& from, service2_methodA_presult& to);
 void merge(service2_methodA_presult&& from, service2_methodA_presult& to);
-class service2_methodB_args : public apache::thrift::TStructType<service2_methodB_args> {
+class service2_methodB_args final : public apache::thrift::TStructType<service2_methodB_args> {
  public:
 
   static const uint64_t _reflection_id = 16438630555754932108U;
@@ -212,9 +203,6 @@ class service2_methodB_args : public apache::thrift::TStructType<service2_method
   service2_methodB_args& operator=(service2_methodB_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodB_args() noexcept {}
-
   int32_t x;
   struct1 y;
   double z;
@@ -252,7 +240,7 @@ class service2_methodB_args : public apache::thrift::TStructType<service2_method
 class service2_methodB_args;
 void merge(const service2_methodB_args& from, service2_methodB_args& to);
 void merge(service2_methodB_args&& from, service2_methodB_args& to);
-class service2_methodB_pargs : public apache::thrift::TStructType<service2_methodB_pargs> {
+class service2_methodB_pargs final : public apache::thrift::TStructType<service2_methodB_pargs> {
  public:
 
   static const uint64_t _reflection_id = 11827867718633991500U;
@@ -294,9 +282,6 @@ class service2_methodB_pargs : public apache::thrift::TStructType<service2_metho
   {
     z = arg.move();
   }
-
-  virtual ~service2_methodB_pargs() noexcept {}
-
   const int32_t* x;
   const struct1* y;
   const double* z;
@@ -314,15 +299,12 @@ class service2_methodB_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodB_pargs;
 void merge(const service2_methodB_pargs& from, service2_methodB_pargs& to);
 void merge(service2_methodB_pargs&& from, service2_methodB_pargs& to);
-class service2_methodB_presult : public apache::thrift::TStructType<service2_methodB_presult> {
+class service2_methodB_presult final : public apache::thrift::TStructType<service2_methodB_presult> {
  public:
 
   static const uint64_t _reflection_id = 17032519182038144204U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodB_presult() = default;
-
-  virtual ~service2_methodB_presult() noexcept {}
-
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -338,7 +320,7 @@ class service2_methodB_presult : public apache::thrift::TStructType<service2_met
 class service2_methodB_presult;
 void merge(const service2_methodB_presult& from, service2_methodB_presult& to);
 void merge(service2_methodB_presult&& from, service2_methodB_presult& to);
-class service2_methodC_args : public apache::thrift::TStructType<service2_methodC_args> {
+class service2_methodC_args final : public apache::thrift::TStructType<service2_methodC_args> {
  public:
 
   static const uint64_t _reflection_id = 8339222530218349644U;
@@ -352,9 +334,6 @@ class service2_methodC_args : public apache::thrift::TStructType<service2_method
   service2_methodC_args& operator=(service2_methodC_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodC_args() noexcept {}
-
 
   bool operator == (const service2_methodC_args &) const;
   bool operator != (const service2_methodC_args& rhs) const {
@@ -377,15 +356,12 @@ class service2_methodC_args : public apache::thrift::TStructType<service2_method
 class service2_methodC_args;
 void merge(const service2_methodC_args& from, service2_methodC_args& to);
 void merge(service2_methodC_args&& from, service2_methodC_args& to);
-class service2_methodC_pargs : public apache::thrift::TStructType<service2_methodC_pargs> {
+class service2_methodC_pargs final : public apache::thrift::TStructType<service2_methodC_pargs> {
  public:
 
   static const uint64_t _reflection_id = 16786668868553556876U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodC_pargs() = default;
-
-  virtual ~service2_methodC_pargs() noexcept {}
-
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -400,7 +376,7 @@ class service2_methodC_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodC_pargs;
 void merge(const service2_methodC_pargs& from, service2_methodC_pargs& to);
 void merge(service2_methodC_pargs&& from, service2_methodC_pargs& to);
-class service2_methodC_presult : public apache::thrift::TStructType<service2_methodC_presult> {
+class service2_methodC_presult final : public apache::thrift::TStructType<service2_methodC_presult> {
  public:
 
   static const uint64_t _reflection_id = 520737506486567340U;
@@ -419,9 +395,6 @@ class service2_methodC_presult : public apache::thrift::TStructType<service2_met
     success = arg.move();
     __isset.success = true;
   }
-
-  virtual ~service2_methodC_presult() noexcept {}
-
   int32_t* success;
 
   struct __isset {
@@ -446,7 +419,7 @@ class service2_methodC_presult : public apache::thrift::TStructType<service2_met
 class service2_methodC_presult;
 void merge(const service2_methodC_presult& from, service2_methodC_presult& to);
 void merge(service2_methodC_presult&& from, service2_methodC_presult& to);
-class service2_methodD_args : public apache::thrift::TStructType<service2_methodD_args> {
+class service2_methodD_args final : public apache::thrift::TStructType<service2_methodD_args> {
  public:
 
   static const uint64_t _reflection_id = 13559834307911128492U;
@@ -499,9 +472,6 @@ class service2_methodD_args : public apache::thrift::TStructType<service2_method
   service2_methodD_args& operator=(service2_methodD_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodD_args() noexcept {}
-
   int32_t i;
   struct1 j;
   double k;
@@ -539,7 +509,7 @@ class service2_methodD_args : public apache::thrift::TStructType<service2_method
 class service2_methodD_args;
 void merge(const service2_methodD_args& from, service2_methodD_args& to);
 void merge(service2_methodD_args&& from, service2_methodD_args& to);
-class service2_methodD_pargs : public apache::thrift::TStructType<service2_methodD_pargs> {
+class service2_methodD_pargs final : public apache::thrift::TStructType<service2_methodD_pargs> {
  public:
 
   static const uint64_t _reflection_id = 260116069361994860U;
@@ -581,9 +551,6 @@ class service2_methodD_pargs : public apache::thrift::TStructType<service2_metho
   {
     k = arg.move();
   }
-
-  virtual ~service2_methodD_pargs() noexcept {}
-
   const int32_t* i;
   const struct1* j;
   const double* k;
@@ -601,7 +568,7 @@ class service2_methodD_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodD_pargs;
 void merge(const service2_methodD_pargs& from, service2_methodD_pargs& to);
 void merge(service2_methodD_pargs&& from, service2_methodD_pargs& to);
-class service2_methodD_presult : public apache::thrift::TStructType<service2_methodD_presult> {
+class service2_methodD_presult final : public apache::thrift::TStructType<service2_methodD_presult> {
  public:
 
   static const uint64_t _reflection_id = 15838475084814263916U;
@@ -620,9 +587,6 @@ class service2_methodD_presult : public apache::thrift::TStructType<service2_met
     success = arg.move();
     __isset.success = true;
   }
-
-  virtual ~service2_methodD_presult() noexcept {}
-
   int32_t* success;
 
   struct __isset {
@@ -647,7 +611,7 @@ class service2_methodD_presult : public apache::thrift::TStructType<service2_met
 class service2_methodD_presult;
 void merge(const service2_methodD_presult& from, service2_methodD_presult& to);
 void merge(service2_methodD_presult&& from, service2_methodD_presult& to);
-class service2_methodE_args : public apache::thrift::TStructType<service2_methodE_args> {
+class service2_methodE_args final : public apache::thrift::TStructType<service2_methodE_args> {
  public:
 
   static const uint64_t _reflection_id = 3137212161413782060U;
@@ -661,9 +625,6 @@ class service2_methodE_args : public apache::thrift::TStructType<service2_method
   service2_methodE_args& operator=(service2_methodE_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodE_args() noexcept {}
-
 
   bool operator == (const service2_methodE_args &) const;
   bool operator != (const service2_methodE_args& rhs) const {
@@ -686,15 +647,12 @@ class service2_methodE_args : public apache::thrift::TStructType<service2_method
 class service2_methodE_args;
 void merge(const service2_methodE_args& from, service2_methodE_args& to);
 void merge(service2_methodE_args&& from, service2_methodE_args& to);
-class service2_methodE_pargs : public apache::thrift::TStructType<service2_methodE_pargs> {
+class service2_methodE_pargs final : public apache::thrift::TStructType<service2_methodE_pargs> {
  public:
 
   static const uint64_t _reflection_id = 9568770577813299788U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodE_pargs() = default;
-
-  virtual ~service2_methodE_pargs() noexcept {}
-
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -709,7 +667,7 @@ class service2_methodE_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodE_pargs;
 void merge(const service2_methodE_pargs& from, service2_methodE_pargs& to);
 void merge(service2_methodE_pargs&& from, service2_methodE_pargs& to);
-class service2_methodE_presult : public apache::thrift::TStructType<service2_methodE_presult> {
+class service2_methodE_presult final : public apache::thrift::TStructType<service2_methodE_presult> {
  public:
 
   static const uint64_t _reflection_id = 12662005636544009740U;
@@ -728,9 +686,6 @@ class service2_methodE_presult : public apache::thrift::TStructType<service2_met
     success = arg.move();
     __isset.success = true;
   }
-
-  virtual ~service2_methodE_presult() noexcept {}
-
   struct2* success;
 
   struct __isset {
@@ -755,7 +710,7 @@ class service2_methodE_presult : public apache::thrift::TStructType<service2_met
 class service2_methodE_presult;
 void merge(const service2_methodE_presult& from, service2_methodE_presult& to);
 void merge(service2_methodE_presult&& from, service2_methodE_presult& to);
-class service2_methodF_args : public apache::thrift::TStructType<service2_methodF_args> {
+class service2_methodF_args final : public apache::thrift::TStructType<service2_methodF_args> {
  public:
 
   static const uint64_t _reflection_id = 9335213369860275500U;
@@ -808,9 +763,6 @@ class service2_methodF_args : public apache::thrift::TStructType<service2_method
   service2_methodF_args& operator=(service2_methodF_args&&) = default;
 
   void __clear();
-
-  virtual ~service2_methodF_args() noexcept {}
-
   int32_t l;
   struct1 m;
   double n;
@@ -848,7 +800,7 @@ class service2_methodF_args : public apache::thrift::TStructType<service2_method
 class service2_methodF_args;
 void merge(const service2_methodF_args& from, service2_methodF_args& to);
 void merge(service2_methodF_args&& from, service2_methodF_args& to);
-class service2_methodF_pargs : public apache::thrift::TStructType<service2_methodF_pargs> {
+class service2_methodF_pargs final : public apache::thrift::TStructType<service2_methodF_pargs> {
  public:
 
   static const uint64_t _reflection_id = 13653453787183033740U;
@@ -890,9 +842,6 @@ class service2_methodF_pargs : public apache::thrift::TStructType<service2_metho
   {
     n = arg.move();
   }
-
-  virtual ~service2_methodF_pargs() noexcept {}
-
   const int32_t* l;
   const struct1* m;
   const double* n;
@@ -910,7 +859,7 @@ class service2_methodF_pargs : public apache::thrift::TStructType<service2_metho
 class service2_methodF_pargs;
 void merge(const service2_methodF_pargs& from, service2_methodF_pargs& to);
 void merge(service2_methodF_pargs&& from, service2_methodF_pargs& to);
-class service2_methodF_presult : public apache::thrift::TStructType<service2_methodF_presult> {
+class service2_methodF_presult final : public apache::thrift::TStructType<service2_methodF_presult> {
  public:
 
   static const uint64_t _reflection_id = 16009723004397363244U;
@@ -929,9 +878,6 @@ class service2_methodF_presult : public apache::thrift::TStructType<service2_met
     success = arg.move();
     __isset.success = true;
   }
-
-  virtual ~service2_methodF_presult() noexcept {}
-
   struct2* success;
 
   struct __isset {

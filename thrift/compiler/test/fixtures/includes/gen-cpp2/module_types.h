@@ -29,7 +29,7 @@ class MyStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() :
@@ -67,9 +67,6 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
-
-  virtual ~MyStruct() {}
-
    ::cpp2::Included MyIncludedField;
    ::cpp2::Included MyOtherIncludedField;
    ::cpp2::IncludedInt64 MyIncludedInt;

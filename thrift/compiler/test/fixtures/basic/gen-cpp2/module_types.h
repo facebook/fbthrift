@@ -57,7 +57,7 @@ template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max()
 }} // apache::thrift
 namespace cpp2 {
 
-class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() :
@@ -94,9 +94,6 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
-
-  virtual ~MyStruct() {}
-
   int64_t MyIntField;
   std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
@@ -197,7 +194,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::seria
 }} // apache::thrift
 namespace cpp2 {
 
-class MyDataItem : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
  public:
 
   MyDataItem() {}
@@ -212,9 +209,6 @@ class MyDataItem : private apache::thrift::detail::st::ComparisonOperators<MyDat
 
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
-
-  virtual ~MyDataItem() {}
-
   bool operator==(const MyDataItem& /* rhs */) const;
 
   bool operator < (const MyDataItem& rhs) const {

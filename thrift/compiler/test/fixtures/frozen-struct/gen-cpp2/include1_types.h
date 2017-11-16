@@ -28,7 +28,7 @@ class IncludedA;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace some { namespace ns {
-class IncludedA : private apache::thrift::detail::st::ComparisonOperators<IncludedA> {
+class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<IncludedA> {
  public:
 
   IncludedA() :
@@ -58,9 +58,6 @@ class IncludedA : private apache::thrift::detail::st::ComparisonOperators<Includ
 
   IncludedA& operator=(const IncludedA&) = default;
   void __clear();
-
-  virtual ~IncludedA() {}
-
   int32_t i32Field;
   std::string strField;
 

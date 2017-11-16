@@ -397,30 +397,30 @@ func (p *ComplexUnion) String() string {
 // Attributes:
 //  - ThingOne
 //  - ThingTwo
-type FinalComplexUnion struct {
+type VirtualComplexUnion struct {
   ThingOne *string `thrift:"thingOne,1" db:"thingOne" json:"thingOne,omitempty"`
   ThingTwo *string `thrift:"thingTwo,2" db:"thingTwo" json:"thingTwo,omitempty"`
 }
 
-func NewFinalComplexUnion() *FinalComplexUnion {
-  return &FinalComplexUnion{}
+func NewVirtualComplexUnion() *VirtualComplexUnion {
+  return &VirtualComplexUnion{}
 }
 
-var FinalComplexUnion_ThingOne_DEFAULT string
-func (p *FinalComplexUnion) GetThingOne() string {
+var VirtualComplexUnion_ThingOne_DEFAULT string
+func (p *VirtualComplexUnion) GetThingOne() string {
   if !p.IsSetThingOne() {
-    return FinalComplexUnion_ThingOne_DEFAULT
+    return VirtualComplexUnion_ThingOne_DEFAULT
   }
 return *p.ThingOne
 }
-var FinalComplexUnion_ThingTwo_DEFAULT string
-func (p *FinalComplexUnion) GetThingTwo() string {
+var VirtualComplexUnion_ThingTwo_DEFAULT string
+func (p *VirtualComplexUnion) GetThingTwo() string {
   if !p.IsSetThingTwo() {
-    return FinalComplexUnion_ThingTwo_DEFAULT
+    return VirtualComplexUnion_ThingTwo_DEFAULT
   }
 return *p.ThingTwo
 }
-func (p *FinalComplexUnion) CountSetFieldsFinalComplexUnion() int {
+func (p *VirtualComplexUnion) CountSetFieldsVirtualComplexUnion() int {
   count := 0
   if (p.IsSetThingOne()) {
     count++
@@ -432,15 +432,15 @@ func (p *FinalComplexUnion) CountSetFieldsFinalComplexUnion() int {
 
 }
 
-func (p *FinalComplexUnion) IsSetThingOne() bool {
+func (p *VirtualComplexUnion) IsSetThingOne() bool {
   return p.ThingOne != nil
 }
 
-func (p *FinalComplexUnion) IsSetThingTwo() bool {
+func (p *VirtualComplexUnion) IsSetThingTwo() bool {
   return p.ThingTwo != nil
 }
 
-func (p *FinalComplexUnion) Read(iprot thrift.TProtocol) error {
+func (p *VirtualComplexUnion) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -476,7 +476,7 @@ func (p *FinalComplexUnion) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *FinalComplexUnion)  ReadField1(iprot thrift.TProtocol) error {
+func (p *VirtualComplexUnion)  ReadField1(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -485,7 +485,7 @@ func (p *FinalComplexUnion)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *FinalComplexUnion)  ReadField2(iprot thrift.TProtocol) error {
+func (p *VirtualComplexUnion)  ReadField2(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -494,11 +494,11 @@ func (p *FinalComplexUnion)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *FinalComplexUnion) Write(oprot thrift.TProtocol) error {
-  if c := p.CountSetFieldsFinalComplexUnion(); c != 1 {
+func (p *VirtualComplexUnion) Write(oprot thrift.TProtocol) error {
+  if c := p.CountSetFieldsVirtualComplexUnion(); c != 1 {
     return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
   }
-  if err := oprot.WriteStructBegin("FinalComplexUnion"); err != nil {
+  if err := oprot.WriteStructBegin("VirtualComplexUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
@@ -509,7 +509,7 @@ func (p *FinalComplexUnion) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *FinalComplexUnion) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *VirtualComplexUnion) writeField1(oprot thrift.TProtocol) (err error) {
   if p.IsSetThingOne() {
     if err := oprot.WriteFieldBegin("thingOne", thrift.STRING, 1); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:thingOne: ", p), err) }
@@ -521,7 +521,7 @@ func (p *FinalComplexUnion) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *FinalComplexUnion) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *VirtualComplexUnion) writeField2(oprot thrift.TProtocol) (err error) {
   if p.IsSetThingTwo() {
     if err := oprot.WriteFieldBegin("thingTwo", thrift.STRING, 2); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:thingTwo: ", p), err) }
@@ -533,10 +533,10 @@ func (p *FinalComplexUnion) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *FinalComplexUnion) String() string {
+func (p *VirtualComplexUnion) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("FinalComplexUnion(%+v)", *p)
+  return fmt.Sprintf("VirtualComplexUnion(%+v)", *p)
 }
 
