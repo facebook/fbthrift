@@ -83,9 +83,9 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cFinalComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::FinalComplexUnion>"(shared_ptr[cFinalComplexUnion])
 
 # Forward Definition of the cython struct
-cdef class ComplexUnion(thrift.py3.types.Struct)
+cdef class ComplexUnion(thrift.py3.types.Union)
 
-cdef class ComplexUnion(thrift.py3.types.Struct):
+cdef class ComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
@@ -108,9 +108,9 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
     cdef create(shared_ptr[cComplexUnion])
 
 # Forward Definition of the cython struct
-cdef class FinalComplexUnion(thrift.py3.types.Struct)
+cdef class FinalComplexUnion(thrift.py3.types.Union)
 
-cdef class FinalComplexUnion(thrift.py3.types.Struct):
+cdef class FinalComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFinalComplexUnion] _cpp_obj

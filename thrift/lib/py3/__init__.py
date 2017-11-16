@@ -2,7 +2,7 @@
 __all__ = [
     'get_client', 'Client', 'ThriftServer', 'Struct', 'BadEnum', 'Error',
     'ApplicationError', 'TransportError', 'SSLPolicy', 'pass_context',
-    'Protocol', 'serialize', 'deserialize', 'RequestContext'
+    'Protocol', 'serialize', 'deserialize', 'RequestContext', 'Union',
 ]
 
 try:
@@ -22,10 +22,11 @@ except ImportError:
     __all__.remove('RequestContext')
 
 try:
-    from thrift.py3.types import Struct, BadEnum
+    from thrift.py3.types import Struct, BadEnum, Union
 except ImportError:
     __all__.remove('Struct')
     __all__.remove('BadEnum')
+    __all__.remove('Union')
 
 try:
     from thrift.py3.exceptions import Error, ApplicationError, TransportError

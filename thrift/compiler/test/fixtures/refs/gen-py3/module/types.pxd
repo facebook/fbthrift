@@ -297,9 +297,9 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
 
 # Forward Definition of the cython struct
-cdef class MyUnion(thrift.py3.types.Struct)
+cdef class MyUnion(thrift.py3.types.Union)
 
-cdef class MyUnion(thrift.py3.types.Struct):
+cdef class MyUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyUnion] _cpp_obj

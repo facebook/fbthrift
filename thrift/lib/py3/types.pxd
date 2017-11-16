@@ -7,6 +7,10 @@ cdef class Struct:
     cdef uint32_t _deserialize(self, const IOBuf* buf, proto)
 
 
+cdef class Union(Struct):
+    pass
+
+
 cdef class BadEnum:
     cdef readonly object the_enum
     cdef readonly int value

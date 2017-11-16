@@ -149,9 +149,21 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 
 {{#program:structs}}
 # Forward Definition of the cython struct
-cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}
+{{#struct:exception?}}
+cdef class {{struct:name}}(__Error)
 
-cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+cdef class {{struct:name}}(__Error):
+{{/struct:exception?}}
+{{#struct:union?}}
+cdef class {{struct:name}}(thrift.py3.types.Union)
+
+cdef class {{struct:name}}(thrift.py3.types.Union):
+{{/struct:union?}}
+{{^struct:exception?}}{{^struct:union?}}
+cdef class {{struct:name}}(thrift.py3.types.Struct)
+
+cdef class {{struct:name}}(thrift.py3.types.Struct):
+{{/struct:union?}}{{/struct:exception?}}
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[c{{struct:name}}] _cpp_obj

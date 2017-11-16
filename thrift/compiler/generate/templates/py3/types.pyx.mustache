@@ -249,7 +249,7 @@ class {{struct:name}}Type(Enum):
     {{field:name}} = <int>c{{struct:name}}__type_{{field:name}}
 {{/field:type}}{{/struct:fields}}
 
-cdef class {{struct:name}}(thrift.py3.types.Struct):
+cdef class {{struct:name}}(thrift.py3.types.Union):
     def __init__(
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=None{{/struct:fields}}
@@ -270,7 +270,7 @@ cdef class {{struct:name}}(thrift.py3.types.Struct):
         {{#struct:fields}}{{#field:type}}
         if {{field:name}} is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             {{> CythonUnionAssignField}}
 
             any_set = True
@@ -293,7 +293,7 @@ cdef class {{struct:name}}(thrift.py3.types.Struct):
     @property
     def {{field:name}}(self):
         if self.__type != {{struct:name}}Type.{{field:name}}:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not {{field:name}}')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not {{field:name}}')
         return self.__cached
 
     {{/struct:fields}}
@@ -307,7 +307,7 @@ cdef class {{struct:name}}(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__({{struct:name}} self):
-        return f'{{struct:name}}(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'{{struct:name}}(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache({{struct:name}} self):
         if self.__type is not None:
@@ -321,6 +321,14 @@ cdef class {{struct:name}}(thrift.py3.types.Struct):
             {{> CythonUnionGetter}}
 
         {{/field:type}}{{/struct:fields}}
+
+    @property
+    def value({{struct:name}} self):
+        return self.__cached
+
+    @property
+    def type({{struct:name}} self):
+        return self.__type
 
     def get_type({{struct:name}} self):
         return self.__type

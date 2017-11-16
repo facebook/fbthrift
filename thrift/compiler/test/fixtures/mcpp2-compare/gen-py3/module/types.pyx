@@ -811,7 +811,7 @@ class SimpleUnionType(Enum):
     intValue = <int>cSimpleUnion__type_intValue
     stringValue = <int>cSimpleUnion__type_stringValue
 
-cdef class SimpleUnion(thrift.py3.types.Struct):
+cdef class SimpleUnion(thrift.py3.types.Union):
     def __init__(
         SimpleUnion self,
         intValue=None,
@@ -834,12 +834,12 @@ cdef class SimpleUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if intValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue(intValue)
             any_set = True
         if stringValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringValue(stringValue.encode('UTF-8'))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -859,13 +859,13 @@ cdef class SimpleUnion(thrift.py3.types.Struct):
     @property
     def intValue(self):
         if self.__type != SimpleUnionType.intValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue')
         return self.__cached
 
     @property
     def stringValue(self):
         if self.__type != SimpleUnionType.stringValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringValue')
         return self.__cached
 
 
@@ -878,7 +878,7 @@ cdef class SimpleUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(SimpleUnion self):
-        return f'SimpleUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'SimpleUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(SimpleUnion self):
         if self.__type is not None:
@@ -891,6 +891,14 @@ cdef class SimpleUnion(thrift.py3.types.Struct):
             self.__cached = deref(self._cpp_obj).get_intValue()
         elif self.__type == SimpleUnionType.stringValue:
             self.__cached = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
+
+    @property
+    def value(SimpleUnion self):
+        return self.__cached
+
+    @property
+    def type(SimpleUnion self):
+        return self.__type
 
     def get_type(SimpleUnion self):
         return self.__type
@@ -976,7 +984,7 @@ class ComplexUnionType(Enum):
     ref_field2 = <int>cComplexUnion__type_ref_field2
     excp_field = <int>cComplexUnion__type_excp_field
 
-cdef class ComplexUnion(thrift.py3.types.Struct):
+cdef class ComplexUnion(thrift.py3.types.Union):
     def __init__(
         ComplexUnion self,
         intValue=None,
@@ -1089,162 +1097,162 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if intValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue(intValue)
             any_set = True
         if req_intValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_req_intValue(req_intValue)
             any_set = True
         if opt_intValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_opt_intValue(opt_intValue)
             any_set = True
         if stringValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringValue(stringValue.encode('UTF-8'))
             any_set = True
         if req_stringValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_req_stringValue(req_stringValue.encode('UTF-8'))
             any_set = True
         if opt_stringValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_opt_stringValue(opt_stringValue.encode('UTF-8'))
             any_set = True
         if intValue2 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue2(intValue2)
             any_set = True
         if intValue3 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue3(intValue3)
             any_set = True
         if doubelValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_doubelValue(doubelValue)
             any_set = True
         if boolValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_boolValue(boolValue)
             any_set = True
         if union_list is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_union_list(<vector[int32_t]>deref(List__i32(union_list)._cpp_obj))
             any_set = True
         if union_set is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_union_set(<cset[int64_t]>deref(Set__i64(union_set)._cpp_obj))
             any_set = True
         if union_map is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_union_map(<cmap[string,int32_t]>deref(Map__string_i32(union_map)._cpp_obj))
             any_set = True
         if req_union_map is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_req_union_map(<cmap[string,int32_t]>deref(Map__string_i32(req_union_map)._cpp_obj))
             any_set = True
         if opt_union_map is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_opt_union_map(<cmap[string,int32_t]>deref(Map__string_i32(opt_union_map)._cpp_obj))
             any_set = True
         if enum_field is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_enum_field(MyEnumA_to_cpp(enum_field))
             any_set = True
         if enum_container is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_enum_container(<vector[cMyEnumA]>deref(List__MyEnumA(enum_container)._cpp_obj))
             any_set = True
         if a_struct is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_struct(deref((<MyStruct?> a_struct)._cpp_obj))
             any_set = True
         if a_set_struct is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_set_struct(<cset[cMyStruct]>deref(Set__MyStruct(a_set_struct)._cpp_obj))
             any_set = True
         if a_union is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_union(deref((<SimpleUnion?> a_union)._cpp_obj))
             any_set = True
         if req_a_union is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_req_a_union(deref((<SimpleUnion?> req_a_union)._cpp_obj))
             any_set = True
         if opt_a_union is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_opt_a_union(deref((<SimpleUnion?> opt_a_union)._cpp_obj))
             any_set = True
         if a_union_list is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_union_list(<vector[cSimpleUnion]>deref(List__SimpleUnion(a_union_list)._cpp_obj))
             any_set = True
         if a_union_typedef is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_union_typedef(<cset[cSimpleUnion]>deref(Set__SimpleUnion(a_union_typedef)._cpp_obj))
             any_set = True
         if a_union_typedef_list is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_union_typedef_list(<vector[cset[cSimpleUnion]]>deref(List__Set__SimpleUnion(a_union_typedef_list)._cpp_obj))
             any_set = True
         if MyBinaryField is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_MyBinaryField(MyBinaryField)
             any_set = True
         if MyBinaryField2 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_MyBinaryField2(MyBinaryField2)
             any_set = True
         if MyBinaryField3 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_MyBinaryField3(MyBinaryField3)
             any_set = True
         if MyBinaryListField4 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_MyBinaryListField4(<vector[string]>deref(List__binary(MyBinaryListField4)._cpp_obj))
             any_set = True
         if ref_field is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_ref_field(cMyStruct(deref((<MyStruct?>ref_field)._cpp_obj)))
             any_set = True
         if ref_field2 is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_ref_field2(deref((<MyStruct?>ref_field2)._cpp_obj))
             any_set = True
         if excp_field is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_excp_field(deref((<AnException?> excp_field)._cpp_obj))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -1264,193 +1272,193 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
     @property
     def intValue(self):
         if self.__type != ComplexUnionType.intValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue')
         return self.__cached
 
     @property
     def req_intValue(self):
         if self.__type != ComplexUnionType.req_intValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not req_intValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not req_intValue')
         return self.__cached
 
     @property
     def opt_intValue(self):
         if self.__type != ComplexUnionType.opt_intValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not opt_intValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not opt_intValue')
         return self.__cached
 
     @property
     def stringValue(self):
         if self.__type != ComplexUnionType.stringValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringValue')
         return self.__cached
 
     @property
     def req_stringValue(self):
         if self.__type != ComplexUnionType.req_stringValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not req_stringValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not req_stringValue')
         return self.__cached
 
     @property
     def opt_stringValue(self):
         if self.__type != ComplexUnionType.opt_stringValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not opt_stringValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not opt_stringValue')
         return self.__cached
 
     @property
     def intValue2(self):
         if self.__type != ComplexUnionType.intValue2:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue2')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue2')
         return self.__cached
 
     @property
     def intValue3(self):
         if self.__type != ComplexUnionType.intValue3:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue3')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue3')
         return self.__cached
 
     @property
     def doubelValue(self):
         if self.__type != ComplexUnionType.doubelValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not doubelValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not doubelValue')
         return self.__cached
 
     @property
     def boolValue(self):
         if self.__type != ComplexUnionType.boolValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not boolValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not boolValue')
         return self.__cached
 
     @property
     def union_list(self):
         if self.__type != ComplexUnionType.union_list:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not union_list')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not union_list')
         return self.__cached
 
     @property
     def union_set(self):
         if self.__type != ComplexUnionType.union_set:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not union_set')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not union_set')
         return self.__cached
 
     @property
     def union_map(self):
         if self.__type != ComplexUnionType.union_map:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not union_map')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not union_map')
         return self.__cached
 
     @property
     def req_union_map(self):
         if self.__type != ComplexUnionType.req_union_map:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not req_union_map')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not req_union_map')
         return self.__cached
 
     @property
     def opt_union_map(self):
         if self.__type != ComplexUnionType.opt_union_map:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not opt_union_map')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not opt_union_map')
         return self.__cached
 
     @property
     def enum_field(self):
         if self.__type != ComplexUnionType.enum_field:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not enum_field')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not enum_field')
         return self.__cached
 
     @property
     def enum_container(self):
         if self.__type != ComplexUnionType.enum_container:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not enum_container')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not enum_container')
         return self.__cached
 
     @property
     def a_struct(self):
         if self.__type != ComplexUnionType.a_struct:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_struct')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_struct')
         return self.__cached
 
     @property
     def a_set_struct(self):
         if self.__type != ComplexUnionType.a_set_struct:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_set_struct')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_set_struct')
         return self.__cached
 
     @property
     def a_union(self):
         if self.__type != ComplexUnionType.a_union:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_union')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_union')
         return self.__cached
 
     @property
     def req_a_union(self):
         if self.__type != ComplexUnionType.req_a_union:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not req_a_union')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not req_a_union')
         return self.__cached
 
     @property
     def opt_a_union(self):
         if self.__type != ComplexUnionType.opt_a_union:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not opt_a_union')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not opt_a_union')
         return self.__cached
 
     @property
     def a_union_list(self):
         if self.__type != ComplexUnionType.a_union_list:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_union_list')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_union_list')
         return self.__cached
 
     @property
     def a_union_typedef(self):
         if self.__type != ComplexUnionType.a_union_typedef:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_union_typedef')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_union_typedef')
         return self.__cached
 
     @property
     def a_union_typedef_list(self):
         if self.__type != ComplexUnionType.a_union_typedef_list:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not a_union_typedef_list')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not a_union_typedef_list')
         return self.__cached
 
     @property
     def MyBinaryField(self):
         if self.__type != ComplexUnionType.MyBinaryField:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not MyBinaryField')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not MyBinaryField')
         return self.__cached
 
     @property
     def MyBinaryField2(self):
         if self.__type != ComplexUnionType.MyBinaryField2:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not MyBinaryField2')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not MyBinaryField2')
         return self.__cached
 
     @property
     def MyBinaryField3(self):
         if self.__type != ComplexUnionType.MyBinaryField3:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not MyBinaryField3')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not MyBinaryField3')
         return self.__cached
 
     @property
     def MyBinaryListField4(self):
         if self.__type != ComplexUnionType.MyBinaryListField4:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not MyBinaryListField4')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not MyBinaryListField4')
         return self.__cached
 
     @property
     def ref_field(self):
         if self.__type != ComplexUnionType.ref_field:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not ref_field')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not ref_field')
         return self.__cached
 
     @property
     def ref_field2(self):
         if self.__type != ComplexUnionType.ref_field2:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not ref_field2')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not ref_field2')
         return self.__cached
 
     @property
     def excp_field(self):
         if self.__type != ComplexUnionType.excp_field:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not excp_field')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not excp_field')
         return self.__cached
 
 
@@ -1463,7 +1471,7 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(ComplexUnion self):
-        return f'ComplexUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'ComplexUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(ComplexUnion self):
         if self.__type is not None:
@@ -1542,6 +1550,14 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
                 self.__cached = MyStruct.create(aliasing_constructor_ref_field2(self._cpp_obj, <cMyStruct*>(deref(self._cpp_obj).get_ref_field2()).get()))
         elif self.__type == ComplexUnionType.excp_field:
             self.__cached = AnException.create(make_shared[cAnException](deref(self._cpp_obj).get_excp_field()))
+
+    @property
+    def value(ComplexUnion self):
+        return self.__cached
+
+    @property
+    def type(ComplexUnion self):
+        return self.__type
 
     def get_type(ComplexUnion self):
         return self.__type
@@ -4730,7 +4746,7 @@ class FloatUnionType(Enum):
     floatSide = <int>cFloatUnion__type_floatSide
     doubleSide = <int>cFloatUnion__type_doubleSide
 
-cdef class FloatUnion(thrift.py3.types.Struct):
+cdef class FloatUnion(thrift.py3.types.Union):
     def __init__(
         FloatUnion self,
         floatSide=None,
@@ -4753,12 +4769,12 @@ cdef class FloatUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if floatSide is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_floatSide(floatSide)
             any_set = True
         if doubleSide is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_doubleSide(doubleSide)
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -4778,13 +4794,13 @@ cdef class FloatUnion(thrift.py3.types.Struct):
     @property
     def floatSide(self):
         if self.__type != FloatUnionType.floatSide:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not floatSide')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not floatSide')
         return self.__cached
 
     @property
     def doubleSide(self):
         if self.__type != FloatUnionType.doubleSide:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not doubleSide')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not doubleSide')
         return self.__cached
 
 
@@ -4797,7 +4813,7 @@ cdef class FloatUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(FloatUnion self):
-        return f'FloatUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'FloatUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(FloatUnion self):
         if self.__type is not None:
@@ -4810,6 +4826,14 @@ cdef class FloatUnion(thrift.py3.types.Struct):
             self.__cached = deref(self._cpp_obj).get_floatSide()
         elif self.__type == FloatUnionType.doubleSide:
             self.__cached = deref(self._cpp_obj).get_doubleSide()
+
+    @property
+    def value(FloatUnion self):
+        return self.__cached
+
+    @property
+    def type(FloatUnion self):
+        return self.__type
 
     def get_type(FloatUnion self):
         return self.__type

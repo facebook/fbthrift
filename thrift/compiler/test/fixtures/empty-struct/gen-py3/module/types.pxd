@@ -74,9 +74,9 @@ cdef class Empty(thrift.py3.types.Struct):
     cdef create(shared_ptr[cEmpty])
 
 # Forward Definition of the cython struct
-cdef class Nada(thrift.py3.types.Struct)
+cdef class Nada(thrift.py3.types.Union)
 
-cdef class Nada(thrift.py3.types.Struct):
+cdef class Nada(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNada] _cpp_obj

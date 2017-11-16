@@ -20,6 +20,14 @@ struct easy {
     2: I32List val_list
 }
 
+union Integers {
+    1: byte tiny
+    2: i16 small
+    3: i32 medium
+    4: i64 large
+    5: string unbounded
+}
+
 service TestingService {
     i32 complex_action(1: string first, 2: string second, 3: i64 third, 4: string fourth)
     void takes_a_list(1: I32List ints)

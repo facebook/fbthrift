@@ -1091,7 +1091,7 @@ class union1Type(Enum):
     i = <int>cunion1__type_i
     d = <int>cunion1__type_d
 
-cdef class union1(thrift.py3.types.Struct):
+cdef class union1(thrift.py3.types.Union):
     def __init__(
         union1 self,
         i=None,
@@ -1114,12 +1114,12 @@ cdef class union1(thrift.py3.types.Struct):
         cdef bint any_set = False
         if i is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_i(i)
             any_set = True
         if d is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_d(d)
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -1139,13 +1139,13 @@ cdef class union1(thrift.py3.types.Struct):
     @property
     def i(self):
         if self.__type != union1Type.i:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not i')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not i')
         return self.__cached
 
     @property
     def d(self):
         if self.__type != union1Type.d:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not d')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not d')
         return self.__cached
 
 
@@ -1158,7 +1158,7 @@ cdef class union1(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(union1 self):
-        return f'union1(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'union1(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(union1 self):
         if self.__type is not None:
@@ -1171,6 +1171,14 @@ cdef class union1(thrift.py3.types.Struct):
             self.__cached = deref(self._cpp_obj).get_i()
         elif self.__type == union1Type.d:
             self.__cached = deref(self._cpp_obj).get_d()
+
+    @property
+    def value(union1 self):
+        return self.__cached
+
+    @property
+    def type(union1 self):
+        return self.__type
 
     def get_type(union1 self):
         return self.__type
@@ -1228,7 +1236,7 @@ class union2Type(Enum):
     s = <int>cunion2__type_s
     u = <int>cunion2__type_u
 
-cdef class union2(thrift.py3.types.Struct):
+cdef class union2(thrift.py3.types.Union):
     def __init__(
         union2 self,
         i=None,
@@ -1257,22 +1265,22 @@ cdef class union2(thrift.py3.types.Struct):
         cdef bint any_set = False
         if i is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_i(i)
             any_set = True
         if d is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_d(d)
             any_set = True
         if s is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_s(deref((<struct1?> s)._cpp_obj))
             any_set = True
         if u is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_u(deref((<union1?> u)._cpp_obj))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -1292,25 +1300,25 @@ cdef class union2(thrift.py3.types.Struct):
     @property
     def i(self):
         if self.__type != union2Type.i:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not i')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not i')
         return self.__cached
 
     @property
     def d(self):
         if self.__type != union2Type.d:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not d')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not d')
         return self.__cached
 
     @property
     def s(self):
         if self.__type != union2Type.s:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not s')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not s')
         return self.__cached
 
     @property
     def u(self):
         if self.__type != union2Type.u:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not u')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not u')
         return self.__cached
 
 
@@ -1323,7 +1331,7 @@ cdef class union2(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(union2 self):
-        return f'union2(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'union2(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(union2 self):
         if self.__type is not None:
@@ -1340,6 +1348,14 @@ cdef class union2(thrift.py3.types.Struct):
             self.__cached = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
         elif self.__type == union2Type.u:
             self.__cached = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
+
+    @property
+    def value(union2 self):
+        return self.__cached
+
+    @property
+    def type(union2 self):
+        return self.__type
 
     def get_type(union2 self):
         return self.__type

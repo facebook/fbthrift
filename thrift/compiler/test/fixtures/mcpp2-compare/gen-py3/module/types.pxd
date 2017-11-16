@@ -815,9 +815,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef create(shared_ptr[cMyStruct])
 
 # Forward Definition of the cython struct
-cdef class SimpleUnion(thrift.py3.types.Struct)
+cdef class SimpleUnion(thrift.py3.types.Union)
 
-cdef class SimpleUnion(thrift.py3.types.Struct):
+cdef class SimpleUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSimpleUnion] _cpp_obj
@@ -836,9 +836,9 @@ cdef class SimpleUnion(thrift.py3.types.Struct):
     cdef create(shared_ptr[cSimpleUnion])
 
 # Forward Definition of the cython struct
-cdef class ComplexUnion(thrift.py3.types.Struct)
+cdef class ComplexUnion(thrift.py3.types.Union)
 
-cdef class ComplexUnion(thrift.py3.types.Struct):
+cdef class ComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
@@ -1168,9 +1168,9 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     cdef create(shared_ptr[cFloatStruct])
 
 # Forward Definition of the cython struct
-cdef class FloatUnion(thrift.py3.types.Struct)
+cdef class FloatUnion(thrift.py3.types.Union)
 
-cdef class FloatUnion(thrift.py3.types.Struct):
+cdef class FloatUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFloatUnion] _cpp_obj

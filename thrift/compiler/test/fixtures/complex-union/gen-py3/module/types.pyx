@@ -41,7 +41,7 @@ class ComplexUnionType(Enum):
     typedefValue = <int>cComplexUnion__type_typedefValue
     stringRef = <int>cComplexUnion__type_stringRef
 
-cdef class ComplexUnion(thrift.py3.types.Struct):
+cdef class ComplexUnion(thrift.py3.types.Union):
     def __init__(
         ComplexUnion self,
         intValue=None,
@@ -76,32 +76,32 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if intValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue(intValue)
             any_set = True
         if stringValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringValue(stringValue.encode('UTF-8'))
             any_set = True
         if intListValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intListValue(<vector[int64_t]>deref(List__i64(intListValue)._cpp_obj))
             any_set = True
         if stringListValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringListValue(<vector[string]>deref(List__string(stringListValue)._cpp_obj))
             any_set = True
         if typedefValue is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_typedefValue(<cmap[int16_t,string]>deref(Map__i16_string(typedefValue)._cpp_obj))
             any_set = True
         if stringRef is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringRef(string(deref((<str?>stringRef)._cpp_obj)))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -121,37 +121,37 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
     @property
     def intValue(self):
         if self.__type != ComplexUnionType.intValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue')
         return self.__cached
 
     @property
     def stringValue(self):
         if self.__type != ComplexUnionType.stringValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringValue')
         return self.__cached
 
     @property
     def intListValue(self):
         if self.__type != ComplexUnionType.intListValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not intListValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not intListValue')
         return self.__cached
 
     @property
     def stringListValue(self):
         if self.__type != ComplexUnionType.stringListValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringListValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringListValue')
         return self.__cached
 
     @property
     def typedefValue(self):
         if self.__type != ComplexUnionType.typedefValue:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not typedefValue')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not typedefValue')
         return self.__cached
 
     @property
     def stringRef(self):
         if self.__type != ComplexUnionType.stringRef:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringRef')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringRef')
         return self.__cached
 
 
@@ -164,7 +164,7 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(ComplexUnion self):
-        return f'ComplexUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'ComplexUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(ComplexUnion self):
         if self.__type is not None:
@@ -188,6 +188,14 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
                 self.__cached = None
             else:
                 self.__cached = str.create(aliasing_constructor_stringRef(self._cpp_obj, (deref(self._cpp_obj).get_stringRef()).get()))
+
+    @property
+    def value(ComplexUnion self):
+        return self.__cached
+
+    @property
+    def type(ComplexUnion self):
+        return self.__type
 
     def get_type(ComplexUnion self):
         return self.__type
@@ -243,7 +251,7 @@ class FinalComplexUnionType(Enum):
     thingOne = <int>cFinalComplexUnion__type_thingOne
     thingTwo = <int>cFinalComplexUnion__type_thingTwo
 
-cdef class FinalComplexUnion(thrift.py3.types.Struct):
+cdef class FinalComplexUnion(thrift.py3.types.Union):
     def __init__(
         FinalComplexUnion self,
         thingOne=None,
@@ -266,12 +274,12 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if thingOne is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_thingOne(thingOne.encode('UTF-8'))
             any_set = True
         if thingTwo is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_thingTwo(thingTwo.encode('UTF-8'))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -291,13 +299,13 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
     @property
     def thingOne(self):
         if self.__type != FinalComplexUnionType.thingOne:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not thingOne')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not thingOne')
         return self.__cached
 
     @property
     def thingTwo(self):
         if self.__type != FinalComplexUnionType.thingTwo:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not thingTwo')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not thingTwo')
         return self.__cached
 
 
@@ -310,7 +318,7 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(FinalComplexUnion self):
-        return f'FinalComplexUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'FinalComplexUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(FinalComplexUnion self):
         if self.__type is not None:
@@ -323,6 +331,14 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
             self.__cached = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
         elif self.__type == FinalComplexUnionType.thingTwo:
             self.__cached = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
+
+    @property
+    def value(FinalComplexUnion self):
+        return self.__cached
+
+    @property
+    def type(FinalComplexUnion self):
+        return self.__type
 
     def get_type(FinalComplexUnion self):
         return self.__type

@@ -55,7 +55,7 @@ class MyUnionType(Enum):
     anInteger = <int>cMyUnion__type_anInteger
     aString = <int>cMyUnion__type_aString
 
-cdef class MyUnion(thrift.py3.types.Struct):
+cdef class MyUnion(thrift.py3.types.Union):
     def __init__(
         MyUnion self,
         anInteger=None,
@@ -78,12 +78,12 @@ cdef class MyUnion(thrift.py3.types.Struct):
         cdef bint any_set = False
         if anInteger is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_anInteger(anInteger)
             any_set = True
         if aString is not None:
             if any_set:
-                raise ValueError("At most one field may be set when initializing a union")
+                raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_aString(aString.encode('UTF-8'))
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
@@ -103,13 +103,13 @@ cdef class MyUnion(thrift.py3.types.Struct):
     @property
     def anInteger(self):
         if self.__type != MyUnionType.anInteger:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not anInteger')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not anInteger')
         return self.__cached
 
     @property
     def aString(self):
         if self.__type != MyUnionType.aString:
-            raise ValueError(f'Union contains a value of type {self.__type.name}, not aString')
+            raise TypeError(f'Union contains a value of type {self.__type.name}, not aString')
         return self.__cached
 
 
@@ -122,7 +122,7 @@ cdef class MyUnion(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(MyUnion self):
-        return f'MyUnion(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'MyUnion(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(MyUnion self):
         if self.__type is not None:
@@ -135,6 +135,14 @@ cdef class MyUnion(thrift.py3.types.Struct):
             self.__cached = deref(self._cpp_obj).get_anInteger()
         elif self.__type == MyUnionType.aString:
             self.__cached = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
+
+    @property
+    def value(MyUnion self):
+        return self.__cached
+
+    @property
+    def type(MyUnion self):
+        return self.__type
 
     def get_type(MyUnion self):
         return self.__type

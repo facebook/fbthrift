@@ -142,7 +142,7 @@ cdef class Empty(thrift.py3.types.Struct):
 class NadaType(Enum):
     EMPTY = <int>cNada__type___EMPTY__
 
-cdef class Nada(thrift.py3.types.Struct):
+cdef class Nada(thrift.py3.types.Union):
     def __init__(
         Nada self
     ):
@@ -181,7 +181,7 @@ cdef class Nada(thrift.py3.types.Struct):
         return self.__hash
 
     def __repr__(Nada self):
-        return f'Nada(type={self.__type.name}, value={repr(self.__cached)})'
+        return f'Nada(type={self.__type.name}, value={self.__cached!r})'
 
     cdef _load_cache(Nada self):
         if self.__type is not None:
@@ -190,6 +190,14 @@ cdef class Nada(thrift.py3.types.Struct):
         self.__type = NadaType(<int>(deref(self._cpp_obj).getType()))
         if self.__type == NadaType.EMPTY:
             self.__cached = None
+
+    @property
+    def value(Nada self):
+        return self.__cached
+
+    @property
+    def type(Nada self):
+        return self.__type
 
     def get_type(Nada self):
         return self.__type

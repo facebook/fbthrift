@@ -14,6 +14,9 @@ NOTSET: NOTSETTYPE = ...
 class Struct: ...
 
 
+class Union(Struct): ...
+
+
 class BadEnum:
     name: str
 

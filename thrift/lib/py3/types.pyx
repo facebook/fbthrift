@@ -1,6 +1,6 @@
 from enum import Enum
 
-__all__ = ['Struct', 'BadEnum', 'NOTSET']
+__all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union']
 
 class NOTSETTYPE(Enum):
     token = 0
@@ -17,6 +17,13 @@ cdef class Struct:
 
     cdef uint32_t _deserialize(self, const IOBuf* buf, proto):
         return 0
+
+
+cdef class Union(Struct):
+    """
+    Base class for all thrift Unions
+    """
+    pass
 
 
 cdef class BadEnum:
