@@ -1247,7 +1247,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     $shape_data = $json_data;
 
     if (!array_key_exists('foo', $shape_data)) {
-      return null;
+      $shape_data['foo'] = Map {};
     }
     if (!is_array($shape_data['foo'])) {
       return null;
@@ -1362,7 +1362,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     $shape_data = $json_data;
 
     if (!array_key_exists('foo', $shape_data)) {
-      return null;
+      $shape_data['foo'] = Map {};
     }
     if (!is_array($shape_data['foo'])) {
       return null;
@@ -1475,7 +1475,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     $shape_data = $json_data;
 
     if (!array_key_exists('foo', $shape_data)) {
-      return null;
+      $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
       return null;
@@ -1586,7 +1586,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     $shape_data = $json_data;
 
     if (!array_key_exists('foo', $shape_data)) {
-      return null;
+      $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
       return null;
@@ -1718,7 +1718,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     $shape_data = $json_data;
 
     if (!array_key_exists('foo', $shape_data)) {
-      return null;
+      $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
       return null;

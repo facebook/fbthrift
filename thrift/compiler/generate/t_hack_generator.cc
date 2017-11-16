@@ -1847,7 +1847,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
       if (nullable) {
         indent(out) << "  $shape_data['" << (*m_iter)->get_name() << "'] = null;"
                     << endl;
-      } else if (dval != "null" && t->is_base_type()) {
+      } else if (dval != "null") {
         // for "optional" fields with default values:
         indent(out) << "  $shape_data['" << (*m_iter)->get_name() << "'] = "
                     << dval << ";"

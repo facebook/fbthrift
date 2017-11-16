@@ -1023,7 +1023,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('set_of_i32', $shape_data)) {
-      return null;
+      $shape_data['set_of_i32'] = Set {};
     }
     if (!is_array($shape_data['set_of_i32'])) {
       return null;
@@ -1038,7 +1038,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $shape_data['set_of_i32'] = $the_set2;
 
     if (!array_key_exists('list_of_i32', $shape_data)) {
-      return null;
+      $shape_data['list_of_i32'] = Vector {};
     }
     if (!is_array($shape_data['list_of_i32'])) {
       return null;
@@ -1055,7 +1055,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_string', $shape_data)) {
-      return null;
+      $shape_data['list_of_string'] = Vector {};
     }
     if (!is_array($shape_data['list_of_string'])) {
       return null;
@@ -1072,7 +1072,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_i32', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_i32'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_i32'])) {
       return null;
@@ -1089,7 +1089,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_A', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_A'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_A'])) {
       return null;
@@ -1107,7 +1107,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_list_of_i32', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_list_of_i32'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_list_of_i32'])) {
       return null;
@@ -1134,7 +1134,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_list_of_A', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_list_of_A'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_list_of_A'])) {
       return null;
@@ -1162,7 +1162,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_set_of_i32', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_set_of_i32'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_set_of_i32'])) {
       return null;
@@ -1187,7 +1187,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_map_of_string_to_i32', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_map_of_string_to_i32'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_map_of_string_to_i32'])) {
       return null;
@@ -1214,7 +1214,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_map_of_string_to_A', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_map_of_string_to_A'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_map_of_string_to_A'])) {
       return null;
@@ -1242,7 +1242,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_set_of_i32', $shape_data)) {
-      return null;
+      $shape_data['list_of_set_of_i32'] = Vector {};
     }
     if (!is_array($shape_data['list_of_set_of_i32'])) {
       return null;
@@ -1267,7 +1267,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_map_of_string_to_list_of_A', $shape_data)) {
-      return null;
+      $shape_data['list_of_map_of_string_to_list_of_A'] = Vector {};
     }
     if (!is_array($shape_data['list_of_map_of_string_to_list_of_A'])) {
       return null;
@@ -1305,7 +1305,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_map_of_string_to_A', $shape_data)) {
-      return null;
+      $shape_data['list_of_map_of_string_to_A'] = Vector {};
     }
     if (!is_array($shape_data['list_of_map_of_string_to_A'])) {
       return null;
@@ -1333,7 +1333,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_self', $shape_data)) {
-      return null;
+      $shape_data['list_of_self'] = Vector {};
     }
     if (!is_array($shape_data['list_of_self'])) {
       return null;
@@ -1351,7 +1351,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_self', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_self'] = Map {};
     }
     if (!is_array($shape_data['map_of_string_to_self'])) {
       return null;
@@ -1621,7 +1621,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('set_of_i32_with_default_value', $shape_data)) {
-      return null;
+      $shape_data['set_of_i32_with_default_value'] = Set {
+      3,
+      7,
+      31,
+      127,
+    };
     }
     if (!is_array($shape_data['set_of_i32_with_default_value'])) {
       return null;
@@ -1636,7 +1641,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $shape_data['set_of_i32_with_default_value'] = $the_set77;
 
     if (!array_key_exists('map_of_i32_to_string_with_default_value', $shape_data)) {
-      return null;
+      $shape_data['map_of_i32_to_string_with_default_value'] = Map {
+      1 => "fish",
+      2 => "fish",
+    };
     }
     if (!is_array($shape_data['map_of_i32_to_string_with_default_value'])) {
       return null;
@@ -1653,7 +1661,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('list_of_string_with_default_value', $shape_data)) {
-      return null;
+      $shape_data['list_of_string_with_default_value'] = Vector {
+      "red fish",
+      "blue fish",
+    };
     }
     if (!is_array($shape_data['list_of_string_with_default_value'])) {
       return null;
@@ -1670,7 +1681,17 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('map_of_string_to_list_of_i32_with_default_value', $shape_data)) {
-      return null;
+      $shape_data['map_of_string_to_list_of_i32_with_default_value'] = Map {
+      "Jenny" => Vector {
+        8,
+        6,
+        7,
+        5,
+        3,
+        0,
+        9,
+      },
+    };
     }
     if (!is_array($shape_data['map_of_string_to_list_of_i32_with_default_value'])) {
       return null;
