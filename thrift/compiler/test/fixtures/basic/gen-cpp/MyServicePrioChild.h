@@ -52,7 +52,7 @@ class MyServicePrioChildNull : virtual public MyServicePrioChildIf , virtual pub
   }
 };
 
-class MyServicePrioChild_pang_args final : public apache::thrift::TStructType<MyServicePrioChild_pang_args> {
+class MyServicePrioChild_pang_args : public apache::thrift::TStructType<MyServicePrioChild_pang_args> {
  public:
 
   static const uint64_t _reflection_id = 6708350789317430956U;
@@ -66,6 +66,9 @@ class MyServicePrioChild_pang_args final : public apache::thrift::TStructType<My
   MyServicePrioChild_pang_args& operator=(MyServicePrioChild_pang_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServicePrioChild_pang_args() noexcept {}
+
 
   bool operator == (const MyServicePrioChild_pang_args &) const;
   bool operator != (const MyServicePrioChild_pang_args& rhs) const {
@@ -86,12 +89,15 @@ class MyServicePrioChild_pang_args final : public apache::thrift::TStructType<My
 class MyServicePrioChild_pang_args;
 void merge(const MyServicePrioChild_pang_args& from, MyServicePrioChild_pang_args& to);
 void merge(MyServicePrioChild_pang_args&& from, MyServicePrioChild_pang_args& to);
-class MyServicePrioChild_pang_pargs final : public apache::thrift::TStructType<MyServicePrioChild_pang_pargs> {
+class MyServicePrioChild_pang_pargs : public apache::thrift::TStructType<MyServicePrioChild_pang_pargs> {
  public:
 
   static const uint64_t _reflection_id = 13933468378955615660U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioChild_pang_pargs() = default;
+
+  virtual ~MyServicePrioChild_pang_pargs() noexcept {}
+
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -104,12 +110,15 @@ class MyServicePrioChild_pang_pargs final : public apache::thrift::TStructType<M
 class MyServicePrioChild_pang_pargs;
 void merge(const MyServicePrioChild_pang_pargs& from, MyServicePrioChild_pang_pargs& to);
 void merge(MyServicePrioChild_pang_pargs&& from, MyServicePrioChild_pang_pargs& to);
-class MyServicePrioChild_pang_presult final : public apache::thrift::TStructType<MyServicePrioChild_pang_presult> {
+class MyServicePrioChild_pang_presult : public apache::thrift::TStructType<MyServicePrioChild_pang_presult> {
  public:
 
   static const uint64_t _reflection_id = 6662883238703015788U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioChild_pang_presult() = default;
+
+  virtual ~MyServicePrioChild_pang_presult() noexcept {}
+
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;

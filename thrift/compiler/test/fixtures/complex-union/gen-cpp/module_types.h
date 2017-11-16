@@ -20,11 +20,11 @@ class Schema;
 
 class ComplexUnion;
 
-class VirtualComplexUnion;
+class FinalComplexUnion;
 
 typedef std::map<int16_t, std::string>  containerTypedef;
 
-class ComplexUnion final : public apache::thrift::TStructType<ComplexUnion> {
+class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -245,7 +245,7 @@ class ComplexUnion final : public apache::thrift::TStructType<ComplexUnion> {
     }
     type_ = Type::__EMPTY__;
   }
-  ~ComplexUnion() noexcept {
+  virtual ~ComplexUnion() noexcept {
     __clear();
   }
 
@@ -486,7 +486,7 @@ class ComplexUnion final : public apache::thrift::TStructType<ComplexUnion> {
 
 };
 
-class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUnion> {
+class FinalComplexUnion final : public apache::thrift::TStructType<FinalComplexUnion> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -494,22 +494,22 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     thingTwo = 2,
   };
 
-  VirtualComplexUnion() : type_(Type::__EMPTY__) {}
+  FinalComplexUnion() : type_(Type::__EMPTY__) {}
   template <typename T__ThriftWrappedArgument__Ctor>
-  explicit VirtualComplexUnion(
+  explicit FinalComplexUnion(
     ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_thingOne(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  explicit VirtualComplexUnion(
+  explicit FinalComplexUnion(
     ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_thingTwo(arg.move());
   }
-  VirtualComplexUnion(const VirtualComplexUnion& rhs) : type_(Type::__EMPTY__) {
+  FinalComplexUnion(const FinalComplexUnion& rhs) : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
     switch (rhs.type_) {
@@ -525,7 +525,7 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     }
   }
 
-  VirtualComplexUnion& operator=(const VirtualComplexUnion& rhs) {
+  FinalComplexUnion& operator=(const FinalComplexUnion& rhs) {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -543,7 +543,7 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     return *this;
   }
 
-  VirtualComplexUnion(VirtualComplexUnion&& rhs) : type_(Type::__EMPTY__) {
+  FinalComplexUnion(FinalComplexUnion&& rhs) : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
     switch (rhs.type_) {
@@ -560,7 +560,7 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     rhs.__clear();
   }
 
-  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) {
+  FinalComplexUnion& operator=(FinalComplexUnion&& rhs) {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -595,7 +595,7 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~VirtualComplexUnion() noexcept {
+  ~FinalComplexUnion() noexcept {
     __clear();
   }
 
@@ -607,7 +607,7 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     ~storage_type() {}
   };
 
-  bool operator==(const VirtualComplexUnion& rhs) const {
+  bool operator==(const FinalComplexUnion& rhs) const {
     if (type_ != rhs.type_) { return false; }
     switch (type_) {
       case Type::thingOne: {
@@ -624,11 +624,11 @@ class VirtualComplexUnion : public apache::thrift::TStructType<VirtualComplexUni
     }
   }
 
-  bool operator!=(const VirtualComplexUnion& rhs) const {
+  bool operator!=(const FinalComplexUnion& rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator<(const VirtualComplexUnion& rhs) const {
+  bool operator<(const FinalComplexUnion& rhs) const {
     if (type_ != rhs.type_) return type_ < rhs.type_;
     switch (type_) {
       case Type::thingOne: {

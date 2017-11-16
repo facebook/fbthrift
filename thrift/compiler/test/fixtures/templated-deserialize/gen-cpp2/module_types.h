@@ -111,7 +111,7 @@ typedef Bar IndirectionB;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class SmallStruct final : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
+class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<SmallStruct> {
  public:
 
   SmallStruct() :
@@ -142,6 +142,9 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   SmallStruct& operator=(const SmallStruct&) = default;
   void __clear();
+
+  virtual ~SmallStruct() {}
+
   bool small_A;
   int32_t small_B;
 
@@ -234,7 +237,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::SmallStruct>::se
 
 }} // apache::thrift
 namespace cpp2 {
-class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
+class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
   containerStruct();
@@ -398,7 +401,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   containerStruct& operator=(const containerStruct& src);
   void __clear();
 
-  ~containerStruct();
+  virtual ~containerStruct();
 
   bool fieldA;
   std::map<std::string, bool> fieldB;

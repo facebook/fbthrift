@@ -35,10 +35,6 @@ using namespace std;
 
 namespace {
 
-namespace ann {
-constexpr auto const virtual_ = "cpp.virtual";
-}
-
 enum TerseWrites { TW_DISABLED = 0, TW_SAFE = 1, TW_ALL = 2 };
 
 template <class Options>
@@ -1555,7 +1551,7 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
  *
  * The generated class looks like
  *
- * class Message final {
+ * class Message {
  *  public:
  *   enum class Type {
  *     __EMPTY__,
@@ -1627,11 +1623,11 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
 void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   auto& out = f_types_;
   const vector<t_field*>& members = tstruct->get_members();
-  auto const virt = tstruct->annotations_.count(ann::virtual_) != 0;
+  bool isFinal = tstruct->annotations_.count("final") != 0;
 
   // Open struct def
   indent(out) << "class " << tstruct->get_name();
-  if (!virt) {
+  if (isFinal) {
     out << " final";
   }
   out << " : public apache::thrift::TStructType<" << tstruct->get_name()
@@ -1795,7 +1791,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent_down();
   indent(out) << "}" << endl;
 
-  indent(out) << (virt ? "virtual " : "") << "~" << tstruct->get_name()
+  indent(out) << (!isFinal ? "virtual " : "") << "~" << tstruct->get_name()
               << "() noexcept {" << endl;
   indent_up();
   indent(out) << "__clear();" << endl;
@@ -2375,7 +2371,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
                 + tstruct->get_name() + ">";
   }
 
-  auto const virt = tstruct->annotations_.count(ann::virtual_) != 0;
+  bool isFinal = tstruct->annotations_.count("final") != 0;
 
   if (swap) {
     // Generate a namespace-scope swap() function
@@ -2386,7 +2382,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   }
   // Open struct def
   out << indent() << "class " << tstruct->get_name();
-  if (!virt) {
+  if (isFinal) {
     out << " final";
   }
   out << extends << " {" << endl << indent() << " public:" << endl << endl;
@@ -2551,7 +2547,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     out << endl << indent() << "void __clear();" << endl;
   }
 
-  if (virt) {
+  if (!isFinal) {
     out << endl << indent() << "virtual ~" << tstruct->get_name()
         << "() noexcept {}" << endl << endl;
   }
@@ -2626,10 +2622,10 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       what = msg_it->second + ".c_str()";
     }
 
-    out << indent() << "const char* what() const noexcept override {" << endl
-        << indent() << "  return " << what << ";" << endl
-        << indent() << "}" << endl
-        << endl;
+    out <<
+      indent() << "virtual const char* what() const noexcept {" << endl <<
+      indent() << "  return " << what << ";" << endl <<
+      indent() << "}" << endl << endl;
   }
 
   auto methods = tstruct->annotations_.find("cpp.methods");

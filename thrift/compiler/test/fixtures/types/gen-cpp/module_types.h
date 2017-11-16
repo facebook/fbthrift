@@ -80,11 +80,11 @@ class decorated_struct;
 
 class ContainerStruct;
 
-class VirtualStruct;
+class FinalStruct;
 
 void swap(decorated_struct &a, decorated_struct &b);
 
-class decorated_struct final : public apache::thrift::TStructType<decorated_struct> {
+class decorated_struct : public apache::thrift::TStructType<decorated_struct> {
  public:
 
   static const uint64_t _reflection_id = 2133116297910176940U;
@@ -111,6 +111,9 @@ class decorated_struct final : public apache::thrift::TStructType<decorated_stru
   decorated_struct& operator=(decorated_struct&&) = default;
 
   void __clear();
+
+  virtual ~decorated_struct() noexcept {}
+
   std::string field;
 
   struct __isset {
@@ -156,7 +159,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 void swap(ContainerStruct &a, ContainerStruct &b);
 
-class ContainerStruct final : public apache::thrift::TStructType<ContainerStruct> {
+class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
  public:
 
   static const uint64_t _reflection_id = 11962737781608441260U;
@@ -274,6 +277,9 @@ class ContainerStruct final : public apache::thrift::TStructType<ContainerStruct
   ContainerStruct& operator=(ContainerStruct&&) = default;
 
   void __clear();
+
+  virtual ~ContainerStruct() noexcept {}
+
   std::vector<int32_t>  fieldA;
   std::list<int32_t>  fieldB;
   std::deque<int32_t>  fieldC;
@@ -324,38 +330,35 @@ class ContainerStruct final : public apache::thrift::TStructType<ContainerStruct
 class ContainerStruct;
 void merge(const ContainerStruct& from, ContainerStruct& to);
 void merge(ContainerStruct&& from, ContainerStruct& to);
-void swap(VirtualStruct &a, VirtualStruct &b);
+void swap(FinalStruct &a, FinalStruct &b);
 
-class VirtualStruct : public apache::thrift::TStructType<VirtualStruct> {
+class FinalStruct final : public apache::thrift::TStructType<FinalStruct> {
  public:
 
-  static const uint64_t _reflection_id = 6433147857901895308U;
+  static const uint64_t _reflection_id = 1276076876175970924U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
-  VirtualStruct() : MyIntField(0) {
+  FinalStruct() : MyIntField(0) {
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
     typename... Args__ThriftWrappedArgument__Ctor
   >
-  explicit VirtualStruct(
+  explicit FinalStruct(
     ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
     Args__ThriftWrappedArgument__Ctor&&... args
   ):
-    VirtualStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+    FinalStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyIntField = arg.move();
     __isset.MyIntField = true;
   }
 
-  VirtualStruct(const VirtualStruct&) = default;
-  VirtualStruct& operator=(const VirtualStruct& src)= default;
-  VirtualStruct(VirtualStruct&&) = default;
-  VirtualStruct& operator=(VirtualStruct&&) = default;
+  FinalStruct(const FinalStruct&) = default;
+  FinalStruct& operator=(const FinalStruct& src)= default;
+  FinalStruct(FinalStruct&&) = default;
+  FinalStruct& operator=(FinalStruct&&) = default;
 
   void __clear();
-
-  virtual ~VirtualStruct() noexcept {}
-
   int64_t MyIntField;
 
   struct __isset {
@@ -366,12 +369,12 @@ class VirtualStruct : public apache::thrift::TStructType<VirtualStruct> {
     bool MyIntField;
   } __isset;
 
-  bool operator == (const VirtualStruct &) const;
-  bool operator != (const VirtualStruct& rhs) const {
+  bool operator == (const FinalStruct &) const;
+  bool operator != (const FinalStruct& rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const VirtualStruct & ) const;
+  bool operator < (const FinalStruct & ) const;
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -382,8 +385,8 @@ class VirtualStruct : public apache::thrift::TStructType<VirtualStruct> {
       apache::thrift::protocol::TType& _ftype);
 };
 
-class VirtualStruct;
-void merge(const VirtualStruct& from, VirtualStruct& to);
-void merge(VirtualStruct&& from, VirtualStruct& to);
+class FinalStruct;
+void merge(const FinalStruct& from, FinalStruct& to);
+void merge(FinalStruct&& from, FinalStruct& to);
 }}}} // namespace
 

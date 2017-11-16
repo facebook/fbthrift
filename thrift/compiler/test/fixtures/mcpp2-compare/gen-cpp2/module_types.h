@@ -371,7 +371,7 @@ template<> struct equal_to<typename  ::some::valid::ns::HashedTypedef> {
 } // std
 // END hash_and_equal_to
 namespace some { namespace valid { namespace ns {
-class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
+class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
@@ -385,6 +385,9 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty& operator=(const Empty&) = default;
   void __clear();
+
+  virtual ~Empty() {}
+
   bool operator==(const Empty& /* rhs */) const;
 
   bool operator < (const Empty& rhs) const {
@@ -448,7 +451,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
+class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
  public:
 
   ASimpleStruct() :
@@ -471,6 +474,9 @@ class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
   void __clear();
+
+  virtual ~ASimpleStruct() {}
+
   int64_t boolField;
 
   struct __isset {
@@ -545,7 +551,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimp
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class ASimpleStructNoexcept final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStructNoexcept> {
+class ASimpleStructNoexcept : private apache::thrift::detail::st::ComparisonOperators<ASimpleStructNoexcept> {
  public:
 
   ASimpleStructNoexcept() :
@@ -568,6 +574,9 @@ class ASimpleStructNoexcept final : private apache::thrift::detail::st::Comparis
 
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
   void __clear();
+
+  virtual ~ASimpleStructNoexcept() {}
+
   int64_t boolField;
 
   struct __isset {
@@ -649,7 +658,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimp
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct();
@@ -727,7 +736,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
 
-  ~MyStruct();
+  virtual ~MyStruct();
 
   bool MyBoolField;
   int64_t MyIntField;
@@ -921,7 +930,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStr
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
+class SimpleUnion final : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -1041,10 +1050,9 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
   void __clear();
 
-  virtual ~SimpleUnion() {
+  ~SimpleUnion() {
     __clear();
   }
-
   union storage_type {
     int64_t intValue;
     std::string stringValue;
@@ -1196,7 +1204,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Simpl
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
+class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -2126,9 +2134,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
   void __clear();
 
-  ~ComplexUnion() {
+  virtual ~ComplexUnion() {
     __clear();
   }
+
   union storage_type {
     int64_t intValue;
     int64_t req_intValue;
@@ -3241,7 +3250,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Compl
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class AnException final : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
+class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
  public:
 
   AnException();
@@ -3366,7 +3375,7 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
   AnException& operator=(const AnException&) = default;
   void __clear();
 
-  ~AnException();
+  virtual ~AnException();
 
   int32_t code;
   int32_t req_code;
@@ -3557,7 +3566,7 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
     return message2.c_str();
   }
 
@@ -3608,7 +3617,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnExc
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
+class AnotherException final : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
  public:
 
   AnotherException() :
@@ -3645,9 +3654,6 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
 
   AnotherException& operator=(const AnotherException&) = default;
   void __clear();
-
-  virtual ~AnotherException() {}
-
   int32_t code;
   int32_t req_code;
   std::string message;
@@ -3715,7 +3721,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
     return " ::some::valid::ns::AnotherException";
   }
 
@@ -3766,7 +3772,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Anoth
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
+class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
   containerStruct();
@@ -4087,7 +4093,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   containerStruct& operator=(containerStruct&&) = default;
   void __clear();
 
-  ~containerStruct();
+  virtual ~containerStruct();
 
   bool fieldA;
   bool req_fieldA;
@@ -4685,7 +4691,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::conta
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
+class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
  public:
 
   MyIncludedStruct() :
@@ -4725,6 +4731,9 @@ class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOpe
   MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
   void __clear();
+
+  virtual ~MyIncludedStruct() {}
+
    ::a::different::ns::IncludedInt64 MyIncludedInt;
    ::some::valid::ns::AStruct MyIncludedStruct;
   std::unique_ptr< ::some::valid::ns::AStruct> ARefField;
@@ -4820,7 +4829,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyInc
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
+class AnnotatedStruct final : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
 
   AnnotatedStruct();
@@ -5094,7 +5103,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
   void __clear();
 
-  virtual ~AnnotatedStruct();
+  ~AnnotatedStruct();
 
    ::some::valid::ns::containerStruct no_annotation;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
@@ -5446,7 +5455,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Annot
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class FloatStruct final : private apache::thrift::detail::st::ComparisonOperators<FloatStruct> {
+class FloatStruct : private apache::thrift::detail::st::ComparisonOperators<FloatStruct> {
  public:
 
   FloatStruct() :
@@ -5477,6 +5486,9 @@ class FloatStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   FloatStruct& operator=(const FloatStruct&) = default;
   void __clear();
+
+  virtual ~FloatStruct() {}
+
   float floatField;
   double doubleField;
 
@@ -5573,7 +5585,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Float
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
-class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators<FloatUnion> {
+class FloatUnion : private apache::thrift::detail::st::ComparisonOperators<FloatUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -5693,9 +5705,10 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
   }
   void __clear();
 
-  ~FloatUnion() {
+  virtual ~FloatUnion() {
     __clear();
   }
+
   union storage_type {
     float floatSide;
     double doubleSide;

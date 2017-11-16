@@ -83,7 +83,7 @@ class StructWithRefTypeSharedConst;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
+class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -203,9 +203,10 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
   }
   void __clear();
 
-  ~MyUnion() {
+  virtual ~MyUnion() {
     __clear();
   }
+
   union storage_type {
     int32_t anInteger;
     std::string aString;
@@ -353,7 +354,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyUnion>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-class MyField final : private apache::thrift::detail::st::ComparisonOperators<MyField> {
+class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField> {
  public:
 
   MyField() :
@@ -391,6 +392,9 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
 
   MyField& operator=(const MyField&) = default;
   void __clear();
+
+  virtual ~MyField() {}
+
   int64_t opt_value;
   int64_t value;
   int64_t req_value;
@@ -488,7 +492,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyField>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() {}
@@ -519,6 +523,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(MyStruct&&) = default;
   MyStruct& operator=(const MyStruct& src);
   void __clear();
+
+  virtual ~MyStruct() {}
+
   std::unique_ptr< ::cpp2::MyField> opt_ref;
   std::unique_ptr< ::cpp2::MyField> ref;
   std::unique_ptr< ::cpp2::MyField> req_ref;
@@ -580,7 +587,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::seria
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithUnion final : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
+class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
  public:
 
   StructWithUnion() :
@@ -614,6 +621,9 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   StructWithUnion& operator=(StructWithUnion&&) = default;
   StructWithUnion& operator=(const StructWithUnion& src);
   void __clear();
+
+  virtual ~StructWithUnion() {}
+
   std::unique_ptr< ::cpp2::MyUnion> u;
   double aDouble;
    ::cpp2::MyField f;
@@ -696,7 +706,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithUnion>
 
 }} // apache::thrift
 namespace cpp2 {
-class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
+class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
  public:
 
   RecursiveStruct() {}
@@ -718,6 +728,9 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
   void __clear();
+
+  virtual ~RecursiveStruct() {}
+
   std::vector< ::cpp2::RecursiveStruct> mes;
 
   struct __isset {
@@ -788,7 +801,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithContainers final : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
+class StructWithContainers : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
  public:
 
   StructWithContainers();
@@ -839,7 +852,7 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   StructWithContainers& operator=(const StructWithContainers& src);
   void __clear();
 
-  ~StructWithContainers();
+  virtual ~StructWithContainers();
 
   std::unique_ptr<std::vector<int32_t>> list_ref;
   std::unique_ptr<std::set<int32_t>> set_ref;
@@ -927,7 +940,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithContai
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
+class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
  public:
 
   StructWithSharedConst() {}
@@ -960,6 +973,9 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
 
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
   void __clear();
+
+  virtual ~StructWithSharedConst() {}
+
   std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
   std::shared_ptr<const  ::cpp2::MyField> shared_const;
   std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
@@ -1021,7 +1037,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithShared
 
 }} // apache::thrift
 namespace cpp2 {
-class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
+class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
@@ -1036,6 +1052,9 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty& operator=(const Empty&) = default;
   void __clear();
+
+  virtual ~Empty() {}
+
   bool operator==(const Empty& /* rhs */) const;
 
   bool operator < (const Empty& rhs) const {
@@ -1095,7 +1114,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Empty>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithRef final : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
+class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
  public:
 
   StructWithRef() {}
@@ -1126,6 +1145,9 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   StructWithRef& operator=(StructWithRef&&) = default;
   StructWithRef& operator=(const StructWithRef& src);
   void __clear();
+
+  virtual ~StructWithRef() {}
+
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
   std::unique_ptr< ::cpp2::Empty> req_field;
@@ -1187,7 +1209,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRef>::
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithRefTypeUnique final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
+class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
  public:
 
   StructWithRefTypeUnique() {}
@@ -1218,6 +1240,9 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
   void __clear();
+
+  virtual ~StructWithRefTypeUnique() {}
+
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
   std::unique_ptr< ::cpp2::Empty> req_field;
@@ -1279,7 +1304,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithRefTypeShared final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
+class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
  public:
 
   StructWithRefTypeShared() {}
@@ -1312,6 +1337,9 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
 
   StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
   void __clear();
+
+  virtual ~StructWithRefTypeShared() {}
+
   std::shared_ptr< ::cpp2::Empty> def_field;
   std::shared_ptr< ::cpp2::Empty> opt_field;
   std::shared_ptr< ::cpp2::Empty> req_field;
@@ -1373,7 +1401,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 
 }} // apache::thrift
 namespace cpp2 {
-class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
+class StructWithRefTypeSharedConst : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
  public:
 
   StructWithRefTypeSharedConst() {}
@@ -1406,6 +1434,9 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
 
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
   void __clear();
+
+  virtual ~StructWithRefTypeSharedConst() {}
+
   std::shared_ptr<const  ::cpp2::Empty> def_field;
   std::shared_ptr<const  ::cpp2::Empty> opt_field;
   std::shared_ptr<const  ::cpp2::Empty> req_field;

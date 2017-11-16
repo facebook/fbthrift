@@ -77,7 +77,7 @@ typedef int64_t IncludedInt64;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace a { namespace different { namespace ns {
-class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
+class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct> {
  public:
 
   AStruct() :
@@ -100,6 +100,9 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
 
   AStruct& operator=(const AStruct&) = default;
   void __clear();
+
+  virtual ~AStruct() {}
+
   int32_t FieldA;
 
   struct __isset {
@@ -181,7 +184,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStr
 
 }} // apache::thrift
 namespace a { namespace different { namespace ns {
-class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
+class AStructB : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
  public:
 
   AStructB() {}
@@ -202,6 +205,9 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
 
   AStructB& operator=(const AStructB&) = default;
   void __clear();
+
+  virtual ~AStructB() {}
+
   std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
 
   struct __isset {

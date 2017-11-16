@@ -35,7 +35,7 @@ typedef std::map<int16_t, std::vector<float>> OldMapList;
 
 typedef std::map<int32_t, std::vector<float>> NewMapList;
 
-class OldStructure final : private apache::thrift::detail::st::ComparisonOperators<OldStructure> {
+class OldStructure : private apache::thrift::detail::st::ComparisonOperators<OldStructure> {
  public:
 
   OldStructure() {}
@@ -57,6 +57,9 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   OldStructure& operator=(const OldStructure&) = default;
   void __clear();
+
+  virtual ~OldStructure() {}
+
   std::map<int16_t, double> features;
 
   struct __isset {
@@ -139,7 +142,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::s
 }} // apache::thrift
 namespace cpp2 {
 
-class NewStructure final : private apache::thrift::detail::st::ComparisonOperators<NewStructure> {
+class NewStructure : private apache::thrift::detail::st::ComparisonOperators<NewStructure> {
  public:
 
   NewStructure() {}
@@ -161,6 +164,9 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   NewStructure& operator=(const NewStructure&) = default;
   void __clear();
+
+  virtual ~NewStructure() {}
+
   std::map<int16_t, double> features;
 
   struct __isset {
@@ -243,7 +249,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::s
 }} // apache::thrift
 namespace cpp2 {
 
-class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperators<NewStructure2> {
+class NewStructure2 : private apache::thrift::detail::st::ComparisonOperators<NewStructure2> {
  public:
 
   NewStructure2() {}
@@ -265,6 +271,9 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
 
   NewStructure2& operator=(const NewStructure2&) = default;
   void __clear();
+
+  virtual ~NewStructure2() {}
+
    ::cpp2::FloatFeatures features;
 
   struct __isset {
@@ -340,7 +349,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::
 }} // apache::thrift
 namespace cpp2 {
 
-class NewStructureNested final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNested> {
+class NewStructureNested : private apache::thrift::detail::st::ComparisonOperators<NewStructureNested> {
  public:
 
   NewStructureNested() {}
@@ -376,6 +385,9 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
 
   NewStructureNested& operator=(const NewStructureNested&) = default;
   void __clear();
+
+  virtual ~NewStructureNested() {}
+
   std::vector< ::cpp2::FloatFeatures> lst;
   std::map<int16_t,  ::cpp2::FloatFeatures> mp;
   std::set< ::cpp2::FloatFeatures> s;
@@ -473,7 +485,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
 }} // apache::thrift
 namespace cpp2 {
 
-class NewStructureNestedField final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNestedField> {
+class NewStructureNestedField : private apache::thrift::detail::st::ComparisonOperators<NewStructureNestedField> {
  public:
 
   NewStructureNestedField() {}
@@ -495,6 +507,9 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
 
   NewStructureNestedField& operator=(const NewStructureNestedField&) = default;
   void __clear();
+
+  virtual ~NewStructureNestedField() {}
+
    ::cpp2::NewStructureNested f;
 
   struct __isset {

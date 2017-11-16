@@ -2561,7 +2561,6 @@ class CppGenerator(t_generator.Generator):
             write_extern_templates()
             return
 
-        is_virtual = self._has_cpp_annotation(obj, 'virtual')
         extends = [
             'private apache::thrift::detail::st::ComparisonOperators<{0}>'
             .format(obj.name),
@@ -2574,7 +2573,7 @@ class CppGenerator(t_generator.Generator):
 
         deprecated = check_if_deprecated('class', obj.name, obj.annotations)
         class_signature += deprecated + obj.name
-        if not is_virtual:
+        if 'final' in obj.annotations:
             class_signature += ' final'
         class_signature += extends
         struct = s.cls(class_signature).scope
@@ -2838,6 +2837,7 @@ class CppGenerator(t_generator.Generator):
                             self._serialized_fields_name))
         # END if not pointers
 
+        is_virtual = 'final' not in obj.annotations
         if is_virtual or is_large:
             with struct.defn('{name}()',
                              name='~' + obj.name,
@@ -3206,7 +3206,7 @@ class CppGenerator(t_generator.Generator):
                 what = '{0}.c_str()'.format(obj.annotations['message'])
             else:
                 what = '"{0}"'.format(self._type_name(obj))
-            with struct.defn('const char* what() const noexcept override',
+            with struct.defn('virtual const char* what() const noexcept',
                                    in_header=True) as x1:
                 x1('return {0};'.format(what))
 

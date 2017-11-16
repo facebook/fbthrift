@@ -45,7 +45,7 @@
 <% > common/namespace_cpp2_begin%>
 
 class <%struct:name%> <%!
-%><%^struct:virtual%>final <%/struct:virtual%><%!
+%><%#struct:final%>final <%/struct:final%><%!
 %>: private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
 <%#struct:union?%>
@@ -63,12 +63,12 @@ class <%struct:name%> <%!
 <% > module_types_h/union_template_ctor%>
   void __clear();
 
-  <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:name%>() {
+  <%^struct:final%>virtual <%/struct:final%>~<%struct:name%>() {
     __clear();
   }
-<%#struct:virtual%>
+<%^struct:final%>
 
-<%/struct:virtual%>
+<%/struct:final%>
 <% > module_types_h/union_storage%>
 
 <% > module_types_h/eq_overload%>
@@ -155,14 +155,14 @@ class <%struct:name%> <%!
 <%/struct:fields_contain_cpp_ref?%>
 <%/struct:cpp_noncopyable%>
   void __clear();
-<%^struct:virtual%>
+<%#struct:final%>
 <%#struct:is_large?%>
 
   ~<%struct:name%>();
 
 <%/struct:is_large?%>
-<%/struct:virtual%>
-<%#struct:virtual%>
+<%/struct:final%>
+<%^struct:final%>
 
 <%^struct:is_large?%>
   virtual ~<%struct:name%>() {}
@@ -171,7 +171,7 @@ class <%struct:name%> <%!
   virtual ~<%struct:name%>();
 <%/struct:is_large?%>
 
-<%/struct:virtual%>
+<%/struct:final%>
 <%#struct:fields?%>
 <% > module_types_h/declare_members%>
 <%/struct:fields?%>
@@ -191,7 +191,7 @@ class <%struct:name%> <%!
   uint32_t write(Protocol_* prot_) const;
 <%#struct:exception?%>
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
 <%#struct:message%>
     return <%struct:message%>.c_str();
 <%/struct:message%>

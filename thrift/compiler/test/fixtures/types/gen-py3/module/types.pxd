@@ -247,7 +247,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     # Forward Declaration
     cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct"
     # Forward Declaration
-    cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct"
+    cdef cppclass cFinalStruct "apache::thrift::fixtures::types::FinalStruct"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -284,15 +284,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         std_unordered_map[int32_t,string] fieldH
         cContainerStruct__isset __isset
 
-    cdef cppclass cVirtualStruct__isset "apache::thrift::fixtures::types::VirtualStruct::__isset":
+    cdef cppclass cFinalStruct__isset "apache::thrift::fixtures::types::FinalStruct::__isset":
         bint MyIntField
 
-    cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct":
-        cVirtualStruct() except +
-        cVirtualStruct(const cVirtualStruct&) except +
-        bint operator==(cVirtualStruct&)
+    cdef cppclass cFinalStruct "apache::thrift::fixtures::types::FinalStruct":
+        cFinalStruct() except +
+        cFinalStruct(const cFinalStruct&) except +
+        bint operator==(cFinalStruct&)
         int64_t MyIntField
-        cVirtualStruct__isset __isset
+        cFinalStruct__isset __isset
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -302,14 +302,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cContainerStruct] move(unique_ptr[cContainerStruct])
     cdef shared_ptr[cContainerStruct] move_shared "std::move"(shared_ptr[cContainerStruct])
     cdef unique_ptr[cContainerStruct] move_unique "std::move"(unique_ptr[cContainerStruct])
-    cdef shared_ptr[cVirtualStruct] move(unique_ptr[cVirtualStruct])
-    cdef shared_ptr[cVirtualStruct] move_shared "std::move"(shared_ptr[cVirtualStruct])
-    cdef unique_ptr[cVirtualStruct] move_unique "std::move"(unique_ptr[cVirtualStruct])
+    cdef shared_ptr[cFinalStruct] move(unique_ptr[cFinalStruct])
+    cdef shared_ptr[cFinalStruct] move_shared "std::move"(shared_ptr[cFinalStruct])
+    cdef unique_ptr[cFinalStruct] move_unique "std::move"(unique_ptr[cFinalStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
     cdef shared_ptr[const cContainerStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ContainerStruct>"(shared_ptr[cContainerStruct])
-    cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
+    cdef shared_ptr[const cFinalStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::FinalStruct>"(shared_ptr[cFinalStruct])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -361,21 +361,21 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef create(shared_ptr[cContainerStruct])
 
 # Forward Definition of the cython struct
-cdef class VirtualStruct(thrift.py3.types.Struct)
+cdef class FinalStruct(thrift.py3.types.Struct)
 
-cdef class VirtualStruct(thrift.py3.types.Struct):
+cdef class FinalStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cVirtualStruct] _cpp_obj
+    cdef shared_ptr[cFinalStruct] _cpp_obj
 
     @staticmethod
-    cdef unique_ptr[cVirtualStruct] _make_instance(
-        cVirtualStruct* base_instance,
+    cdef unique_ptr[cFinalStruct] _make_instance(
+        cFinalStruct* base_instance,
         object MyIntField
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cVirtualStruct])
+    cdef create(shared_ptr[cFinalStruct])
 
 
 cdef class std_unordered_map__Map__i32_string:

@@ -68,7 +68,7 @@ class MyStruct;
 
 void swap(MyStruct &a, MyStruct &b);
 
-class MyStruct final : public apache::thrift::TStructType<MyStruct> {
+class MyStruct : public apache::thrift::TStructType<MyStruct> {
  public:
 
   static const uint64_t _reflection_id = 7958971832214294220U;
@@ -95,6 +95,9 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
   MyStruct& operator=(MyStruct&&) = default;
 
   void __clear();
+
+  virtual ~MyStruct() noexcept {}
+
   MyEnum baz;
 
   struct __isset {

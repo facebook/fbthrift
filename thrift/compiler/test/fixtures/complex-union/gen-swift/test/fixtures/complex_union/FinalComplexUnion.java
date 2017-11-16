@@ -14,8 +14,8 @@ import java.util.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
-@ThriftUnion("VirtualComplexUnion")
-public final class VirtualComplexUnion
+@ThriftUnion("FinalComplexUnion")
+public final class FinalComplexUnion
 {
     private final Object value;
     private final int id;
@@ -23,14 +23,14 @@ public final class VirtualComplexUnion
 
 
     @ThriftConstructor
-    public VirtualComplexUnion(final String thingOne) {
+    public FinalComplexUnion(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
         this.name = "thingOne";
     }
 
     @ThriftConstructor
-    public VirtualComplexUnion(final String thingTwo) {
+    public FinalComplexUnion(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;
         this.name = "thingTwo";

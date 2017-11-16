@@ -31,7 +31,7 @@ class Included;
 
 void swap(Included &a, Included &b);
 
-class Included final : public apache::thrift::TStructType<Included> {
+class Included : public apache::thrift::TStructType<Included> {
  public:
 
   static const uint64_t _reflection_id = 16202005076139393548U;
@@ -58,6 +58,9 @@ class Included final : public apache::thrift::TStructType<Included> {
   Included& operator=(Included&&) = default;
 
   void __clear();
+
+  virtual ~Included() noexcept {}
+
   int16_t some_val;
 
   struct __isset {

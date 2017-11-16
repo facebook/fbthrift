@@ -113,7 +113,7 @@ class union2;
 
 void swap(Internship &a, Internship &b);
 
-class Internship final : public apache::thrift::TStructType<Internship> {
+class Internship : public apache::thrift::TStructType<Internship> {
  public:
 
   static const uint64_t _reflection_id = 9022508676980868684U;
@@ -165,6 +165,9 @@ class Internship final : public apache::thrift::TStructType<Internship> {
   Internship& operator=(Internship&&) = default;
 
   void __clear();
+
+  virtual ~Internship() noexcept {}
+
   int32_t weeks;
   std::string title;
   Company employer;
@@ -200,7 +203,7 @@ void merge(const Internship& from, Internship& to);
 void merge(Internship&& from, Internship& to);
 void swap(UnEnumStruct &a, UnEnumStruct &b);
 
-class UnEnumStruct final : public apache::thrift::TStructType<UnEnumStruct> {
+class UnEnumStruct : public apache::thrift::TStructType<UnEnumStruct> {
  public:
 
   static const uint64_t _reflection_id = 18314195816413397484U;
@@ -227,6 +230,9 @@ class UnEnumStruct final : public apache::thrift::TStructType<UnEnumStruct> {
   UnEnumStruct& operator=(UnEnumStruct&&) = default;
 
   void __clear();
+
+  virtual ~UnEnumStruct() noexcept {}
+
   City city;
 
   struct __isset {
@@ -258,7 +264,7 @@ void merge(const UnEnumStruct& from, UnEnumStruct& to);
 void merge(UnEnumStruct&& from, UnEnumStruct& to);
 void swap(Range &a, Range &b);
 
-class Range final : public apache::thrift::TStructType<Range> {
+class Range : public apache::thrift::TStructType<Range> {
  public:
 
   static const uint64_t _reflection_id = 7757081658652615948U;
@@ -296,6 +302,9 @@ class Range final : public apache::thrift::TStructType<Range> {
   Range& operator=(Range&&) = default;
 
   void __clear();
+
+  virtual ~Range() noexcept {}
+
   int32_t min;
   int32_t max;
 
@@ -320,7 +329,7 @@ void merge(const Range& from, Range& to);
 void merge(Range&& from, Range& to);
 void swap(struct1 &a, struct1 &b);
 
-class struct1 final : public apache::thrift::TStructType<struct1> {
+class struct1 : public apache::thrift::TStructType<struct1> {
  public:
 
   static const uint64_t _reflection_id = 18317194148543753228U;
@@ -360,6 +369,9 @@ class struct1 final : public apache::thrift::TStructType<struct1> {
   struct1& operator=(struct1&&) = default;
 
   void __clear();
+
+  virtual ~struct1() noexcept {}
+
   int32_t a;
   std::string b;
 
@@ -394,7 +406,7 @@ void merge(const struct1& from, struct1& to);
 void merge(struct1&& from, struct1& to);
 void swap(struct2 &a, struct2 &b);
 
-class struct2 final : public apache::thrift::TStructType<struct2> {
+class struct2 : public apache::thrift::TStructType<struct2> {
  public:
 
   static const uint64_t _reflection_id = 13919930284671800588U;
@@ -460,6 +472,9 @@ class struct2 final : public apache::thrift::TStructType<struct2> {
   struct2& operator=(struct2&&) = default;
 
   void __clear();
+
+  virtual ~struct2() noexcept {}
+
   int32_t a;
   std::string b;
   struct1 c;
@@ -500,7 +515,7 @@ void merge(const struct2& from, struct2& to);
 void merge(struct2&& from, struct2& to);
 void swap(struct3 &a, struct3 &b);
 
-class struct3 final : public apache::thrift::TStructType<struct3> {
+class struct3 : public apache::thrift::TStructType<struct3> {
  public:
 
   static const uint64_t _reflection_id = 16392874475279945260U;
@@ -553,6 +568,9 @@ class struct3 final : public apache::thrift::TStructType<struct3> {
   struct3& operator=(struct3&&) = default;
 
   void __clear();
+
+  virtual ~struct3() noexcept {}
+
   std::string a;
   int32_t b;
   struct2 c;
@@ -588,7 +606,7 @@ class struct3 final : public apache::thrift::TStructType<struct3> {
 class struct3;
 void merge(const struct3& from, struct3& to);
 void merge(struct3&& from, struct3& to);
-class union1 final : public apache::thrift::TStructType<union1> {
+class union1 : public apache::thrift::TStructType<union1> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -697,7 +715,7 @@ class union1 final : public apache::thrift::TStructType<union1> {
     }
     type_ = Type::__EMPTY__;
   }
-  ~union1() noexcept {
+  virtual ~union1() noexcept {
     __clear();
   }
 
@@ -806,7 +824,7 @@ class union1 final : public apache::thrift::TStructType<union1> {
 
 };
 
-class union2 final : public apache::thrift::TStructType<union2> {
+class union2 : public apache::thrift::TStructType<union2> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -971,7 +989,7 @@ class union2 final : public apache::thrift::TStructType<union2> {
     }
     type_ = Type::__EMPTY__;
   }
-  ~union2() noexcept {
+  virtual ~union2() noexcept {
     __clear();
   }
 

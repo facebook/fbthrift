@@ -28,7 +28,7 @@ class FooEx;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooEx>, public apache::thrift::TException {
+class FooEx : private apache::thrift::detail::st::ComparisonOperators<FooEx>, public apache::thrift::TException {
  public:
 
   FooEx() {}
@@ -43,6 +43,9 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
 
   FooEx& operator=(const FooEx&) = default;
   void __clear();
+
+  virtual ~FooEx() {}
+
   bool operator==(const FooEx& /* rhs */) const;
 
   bool operator < (const FooEx& rhs) const {
@@ -59,7 +62,7 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
     return " ::cpp2::FooEx";
   }
 

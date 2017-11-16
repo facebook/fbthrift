@@ -72,7 +72,7 @@ class MyServiceFastNull : virtual public MyServiceFastIf {
   }
 };
 
-class MyServiceFast_ping_args final : public apache::thrift::TStructType<MyServiceFast_ping_args> {
+class MyServiceFast_ping_args : public apache::thrift::TStructType<MyServiceFast_ping_args> {
  public:
 
   static const uint64_t _reflection_id = 13297394169545716012U;
@@ -86,6 +86,9 @@ class MyServiceFast_ping_args final : public apache::thrift::TStructType<MyServi
   MyServiceFast_ping_args& operator=(MyServiceFast_ping_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_ping_args() noexcept {}
+
 
   bool operator == (const MyServiceFast_ping_args &) const;
   bool operator != (const MyServiceFast_ping_args& rhs) const {
@@ -106,12 +109,15 @@ class MyServiceFast_ping_args final : public apache::thrift::TStructType<MyServi
 class MyServiceFast_ping_args;
 void merge(const MyServiceFast_ping_args& from, MyServiceFast_ping_args& to);
 void merge(MyServiceFast_ping_args&& from, MyServiceFast_ping_args& to);
-class MyServiceFast_ping_pargs final : public apache::thrift::TStructType<MyServiceFast_ping_pargs> {
+class MyServiceFast_ping_pargs : public apache::thrift::TStructType<MyServiceFast_ping_pargs> {
  public:
 
   static const uint64_t _reflection_id = 10013556897733106540U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_ping_pargs() = default;
+
+  virtual ~MyServiceFast_ping_pargs() noexcept {}
+
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -124,12 +130,15 @@ class MyServiceFast_ping_pargs final : public apache::thrift::TStructType<MyServ
 class MyServiceFast_ping_pargs;
 void merge(const MyServiceFast_ping_pargs& from, MyServiceFast_ping_pargs& to);
 void merge(MyServiceFast_ping_pargs&& from, MyServiceFast_ping_pargs& to);
-class MyServiceFast_ping_presult final : public apache::thrift::TStructType<MyServiceFast_ping_presult> {
+class MyServiceFast_ping_presult : public apache::thrift::TStructType<MyServiceFast_ping_presult> {
  public:
 
   static const uint64_t _reflection_id = 2896269803413006412U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_ping_presult() = default;
+
+  virtual ~MyServiceFast_ping_presult() noexcept {}
+
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -143,7 +152,7 @@ class MyServiceFast_ping_presult final : public apache::thrift::TStructType<MySe
 class MyServiceFast_ping_presult;
 void merge(const MyServiceFast_ping_presult& from, MyServiceFast_ping_presult& to);
 void merge(MyServiceFast_ping_presult&& from, MyServiceFast_ping_presult& to);
-class MyServiceFast_getRandomData_args final : public apache::thrift::TStructType<MyServiceFast_getRandomData_args> {
+class MyServiceFast_getRandomData_args : public apache::thrift::TStructType<MyServiceFast_getRandomData_args> {
  public:
 
   static const uint64_t _reflection_id = 7860776305358079468U;
@@ -157,6 +166,9 @@ class MyServiceFast_getRandomData_args final : public apache::thrift::TStructTyp
   MyServiceFast_getRandomData_args& operator=(MyServiceFast_getRandomData_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_getRandomData_args() noexcept {}
+
 
   bool operator == (const MyServiceFast_getRandomData_args &) const;
   bool operator != (const MyServiceFast_getRandomData_args& rhs) const {
@@ -177,12 +189,15 @@ class MyServiceFast_getRandomData_args final : public apache::thrift::TStructTyp
 class MyServiceFast_getRandomData_args;
 void merge(const MyServiceFast_getRandomData_args& from, MyServiceFast_getRandomData_args& to);
 void merge(MyServiceFast_getRandomData_args&& from, MyServiceFast_getRandomData_args& to);
-class MyServiceFast_getRandomData_pargs final : public apache::thrift::TStructType<MyServiceFast_getRandomData_pargs> {
+class MyServiceFast_getRandomData_pargs : public apache::thrift::TStructType<MyServiceFast_getRandomData_pargs> {
  public:
 
   static const uint64_t _reflection_id = 17116623944762865804U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_getRandomData_pargs() = default;
+
+  virtual ~MyServiceFast_getRandomData_pargs() noexcept {}
+
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -195,7 +210,7 @@ class MyServiceFast_getRandomData_pargs final : public apache::thrift::TStructTy
 class MyServiceFast_getRandomData_pargs;
 void merge(const MyServiceFast_getRandomData_pargs& from, MyServiceFast_getRandomData_pargs& to);
 void merge(MyServiceFast_getRandomData_pargs&& from, MyServiceFast_getRandomData_pargs& to);
-class MyServiceFast_getRandomData_presult final : public apache::thrift::TStructType<MyServiceFast_getRandomData_presult> {
+class MyServiceFast_getRandomData_presult : public apache::thrift::TStructType<MyServiceFast_getRandomData_presult> {
  public:
 
   static const uint64_t _reflection_id = 11994669763530285548U;
@@ -214,6 +229,9 @@ class MyServiceFast_getRandomData_presult final : public apache::thrift::TStruct
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~MyServiceFast_getRandomData_presult() noexcept {}
+
   std::string* success;
 
   struct __isset {
@@ -236,7 +254,7 @@ class MyServiceFast_getRandomData_presult final : public apache::thrift::TStruct
 class MyServiceFast_getRandomData_presult;
 void merge(const MyServiceFast_getRandomData_presult& from, MyServiceFast_getRandomData_presult& to);
 void merge(MyServiceFast_getRandomData_presult&& from, MyServiceFast_getRandomData_presult& to);
-class MyServiceFast_hasDataById_args final : public apache::thrift::TStructType<MyServiceFast_hasDataById_args> {
+class MyServiceFast_hasDataById_args : public apache::thrift::TStructType<MyServiceFast_hasDataById_args> {
  public:
 
   static const uint64_t _reflection_id = 16544393981270173068U;
@@ -263,6 +281,9 @@ class MyServiceFast_hasDataById_args final : public apache::thrift::TStructType<
   MyServiceFast_hasDataById_args& operator=(MyServiceFast_hasDataById_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_hasDataById_args() noexcept {}
+
   int64_t id;
 
   struct __isset {
@@ -292,7 +313,7 @@ class MyServiceFast_hasDataById_args final : public apache::thrift::TStructType<
 class MyServiceFast_hasDataById_args;
 void merge(const MyServiceFast_hasDataById_args& from, MyServiceFast_hasDataById_args& to);
 void merge(MyServiceFast_hasDataById_args&& from, MyServiceFast_hasDataById_args& to);
-class MyServiceFast_hasDataById_pargs final : public apache::thrift::TStructType<MyServiceFast_hasDataById_pargs> {
+class MyServiceFast_hasDataById_pargs : public apache::thrift::TStructType<MyServiceFast_hasDataById_pargs> {
  public:
 
   static const uint64_t _reflection_id = 6647526459198525900U;
@@ -310,6 +331,9 @@ class MyServiceFast_hasDataById_pargs final : public apache::thrift::TStructType
   {
     id = arg.move();
   }
+
+  virtual ~MyServiceFast_hasDataById_pargs() noexcept {}
+
   const int64_t* id;
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -323,7 +347,7 @@ class MyServiceFast_hasDataById_pargs final : public apache::thrift::TStructType
 class MyServiceFast_hasDataById_pargs;
 void merge(const MyServiceFast_hasDataById_pargs& from, MyServiceFast_hasDataById_pargs& to);
 void merge(MyServiceFast_hasDataById_pargs&& from, MyServiceFast_hasDataById_pargs& to);
-class MyServiceFast_hasDataById_presult final : public apache::thrift::TStructType<MyServiceFast_hasDataById_presult> {
+class MyServiceFast_hasDataById_presult : public apache::thrift::TStructType<MyServiceFast_hasDataById_presult> {
  public:
 
   static const uint64_t _reflection_id = 4432778191137181708U;
@@ -342,6 +366,9 @@ class MyServiceFast_hasDataById_presult final : public apache::thrift::TStructTy
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~MyServiceFast_hasDataById_presult() noexcept {}
+
   bool* success;
 
   struct __isset {
@@ -364,7 +391,7 @@ class MyServiceFast_hasDataById_presult final : public apache::thrift::TStructTy
 class MyServiceFast_hasDataById_presult;
 void merge(const MyServiceFast_hasDataById_presult& from, MyServiceFast_hasDataById_presult& to);
 void merge(MyServiceFast_hasDataById_presult&& from, MyServiceFast_hasDataById_presult& to);
-class MyServiceFast_getDataById_args final : public apache::thrift::TStructType<MyServiceFast_getDataById_args> {
+class MyServiceFast_getDataById_args : public apache::thrift::TStructType<MyServiceFast_getDataById_args> {
  public:
 
   static const uint64_t _reflection_id = 7870403311925922956U;
@@ -391,6 +418,9 @@ class MyServiceFast_getDataById_args final : public apache::thrift::TStructType<
   MyServiceFast_getDataById_args& operator=(MyServiceFast_getDataById_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_getDataById_args() noexcept {}
+
   int64_t id;
 
   struct __isset {
@@ -420,7 +450,7 @@ class MyServiceFast_getDataById_args final : public apache::thrift::TStructType<
 class MyServiceFast_getDataById_args;
 void merge(const MyServiceFast_getDataById_args& from, MyServiceFast_getDataById_args& to);
 void merge(MyServiceFast_getDataById_args&& from, MyServiceFast_getDataById_args& to);
-class MyServiceFast_getDataById_pargs final : public apache::thrift::TStructType<MyServiceFast_getDataById_pargs> {
+class MyServiceFast_getDataById_pargs : public apache::thrift::TStructType<MyServiceFast_getDataById_pargs> {
  public:
 
   static const uint64_t _reflection_id = 1623351238808566124U;
@@ -438,6 +468,9 @@ class MyServiceFast_getDataById_pargs final : public apache::thrift::TStructType
   {
     id = arg.move();
   }
+
+  virtual ~MyServiceFast_getDataById_pargs() noexcept {}
+
   const int64_t* id;
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -451,7 +484,7 @@ class MyServiceFast_getDataById_pargs final : public apache::thrift::TStructType
 class MyServiceFast_getDataById_pargs;
 void merge(const MyServiceFast_getDataById_pargs& from, MyServiceFast_getDataById_pargs& to);
 void merge(MyServiceFast_getDataById_pargs&& from, MyServiceFast_getDataById_pargs& to);
-class MyServiceFast_getDataById_presult final : public apache::thrift::TStructType<MyServiceFast_getDataById_presult> {
+class MyServiceFast_getDataById_presult : public apache::thrift::TStructType<MyServiceFast_getDataById_presult> {
  public:
 
   static const uint64_t _reflection_id = 12937877697079870508U;
@@ -470,6 +503,9 @@ class MyServiceFast_getDataById_presult final : public apache::thrift::TStructTy
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~MyServiceFast_getDataById_presult() noexcept {}
+
   std::string* success;
 
   struct __isset {
@@ -492,7 +528,7 @@ class MyServiceFast_getDataById_presult final : public apache::thrift::TStructTy
 class MyServiceFast_getDataById_presult;
 void merge(const MyServiceFast_getDataById_presult& from, MyServiceFast_getDataById_presult& to);
 void merge(MyServiceFast_getDataById_presult&& from, MyServiceFast_getDataById_presult& to);
-class MyServiceFast_putDataById_args final : public apache::thrift::TStructType<MyServiceFast_putDataById_args> {
+class MyServiceFast_putDataById_args : public apache::thrift::TStructType<MyServiceFast_putDataById_args> {
  public:
 
   static const uint64_t _reflection_id = 5240787399467302572U;
@@ -532,6 +568,9 @@ class MyServiceFast_putDataById_args final : public apache::thrift::TStructType<
   MyServiceFast_putDataById_args& operator=(MyServiceFast_putDataById_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_putDataById_args() noexcept {}
+
   int64_t id;
   std::string data;
 
@@ -564,7 +603,7 @@ class MyServiceFast_putDataById_args final : public apache::thrift::TStructType<
 class MyServiceFast_putDataById_args;
 void merge(const MyServiceFast_putDataById_args& from, MyServiceFast_putDataById_args& to);
 void merge(MyServiceFast_putDataById_args&& from, MyServiceFast_putDataById_args& to);
-class MyServiceFast_putDataById_pargs final : public apache::thrift::TStructType<MyServiceFast_putDataById_pargs> {
+class MyServiceFast_putDataById_pargs : public apache::thrift::TStructType<MyServiceFast_putDataById_pargs> {
  public:
 
   static const uint64_t _reflection_id = 2400771228403367052U;
@@ -594,6 +633,9 @@ class MyServiceFast_putDataById_pargs final : public apache::thrift::TStructType
   {
     data = arg.move();
   }
+
+  virtual ~MyServiceFast_putDataById_pargs() noexcept {}
+
   const int64_t* id;
   const std::string* data;
 
@@ -608,12 +650,15 @@ class MyServiceFast_putDataById_pargs final : public apache::thrift::TStructType
 class MyServiceFast_putDataById_pargs;
 void merge(const MyServiceFast_putDataById_pargs& from, MyServiceFast_putDataById_pargs& to);
 void merge(MyServiceFast_putDataById_pargs&& from, MyServiceFast_putDataById_pargs& to);
-class MyServiceFast_putDataById_presult final : public apache::thrift::TStructType<MyServiceFast_putDataById_presult> {
+class MyServiceFast_putDataById_presult : public apache::thrift::TStructType<MyServiceFast_putDataById_presult> {
  public:
 
   static const uint64_t _reflection_id = 6473241192987738956U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_putDataById_presult() = default;
+
+  virtual ~MyServiceFast_putDataById_presult() noexcept {}
+
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -627,7 +672,7 @@ class MyServiceFast_putDataById_presult final : public apache::thrift::TStructTy
 class MyServiceFast_putDataById_presult;
 void merge(const MyServiceFast_putDataById_presult& from, MyServiceFast_putDataById_presult& to);
 void merge(MyServiceFast_putDataById_presult&& from, MyServiceFast_putDataById_presult& to);
-class MyServiceFast_lobDataById_args final : public apache::thrift::TStructType<MyServiceFast_lobDataById_args> {
+class MyServiceFast_lobDataById_args : public apache::thrift::TStructType<MyServiceFast_lobDataById_args> {
  public:
 
   static const uint64_t _reflection_id = 6539614639720993804U;
@@ -667,6 +712,9 @@ class MyServiceFast_lobDataById_args final : public apache::thrift::TStructType<
   MyServiceFast_lobDataById_args& operator=(MyServiceFast_lobDataById_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServiceFast_lobDataById_args() noexcept {}
+
   int64_t id;
   std::string data;
 
@@ -699,7 +747,7 @@ class MyServiceFast_lobDataById_args final : public apache::thrift::TStructType<
 class MyServiceFast_lobDataById_args;
 void merge(const MyServiceFast_lobDataById_args& from, MyServiceFast_lobDataById_args& to);
 void merge(MyServiceFast_lobDataById_args&& from, MyServiceFast_lobDataById_args& to);
-class MyServiceFast_lobDataById_pargs final : public apache::thrift::TStructType<MyServiceFast_lobDataById_pargs> {
+class MyServiceFast_lobDataById_pargs : public apache::thrift::TStructType<MyServiceFast_lobDataById_pargs> {
  public:
 
   static const uint64_t _reflection_id = 12884209126637567500U;
@@ -729,6 +777,9 @@ class MyServiceFast_lobDataById_pargs final : public apache::thrift::TStructType
   {
     data = arg.move();
   }
+
+  virtual ~MyServiceFast_lobDataById_pargs() noexcept {}
+
   const int64_t* id;
   const std::string* data;
 

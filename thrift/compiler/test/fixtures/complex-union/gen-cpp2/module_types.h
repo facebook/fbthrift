@@ -20,7 +20,7 @@
 // BEGIN forward_declare
 namespace cpp2 {
 class ComplexUnion;
-class VirtualComplexUnion;
+class FinalComplexUnion;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -32,7 +32,7 @@ typedef std::map<int16_t, std::string> containerTypedef;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
+class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -260,9 +260,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
   void __clear();
 
-  ~ComplexUnion() {
+  virtual ~ComplexUnion() {
     __clear();
   }
+
   union storage_type {
     int64_t intValue;
     std::string stringValue;
@@ -541,7 +542,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::s
 
 }} // apache::thrift
 namespace cpp2 {
-class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperators<VirtualComplexUnion> {
+class FinalComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<FinalComplexUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -549,10 +550,10 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     thingTwo = 2,
   } ;
 
-  VirtualComplexUnion() :
+  FinalComplexUnion() :
       type_(Type::__EMPTY__) {}
 
-  VirtualComplexUnion(VirtualComplexUnion&& rhs) :
+  FinalComplexUnion(FinalComplexUnion&& rhs) :
       type_(Type::__EMPTY__) {
     if (this == &rhs) {return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -576,7 +577,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     rhs.__clear();
   }
 
-  VirtualComplexUnion(const VirtualComplexUnion& rhs) :
+  FinalComplexUnion(const FinalComplexUnion& rhs) :
       type_(Type::__EMPTY__) {
     if (this == &rhs) {return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -599,7 +600,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     }
   }
 
-  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) {
+  FinalComplexUnion& operator=(FinalComplexUnion&& rhs) {
     if (this == &rhs) {return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -624,7 +625,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     return *this;
   }
 
-  VirtualComplexUnion& operator=(const VirtualComplexUnion& rhs) {
+  FinalComplexUnion& operator=(const FinalComplexUnion& rhs) {
     if (this == &rhs) {return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -648,23 +649,22 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     return *this;
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  VirtualComplexUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+  FinalComplexUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_thingOne(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  VirtualComplexUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+  FinalComplexUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_thingTwo(arg.move());
   }
   void __clear();
 
-  virtual ~VirtualComplexUnion() {
+  ~FinalComplexUnion() {
     __clear();
   }
-
   union storage_type {
     std::string thingOne;
     std::string thingTwo;
@@ -672,9 +672,9 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const VirtualComplexUnion& rhs) const;
+  bool operator==(const FinalComplexUnion& rhs) const;
 
-  bool operator < (const VirtualComplexUnion& rhs) const {
+  bool operator < (const FinalComplexUnion& rhs) const {
     if (type_ != rhs.type_) { return type_ < rhs.type_; }
     switch(type_) {
       case Type::thingOne:
@@ -787,40 +787,40 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
-void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
-extern template uint32_t VirtualComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(FinalComplexUnion& a, FinalComplexUnion& b);
+extern template uint32_t FinalComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t FinalComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t FinalComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FinalComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FinalComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t FinalComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t FinalComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FinalComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::VirtualComplexUnion>::clear( ::cpp2::VirtualComplexUnion* obj) {
+template <> inline void Cpp2Ops< ::cpp2::FinalComplexUnion>::clear( ::cpp2::FinalComplexUnion* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::VirtualComplexUnion>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::FinalComplexUnion>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::write(Protocol* proto,  ::cpp2::VirtualComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FinalComplexUnion>::write(Protocol* proto,  ::cpp2::FinalComplexUnion const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::read(Protocol* proto,  ::cpp2::VirtualComplexUnion* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FinalComplexUnion>::read(Protocol* proto,  ::cpp2::FinalComplexUnion* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::VirtualComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FinalComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::FinalComplexUnion const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::VirtualComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FinalComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::FinalComplexUnion const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

@@ -243,7 +243,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 
 }
 
-enum VirtualComplexUnionEnum: int {
+enum FinalComplexUnionEnum: int {
   _EMPTY_ = 0;
   thingOne = 1;
   thingTwo = 2;
@@ -251,9 +251,9 @@ enum VirtualComplexUnionEnum: int {
 
 /**
  * Original thrift struct:-
- * VirtualComplexUnion
+ * FinalComplexUnion
  */
-class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComplexUnionEnum> {
+class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
   use \ThriftUnionSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -283,53 +283,53 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
    * 2: string thingTwo
    */
   public ?string $thingTwo;
-  protected VirtualComplexUnionEnum $_type = VirtualComplexUnionEnum::_EMPTY_;
+  protected FinalComplexUnionEnum $_type = FinalComplexUnionEnum::_EMPTY_;
 
   public function __construct(?string $thingOne = null, ?string $thingTwo = null  ) {
-    $this->_type = VirtualComplexUnionEnum::_EMPTY_;
+    $this->_type = FinalComplexUnionEnum::_EMPTY_;
     if ($thingOne !== null) {
       $this->thingOne = $thingOne;
-      $this->_type = VirtualComplexUnionEnum::thingOne;
+      $this->_type = FinalComplexUnionEnum::thingOne;
     }
     if ($thingTwo !== null) {
       $this->thingTwo = $thingTwo;
-      $this->_type = VirtualComplexUnionEnum::thingTwo;
+      $this->_type = FinalComplexUnionEnum::thingTwo;
     }
   }
 
   public function getName(): string {
-    return 'VirtualComplexUnion';
+    return 'FinalComplexUnion';
   }
 
-  public function getType(): VirtualComplexUnionEnum {
+  public function getType(): FinalComplexUnionEnum {
     return $this->_type;
   }
 
   public function set_thingOne(string $thingOne): this {
-    $this->_type = VirtualComplexUnionEnum::thingOne;
+    $this->_type = FinalComplexUnionEnum::thingOne;
     $this->thingOne = $thingOne;
     return $this;
   }
 
   public function get_thingOne(): string {
     invariant(
-      $this->_type === VirtualComplexUnionEnum::thingOne,
-      'get_thingOne called on an instance of VirtualComplexUnion whose current type is %s',
+      $this->_type === FinalComplexUnionEnum::thingOne,
+      'get_thingOne called on an instance of FinalComplexUnion whose current type is %s',
       $this->_type,
     );
     return nullthrows($this->thingOne);
   }
 
   public function set_thingTwo(string $thingTwo): this {
-    $this->_type = VirtualComplexUnionEnum::thingTwo;
+    $this->_type = FinalComplexUnionEnum::thingTwo;
     $this->thingTwo = $thingTwo;
     return $this;
   }
 
   public function get_thingTwo(): string {
     invariant(
-      $this->_type === VirtualComplexUnionEnum::thingTwo,
-      'get_thingTwo called on an instance of VirtualComplexUnion whose current type is %s',
+      $this->_type === FinalComplexUnionEnum::thingTwo,
+      'get_thingTwo called on an instance of FinalComplexUnion whose current type is %s',
       $this->_type,
     );
     return nullthrows($this->thingTwo);

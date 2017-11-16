@@ -268,7 +268,7 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-void VirtualComplexUnion::translateFieldName(
+void FinalComplexUnion::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -283,7 +283,7 @@ void VirtualComplexUnion::translateFieldName(
   }
 };
 
-uint32_t VirtualComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
+uint32_t FinalComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
@@ -326,9 +326,9 @@ uint32_t VirtualComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-uint32_t VirtualComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t FinalComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("VirtualComplexUnion");
+  xfer += oprot->writeStructBegin("FinalComplexUnion");
   switch (type_) {
     case Type::thingOne: {
       xfer += oprot->writeFieldBegin("thingOne", apache::thrift::protocol::T_STRING, 1);

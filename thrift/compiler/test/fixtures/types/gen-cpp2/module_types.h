@@ -155,7 +155,7 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEn
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct;
 class ContainerStruct;
-class VirtualStruct;
+class FinalStruct;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -173,7 +173,7 @@ template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorate
 } // std
 // END hash_and_equal_to
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class decorated_struct final : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {
+class decorated_struct : private apache::thrift::detail::st::ComparisonOperators<decorated_struct> {
  public:
 
   decorated_struct() {}
@@ -195,6 +195,9 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
 
   decorated_struct& operator=(const decorated_struct&) = default;
   void __clear();
+
+  virtual ~decorated_struct() {}
+
   std::string field;
 
   struct __isset {
@@ -277,7 +280,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
+class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
  public:
 
   ContainerStruct();
@@ -350,7 +353,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   ContainerStruct& operator=(const ContainerStruct&) = default;
   void __clear();
 
-  ~ContainerStruct();
+  virtual ~ContainerStruct();
 
   std::vector<int32_t> fieldA;
   std::list<int32_t> fieldB;
@@ -498,40 +501,37 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<VirtualStruct> {
+class FinalStruct final : private apache::thrift::detail::st::ComparisonOperators<FinalStruct> {
  public:
 
-  VirtualStruct() :
+  FinalStruct() :
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
-  VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
+  FinalStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  VirtualStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    VirtualStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  FinalStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    FinalStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyIntField = arg.move();
     __isset.MyIntField = true;
   }
 
-  VirtualStruct(VirtualStruct&&) = default;
+  FinalStruct(FinalStruct&&) = default;
 
-  VirtualStruct(const VirtualStruct&) = default;
+  FinalStruct(const FinalStruct&) = default;
 
-  VirtualStruct& operator=(VirtualStruct&&) = default;
+  FinalStruct& operator=(FinalStruct&&) = default;
 
-  VirtualStruct& operator=(const VirtualStruct&) = default;
+  FinalStruct& operator=(const FinalStruct&) = default;
   void __clear();
-
-  virtual ~VirtualStruct() {}
-
   int64_t MyIntField;
 
   struct __isset {
     bool MyIntField;
   } __isset = {};
-  bool operator==(const VirtualStruct& rhs) const;
+  bool operator==(const FinalStruct& rhs) const;
 
-  bool operator < (const VirtualStruct& rhs) const {
+  bool operator < (const FinalStruct& rhs) const {
     if (!(MyIntField == rhs.MyIntField)) {
       return MyIntField < rhs.MyIntField;
     }
@@ -562,40 +562,40 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
 };
 
-void swap(VirtualStruct& a, VirtualStruct& b);
-extern template uint32_t VirtualStruct::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t VirtualStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t VirtualStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualStruct::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(FinalStruct& a, FinalStruct& b);
+extern template uint32_t FinalStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t FinalStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t FinalStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FinalStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FinalStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t FinalStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t FinalStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FinalStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::clear( ::apache::thrift::fixtures::types::VirtualStruct* obj) {
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::clear( ::apache::thrift::fixtures::types::FinalStruct* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::write(Protocol* proto,  ::apache::thrift::fixtures::types::VirtualStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::write(Protocol* proto,  ::apache::thrift::fixtures::types::FinalStruct const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::VirtualStruct* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::FinalStruct* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::VirtualStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::FinalStruct const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::VirtualStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::FinalStruct>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::FinalStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

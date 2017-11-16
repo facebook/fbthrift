@@ -69,7 +69,7 @@ class StructWithRefTypeShared;
 
 class StructWithRefTypeSharedConst;
 
-class MyUnion final : public apache::thrift::TStructType<MyUnion> {
+class MyUnion : public apache::thrift::TStructType<MyUnion> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -178,7 +178,7 @@ class MyUnion final : public apache::thrift::TStructType<MyUnion> {
     }
     type_ = Type::__EMPTY__;
   }
-  ~MyUnion() noexcept {
+  virtual ~MyUnion() noexcept {
     __clear();
   }
 
@@ -289,7 +289,7 @@ class MyUnion final : public apache::thrift::TStructType<MyUnion> {
 
 void swap(MyField &a, MyField &b);
 
-class MyField final : public apache::thrift::TStructType<MyField> {
+class MyField : public apache::thrift::TStructType<MyField> {
  public:
 
   static const uint64_t _reflection_id = 16778989117799402412U;
@@ -341,6 +341,9 @@ class MyField final : public apache::thrift::TStructType<MyField> {
   MyField& operator=(MyField&&) = default;
 
   void __clear();
+
+  virtual ~MyField() noexcept {}
+
   int64_t opt_value;
   int64_t value;
   int64_t req_value;
@@ -376,7 +379,7 @@ void merge(const MyField& from, MyField& to);
 void merge(MyField&& from, MyField& to);
 void swap(MyStruct &a, MyStruct &b);
 
-class MyStruct final : public apache::thrift::TStructType<MyStruct> {
+class MyStruct : public apache::thrift::TStructType<MyStruct> {
  public:
 
   static const uint64_t _reflection_id = 7958971832214294220U;
@@ -430,6 +433,9 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
   MyStruct& operator=(MyStruct&&) = default;
 
   void __clear();
+
+  virtual ~MyStruct() noexcept {}
+
   std::unique_ptr<MyField> opt_ref;
   std::unique_ptr<MyField> ref;
   std::unique_ptr<MyField> req_ref;
@@ -461,7 +467,7 @@ void merge(const MyStruct& from, MyStruct& to);
 void merge(MyStruct&& from, MyStruct& to);
 void swap(StructWithUnion &a, StructWithUnion &b);
 
-class StructWithUnion final : public apache::thrift::TStructType<StructWithUnion> {
+class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
  public:
 
   static const uint64_t _reflection_id = 11295191354176986988U;
@@ -517,6 +523,9 @@ class StructWithUnion final : public apache::thrift::TStructType<StructWithUnion
   StructWithUnion& operator=(StructWithUnion&&) = default;
 
   void __clear();
+
+  virtual ~StructWithUnion() noexcept {}
+
   std::unique_ptr<MyUnion> u;
   double aDouble;
   MyField f;
@@ -552,7 +561,7 @@ void merge(const StructWithUnion& from, StructWithUnion& to);
 void merge(StructWithUnion&& from, StructWithUnion& to);
 void swap(RecursiveStruct &a, RecursiveStruct &b);
 
-class RecursiveStruct final : public apache::thrift::TStructType<RecursiveStruct> {
+class RecursiveStruct : public apache::thrift::TStructType<RecursiveStruct> {
  public:
 
   static const uint64_t _reflection_id = 2826922994162023308U;
@@ -579,6 +588,9 @@ class RecursiveStruct final : public apache::thrift::TStructType<RecursiveStruct
   RecursiveStruct& operator=(RecursiveStruct&&) = default;
 
   void __clear();
+
+  virtual ~RecursiveStruct() noexcept {}
+
   std::vector<RecursiveStruct>  mes;
 
   struct __isset {
@@ -610,7 +622,7 @@ void merge(const RecursiveStruct& from, RecursiveStruct& to);
 void merge(RecursiveStruct&& from, RecursiveStruct& to);
 void swap(StructWithContainers &a, StructWithContainers &b);
 
-class StructWithContainers final : public apache::thrift::TStructType<StructWithContainers> {
+class StructWithContainers : public apache::thrift::TStructType<StructWithContainers> {
  public:
 
   static const uint64_t _reflection_id = 18101585657679500556U;
@@ -706,6 +718,9 @@ class StructWithContainers final : public apache::thrift::TStructType<StructWith
   StructWithContainers& operator=(StructWithContainers&&) = default;
 
   void __clear();
+
+  virtual ~StructWithContainers() noexcept {}
+
   std::unique_ptr<std::vector<int32_t> > list_ref;
   std::unique_ptr<std::set<int32_t> > set_ref;
   std::unique_ptr<std::map<int32_t, int32_t> > map_ref;
@@ -740,7 +755,7 @@ void merge(const StructWithContainers& from, StructWithContainers& to);
 void merge(StructWithContainers&& from, StructWithContainers& to);
 void swap(StructWithSharedConst &a, StructWithSharedConst &b);
 
-class StructWithSharedConst final : public apache::thrift::TStructType<StructWithSharedConst> {
+class StructWithSharedConst : public apache::thrift::TStructType<StructWithSharedConst> {
  public:
 
   static const uint64_t _reflection_id = 17232433652683371404U;
@@ -790,6 +805,9 @@ class StructWithSharedConst final : public apache::thrift::TStructType<StructWit
   StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
 
   void __clear();
+
+  virtual ~StructWithSharedConst() noexcept {}
+
   std::shared_ptr<const MyField> opt_shared_const;
   std::shared_ptr<const MyField> shared_const;
   std::shared_ptr<const MyField> req_shared_const;
@@ -821,7 +839,7 @@ void merge(const StructWithSharedConst& from, StructWithSharedConst& to);
 void merge(StructWithSharedConst&& from, StructWithSharedConst& to);
 void swap(Empty &a, Empty &b);
 
-class Empty final : public apache::thrift::TStructType<Empty> {
+class Empty : public apache::thrift::TStructType<Empty> {
  public:
 
   static const uint64_t _reflection_id = 14313748354111837868U;
@@ -835,6 +853,9 @@ class Empty final : public apache::thrift::TStructType<Empty> {
   Empty& operator=(Empty&&) = default;
 
   void __clear();
+
+  virtual ~Empty() noexcept {}
+
 
   bool operator == (const Empty &) const;
   bool operator != (const Empty& rhs) const {
@@ -857,7 +878,7 @@ void merge(const Empty& from, Empty& to);
 void merge(Empty&& from, Empty& to);
 void swap(StructWithRef &a, StructWithRef &b);
 
-class StructWithRef final : public apache::thrift::TStructType<StructWithRef> {
+class StructWithRef : public apache::thrift::TStructType<StructWithRef> {
  public:
 
   static const uint64_t _reflection_id = 11749517231251122252U;
@@ -911,6 +932,9 @@ class StructWithRef final : public apache::thrift::TStructType<StructWithRef> {
   StructWithRef& operator=(StructWithRef&&) = default;
 
   void __clear();
+
+  virtual ~StructWithRef() noexcept {}
+
   std::unique_ptr<Empty> def_field;
   std::unique_ptr<Empty> opt_field;
   std::unique_ptr<Empty> req_field;
@@ -942,7 +966,7 @@ void merge(const StructWithRef& from, StructWithRef& to);
 void merge(StructWithRef&& from, StructWithRef& to);
 void swap(StructWithRefTypeUnique &a, StructWithRefTypeUnique &b);
 
-class StructWithRefTypeUnique final : public apache::thrift::TStructType<StructWithRefTypeUnique> {
+class StructWithRefTypeUnique : public apache::thrift::TStructType<StructWithRefTypeUnique> {
  public:
 
   static const uint64_t _reflection_id = 215755688094406540U;
@@ -996,6 +1020,9 @@ class StructWithRefTypeUnique final : public apache::thrift::TStructType<StructW
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
 
   void __clear();
+
+  virtual ~StructWithRefTypeUnique() noexcept {}
+
   std::unique_ptr<Empty> def_field;
   std::unique_ptr<Empty> opt_field;
   std::unique_ptr<Empty> req_field;
@@ -1027,7 +1054,7 @@ void merge(const StructWithRefTypeUnique& from, StructWithRefTypeUnique& to);
 void merge(StructWithRefTypeUnique&& from, StructWithRefTypeUnique& to);
 void swap(StructWithRefTypeShared &a, StructWithRefTypeShared &b);
 
-class StructWithRefTypeShared final : public apache::thrift::TStructType<StructWithRefTypeShared> {
+class StructWithRefTypeShared : public apache::thrift::TStructType<StructWithRefTypeShared> {
  public:
 
   static const uint64_t _reflection_id = 12352376109981065772U;
@@ -1077,6 +1104,9 @@ class StructWithRefTypeShared final : public apache::thrift::TStructType<StructW
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) = default;
 
   void __clear();
+
+  virtual ~StructWithRefTypeShared() noexcept {}
+
   std::shared_ptr<Empty> def_field;
   std::shared_ptr<Empty> opt_field;
   std::shared_ptr<Empty> req_field;
@@ -1108,7 +1138,7 @@ void merge(const StructWithRefTypeShared& from, StructWithRefTypeShared& to);
 void merge(StructWithRefTypeShared&& from, StructWithRefTypeShared& to);
 void swap(StructWithRefTypeSharedConst &a, StructWithRefTypeSharedConst &b);
 
-class StructWithRefTypeSharedConst final : public apache::thrift::TStructType<StructWithRefTypeSharedConst> {
+class StructWithRefTypeSharedConst : public apache::thrift::TStructType<StructWithRefTypeSharedConst> {
  public:
 
   static const uint64_t _reflection_id = 11678635121852876428U;
@@ -1158,6 +1188,9 @@ class StructWithRefTypeSharedConst final : public apache::thrift::TStructType<St
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) = default;
 
   void __clear();
+
+  virtual ~StructWithRefTypeSharedConst() noexcept {}
+
   std::shared_ptr<const Empty> def_field;
   std::shared_ptr<const Empty> opt_field;
   std::shared_ptr<const Empty> req_field;

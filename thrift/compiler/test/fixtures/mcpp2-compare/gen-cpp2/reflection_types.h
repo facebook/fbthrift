@@ -28,7 +28,7 @@ class ReflectionStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOperators<ReflectionStruct> {
+class ReflectionStruct : private apache::thrift::detail::st::ComparisonOperators<ReflectionStruct> {
  public:
 
   ReflectionStruct() :
@@ -51,6 +51,9 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
   void __clear();
+
+  virtual ~ReflectionStruct() {}
+
   int32_t fieldA;
 
   struct __isset {

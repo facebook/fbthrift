@@ -56,7 +56,7 @@ template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max()
 }} // apache::thrift
 namespace cpp2 {
 
-class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() :
@@ -86,6 +86,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+
+  virtual ~MyStruct() {}
+
   int64_t MyIntField;
   std::string MyStringField;
 

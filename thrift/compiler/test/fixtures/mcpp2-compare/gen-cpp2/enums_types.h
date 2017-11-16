@@ -192,7 +192,7 @@ class SomeStruct;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace facebook { namespace ns { namespace qwerty {
-class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
+class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeStruct> {
  public:
 
   SomeStruct() :
@@ -215,6 +215,9 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
   SomeStruct& operator=(const SomeStruct&) = default;
   void __clear();
+
+  virtual ~SomeStruct() {}
+
   int32_t fieldA;
 
   struct __isset {

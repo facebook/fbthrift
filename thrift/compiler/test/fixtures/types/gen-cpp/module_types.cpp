@@ -686,18 +686,18 @@ void merge(ContainerStruct&& from, ContainerStruct& to) {
   to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
 }
 
-const uint64_t VirtualStruct::_reflection_id;
-void VirtualStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
-   ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_6433147857901895308(schema);
+const uint64_t FinalStruct::_reflection_id;
+void FinalStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_1276076876175970924(schema);
 }
 
-bool VirtualStruct::operator == (const VirtualStruct & rhs) const {
+bool FinalStruct::operator == (const FinalStruct & rhs) const {
   if (!(this->MyIntField == rhs.MyIntField))
     return false;
   return true;
 }
 
-void VirtualStruct::translateFieldName(
+void FinalStruct::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -708,7 +708,7 @@ void VirtualStruct::translateFieldName(
   }
 };
 
-uint32_t VirtualStruct::read(apache::thrift::protocol::TProtocol* iprot) {
+uint32_t FinalStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string _fname;
@@ -717,8 +717,8 @@ uint32_t VirtualStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
   if (schema != nullptr) {
-     ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_6433147857901895308(*schema);
-    iprot->setNextStructType(VirtualStruct::_reflection_id);
+     ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_1276076876175970924(*schema);
+    iprot->setNextStructType(FinalStruct::_reflection_id);
   }
   xfer += iprot->readStructBegin(_fname);
 
@@ -754,13 +754,13 @@ uint32_t VirtualStruct::read(apache::thrift::protocol::TProtocol* iprot) {
   return xfer;
 }
 
-void VirtualStruct::__clear() {
+void FinalStruct::__clear() {
   MyIntField = 0;
   __isset.__clear();
 }
-uint32_t VirtualStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t FinalStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("VirtualStruct");
+  xfer += oprot->writeStructBegin("FinalStruct");
   xfer += oprot->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
   xfer += oprot->writeI64(this->MyIntField);
   xfer += oprot->writeFieldEnd();
@@ -769,7 +769,7 @@ uint32_t VirtualStruct::write(apache::thrift::protocol::TProtocol* oprot) const 
   return xfer;
 }
 
-void swap(VirtualStruct &a, VirtualStruct &b) {
+void swap(FinalStruct &a, FinalStruct &b) {
   using ::std::swap;
   (void)a;
   (void)b;
@@ -777,13 +777,13 @@ void swap(VirtualStruct &a, VirtualStruct &b) {
   swap(a.__isset, b.__isset);
 }
 
-void merge(const VirtualStruct& from, VirtualStruct& to) {
+void merge(const FinalStruct& from, FinalStruct& to) {
   using apache::thrift::merge;
   merge(from.MyIntField, to.MyIntField);
   to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
 }
 
-void merge(VirtualStruct&& from, VirtualStruct& to) {
+void merge(FinalStruct&& from, FinalStruct& to) {
   using apache::thrift::merge;
   merge(std::move(from.MyIntField), to.MyIntField);
   to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;

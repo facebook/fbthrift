@@ -55,7 +55,7 @@ class MyServicePrioParentNull : virtual public MyServicePrioParentIf {
   }
 };
 
-class MyServicePrioParent_ping_args final : public apache::thrift::TStructType<MyServicePrioParent_ping_args> {
+class MyServicePrioParent_ping_args : public apache::thrift::TStructType<MyServicePrioParent_ping_args> {
  public:
 
   static const uint64_t _reflection_id = 15158865162347410572U;
@@ -69,6 +69,9 @@ class MyServicePrioParent_ping_args final : public apache::thrift::TStructType<M
   MyServicePrioParent_ping_args& operator=(MyServicePrioParent_ping_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServicePrioParent_ping_args() noexcept {}
+
 
   bool operator == (const MyServicePrioParent_ping_args &) const;
   bool operator != (const MyServicePrioParent_ping_args& rhs) const {
@@ -89,12 +92,15 @@ class MyServicePrioParent_ping_args final : public apache::thrift::TStructType<M
 class MyServicePrioParent_ping_args;
 void merge(const MyServicePrioParent_ping_args& from, MyServicePrioParent_ping_args& to);
 void merge(MyServicePrioParent_ping_args&& from, MyServicePrioParent_ping_args& to);
-class MyServicePrioParent_ping_pargs final : public apache::thrift::TStructType<MyServicePrioParent_ping_pargs> {
+class MyServicePrioParent_ping_pargs : public apache::thrift::TStructType<MyServicePrioParent_ping_pargs> {
  public:
 
   static const uint64_t _reflection_id = 11775803641217596972U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_ping_pargs() = default;
+
+  virtual ~MyServicePrioParent_ping_pargs() noexcept {}
+
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -107,12 +113,15 @@ class MyServicePrioParent_ping_pargs final : public apache::thrift::TStructType<
 class MyServicePrioParent_ping_pargs;
 void merge(const MyServicePrioParent_ping_pargs& from, MyServicePrioParent_ping_pargs& to);
 void merge(MyServicePrioParent_ping_pargs&& from, MyServicePrioParent_ping_pargs& to);
-class MyServicePrioParent_ping_presult final : public apache::thrift::TStructType<MyServicePrioParent_ping_presult> {
+class MyServicePrioParent_ping_presult : public apache::thrift::TStructType<MyServicePrioParent_ping_presult> {
  public:
 
   static const uint64_t _reflection_id = 1987822334736715596U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_ping_presult() = default;
+
+  virtual ~MyServicePrioParent_ping_presult() noexcept {}
+
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -126,7 +135,7 @@ class MyServicePrioParent_ping_presult final : public apache::thrift::TStructTyp
 class MyServicePrioParent_ping_presult;
 void merge(const MyServicePrioParent_ping_presult& from, MyServicePrioParent_ping_presult& to);
 void merge(MyServicePrioParent_ping_presult&& from, MyServicePrioParent_ping_presult& to);
-class MyServicePrioParent_pong_args final : public apache::thrift::TStructType<MyServicePrioParent_pong_args> {
+class MyServicePrioParent_pong_args : public apache::thrift::TStructType<MyServicePrioParent_pong_args> {
  public:
 
   static const uint64_t _reflection_id = 9845490327892903980U;
@@ -140,6 +149,9 @@ class MyServicePrioParent_pong_args final : public apache::thrift::TStructType<M
   MyServicePrioParent_pong_args& operator=(MyServicePrioParent_pong_args&&) = default;
 
   void __clear();
+
+  virtual ~MyServicePrioParent_pong_args() noexcept {}
+
 
   bool operator == (const MyServicePrioParent_pong_args &) const;
   bool operator != (const MyServicePrioParent_pong_args& rhs) const {
@@ -160,12 +172,15 @@ class MyServicePrioParent_pong_args final : public apache::thrift::TStructType<M
 class MyServicePrioParent_pong_args;
 void merge(const MyServicePrioParent_pong_args& from, MyServicePrioParent_pong_args& to);
 void merge(MyServicePrioParent_pong_args&& from, MyServicePrioParent_pong_args& to);
-class MyServicePrioParent_pong_pargs final : public apache::thrift::TStructType<MyServicePrioParent_pong_pargs> {
+class MyServicePrioParent_pong_pargs : public apache::thrift::TStructType<MyServicePrioParent_pong_pargs> {
  public:
 
   static const uint64_t _reflection_id = 17598621816419220940U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_pong_pargs() = default;
+
+  virtual ~MyServicePrioParent_pong_pargs() noexcept {}
+
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -178,12 +193,15 @@ class MyServicePrioParent_pong_pargs final : public apache::thrift::TStructType<
 class MyServicePrioParent_pong_pargs;
 void merge(const MyServicePrioParent_pong_pargs& from, MyServicePrioParent_pong_pargs& to);
 void merge(MyServicePrioParent_pong_pargs&& from, MyServicePrioParent_pong_pargs& to);
-class MyServicePrioParent_pong_presult final : public apache::thrift::TStructType<MyServicePrioParent_pong_presult> {
+class MyServicePrioParent_pong_presult : public apache::thrift::TStructType<MyServicePrioParent_pong_presult> {
  public:
 
   static const uint64_t _reflection_id = 2551766680163974924U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_pong_presult() = default;
+
+  virtual ~MyServicePrioParent_pong_presult() noexcept {}
+
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;

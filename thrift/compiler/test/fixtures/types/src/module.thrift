@@ -35,6 +35,6 @@ service SomeService {
   include.SomeMap bounce_map(1: include.SomeMap m)
 }
 
-struct VirtualStruct {
+struct FinalStruct {
   1: i64 MyIntField,
-} (cpp.virtual)
+} (final)

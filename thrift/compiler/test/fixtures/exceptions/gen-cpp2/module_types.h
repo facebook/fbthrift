@@ -29,7 +29,7 @@ class Fiery;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Banal final : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
+class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
  public:
 
   Banal() {}
@@ -44,6 +44,9 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
 
   Banal& operator=(const Banal&) = default;
   void __clear();
+
+  virtual ~Banal() {}
+
   bool operator==(const Banal& /* rhs */) const;
 
   bool operator < (const Banal& rhs) const {
@@ -60,7 +63,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
     return " ::cpp2::Banal";
   }
 
@@ -107,7 +110,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Banal>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
+class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
  public:
 
   Fiery() {}
@@ -128,6 +131,9 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
 
   Fiery& operator=(const Fiery&) = default;
   void __clear();
+
+  virtual ~Fiery() {}
+
   std::string message;
   bool operator==(const Fiery& rhs) const;
 
@@ -162,7 +168,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  const char* what() const noexcept override {
+  virtual const char* what() const noexcept {
     return " ::cpp2::Fiery";
   }
 

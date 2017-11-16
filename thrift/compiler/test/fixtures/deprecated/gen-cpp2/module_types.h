@@ -25,7 +25,7 @@ typedef int64_t ColorID;
 
 class FOLLY_DEPRECATED(
   "class House is deprecated"
-) House final : private apache::thrift::detail::st::ComparisonOperators<House> {
+) House : private apache::thrift::detail::st::ComparisonOperators<House> {
  public:
 
   House() :
@@ -59,6 +59,9 @@ class FOLLY_DEPRECATED(
 
   House& operator=(const House&) = default;
   void __clear();
+
+  virtual ~House() {}
+
    ::cpp2::ColorID id;
   std::string houseName;
   folly::Optional<std::set< ::cpp2::ColorID>> FOLLY_DEPRECATED(
@@ -122,7 +125,7 @@ namespace cpp2 {
 
 class FOLLY_DEPRECATED(
   "No longer supported"
-) Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
+) Field : private apache::thrift::detail::st::ComparisonOperators<Field> {
  public:
 
   Field() :
@@ -151,6 +154,9 @@ class FOLLY_DEPRECATED(
 
   Field& operator=(const Field&) = default;
   void __clear();
+
+  virtual ~Field() {}
+
    ::cpp2::ColorID id;
   int32_t FOLLY_DEPRECATED(
     "int32_t fieldType is deprecated"

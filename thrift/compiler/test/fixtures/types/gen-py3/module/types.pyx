@@ -535,21 +535,21 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return (deserialize, (ContainerStruct, serialize(self)))
 
 
-cdef cVirtualStruct _VirtualStruct_defaults = cVirtualStruct()
+cdef cFinalStruct _FinalStruct_defaults = cFinalStruct()
 
-cdef class VirtualStruct(thrift.py3.types.Struct):
+cdef class FinalStruct(thrift.py3.types.Struct):
 
     def __init__(
-        VirtualStruct self,
+        FinalStruct self,
         MyIntField=None
     ):
-        self._cpp_obj = move(VirtualStruct._make_instance(
+        self._cpp_obj = move(FinalStruct._make_instance(
           NULL,
           MyIntField,
         ))
 
     def __call__(
-        VirtualStruct self,
+        FinalStruct self,
         MyIntField=NOTSET
     ):
         changes = any((
@@ -559,28 +559,28 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
-        inst._cpp_obj = move(VirtualStruct._make_instance(
+        inst = <FinalStruct>FinalStruct.__new__(FinalStruct)
+        inst._cpp_obj = move(FinalStruct._make_instance(
           self._cpp_obj.get(),
           MyIntField,
         ))
         return inst
 
     @staticmethod
-    cdef unique_ptr[cVirtualStruct] _make_instance(
-        cVirtualStruct* base_instance,
+    cdef unique_ptr[cFinalStruct] _make_instance(
+        cFinalStruct* base_instance,
         object MyIntField
     ) except *:
-        cdef unique_ptr[cVirtualStruct] c_inst
+        cdef unique_ptr[cFinalStruct] c_inst
         if base_instance:
-            c_inst = make_unique[cVirtualStruct](deref(base_instance))
+            c_inst = make_unique[cFinalStruct](deref(base_instance))
         else:
-            c_inst = make_unique[cVirtualStruct]()
+            c_inst = make_unique[cFinalStruct]()
 
         if base_instance:
             # Convert None's to default value.
             if MyIntField is None:
-                deref(c_inst).MyIntField = _VirtualStruct_defaults.MyIntField
+                deref(c_inst).MyIntField = _FinalStruct_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
             elif MyIntField is NOTSET:
                 MyIntField = None
@@ -600,8 +600,8 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return deref(self._cpp_obj).__isset.MyIntField
 
     @staticmethod
-    cdef create(shared_ptr[cVirtualStruct] cpp_obj):
-        inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
+    cdef create(shared_ptr[cFinalStruct] cpp_obj):
+        inst = <FinalStruct>FinalStruct.__new__(FinalStruct)
         inst._cpp_obj = cpp_obj
         return inst
 
@@ -613,56 +613,56 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return self._cpp_obj.get().MyIntField
 
 
-    def __hash__(VirtualStruct self):
+    def __hash__(FinalStruct self):
         if not self.__hash:
             self.__hash = hash((
             self.MyIntField,
             ))
         return self.__hash
 
-    def __repr__(VirtualStruct self):
-        return f'VirtualStruct(MyIntField={repr(self.MyIntField)})'
+    def __repr__(FinalStruct self):
+        return f'FinalStruct(MyIntField={repr(self.MyIntField)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
             raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
-                isinstance(self, VirtualStruct) and
-                isinstance(other, VirtualStruct)):
+                isinstance(self, FinalStruct) and
+                isinstance(other, FinalStruct)):
             if cop == 2:  # different types are never equal
                 return False
             else:         # different types are always notequal
                 return True
 
-        cdef cVirtualStruct cself = deref((<VirtualStruct>self)._cpp_obj)
-        cdef cVirtualStruct cother = deref((<VirtualStruct>other)._cpp_obj)
+        cdef cFinalStruct cself = deref((<FinalStruct>self)._cpp_obj)
+        cdef cFinalStruct cother = deref((<FinalStruct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
         return not cmp
 
-    cdef bytes _serialize(VirtualStruct self, proto):
+    cdef bytes _serialize(FinalStruct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cVirtualStruct](deref(self._cpp_obj.get()), &c_str)
+            serializer.CompactSerialize[cFinalStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cVirtualStruct](deref(self._cpp_obj.get()), &c_str)
+            serializer.BinarySerialize[cFinalStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cVirtualStruct](deref(self._cpp_obj.get()), &c_str)
+            serializer.JSONSerialize[cFinalStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(VirtualStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(FinalStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cVirtualStruct](buf, deref(self._cpp_obj.get()))
+            needed = serializer.CompactDeserialize[cFinalStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cVirtualStruct](buf, deref(self._cpp_obj.get()))
+            needed = serializer.BinaryDeserialize[cFinalStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cVirtualStruct](buf, deref(self._cpp_obj.get()))
+            needed = serializer.JSONDeserialize[cFinalStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
-        return (deserialize, (VirtualStruct, serialize(self)))
+        return (deserialize, (FinalStruct, serialize(self)))
 
 
 cdef class std_unordered_map__Map__i32_string:

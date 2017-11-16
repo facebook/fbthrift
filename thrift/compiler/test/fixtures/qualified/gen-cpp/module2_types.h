@@ -26,7 +26,7 @@ class BigStruct;
 
 void swap(Struct &a, Struct &b);
 
-class Struct final : public apache::thrift::TStructType<Struct> {
+class Struct : public apache::thrift::TStructType<Struct> {
  public:
 
   static const uint64_t _reflection_id = 6048788120110564236U;
@@ -66,6 +66,9 @@ class Struct final : public apache::thrift::TStructType<Struct> {
   Struct& operator=(Struct&&) = default;
 
   void __clear();
+
+  virtual ~Struct() noexcept {}
+
    ::MODULE0::Struct first;
    ::MODULE1::Struct second;
 
@@ -100,7 +103,7 @@ void merge(const Struct& from, Struct& to);
 void merge(Struct&& from, Struct& to);
 void swap(BigStruct &a, BigStruct &b);
 
-class BigStruct final : public apache::thrift::TStructType<BigStruct> {
+class BigStruct : public apache::thrift::TStructType<BigStruct> {
  public:
 
   static const uint64_t _reflection_id = 18288836959267843340U;
@@ -140,6 +143,9 @@ class BigStruct final : public apache::thrift::TStructType<BigStruct> {
   BigStruct& operator=(BigStruct&&) = default;
 
   void __clear();
+
+  virtual ~BigStruct() noexcept {}
+
   Struct s;
   int32_t id;
 

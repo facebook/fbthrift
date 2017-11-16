@@ -42,7 +42,7 @@ typedef std::map<int32_t, std::vector<float> >  NewMapList;
 
 void swap(OldStructure &a, OldStructure &b);
 
-class OldStructure final : public apache::thrift::TStructType<OldStructure> {
+class OldStructure : public apache::thrift::TStructType<OldStructure> {
  public:
 
   static const uint64_t _reflection_id = 4131921941933986764U;
@@ -69,6 +69,9 @@ class OldStructure final : public apache::thrift::TStructType<OldStructure> {
   OldStructure& operator=(OldStructure&&) = default;
 
   void __clear();
+
+  virtual ~OldStructure() noexcept {}
+
   std::map<int16_t, double>  features;
 
   struct __isset {
@@ -100,7 +103,7 @@ void merge(const OldStructure& from, OldStructure& to);
 void merge(OldStructure&& from, OldStructure& to);
 void swap(NewStructure &a, NewStructure &b);
 
-class NewStructure final : public apache::thrift::TStructType<NewStructure> {
+class NewStructure : public apache::thrift::TStructType<NewStructure> {
  public:
 
   static const uint64_t _reflection_id = 13282492778586199212U;
@@ -127,6 +130,9 @@ class NewStructure final : public apache::thrift::TStructType<NewStructure> {
   NewStructure& operator=(NewStructure&&) = default;
 
   void __clear();
+
+  virtual ~NewStructure() noexcept {}
+
   std::map<int16_t, double>  features;
 
   struct __isset {
@@ -158,7 +164,7 @@ void merge(const NewStructure& from, NewStructure& to);
 void merge(NewStructure&& from, NewStructure& to);
 void swap(NewStructure2 &a, NewStructure2 &b);
 
-class NewStructure2 final : public apache::thrift::TStructType<NewStructure2> {
+class NewStructure2 : public apache::thrift::TStructType<NewStructure2> {
  public:
 
   static const uint64_t _reflection_id = 8404079032344701484U;
@@ -185,6 +191,9 @@ class NewStructure2 final : public apache::thrift::TStructType<NewStructure2> {
   NewStructure2& operator=(NewStructure2&&) = default;
 
   void __clear();
+
+  virtual ~NewStructure2() noexcept {}
+
   FloatFeatures features;
 
   struct __isset {
@@ -216,7 +225,7 @@ void merge(const NewStructure2& from, NewStructure2& to);
 void merge(NewStructure2&& from, NewStructure2& to);
 void swap(NewStructureNested &a, NewStructureNested &b);
 
-class NewStructureNested final : public apache::thrift::TStructType<NewStructureNested> {
+class NewStructureNested : public apache::thrift::TStructType<NewStructureNested> {
  public:
 
   static const uint64_t _reflection_id = 8209486072152767468U;
@@ -269,6 +278,9 @@ class NewStructureNested final : public apache::thrift::TStructType<NewStructure
   NewStructureNested& operator=(NewStructureNested&&) = default;
 
   void __clear();
+
+  virtual ~NewStructureNested() noexcept {}
+
   std::vector<FloatFeatures>  lst;
   std::map<int16_t, FloatFeatures>  mp;
   std::set<FloatFeatures>  s;
@@ -306,7 +318,7 @@ void merge(const NewStructureNested& from, NewStructureNested& to);
 void merge(NewStructureNested&& from, NewStructureNested& to);
 void swap(NewStructureNestedField &a, NewStructureNestedField &b);
 
-class NewStructureNestedField final : public apache::thrift::TStructType<NewStructureNestedField> {
+class NewStructureNestedField : public apache::thrift::TStructType<NewStructureNestedField> {
  public:
 
   static const uint64_t _reflection_id = 5773853137915793324U;
@@ -333,6 +345,9 @@ class NewStructureNestedField final : public apache::thrift::TStructType<NewStru
   NewStructureNestedField& operator=(NewStructureNestedField&&) = default;
 
   void __clear();
+
+  virtual ~NewStructureNestedField() noexcept {}
+
   NewStructureNested f;
 
   struct __isset {

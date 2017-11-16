@@ -390,7 +390,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
             {"struct:cpp_noexcept_move_ctor",
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
-            {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
+            {"struct:final", &mstch_cpp2_struct::cpp_final},
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:struct_list", &mstch_cpp2_struct::struct_list},
             {"struct:non_req_fields?", &mstch_cpp2_struct::has_non_req_fields},
@@ -530,9 +530,8 @@ class mstch_cpp2_struct : public mstch_struct {
     return strct_->annotations_.count("cpp.noexcept_move_ctor") ||
         strct_->annotations_.count("cpp2.noexcept_move_ctor");
   }
-  mstch::node cpp_virtual() {
-    return strct_->annotations_.count("cpp.virtual") > 0 ||
-        strct_->annotations_.count("cpp2.virtual") > 0;
+  mstch::node cpp_final() {
+    return bool(strct_->annotations_.count("final"));
   }
   mstch::node message() {
     if (strct_->annotations_.count("message")) {

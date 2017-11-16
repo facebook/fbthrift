@@ -53,7 +53,7 @@ class MyDataItem;
 
 void swap(MyStruct &a, MyStruct &b);
 
-class MyStruct final : public apache::thrift::TStructType<MyStruct> {
+class MyStruct : public apache::thrift::TStructType<MyStruct> {
  public:
 
   static const uint64_t _reflection_id = 7958971832214294220U;
@@ -106,6 +106,9 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
   MyStruct& operator=(MyStruct&&) = default;
 
   void __clear();
+
+  virtual ~MyStruct() noexcept {}
+
   int64_t MyIntField;
   std::string MyStringField;
   MyDataItem MyDataField;
@@ -167,7 +170,7 @@ struct Frozen< ::MyStruct, void> {
 
 void swap(MyDataItem &a, MyDataItem &b);
 
-class MyDataItem final : public apache::thrift::TStructType<MyDataItem> {
+class MyDataItem : public apache::thrift::TStructType<MyDataItem> {
  public:
 
   static const uint64_t _reflection_id = 4790436723586763884U;
@@ -181,6 +184,9 @@ class MyDataItem final : public apache::thrift::TStructType<MyDataItem> {
   MyDataItem& operator=(MyDataItem&&) = default;
 
   void __clear();
+
+  virtual ~MyDataItem() noexcept {}
+
 
   bool operator == (const MyDataItem &) const;
   bool operator != (const MyDataItem& rhs) const {

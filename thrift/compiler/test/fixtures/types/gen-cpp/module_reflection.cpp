@@ -133,12 +133,12 @@ void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Sc
   reflectionInitializer_673983474151144843(schema);  // map<i32, string>
 }
 
-// Reflection initializer for struct module.VirtualStruct
-void reflectionInitializer_6433147857901895308(::apache::thrift::reflection::Schema& schema) {
-  const uint64_t id = 6433147857901895308U;
+// Reflection initializer for struct module.FinalStruct
+void reflectionInitializer_1276076876175970924(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1276076876175970924U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
-  dt.name = "struct module.VirtualStruct";
+  dt.name = "struct module.FinalStruct";
   schema.names[dt.name] = id;
   dt.__isset.fields = true;
   {

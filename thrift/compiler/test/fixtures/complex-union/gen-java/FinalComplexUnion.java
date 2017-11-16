@@ -24,9 +24,9 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
-public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements Comparable<VirtualComplexUnion> {
+public final class FinalComplexUnion extends TUnion<FinalComplexUnion> implements Comparable<FinalComplexUnion> {
   public static boolean DEFAULT_PRETTY_PRINT = true;
-  private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
+  private static final TStruct STRUCT_DESC = new TStruct("FinalComplexUnion");
   private static final TField THING_ONE_FIELD_DESC = new TField("thingOne", TType.STRING, (short)1);
   private static final TField THING_TWO_FIELD_DESC = new TField("thingTwo", TType.STRING, (short)2);
 
@@ -43,29 +43,29 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
-  public VirtualComplexUnion() {
+  public FinalComplexUnion() {
     super();
   }
 
-  public VirtualComplexUnion(int setField, Object value) {
+  public FinalComplexUnion(int setField, Object value) {
     super(setField, value);
   }
 
-  public VirtualComplexUnion(VirtualComplexUnion other) {
+  public FinalComplexUnion(FinalComplexUnion other) {
     super(other);
   }
-  public VirtualComplexUnion deepCopy() {
-    return new VirtualComplexUnion(this);
+  public FinalComplexUnion deepCopy() {
+    return new FinalComplexUnion(this);
   }
 
-  public static VirtualComplexUnion thingOne(String value) {
-    VirtualComplexUnion x = new VirtualComplexUnion();
+  public static FinalComplexUnion thingOne(String value) {
+    FinalComplexUnion x = new FinalComplexUnion();
     x.setThingOne(value);
     return x;
   }
 
-  public static VirtualComplexUnion thingTwo(String value) {
-    VirtualComplexUnion x = new VirtualComplexUnion();
+  public static FinalComplexUnion thingTwo(String value) {
+    FinalComplexUnion x = new FinalComplexUnion();
     x.setThingTwo(value);
     return x;
   }
@@ -209,19 +209,19 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   }
 
   public boolean equals(Object other) {
-    if (other instanceof VirtualComplexUnion) {
-      return equals((VirtualComplexUnion)other);
+    if (other instanceof FinalComplexUnion) {
+      return equals((FinalComplexUnion)other);
     } else {
       return false;
     }
   }
 
-  public boolean equals(VirtualComplexUnion other) {
+  public boolean equals(FinalComplexUnion other) {
     return equalsNobinaryImpl(other);
   }
 
   @Override
-  public int compareTo(VirtualComplexUnion other) {
+  public int compareTo(FinalComplexUnion other) {
     return compareToImpl(other);
   }
 
@@ -249,7 +249,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
 String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("VirtualComplexUnion");
+    StringBuilder sb = new StringBuilder("FinalComplexUnion");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

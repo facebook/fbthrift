@@ -177,7 +177,7 @@ class service_with_special_namesNull : virtual public service_with_special_names
   }
 };
 
-class service_with_special_names_get_args final : public apache::thrift::TStructType<service_with_special_names_get_args> {
+class service_with_special_names_get_args : public apache::thrift::TStructType<service_with_special_names_get_args> {
  public:
 
   static const uint64_t _reflection_id = 1373511551720987884U;
@@ -191,6 +191,9 @@ class service_with_special_names_get_args final : public apache::thrift::TStruct
   service_with_special_names_get_args& operator=(service_with_special_names_get_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_get_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_get_args &) const;
   bool operator != (const service_with_special_names_get_args& rhs) const {
@@ -213,12 +216,15 @@ class service_with_special_names_get_args final : public apache::thrift::TStruct
 class service_with_special_names_get_args;
 void merge(const service_with_special_names_get_args& from, service_with_special_names_get_args& to);
 void merge(service_with_special_names_get_args&& from, service_with_special_names_get_args& to);
-class service_with_special_names_get_pargs final : public apache::thrift::TStructType<service_with_special_names_get_pargs> {
+class service_with_special_names_get_pargs : public apache::thrift::TStructType<service_with_special_names_get_pargs> {
  public:
 
   static const uint64_t _reflection_id = 6180717848238773804U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_get_pargs() = default;
+
+  virtual ~service_with_special_names_get_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -233,7 +239,7 @@ class service_with_special_names_get_pargs final : public apache::thrift::TStruc
 class service_with_special_names_get_pargs;
 void merge(const service_with_special_names_get_pargs& from, service_with_special_names_get_pargs& to);
 void merge(service_with_special_names_get_pargs&& from, service_with_special_names_get_pargs& to);
-class service_with_special_names_get_presult final : public apache::thrift::TStructType<service_with_special_names_get_presult> {
+class service_with_special_names_get_presult : public apache::thrift::TStructType<service_with_special_names_get_presult> {
  public:
 
   static const uint64_t _reflection_id = 11646051635369598572U;
@@ -252,6 +258,9 @@ class service_with_special_names_get_presult final : public apache::thrift::TStr
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_get_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -276,7 +285,7 @@ class service_with_special_names_get_presult final : public apache::thrift::TStr
 class service_with_special_names_get_presult;
 void merge(const service_with_special_names_get_presult& from, service_with_special_names_get_presult& to);
 void merge(service_with_special_names_get_presult&& from, service_with_special_names_get_presult& to);
-class service_with_special_names_getter_args final : public apache::thrift::TStructType<service_with_special_names_getter_args> {
+class service_with_special_names_getter_args : public apache::thrift::TStructType<service_with_special_names_getter_args> {
  public:
 
   static const uint64_t _reflection_id = 5841548007298017580U;
@@ -290,6 +299,9 @@ class service_with_special_names_getter_args final : public apache::thrift::TStr
   service_with_special_names_getter_args& operator=(service_with_special_names_getter_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_getter_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_getter_args &) const;
   bool operator != (const service_with_special_names_getter_args& rhs) const {
@@ -312,12 +324,15 @@ class service_with_special_names_getter_args final : public apache::thrift::TStr
 class service_with_special_names_getter_args;
 void merge(const service_with_special_names_getter_args& from, service_with_special_names_getter_args& to);
 void merge(service_with_special_names_getter_args&& from, service_with_special_names_getter_args& to);
-class service_with_special_names_getter_pargs final : public apache::thrift::TStructType<service_with_special_names_getter_pargs> {
+class service_with_special_names_getter_pargs : public apache::thrift::TStructType<service_with_special_names_getter_pargs> {
  public:
 
   static const uint64_t _reflection_id = 1626803846620101004U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_getter_pargs() = default;
+
+  virtual ~service_with_special_names_getter_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -332,7 +347,7 @@ class service_with_special_names_getter_pargs final : public apache::thrift::TSt
 class service_with_special_names_getter_pargs;
 void merge(const service_with_special_names_getter_pargs& from, service_with_special_names_getter_pargs& to);
 void merge(service_with_special_names_getter_pargs&& from, service_with_special_names_getter_pargs& to);
-class service_with_special_names_getter_presult final : public apache::thrift::TStructType<service_with_special_names_getter_presult> {
+class service_with_special_names_getter_presult : public apache::thrift::TStructType<service_with_special_names_getter_presult> {
  public:
 
   static const uint64_t _reflection_id = 8969449638576176396U;
@@ -351,6 +366,9 @@ class service_with_special_names_getter_presult final : public apache::thrift::T
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_getter_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -375,7 +393,7 @@ class service_with_special_names_getter_presult final : public apache::thrift::T
 class service_with_special_names_getter_presult;
 void merge(const service_with_special_names_getter_presult& from, service_with_special_names_getter_presult& to);
 void merge(service_with_special_names_getter_presult&& from, service_with_special_names_getter_presult& to);
-class service_with_special_names_lists_args final : public apache::thrift::TStructType<service_with_special_names_lists_args> {
+class service_with_special_names_lists_args : public apache::thrift::TStructType<service_with_special_names_lists_args> {
  public:
 
   static const uint64_t _reflection_id = 5732728134094404812U;
@@ -389,6 +407,9 @@ class service_with_special_names_lists_args final : public apache::thrift::TStru
   service_with_special_names_lists_args& operator=(service_with_special_names_lists_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_lists_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_lists_args &) const;
   bool operator != (const service_with_special_names_lists_args& rhs) const {
@@ -411,12 +432,15 @@ class service_with_special_names_lists_args final : public apache::thrift::TStru
 class service_with_special_names_lists_args;
 void merge(const service_with_special_names_lists_args& from, service_with_special_names_lists_args& to);
 void merge(service_with_special_names_lists_args&& from, service_with_special_names_lists_args& to);
-class service_with_special_names_lists_pargs final : public apache::thrift::TStructType<service_with_special_names_lists_pargs> {
+class service_with_special_names_lists_pargs : public apache::thrift::TStructType<service_with_special_names_lists_pargs> {
  public:
 
   static const uint64_t _reflection_id = 11005640243407784812U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_lists_pargs() = default;
+
+  virtual ~service_with_special_names_lists_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -431,7 +455,7 @@ class service_with_special_names_lists_pargs final : public apache::thrift::TStr
 class service_with_special_names_lists_pargs;
 void merge(const service_with_special_names_lists_pargs& from, service_with_special_names_lists_pargs& to);
 void merge(service_with_special_names_lists_pargs&& from, service_with_special_names_lists_pargs& to);
-class service_with_special_names_lists_presult final : public apache::thrift::TStructType<service_with_special_names_lists_presult> {
+class service_with_special_names_lists_presult : public apache::thrift::TStructType<service_with_special_names_lists_presult> {
  public:
 
   static const uint64_t _reflection_id = 3698312719729166668U;
@@ -450,6 +474,9 @@ class service_with_special_names_lists_presult final : public apache::thrift::TS
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_lists_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -474,7 +501,7 @@ class service_with_special_names_lists_presult final : public apache::thrift::TS
 class service_with_special_names_lists_presult;
 void merge(const service_with_special_names_lists_presult& from, service_with_special_names_lists_presult& to);
 void merge(service_with_special_names_lists_presult&& from, service_with_special_names_lists_presult& to);
-class service_with_special_names_maps_args final : public apache::thrift::TStructType<service_with_special_names_maps_args> {
+class service_with_special_names_maps_args : public apache::thrift::TStructType<service_with_special_names_maps_args> {
  public:
 
   static const uint64_t _reflection_id = 3351470906650519212U;
@@ -488,6 +515,9 @@ class service_with_special_names_maps_args final : public apache::thrift::TStruc
   service_with_special_names_maps_args& operator=(service_with_special_names_maps_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_maps_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_maps_args &) const;
   bool operator != (const service_with_special_names_maps_args& rhs) const {
@@ -510,12 +540,15 @@ class service_with_special_names_maps_args final : public apache::thrift::TStruc
 class service_with_special_names_maps_args;
 void merge(const service_with_special_names_maps_args& from, service_with_special_names_maps_args& to);
 void merge(service_with_special_names_maps_args&& from, service_with_special_names_maps_args& to);
-class service_with_special_names_maps_pargs final : public apache::thrift::TStructType<service_with_special_names_maps_pargs> {
+class service_with_special_names_maps_pargs : public apache::thrift::TStructType<service_with_special_names_maps_pargs> {
  public:
 
   static const uint64_t _reflection_id = 13252849339744761324U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_maps_pargs() = default;
+
+  virtual ~service_with_special_names_maps_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -530,7 +563,7 @@ class service_with_special_names_maps_pargs final : public apache::thrift::TStru
 class service_with_special_names_maps_pargs;
 void merge(const service_with_special_names_maps_pargs& from, service_with_special_names_maps_pargs& to);
 void merge(service_with_special_names_maps_pargs&& from, service_with_special_names_maps_pargs& to);
-class service_with_special_names_maps_presult final : public apache::thrift::TStructType<service_with_special_names_maps_presult> {
+class service_with_special_names_maps_presult : public apache::thrift::TStructType<service_with_special_names_maps_presult> {
  public:
 
   static const uint64_t _reflection_id = 7089921217987282892U;
@@ -549,6 +582,9 @@ class service_with_special_names_maps_presult final : public apache::thrift::TSt
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_maps_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -573,7 +609,7 @@ class service_with_special_names_maps_presult final : public apache::thrift::TSt
 class service_with_special_names_maps_presult;
 void merge(const service_with_special_names_maps_presult& from, service_with_special_names_maps_presult& to);
 void merge(service_with_special_names_maps_presult&& from, service_with_special_names_maps_presult& to);
-class service_with_special_names_name_args final : public apache::thrift::TStructType<service_with_special_names_name_args> {
+class service_with_special_names_name_args : public apache::thrift::TStructType<service_with_special_names_name_args> {
  public:
 
   static const uint64_t _reflection_id = 11922926156328519820U;
@@ -587,6 +623,9 @@ class service_with_special_names_name_args final : public apache::thrift::TStruc
   service_with_special_names_name_args& operator=(service_with_special_names_name_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_name_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_name_args &) const;
   bool operator != (const service_with_special_names_name_args& rhs) const {
@@ -609,12 +648,15 @@ class service_with_special_names_name_args final : public apache::thrift::TStruc
 class service_with_special_names_name_args;
 void merge(const service_with_special_names_name_args& from, service_with_special_names_name_args& to);
 void merge(service_with_special_names_name_args&& from, service_with_special_names_name_args& to);
-class service_with_special_names_name_pargs final : public apache::thrift::TStructType<service_with_special_names_name_pargs> {
+class service_with_special_names_name_pargs : public apache::thrift::TStructType<service_with_special_names_name_pargs> {
  public:
 
   static const uint64_t _reflection_id = 8032862167142743564U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_name_pargs() = default;
+
+  virtual ~service_with_special_names_name_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -629,7 +671,7 @@ class service_with_special_names_name_pargs final : public apache::thrift::TStru
 class service_with_special_names_name_pargs;
 void merge(const service_with_special_names_name_pargs& from, service_with_special_names_name_pargs& to);
 void merge(service_with_special_names_name_pargs&& from, service_with_special_names_name_pargs& to);
-class service_with_special_names_name_presult final : public apache::thrift::TStructType<service_with_special_names_name_presult> {
+class service_with_special_names_name_presult : public apache::thrift::TStructType<service_with_special_names_name_presult> {
  public:
 
   static const uint64_t _reflection_id = 4476510193210978508U;
@@ -648,6 +690,9 @@ class service_with_special_names_name_presult final : public apache::thrift::TSt
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_name_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -672,7 +717,7 @@ class service_with_special_names_name_presult final : public apache::thrift::TSt
 class service_with_special_names_name_presult;
 void merge(const service_with_special_names_name_presult& from, service_with_special_names_name_presult& to);
 void merge(service_with_special_names_name_presult&& from, service_with_special_names_name_presult& to);
-class service_with_special_names_name_to_value_args final : public apache::thrift::TStructType<service_with_special_names_name_to_value_args> {
+class service_with_special_names_name_to_value_args : public apache::thrift::TStructType<service_with_special_names_name_to_value_args> {
  public:
 
   static const uint64_t _reflection_id = 6155512989613449804U;
@@ -686,6 +731,9 @@ class service_with_special_names_name_to_value_args final : public apache::thrif
   service_with_special_names_name_to_value_args& operator=(service_with_special_names_name_to_value_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_name_to_value_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_name_to_value_args &) const;
   bool operator != (const service_with_special_names_name_to_value_args& rhs) const {
@@ -708,12 +756,15 @@ class service_with_special_names_name_to_value_args final : public apache::thrif
 class service_with_special_names_name_to_value_args;
 void merge(const service_with_special_names_name_to_value_args& from, service_with_special_names_name_to_value_args& to);
 void merge(service_with_special_names_name_to_value_args&& from, service_with_special_names_name_to_value_args& to);
-class service_with_special_names_name_to_value_pargs final : public apache::thrift::TStructType<service_with_special_names_name_to_value_pargs> {
+class service_with_special_names_name_to_value_pargs : public apache::thrift::TStructType<service_with_special_names_name_to_value_pargs> {
  public:
 
   static const uint64_t _reflection_id = 8237545762925274764U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_name_to_value_pargs() = default;
+
+  virtual ~service_with_special_names_name_to_value_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -728,7 +779,7 @@ class service_with_special_names_name_to_value_pargs final : public apache::thri
 class service_with_special_names_name_to_value_pargs;
 void merge(const service_with_special_names_name_to_value_pargs& from, service_with_special_names_name_to_value_pargs& to);
 void merge(service_with_special_names_name_to_value_pargs&& from, service_with_special_names_name_to_value_pargs& to);
-class service_with_special_names_name_to_value_presult final : public apache::thrift::TStructType<service_with_special_names_name_to_value_presult> {
+class service_with_special_names_name_to_value_presult : public apache::thrift::TStructType<service_with_special_names_name_to_value_presult> {
  public:
 
   static const uint64_t _reflection_id = 17212294354743603788U;
@@ -747,6 +798,9 @@ class service_with_special_names_name_to_value_presult final : public apache::th
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_name_to_value_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -771,7 +825,7 @@ class service_with_special_names_name_to_value_presult final : public apache::th
 class service_with_special_names_name_to_value_presult;
 void merge(const service_with_special_names_name_to_value_presult& from, service_with_special_names_name_to_value_presult& to);
 void merge(service_with_special_names_name_to_value_presult&& from, service_with_special_names_name_to_value_presult& to);
-class service_with_special_names_names_args final : public apache::thrift::TStructType<service_with_special_names_names_args> {
+class service_with_special_names_names_args : public apache::thrift::TStructType<service_with_special_names_names_args> {
  public:
 
   static const uint64_t _reflection_id = 9756879492097671468U;
@@ -785,6 +839,9 @@ class service_with_special_names_names_args final : public apache::thrift::TStru
   service_with_special_names_names_args& operator=(service_with_special_names_names_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_names_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_names_args &) const;
   bool operator != (const service_with_special_names_names_args& rhs) const {
@@ -807,12 +864,15 @@ class service_with_special_names_names_args final : public apache::thrift::TStru
 class service_with_special_names_names_args;
 void merge(const service_with_special_names_names_args& from, service_with_special_names_names_args& to);
 void merge(service_with_special_names_names_args&& from, service_with_special_names_names_args& to);
-class service_with_special_names_names_pargs final : public apache::thrift::TStructType<service_with_special_names_names_pargs> {
+class service_with_special_names_names_pargs : public apache::thrift::TStructType<service_with_special_names_names_pargs> {
  public:
 
   static const uint64_t _reflection_id = 10586736841908509644U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_names_pargs() = default;
+
+  virtual ~service_with_special_names_names_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -827,7 +887,7 @@ class service_with_special_names_names_pargs final : public apache::thrift::TStr
 class service_with_special_names_names_pargs;
 void merge(const service_with_special_names_names_pargs& from, service_with_special_names_names_pargs& to);
 void merge(service_with_special_names_names_pargs&& from, service_with_special_names_names_pargs& to);
-class service_with_special_names_names_presult final : public apache::thrift::TStructType<service_with_special_names_names_presult> {
+class service_with_special_names_names_presult : public apache::thrift::TStructType<service_with_special_names_names_presult> {
  public:
 
   static const uint64_t _reflection_id = 11207936718153437132U;
@@ -846,6 +906,9 @@ class service_with_special_names_names_presult final : public apache::thrift::TS
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_names_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -870,7 +933,7 @@ class service_with_special_names_names_presult final : public apache::thrift::TS
 class service_with_special_names_names_presult;
 void merge(const service_with_special_names_names_presult& from, service_with_special_names_names_presult& to);
 void merge(service_with_special_names_names_presult&& from, service_with_special_names_names_presult& to);
-class service_with_special_names_prefix_tree_args final : public apache::thrift::TStructType<service_with_special_names_prefix_tree_args> {
+class service_with_special_names_prefix_tree_args : public apache::thrift::TStructType<service_with_special_names_prefix_tree_args> {
  public:
 
   static const uint64_t _reflection_id = 15677913871102706636U;
@@ -884,6 +947,9 @@ class service_with_special_names_prefix_tree_args final : public apache::thrift:
   service_with_special_names_prefix_tree_args& operator=(service_with_special_names_prefix_tree_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_prefix_tree_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_prefix_tree_args &) const;
   bool operator != (const service_with_special_names_prefix_tree_args& rhs) const {
@@ -906,12 +972,15 @@ class service_with_special_names_prefix_tree_args final : public apache::thrift:
 class service_with_special_names_prefix_tree_args;
 void merge(const service_with_special_names_prefix_tree_args& from, service_with_special_names_prefix_tree_args& to);
 void merge(service_with_special_names_prefix_tree_args&& from, service_with_special_names_prefix_tree_args& to);
-class service_with_special_names_prefix_tree_pargs final : public apache::thrift::TStructType<service_with_special_names_prefix_tree_pargs> {
+class service_with_special_names_prefix_tree_pargs : public apache::thrift::TStructType<service_with_special_names_prefix_tree_pargs> {
  public:
 
   static const uint64_t _reflection_id = 18331187933004642700U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_prefix_tree_pargs() = default;
+
+  virtual ~service_with_special_names_prefix_tree_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -926,7 +995,7 @@ class service_with_special_names_prefix_tree_pargs final : public apache::thrift
 class service_with_special_names_prefix_tree_pargs;
 void merge(const service_with_special_names_prefix_tree_pargs& from, service_with_special_names_prefix_tree_pargs& to);
 void merge(service_with_special_names_prefix_tree_pargs&& from, service_with_special_names_prefix_tree_pargs& to);
-class service_with_special_names_prefix_tree_presult final : public apache::thrift::TStructType<service_with_special_names_prefix_tree_presult> {
+class service_with_special_names_prefix_tree_presult : public apache::thrift::TStructType<service_with_special_names_prefix_tree_presult> {
  public:
 
   static const uint64_t _reflection_id = 16771581789976342828U;
@@ -945,6 +1014,9 @@ class service_with_special_names_prefix_tree_presult final : public apache::thri
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_prefix_tree_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -969,7 +1041,7 @@ class service_with_special_names_prefix_tree_presult final : public apache::thri
 class service_with_special_names_prefix_tree_presult;
 void merge(const service_with_special_names_prefix_tree_presult& from, service_with_special_names_prefix_tree_presult& to);
 void merge(service_with_special_names_prefix_tree_presult&& from, service_with_special_names_prefix_tree_presult& to);
-class service_with_special_names_sets_args final : public apache::thrift::TStructType<service_with_special_names_sets_args> {
+class service_with_special_names_sets_args : public apache::thrift::TStructType<service_with_special_names_sets_args> {
  public:
 
   static const uint64_t _reflection_id = 14231777332181685580U;
@@ -983,6 +1055,9 @@ class service_with_special_names_sets_args final : public apache::thrift::TStruc
   service_with_special_names_sets_args& operator=(service_with_special_names_sets_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_sets_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_sets_args &) const;
   bool operator != (const service_with_special_names_sets_args& rhs) const {
@@ -1005,12 +1080,15 @@ class service_with_special_names_sets_args final : public apache::thrift::TStruc
 class service_with_special_names_sets_args;
 void merge(const service_with_special_names_sets_args& from, service_with_special_names_sets_args& to);
 void merge(service_with_special_names_sets_args&& from, service_with_special_names_sets_args& to);
-class service_with_special_names_sets_pargs final : public apache::thrift::TStructType<service_with_special_names_sets_pargs> {
+class service_with_special_names_sets_pargs : public apache::thrift::TStructType<service_with_special_names_sets_pargs> {
  public:
 
   static const uint64_t _reflection_id = 3749180045256457292U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_sets_pargs() = default;
+
+  virtual ~service_with_special_names_sets_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1025,7 +1103,7 @@ class service_with_special_names_sets_pargs final : public apache::thrift::TStru
 class service_with_special_names_sets_pargs;
 void merge(const service_with_special_names_sets_pargs& from, service_with_special_names_sets_pargs& to);
 void merge(service_with_special_names_sets_pargs&& from, service_with_special_names_sets_pargs& to);
-class service_with_special_names_sets_presult final : public apache::thrift::TStructType<service_with_special_names_sets_presult> {
+class service_with_special_names_sets_presult : public apache::thrift::TStructType<service_with_special_names_sets_presult> {
  public:
 
   static const uint64_t _reflection_id = 4151785695256646572U;
@@ -1044,6 +1122,9 @@ class service_with_special_names_sets_presult final : public apache::thrift::TSt
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_sets_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1068,7 +1149,7 @@ class service_with_special_names_sets_presult final : public apache::thrift::TSt
 class service_with_special_names_sets_presult;
 void merge(const service_with_special_names_sets_presult& from, service_with_special_names_sets_presult& to);
 void merge(service_with_special_names_sets_presult&& from, service_with_special_names_sets_presult& to);
-class service_with_special_names_setter_args final : public apache::thrift::TStructType<service_with_special_names_setter_args> {
+class service_with_special_names_setter_args : public apache::thrift::TStructType<service_with_special_names_setter_args> {
  public:
 
   static const uint64_t _reflection_id = 9870312273607259884U;
@@ -1082,6 +1163,9 @@ class service_with_special_names_setter_args final : public apache::thrift::TStr
   service_with_special_names_setter_args& operator=(service_with_special_names_setter_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_setter_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_setter_args &) const;
   bool operator != (const service_with_special_names_setter_args& rhs) const {
@@ -1104,12 +1188,15 @@ class service_with_special_names_setter_args final : public apache::thrift::TStr
 class service_with_special_names_setter_args;
 void merge(const service_with_special_names_setter_args& from, service_with_special_names_setter_args& to);
 void merge(service_with_special_names_setter_args&& from, service_with_special_names_setter_args& to);
-class service_with_special_names_setter_pargs final : public apache::thrift::TStructType<service_with_special_names_setter_pargs> {
+class service_with_special_names_setter_pargs : public apache::thrift::TStructType<service_with_special_names_setter_pargs> {
  public:
 
   static const uint64_t _reflection_id = 13085949427034307116U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_setter_pargs() = default;
+
+  virtual ~service_with_special_names_setter_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1124,7 +1211,7 @@ class service_with_special_names_setter_pargs final : public apache::thrift::TSt
 class service_with_special_names_setter_pargs;
 void merge(const service_with_special_names_setter_pargs& from, service_with_special_names_setter_pargs& to);
 void merge(service_with_special_names_setter_pargs&& from, service_with_special_names_setter_pargs& to);
-class service_with_special_names_setter_presult final : public apache::thrift::TStructType<service_with_special_names_setter_presult> {
+class service_with_special_names_setter_presult : public apache::thrift::TStructType<service_with_special_names_setter_presult> {
  public:
 
   static const uint64_t _reflection_id = 3615611587777939756U;
@@ -1143,6 +1230,9 @@ class service_with_special_names_setter_presult final : public apache::thrift::T
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_setter_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1167,7 +1257,7 @@ class service_with_special_names_setter_presult final : public apache::thrift::T
 class service_with_special_names_setter_presult;
 void merge(const service_with_special_names_setter_presult& from, service_with_special_names_setter_presult& to);
 void merge(service_with_special_names_setter_presult&& from, service_with_special_names_setter_presult& to);
-class service_with_special_names_str_args final : public apache::thrift::TStructType<service_with_special_names_str_args> {
+class service_with_special_names_str_args : public apache::thrift::TStructType<service_with_special_names_str_args> {
  public:
 
   static const uint64_t _reflection_id = 9523889597948027724U;
@@ -1181,6 +1271,9 @@ class service_with_special_names_str_args final : public apache::thrift::TStruct
   service_with_special_names_str_args& operator=(service_with_special_names_str_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_str_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_str_args &) const;
   bool operator != (const service_with_special_names_str_args& rhs) const {
@@ -1203,12 +1296,15 @@ class service_with_special_names_str_args final : public apache::thrift::TStruct
 class service_with_special_names_str_args;
 void merge(const service_with_special_names_str_args& from, service_with_special_names_str_args& to);
 void merge(service_with_special_names_str_args&& from, service_with_special_names_str_args& to);
-class service_with_special_names_str_pargs final : public apache::thrift::TStructType<service_with_special_names_str_pargs> {
+class service_with_special_names_str_pargs : public apache::thrift::TStructType<service_with_special_names_str_pargs> {
  public:
 
   static const uint64_t _reflection_id = 11104524594484825836U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_str_pargs() = default;
+
+  virtual ~service_with_special_names_str_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1223,7 +1319,7 @@ class service_with_special_names_str_pargs final : public apache::thrift::TStruc
 class service_with_special_names_str_pargs;
 void merge(const service_with_special_names_str_pargs& from, service_with_special_names_str_pargs& to);
 void merge(service_with_special_names_str_pargs&& from, service_with_special_names_str_pargs& to);
-class service_with_special_names_str_presult final : public apache::thrift::TStructType<service_with_special_names_str_presult> {
+class service_with_special_names_str_presult : public apache::thrift::TStructType<service_with_special_names_str_presult> {
  public:
 
   static const uint64_t _reflection_id = 10019129158603438188U;
@@ -1242,6 +1338,9 @@ class service_with_special_names_str_presult final : public apache::thrift::TStr
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_str_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1266,7 +1365,7 @@ class service_with_special_names_str_presult final : public apache::thrift::TStr
 class service_with_special_names_str_presult;
 void merge(const service_with_special_names_str_presult& from, service_with_special_names_str_presult& to);
 void merge(service_with_special_names_str_presult&& from, service_with_special_names_str_presult& to);
-class service_with_special_names_strings_args final : public apache::thrift::TStructType<service_with_special_names_strings_args> {
+class service_with_special_names_strings_args : public apache::thrift::TStructType<service_with_special_names_strings_args> {
  public:
 
   static const uint64_t _reflection_id = 11558869670105657900U;
@@ -1280,6 +1379,9 @@ class service_with_special_names_strings_args final : public apache::thrift::TSt
   service_with_special_names_strings_args& operator=(service_with_special_names_strings_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_strings_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_strings_args &) const;
   bool operator != (const service_with_special_names_strings_args& rhs) const {
@@ -1302,12 +1404,15 @@ class service_with_special_names_strings_args final : public apache::thrift::TSt
 class service_with_special_names_strings_args;
 void merge(const service_with_special_names_strings_args& from, service_with_special_names_strings_args& to);
 void merge(service_with_special_names_strings_args&& from, service_with_special_names_strings_args& to);
-class service_with_special_names_strings_pargs final : public apache::thrift::TStructType<service_with_special_names_strings_pargs> {
+class service_with_special_names_strings_pargs : public apache::thrift::TStructType<service_with_special_names_strings_pargs> {
  public:
 
   static const uint64_t _reflection_id = 9937103767805045164U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_strings_pargs() = default;
+
+  virtual ~service_with_special_names_strings_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1322,7 +1427,7 @@ class service_with_special_names_strings_pargs final : public apache::thrift::TS
 class service_with_special_names_strings_pargs;
 void merge(const service_with_special_names_strings_pargs& from, service_with_special_names_strings_pargs& to);
 void merge(service_with_special_names_strings_pargs&& from, service_with_special_names_strings_pargs& to);
-class service_with_special_names_strings_presult final : public apache::thrift::TStructType<service_with_special_names_strings_presult> {
+class service_with_special_names_strings_presult : public apache::thrift::TStructType<service_with_special_names_strings_presult> {
  public:
 
   static const uint64_t _reflection_id = 6090313409056969900U;
@@ -1341,6 +1446,9 @@ class service_with_special_names_strings_presult final : public apache::thrift::
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_strings_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1365,7 +1473,7 @@ class service_with_special_names_strings_presult final : public apache::thrift::
 class service_with_special_names_strings_presult;
 void merge(const service_with_special_names_strings_presult& from, service_with_special_names_strings_presult& to);
 void merge(service_with_special_names_strings_presult&& from, service_with_special_names_strings_presult& to);
-class service_with_special_names_type_args final : public apache::thrift::TStructType<service_with_special_names_type_args> {
+class service_with_special_names_type_args : public apache::thrift::TStructType<service_with_special_names_type_args> {
  public:
 
   static const uint64_t _reflection_id = 15109213770833110476U;
@@ -1379,6 +1487,9 @@ class service_with_special_names_type_args final : public apache::thrift::TStruc
   service_with_special_names_type_args& operator=(service_with_special_names_type_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_type_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_type_args &) const;
   bool operator != (const service_with_special_names_type_args& rhs) const {
@@ -1401,12 +1512,15 @@ class service_with_special_names_type_args final : public apache::thrift::TStruc
 class service_with_special_names_type_args;
 void merge(const service_with_special_names_type_args& from, service_with_special_names_type_args& to);
 void merge(service_with_special_names_type_args&& from, service_with_special_names_type_args& to);
-class service_with_special_names_type_pargs final : public apache::thrift::TStructType<service_with_special_names_type_pargs> {
+class service_with_special_names_type_pargs : public apache::thrift::TStructType<service_with_special_names_type_pargs> {
  public:
 
   static const uint64_t _reflection_id = 18298586877078455596U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_type_pargs() = default;
+
+  virtual ~service_with_special_names_type_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1421,7 +1535,7 @@ class service_with_special_names_type_pargs final : public apache::thrift::TStru
 class service_with_special_names_type_pargs;
 void merge(const service_with_special_names_type_pargs& from, service_with_special_names_type_pargs& to);
 void merge(service_with_special_names_type_pargs&& from, service_with_special_names_type_pargs& to);
-class service_with_special_names_type_presult final : public apache::thrift::TStructType<service_with_special_names_type_presult> {
+class service_with_special_names_type_presult : public apache::thrift::TStructType<service_with_special_names_type_presult> {
  public:
 
   static const uint64_t _reflection_id = 10509333716012291820U;
@@ -1440,6 +1554,9 @@ class service_with_special_names_type_presult final : public apache::thrift::TSt
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_type_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1464,7 +1581,7 @@ class service_with_special_names_type_presult final : public apache::thrift::TSt
 class service_with_special_names_type_presult;
 void merge(const service_with_special_names_type_presult& from, service_with_special_names_type_presult& to);
 void merge(service_with_special_names_type_presult&& from, service_with_special_names_type_presult& to);
-class service_with_special_names_value_args final : public apache::thrift::TStructType<service_with_special_names_value_args> {
+class service_with_special_names_value_args : public apache::thrift::TStructType<service_with_special_names_value_args> {
  public:
 
   static const uint64_t _reflection_id = 3864619655954954348U;
@@ -1478,6 +1595,9 @@ class service_with_special_names_value_args final : public apache::thrift::TStru
   service_with_special_names_value_args& operator=(service_with_special_names_value_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_value_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_value_args &) const;
   bool operator != (const service_with_special_names_value_args& rhs) const {
@@ -1500,12 +1620,15 @@ class service_with_special_names_value_args final : public apache::thrift::TStru
 class service_with_special_names_value_args;
 void merge(const service_with_special_names_value_args& from, service_with_special_names_value_args& to);
 void merge(service_with_special_names_value_args&& from, service_with_special_names_value_args& to);
-class service_with_special_names_value_pargs final : public apache::thrift::TStructType<service_with_special_names_value_pargs> {
+class service_with_special_names_value_pargs : public apache::thrift::TStructType<service_with_special_names_value_pargs> {
  public:
 
   static const uint64_t _reflection_id = 1945700546667119884U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_value_pargs() = default;
+
+  virtual ~service_with_special_names_value_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1520,7 +1643,7 @@ class service_with_special_names_value_pargs final : public apache::thrift::TStr
 class service_with_special_names_value_pargs;
 void merge(const service_with_special_names_value_pargs& from, service_with_special_names_value_pargs& to);
 void merge(service_with_special_names_value_pargs&& from, service_with_special_names_value_pargs& to);
-class service_with_special_names_value_presult final : public apache::thrift::TStructType<service_with_special_names_value_presult> {
+class service_with_special_names_value_presult : public apache::thrift::TStructType<service_with_special_names_value_presult> {
  public:
 
   static const uint64_t _reflection_id = 14418760717554044556U;
@@ -1539,6 +1662,9 @@ class service_with_special_names_value_presult final : public apache::thrift::TS
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_value_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1563,7 +1689,7 @@ class service_with_special_names_value_presult final : public apache::thrift::TS
 class service_with_special_names_value_presult;
 void merge(const service_with_special_names_value_presult& from, service_with_special_names_value_presult& to);
 void merge(service_with_special_names_value_presult&& from, service_with_special_names_value_presult& to);
-class service_with_special_names_value_to_name_args final : public apache::thrift::TStructType<service_with_special_names_value_to_name_args> {
+class service_with_special_names_value_to_name_args : public apache::thrift::TStructType<service_with_special_names_value_to_name_args> {
  public:
 
   static const uint64_t _reflection_id = 17974119141925120876U;
@@ -1577,6 +1703,9 @@ class service_with_special_names_value_to_name_args final : public apache::thrif
   service_with_special_names_value_to_name_args& operator=(service_with_special_names_value_to_name_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_value_to_name_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_value_to_name_args &) const;
   bool operator != (const service_with_special_names_value_to_name_args& rhs) const {
@@ -1599,12 +1728,15 @@ class service_with_special_names_value_to_name_args final : public apache::thrif
 class service_with_special_names_value_to_name_args;
 void merge(const service_with_special_names_value_to_name_args& from, service_with_special_names_value_to_name_args& to);
 void merge(service_with_special_names_value_to_name_args&& from, service_with_special_names_value_to_name_args& to);
-class service_with_special_names_value_to_name_pargs final : public apache::thrift::TStructType<service_with_special_names_value_to_name_pargs> {
+class service_with_special_names_value_to_name_pargs : public apache::thrift::TStructType<service_with_special_names_value_to_name_pargs> {
  public:
 
   static const uint64_t _reflection_id = 7019790290212150988U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_value_to_name_pargs() = default;
+
+  virtual ~service_with_special_names_value_to_name_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1619,7 +1751,7 @@ class service_with_special_names_value_to_name_pargs final : public apache::thri
 class service_with_special_names_value_to_name_pargs;
 void merge(const service_with_special_names_value_to_name_pargs& from, service_with_special_names_value_to_name_pargs& to);
 void merge(service_with_special_names_value_to_name_pargs&& from, service_with_special_names_value_to_name_pargs& to);
-class service_with_special_names_value_to_name_presult final : public apache::thrift::TStructType<service_with_special_names_value_to_name_presult> {
+class service_with_special_names_value_to_name_presult : public apache::thrift::TStructType<service_with_special_names_value_to_name_presult> {
  public:
 
   static const uint64_t _reflection_id = 15398044640920953004U;
@@ -1638,6 +1770,9 @@ class service_with_special_names_value_to_name_presult final : public apache::th
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_value_to_name_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1662,7 +1797,7 @@ class service_with_special_names_value_to_name_presult final : public apache::th
 class service_with_special_names_value_to_name_presult;
 void merge(const service_with_special_names_value_to_name_presult& from, service_with_special_names_value_to_name_presult& to);
 void merge(service_with_special_names_value_to_name_presult&& from, service_with_special_names_value_to_name_presult& to);
-class service_with_special_names_values_args final : public apache::thrift::TStructType<service_with_special_names_values_args> {
+class service_with_special_names_values_args : public apache::thrift::TStructType<service_with_special_names_values_args> {
  public:
 
   static const uint64_t _reflection_id = 3069345450276425100U;
@@ -1676,6 +1811,9 @@ class service_with_special_names_values_args final : public apache::thrift::TStr
   service_with_special_names_values_args& operator=(service_with_special_names_values_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_values_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_values_args &) const;
   bool operator != (const service_with_special_names_values_args& rhs) const {
@@ -1698,12 +1836,15 @@ class service_with_special_names_values_args final : public apache::thrift::TStr
 class service_with_special_names_values_args;
 void merge(const service_with_special_names_values_args& from, service_with_special_names_values_args& to);
 void merge(service_with_special_names_values_args&& from, service_with_special_names_values_args& to);
-class service_with_special_names_values_pargs final : public apache::thrift::TStructType<service_with_special_names_values_pargs> {
+class service_with_special_names_values_pargs : public apache::thrift::TStructType<service_with_special_names_values_pargs> {
  public:
 
   static const uint64_t _reflection_id = 3546005976427740364U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_values_pargs() = default;
+
+  virtual ~service_with_special_names_values_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1718,7 +1859,7 @@ class service_with_special_names_values_pargs final : public apache::thrift::TSt
 class service_with_special_names_values_pargs;
 void merge(const service_with_special_names_values_pargs& from, service_with_special_names_values_pargs& to);
 void merge(service_with_special_names_values_pargs&& from, service_with_special_names_values_pargs& to);
-class service_with_special_names_values_presult final : public apache::thrift::TStructType<service_with_special_names_values_presult> {
+class service_with_special_names_values_presult : public apache::thrift::TStructType<service_with_special_names_values_presult> {
  public:
 
   static const uint64_t _reflection_id = 3563447443625046764U;
@@ -1737,6 +1878,9 @@ class service_with_special_names_values_presult final : public apache::thrift::T
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_values_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1761,7 +1905,7 @@ class service_with_special_names_values_presult final : public apache::thrift::T
 class service_with_special_names_values_presult;
 void merge(const service_with_special_names_values_presult& from, service_with_special_names_values_presult& to);
 void merge(service_with_special_names_values_presult&& from, service_with_special_names_values_presult& to);
-class service_with_special_names_id_args final : public apache::thrift::TStructType<service_with_special_names_id_args> {
+class service_with_special_names_id_args : public apache::thrift::TStructType<service_with_special_names_id_args> {
  public:
 
   static const uint64_t _reflection_id = 8735572574444870700U;
@@ -1775,6 +1919,9 @@ class service_with_special_names_id_args final : public apache::thrift::TStructT
   service_with_special_names_id_args& operator=(service_with_special_names_id_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_id_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_id_args &) const;
   bool operator != (const service_with_special_names_id_args& rhs) const {
@@ -1797,12 +1944,15 @@ class service_with_special_names_id_args final : public apache::thrift::TStructT
 class service_with_special_names_id_args;
 void merge(const service_with_special_names_id_args& from, service_with_special_names_id_args& to);
 void merge(service_with_special_names_id_args&& from, service_with_special_names_id_args& to);
-class service_with_special_names_id_pargs final : public apache::thrift::TStructType<service_with_special_names_id_pargs> {
+class service_with_special_names_id_pargs : public apache::thrift::TStructType<service_with_special_names_id_pargs> {
  public:
 
   static const uint64_t _reflection_id = 7139318446922995980U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_id_pargs() = default;
+
+  virtual ~service_with_special_names_id_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1817,7 +1967,7 @@ class service_with_special_names_id_pargs final : public apache::thrift::TStruct
 class service_with_special_names_id_pargs;
 void merge(const service_with_special_names_id_pargs& from, service_with_special_names_id_pargs& to);
 void merge(service_with_special_names_id_pargs&& from, service_with_special_names_id_pargs& to);
-class service_with_special_names_id_presult final : public apache::thrift::TStructType<service_with_special_names_id_presult> {
+class service_with_special_names_id_presult : public apache::thrift::TStructType<service_with_special_names_id_presult> {
  public:
 
   static const uint64_t _reflection_id = 10614178590552322796U;
@@ -1836,6 +1986,9 @@ class service_with_special_names_id_presult final : public apache::thrift::TStru
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_id_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1860,7 +2013,7 @@ class service_with_special_names_id_presult final : public apache::thrift::TStru
 class service_with_special_names_id_presult;
 void merge(const service_with_special_names_id_presult& from, service_with_special_names_id_presult& to);
 void merge(service_with_special_names_id_presult&& from, service_with_special_names_id_presult& to);
-class service_with_special_names_ids_args final : public apache::thrift::TStructType<service_with_special_names_ids_args> {
+class service_with_special_names_ids_args : public apache::thrift::TStructType<service_with_special_names_ids_args> {
  public:
 
   static const uint64_t _reflection_id = 18283754767201791212U;
@@ -1874,6 +2027,9 @@ class service_with_special_names_ids_args final : public apache::thrift::TStruct
   service_with_special_names_ids_args& operator=(service_with_special_names_ids_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_ids_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_ids_args &) const;
   bool operator != (const service_with_special_names_ids_args& rhs) const {
@@ -1896,12 +2052,15 @@ class service_with_special_names_ids_args final : public apache::thrift::TStruct
 class service_with_special_names_ids_args;
 void merge(const service_with_special_names_ids_args& from, service_with_special_names_ids_args& to);
 void merge(service_with_special_names_ids_args&& from, service_with_special_names_ids_args& to);
-class service_with_special_names_ids_pargs final : public apache::thrift::TStructType<service_with_special_names_ids_pargs> {
+class service_with_special_names_ids_pargs : public apache::thrift::TStructType<service_with_special_names_ids_pargs> {
  public:
 
   static const uint64_t _reflection_id = 17621159150274508076U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_ids_pargs() = default;
+
+  virtual ~service_with_special_names_ids_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1916,7 +2075,7 @@ class service_with_special_names_ids_pargs final : public apache::thrift::TStruc
 class service_with_special_names_ids_pargs;
 void merge(const service_with_special_names_ids_pargs& from, service_with_special_names_ids_pargs& to);
 void merge(service_with_special_names_ids_pargs&& from, service_with_special_names_ids_pargs& to);
-class service_with_special_names_ids_presult final : public apache::thrift::TStructType<service_with_special_names_ids_presult> {
+class service_with_special_names_ids_presult : public apache::thrift::TStructType<service_with_special_names_ids_presult> {
  public:
 
   static const uint64_t _reflection_id = 9652207830689380876U;
@@ -1935,6 +2094,9 @@ class service_with_special_names_ids_presult final : public apache::thrift::TStr
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_ids_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -1959,7 +2121,7 @@ class service_with_special_names_ids_presult final : public apache::thrift::TStr
 class service_with_special_names_ids_presult;
 void merge(const service_with_special_names_ids_presult& from, service_with_special_names_ids_presult& to);
 void merge(service_with_special_names_ids_presult&& from, service_with_special_names_ids_presult& to);
-class service_with_special_names_descriptor_args final : public apache::thrift::TStructType<service_with_special_names_descriptor_args> {
+class service_with_special_names_descriptor_args : public apache::thrift::TStructType<service_with_special_names_descriptor_args> {
  public:
 
   static const uint64_t _reflection_id = 11888178329946336460U;
@@ -1973,6 +2135,9 @@ class service_with_special_names_descriptor_args final : public apache::thrift::
   service_with_special_names_descriptor_args& operator=(service_with_special_names_descriptor_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_descriptor_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_descriptor_args &) const;
   bool operator != (const service_with_special_names_descriptor_args& rhs) const {
@@ -1995,12 +2160,15 @@ class service_with_special_names_descriptor_args final : public apache::thrift::
 class service_with_special_names_descriptor_args;
 void merge(const service_with_special_names_descriptor_args& from, service_with_special_names_descriptor_args& to);
 void merge(service_with_special_names_descriptor_args&& from, service_with_special_names_descriptor_args& to);
-class service_with_special_names_descriptor_pargs final : public apache::thrift::TStructType<service_with_special_names_descriptor_pargs> {
+class service_with_special_names_descriptor_pargs : public apache::thrift::TStructType<service_with_special_names_descriptor_pargs> {
  public:
 
   static const uint64_t _reflection_id = 10175935319856860844U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_descriptor_pargs() = default;
+
+  virtual ~service_with_special_names_descriptor_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2015,7 +2183,7 @@ class service_with_special_names_descriptor_pargs final : public apache::thrift:
 class service_with_special_names_descriptor_pargs;
 void merge(const service_with_special_names_descriptor_pargs& from, service_with_special_names_descriptor_pargs& to);
 void merge(service_with_special_names_descriptor_pargs&& from, service_with_special_names_descriptor_pargs& to);
-class service_with_special_names_descriptor_presult final : public apache::thrift::TStructType<service_with_special_names_descriptor_presult> {
+class service_with_special_names_descriptor_presult : public apache::thrift::TStructType<service_with_special_names_descriptor_presult> {
  public:
 
   static const uint64_t _reflection_id = 17988834178275663756U;
@@ -2034,6 +2202,9 @@ class service_with_special_names_descriptor_presult final : public apache::thrif
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_descriptor_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2058,7 +2229,7 @@ class service_with_special_names_descriptor_presult final : public apache::thrif
 class service_with_special_names_descriptor_presult;
 void merge(const service_with_special_names_descriptor_presult& from, service_with_special_names_descriptor_presult& to);
 void merge(service_with_special_names_descriptor_presult&& from, service_with_special_names_descriptor_presult& to);
-class service_with_special_names_descriptors_args final : public apache::thrift::TStructType<service_with_special_names_descriptors_args> {
+class service_with_special_names_descriptors_args : public apache::thrift::TStructType<service_with_special_names_descriptors_args> {
  public:
 
   static const uint64_t _reflection_id = 8146408518317640812U;
@@ -2072,6 +2243,9 @@ class service_with_special_names_descriptors_args final : public apache::thrift:
   service_with_special_names_descriptors_args& operator=(service_with_special_names_descriptors_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_descriptors_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_descriptors_args &) const;
   bool operator != (const service_with_special_names_descriptors_args& rhs) const {
@@ -2094,12 +2268,15 @@ class service_with_special_names_descriptors_args final : public apache::thrift:
 class service_with_special_names_descriptors_args;
 void merge(const service_with_special_names_descriptors_args& from, service_with_special_names_descriptors_args& to);
 void merge(service_with_special_names_descriptors_args&& from, service_with_special_names_descriptors_args& to);
-class service_with_special_names_descriptors_pargs final : public apache::thrift::TStructType<service_with_special_names_descriptors_pargs> {
+class service_with_special_names_descriptors_pargs : public apache::thrift::TStructType<service_with_special_names_descriptors_pargs> {
  public:
 
   static const uint64_t _reflection_id = 147755538338568012U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_descriptors_pargs() = default;
+
+  virtual ~service_with_special_names_descriptors_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2114,7 +2291,7 @@ class service_with_special_names_descriptors_pargs final : public apache::thrift
 class service_with_special_names_descriptors_pargs;
 void merge(const service_with_special_names_descriptors_pargs& from, service_with_special_names_descriptors_pargs& to);
 void merge(service_with_special_names_descriptors_pargs&& from, service_with_special_names_descriptors_pargs& to);
-class service_with_special_names_descriptors_presult final : public apache::thrift::TStructType<service_with_special_names_descriptors_presult> {
+class service_with_special_names_descriptors_presult : public apache::thrift::TStructType<service_with_special_names_descriptors_presult> {
  public:
 
   static const uint64_t _reflection_id = 9000437692453049900U;
@@ -2133,6 +2310,9 @@ class service_with_special_names_descriptors_presult final : public apache::thri
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_descriptors_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2157,7 +2337,7 @@ class service_with_special_names_descriptors_presult final : public apache::thri
 class service_with_special_names_descriptors_presult;
 void merge(const service_with_special_names_descriptors_presult& from, service_with_special_names_descriptors_presult& to);
 void merge(service_with_special_names_descriptors_presult&& from, service_with_special_names_descriptors_presult& to);
-class service_with_special_names_key_args final : public apache::thrift::TStructType<service_with_special_names_key_args> {
+class service_with_special_names_key_args : public apache::thrift::TStructType<service_with_special_names_key_args> {
  public:
 
   static const uint64_t _reflection_id = 1605840161292897484U;
@@ -2171,6 +2351,9 @@ class service_with_special_names_key_args final : public apache::thrift::TStruct
   service_with_special_names_key_args& operator=(service_with_special_names_key_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_key_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_key_args &) const;
   bool operator != (const service_with_special_names_key_args& rhs) const {
@@ -2193,12 +2376,15 @@ class service_with_special_names_key_args final : public apache::thrift::TStruct
 class service_with_special_names_key_args;
 void merge(const service_with_special_names_key_args& from, service_with_special_names_key_args& to);
 void merge(service_with_special_names_key_args&& from, service_with_special_names_key_args& to);
-class service_with_special_names_key_pargs final : public apache::thrift::TStructType<service_with_special_names_key_pargs> {
+class service_with_special_names_key_pargs : public apache::thrift::TStructType<service_with_special_names_key_pargs> {
  public:
 
   static const uint64_t _reflection_id = 1242976451924902860U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_key_pargs() = default;
+
+  virtual ~service_with_special_names_key_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2213,7 +2399,7 @@ class service_with_special_names_key_pargs final : public apache::thrift::TStruc
 class service_with_special_names_key_pargs;
 void merge(const service_with_special_names_key_pargs& from, service_with_special_names_key_pargs& to);
 void merge(service_with_special_names_key_pargs&& from, service_with_special_names_key_pargs& to);
-class service_with_special_names_key_presult final : public apache::thrift::TStructType<service_with_special_names_key_presult> {
+class service_with_special_names_key_presult : public apache::thrift::TStructType<service_with_special_names_key_presult> {
  public:
 
   static const uint64_t _reflection_id = 9390535927945279788U;
@@ -2232,6 +2418,9 @@ class service_with_special_names_key_presult final : public apache::thrift::TStr
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_key_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2256,7 +2445,7 @@ class service_with_special_names_key_presult final : public apache::thrift::TStr
 class service_with_special_names_key_presult;
 void merge(const service_with_special_names_key_presult& from, service_with_special_names_key_presult& to);
 void merge(service_with_special_names_key_presult&& from, service_with_special_names_key_presult& to);
-class service_with_special_names_keys_args final : public apache::thrift::TStructType<service_with_special_names_keys_args> {
+class service_with_special_names_keys_args : public apache::thrift::TStructType<service_with_special_names_keys_args> {
  public:
 
   static const uint64_t _reflection_id = 9648629972725083468U;
@@ -2270,6 +2459,9 @@ class service_with_special_names_keys_args final : public apache::thrift::TStruc
   service_with_special_names_keys_args& operator=(service_with_special_names_keys_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_keys_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_keys_args &) const;
   bool operator != (const service_with_special_names_keys_args& rhs) const {
@@ -2292,12 +2484,15 @@ class service_with_special_names_keys_args final : public apache::thrift::TStruc
 class service_with_special_names_keys_args;
 void merge(const service_with_special_names_keys_args& from, service_with_special_names_keys_args& to);
 void merge(service_with_special_names_keys_args&& from, service_with_special_names_keys_args& to);
-class service_with_special_names_keys_pargs final : public apache::thrift::TStructType<service_with_special_names_keys_pargs> {
+class service_with_special_names_keys_pargs : public apache::thrift::TStructType<service_with_special_names_keys_pargs> {
  public:
 
   static const uint64_t _reflection_id = 16794217974532786508U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_keys_pargs() = default;
+
+  virtual ~service_with_special_names_keys_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2312,7 +2507,7 @@ class service_with_special_names_keys_pargs final : public apache::thrift::TStru
 class service_with_special_names_keys_pargs;
 void merge(const service_with_special_names_keys_pargs& from, service_with_special_names_keys_pargs& to);
 void merge(service_with_special_names_keys_pargs&& from, service_with_special_names_keys_pargs& to);
-class service_with_special_names_keys_presult final : public apache::thrift::TStructType<service_with_special_names_keys_presult> {
+class service_with_special_names_keys_presult : public apache::thrift::TStructType<service_with_special_names_keys_presult> {
  public:
 
   static const uint64_t _reflection_id = 11746734769662621452U;
@@ -2331,6 +2526,9 @@ class service_with_special_names_keys_presult final : public apache::thrift::TSt
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_keys_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2355,7 +2553,7 @@ class service_with_special_names_keys_presult final : public apache::thrift::TSt
 class service_with_special_names_keys_presult;
 void merge(const service_with_special_names_keys_presult& from, service_with_special_names_keys_presult& to);
 void merge(service_with_special_names_keys_presult&& from, service_with_special_names_keys_presult& to);
-class service_with_special_names_annotation_args final : public apache::thrift::TStructType<service_with_special_names_annotation_args> {
+class service_with_special_names_annotation_args : public apache::thrift::TStructType<service_with_special_names_annotation_args> {
  public:
 
   static const uint64_t _reflection_id = 15683333469201773708U;
@@ -2369,6 +2567,9 @@ class service_with_special_names_annotation_args final : public apache::thrift::
   service_with_special_names_annotation_args& operator=(service_with_special_names_annotation_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_annotation_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_annotation_args &) const;
   bool operator != (const service_with_special_names_annotation_args& rhs) const {
@@ -2391,12 +2592,15 @@ class service_with_special_names_annotation_args final : public apache::thrift::
 class service_with_special_names_annotation_args;
 void merge(const service_with_special_names_annotation_args& from, service_with_special_names_annotation_args& to);
 void merge(service_with_special_names_annotation_args&& from, service_with_special_names_annotation_args& to);
-class service_with_special_names_annotation_pargs final : public apache::thrift::TStructType<service_with_special_names_annotation_pargs> {
+class service_with_special_names_annotation_pargs : public apache::thrift::TStructType<service_with_special_names_annotation_pargs> {
  public:
 
   static const uint64_t _reflection_id = 17332786171836213740U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_annotation_pargs() = default;
+
+  virtual ~service_with_special_names_annotation_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2411,7 +2615,7 @@ class service_with_special_names_annotation_pargs final : public apache::thrift:
 class service_with_special_names_annotation_pargs;
 void merge(const service_with_special_names_annotation_pargs& from, service_with_special_names_annotation_pargs& to);
 void merge(service_with_special_names_annotation_pargs&& from, service_with_special_names_annotation_pargs& to);
-class service_with_special_names_annotation_presult final : public apache::thrift::TStructType<service_with_special_names_annotation_presult> {
+class service_with_special_names_annotation_presult : public apache::thrift::TStructType<service_with_special_names_annotation_presult> {
  public:
 
   static const uint64_t _reflection_id = 4139107230434154412U;
@@ -2430,6 +2634,9 @@ class service_with_special_names_annotation_presult final : public apache::thrif
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_annotation_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2454,7 +2661,7 @@ class service_with_special_names_annotation_presult final : public apache::thrif
 class service_with_special_names_annotation_presult;
 void merge(const service_with_special_names_annotation_presult& from, service_with_special_names_annotation_presult& to);
 void merge(service_with_special_names_annotation_presult&& from, service_with_special_names_annotation_presult& to);
-class service_with_special_names_annotations_args final : public apache::thrift::TStructType<service_with_special_names_annotations_args> {
+class service_with_special_names_annotations_args : public apache::thrift::TStructType<service_with_special_names_annotations_args> {
  public:
 
   static const uint64_t _reflection_id = 17069873164792460620U;
@@ -2468,6 +2675,9 @@ class service_with_special_names_annotations_args final : public apache::thrift:
   service_with_special_names_annotations_args& operator=(service_with_special_names_annotations_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_annotations_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_annotations_args &) const;
   bool operator != (const service_with_special_names_annotations_args& rhs) const {
@@ -2490,12 +2700,15 @@ class service_with_special_names_annotations_args final : public apache::thrift:
 class service_with_special_names_annotations_args;
 void merge(const service_with_special_names_annotations_args& from, service_with_special_names_annotations_args& to);
 void merge(service_with_special_names_annotations_args&& from, service_with_special_names_annotations_args& to);
-class service_with_special_names_annotations_pargs final : public apache::thrift::TStructType<service_with_special_names_annotations_pargs> {
+class service_with_special_names_annotations_pargs : public apache::thrift::TStructType<service_with_special_names_annotations_pargs> {
  public:
 
   static const uint64_t _reflection_id = 18318118632293507020U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_annotations_pargs() = default;
+
+  virtual ~service_with_special_names_annotations_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2510,7 +2723,7 @@ class service_with_special_names_annotations_pargs final : public apache::thrift
 class service_with_special_names_annotations_pargs;
 void merge(const service_with_special_names_annotations_pargs& from, service_with_special_names_annotations_pargs& to);
 void merge(service_with_special_names_annotations_pargs&& from, service_with_special_names_annotations_pargs& to);
-class service_with_special_names_annotations_presult final : public apache::thrift::TStructType<service_with_special_names_annotations_presult> {
+class service_with_special_names_annotations_presult : public apache::thrift::TStructType<service_with_special_names_annotations_presult> {
  public:
 
   static const uint64_t _reflection_id = 4043952334908702028U;
@@ -2529,6 +2742,9 @@ class service_with_special_names_annotations_presult final : public apache::thri
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_annotations_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2553,7 +2769,7 @@ class service_with_special_names_annotations_presult final : public apache::thri
 class service_with_special_names_annotations_presult;
 void merge(const service_with_special_names_annotations_presult& from, service_with_special_names_annotations_presult& to);
 void merge(service_with_special_names_annotations_presult&& from, service_with_special_names_annotations_presult& to);
-class service_with_special_names_member_args final : public apache::thrift::TStructType<service_with_special_names_member_args> {
+class service_with_special_names_member_args : public apache::thrift::TStructType<service_with_special_names_member_args> {
  public:
 
   static const uint64_t _reflection_id = 3769000557722425548U;
@@ -2567,6 +2783,9 @@ class service_with_special_names_member_args final : public apache::thrift::TStr
   service_with_special_names_member_args& operator=(service_with_special_names_member_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_member_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_member_args &) const;
   bool operator != (const service_with_special_names_member_args& rhs) const {
@@ -2589,12 +2808,15 @@ class service_with_special_names_member_args final : public apache::thrift::TStr
 class service_with_special_names_member_args;
 void merge(const service_with_special_names_member_args& from, service_with_special_names_member_args& to);
 void merge(service_with_special_names_member_args&& from, service_with_special_names_member_args& to);
-class service_with_special_names_member_pargs final : public apache::thrift::TStructType<service_with_special_names_member_pargs> {
+class service_with_special_names_member_pargs : public apache::thrift::TStructType<service_with_special_names_member_pargs> {
  public:
 
   static const uint64_t _reflection_id = 3801129748783201580U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_member_pargs() = default;
+
+  virtual ~service_with_special_names_member_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2609,7 +2831,7 @@ class service_with_special_names_member_pargs final : public apache::thrift::TSt
 class service_with_special_names_member_pargs;
 void merge(const service_with_special_names_member_pargs& from, service_with_special_names_member_pargs& to);
 void merge(service_with_special_names_member_pargs&& from, service_with_special_names_member_pargs& to);
-class service_with_special_names_member_presult final : public apache::thrift::TStructType<service_with_special_names_member_presult> {
+class service_with_special_names_member_presult : public apache::thrift::TStructType<service_with_special_names_member_presult> {
  public:
 
   static const uint64_t _reflection_id = 6342879103543108076U;
@@ -2628,6 +2850,9 @@ class service_with_special_names_member_presult final : public apache::thrift::T
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_member_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {
@@ -2652,7 +2877,7 @@ class service_with_special_names_member_presult final : public apache::thrift::T
 class service_with_special_names_member_presult;
 void merge(const service_with_special_names_member_presult& from, service_with_special_names_member_presult& to);
 void merge(service_with_special_names_member_presult&& from, service_with_special_names_member_presult& to);
-class service_with_special_names_members_args final : public apache::thrift::TStructType<service_with_special_names_members_args> {
+class service_with_special_names_members_args : public apache::thrift::TStructType<service_with_special_names_members_args> {
  public:
 
   static const uint64_t _reflection_id = 15917542671561311212U;
@@ -2666,6 +2891,9 @@ class service_with_special_names_members_args final : public apache::thrift::TSt
   service_with_special_names_members_args& operator=(service_with_special_names_members_args&&) = default;
 
   void __clear();
+
+  virtual ~service_with_special_names_members_args() noexcept {}
+
 
   bool operator == (const service_with_special_names_members_args &) const;
   bool operator != (const service_with_special_names_members_args& rhs) const {
@@ -2688,12 +2916,15 @@ class service_with_special_names_members_args final : public apache::thrift::TSt
 class service_with_special_names_members_args;
 void merge(const service_with_special_names_members_args& from, service_with_special_names_members_args& to);
 void merge(service_with_special_names_members_args&& from, service_with_special_names_members_args& to);
-class service_with_special_names_members_pargs final : public apache::thrift::TStructType<service_with_special_names_members_pargs> {
+class service_with_special_names_members_pargs : public apache::thrift::TStructType<service_with_special_names_members_pargs> {
  public:
 
   static const uint64_t _reflection_id = 14009036600105297516U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_members_pargs() = default;
+
+  virtual ~service_with_special_names_members_pargs() noexcept {}
+
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2708,7 +2939,7 @@ class service_with_special_names_members_pargs final : public apache::thrift::TS
 class service_with_special_names_members_pargs;
 void merge(const service_with_special_names_members_pargs& from, service_with_special_names_members_pargs& to);
 void merge(service_with_special_names_members_pargs&& from, service_with_special_names_members_pargs& to);
-class service_with_special_names_members_presult final : public apache::thrift::TStructType<service_with_special_names_members_presult> {
+class service_with_special_names_members_presult : public apache::thrift::TStructType<service_with_special_names_members_presult> {
  public:
 
   static const uint64_t _reflection_id = 2099147124458247276U;
@@ -2727,6 +2958,9 @@ class service_with_special_names_members_presult final : public apache::thrift::
     success = arg.move();
     __isset.success = true;
   }
+
+  virtual ~service_with_special_names_members_presult() noexcept {}
+
   int32_t* success;
 
   struct __isset {

@@ -11,7 +11,7 @@ union ComplexUnion {
   14: string stringRef (cpp2.ref = "true");
 }
 
-union VirtualComplexUnion {
+union FinalComplexUnion {
   1: string thingOne;
   2: string thingTwo;
-} (cpp.virtual)
+} (final)

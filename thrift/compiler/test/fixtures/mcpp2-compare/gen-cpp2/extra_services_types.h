@@ -30,7 +30,7 @@ class containerStruct2;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace extra { namespace svc {
-class containerStruct2 final : private apache::thrift::detail::st::ComparisonOperators<containerStruct2> {
+class containerStruct2 : private apache::thrift::detail::st::ComparisonOperators<containerStruct2> {
  public:
 
   containerStruct2();
@@ -125,7 +125,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   containerStruct2& operator=(const containerStruct2&) = default;
   void __clear();
 
-  ~containerStruct2();
+  virtual ~containerStruct2();
 
   bool fieldA;
   bool req_fieldA;

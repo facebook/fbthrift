@@ -32,7 +32,7 @@ class StructUsingOtherNamespace;
 
 void swap(StructUsingOtherNamespace &a, StructUsingOtherNamespace &b);
 
-class StructUsingOtherNamespace final : public apache::thrift::TStructType<StructUsingOtherNamespace> {
+class StructUsingOtherNamespace : public apache::thrift::TStructType<StructUsingOtherNamespace> {
  public:
 
   static const uint64_t _reflection_id = 8285996275179549516U;
@@ -62,6 +62,9 @@ class StructUsingOtherNamespace final : public apache::thrift::TStructType<Struc
   StructUsingOtherNamespace& operator=(StructUsingOtherNamespace&&) = default;
 
   void __clear();
+
+  virtual ~StructUsingOtherNamespace() noexcept {}
+
   std::unique_ptr< ::cpp1::Included> other;
 
   struct __isset {
