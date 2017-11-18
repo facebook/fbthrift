@@ -181,7 +181,10 @@ void RSClientThriftChannel::sendThriftRequest(
           std::move(metadata), std::move(payload), std::move(callback));
       break;
     case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-      channelRequest(std::move(metadata), std::move(payload));
+      sendStreamRequestStreamResponse(std::move(metadata), std::move(payload));
+      break;
+    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      sendSingleRequestStreamResponse(std::move(metadata), std::move(payload));
       break;
     default: {
       LOG(ERROR) << "Unknown RpcKind value in the Metadata";
@@ -195,17 +198,17 @@ void RSClientThriftChannel::sendThriftRequest(
 }
 
 void RSClientThriftChannel::sendSingleRequestNoResponse(
-    std::unique_ptr<RequestRpcMetadata> requestMetadata,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  DCHECK(requestMetadata);
+  DCHECK(metadata);
 
   if (channelCounters_.incPendingRequests()) {
     auto guard =
         folly::makeGuard([&] { channelCounters_.decPendingRequests(); });
     rsRequester_
-        ->fireAndForget(rsocket::Payload(
-            std::move(buf), serializeMetadata(*requestMetadata)))
+        ->fireAndForget(
+            rsocket::Payload(std::move(buf), serializeMetadata(*metadata)))
         ->subscribe([] {});
   } else {
     LOG(ERROR) << "max number of pending requests is exceeded";
@@ -217,13 +220,13 @@ void RSClientThriftChannel::sendSingleRequestNoResponse(
 }
 
 void RSClientThriftChannel::sendSingleRequestResponse(
-    std::unique_ptr<RequestRpcMetadata> requestMetadata,
+    std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  DCHECK(requestMetadata);
+  DCHECK(metadata);
   auto timeout = kDefaultRequestTimeout;
-  if (requestMetadata->__isset.clientTimeoutMs) {
-    timeout = std::chrono::milliseconds(requestMetadata->clientTimeoutMs);
+  if (metadata->__isset.clientTimeoutMs) {
+    timeout = std::chrono::milliseconds(metadata->clientTimeoutMs);
   }
 
   auto singleObserver = yarpl::make_ref<TimedSingleObserver>(
@@ -237,8 +240,8 @@ void RSClientThriftChannel::sendSingleRequestResponse(
     // metadata->otherMetadata map.
 
     rsRequester_
-        ->requestResponse(rsocket::Payload(
-            std::move(buf), serializeMetadata(*requestMetadata)))
+        ->requestResponse(
+            rsocket::Payload(std::move(buf), serializeMetadata(*metadata)))
         ->subscribe(std::move(singleObserver));
   } else {
     TTransportException ex(
@@ -252,11 +255,11 @@ void RSClientThriftChannel::sendSingleRequestResponse(
   }
 }
 
-void RSClientThriftChannel::channelRequest(
+void RSClientThriftChannel::sendStreamRequestStreamResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> payload) noexcept {
+    std::unique_ptr<folly::IOBuf> buf) noexcept {
   auto input = yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
-      [this, initialBuf = std::move(payload), metadata = std::move(metadata)](
+      [this, initialBuf = std::move(buf), metadata = std::move(metadata)](
           yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
               subscriber) mutable {
         VLOG(3) << "Input is started to be consumed: "
@@ -274,6 +277,19 @@ void RSClientThriftChannel::channelRequest(
         VLOG(3) << "Request channel: "
                 << payload.data->cloneAsValue().moveToFbString().toStdString();
 
+        // TODO - don't drop the headers
+        return std::move(payload.data);
+      })
+      ->subscribe(input_);
+}
+
+void RSClientThriftChannel::sendSingleRequestStreamResponse(
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<folly::IOBuf> buf) noexcept {
+  auto result = rsRequester_->requestStream(
+      rsocket::Payload(std::move(buf), serializeMetadata(*metadata)));
+  result
+      ->map([](auto payload) -> std::unique_ptr<folly::IOBuf> {
         // TODO - don't drop the headers
         return std::move(payload.data);
       })

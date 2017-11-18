@@ -88,7 +88,11 @@ class RSClientThriftChannel : public ThriftChannelIf {
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept;
 
-  void channelRequest(
+  void sendStreamRequestStreamResponse(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload) noexcept;
+
+  void sendSingleRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
 
