@@ -84,7 +84,7 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
     bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs"});
   std::shared_ptr<ClientConnectionIf> conn =
-      std::make_shared<RSClientConnection>(std::move(sock), evb);
+      std::make_shared<RSClientConnection>(std::move(sock), encrypted);
   auto client = ThriftClient::Ptr(new ThriftClient(conn, evb));
   client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(client));

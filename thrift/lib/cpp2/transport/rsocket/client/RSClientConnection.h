@@ -51,7 +51,7 @@ class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
 
 class RSClientConnection : public ClientConnectionIf {
  public:
-  RSClientConnection(
+  explicit RSClientConnection(
       apache::thrift::async::TAsyncTransport::UniquePtr socket,
       bool isSecure = false);
 
