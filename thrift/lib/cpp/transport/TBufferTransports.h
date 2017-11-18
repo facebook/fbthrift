@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,9 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
    * This method is meant to eventually be nonvirtual and inlinable.
    */
   uint32_t read(uint8_t* buf, uint32_t len) {
-    uint8_t* new_rBase = rBase_ + len;
-    if (LIKELY(new_rBase <= rBound_)) {
+    if (LIKELY(static_cast<ptrdiff_t>(len) <= rBound_ - rBase_)) {
       std::memcpy(buf, rBase_, len);
-      rBase_ = new_rBase;
+      rBase_ += len;
       return len;
     }
     return readSlow(buf, len);
@@ -64,10 +63,9 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
    * Shortcutted version of readAll.
    */
   uint32_t readAll(uint8_t* buf, uint32_t len) {
-    uint8_t* new_rBase = rBase_ + len;
-    if (LIKELY(new_rBase <= rBound_)) {
+    if (LIKELY(static_cast<ptrdiff_t>(len) <= rBound_ - rBase_)) {
       std::memcpy(buf, rBase_, len);
-      rBase_ = new_rBase;
+      rBase_ += len;
       return len;
     }
     return apache::thrift::transport::readAll(*this, buf, len);
@@ -83,10 +81,9 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
    * inlinable.
    */
   void write(const uint8_t* buf, uint32_t len) {
-    uint8_t* new_wBase = wBase_ + len;
-    if (LIKELY(new_wBase <= wBound_)) {
+    if (LIKELY(static_cast<ptrdiff_t>(len) <= wBound_ - wBase_)) {
       std::memcpy(wBase_, buf, len);
-      wBase_ = new_wBase;
+      wBase_ += len;
       return;
     }
     writeSlow(buf, len);
@@ -157,7 +154,7 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
   /// Convenience mutator for setting the read buffer.
   void setReadBuffer(uint8_t* buf, uint32_t len) {
     rBase_ = buf;
-    rBound_ = buf+len;
+    rBound_ = buf + len;
   }
 
   /// Convenience mutator for setting the write buffer.
