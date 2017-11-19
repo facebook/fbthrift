@@ -127,9 +127,7 @@ class ThreadManager::ImplT : public ThreadManager  {
     deadWorkers_(),
     namePrefix_(""),
     namePrefixCounter_(0),
-    codelEnabled_(false || FLAGS_codel_enabled) {
-      folly::RequestContext::saveContext();
-  }
+    codelEnabled_(false || FLAGS_codel_enabled) {}
 
   ~ImplT() override { stop(); }
 
