@@ -307,7 +307,7 @@ bool HeaderClientChannel::isSecurityPending() {
     }
   }
 
-  CHECK(false);
+  throw std::runtime_error("bad ProtectionState");
 }
 
 void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
