@@ -205,7 +205,7 @@ typedef CppHasANumber HasANumber;
 
 typedef CppHasAResult HasAResult;
 
-class union1 : public apache::thrift::TStructType<union1> {
+class union1 final : public apache::thrift::TStructType<union1> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -370,7 +370,7 @@ class union1 : public apache::thrift::TStructType<union1> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union1() noexcept {
+  ~union1() noexcept {
     __clear();
   }
 
@@ -547,7 +547,7 @@ class union1 : public apache::thrift::TStructType<union1> {
 
 };
 
-class union2 : public apache::thrift::TStructType<union2> {
+class union2 final : public apache::thrift::TStructType<union2> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -712,7 +712,7 @@ class union2 : public apache::thrift::TStructType<union2> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union2() noexcept {
+  ~union2() noexcept {
     __clear();
   }
 
@@ -889,7 +889,7 @@ class union2 : public apache::thrift::TStructType<union2> {
 
 };
 
-class union3 : public apache::thrift::TStructType<union3> {
+class union3 final : public apache::thrift::TStructType<union3> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -1054,7 +1054,7 @@ class union3 : public apache::thrift::TStructType<union3> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union3() noexcept {
+  ~union3() noexcept {
     __clear();
   }
 
@@ -1233,7 +1233,7 @@ class union3 : public apache::thrift::TStructType<union3> {
 
 void swap(structA &a, structA &b);
 
-class structA : public apache::thrift::TStructType<structA> {
+class structA final : public apache::thrift::TStructType<structA> {
  public:
 
   static const uint64_t _reflection_id = 9663308154247018828U;
@@ -1273,9 +1273,6 @@ class structA : public apache::thrift::TStructType<structA> {
   structA& operator=(structA&&) = default;
 
   void __clear();
-
-  virtual ~structA() noexcept {}
-
   int32_t a;
   std::string b;
 
@@ -1310,7 +1307,7 @@ class structA : public apache::thrift::TStructType<structA> {
 class structA;
 void merge(const structA& from, structA& to);
 void merge(structA&& from, structA& to);
-class unionA : public apache::thrift::TStructType<unionA> {
+class unionA final : public apache::thrift::TStructType<unionA> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -1503,7 +1500,7 @@ class unionA : public apache::thrift::TStructType<unionA> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~unionA() noexcept {
+  ~unionA() noexcept {
     __clear();
   }
 
@@ -1715,7 +1712,7 @@ class unionA : public apache::thrift::TStructType<unionA> {
 
 void swap(structB &a, structB &b);
 
-class structB : public apache::thrift::TStructType<structB> {
+class structB final : public apache::thrift::TStructType<structB> {
  public:
 
   static const uint64_t _reflection_id = 10239267202130913964U;
@@ -1755,9 +1752,6 @@ class structB : public apache::thrift::TStructType<structB> {
   structB& operator=(structB&&) = default;
 
   void __clear();
-
-  virtual ~structB() noexcept {}
-
   double c;
   bool d;
 
@@ -1794,7 +1788,7 @@ void merge(const structB& from, structB& to);
 void merge(structB&& from, structB& to);
 void swap(structC &a, structC &b);
 
-class structC : public apache::thrift::TStructType<structC> {
+class structC final : public apache::thrift::TStructType<structC> {
  public:
 
   static const uint64_t _reflection_id = 18130273386912691148U;
@@ -2198,9 +2192,6 @@ class structC : public apache::thrift::TStructType<structC> {
   structC& operator=(structC&&) = default;
 
   void __clear();
-
-  virtual ~structC() noexcept {}
-
   int32_t a;
   std::string b;
   double c;
@@ -2321,7 +2312,7 @@ void merge(const structC& from, structC& to);
 void merge(structC&& from, structC& to);
 void swap(struct1 &a, struct1 &b);
 
-class struct1 : public apache::thrift::TStructType<struct1> {
+class struct1 final : public apache::thrift::TStructType<struct1> {
  public:
 
   static const uint64_t _reflection_id = 18317194148543753228U;
@@ -2411,9 +2402,6 @@ class struct1 : public apache::thrift::TStructType<struct1> {
   struct1& operator=(struct1&&) = default;
 
   void __clear();
-
-  virtual ~struct1() noexcept {}
-
   int32_t field0;
   std::string field1;
   enum1 field2;
@@ -2458,7 +2446,7 @@ void merge(const struct1& from, struct1& to);
 void merge(struct1&& from, struct1& to);
 void swap(struct2 &a, struct2 &b);
 
-class struct2 : public apache::thrift::TStructType<struct2> {
+class struct2 final : public apache::thrift::TStructType<struct2> {
  public:
 
   static const uint64_t _reflection_id = 13919930284671800588U;
@@ -2563,9 +2551,6 @@ class struct2 : public apache::thrift::TStructType<struct2> {
   struct2& operator=(struct2&&) = default;
 
   void __clear();
-
-  virtual ~struct2() noexcept {}
-
   int32_t fieldA;
   std::string fieldB;
   enum1 fieldC;
@@ -2617,7 +2602,7 @@ void merge(const struct2& from, struct2& to);
 void merge(struct2&& from, struct2& to);
 void swap(struct3 &a, struct3 &b);
 
-class struct3 : public apache::thrift::TStructType<struct3> {
+class struct3 final : public apache::thrift::TStructType<struct3> {
  public:
 
   static const uint64_t _reflection_id = 16392874475279945260U;
@@ -2865,9 +2850,6 @@ class struct3 : public apache::thrift::TStructType<struct3> {
   struct3& operator=(struct3&&) = default;
 
   void __clear();
-
-  virtual ~struct3() noexcept {}
-
   int32_t fieldA;
   std::string fieldB;
   enum1 fieldC;
@@ -2952,7 +2934,7 @@ void merge(const struct3& from, struct3& to);
 void merge(struct3&& from, struct3& to);
 void swap(struct4 &a, struct4 &b);
 
-class struct4 : public apache::thrift::TStructType<struct4> {
+class struct4 final : public apache::thrift::TStructType<struct4> {
  public:
 
   static const uint64_t _reflection_id = 7898252530621438604U;
@@ -3017,9 +2999,6 @@ class struct4 : public apache::thrift::TStructType<struct4> {
   struct4& operator=(struct4&&) = default;
 
   void __clear();
-
-  virtual ~struct4() noexcept {}
-
   int32_t field0;
   std::string field1;
   enum1 field2;
@@ -3060,7 +3039,7 @@ void merge(const struct4& from, struct4& to);
 void merge(struct4&& from, struct4& to);
 void swap(struct5 &a, struct5 &b);
 
-class struct5 : public apache::thrift::TStructType<struct5> {
+class struct5 final : public apache::thrift::TStructType<struct5> {
  public:
 
   static const uint64_t _reflection_id = 16358384009565610188U;
@@ -3138,9 +3117,6 @@ class struct5 : public apache::thrift::TStructType<struct5> {
   struct5& operator=(struct5&&) = default;
 
   void __clear();
-
-  virtual ~struct5() noexcept {}
-
   int32_t field0;
   std::string field1;
   enum1 field2;
@@ -3184,7 +3160,7 @@ void merge(const struct5& from, struct5& to);
 void merge(struct5&& from, struct5& to);
 void swap(struct_binary &a, struct_binary &b);
 
-class struct_binary : public apache::thrift::TStructType<struct_binary> {
+class struct_binary final : public apache::thrift::TStructType<struct_binary> {
  public:
 
   static const uint64_t _reflection_id = 6812073435240150444U;
@@ -3211,9 +3187,6 @@ class struct_binary : public apache::thrift::TStructType<struct_binary> {
   struct_binary& operator=(struct_binary&&) = default;
 
   void __clear();
-
-  virtual ~struct_binary() noexcept {}
-
   std::string bi;
 
   struct __isset {
@@ -3247,7 +3220,7 @@ void merge(const struct_binary& from, struct_binary& to);
 void merge(struct_binary&& from, struct_binary& to);
 void swap(annotated &a, annotated &b);
 
-class annotated : public apache::thrift::TStructType<annotated> {
+class annotated final : public apache::thrift::TStructType<annotated> {
  public:
 
   static const uint64_t _reflection_id = 300598955218934796U;
@@ -3274,9 +3247,6 @@ class annotated : public apache::thrift::TStructType<annotated> {
   annotated& operator=(annotated&&) = default;
 
   void __clear();
-
-  virtual ~annotated() noexcept {}
-
   int32_t a;
 
   struct __isset {
@@ -3308,7 +3278,7 @@ class annotated : public apache::thrift::TStructType<annotated> {
 class annotated;
 void merge(const annotated& from, annotated& to);
 void merge(annotated&& from, annotated& to);
-class union_with_special_names : public apache::thrift::TStructType<union_with_special_names> {
+class union_with_special_names final : public apache::thrift::TStructType<union_with_special_names> {
  public:
   enum class Type {
     __EMPTY__ = 0,
@@ -4089,7 +4059,7 @@ class union_with_special_names : public apache::thrift::TStructType<union_with_s
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union_with_special_names() noexcept {
+  ~union_with_special_names() noexcept {
     __clear();
   }
 
@@ -4994,7 +4964,7 @@ class union_with_special_names : public apache::thrift::TStructType<union_with_s
 
 void swap(struct_with_special_names &a, struct_with_special_names &b);
 
-class struct_with_special_names : public apache::thrift::TStructType<struct_with_special_names> {
+class struct_with_special_names final : public apache::thrift::TStructType<struct_with_special_names> {
  public:
 
   static const uint64_t _reflection_id = 8634504681174503372U;
@@ -5346,9 +5316,6 @@ class struct_with_special_names : public apache::thrift::TStructType<struct_with
   struct_with_special_names& operator=(struct_with_special_names&&) = default;
 
   void __clear();
-
-  virtual ~struct_with_special_names() noexcept {}
-
   int32_t get;
   int32_t getter;
   int32_t lists;
@@ -5457,7 +5424,7 @@ void merge(const struct_with_special_names& from, struct_with_special_names& to)
 void merge(struct_with_special_names&& from, struct_with_special_names& to);
 void swap(struct_with_indirections &a, struct_with_indirections &b);
 
-class struct_with_indirections : public apache::thrift::TStructType<struct_with_indirections> {
+class struct_with_indirections final : public apache::thrift::TStructType<struct_with_indirections> {
  public:
 
   static const uint64_t _reflection_id = 1743512479375461036U;
@@ -5523,9 +5490,6 @@ class struct_with_indirections : public apache::thrift::TStructType<struct_with_
   struct_with_indirections& operator=(struct_with_indirections&&) = default;
 
   void __clear();
-
-  virtual ~struct_with_indirections() noexcept {}
-
   int32_t real;
   FakeI32 fake;
   HasANumber number;

@@ -50,7 +50,7 @@ class Struct;
 
 void swap(Struct &a, Struct &b);
 
-class Struct : public apache::thrift::TStructType<Struct> {
+class Struct final : public apache::thrift::TStructType<Struct> {
  public:
 
   static const uint64_t _reflection_id = 18368202441649123916U;
@@ -90,9 +90,6 @@ class Struct : public apache::thrift::TStructType<Struct> {
   Struct& operator=(Struct&&) = default;
 
   void __clear();
-
-  virtual ~Struct() noexcept {}
-
   int32_t first;
   std::string second;
 

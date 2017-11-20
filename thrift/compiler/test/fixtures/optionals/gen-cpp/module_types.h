@@ -56,7 +56,7 @@ typedef int64_t PersonID;
 
 void swap(Color &a, Color &b);
 
-class Color : public apache::thrift::TStructType<Color> {
+class Color final : public apache::thrift::TStructType<Color> {
  public:
 
   static const uint64_t _reflection_id = 11194926431654439212U;
@@ -122,9 +122,6 @@ class Color : public apache::thrift::TStructType<Color> {
   Color& operator=(Color&&) = default;
 
   void __clear();
-
-  virtual ~Color() noexcept {}
-
   double red;
   double green;
   double blue;
@@ -165,7 +162,7 @@ void merge(const Color& from, Color& to);
 void merge(Color&& from, Color& to);
 void swap(Vehicle &a, Vehicle &b);
 
-class Vehicle : public apache::thrift::TStructType<Vehicle> {
+class Vehicle final : public apache::thrift::TStructType<Vehicle> {
  public:
 
   static const uint64_t _reflection_id = 11029503283921871788U;
@@ -244,9 +241,6 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
   Vehicle& operator=(Vehicle&&) = default;
 
   void __clear();
-
-  virtual ~Vehicle() noexcept {}
-
   Color color;
   std::string licensePlate;
   std::string description;
@@ -290,7 +284,7 @@ void merge(const Vehicle& from, Vehicle& to);
 void merge(Vehicle&& from, Vehicle& to);
 void swap(Person &a, Person &b);
 
-class Person : public apache::thrift::TStructType<Person> {
+class Person final : public apache::thrift::TStructType<Person> {
  public:
 
   static const uint64_t _reflection_id = 17004913262661492556U;
@@ -434,9 +428,6 @@ class Person : public apache::thrift::TStructType<Person> {
   Person& operator=(Person&&) = default;
 
   void __clear();
-
-  virtual ~Person() noexcept {}
-
   PersonID id;
   std::string name;
   int16_t age;

@@ -135,7 +135,7 @@ class union2;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Internship : private apache::thrift::detail::st::ComparisonOperators<Internship> {
+class Internship final : private apache::thrift::detail::st::ComparisonOperators<Internship> {
  public:
 
   Internship() :
@@ -172,9 +172,6 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
 
   Internship& operator=(const Internship&) = default;
   void __clear();
-
-  virtual ~Internship() {}
-
   int32_t weeks;
   std::string title;
    ::cpp2::Company employer;
@@ -277,7 +274,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::ser
 
 }} // apache::thrift
 namespace cpp2 {
-class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
+class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
  public:
 
   UnEnumStruct() :
@@ -300,9 +297,6 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
 
   UnEnumStruct& operator=(const UnEnumStruct&) = default;
   void __clear();
-
-  virtual ~UnEnumStruct() {}
-
    ::cpp2::City city;
 
   struct __isset {
@@ -380,7 +374,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::s
 
 }} // apache::thrift
 namespace cpp2 {
-class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
+class Range final : private apache::thrift::detail::st::ComparisonOperators<Range> {
  public:
 
   Range() :
@@ -409,9 +403,6 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
 
   Range& operator=(const Range&) = default;
   void __clear();
-
-  virtual ~Range() {}
-
   int32_t min;
   int32_t max;
   bool operator==(const Range& rhs) const;
@@ -497,7 +488,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1> {
+class struct1 final : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
 
   struct1() :
@@ -528,9 +519,6 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
 
   struct1& operator=(const struct1&) = default;
   void __clear();
-
-  virtual ~struct1() {}
-
   int32_t a;
   std::string b;
 
@@ -628,7 +616,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2> {
+class struct2 final : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
 
   struct2() :
@@ -672,9 +660,6 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
 
   struct2& operator=(const struct2&) = default;
   void __clear();
-
-  virtual ~struct2() {}
-
   int32_t a;
   std::string b;
    ::cpp2::struct1 c;
@@ -800,7 +785,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3> {
+class struct3 final : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
 
   struct3() :
@@ -837,9 +822,6 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
 
   struct3& operator=(const struct3&) = default;
   void __clear();
-
-  virtual ~struct3() {}
-
   std::string a;
   int32_t b;
    ::cpp2::struct2 c;
@@ -951,7 +933,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::serial
 
 }} // apache::thrift
 namespace cpp2 {
-class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
+class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -1071,10 +1053,9 @@ class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
   }
   void __clear();
 
-  virtual ~union1() {
+  ~union1() {
     __clear();
   }
-
   union storage_type {
     int32_t i;
     double d;
@@ -1208,7 +1189,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::seriali
 
 }} // apache::thrift
 namespace cpp2 {
-class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
+class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -1382,10 +1363,9 @@ class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
   }
   void __clear();
 
-  virtual ~union2() {
+  ~union2() {
     __clear();
   }
-
   union storage_type {
     int32_t i;
     double d;

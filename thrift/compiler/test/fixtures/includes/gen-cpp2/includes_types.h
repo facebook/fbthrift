@@ -32,7 +32,7 @@ typedef int64_t IncludedInt64;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Included : private apache::thrift::detail::st::ComparisonOperators<Included> {
+class Included final : private apache::thrift::detail::st::ComparisonOperators<Included> {
  public:
 
   Included() :
@@ -63,9 +63,6 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
 
   Included& operator=(const Included&) = default;
   void __clear();
-
-  virtual ~Included() {}
-
   int64_t MyIntField;
    ::cpp2::Foo MyTransitiveField;
 

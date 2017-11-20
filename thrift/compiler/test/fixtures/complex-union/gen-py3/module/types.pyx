@@ -246,18 +246,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return (deserialize, (ComplexUnion, serialize(self)))
 
 
-class FinalComplexUnionType(Enum):
-    EMPTY = <int>cFinalComplexUnion__type___EMPTY__
-    thingOne = <int>cFinalComplexUnion__type_thingOne
-    thingTwo = <int>cFinalComplexUnion__type_thingTwo
+class VirtualComplexUnionType(Enum):
+    EMPTY = <int>cVirtualComplexUnion__type___EMPTY__
+    thingOne = <int>cVirtualComplexUnion__type_thingOne
+    thingTwo = <int>cVirtualComplexUnion__type_thingTwo
 
-cdef class FinalComplexUnion(thrift.py3.types.Union):
+cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def __init__(
-        FinalComplexUnion self,
+        VirtualComplexUnion self,
         thingOne=None,
         thingTwo=None
     ):
-        self._cpp_obj = move(FinalComplexUnion._make_instance(
+        self._cpp_obj = move(VirtualComplexUnion._make_instance(
           NULL,
           thingOne,
           thingTwo,
@@ -265,12 +265,12 @@ cdef class FinalComplexUnion(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
-    cdef unique_ptr[cFinalComplexUnion] _make_instance(
-        cFinalComplexUnion* base_instance,
+    cdef unique_ptr[cVirtualComplexUnion] _make_instance(
+        cVirtualComplexUnion* base_instance,
         thingOne,
         thingTwo
     ) except *:
-        cdef unique_ptr[cFinalComplexUnion] c_inst = make_unique[cFinalComplexUnion]()
+        cdef unique_ptr[cVirtualComplexUnion] c_inst = make_unique[cVirtualComplexUnion]()
         cdef bint any_set = False
         if thingOne is not None:
             if any_set:
@@ -287,29 +287,29 @@ cdef class FinalComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != FinalComplexUnionType.EMPTY
+        return self.__type != VirtualComplexUnionType.EMPTY
 
     @staticmethod
-    cdef create(shared_ptr[cFinalComplexUnion] cpp_obj):
-        inst = <FinalComplexUnion>FinalComplexUnion.__new__(FinalComplexUnion)
+    cdef create(shared_ptr[cVirtualComplexUnion] cpp_obj):
+        inst = <VirtualComplexUnion>VirtualComplexUnion.__new__(VirtualComplexUnion)
         inst._cpp_obj = cpp_obj
         inst._load_cache()
         return inst
 
     @property
     def thingOne(self):
-        if self.__type != FinalComplexUnionType.thingOne:
+        if self.__type != VirtualComplexUnionType.thingOne:
             raise TypeError(f'Union contains a value of type {self.__type.name}, not thingOne')
         return self.__cached
 
     @property
     def thingTwo(self):
-        if self.__type != FinalComplexUnionType.thingTwo:
+        if self.__type != VirtualComplexUnionType.thingTwo:
             raise TypeError(f'Union contains a value of type {self.__type.name}, not thingTwo')
         return self.__cached
 
 
-    def __hash__(FinalComplexUnion self):
+    def __hash__(VirtualComplexUnion self):
         if not self.__hash:
             self.__hash = hash((
                 self.__type,
@@ -317,30 +317,30 @@ cdef class FinalComplexUnion(thrift.py3.types.Union):
             ))
         return self.__hash
 
-    def __repr__(FinalComplexUnion self):
-        return f'FinalComplexUnion(type={self.__type.name}, value={self.__cached!r})'
+    def __repr__(VirtualComplexUnion self):
+        return f'VirtualComplexUnion(type={self.__type.name}, value={self.__cached!r})'
 
-    cdef _load_cache(FinalComplexUnion self):
+    cdef _load_cache(VirtualComplexUnion self):
         if self.__type is not None:
             return
 
-        self.__type = FinalComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == FinalComplexUnionType.EMPTY:
+        self.__type = VirtualComplexUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == VirtualComplexUnionType.EMPTY:
             self.__cached = None
-        elif self.__type == FinalComplexUnionType.thingOne:
+        elif self.__type == VirtualComplexUnionType.thingOne:
             self.__cached = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
-        elif self.__type == FinalComplexUnionType.thingTwo:
+        elif self.__type == VirtualComplexUnionType.thingTwo:
             self.__cached = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
 
     @property
-    def value(FinalComplexUnion self):
+    def value(VirtualComplexUnion self):
         return self.__cached
 
     @property
-    def type(FinalComplexUnion self):
+    def type(VirtualComplexUnion self):
         return self.__type
 
-    def get_type(FinalComplexUnion self):
+    def get_type(VirtualComplexUnion self):
         return self.__type
 
     def __richcmp__(self, other, op):
@@ -348,45 +348,45 @@ cdef class FinalComplexUnion(thrift.py3.types.Union):
         if cop not in (2, 3):
             raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
-                isinstance(self, FinalComplexUnion) and
-                isinstance(other, FinalComplexUnion)):
+                isinstance(self, VirtualComplexUnion) and
+                isinstance(other, VirtualComplexUnion)):
             if cop == 2:  # different types are never equal
                 return False
             else:         # different types are always notequal
                 return True
 
-        cdef cFinalComplexUnion cself = deref((<FinalComplexUnion>self)._cpp_obj)
-        cdef cFinalComplexUnion cother = deref((<FinalComplexUnion>other)._cpp_obj)
+        cdef cVirtualComplexUnion cself = deref((<VirtualComplexUnion>self)._cpp_obj)
+        cdef cVirtualComplexUnion cother = deref((<VirtualComplexUnion>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
         return not cmp
 
-    cdef bytes _serialize(FinalComplexUnion self, proto):
+    cdef bytes _serialize(VirtualComplexUnion self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cFinalComplexUnion](deref(self._cpp_obj.get()), &c_str)
+            serializer.CompactSerialize[cVirtualComplexUnion](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cFinalComplexUnion](deref(self._cpp_obj.get()), &c_str)
+            serializer.BinarySerialize[cVirtualComplexUnion](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cFinalComplexUnion](deref(self._cpp_obj.get()), &c_str)
+            serializer.JSONSerialize[cVirtualComplexUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(FinalComplexUnion self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(VirtualComplexUnion self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cFinalComplexUnion](buf, deref(self._cpp_obj.get()))
+            needed = serializer.CompactDeserialize[cVirtualComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cFinalComplexUnion](buf, deref(self._cpp_obj.get()))
+            needed = serializer.BinaryDeserialize[cVirtualComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cFinalComplexUnion](buf, deref(self._cpp_obj.get()))
+            needed = serializer.JSONDeserialize[cVirtualComplexUnion](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
         self.__type = None
         self._load_cache()
         return needed
 
     def __reduce__(self):
-        return (deserialize, (FinalComplexUnion, serialize(self)))
+        return (deserialize, (VirtualComplexUnion, serialize(self)))
 
 
 cdef class List__i64:

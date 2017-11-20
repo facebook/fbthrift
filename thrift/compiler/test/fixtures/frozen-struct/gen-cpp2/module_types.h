@@ -74,7 +74,7 @@ class ModuleB;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace some { namespace ns {
-class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
+class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<ModuleA> {
  public:
 
   ModuleA();
@@ -133,7 +133,7 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   ModuleA& operator=(const ModuleA&) = default;
   void __clear();
 
-  virtual ~ModuleA();
+  ~ModuleA();
 
   int32_t i32Field;
   std::string strField;
@@ -288,7 +288,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::ModuleA>::se
 
 }} // apache::thrift
 namespace some { namespace ns {
-class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
+class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
  public:
 
   ModuleB() :
@@ -319,9 +319,6 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
 
   ModuleB& operator=(const ModuleB&) = default;
   void __clear();
-
-  virtual ~ModuleB() {}
-
   int32_t i32Field;
    ::some::ns::EnumB inclEnumB;
 

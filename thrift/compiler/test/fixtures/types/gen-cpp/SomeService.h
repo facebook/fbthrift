@@ -51,7 +51,7 @@ class SomeServiceNull : virtual public SomeServiceIf {
   }
 };
 
-class SomeService_bounce_map_args : public apache::thrift::TStructType<SomeService_bounce_map_args> {
+class SomeService_bounce_map_args final : public apache::thrift::TStructType<SomeService_bounce_map_args> {
  public:
 
   static const uint64_t _reflection_id = 8067468913239303596U;
@@ -78,9 +78,6 @@ class SomeService_bounce_map_args : public apache::thrift::TStructType<SomeServi
   SomeService_bounce_map_args& operator=(SomeService_bounce_map_args&&) = default;
 
   void __clear();
-
-  virtual ~SomeService_bounce_map_args() noexcept {}
-
    ::apache::thrift::fixtures::types::SomeMap m;
 
   struct __isset {
@@ -110,7 +107,7 @@ class SomeService_bounce_map_args : public apache::thrift::TStructType<SomeServi
 class SomeService_bounce_map_args;
 void merge(const SomeService_bounce_map_args& from, SomeService_bounce_map_args& to);
 void merge(SomeService_bounce_map_args&& from, SomeService_bounce_map_args& to);
-class SomeService_bounce_map_pargs : public apache::thrift::TStructType<SomeService_bounce_map_pargs> {
+class SomeService_bounce_map_pargs final : public apache::thrift::TStructType<SomeService_bounce_map_pargs> {
  public:
 
   static const uint64_t _reflection_id = 13692909882459418892U;
@@ -128,9 +125,6 @@ class SomeService_bounce_map_pargs : public apache::thrift::TStructType<SomeServ
   {
     m = arg.move();
   }
-
-  virtual ~SomeService_bounce_map_pargs() noexcept {}
-
   const  ::apache::thrift::fixtures::types::SomeMap* m;
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -144,7 +138,7 @@ class SomeService_bounce_map_pargs : public apache::thrift::TStructType<SomeServ
 class SomeService_bounce_map_pargs;
 void merge(const SomeService_bounce_map_pargs& from, SomeService_bounce_map_pargs& to);
 void merge(SomeService_bounce_map_pargs&& from, SomeService_bounce_map_pargs& to);
-class SomeService_bounce_map_presult : public apache::thrift::TStructType<SomeService_bounce_map_presult> {
+class SomeService_bounce_map_presult final : public apache::thrift::TStructType<SomeService_bounce_map_presult> {
  public:
 
   static const uint64_t _reflection_id = 14908807508243143308U;
@@ -163,9 +157,6 @@ class SomeService_bounce_map_presult : public apache::thrift::TStructType<SomeSe
     success = arg.move();
     __isset.success = true;
   }
-
-  virtual ~SomeService_bounce_map_presult() noexcept {}
-
    ::apache::thrift::fixtures::types::SomeMap* success;
 
   struct __isset {

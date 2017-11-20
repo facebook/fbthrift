@@ -29,7 +29,7 @@ class Nada;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
+class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}
@@ -44,9 +44,6 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-
-  virtual ~Empty() {}
-
   bool operator==(const Empty& /* rhs */) const;
 
   bool operator < (const Empty& rhs) const {
@@ -106,7 +103,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Empty>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-class Nada : private apache::thrift::detail::st::ComparisonOperators<Nada> {
+class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -172,10 +169,9 @@ class Nada : private apache::thrift::detail::st::ComparisonOperators<Nada> {
   }
   void __clear();
 
-  virtual ~Nada() {
+  ~Nada() {
     __clear();
   }
-
   union storage_type {
 
     storage_type() {}

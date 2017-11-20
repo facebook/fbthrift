@@ -23,7 +23,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cComplexUnion "cpp2::ComplexUnion"
     # Forward Declaration
-    cdef cppclass cFinalComplexUnion "cpp2::FinalComplexUnion"
+    cdef cppclass cVirtualComplexUnion "cpp2::VirtualComplexUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef enum cComplexUnion__type "cpp2::ComplexUnion::Type":
@@ -53,16 +53,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         const unique_ptr[string]& get_stringRef() const
         unique_ptr[string]& set_stringRef(const string&)
 
-    cdef enum cFinalComplexUnion__type "cpp2::FinalComplexUnion::Type":
-        cFinalComplexUnion__type___EMPTY__ "cpp2::FinalComplexUnion::Type::__EMPTY__",
-        cFinalComplexUnion__type_thingOne "cpp2::FinalComplexUnion::Type::thingOne",
-        cFinalComplexUnion__type_thingTwo "cpp2::FinalComplexUnion::Type::thingTwo",
+    cdef enum cVirtualComplexUnion__type "cpp2::VirtualComplexUnion::Type":
+        cVirtualComplexUnion__type___EMPTY__ "cpp2::VirtualComplexUnion::Type::__EMPTY__",
+        cVirtualComplexUnion__type_thingOne "cpp2::VirtualComplexUnion::Type::thingOne",
+        cVirtualComplexUnion__type_thingTwo "cpp2::VirtualComplexUnion::Type::thingTwo",
 
-    cdef cppclass cFinalComplexUnion "cpp2::FinalComplexUnion":
-        cFinalComplexUnion() except +
-        cFinalComplexUnion(const cFinalComplexUnion&) except +
-        bint operator==(cFinalComplexUnion&)
-        cFinalComplexUnion__type getType() const
+    cdef cppclass cVirtualComplexUnion "cpp2::VirtualComplexUnion":
+        cVirtualComplexUnion() except +
+        cVirtualComplexUnion(const cVirtualComplexUnion&) except +
+        bint operator==(cVirtualComplexUnion&)
+        cVirtualComplexUnion__type getType() const
         const string& get_thingOne() const
         string& set_thingOne(const string&)
         const string& get_thingTwo() const
@@ -74,13 +74,13 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexUnion] move(unique_ptr[cComplexUnion])
     cdef shared_ptr[cComplexUnion] move_shared "std::move"(shared_ptr[cComplexUnion])
     cdef unique_ptr[cComplexUnion] move_unique "std::move"(unique_ptr[cComplexUnion])
-    cdef shared_ptr[cFinalComplexUnion] move(unique_ptr[cFinalComplexUnion])
-    cdef shared_ptr[cFinalComplexUnion] move_shared "std::move"(shared_ptr[cFinalComplexUnion])
-    cdef unique_ptr[cFinalComplexUnion] move_unique "std::move"(unique_ptr[cFinalComplexUnion])
+    cdef shared_ptr[cVirtualComplexUnion] move(unique_ptr[cVirtualComplexUnion])
+    cdef shared_ptr[cVirtualComplexUnion] move_shared "std::move"(shared_ptr[cVirtualComplexUnion])
+    cdef unique_ptr[cVirtualComplexUnion] move_unique "std::move"(unique_ptr[cVirtualComplexUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
-    cdef shared_ptr[const cFinalComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::FinalComplexUnion>"(shared_ptr[cFinalComplexUnion])
+    cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
 
 # Forward Definition of the cython struct
 cdef class ComplexUnion(thrift.py3.types.Union)
@@ -108,25 +108,25 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cComplexUnion])
 
 # Forward Definition of the cython struct
-cdef class FinalComplexUnion(thrift.py3.types.Union)
+cdef class VirtualComplexUnion(thrift.py3.types.Union)
 
-cdef class FinalComplexUnion(thrift.py3.types.Union):
+cdef class VirtualComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cFinalComplexUnion] _cpp_obj
+    cdef shared_ptr[cVirtualComplexUnion] _cpp_obj
     cdef object __type
     cdef object __cached
-    cdef _load_cache(FinalComplexUnion self)
+    cdef _load_cache(VirtualComplexUnion self)
 
     @staticmethod
-    cdef unique_ptr[cFinalComplexUnion] _make_instance(
-        cFinalComplexUnion* base_instance,
+    cdef unique_ptr[cVirtualComplexUnion] _make_instance(
+        cVirtualComplexUnion* base_instance,
         object thingOne,
         object thingTwo
     ) except *
 
     @staticmethod
-    cdef create(shared_ptr[cFinalComplexUnion])
+    cdef create(shared_ptr[cVirtualComplexUnion])
 
 
 cdef class List__i64:

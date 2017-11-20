@@ -88,7 +88,7 @@ struct MyStruct {
 union SimpleUnion {
   7: i64 intValue;
   2: string stringValue;
-} (final)
+} (cpp.virtual)
 
 typedef i32 simpleTypeDef
 typedef map<i16, string> containerTypeDef
@@ -155,7 +155,7 @@ exception AnotherException {
   1: i32 code
   101: required i32 req_code
   2: string message
-} (final)
+} (cpp.virtual)
 
 typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
 typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
@@ -283,7 +283,7 @@ struct AnnotatedStruct {
         "fieldI" : false,
       }
 } (
-    final,
+    cpp.virtual,
     cpp2.noexcept_move_ctor,
     cpp2.noncopyable,
     cpp.declare_hash,
