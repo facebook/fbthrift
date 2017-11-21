@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, Error as __Error
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.exceptions
 cimport thrift.py3.types
 
 

@@ -1,0 +1,30 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}{{!
+
+Produce the pep484 container type for a given thrift-py3 container
+
+}}{{#type:list?}}_typing.Sequence[{{!
+    }}{{#type:listElemType}}{{> types/PEP484Type}}{{/type:listElemType}}{{!
+}}]{{/type:list?}}{{!
+}}{{#type:set?}}_typing.AbstractSet[{{!
+    }}{{#type:setElemType}}{{> types/PEP484Type}}{{/type:setElemType}}{{!
+}}]{{/type:set?}}{{!
+}}{{#type:map?}}_typing.Mapping[{{!
+    }}{{#type:keyType}}{{> types/PEP484Type}}{{/type:keyType}}, {{!
+    }}{{#type:valueType}}{{> types/PEP484Type}}{{/type:valueType}}{{!
+}}]{{/type:map?}}

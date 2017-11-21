@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, Error as __Error
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.exceptions
 cimport thrift.py3.types
 cimport includes.types
 
@@ -887,9 +888,9 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cComplexUnion])
 
 # Forward Definition of the cython struct
-cdef class AnException(__Error)
+cdef class AnException(thrift.py3.exceptions.Error)
 
-cdef class AnException(__Error):
+cdef class AnException(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnException] _cpp_obj
@@ -928,9 +929,9 @@ cdef class AnException(__Error):
     cdef create(shared_ptr[cAnException])
 
 # Forward Definition of the cython struct
-cdef class AnotherException(__Error)
+cdef class AnotherException(thrift.py3.exceptions.Error)
 
-cdef class AnotherException(__Error):
+cdef class AnotherException(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnotherException] _cpp_obj

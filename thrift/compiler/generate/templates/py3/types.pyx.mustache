@@ -93,11 +93,11 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 
 {{#program:structs}}
 {{^struct:union?}}
-{{^struct:exception?}}
+{{#struct:plain?}}
 cdef c{{struct:name}} _{{struct:name}}_defaults = c{{struct:name}}()
 
-{{/struct:exception?}}
-cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+{{/struct:plain?}}
+cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     def __init__(
         {{struct:name}} self{{#struct:fields}},
@@ -245,9 +245,9 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 }}{{#struct:union?}}
 class {{struct:name}}Type(Enum):
     EMPTY = <int>c{{struct:name}}__type___EMPTY__
-{{#struct:fields}}{{#field:type}}
+{{#struct:fields}}
     {{field:name}} = <int>c{{struct:name}}__type_{{field:name}}
-{{/field:type}}{{/struct:fields}}
+{{/struct:fields}}
 
 cdef class {{struct:name}}(thrift.py3.types.Union):
     def __init__(

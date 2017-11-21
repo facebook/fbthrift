@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, Error as __Error
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.exceptions
 cimport thrift.py3.types
 
 
@@ -106,9 +107,9 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cComplexStruct] const_pointer_cast "std::const_pointer_cast<const py3::simple::ComplexStruct>"(shared_ptr[cComplexStruct])
 
 # Forward Definition of the cython struct
-cdef class SimpleException(__Error)
+cdef class SimpleException(thrift.py3.exceptions.Error)
 
-cdef class SimpleException(__Error):
+cdef class SimpleException(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSimpleException] _cpp_obj

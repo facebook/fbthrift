@@ -62,6 +62,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     std::string flatten_type_name(const t_type&);
 
    private:
+    const std::vector<std::string> extensions{".pyx", ".pxd", ".pyi"};
     struct type_data {
       vector<const t_type*> containers;
       std::set<string> container_names;
@@ -335,10 +336,10 @@ void t_mstch_py3_generator::generate_structs(const t_program& program) {
   auto path = package_to_path(program.get_namespace("py3"));
   auto name = program.get_name();
   std::string module = "types";
-  render_to_file(
-      program, extra_context, "types.pxd", path / name / (module + ".pxd"));
-  render_to_file(
-      program, extra_context, "types.pyx", path / name / (module + ".pyx"));
+  for (auto ext : extensions) {
+    render_to_file(
+        program, extra_context, module + ext, path / name / (module + ext));
+  }
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
