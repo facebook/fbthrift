@@ -108,10 +108,10 @@ uint32_t StreamThriftClient::sendRequest(
 uint32_t StreamThriftClient::sendStreamRequestHelper(
     RpcOptions& rpcOptions,
     std::unique_ptr<StreamRequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
+    std::unique_ptr<ContextStack>,
     std::unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header,
-    EventBase* callbackEvb) {
+    EventBase*) {
   DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
   auto metadata = createRequestRpcMetadata(
@@ -120,56 +120,42 @@ uint32_t StreamThriftClient::sendStreamRequestHelper(
       static_cast<apache::thrift::ProtocolId>(protocolId_),
       header.get());
 
-  bool singleResponse = cb->kind_ == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE;
-  std::unique_ptr<ThriftClientCallback> callback;
-  if (singleResponse) {
-    callback = std::make_unique<ThriftClientCallback>(
-        callbackEvb,
-        std::move(cb),
-        std::move(ctx),
-        isSecurityActive(),
-        protocolId_);
-  }
-
   auto conn = connection_;
   connection_->getEventBase()->runInEventBaseThread(
       [conn = std::move(conn),
        metadata = std::move(metadata),
        buf = std::move(buf),
-       evbCb = std::move(cb),
-       callback = std::move(callback),
-       singleResponse]() mutable {
+       cb = std::move(cb)]() mutable {
         try {
           auto channel = conn->getChannel(metadata.get());
 
-          if (evbCb->kind_ == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE ||
-              evbCb->kind_ == RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE) {
-            channel->setInput(0, evbCb->getChannelInput());
+          RpcKind rpcKind = cb->kind_;
+          CHECK(rpcKind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
+          CHECK(rpcKind != RpcKind::STREAMING_REQUEST_NO_RESPONSE);
+
+          bool streamingResponse =
+              rpcKind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE ||
+              rpcKind == RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE;
+          if (streamingResponse) {
+            channel->setInput(0, cb->getChannelInput());
           }
 
           channel->sendThriftRequest(
-              std::move(metadata), std::move(buf), std::move(callback));
-          if (!singleResponse) {
-            evbCb->setChannelOutput(channel->getOutput(0));
+              std::move(metadata), std::move(buf), nullptr);
+
+          bool streamingRequest =
+              rpcKind == RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE;
+          if (streamingRequest) {
+            cb->setChannelOutput(channel->getOutput(0));
           }
         } catch (const TTransportException& te) {
-          if (singleResponse) {
-            // sendThriftRequest is noexcept, so callback will never be nullptr
-            // in here
-            auto callbackEvb = callback->getEventBase();
-            callbackEvb->runInEventBaseThread(
-                [callback = std::move(callback), te]() {
-                  callback->onError(te);
-                });
-          } else {
-            // Give the error as the stream!
-            evbCb->getChannelInput()->onSubscribe(
-                yarpl::flowable::Subscription::empty());
-            evbCb->getChannelInput()->onError(te);
-          }
+          // Give the error as the stream!
+          cb->getChannelInput()->onSubscribe(
+              yarpl::flowable::Subscription::empty());
+          cb->getChannelInput()->onError(te);
         }
       });
-  return 0;
+  return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
 } // namespace thrift

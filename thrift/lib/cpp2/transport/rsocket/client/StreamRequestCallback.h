@@ -32,12 +32,11 @@ class StreamRequestCallback : public ClientSyncCallback {
   using FlowableRef = yarpl::Reference<
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
-  // TODO: Extract the `oneWay` parameter's value from the functionInfo
-  StreamRequestCallback(
-      RpcKind kind,
-      ClientReceiveState* rs,
-      bool oneway = false)
-      : ClientSyncCallback(rs, oneway), kind_(kind) {}
+  StreamRequestCallback(RpcKind kind)
+      : ClientSyncCallback(
+            &rs_,
+            kind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE),
+        kind_(kind) {}
 
   // Called from the compiler generated code
   void setInput(ThriftChannelIf::SubscriberRef subscriber) {
@@ -82,6 +81,8 @@ class StreamRequestCallback : public ClientSyncCallback {
   RpcKind kind_;
 
  protected:
+  ClientReceiveState rs_;
+
   ThriftChannelIf::SubscriberRef inputSubscriber_;
   FlowableRef inputFlowable_;
 

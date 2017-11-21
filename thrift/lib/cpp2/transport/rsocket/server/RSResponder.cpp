@@ -136,6 +136,8 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
 
            // TODO - STREAMING_REQUEST_NO_RESPONSE?
            // TODO - STREAMING_REQUEST_SINGLE_RESPONSE?
+           CHECK(metadata->kind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
+           CHECK(metadata->kind != RpcKind::STREAMING_REQUEST_NO_RESPONSE);
 
            auto channel = std::make_shared<StreamingInputOutput>(
                evb_,
