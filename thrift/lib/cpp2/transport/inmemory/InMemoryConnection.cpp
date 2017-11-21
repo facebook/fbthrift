@@ -20,7 +20,7 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryChannel.h>
 
-DEFINE_int32(num_cpu_threads, 1, "Number of cpu threads");
+DEFINE_int32(thrift_num_cpu_threads, 1, "Number of cpu threads");
 
 namespace apache {
 namespace thrift {
@@ -28,9 +28,9 @@ namespace thrift {
 InMemoryConnection::InMemoryConnection(
     std::shared_ptr<AsyncProcessorFactory> pFac,
     const apache::thrift::server::ServerConfigs& serverConfigs) {
-  CHECK(FLAGS_num_cpu_threads > 0);
-  threadManager_ =
-      PriorityThreadManager::newPriorityThreadManager(FLAGS_num_cpu_threads);
+  CHECK_GT(FLAGS_thrift_num_cpu_threads, 0);
+  threadManager_ = PriorityThreadManager::newPriorityThreadManager(
+      FLAGS_thrift_num_cpu_threads);
   threadManager_->start();
   processor_ =
       std::make_unique<ThriftProcessor>(pFac->getProcessor(), serverConfigs);
