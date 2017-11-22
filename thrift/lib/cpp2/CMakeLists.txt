@@ -101,7 +101,6 @@ add_library(
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
   server/ThriftServer.cpp
-  server/peeking/HTTPHelper.cpp
   server/peeking/TLSHelper.cpp
   transport/core/ThriftProcessor.cpp
   util/ScopedServerInterfaceThread.cpp
