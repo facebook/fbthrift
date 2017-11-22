@@ -36,3 +36,5 @@ thrift_generate(
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
 )
+
+set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES ${RpcMetadata-cpp2-SOURCES})

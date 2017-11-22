@@ -2,6 +2,17 @@
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 
+
+#######
+# CMAKE variables only have local/subdirectory scope
+# So even though this is defined in ../thrift/CMakeLists.txt as a variable
+# it's not accessible here and silently defaults to ""
+#
+# Using global properties gets around this; probably better to restructure
+# the directories/files to avoid this type of hack
+#
+get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
+
 bypass_source_check("${frozen_cpp_SOURCES}")
 add_library(
   thriftfrozen2
