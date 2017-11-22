@@ -129,5 +129,10 @@ TEST_F(RSCompatibilityTest, BadPayload) {
   compatibilityTest_->TestBadPayload();
 }
 
+TEST_F(RSCompatibilityTest, EvbSwitch) {
+  // TODO: fix EventBase switching for RSocket
+  // compatibilityTest_->TestEvbSwitch();
+}
+
 } // namespace thrift
 } // namespace apache

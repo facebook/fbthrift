@@ -180,6 +180,13 @@ TEST_P(H2CompatibilityTest, BadPayload) {
   }
 }
 
+TEST_P(H2CompatibilityTest, EvbSwitch) {
+  if (GetParam() != ChannelType::Default &&
+      GetParam() != ChannelType::MultiRpc) {
+    compatibilityTest_->TestEvbSwitch();
+  }
+}
+
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     H2CompatibilityTest,

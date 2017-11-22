@@ -762,5 +762,42 @@ void TransportCompatibilityTest::TestBadPayload() {
   });
 }
 
+void TransportCompatibilityTest::TestEvbSwitch() {
+  connectToServer([this](
+                      std::unique_ptr<TestServiceAsyncClient> client,
+                      std::shared_ptr<ClientConnectionIf> connection) {
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(3);
+
+    folly::ScopedEventBaseThread sevbt;
+
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+
+    auto evb = connection->getEventBase();
+    evb->runInEventBaseThreadAndWait([&]() {
+      EXPECT_TRUE(connection->isDetachable());
+
+      connection->detachEventBase();
+    });
+
+    sevbt.getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { connection->attachEventBase(sevbt.getEventBase()); });
+
+    // Execution happens on the new event base
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+
+    // Attach the old one back
+    sevbt.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      EXPECT_TRUE(connection->isDetachable());
+      connection->detachEventBase();
+    });
+
+    evb->runInEventBaseThreadAndWait(
+        [&]() { connection->attachEventBase(evb); });
+
+    // Execution happens on the old event base, along with the destruction
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+  });
+} // namespace thrift
+
 } // namespace thrift
 } // namespace apache

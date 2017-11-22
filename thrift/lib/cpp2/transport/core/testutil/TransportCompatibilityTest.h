@@ -64,6 +64,8 @@ class TransportCompatibilityTest {
 
   void TestBadPayload();
 
+  void TestEvbSwitch();
+
  protected:
   void setupServer();
   void stopServer();
