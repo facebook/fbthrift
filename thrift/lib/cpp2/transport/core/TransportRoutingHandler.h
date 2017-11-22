@@ -56,7 +56,7 @@ class TransportRoutingHandler {
   virtual void handleConnection(
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
-      folly::SocketAddress* peerAddress,
+      folly::SocketAddress const* peerAddress,
       wangle::TransportInfo const& tinfo) = 0;
 };
 

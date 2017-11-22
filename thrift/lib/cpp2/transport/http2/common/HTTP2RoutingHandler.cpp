@@ -224,7 +224,7 @@ bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
 void HTTP2RoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
-    folly::SocketAddress* peerAddress,
+    folly::SocketAddress const* peerAddress,
     wangle::TransportInfo const& tinfo) {
   // Create the DownstreamSession manager.
   auto ipConfig = proxygen::HTTPServer::IPConfig(
@@ -239,8 +239,12 @@ void HTTP2RoutingHandler::handleConnection(
   auto h2codec =
       codecFactory.getCodec("h2", proxygen::TransportDirection::DOWNSTREAM);
   // Create the DownstreamSession
+  // A const_cast is needed to match wangle and proxygen APIs
   auto session = sessionManager->createSession(
-      std::move(sock), peerAddress, std::move(h2codec), tinfo);
+      std::move(sock),
+      const_cast<folly::SocketAddress*>(peerAddress),
+      std::move(h2codec),
+      tinfo);
   // Set HTTP2 priorities flag on session object.
   session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
   /*

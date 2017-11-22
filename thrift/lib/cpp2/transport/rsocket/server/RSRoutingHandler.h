@@ -40,7 +40,7 @@ class RSRoutingHandler : public TransportRoutingHandler {
   void handleConnection(
       wangle::ConnectionManager*,
       folly::AsyncTransportWrapper::UniquePtr sock,
-      folly::SocketAddress* peerAddress,
+      folly::SocketAddress const* peerAddress,
       wangle::TransportInfo const& tinfo) override;
 
  private:

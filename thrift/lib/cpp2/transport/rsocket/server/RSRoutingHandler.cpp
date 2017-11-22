@@ -87,7 +87,7 @@ bool RSRoutingHandler::canAcceptEncryptedConnection(
 void RSRoutingHandler::handleConnection(
     wangle::ConnectionManager*,
     folly::AsyncTransportWrapper::UniquePtr sock,
-    folly::SocketAddress*,
+    folly::SocketAddress const*,
     wangle::TransportInfo const&) {
   auto connection = std::make_unique<TcpDuplexConnection>(
       std::
