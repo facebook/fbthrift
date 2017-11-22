@@ -124,8 +124,7 @@ void Cpp2Worker::plaintextConnectionReady(
       nextProtocolName,
       secureTransportType,
       tinfo,
-      server_->getRoutingHandlers(),
-      server_->getNumIOWorkerThreads());
+      server_);
   peekingManager->start(std::move(sock), server_->getObserver());
 }
 

@@ -51,15 +51,13 @@ class PeekingManager : public wangle::ManagedConnection,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo tinfo,
-      std::vector<std::unique_ptr<TransportRoutingHandler>> const* handlers,
-      int kIOWorkerThreads)
+      apache::thrift::ThriftServer* server)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
         nextProtocolName_(nextProtocolName),
         secureTransportType_(secureTransportType),
         tinfo_(std::move(tinfo)),
-        handlers_(handlers),
-        kIOWorkerThreads_(kIOWorkerThreads) {}
+        server_(server) {}
 
   ~PeekingManager() override = default;
 
@@ -102,7 +100,7 @@ class PeekingManager : public wangle::ManagedConnection,
      * Route the socket to a handler if the handler determines that it
      * is able to handle the connection by peeking in the first few bytes.
      */
-    for (auto const& handler : *handlers_) {
+    for (auto const& handler : *server_->getRoutingHandlers()) {
       if (handler->canAcceptConnection(peekBytes)) {
         handler->handleConnection(
             acceptor_->getConnectionManager(),
@@ -113,7 +111,7 @@ class PeekingManager : public wangle::ManagedConnection,
           observer_->connAccepted();
           observer_->activeConnections(
               acceptor_->getConnectionManager()->getNumConnections() *
-              kIOWorkerThreads_);
+              server_->getNumIOWorkerThreads());
         }
         return;
       }
@@ -175,8 +173,7 @@ class PeekingManager : public wangle::ManagedConnection,
   std::string nextProtocolName_;
   wangle::SecureTransportType secureTransportType_;
   wangle::TransportInfo tinfo_;
-  std::vector<std::unique_ptr<TransportRoutingHandler>> const* handlers_;
-  int kIOWorkerThreads_;
+  ThriftServer* server_;
 };
 }
 }
