@@ -119,7 +119,7 @@ void Cpp2Worker::plaintextConnectionReady(
   CHECK(asyncSocket) << "Underlying socket is not a AsyncSocket type";
   asyncSocket->setShutdownSocketSet(server_->wShutdownSocketSet_);
   auto peekingManager = new PeekingManager(
-      this,
+      shared_from_this(),
       clientAddr,
       nextProtocolName,
       secureTransportType,

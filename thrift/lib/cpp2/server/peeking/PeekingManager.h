@@ -46,7 +46,7 @@ class PeekingManager : public wangle::ManagedConnection,
                        public wangle::SocketPeeker::Callback {
  public:
   PeekingManager(
-      wangle::Acceptor* acceptor,
+      std::shared_ptr<apache::thrift::Cpp2Worker> acceptor,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,
@@ -180,7 +180,7 @@ class PeekingManager : public wangle::ManagedConnection,
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
   typename wangle::SocketPeeker::UniquePtr peeker_;
 
-  wangle::Acceptor* acceptor_;
+  std::shared_ptr<apache::thrift::Cpp2Worker> acceptor_;
   folly::SocketAddress clientAddr_;
   std::string nextProtocolName_;
   wangle::SecureTransportType secureTransportType_;
