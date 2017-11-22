@@ -51,13 +51,15 @@ class PeekingManager : public wangle::ManagedConnection,
       const std::string& nextProtocolName,
       wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo tinfo,
-      apache::thrift::ThriftServer* server)
+      apache::thrift::ThriftServer* server,
+      bool checkTLS = false)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
         nextProtocolName_(nextProtocolName),
         secureTransportType_(secureTransportType),
         tinfo_(std::move(tinfo)),
-        server_(server) {}
+        server_(server),
+        checkTLS_(checkTLS) {}
 
   ~PeekingManager() override = default;
 
@@ -80,12 +82,19 @@ class PeekingManager : public wangle::ManagedConnection,
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
 
-    /**
-     * This rejects SSL connections with an alert. It is
-     * useful for cases where clients might send SSL connections on
-     * a plaintext port and you need to fail fast to tell clients to
-     * go away.
-     */
+    if (checkTLS_ && checkTLSBytes(peekBytes)) {
+      return;
+    }
+    checkConnectionBytes(peekBytes);
+}
+
+  /**
+   * This rejects SSL connections with an alert. It is
+   * useful for cases where clients might send SSL connections on
+   * a plaintext port and you need to fail fast to tell clients to
+   * go away.
+   */
+  bool checkTLSBytes(std::vector<uint8_t>& peekBytes) {
     if (TLSHelper::looksLikeTLS(peekBytes)) {
       LOG(ERROR) << "Received SSL connection on non SSL port";
       sendPlaintextTLSAlert(peekBytes);
@@ -93,13 +102,16 @@ class PeekingManager : public wangle::ManagedConnection,
         observer_->protocolError();
       }
       dropConnection();
-      return;
+      return true;
     }
+    return false;
+  }
 
-    /**
-     * Route the socket to a handler if the handler determines that it
-     * is able to handle the connection by peeking in the first few bytes.
-     */
+  /**
+   * Route the socket to a handler if the handler determines that it
+   * is able to handle the connection by peeking in the first few bytes.
+   */
+  void checkConnectionBytes(std::vector<uint8_t>& peekBytes) {
     for (auto const& handler : *server_->getRoutingHandlers()) {
       if (handler->canAcceptConnection(peekBytes)) {
         handler->handleConnection(
@@ -174,6 +186,7 @@ class PeekingManager : public wangle::ManagedConnection,
   wangle::SecureTransportType secureTransportType_;
   wangle::TransportInfo tinfo_;
   ThriftServer* server_;
+  bool checkTLS_;
 };
 }
 }

@@ -124,7 +124,8 @@ void Cpp2Worker::plaintextConnectionReady(
       nextProtocolName,
       secureTransportType,
       tinfo,
-      server_);
+      server_,
+      /* checkTLS */ true);
   peekingManager->start(std::move(sock), server_->getObserver());
 }
 
