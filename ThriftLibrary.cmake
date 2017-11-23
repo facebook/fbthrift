@@ -18,6 +18,7 @@
 #   @options   - Extra options to pass to the generator
 #   @file_path - The directory where the thrift file lives
 #   @output_path - The directory where the thrift objects will be built
+#   @include_prefix - The last part of output_path, relative include prefix
 #
 # Output:
 #  A object file named `${file-name}-${language}-obj` to include into your
@@ -34,11 +35,12 @@
 #     #options
 #     #file_path
 #     #output_path
+#     #include_prefix
 #   )
 #   add_library(somelib $<TARGET_OBJECTS:${file_name}-${language}-obj> ...)
 #
 
-macro(thrift_object file_name services language options file_path output_path)
+macro(thrift_object file_name services language options file_path output_path include_prefix)
 thrift_generate(
   "${file_name}"
   "${services}"
@@ -46,6 +48,7 @@ thrift_generate(
   "${options}"
   "${file_path}"
   "${output_path}"
+  "${include_prefix}"
 )
 bypass_source_check(${${file_name}-${language}-SOURCES})
 add_library(
@@ -72,6 +75,7 @@ endmacro()
 #   @options   - Extra options to pass to the generator
 #   @file_path - The directory where the thrift file lives
 #   @output_path - The directory where the thrift objects will be built
+#   @include_prefix - The last part of output_path, relative include prefix
 #
 # Output:
 #  A library file named `${file-name}-${language}` to link against your
@@ -88,12 +92,13 @@ endmacro()
 #     #options
 #     #file_path
 #     #output_path
+#     #include_prefix
 #   )
 #   add_library(somelib ...)
 #   target_link_libraries(somelibe ${file_name}-${language} ...)
 #
 
-macro(thrift_library file_name services language options file_path output_path)
+macro(thrift_library file_name services language options file_path output_path include_prefix)
 thrift_object(
   "${file_name}"
   "${services}"
@@ -101,6 +106,7 @@ thrift_object(
   "${options}"
   "${file_path}"
   "${output_path}"
+  "${include_prefix}"
 )
 add_library(
   "${file_name}-${language}"
@@ -150,7 +156,7 @@ endmacro()
 # This will prevent cmake from complaining about missing source files
 #
 
-macro(thrift_generate file_name services language options file_path output_path)
+macro(thrift_generate file_name services language options file_path output_path include_prefix)
 set("${file_name}-${language}-HEADERS"
   ${output_path}/gen-${language}/${file_name}_constants.h
   ${output_path}/gen-${language}/${file_name}_data.h
@@ -196,9 +202,9 @@ foreach(service ${services})
 
   endif()
 endforeach()
-set(include_prefix "include_prefix=${output_path}")
+set(include_prefix_text "include_prefix=${include_prefix}")
 if(NOT "${options}" STREQUAL "")
-  set(include_prefix ",${include_prefix}")
+  set(include_prefix_text ",${include_prefix_text}")
 endif()
 set(gen_language ${language})
 if("${language}" STREQUAL "cpp2")
@@ -207,7 +213,7 @@ endif()
 add_custom_command(
   OUTPUT ${${file_name}-${language}-HEADERS} ${${file_name}-${language}-SOURCES}
   COMMAND ${THRIFT1}
-    --gen "${gen_language}:${options}${include_prefix}"
+    --gen "${gen_language}:${options}${include_prefix_text}"
     -o ${output_path}
     --templates ${THRIFT_TEMPLATES}
     "${file_path}/${file_name}.thrift"

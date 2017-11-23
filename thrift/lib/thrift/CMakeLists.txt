@@ -8,6 +8,7 @@ thrift_generate(
   "templates,cob_style" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
+  "thrift/lib/thrift" #include_prefix
 )
 
 thrift_generate(
@@ -17,6 +18,7 @@ thrift_generate(
   "templates" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
+  "thrift/lib/thrift" #include_prefix
 )
 
 thrift_generate(
@@ -26,6 +28,7 @@ thrift_generate(
   "" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
+  "thrift/lib/thrift" #include_prefix
 )
 
 thrift_generate(
@@ -35,6 +38,7 @@ thrift_generate(
   "" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
+  "thrift/lib/thrift" #include_prefix
 )
 
 set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES ${RpcMetadata-cpp2-SOURCES})

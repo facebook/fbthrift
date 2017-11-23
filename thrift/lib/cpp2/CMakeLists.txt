@@ -64,6 +64,7 @@ thrift_generate(
   "" #options
   "${LIB_CPP2_HOME}" #file_path
   "${LIB_CPP2_HOME}" #output_path
+  "thrift/lib/cpp2" #include_prefix
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")

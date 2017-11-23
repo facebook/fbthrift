@@ -8,4 +8,5 @@ thrift_library(
   "" #options
   "${EXAMPLE_IF_HOME}" #file_path
   "${EXAMPLE_IF_HOME}" #output_path
+  "thrift/example/if" #include_prefix
 )
