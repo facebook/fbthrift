@@ -25,6 +25,7 @@
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <proxygen/lib/utils/WheelTimerInstance.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 #include <wangle/acceptor/TransportInfo.h>
 #include <algorithm>
@@ -103,6 +104,16 @@ void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   if (httpSession_) {
     httpSession_->setMaxConcurrentOutgoingStreams(num);
+  }
+}
+
+void H2ClientConnection::setCloseCallback(
+    ThriftClient* client,
+    CloseCallback* cb) {
+  if (cb == nullptr) {
+    closeCallbacks_.erase(client);
+  } else {
+    closeCallbacks_[client] = cb;
   }
 }
 
@@ -221,8 +232,12 @@ CLIENT_TYPE H2ClientConnection::getClientType() {
   return THRIFT_HTTP_CLIENT_TYPE;
 }
 
-void H2ClientConnection::onDestroy(const HTTPSessionBase& /*session*/) {
+void H2ClientConnection::onDestroy(const HTTPSessionBase&) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
+  for (auto& cb : closeCallbacks_) {
+    cb.second->channelClosed();
+  }
+  closeCallbacks_.clear();
   httpSession_ = nullptr;
 }
 

@@ -28,6 +28,8 @@
 namespace apache {
 namespace thrift {
 
+class ThriftClient;
+
 /**
  * The API to the transport layer.
  *
@@ -72,6 +74,10 @@ class ClientConnectionIf {
   // connection.  Subject to negotiation with the server, which may
   // dictate a smaller maximum.
   virtual void setMaxPendingRequests(uint32_t num) = 0;
+
+  // Sets/updates the close callback on behalf of the client.  Can be
+  // called with "cb" set to nullptr to remove the close callback.
+  virtual void setCloseCallback(ThriftClient* client, CloseCallback* cb) = 0;
 
   // Returns the event base of the underlying transport.  This is also
   // the event base on which all calls to channel object (obtained via

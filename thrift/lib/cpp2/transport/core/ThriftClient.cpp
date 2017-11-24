@@ -90,6 +90,10 @@ ThriftClient::ThriftClient(
 ThriftClient::ThriftClient(std::shared_ptr<ClientConnectionIf> connection)
     : ThriftClient(connection, connection->getEventBase()) {}
 
+ThriftClient::~ThriftClient() {
+  connection_->setCloseCallback(this, nullptr);
+}
+
 void ThriftClient::setProtocolId(uint16_t protocolId) {
   protocolId_ = protocolId;
 }
@@ -274,8 +278,8 @@ uint16_t ThriftClient::getProtocolId() {
   return protocolId_;
 }
 
-void ThriftClient::setCloseCallback(CloseCallback* /*cb*/) {
-  // TBD
+void ThriftClient::setCloseCallback(CloseCallback* cb) {
+  connection_->setCloseCallback(this, cb);
 }
 
 TAsyncTransport* ThriftClient::getTransport() {

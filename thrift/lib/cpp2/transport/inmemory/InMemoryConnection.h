@@ -39,6 +39,7 @@ class InMemoryConnection : public ClientConnectionIf {
   std::shared_ptr<ThriftChannelIf> getChannel(
       RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;
+  void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
 
   apache::thrift::async::TAsyncTransport* getTransport() override;

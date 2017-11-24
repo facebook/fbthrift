@@ -187,6 +187,10 @@ TEST_P(H2CompatibilityTest, EvbSwitch) {
   }
 }
 
+TEST_P(H2CompatibilityTest, CloseCallback) {
+  compatibilityTest_->TestCloseCallback();
+}
+
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     H2CompatibilityTest,

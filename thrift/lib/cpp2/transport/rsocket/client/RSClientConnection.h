@@ -58,6 +58,8 @@ class RSClientConnection : public ClientConnectionIf {
   std::shared_ptr<ThriftChannelIf> getChannel(
       RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;
+  // TODO: Fuat, please implement this.
+  void setCloseCallback(ThriftClient*, CloseCallback*) override {}
   folly::EventBase* getEventBase() const override;
   apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
   getTransport() override;

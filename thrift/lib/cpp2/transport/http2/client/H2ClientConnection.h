@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <chrono>
 #include <string>
+#include <unordered_map>
 
 namespace apache {
 namespace thrift {
@@ -62,6 +63,7 @@ class H2ClientConnection : public ClientConnectionIf,
   std::shared_ptr<ThriftChannelIf> getChannel(
       RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;
+  void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
 
   // Returns a new transaction that is bound to the channel parameter.
@@ -103,6 +105,10 @@ class H2ClientConnection : public ClientConnectionIf,
   proxygen::HTTPUpstreamSession* httpSession_;
   folly::EventBase* evb_{nullptr};
   std::chrono::milliseconds timeout_{kDefaultTimeout};
+
+  // A map of all registered CloseCallback objects keyed by the
+  // ThriftClient objects that registered the callback.
+  std::unordered_map<ThriftClient*, CloseCallback*> closeCallbacks_;
 
   // The negotiated channel version - 0 means settings frame has not
   // yet arrived and negotiation has not taken place yet.

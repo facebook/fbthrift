@@ -123,16 +123,21 @@ void TransportCompatibilityTest::stopServer() {
 }
 
 void TransportCompatibilityTest::connectToServer(
-    folly::Function<void(std::unique_ptr<TestServiceAsyncClient>)> callMe) {
-  connectToServer([callMe = std::move(callMe)](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      auto) mutable { callMe(std::move(client)); });
+    folly::Function<void(std::unique_ptr<TestServiceAsyncClient>)> callMe,
+    CloseCallback* closeCb) {
+  connectToServer(
+      [callMe = std::move(callMe)](
+          std::unique_ptr<TestServiceAsyncClient> client, auto) mutable {
+        callMe(std::move(client));
+      },
+      closeCb);
 }
 
 void TransportCompatibilityTest::connectToServer(
     folly::Function<void(
         std::unique_ptr<TestServiceAsyncClient>,
-        std::shared_ptr<ClientConnectionIf>)> callMe) {
+        std::shared_ptr<ClientConnectionIf>)> callMe,
+    CloseCallback* closeCb) {
   CHECK_GT(port_, 0) << "Check if the server has started already";
   if (FLAGS_transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
@@ -156,6 +161,7 @@ void TransportCompatibilityTest::connectToServer(
     auto channel = ThriftClient::Ptr(
         new ThriftClient(connection, workerThread_.getEventBase()));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+    channel->setCloseCallback(closeCb);
     auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
     callMe(std::move(client), std::move(connection));
   }
@@ -797,7 +803,35 @@ void TransportCompatibilityTest::TestEvbSwitch() {
     // Execution happens on the old event base, along with the destruction
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
   });
-} // namespace thrift
+}
+
+class CloseCallbackTest : public CloseCallback {
+ public:
+  void channelClosed() override {
+    EXPECT_FALSE(closed_);
+    closed_ = true;
+  }
+  bool isClosed() {
+    return closed_;
+  }
+
+ private:
+  bool closed_{false};
+};
+
+void TransportCompatibilityTest::TestCloseCallback() {
+  auto closeCb = std::make_unique<CloseCallbackTest>();
+  connectToServer(
+      [&closeCb](
+          std::unique_ptr<TestServiceAsyncClient>,
+          std::shared_ptr<ClientConnectionIf> connection) {
+        EXPECT_FALSE(closeCb->isClosed());
+        auto evb = connection->getEventBase();
+        evb->runInEventBaseThreadAndWait([&]() { connection->closeNow(); });
+        EXPECT_TRUE(closeCb->isClosed());
+      },
+      closeCb.get());
+}
 
 } // namespace thrift
 } // namespace apache

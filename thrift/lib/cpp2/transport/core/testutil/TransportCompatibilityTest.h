@@ -61,10 +61,9 @@ class TransportCompatibilityTest {
   void TestOneway_ServerQueueTimeout();
 
   void TestRequestContextIsPreserved();
-
   void TestBadPayload();
-
   void TestEvbSwitch();
+  void TestCloseCallback();
 
  protected:
   void setupServer();
@@ -72,11 +71,13 @@ class TransportCompatibilityTest {
   void connectToServer(
       folly::Function<
           void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
-          callMe);
+          callMe,
+      CloseCallback* closeCb = nullptr);
   void connectToServer(
       folly::Function<void(
           std::unique_ptr<testutil::testservice::TestServiceAsyncClient>,
-          std::shared_ptr<ClientConnectionIf>)> callMe);
+          std::shared_ptr<ClientConnectionIf>)> callMe,
+      CloseCallback* closeCb = nullptr);
 
   void callSleep(
       testutil::testservice::TestServiceAsyncClient* client,

@@ -150,7 +150,7 @@ class ThriftClient : public ClientChannel {
 
   // Destructor is private because this class inherits from
   // folly:DelayedDestruction.
-  virtual ~ThriftClient() = default;
+  virtual ~ThriftClient();
 
   std::unique_ptr<RequestRpcMetadata> createRequestRpcMetadata(
       RpcOptions& rpcOptions,

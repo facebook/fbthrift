@@ -43,7 +43,11 @@ std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel(
       processor_.get(), runner_.getEventBase());
 }
 
-void InMemoryConnection::setMaxPendingRequests(uint32_t /*num*/) {
+void InMemoryConnection::setMaxPendingRequests(uint32_t) {
+  // not implemented
+}
+
+void InMemoryConnection::setCloseCallback(ThriftClient*, CloseCallback*) {
   // not implemented
 }
 
@@ -63,7 +67,7 @@ ClientChannel::SaturationStatus InMemoryConnection::getSaturationStatus() {
   LOG(FATAL) << "Method should not be called";
 }
 
-void InMemoryConnection::attachEventBase(folly::EventBase* /*evb*/) {
+void InMemoryConnection::attachEventBase(folly::EventBase*) {
   LOG(FATAL) << "Method should not be called";
 }
 
@@ -83,7 +87,7 @@ uint32_t InMemoryConnection::getTimeout() {
   LOG(FATAL) << "Method should not be called";
 }
 
-void InMemoryConnection::setTimeout(uint32_t /*ms*/) {
+void InMemoryConnection::setTimeout(uint32_t) {
   LOG(FATAL) << "Method should not be called";
 }
 
