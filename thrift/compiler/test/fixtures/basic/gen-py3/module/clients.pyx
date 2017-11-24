@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 from module.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
 from module.clients_wrapper cimport cMyServiceFastAsyncClient, cMyServiceFastClientWrapper
@@ -813,12 +812,12 @@ cdef class MyServicePrioChild(MyServicePrioParent):
     cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServicePrioChild_client = c_obj
-        MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+        _MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
 
     cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyServicePrioChild_client.reset()
-        MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
+        _MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
 
     def __dealloc__(MyServicePrioChild self):
         if self._cRequestChannel or self._module_MyServicePrioChild_client:

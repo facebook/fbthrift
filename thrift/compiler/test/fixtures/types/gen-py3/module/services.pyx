@@ -30,8 +30,10 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
+import include.types as _include_types
+cimport include.types as _include_types
 
 import asyncio
 import functools
@@ -43,14 +45,14 @@ from module.services_wrapper cimport cSomeServiceInterface
 
 cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] move(
-        cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]])
+    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] move(
+        cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]])
 
 cdef class Promise_std_unordered_map__Map__i32_string:
-    cdef cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise
+    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise):
         inst = <Promise_std_unordered_map__Map__i32_string>Promise_std_unordered_map__Map__i32_string.__new__(Promise_std_unordered_map__Map__i32_string)
         inst.cPromise = move(cPromise)
         return inst
@@ -75,13 +77,13 @@ cdef class SomeServiceInterface(
 cdef api void call_cy_SomeService_bounce_map(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.std_unordered_map[int32_t,string]]] cPromise,
-    unique_ptr[module.types.std_unordered_map[int32_t,string]] m
+    cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise,
+    unique_ptr[_module_types.std_unordered_map[int32_t,string]] m
 ):
     cdef SomeServiceInterface iface
     iface = self
     __promise = Promise_std_unordered_map__Map__i32_string.create(move(cPromise))
-    arg_m = module.types.std_unordered_map__Map__i32_string.create(module.types.move(m))
+    arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.move(m))
     __context = None
     if iface._pass_context_bounce_map:
         __context = RequestContext.create(ctx)
@@ -107,7 +109,7 @@ async def SomeService_bounce_map_coro(
         else:
             result = await self.bounce_map(
                       m)
-        result = module.types.std_unordered_map__Map__i32_string(result)
+        result = _module_types.std_unordered_map__Map__i32_string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -122,5 +124,5 @@ async def SomeService_bounce_map_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.std_unordered_map[int32_t,string]](deref((<module.types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.std_unordered_map[int32_t,string]](deref((<_module_types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
 

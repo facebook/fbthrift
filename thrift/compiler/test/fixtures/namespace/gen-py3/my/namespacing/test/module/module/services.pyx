@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport my.namespacing.test.module.module.types
-import my.namespacing.test.module.module.types
+cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
+import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
 import asyncio
 import functools

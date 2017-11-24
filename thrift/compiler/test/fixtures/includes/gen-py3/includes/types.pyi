@@ -14,7 +14,7 @@ import typing as _typing
 import sys
 import itertools
 from enum import Enum
-import transitive.types
+import transitive.types as _transitive_types
 
 
 # Forward Definitions for Structs
@@ -25,13 +25,13 @@ class Included(thrift.py3.types.Struct):
     def __init__(
         self, *,
         MyIntField: int=None,
-        MyTransitiveField: transitive.types.Foo=None
+        MyTransitiveField: _transitive_types.Foo=None
     ) -> None: ...
 
     def __call__(
         self, *,
         MyIntField: _typing.Union[int, NOTSET, None]=NOTSET,
-        MyTransitiveField: _typing.Union[transitive.types.Foo, NOTSET, None]=NOTSET
+        MyTransitiveField: _typing.Union[_transitive_types.Foo, NOTSET, None]=NOTSET
     ): ...
 
     def __reduce__(self) -> _typing.Tuple[Callable, _typing.Tuple[_typing.Type[Included], bytes]]: ...
@@ -45,6 +45,6 @@ class Included(thrift.py3.types.Struct):
     @property
     def MyIntField(self) -> int: ...
     @property
-    def MyTransitiveField(self) -> transitive.types.Foo: ...
+    def MyTransitiveField(self) -> _transitive_types.Foo: ...
 
 

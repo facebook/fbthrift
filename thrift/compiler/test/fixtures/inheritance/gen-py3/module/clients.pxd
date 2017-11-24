@@ -19,7 +19,7 @@ cdef class MyRoot(thrift.py3.client.Client):
     cdef _module_MyRoot_set_client(MyRoot inst, shared_ptr[cMyRootClientWrapper] c_obj)
 
     cdef _module_MyRoot_reset_client(MyRoot self)
-    
+
 cdef class MyNode(MyRoot):
     cdef shared_ptr[cMyNodeClientWrapper] _module_MyNode_client
 
@@ -27,7 +27,7 @@ cdef class MyNode(MyRoot):
     cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj)
 
     cdef _module_MyNode_reset_client(MyNode self)
-    
+
 cdef class MyLeaf(MyNode):
     cdef shared_ptr[cMyLeafClientWrapper] _module_MyLeaf_client
 
@@ -35,4 +35,4 @@ cdef class MyLeaf(MyNode):
     cdef _module_MyLeaf_set_client(MyLeaf inst, shared_ptr[cMyLeafClientWrapper] c_obj)
 
     cdef _module_MyLeaf_reset_client(MyLeaf self)
-    
+

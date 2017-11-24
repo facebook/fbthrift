@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 import asyncio
 import functools
@@ -105,7 +105,7 @@ cdef api void call_cy_NestedContainers_mapList(
     cdef NestedContainersInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.Map__i32_List__i32.create(module.types.move(foo))
+    arg_foo = _module_types.Map__i32_List__i32.create(_module_types.move(foo))
     __context = None
     if iface._pass_context_mapList:
         __context = RequestContext.create(ctx)
@@ -156,7 +156,7 @@ cdef api void call_cy_NestedContainers_mapSet(
     cdef NestedContainersInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.Map__i32_Set__i32.create(module.types.move(foo))
+    arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
     if iface._pass_context_mapSet:
         __context = RequestContext.create(ctx)
@@ -207,7 +207,7 @@ cdef api void call_cy_NestedContainers_listMap(
     cdef NestedContainersInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__Map__i32_i32.create(module.types.move(foo))
+    arg_foo = _module_types.List__Map__i32_i32.create(_module_types.move(foo))
     __context = None
     if iface._pass_context_listMap:
         __context = RequestContext.create(ctx)
@@ -258,7 +258,7 @@ cdef api void call_cy_NestedContainers_listSet(
     cdef NestedContainersInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__Set__i32.create(module.types.move(foo))
+    arg_foo = _module_types.List__Set__i32.create(_module_types.move(foo))
     __context = None
     if iface._pass_context_listSet:
         __context = RequestContext.create(ctx)
@@ -309,7 +309,7 @@ cdef api void call_cy_NestedContainers_turtles(
     cdef NestedContainersInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__List__Map__i32_Map__i32_Set__i32.create(module.types.move(foo))
+    arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
     if iface._pass_context_turtles:
         __context = RequestContext.create(ctx)

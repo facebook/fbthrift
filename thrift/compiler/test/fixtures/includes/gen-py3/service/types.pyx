@@ -28,10 +28,10 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport module.types
-import module.types
-cimport includes.types
-import includes.types
+cimport module.types as _module_types
+import module.types as _module_types
+cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 
 

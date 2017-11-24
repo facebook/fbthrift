@@ -28,12 +28,11 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
-cimport includes.types
-import includes.types
+cimport module.types as _module_types
+import module.types as _module_types
+cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 from module.clients_wrapper cimport cEmptyServiceAsyncClient, cEmptyServiceClientWrapper
 from module.clients_wrapper cimport cReturnServiceAsyncClient, cReturnServiceClientWrapper
@@ -168,7 +167,7 @@ cdef void ReturnService_mapReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+        pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
 
 cdef void ReturnService_simpleTypedefReturn_callback(
     cFollyTry[int32_t]&& result,
@@ -184,7 +183,7 @@ cdef void ReturnService_simpleTypedefReturn_callback(
         pyfuture.set_result(result.value())
 
 cdef void ReturnService_complexTypedefReturn_callback(
-    cFollyTry[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]&& result,
+    cFollyTry[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -194,10 +193,10 @@ cdef void ReturnService_complexTypedefReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__Map__Empty_MyStruct.create(make_shared[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]](result.value())))
+        pyfuture.set_result(_module_types.List__Map__Empty_MyStruct.create(make_shared[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](result.value())))
 
 cdef void ReturnService_list_mostComplexTypedefReturn_callback(
-    cFollyTry[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]&& result,
+    cFollyTry[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -207,10 +206,10 @@ cdef void ReturnService_list_mostComplexTypedefReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__List__List__Map__Empty_MyStruct.create(make_shared[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]](result.value())))
+        pyfuture.set_result(_module_types.List__List__List__Map__Empty_MyStruct.create(make_shared[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](result.value())))
 
 cdef void ReturnService_enumReturn_callback(
-    cFollyTry[module.types.cMyEnumA]&& result,
+    cFollyTry[_module_types.cMyEnumA]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -220,10 +219,10 @@ cdef void ReturnService_enumReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.MyEnumA(<int> result.value()))
+        pyfuture.set_result(_module_types.MyEnumA(<int> result.value()))
 
 cdef void ReturnService_list_EnumReturn_callback(
-    cFollyTry[vector[module.types.cMyEnumA]]&& result,
+    cFollyTry[vector[_module_types.cMyEnumA]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -233,10 +232,10 @@ cdef void ReturnService_list_EnumReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__MyEnumA.create(make_shared[vector[module.types.cMyEnumA]](result.value())))
+        pyfuture.set_result(_module_types.List__MyEnumA.create(make_shared[vector[_module_types.cMyEnumA]](result.value())))
 
 cdef void ReturnService_structReturn_callback(
-    cFollyTry[module.types.cMyStruct]&& result,
+    cFollyTry[_module_types.cMyStruct]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -246,10 +245,10 @@ cdef void ReturnService_structReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.MyStruct.create(make_shared[module.types.cMyStruct](result.value())))
+        pyfuture.set_result(_module_types.MyStruct.create(make_shared[_module_types.cMyStruct](result.value())))
 
 cdef void ReturnService_set_StructReturn_callback(
-    cFollyTry[cset[module.types.cMyStruct]]&& result,
+    cFollyTry[cset[_module_types.cMyStruct]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -259,10 +258,10 @@ cdef void ReturnService_set_StructReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__MyStruct.create(make_shared[cset[module.types.cMyStruct]](result.value())))
+        pyfuture.set_result(_module_types.Set__MyStruct.create(make_shared[cset[_module_types.cMyStruct]](result.value())))
 
 cdef void ReturnService_unionReturn_callback(
-    cFollyTry[module.types.cComplexUnion]&& result,
+    cFollyTry[_module_types.cComplexUnion]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -272,10 +271,10 @@ cdef void ReturnService_unionReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.ComplexUnion.create(make_shared[module.types.cComplexUnion](result.value())))
+        pyfuture.set_result(_module_types.ComplexUnion.create(make_shared[_module_types.cComplexUnion](result.value())))
 
 cdef void ReturnService_list_UnionReturn_callback(
-    cFollyTry[vector[module.types.cComplexUnion]]&& result,
+    cFollyTry[vector[_module_types.cComplexUnion]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -285,10 +284,10 @@ cdef void ReturnService_list_UnionReturn_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__ComplexUnion.create(make_shared[vector[module.types.cComplexUnion]](result.value())))
+        pyfuture.set_result(_module_types.List__ComplexUnion.create(make_shared[vector[_module_types.cComplexUnion]](result.value())))
 
 cdef void ReturnService_readDataEb_callback(
-    cFollyTry[module.types.folly_IOBuf]&& result,
+    cFollyTry[_module_types.folly_IOBuf]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -301,7 +300,7 @@ cdef void ReturnService_readDataEb_callback(
         pyfuture.set_result(result.value())
 
 cdef void ReturnService_readData_callback(
-    cFollyTry[module.types.std_unique_ptr_folly_IOBuf]&& result,
+    cFollyTry[_module_types.std_unique_ptr_folly_IOBuf]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -545,7 +544,7 @@ cdef void ParamService_map_ret_bool_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+        pyfuture.set_result(_module_types.Map__string_i64.create(make_shared[cmap[string,int64_t]](result.value())))
 
 cdef void ParamService_list_ret_map_setlist_param_callback(
     cFollyTry[vector[cbool]]&& result,
@@ -558,7 +557,7 @@ cdef void ParamService_list_ret_map_setlist_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__bool.create(make_shared[vector[cbool]](result.value())))
+        pyfuture.set_result(_module_types.List__bool.create(make_shared[vector[cbool]](result.value())))
 
 cdef void ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback(
     cFollyTry[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]&& result,
@@ -571,7 +570,7 @@ cdef void ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Map__Set__List__i32_Map__List__Set__string_string.create(make_shared[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](result.value())))
+        pyfuture.set_result(_module_types.Map__Set__List__i32_Map__List__Set__string_string.create(make_shared[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](result.value())))
 
 cdef void ParamService_typedef_ret_i32_param_callback(
     cFollyTry[int32_t]&& result,
@@ -597,10 +596,10 @@ cdef void ParamService_listtypedef_ret_typedef_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__i32.create(make_shared[vector[int32_t]](result.value())))
+        pyfuture.set_result(_module_types.List__i32.create(make_shared[vector[int32_t]](result.value())))
 
 cdef void ParamService_enum_ret_double_param_callback(
-    cFollyTry[module.types.cMyEnumA]&& result,
+    cFollyTry[_module_types.cMyEnumA]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -610,10 +609,10 @@ cdef void ParamService_enum_ret_double_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.MyEnumA(<int> result.value()))
+        pyfuture.set_result(_module_types.MyEnumA(<int> result.value()))
 
 cdef void ParamService_enum_ret_double_enum_param_callback(
-    cFollyTry[module.types.cMyEnumA]&& result,
+    cFollyTry[_module_types.cMyEnumA]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -623,10 +622,10 @@ cdef void ParamService_enum_ret_double_enum_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.MyEnumA(<int> result.value()))
+        pyfuture.set_result(_module_types.MyEnumA(<int> result.value()))
 
 cdef void ParamService_listenum_ret_map_param_callback(
-    cFollyTry[vector[module.types.cMyEnumA]]&& result,
+    cFollyTry[vector[_module_types.cMyEnumA]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -636,10 +635,10 @@ cdef void ParamService_listenum_ret_map_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__MyEnumA.create(make_shared[vector[module.types.cMyEnumA]](result.value())))
+        pyfuture.set_result(_module_types.List__MyEnumA.create(make_shared[vector[_module_types.cMyEnumA]](result.value())))
 
 cdef void ParamService_struct_ret_i16_param_callback(
-    cFollyTry[module.types.cMyStruct]&& result,
+    cFollyTry[_module_types.cMyStruct]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -649,10 +648,10 @@ cdef void ParamService_struct_ret_i16_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.MyStruct.create(make_shared[module.types.cMyStruct](result.value())))
+        pyfuture.set_result(_module_types.MyStruct.create(make_shared[_module_types.cMyStruct](result.value())))
 
 cdef void ParamService_setstruct_ret_set_param_callback(
-    cFollyTry[cset[module.types.cMyStruct]]&& result,
+    cFollyTry[cset[_module_types.cMyStruct]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -662,10 +661,10 @@ cdef void ParamService_setstruct_ret_set_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__MyStruct.create(make_shared[cset[module.types.cMyStruct]](result.value())))
+        pyfuture.set_result(_module_types.Set__MyStruct.create(make_shared[cset[_module_types.cMyStruct]](result.value())))
 
 cdef void ParamService_union_ret_i32_i32_param_callback(
-    cFollyTry[module.types.cComplexUnion]&& result,
+    cFollyTry[_module_types.cComplexUnion]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -675,10 +674,10 @@ cdef void ParamService_union_ret_i32_i32_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.ComplexUnion.create(make_shared[module.types.cComplexUnion](result.value())))
+        pyfuture.set_result(_module_types.ComplexUnion.create(make_shared[_module_types.cComplexUnion](result.value())))
 
 cdef void ParamService_listunion_string_param_callback(
-    cFollyTry[vector[module.types.cComplexUnion]]&& result,
+    cFollyTry[vector[_module_types.cComplexUnion]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -688,7 +687,7 @@ cdef void ParamService_listunion_string_param_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__ComplexUnion.create(make_shared[vector[module.types.cComplexUnion]](result.value())))
+        pyfuture.set_result(_module_types.List__ComplexUnion.create(make_shared[vector[_module_types.cComplexUnion]](result.value())))
 
 
 cdef class EmptyService(thrift.py3.client.Client):
@@ -1006,7 +1005,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]](
+        bridgeFutureWith[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](
             self._executor,
             deref(self._module_ReturnService_client).complexTypedefReturn(
             ),
@@ -1021,7 +1020,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]](
+        bridgeFutureWith[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](
             self._executor,
             deref(self._module_ReturnService_client).list_mostComplexTypedefReturn(
             ),
@@ -1036,7 +1035,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             deref(self._module_ReturnService_client).enumReturn(
             ),
@@ -1051,7 +1050,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[module.types.cMyEnumA]](
+        bridgeFutureWith[vector[_module_types.cMyEnumA]](
             self._executor,
             deref(self._module_ReturnService_client).list_EnumReturn(
             ),
@@ -1066,7 +1065,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cMyStruct](
+        bridgeFutureWith[_module_types.cMyStruct](
             self._executor,
             deref(self._module_ReturnService_client).structReturn(
             ),
@@ -1081,7 +1080,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[cset[module.types.cMyStruct]](
+        bridgeFutureWith[cset[_module_types.cMyStruct]](
             self._executor,
             deref(self._module_ReturnService_client).set_StructReturn(
             ),
@@ -1096,7 +1095,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cComplexUnion](
+        bridgeFutureWith[_module_types.cComplexUnion](
             self._executor,
             deref(self._module_ReturnService_client).unionReturn(
             ),
@@ -1111,7 +1110,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[module.types.cComplexUnion]](
+        bridgeFutureWith[vector[_module_types.cComplexUnion]](
             self._executor,
             deref(self._module_ReturnService_client).list_UnionReturn(
             ),
@@ -1129,7 +1128,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.folly_IOBuf](
+        bridgeFutureWith[_module_types.folly_IOBuf](
             self._executor,
             deref(self._module_ReturnService_client).readDataEb(
                 size,
@@ -1148,7 +1147,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.std_unique_ptr_folly_IOBuf](
+        bridgeFutureWith[_module_types.std_unique_ptr_folly_IOBuf](
             self._executor,
             deref(self._module_ReturnService_client).readData(
                 size,
@@ -1282,15 +1281,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Map__string_i64):
-            param1 = module.types.Map__string_i64(param1)
+        if not isinstance(param1, _module_types.Map__string_i64):
+            param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_map_param(
-                cmap[string,int64_t](deref(module.types.Map__string_i64(param1)._cpp_obj.get())),
+                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
             ),
             ParamService_void_ret_map_param_callback,
             <PyObject *> __future
@@ -1304,20 +1303,20 @@ cdef class ParamService(thrift.py3.client.Client):
             param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Map__string_i64):
-            param1 = module.types.Map__string_i64(param1)
+        if not isinstance(param1, _module_types.Map__string_i64):
+            param1 = _module_types.Map__string_i64(param1)
         if param2 is None:
             raise TypeError('param2 can not be None')
-        if not isinstance(param2, module.types.Set__List__string):
-            param2 = module.types.Set__List__string(param2)
+        if not isinstance(param2, _module_types.Set__List__string):
+            param2 = _module_types.Set__List__string(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_map_setlist_param(
-                cmap[string,int64_t](deref(module.types.Map__string_i64(param1)._cpp_obj.get())),
-                cset[vector[string]](deref(module.types.Set__List__string(param2)._cpp_obj.get())),
+                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
+                cset[vector[string]](deref(_module_types.Set__List__string(param2)._cpp_obj.get())),
             ),
             ParamService_void_ret_map_setlist_param_callback,
             <PyObject *> __future
@@ -1349,15 +1348,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.MyEnumA):
-            raise ValueError('param1 is not of the enum type { module.types.MyEnumA }.')
+        if not isinstance(param1, _module_types.MyEnumA):
+            raise ValueError('param1 is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_enum_param(
-                module.types.MyEnumA_to_cpp(param1),
+                _module_types.MyEnumA_to_cpp(param1),
             ),
             ParamService_void_ret_enum_param_callback,
             <PyObject *> __future
@@ -1367,7 +1366,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_struct_param(
             ParamService self,
-            module.types.MyStruct param1):
+            _module_types.MyStruct param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1376,7 +1375,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_struct_param(
-                deref((<module.types.MyStruct>param1)._cpp_obj),
+                deref((<_module_types.MyStruct>param1)._cpp_obj),
             ),
             ParamService_void_ret_struct_param_callback,
             <PyObject *> __future
@@ -1389,15 +1388,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.List__ComplexUnion):
-            param1 = module.types.List__ComplexUnion(param1)
+        if not isinstance(param1, _module_types.List__ComplexUnion):
+            param1 = _module_types.List__ComplexUnion(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_listunion_param(
-                vector[module.types.cComplexUnion](deref(module.types.List__ComplexUnion(param1)._cpp_obj.get())),
+                vector[_module_types.cComplexUnion](deref(_module_types.List__ComplexUnion(param1)._cpp_obj.get())),
             ),
             ParamService_void_ret_listunion_param_callback,
             <PyObject *> __future
@@ -1433,15 +1432,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Map__string_i64):
-            param1 = module.types.Map__string_i64(param1)
+        if not isinstance(param1, _module_types.Map__string_i64):
+            param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_ParamService_client).bool_ret_map_param(
-                cmap[string,int64_t](deref(module.types.Map__string_i64(param1)._cpp_obj.get())),
+                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
             ),
             ParamService_bool_ret_map_param_callback,
             <PyObject *> __future
@@ -1451,7 +1450,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_union_param(
             ParamService self,
-            module.types.ComplexUnion param1):
+            _module_types.ComplexUnion param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
         self._check_connect_future()
@@ -1460,7 +1459,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_ParamService_client).bool_ret_union_param(
-                deref((<module.types.ComplexUnion>param1)._cpp_obj),
+                deref((<_module_types.ComplexUnion>param1)._cpp_obj),
             ),
             ParamService_bool_ret_union_param_callback,
             <PyObject *> __future
@@ -1499,8 +1498,8 @@ cdef class ParamService(thrift.py3.client.Client):
             raise TypeError('param1 can not be None')
         if param2 is None:
             raise TypeError('param2 can not be None')
-        if not isinstance(param2, module.types.Set__List__List__Map__Empty_MyStruct):
-            param2 = module.types.Set__List__List__Map__Empty_MyStruct(param2)
+        if not isinstance(param2, _module_types.Set__List__List__Map__Empty_MyStruct):
+            param2 = _module_types.Set__List__List__Map__Empty_MyStruct(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1508,7 +1507,7 @@ cdef class ParamService(thrift.py3.client.Client):
             self._executor,
             deref(self._module_ParamService_client).i64_ret_string_typedef_param(
                 param1.encode('UTF-8'),
-                cset[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]](deref(module.types.Set__List__List__Map__Empty_MyStruct(param2)._cpp_obj.get())),
+                cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]](deref(_module_types.Set__List__List__Map__Empty_MyStruct(param2)._cpp_obj.get())),
             ),
             ParamService_i64_ret_string_typedef_param_callback,
             <PyObject *> __future
@@ -1556,15 +1555,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Set__MyStruct):
-            param1 = module.types.Set__MyStruct(param1)
+        if not isinstance(param1, _module_types.Set__MyStruct):
+            param1 = _module_types.Set__MyStruct(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[double](
             self._executor,
             deref(self._module_ParamService_client).double_ret_setstruct_param(
-                cset[module.types.cMyStruct](deref(module.types.Set__MyStruct(param1)._cpp_obj.get())),
+                cset[_module_types.cMyStruct](deref(_module_types.Set__MyStruct(param1)._cpp_obj.get())),
             ),
             ParamService_double_ret_setstruct_param_callback,
             <PyObject *> __future
@@ -1635,20 +1634,20 @@ cdef class ParamService(thrift.py3.client.Client):
             param2):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Map__i32_List__string):
-            param1 = module.types.Map__i32_List__string(param1)
+        if not isinstance(param1, _module_types.Map__i32_List__string):
+            param1 = _module_types.Map__i32_List__string(param1)
         if param2 is None:
             raise TypeError('param2 can not be None')
-        if not isinstance(param2, module.types.List__string):
-            param2 = module.types.List__string(param2)
+        if not isinstance(param2, _module_types.List__string):
+            param2 = _module_types.List__string(param2)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[vector[cbool]](
             self._executor,
             deref(self._module_ParamService_client).list_ret_map_setlist_param(
-                cmap[int32_t,vector[string]](deref(module.types.Map__i32_List__string(param1)._cpp_obj.get())),
-                vector[string](deref(module.types.List__string(param2)._cpp_obj.get())),
+                cmap[int32_t,vector[string]](deref(_module_types.Map__i32_List__string(param1)._cpp_obj.get())),
+                vector[string](deref(_module_types.List__string(param2)._cpp_obj.get())),
             ),
             ParamService_list_ret_map_setlist_param_callback,
             <PyObject *> __future
@@ -1661,15 +1660,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.List__List__List__List__i32):
-            param1 = module.types.List__List__List__List__i32(param1)
+        if not isinstance(param1, _module_types.List__List__List__List__i32):
+            param1 = _module_types.List__List__List__List__i32(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](
             self._executor,
             deref(self._module_ParamService_client).mapsetlistmapliststring_ret_listlistlist_param(
-                vector[vector[vector[vector[int32_t]]]](deref(module.types.List__List__List__List__i32(param1)._cpp_obj.get())),
+                vector[vector[vector[vector[int32_t]]]](deref(_module_types.List__List__List__List__i32(param1)._cpp_obj.get())),
             ),
             ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback,
             <PyObject *> __future
@@ -1701,15 +1700,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.List__Map__Empty_MyStruct):
-            param1 = module.types.List__Map__Empty_MyStruct(param1)
+        if not isinstance(param1, _module_types.List__Map__Empty_MyStruct):
+            param1 = _module_types.List__Map__Empty_MyStruct(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[vector[int32_t]](
             self._executor,
             deref(self._module_ParamService_client).listtypedef_ret_typedef_param(
-                vector[cmap[module.types.cEmpty,module.types.cMyStruct]](deref(module.types.List__Map__Empty_MyStruct(param1)._cpp_obj.get())),
+                vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]](deref(_module_types.List__Map__Empty_MyStruct(param1)._cpp_obj.get())),
             ),
             ParamService_listtypedef_ret_typedef_param_callback,
             <PyObject *> __future
@@ -1725,7 +1724,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             deref(self._module_ParamService_client).enum_ret_double_param(
                 param1,
@@ -1744,16 +1743,16 @@ cdef class ParamService(thrift.py3.client.Client):
             raise TypeError('param1 can not be None')
         if param2 is None:
             raise TypeError('param2 can not be None')
-        if not isinstance(param2, module.types.MyEnumA):
-            raise ValueError('param2 is not of the enum type { module.types.MyEnumA }.')
+        if not isinstance(param2, _module_types.MyEnumA):
+            raise ValueError('param2 is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             deref(self._module_ParamService_client).enum_ret_double_enum_param(
                 param1,
-                module.types.MyEnumA_to_cpp(param2),
+                _module_types.MyEnumA_to_cpp(param2),
             ),
             ParamService_enum_ret_double_enum_param_callback,
             <PyObject *> __future
@@ -1766,15 +1765,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Map__string_i64):
-            param1 = module.types.Map__string_i64(param1)
+        if not isinstance(param1, _module_types.Map__string_i64):
+            param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[module.types.cMyEnumA]](
+        bridgeFutureWith[vector[_module_types.cMyEnumA]](
             self._executor,
             deref(self._module_ParamService_client).listenum_ret_map_param(
-                cmap[string,int64_t](deref(module.types.Map__string_i64(param1)._cpp_obj.get())),
+                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
             ),
             ParamService_listenum_ret_map_param_callback,
             <PyObject *> __future
@@ -1790,7 +1789,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cMyStruct](
+        bridgeFutureWith[_module_types.cMyStruct](
             self._executor,
             deref(self._module_ParamService_client).struct_ret_i16_param(
                 param1,
@@ -1806,15 +1805,15 @@ cdef class ParamService(thrift.py3.client.Client):
             param1):
         if param1 is None:
             raise TypeError('param1 can not be None')
-        if not isinstance(param1, module.types.Set__string):
-            param1 = module.types.Set__string(param1)
+        if not isinstance(param1, _module_types.Set__string):
+            param1 = _module_types.Set__string(param1)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[cset[module.types.cMyStruct]](
+        bridgeFutureWith[cset[_module_types.cMyStruct]](
             self._executor,
             deref(self._module_ParamService_client).setstruct_ret_set_param(
-                cset[string](deref(module.types.Set__string(param1)._cpp_obj.get())),
+                cset[string](deref(_module_types.Set__string(param1)._cpp_obj.get())),
             ),
             ParamService_setstruct_ret_set_param_callback,
             <PyObject *> __future
@@ -1833,7 +1832,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cComplexUnion](
+        bridgeFutureWith[_module_types.cComplexUnion](
             self._executor,
             deref(self._module_ParamService_client).union_ret_i32_i32_param(
                 param1,
@@ -1853,7 +1852,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[module.types.cComplexUnion]](
+        bridgeFutureWith[vector[_module_types.cComplexUnion]](
             self._executor,
             deref(self._module_ParamService_client).listunion_string_param(
                 param1.encode('UTF-8'),

@@ -17,4 +17,4 @@ cdef class Raiser(thrift.py3.client.Client):
     cdef _module_Raiser_set_client(Raiser inst, shared_ptr[cRaiserClientWrapper] c_obj)
 
     cdef _module_Raiser_reset_client(Raiser self)
-    
+

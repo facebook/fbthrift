@@ -17,4 +17,4 @@ cdef class HsTestService(thrift.py3.client.Client):
     cdef _hsmodule_HsTestService_set_client(HsTestService inst, shared_ptr[cHsTestServiceClientWrapper] c_obj)
 
     cdef _hsmodule_HsTestService_reset_client(HsTestService self)
-    
+

@@ -21,7 +21,7 @@ cdef class MyService(thrift.py3.client.Client):
     cdef _module_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj)
 
     cdef _module_MyService_reset_client(MyService self)
-    
+
 cdef class MyServiceFast(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceFastClientWrapper] _module_MyServiceFast_client
 
@@ -29,7 +29,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     cdef _module_MyServiceFast_set_client(MyServiceFast inst, shared_ptr[cMyServiceFastClientWrapper] c_obj)
 
     cdef _module_MyServiceFast_reset_client(MyServiceFast self)
-    
+
 cdef class MyServiceEmpty(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceEmptyClientWrapper] _module_MyServiceEmpty_client
 
@@ -37,7 +37,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
     cdef _module_MyServiceEmpty_set_client(MyServiceEmpty inst, shared_ptr[cMyServiceEmptyClientWrapper] c_obj)
 
     cdef _module_MyServiceEmpty_reset_client(MyServiceEmpty self)
-    
+
 cdef class MyServicePrioParent(thrift.py3.client.Client):
     cdef shared_ptr[cMyServicePrioParentClientWrapper] _module_MyServicePrioParent_client
 
@@ -45,7 +45,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
     cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj)
 
     cdef _module_MyServicePrioParent_reset_client(MyServicePrioParent self)
-    
+
 cdef class MyServicePrioChild(MyServicePrioParent):
     cdef shared_ptr[cMyServicePrioChildClientWrapper] _module_MyServicePrioChild_client
 
@@ -53,4 +53,4 @@ cdef class MyServicePrioChild(MyServicePrioParent):
     cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj)
 
     cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self)
-    
+

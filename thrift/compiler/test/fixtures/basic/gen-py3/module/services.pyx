@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 import asyncio
 import functools
@@ -198,7 +198,7 @@ cdef class MyServicePrioParentInterface(
 
 
 cdef class MyServicePrioChildInterface(
-    module.services.MyServicePrioParentInterface
+    _module_services.MyServicePrioParentInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioChildInterface(

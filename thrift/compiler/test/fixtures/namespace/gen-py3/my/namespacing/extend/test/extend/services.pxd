@@ -7,9 +7,9 @@
 
 from thrift.py3.server cimport ServiceInterface
 
-cimport hsmodule.services
+cimport hsmodule.services as _hsmodule_services
 
-cdef class ExtendTestServiceInterface(hsmodule.services.HsTestServiceInterface):
+cdef class ExtendTestServiceInterface(_hsmodule_services.HsTestServiceInterface):
     cdef public bint _pass_context_check
     pass
 

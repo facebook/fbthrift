@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 import asyncio
 import functools
@@ -72,7 +72,7 @@ cdef class MyRootInterface(
 
 
 cdef class MyNodeInterface(
-    module.services.MyRootInterface
+    _module_services.MyRootInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyNodeInterface(
@@ -86,7 +86,7 @@ cdef class MyNodeInterface(
 
 
 cdef class MyLeafInterface(
-    module.services.MyNodeInterface
+    _module_services.MyNodeInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyLeafInterface(

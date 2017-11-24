@@ -16,7 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport include.types
+cimport include.types as _include_types
 
 cdef extern from * nogil:
     cdef cppclass std_unordered_map "std::unordered_map"[T, U]:

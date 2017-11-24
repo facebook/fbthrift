@@ -28,8 +28,8 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport hsmodule.types
-import hsmodule.types
+cimport hsmodule.types as _hsmodule_types
+import hsmodule.types as _hsmodule_types
 
 
 

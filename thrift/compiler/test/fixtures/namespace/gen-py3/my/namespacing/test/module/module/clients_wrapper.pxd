@@ -16,7 +16,7 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport my.namespacing.test.module.module.types
+cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
 
 cdef extern from "src/gen-cpp2/TestService.h" namespace "cpp2":

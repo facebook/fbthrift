@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 import asyncio
 import functools
@@ -169,10 +169,10 @@ async def Raiser_doRaise_coro(
             result = await self.doRaise(ctx,)
         else:
             result = await self.doRaise()
-    except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
-    except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
+    except _module_types.Banal as ex:
+        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj.get()))
+    except _module_types.Fiery as ex:
+        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj.get()))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -263,10 +263,10 @@ async def Raiser_get500_coro(
             result = await self.get500(ctx,)
         else:
             result = await self.get500()
-    except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
-    except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
+    except _module_types.Fiery as ex:
+        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj.get()))
+    except _module_types.Banal as ex:
+        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj.get()))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

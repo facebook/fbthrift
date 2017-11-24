@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 from module.clients_wrapper cimport cRaiserAsyncClient, cRaiserClientWrapper
 
@@ -54,10 +53,10 @@ cdef void Raiser_doRaise_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    if result.hasException[module.types.cBanal]():
-        pyfuture.set_exception(module.types.Banal.create(try_make_shared_exception[module.types.cBanal](result.exception())))
-    elif result.hasException[module.types.cFiery]():
-        pyfuture.set_exception(module.types.Fiery.create(try_make_shared_exception[module.types.cFiery](result.exception())))
+    if result.hasException[_module_types.cBanal]():
+        pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
+    elif result.hasException[_module_types.cFiery]():
+        pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
     elif result.hasException():
         try:
             raise_py_exception(result.exception())
@@ -84,10 +83,10 @@ cdef void Raiser_get500_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    if result.hasException[module.types.cFiery]():
-        pyfuture.set_exception(module.types.Fiery.create(try_make_shared_exception[module.types.cFiery](result.exception())))
-    elif result.hasException[module.types.cBanal]():
-        pyfuture.set_exception(module.types.Banal.create(try_make_shared_exception[module.types.cBanal](result.exception())))
+    if result.hasException[_module_types.cFiery]():
+        pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
+    elif result.hasException[_module_types.cBanal]():
+        pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
     elif result.hasException():
         try:
             raise_py_exception(result.exception())

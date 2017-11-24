@@ -16,7 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport includes.types
+cimport includes.types as _includes_types
 
 cdef extern from "<folly/small_vector.h>":
   pass
@@ -525,7 +525,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         vector[cset[cSimpleUnion]] fieldAA
         cmap[Bar,Baz] fieldAB
         cMyEnumB fieldAC
-        includes.types.cAnEnum fieldAD
+        _includes_types.cAnEnum fieldAD
         cmap[string,int32_t] fieldAE
         ccontainerStruct__isset __isset
 
@@ -540,9 +540,9 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cMyIncludedStruct(const cMyIncludedStruct&) except +
         bint operator==(cMyIncludedStruct&)
         int64_t MyIncludedInt
-        includes.types.cAStruct MyIncludedStruct
-        unique_ptr[includes.types.cAStruct] ARefField
-        includes.types.cAStruct ARequiredField
+        _includes_types.cAStruct MyIncludedStruct
+        unique_ptr[_includes_types.cAStruct] ARefField
+        _includes_types.cAStruct ARequiredField
         cMyIncludedStruct__isset __isset
 
     cdef cppclass cAnnotatedStruct__isset "some::valid::ns::AnnotatedStruct::__isset":
@@ -662,7 +662,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
 
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field2 "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
-    cdef shared_ptr[includes.types.cAStruct] aliasing_constructor_ARefField "std::shared_ptr<a::different::ns::AStruct>"(shared_ptr[cMyIncludedStruct]&, includes.types.cAStruct*)
+    cdef shared_ptr[_includes_types.cAStruct] aliasing_constructor_ARefField "std::shared_ptr<a::different::ns::AStruct>"(shared_ptr[cMyIncludedStruct]&, _includes_types.cAStruct*)
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_cpp_unique_ref "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_cpp2_unique_ref "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[cmap[int32_t,vector[string]]] aliasing_constructor_container_with_ref "std::shared_ptr<std::map<int32_t,std::vector<std::string>>>"(shared_ptr[cAnnotatedStruct]&, cmap[int32_t,vector[string]]*)
@@ -1044,9 +1044,9 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
-    cdef includes.types.AStruct __MyIncludedStruct
-    cdef includes.types.AStruct __ARefField
-    cdef includes.types.AStruct __ARequiredField
+    cdef _includes_types.AStruct __MyIncludedStruct
+    cdef _includes_types.AStruct __ARefField
+    cdef _includes_types.AStruct __ARequiredField
 
     @staticmethod
     cdef unique_ptr[cMyIncludedStruct] _make_instance(

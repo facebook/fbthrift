@@ -16,9 +16,9 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport module.types
+cimport module.types as _module_types
 
-cimport includes.types
+cimport includes.types as _includes_types
 
 cdef extern from "src/gen-cpp2/EmptyService.h" namespace "some::valid::ns":
   cdef cppclass cEmptyServiceAsyncClient "some::valid::ns::EmptyServiceAsyncClient":
@@ -67,17 +67,17 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[string] binaryReturn()
     cFollyFuture[cmap[string,int64_t]] mapReturn()
     cFollyFuture[int32_t] simpleTypedefReturn()
-    cFollyFuture[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]] complexTypedefReturn()
-    cFollyFuture[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]] list_mostComplexTypedefReturn()
-    cFollyFuture[module.types.cMyEnumA] enumReturn()
-    cFollyFuture[vector[module.types.cMyEnumA]] list_EnumReturn()
-    cFollyFuture[module.types.cMyStruct] structReturn()
-    cFollyFuture[cset[module.types.cMyStruct]] set_StructReturn()
-    cFollyFuture[module.types.cComplexUnion] unionReturn()
-    cFollyFuture[vector[module.types.cComplexUnion]] list_UnionReturn()
-    cFollyFuture[module.types.folly_IOBuf] readDataEb(
+    cFollyFuture[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] complexTypedefReturn()
+    cFollyFuture[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] list_mostComplexTypedefReturn()
+    cFollyFuture[_module_types.cMyEnumA] enumReturn()
+    cFollyFuture[vector[_module_types.cMyEnumA]] list_EnumReturn()
+    cFollyFuture[_module_types.cMyStruct] structReturn()
+    cFollyFuture[cset[_module_types.cMyStruct]] set_StructReturn()
+    cFollyFuture[_module_types.cComplexUnion] unionReturn()
+    cFollyFuture[vector[_module_types.cComplexUnion]] list_UnionReturn()
+    cFollyFuture[_module_types.folly_IOBuf] readDataEb(
       int64_t arg_size,)
-    cFollyFuture[module.types.std_unique_ptr_folly_IOBuf] readData(
+    cFollyFuture[_module_types.std_unique_ptr_folly_IOBuf] readData(
       int64_t arg_size,)
 
 
@@ -100,24 +100,24 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[cFollyUnit] void_ret_map_typedef_param(
       int32_t arg_param1,)
     cFollyFuture[cFollyUnit] void_ret_enum_param(
-      module.types.cMyEnumA arg_param1,)
+      _module_types.cMyEnumA arg_param1,)
     cFollyFuture[cFollyUnit] void_ret_struct_param(
-      module.types.cMyStruct arg_param1,)
+      _module_types.cMyStruct arg_param1,)
     cFollyFuture[cFollyUnit] void_ret_listunion_param(
-      vector[module.types.cComplexUnion] arg_param1,)
+      vector[_module_types.cComplexUnion] arg_param1,)
     cFollyFuture[cbool] bool_ret_i32_i64_param(
       int32_t arg_param1,
       int64_t arg_param2,)
     cFollyFuture[cbool] bool_ret_map_param(
       cmap[string,int64_t] arg_param1,)
     cFollyFuture[cbool] bool_ret_union_param(
-      module.types.cComplexUnion arg_param1,)
+      _module_types.cComplexUnion arg_param1,)
     cFollyFuture[int64_t] i64_ret_float_double_param(
       float arg_param1,
       double arg_param2,)
     cFollyFuture[int64_t] i64_ret_string_typedef_param(
       string arg_param1,
-      cset[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]] arg_param2,)
+      cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] arg_param2,)
     cFollyFuture[int64_t] i64_ret_i32_i32_i32_i32_i32_param(
       int32_t arg_param1,
       int32_t arg_param2,
@@ -125,7 +125,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
       int32_t arg_param4,
       int32_t arg_param5,)
     cFollyFuture[double] double_ret_setstruct_param(
-      cset[module.types.cMyStruct] arg_param1,)
+      cset[_module_types.cMyStruct] arg_param1,)
     cFollyFuture[string] string_ret_string_param(
       string arg_param1,)
     cFollyFuture[string] binary_ret_binary_param(
@@ -140,21 +140,21 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[int32_t] typedef_ret_i32_param(
       int32_t arg_param1,)
     cFollyFuture[vector[int32_t]] listtypedef_ret_typedef_param(
-      vector[cmap[module.types.cEmpty,module.types.cMyStruct]] arg_param1,)
-    cFollyFuture[module.types.cMyEnumA] enum_ret_double_param(
+      vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]] arg_param1,)
+    cFollyFuture[_module_types.cMyEnumA] enum_ret_double_param(
       double arg_param1,)
-    cFollyFuture[module.types.cMyEnumA] enum_ret_double_enum_param(
+    cFollyFuture[_module_types.cMyEnumA] enum_ret_double_enum_param(
       double arg_param1,
-      module.types.cMyEnumA arg_param2,)
-    cFollyFuture[vector[module.types.cMyEnumA]] listenum_ret_map_param(
+      _module_types.cMyEnumA arg_param2,)
+    cFollyFuture[vector[_module_types.cMyEnumA]] listenum_ret_map_param(
       cmap[string,int64_t] arg_param1,)
-    cFollyFuture[module.types.cMyStruct] struct_ret_i16_param(
+    cFollyFuture[_module_types.cMyStruct] struct_ret_i16_param(
       int16_t arg_param1,)
-    cFollyFuture[cset[module.types.cMyStruct]] setstruct_ret_set_param(
+    cFollyFuture[cset[_module_types.cMyStruct]] setstruct_ret_set_param(
       cset[string] arg_param1,)
-    cFollyFuture[module.types.cComplexUnion] union_ret_i32_i32_param(
+    cFollyFuture[_module_types.cComplexUnion] union_ret_i32_i32_param(
       int32_t arg_param1,
       int32_t arg_param2,)
-    cFollyFuture[vector[module.types.cComplexUnion]] listunion_string_param(
+    cFollyFuture[vector[_module_types.cComplexUnion]] listunion_string_param(
       string arg_param1,)
 

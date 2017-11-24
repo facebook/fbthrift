@@ -31,7 +31,7 @@ cimport thrift.py3.client
 
 {{#program:includeNamespaces}}
 {{#hasServices?}}
-cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}clients
 {{/hasServices?}}
 {{/program:includeNamespaces}}
 
@@ -41,8 +41,8 @@ from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:nam
 
 {{#program:services}}
 cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
-  }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-    }}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}{{!
+    }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
+    }}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}{{!
   }}){{/service:extends}}{{^service:extends?}}(thrift.py3.client.Client){{/service:extends?}}:
     cdef shared_ptr[c{{service:name}}ClientWrapper] _{{program:name}}_{{service:name}}_client
 
@@ -50,5 +50,5 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
     cdef _{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj)
 
     cdef _{{program:name}}_{{service:name}}_reset_client({{service:name}} self)
-    
+
 {{/program:services}}

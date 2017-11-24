@@ -28,14 +28,13 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport my.namespacing.extend.test.extend.types
-import my.namespacing.extend.test.extend.types
-cimport hsmodule.types
-import hsmodule.types
-cimport hsmodule.clients
-import hsmodule.clients
+cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
+import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
+cimport hsmodule.types as _hsmodule_types
+import hsmodule.types as _hsmodule_types
+cimport hsmodule.clients as _hsmodule_clients
+import hsmodule.clients as _hsmodule_clients
 
 from my.namespacing.extend.test.extend.clients_wrapper cimport cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper
 from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
@@ -55,7 +54,7 @@ cdef void ExtendTestService_check_callback(
         pyfuture.set_result(<bint>result.value())
 
 
-cdef class ExtendTestService(hsmodule.clients.HsTestService):
+cdef class ExtendTestService(_hsmodule_clients.HsTestService):
 
     def __cinit__(ExtendTestService self):
         loop = asyncio.get_event_loop()
@@ -70,12 +69,12 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
     cdef _extend_ExtendTestService_set_client(ExtendTestService inst, shared_ptr[cExtendTestServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._extend_ExtendTestService_client = c_obj
-        hsmodule.clients.HsTestService._hsmodule_HsTestService_set_client(inst, <shared_ptr[cHsTestServiceClientWrapper]>c_obj)
+        _hsmodule_clients.HsTestService._hsmodule_HsTestService_set_client(inst, <shared_ptr[cHsTestServiceClientWrapper]>c_obj)
 
     cdef _extend_ExtendTestService_reset_client(ExtendTestService self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._extend_ExtendTestService_client.reset()
-        hsmodule.clients.HsTestService._hsmodule_HsTestService_reset_client(self)
+        _hsmodule_clients.HsTestService._hsmodule_HsTestService_reset_client(self)
 
     def __dealloc__(ExtendTestService self):
         if self._cRequestChannel or self._extend_ExtendTestService_client:
@@ -128,7 +127,7 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
     @cython.always_allow_keywords(True)
     async def check(
             ExtendTestService self,
-            hsmodule.types.HsFoo struct1):
+            _hsmodule_types.HsFoo struct1):
         if struct1 is None:
             raise TypeError('struct1 can not be None')
         self._check_connect_future()
@@ -137,7 +136,7 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._extend_ExtendTestService_client).check(
-                deref((<hsmodule.types.HsFoo>struct1)._cpp_obj),
+                deref((<_hsmodule_types.HsFoo>struct1)._cpp_obj),
             ),
             ExtendTestService_check_callback,
             <PyObject *> __future

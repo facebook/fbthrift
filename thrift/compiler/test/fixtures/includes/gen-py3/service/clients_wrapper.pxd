@@ -16,10 +16,10 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport service.types
+cimport service.types as _service_types
 
-cimport module.types
-cimport includes.types
+cimport module.types as _module_types
+cimport includes.types as _includes_types
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
   cdef cppclass cMyServiceAsyncClient "cpp2::MyServiceAsyncClient":
@@ -36,9 +36,9 @@ cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "cpp2":
     void setPersistentHeader(const string& key, const string& value)
 
     cFollyFuture[cFollyUnit] query(
-      module.types.cMyStruct arg_s,
-      includes.types.cIncluded arg_i,)
+      _module_types.cMyStruct arg_s,
+      _includes_types.cIncluded arg_i,)
     cFollyFuture[cFollyUnit] has_arg_docs(
-      module.types.cMyStruct arg_s,
-      includes.types.cIncluded arg_i,)
+      _module_types.cMyStruct arg_s,
+      _includes_types.cIncluded arg_i,)
 

@@ -30,12 +30,12 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport my.namespacing.extend.test.extend.types
-import my.namespacing.extend.test.extend.types
-cimport hsmodule.services
-import hsmodule.services
-import hsmodule.types
-cimport hsmodule.types
+cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
+import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
+cimport hsmodule.services as _hsmodule_services
+import hsmodule.services as _hsmodule_services
+import hsmodule.types as _hsmodule_types
+cimport hsmodule.types as _hsmodule_types
 
 import asyncio
 import functools
@@ -60,7 +60,7 @@ cdef class Promise_bool:
         return inst
 
 cdef class ExtendTestServiceInterface(
-    hsmodule.services.HsTestServiceInterface
+    _hsmodule_services.HsTestServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cExtendTestServiceInterface(
@@ -80,12 +80,12 @@ cdef api void call_cy_ExtendTestService_check(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    unique_ptr[hsmodule.types.cHsFoo] struct1
+    unique_ptr[_hsmodule_types.cHsFoo] struct1
 ):
     cdef ExtendTestServiceInterface iface
     iface = self
     __promise = Promise_bool.create(move(cPromise))
-    arg_struct1 = hsmodule.types.HsFoo.create(shared_ptr[hsmodule.types.cHsFoo](struct1.release()))
+    arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = None
     if iface._pass_context_check:
         __context = RequestContext.create(ctx)

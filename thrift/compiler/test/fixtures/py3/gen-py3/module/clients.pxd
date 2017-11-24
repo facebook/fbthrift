@@ -19,7 +19,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     cdef _module_SimpleService_set_client(SimpleService inst, shared_ptr[cSimpleServiceClientWrapper] c_obj)
 
     cdef _module_SimpleService_reset_client(SimpleService self)
-    
+
 cdef class DerivedService(SimpleService):
     cdef shared_ptr[cDerivedServiceClientWrapper] _module_DerivedService_client
 
@@ -27,7 +27,7 @@ cdef class DerivedService(SimpleService):
     cdef _module_DerivedService_set_client(DerivedService inst, shared_ptr[cDerivedServiceClientWrapper] c_obj)
 
     cdef _module_DerivedService_reset_client(DerivedService self)
-    
+
 cdef class RederivedService(DerivedService):
     cdef shared_ptr[cRederivedServiceClientWrapper] _module_RederivedService_client
 
@@ -35,4 +35,4 @@ cdef class RederivedService(DerivedService):
     cdef _module_RederivedService_set_client(RederivedService inst, shared_ptr[cRederivedServiceClientWrapper] c_obj)
 
     cdef _module_RederivedService_reset_client(RederivedService self)
-    
+

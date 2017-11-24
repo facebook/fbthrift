@@ -30,10 +30,10 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
-import includes.types
-cimport includes.types
+cimport module.types as _module_types
+import module.types as _module_types
+import includes.types as _includes_types
+cimport includes.types as _includes_types
 
 import asyncio
 import functools
@@ -63,22 +63,22 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[double])
     cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move(
         cFollyPromise[unique_ptr[cmap[string,int64_t]]])
-    cdef cFollyPromise[unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]] move(
-        cFollyPromise[unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]])
-    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]] move(
-        cFollyPromise[unique_ptr[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]])
-    cdef cFollyPromise[module.types.cMyEnumA] move(
-        cFollyPromise[module.types.cMyEnumA])
-    cdef cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]] move(
-        cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]])
-    cdef cFollyPromise[unique_ptr[module.types.cMyStruct]] move(
-        cFollyPromise[unique_ptr[module.types.cMyStruct]])
-    cdef cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]] move(
-        cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]])
-    cdef cFollyPromise[unique_ptr[module.types.cComplexUnion]] move(
-        cFollyPromise[unique_ptr[module.types.cComplexUnion]])
-    cdef cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]] move(
-        cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]])
+    cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] move(
+        cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]])
+    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] move(
+        cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]])
+    cdef cFollyPromise[_module_types.cMyEnumA] move(
+        cFollyPromise[_module_types.cMyEnumA])
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] move(
+        cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]])
+    cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] move(
+        cFollyPromise[unique_ptr[_module_types.cMyStruct]])
+    cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] move(
+        cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]])
+    cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] move(
+        cFollyPromise[unique_ptr[_module_types.cComplexUnion]])
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] move(
+        cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]])
     cdef cFollyPromise[unique_ptr[vector[cbool]]] move(
         cFollyPromise[unique_ptr[vector[cbool]]])
     cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] move(
@@ -177,73 +177,73 @@ cdef class Promise_Map__string_i64:
         return inst
 
 cdef class Promise_List__Map__Empty_MyStruct:
-    cdef cFollyPromise[unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]] cPromise
+    cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise):
         inst = <Promise_List__Map__Empty_MyStruct>Promise_List__Map__Empty_MyStruct.__new__(Promise_List__Map__Empty_MyStruct)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_List__List__List__Map__Empty_MyStruct:
-    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]] cPromise
+    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise):
         inst = <Promise_List__List__List__Map__Empty_MyStruct>Promise_List__List__List__Map__Empty_MyStruct.__new__(Promise_List__List__List__Map__Empty_MyStruct)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_MyEnumA:
-    cdef cFollyPromise[module.types.cMyEnumA] cPromise
+    cdef cFollyPromise[_module_types.cMyEnumA] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[module.types.cMyEnumA] cPromise):
+    cdef create(cFollyPromise[_module_types.cMyEnumA] cPromise):
         inst = <Promise_MyEnumA>Promise_MyEnumA.__new__(Promise_MyEnumA)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_List__MyEnumA:
-    cdef cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]] cPromise
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise):
         inst = <Promise_List__MyEnumA>Promise_List__MyEnumA.__new__(Promise_List__MyEnumA)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_MyStruct:
-    cdef cFollyPromise[unique_ptr[module.types.cMyStruct]] cPromise
+    cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[module.types.cMyStruct]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise):
         inst = <Promise_MyStruct>Promise_MyStruct.__new__(Promise_MyStruct)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_Set__MyStruct:
-    cdef cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]] cPromise
+    cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise):
         inst = <Promise_Set__MyStruct>Promise_Set__MyStruct.__new__(Promise_Set__MyStruct)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_ComplexUnion:
-    cdef cFollyPromise[unique_ptr[module.types.cComplexUnion]] cPromise
+    cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[module.types.cComplexUnion]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise):
         inst = <Promise_ComplexUnion>Promise_ComplexUnion.__new__(Promise_ComplexUnion)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_List__ComplexUnion:
-    cdef cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]] cPromise
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise):
         inst = <Promise_List__ComplexUnion>Promise_List__ComplexUnion.__new__(Promise_List__ComplexUnion)
         inst.cPromise = move(cPromise)
         return inst
@@ -1031,7 +1031,7 @@ async def ReturnService_mapReturn_coro(
             result = await self.mapReturn(ctx,)
         else:
             result = await self.mapReturn()
-        result = module.types.Map__string_i64(result)
+        result = _module_types.Map__string_i64(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1046,7 +1046,7 @@ async def ReturnService_mapReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<module.types.Map__string_i64?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_simpleTypedefReturn(
     object self,
@@ -1096,7 +1096,7 @@ async def ReturnService_simpleTypedefReturn_coro(
 cdef api void call_cy_ReturnService_complexTypedefReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]] cPromise
+    cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1122,7 +1122,7 @@ async def ReturnService_complexTypedefReturn_coro(
             result = await self.complexTypedefReturn(ctx,)
         else:
             result = await self.complexTypedefReturn()
-        result = module.types.List__Map__Empty_MyStruct(result)
+        result = _module_types.List__Map__Empty_MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1137,12 +1137,12 @@ async def ReturnService_complexTypedefReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]](deref((<module.types.List__Map__Empty_MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](deref((<_module_types.List__Map__Empty_MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]]] cPromise
+    cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1168,7 +1168,7 @@ async def ReturnService_list_mostComplexTypedefReturn_coro(
             result = await self.list_mostComplexTypedefReturn(ctx,)
         else:
             result = await self.list_mostComplexTypedefReturn()
-        result = module.types.List__List__List__Map__Empty_MyStruct(result)
+        result = _module_types.List__List__List__Map__Empty_MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1183,12 +1183,12 @@ async def ReturnService_list_mostComplexTypedefReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]](deref((<module.types.List__List__List__Map__Empty_MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](deref((<_module_types.List__List__List__Map__Empty_MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_enumReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[module.types.cMyEnumA] cPromise
+    cFollyPromise[_module_types.cMyEnumA] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1228,12 +1228,12 @@ async def ReturnService_enumReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(module.types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
 
 cdef api void call_cy_ReturnService_list_EnumReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]] cPromise
+    cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1259,7 +1259,7 @@ async def ReturnService_list_EnumReturn_coro(
             result = await self.list_EnumReturn(ctx,)
         else:
             result = await self.list_EnumReturn()
-        result = module.types.List__MyEnumA(result)
+        result = _module_types.List__MyEnumA(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1274,12 +1274,12 @@ async def ReturnService_list_EnumReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cMyEnumA]](deref((<module.types.List__MyEnumA?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_structReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.cMyStruct]] cPromise
+    cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1319,12 +1319,12 @@ async def ReturnService_structReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cMyStruct](deref((<module.types.MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_set_StructReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]] cPromise
+    cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1350,7 +1350,7 @@ async def ReturnService_set_StructReturn_coro(
             result = await self.set_StructReturn(ctx,)
         else:
             result = await self.set_StructReturn()
-        result = module.types.Set__MyStruct(result)
+        result = _module_types.Set__MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1365,12 +1365,12 @@ async def ReturnService_set_StructReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[module.types.cMyStruct]](deref((<module.types.Set__MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_unionReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.cComplexUnion]] cPromise
+    cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1410,12 +1410,12 @@ async def ReturnService_unionReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cComplexUnion](deref((<module.types.ComplexUnion?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_list_UnionReturn(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]] cPromise
+    cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 ):
     cdef ReturnServiceInterface iface
     iface = self
@@ -1441,7 +1441,7 @@ async def ReturnService_list_UnionReturn_coro(
             result = await self.list_UnionReturn(ctx,)
         else:
             result = await self.list_UnionReturn()
-        result = module.types.List__ComplexUnion(result)
+        result = _module_types.List__ComplexUnion(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1456,12 +1456,12 @@ async def ReturnService_list_UnionReturn_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cComplexUnion]](deref((<module.types.List__ComplexUnion?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_readDataEb(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.folly_IOBuf]] cPromise,
+    cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface iface
@@ -1512,7 +1512,7 @@ async def ReturnService_readDataEb_coro(
 cdef api void call_cy_ReturnService_readData(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.std_unique_ptr_folly_IOBuf]] cPromise,
+    cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface iface
@@ -1677,7 +1677,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_param1 = module.types.Map__string_i64.create(module.types.move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_void_ret_map_param:
         __context = RequestContext.create(ctx)
@@ -1729,8 +1729,8 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_param1 = module.types.Map__string_i64.create(module.types.move(param1))
-    arg_param2 = module.types.Set__List__string.create(module.types.move(param2))
+    arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
+    arg_param2 = _module_types.Set__List__string.create(_module_types.move(param2))
     __context = None
     if iface._pass_context_void_ret_map_setlist_param:
         __context = RequestContext.create(ctx)
@@ -1831,12 +1831,12 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    module.types.cMyEnumA param1
+    _module_types.cMyEnumA param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_param1 = module.types.MyEnumA(<int> param1)
+    arg_param1 = _module_types.MyEnumA(<int> param1)
     __context = None
     if iface._pass_context_void_ret_enum_param:
         __context = RequestContext.create(ctx)
@@ -1882,12 +1882,12 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[module.types.cMyStruct] param1
+    unique_ptr[_module_types.cMyStruct] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_param1 = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](param1.release()))
+    arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
     __context = None
     if iface._pass_context_void_ret_struct_param:
         __context = RequestContext.create(ctx)
@@ -1933,12 +1933,12 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[module.types.cComplexUnion]] param1
+    unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_param1 = module.types.List__ComplexUnion.create(module.types.move(param1))
+    arg_param1 = _module_types.List__ComplexUnion.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_void_ret_listunion_param:
         __context = RequestContext.create(ctx)
@@ -2046,7 +2046,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_bool.create(move(cPromise))
-    arg_param1 = module.types.Map__string_i64.create(module.types.move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_bool_ret_map_param:
         __context = RequestContext.create(ctx)
@@ -2092,12 +2092,12 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
-    unique_ptr[module.types.cComplexUnion] param1
+    unique_ptr[_module_types.cComplexUnion] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_bool.create(move(cPromise))
-    arg_param1 = module.types.ComplexUnion.create(shared_ptr[module.types.cComplexUnion](param1.release()))
+    arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
     __context = None
     if iface._pass_context_bool_ret_union_param:
         __context = RequestContext.create(ctx)
@@ -2201,13 +2201,13 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     Cpp2RequestContext* ctx,
     cFollyPromise[int64_t] cPromise,
     unique_ptr[string] param1,
-    unique_ptr[cset[vector[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]]]] param2
+    unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
-    arg_param2 = module.types.Set__List__List__Map__Empty_MyStruct.create(module.types.move(param2))
+    arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
     __context = None
     if iface._pass_context_i64_ret_string_typedef_param:
         __context = RequestContext.create(ctx)
@@ -2332,12 +2332,12 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise,
-    unique_ptr[cset[module.types.cMyStruct]] param1
+    unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_double.create(move(cPromise))
-    arg_param1 = module.types.Set__MyStruct.create(module.types.move(param1))
+    arg_param1 = _module_types.Set__MyStruct.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_double_ret_setstruct_param:
         __context = RequestContext.create(ctx)
@@ -2516,7 +2516,7 @@ async def ParamService_map_ret_bool_param_coro(
         else:
             result = await self.map_ret_bool_param(
                       param1)
-        result = module.types.Map__string_i64(result)
+        result = _module_types.Map__string_i64(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2531,7 +2531,7 @@ async def ParamService_map_ret_bool_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<module.types.Map__string_i64?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     object self,
@@ -2543,8 +2543,8 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_List__bool.create(move(cPromise))
-    arg_param1 = module.types.Map__i32_List__string.create(module.types.move(param1))
-    arg_param2 = module.types.List__string.create(module.types.move(param2))
+    arg_param1 = _module_types.Map__i32_List__string.create(_module_types.move(param1))
+    arg_param2 = _module_types.List__string.create(_module_types.move(param2))
     __context = None
     if iface._pass_context_list_ret_map_setlist_param:
         __context = RequestContext.create(ctx)
@@ -2574,7 +2574,7 @@ async def ParamService_list_ret_map_setlist_param_coro(
             result = await self.list_ret_map_setlist_param(
                       param1,
                       param2)
-        result = module.types.List__bool(result)
+        result = _module_types.List__bool(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2589,7 +2589,7 @@ async def ParamService_list_ret_map_setlist_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[cbool]](deref((<module.types.List__bool?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[cbool]](deref((<_module_types.List__bool?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_param(
     object self,
@@ -2600,7 +2600,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_Map__Set__List__i32_Map__List__Set__string_string.create(move(cPromise))
-    arg_param1 = module.types.List__List__List__List__i32.create(module.types.move(param1))
+    arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_mapsetlistmapliststring_ret_listlistlist_param:
         __context = RequestContext.create(ctx)
@@ -2626,7 +2626,7 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
         else:
             result = await self.mapsetlistmapliststring_ret_listlistlist_param(
                       param1)
-        result = module.types.Map__Set__List__i32_Map__List__Set__string_string(result)
+        result = _module_types.Map__Set__List__i32_Map__List__Set__string_string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2641,7 +2641,7 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](deref((<module.types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](deref((<_module_types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_typedef_ret_i32_param(
     object self,
@@ -2698,12 +2698,12 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
-    unique_ptr[vector[cmap[module.types.cEmpty,module.types.cMyStruct]]] param1
+    unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_List__i32.create(move(cPromise))
-    arg_param1 = module.types.List__Map__Empty_MyStruct.create(module.types.move(param1))
+    arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_listtypedef_ret_typedef_param:
         __context = RequestContext.create(ctx)
@@ -2729,7 +2729,7 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
         else:
             result = await self.listtypedef_ret_typedef_param(
                       param1)
-        result = module.types.List__i32(result)
+        result = _module_types.List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2744,12 +2744,12 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_enum_ret_double_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[module.types.cMyEnumA] cPromise,
+    cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1
 ):
     cdef ParamServiceInterface iface
@@ -2795,20 +2795,20 @@ async def ParamService_enum_ret_double_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(module.types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
 
 cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[module.types.cMyEnumA] cPromise,
+    cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1,
-    module.types.cMyEnumA param2
+    _module_types.cMyEnumA param2
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_MyEnumA.create(move(cPromise))
     arg_param1 = param1
-    arg_param2 = module.types.MyEnumA(<int> param2)
+    arg_param2 = _module_types.MyEnumA(<int> param2)
     __context = None
     if iface._pass_context_enum_ret_double_enum_param:
         __context = RequestContext.create(ctx)
@@ -2852,18 +2852,18 @@ async def ParamService_enum_ret_double_enum_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(module.types.MyEnumA_to_cpp(result))
+        promise.cPromise.setValue(_module_types.MyEnumA_to_cpp(result))
 
 cdef api void call_cy_ParamService_listenum_ret_map_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[module.types.cMyEnumA]]] cPromise,
+    cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
     unique_ptr[cmap[string,int64_t]] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_List__MyEnumA.create(move(cPromise))
-    arg_param1 = module.types.Map__string_i64.create(module.types.move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_listenum_ret_map_param:
         __context = RequestContext.create(ctx)
@@ -2889,7 +2889,7 @@ async def ParamService_listenum_ret_map_param_coro(
         else:
             result = await self.listenum_ret_map_param(
                       param1)
-        result = module.types.List__MyEnumA(result)
+        result = _module_types.List__MyEnumA(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2904,12 +2904,12 @@ async def ParamService_listenum_ret_map_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cMyEnumA]](deref((<module.types.List__MyEnumA?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_struct_ret_i16_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.cMyStruct]] cPromise,
+    cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
     int16_t param1
 ):
     cdef ParamServiceInterface iface
@@ -2955,18 +2955,18 @@ async def ParamService_struct_ret_i16_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cMyStruct](deref((<module.types.MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_setstruct_ret_set_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[cset[module.types.cMyStruct]]] cPromise,
+    cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise,
     unique_ptr[cset[string]] param1
 ):
     cdef ParamServiceInterface iface
     iface = self
     __promise = Promise_Set__MyStruct.create(move(cPromise))
-    arg_param1 = module.types.Set__string.create(module.types.move(param1))
+    arg_param1 = _module_types.Set__string.create(_module_types.move(param1))
     __context = None
     if iface._pass_context_setstruct_ret_set_param:
         __context = RequestContext.create(ctx)
@@ -2992,7 +2992,7 @@ async def ParamService_setstruct_ret_set_param_coro(
         else:
             result = await self.setstruct_ret_set_param(
                       param1)
-        result = module.types.Set__MyStruct(result)
+        result = _module_types.Set__MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3007,12 +3007,12 @@ async def ParamService_setstruct_ret_set_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[module.types.cMyStruct]](deref((<module.types.Set__MyStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.cComplexUnion]] cPromise,
+    cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise,
     int32_t param1,
     int32_t param2
 ):
@@ -3064,12 +3064,12 @@ async def ParamService_union_ret_i32_i32_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cComplexUnion](deref((<module.types.ComplexUnion?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_listunion_string_param(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[module.types.cComplexUnion]]] cPromise,
+    cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise,
     unique_ptr[string] param1
 ):
     cdef ParamServiceInterface iface
@@ -3101,7 +3101,7 @@ async def ParamService_listunion_string_param_coro(
         else:
             result = await self.listunion_string_param(
                       param1)
-        result = module.types.List__ComplexUnion(result)
+        result = _module_types.List__ComplexUnion(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3116,5 +3116,5 @@ async def ParamService_listunion_string_param_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cComplexUnion]](deref((<module.types.List__ComplexUnion?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
 

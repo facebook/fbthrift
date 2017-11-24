@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 from module.clients_wrapper cimport cSimpleServiceAsyncClient, cSimpleServiceClientWrapper
 from module.clients_wrapper cimport cDerivedServiceAsyncClient, cDerivedServiceClientWrapper
@@ -173,8 +172,8 @@ cdef void SimpleService_expected_exception_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    if result.hasException[module.types.cSimpleException]():
-        pyfuture.set_exception(module.types.SimpleException.create(try_make_shared_exception[module.types.cSimpleException](result.exception())))
+    if result.hasException[_module_types.cSimpleException]():
+        pyfuture.set_exception(_module_types.SimpleException.create(try_make_shared_exception[_module_types.cSimpleException](result.exception())))
     elif result.hasException():
         try:
             raise_py_exception(result.exception())
@@ -353,7 +352,7 @@ cdef void SimpleService_repeat_name_callback(
         pyfuture.set_result(result.value().decode('UTF-8'))
 
 cdef void SimpleService_get_struct_callback(
-    cFollyTry[module.types.cSimpleStruct]&& result,
+    cFollyTry[_module_types.cSimpleStruct]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -363,7 +362,7 @@ cdef void SimpleService_get_struct_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.SimpleStruct.create(make_shared[module.types.cSimpleStruct](result.value())))
+        pyfuture.set_result(_module_types.SimpleStruct.create(make_shared[_module_types.cSimpleStruct](result.value())))
 
 cdef void SimpleService_fib_callback(
     cFollyTry[vector[int32_t]]&& result,
@@ -376,7 +375,7 @@ cdef void SimpleService_fib_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__i32.create(make_shared[vector[int32_t]](result.value())))
+        pyfuture.set_result(_module_types.List__i32.create(make_shared[vector[int32_t]](result.value())))
 
 cdef void SimpleService_unique_words_callback(
     cFollyTry[cset[string]]&& result,
@@ -389,7 +388,7 @@ cdef void SimpleService_unique_words_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__string.create(make_shared[cset[string]](result.value())))
+        pyfuture.set_result(_module_types.Set__string.create(make_shared[cset[string]](result.value())))
 
 cdef void SimpleService_words_count_callback(
     cFollyTry[cmap[string,int16_t]]&& result,
@@ -402,10 +401,10 @@ cdef void SimpleService_words_count_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Map__string_i16.create(make_shared[cmap[string,int16_t]](result.value())))
+        pyfuture.set_result(_module_types.Map__string_i16.create(make_shared[cmap[string,int16_t]](result.value())))
 
 cdef void SimpleService_set_enum_callback(
-    cFollyTry[module.types.cAnEnum]&& result,
+    cFollyTry[_module_types.cAnEnum]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -415,7 +414,7 @@ cdef void SimpleService_set_enum_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.AnEnum(<int> result.value()))
+        pyfuture.set_result(_module_types.AnEnum(<int> result.value()))
 
 cdef void SimpleService_list_of_lists_callback(
     cFollyTry[vector[vector[int32_t]]]&& result,
@@ -428,7 +427,7 @@ cdef void SimpleService_list_of_lists_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__List__i32.create(make_shared[vector[vector[int32_t]]](result.value())))
+        pyfuture.set_result(_module_types.List__List__i32.create(make_shared[vector[vector[int32_t]]](result.value())))
 
 cdef void SimpleService_word_character_frequency_callback(
     cFollyTry[cmap[string,cmap[string,int32_t]]]&& result,
@@ -441,7 +440,7 @@ cdef void SimpleService_word_character_frequency_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Map__string_Map__string_i32.create(make_shared[cmap[string,cmap[string,int32_t]]](result.value())))
+        pyfuture.set_result(_module_types.Map__string_Map__string_i32.create(make_shared[cmap[string,cmap[string,int32_t]]](result.value())))
 
 cdef void SimpleService_list_of_sets_callback(
     cFollyTry[vector[cset[string]]]&& result,
@@ -454,7 +453,7 @@ cdef void SimpleService_list_of_sets_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__Set__string.create(make_shared[vector[cset[string]]](result.value())))
+        pyfuture.set_result(_module_types.List__Set__string.create(make_shared[vector[cset[string]]](result.value())))
 
 cdef void SimpleService_nested_map_argument_callback(
     cFollyTry[int32_t]&& result,
@@ -493,7 +492,7 @@ cdef void SimpleService_get_union_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__i32.create(make_shared[cset[int32_t]](result.value())))
+        pyfuture.set_result(_module_types.Set__i32.create(make_shared[cset[int32_t]](result.value())))
 
 cdef void SimpleService_get_keys_callback(
     cFollyTry[cset[string]]&& result,
@@ -506,7 +505,7 @@ cdef void SimpleService_get_keys_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__string.create(make_shared[cset[string]](result.value())))
+        pyfuture.set_result(_module_types.Set__string.create(make_shared[cset[string]](result.value())))
 
 cdef void SimpleService_lookup_double_callback(
     cFollyTry[double]&& result,
@@ -545,10 +544,10 @@ cdef void SimpleService_contain_binary_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.Set__binary.create(make_shared[cset[string]](result.value())))
+        pyfuture.set_result(_module_types.Set__binary.create(make_shared[cset[string]](result.value())))
 
 cdef void SimpleService_contain_enum_callback(
-    cFollyTry[vector[module.types.cAnEnum]]&& result,
+    cFollyTry[vector[_module_types.cAnEnum]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -558,7 +557,7 @@ cdef void SimpleService_contain_enum_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.List__AnEnum.create(make_shared[vector[module.types.cAnEnum]](result.value())))
+        pyfuture.set_result(_module_types.List__AnEnum.create(make_shared[vector[_module_types.cAnEnum]](result.value())))
 
 cdef void DerivedService_get_six_callback(
     cFollyTry[int32_t]&& result,
@@ -730,7 +729,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def get_value(
             SimpleService self,
-            module.types.SimpleStruct simple_struct):
+            _module_types.SimpleStruct simple_struct):
         if simple_struct is None:
             raise TypeError('simple_struct can not be None')
         self._check_connect_future()
@@ -739,7 +738,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).get_value(
-                deref((<module.types.SimpleStruct>simple_struct)._cpp_obj),
+                deref((<_module_types.SimpleStruct>simple_struct)._cpp_obj),
             ),
             SimpleService_get_value_callback,
             <PyObject *> __future
@@ -877,15 +876,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             numbers):
         if numbers is None:
             raise TypeError('numbers can not be None')
-        if not isinstance(numbers, module.types.List__i16):
-            numbers = module.types.List__i16(numbers)
+        if not isinstance(numbers, _module_types.List__i16):
+            numbers = _module_types.List__i16(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i16_list(
-                vector[int16_t](deref(module.types.List__i16(numbers)._cpp_obj.get())),
+                vector[int16_t](deref(_module_types.List__i16(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i16_list_callback,
             <PyObject *> __future
@@ -898,15 +897,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             numbers):
         if numbers is None:
             raise TypeError('numbers can not be None')
-        if not isinstance(numbers, module.types.List__i32):
-            numbers = module.types.List__i32(numbers)
+        if not isinstance(numbers, _module_types.List__i32):
+            numbers = _module_types.List__i32(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i32_list(
-                vector[int32_t](deref(module.types.List__i32(numbers)._cpp_obj.get())),
+                vector[int32_t](deref(_module_types.List__i32(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i32_list_callback,
             <PyObject *> __future
@@ -919,15 +918,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             numbers):
         if numbers is None:
             raise TypeError('numbers can not be None')
-        if not isinstance(numbers, module.types.List__i64):
-            numbers = module.types.List__i64(numbers)
+        if not isinstance(numbers, _module_types.List__i64):
+            numbers = _module_types.List__i64(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i64_list(
-                vector[int64_t](deref(module.types.List__i64(numbers)._cpp_obj.get())),
+                vector[int64_t](deref(_module_types.List__i64(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_i64_list_callback,
             <PyObject *> __future
@@ -940,15 +939,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             words):
         if words is None:
             raise TypeError('words can not be None')
-        if not isinstance(words, module.types.List__string):
-            words = module.types.List__string(words)
+        if not isinstance(words, _module_types.List__string):
+            words = _module_types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).concat_many(
-                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
+                vector[string](deref(_module_types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_concat_many_callback,
             <PyObject *> __future
@@ -961,15 +960,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             items):
         if items is None:
             raise TypeError('items can not be None')
-        if not isinstance(items, module.types.List__SimpleStruct):
-            items = module.types.List__SimpleStruct(items)
+        if not isinstance(items, _module_types.List__SimpleStruct):
+            items = _module_types.List__SimpleStruct(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).count_structs(
-                vector[module.types.cSimpleStruct](deref(module.types.List__SimpleStruct(items)._cpp_obj.get())),
+                vector[_module_types.cSimpleStruct](deref(_module_types.List__SimpleStruct(items)._cpp_obj.get())),
             ),
             SimpleService_count_structs_callback,
             <PyObject *> __future
@@ -982,15 +981,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             numbers):
         if numbers is None:
             raise TypeError('numbers can not be None')
-        if not isinstance(numbers, module.types.Set__i32):
-            numbers = module.types.Set__i32(numbers)
+        if not isinstance(numbers, _module_types.Set__i32):
+            numbers = _module_types.Set__i32(numbers)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_set(
-                cset[int32_t](deref(module.types.Set__i32(numbers)._cpp_obj.get())),
+                cset[int32_t](deref(_module_types.Set__i32(numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_set_callback,
             <PyObject *> __future
@@ -1004,8 +1003,8 @@ cdef class SimpleService(thrift.py3.client.Client):
             str word):
         if words is None:
             raise TypeError('words can not be None')
-        if not isinstance(words, module.types.Set__string):
-            words = module.types.Set__string(words)
+        if not isinstance(words, _module_types.Set__string):
+            words = _module_types.Set__string(words)
         if word is None:
             raise TypeError('word can not be None')
         self._check_connect_future()
@@ -1014,7 +1013,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_SimpleService_client).contains_word(
-                cset[string](deref(module.types.Set__string(words)._cpp_obj.get())),
+                cset[string](deref(_module_types.Set__string(words)._cpp_obj.get())),
                 word.encode('UTF-8'),
             ),
             SimpleService_contains_word_callback,
@@ -1029,8 +1028,8 @@ cdef class SimpleService(thrift.py3.client.Client):
             str key):
         if words is None:
             raise TypeError('words can not be None')
-        if not isinstance(words, module.types.Map__string_string):
-            words = module.types.Map__string_string(words)
+        if not isinstance(words, _module_types.Map__string_string):
+            words = _module_types.Map__string_string(words)
         if key is None:
             raise TypeError('key can not be None')
         self._check_connect_future()
@@ -1039,7 +1038,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).get_map_value(
-                cmap[string,string](deref(module.types.Map__string_string(words)._cpp_obj.get())),
+                cmap[string,string](deref(_module_types.Map__string_string(words)._cpp_obj.get())),
                 key.encode('UTF-8'),
             ),
             SimpleService_get_map_value_callback,
@@ -1053,15 +1052,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             items):
         if items is None:
             raise TypeError('items can not be None')
-        if not isinstance(items, module.types.Map__string_SimpleStruct):
-            items = module.types.Map__string_SimpleStruct(items)
+        if not isinstance(items, _module_types.Map__string_SimpleStruct):
+            items = _module_types.Map__string_SimpleStruct(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).map_length(
-                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(items)._cpp_obj.get())),
+                cmap[string,_module_types.cSimpleStruct](deref(_module_types.Map__string_SimpleStruct(items)._cpp_obj.get())),
             ),
             SimpleService_map_length_callback,
             <PyObject *> __future
@@ -1074,15 +1073,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             items):
         if items is None:
             raise TypeError('items can not be None')
-        if not isinstance(items, module.types.Map__string_i16):
-            items = module.types.Map__string_i16(items)
+        if not isinstance(items, _module_types.Map__string_i16):
+            items = _module_types.Map__string_i16(items)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_map_values(
-                cmap[string,int16_t](deref(module.types.Map__string_i16(items)._cpp_obj.get())),
+                cmap[string,int16_t](deref(_module_types.Map__string_i16(items)._cpp_obj.get())),
             ),
             SimpleService_sum_map_values_callback,
             <PyObject *> __future
@@ -1092,7 +1091,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def complex_sum_i32(
             SimpleService self,
-            module.types.ComplexStruct counter):
+            _module_types.ComplexStruct counter):
         if counter is None:
             raise TypeError('counter can not be None')
         self._check_connect_future()
@@ -1101,7 +1100,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).complex_sum_i32(
-                deref((<module.types.ComplexStruct>counter)._cpp_obj),
+                deref((<_module_types.ComplexStruct>counter)._cpp_obj),
             ),
             SimpleService_complex_sum_i32_callback,
             <PyObject *> __future
@@ -1111,7 +1110,7 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def repeat_name(
             SimpleService self,
-            module.types.ComplexStruct counter):
+            _module_types.ComplexStruct counter):
         if counter is None:
             raise TypeError('counter can not be None')
         self._check_connect_future()
@@ -1120,7 +1119,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).repeat_name(
-                deref((<module.types.ComplexStruct>counter)._cpp_obj),
+                deref((<_module_types.ComplexStruct>counter)._cpp_obj),
             ),
             SimpleService_repeat_name_callback,
             <PyObject *> __future
@@ -1133,7 +1132,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cSimpleStruct](
+        bridgeFutureWith[_module_types.cSimpleStruct](
             self._executor,
             deref(self._module_SimpleService_client).get_struct(
             ),
@@ -1167,15 +1166,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             words):
         if words is None:
             raise TypeError('words can not be None')
-        if not isinstance(words, module.types.List__string):
-            words = module.types.List__string(words)
+        if not isinstance(words, _module_types.List__string):
+            words = _module_types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).unique_words(
-                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
+                vector[string](deref(_module_types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_unique_words_callback,
             <PyObject *> __future
@@ -1188,15 +1187,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             words):
         if words is None:
             raise TypeError('words can not be None')
-        if not isinstance(words, module.types.List__string):
-            words = module.types.List__string(words)
+        if not isinstance(words, _module_types.List__string):
+            words = _module_types.List__string(words)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cmap[string,int16_t]](
             self._executor,
             deref(self._module_SimpleService_client).words_count(
-                vector[string](deref(module.types.List__string(words)._cpp_obj.get())),
+                vector[string](deref(_module_types.List__string(words)._cpp_obj.get())),
             ),
             SimpleService_words_count_callback,
             <PyObject *> __future
@@ -1209,15 +1208,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             in_enum):
         if in_enum is None:
             raise TypeError('in_enum can not be None')
-        if not isinstance(in_enum, module.types.AnEnum):
-            raise ValueError('in_enum is not of the enum type { module.types.AnEnum }.')
+        if not isinstance(in_enum, _module_types.AnEnum):
+            raise ValueError('in_enum is not of the enum type { _module_types.AnEnum }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.cAnEnum](
+        bridgeFutureWith[_module_types.cAnEnum](
             self._executor,
             deref(self._module_SimpleService_client).set_enum(
-                module.types.AnEnum_to_cpp(in_enum),
+                _module_types.AnEnum_to_cpp(in_enum),
             ),
             SimpleService_set_enum_callback,
             <PyObject *> __future
@@ -1291,15 +1290,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             struct_map):
         if struct_map is None:
             raise TypeError('struct_map can not be None')
-        if not isinstance(struct_map, module.types.Map__string_List__SimpleStruct):
-            struct_map = module.types.Map__string_List__SimpleStruct(struct_map)
+        if not isinstance(struct_map, _module_types.Map__string_List__SimpleStruct):
+            struct_map = _module_types.Map__string_List__SimpleStruct(struct_map)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).nested_map_argument(
-                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(struct_map)._cpp_obj.get())),
+                cmap[string,vector[_module_types.cSimpleStruct]](deref(_module_types.Map__string_List__SimpleStruct(struct_map)._cpp_obj.get())),
             ),
             SimpleService_nested_map_argument_callback,
             <PyObject *> __future
@@ -1312,15 +1311,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             word_chars):
         if word_chars is None:
             raise TypeError('word_chars can not be None')
-        if not isinstance(word_chars, module.types.List__List__string):
-            word_chars = module.types.List__List__string(word_chars)
+        if not isinstance(word_chars, _module_types.List__List__string):
+            word_chars = _module_types.List__List__string(word_chars)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).make_sentence(
-                vector[vector[string]](deref(module.types.List__List__string(word_chars)._cpp_obj.get())),
+                vector[vector[string]](deref(_module_types.List__List__string(word_chars)._cpp_obj.get())),
             ),
             SimpleService_make_sentence_callback,
             <PyObject *> __future
@@ -1333,15 +1332,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             sets):
         if sets is None:
             raise TypeError('sets can not be None')
-        if not isinstance(sets, module.types.List__Set__i32):
-            sets = module.types.List__Set__i32(sets)
+        if not isinstance(sets, _module_types.List__Set__i32):
+            sets = _module_types.List__Set__i32(sets)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cset[int32_t]](
             self._executor,
             deref(self._module_SimpleService_client).get_union(
-                vector[cset[int32_t]](deref(module.types.List__Set__i32(sets)._cpp_obj.get())),
+                vector[cset[int32_t]](deref(_module_types.List__Set__i32(sets)._cpp_obj.get())),
             ),
             SimpleService_get_union_callback,
             <PyObject *> __future
@@ -1354,15 +1353,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             string_map):
         if string_map is None:
             raise TypeError('string_map can not be None')
-        if not isinstance(string_map, module.types.List__Map__string_string):
-            string_map = module.types.List__Map__string_string(string_map)
+        if not isinstance(string_map, _module_types.List__Map__string_string):
+            string_map = _module_types.List__Map__string_string(string_map)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).get_keys(
-                vector[cmap[string,string]](deref(module.types.List__Map__string_string(string_map)._cpp_obj.get())),
+                vector[cmap[string,string]](deref(_module_types.List__Map__string_string(string_map)._cpp_obj.get())),
             ),
             SimpleService_get_keys_callback,
             <PyObject *> __future
@@ -1413,15 +1412,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             binaries):
         if binaries is None:
             raise TypeError('binaries can not be None')
-        if not isinstance(binaries, module.types.List__binary):
-            binaries = module.types.List__binary(binaries)
+        if not isinstance(binaries, _module_types.List__binary):
+            binaries = _module_types.List__binary(binaries)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).contain_binary(
-                vector[string](deref(module.types.List__binary(binaries)._cpp_obj.get())),
+                vector[string](deref(_module_types.List__binary(binaries)._cpp_obj.get())),
             ),
             SimpleService_contain_binary_callback,
             <PyObject *> __future
@@ -1434,15 +1433,15 @@ cdef class SimpleService(thrift.py3.client.Client):
             the_enum):
         if the_enum is None:
             raise TypeError('the_enum can not be None')
-        if not isinstance(the_enum, module.types.List__AnEnum):
-            the_enum = module.types.List__AnEnum(the_enum)
+        if not isinstance(the_enum, _module_types.List__AnEnum):
+            the_enum = _module_types.List__AnEnum(the_enum)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[vector[module.types.cAnEnum]](
+        bridgeFutureWith[vector[_module_types.cAnEnum]](
             self._executor,
             deref(self._module_SimpleService_client).contain_enum(
-                vector[module.types.cAnEnum](deref(module.types.List__AnEnum(the_enum)._cpp_obj.get())),
+                vector[_module_types.cAnEnum](deref(_module_types.List__AnEnum(the_enum)._cpp_obj.get())),
             ),
             SimpleService_contain_enum_callback,
             <PyObject *> __future
@@ -1472,12 +1471,12 @@ cdef class DerivedService(SimpleService):
     cdef _module_DerivedService_set_client(DerivedService inst, shared_ptr[cDerivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_DerivedService_client = c_obj
-        SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
+        _SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
 
     cdef _module_DerivedService_reset_client(DerivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_DerivedService_client.reset()
-        SimpleService._module_SimpleService_reset_client(self)
+        _SimpleService._module_SimpleService_reset_client(self)
 
     def __dealloc__(DerivedService self):
         if self._cRequestChannel or self._module_DerivedService_client:
@@ -1565,12 +1564,12 @@ cdef class RederivedService(DerivedService):
     cdef _module_RederivedService_set_client(RederivedService inst, shared_ptr[cRederivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_RederivedService_client = c_obj
-        DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
+        _DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
 
     cdef _module_RederivedService_reset_client(RederivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_RederivedService_client.reset()
-        DerivedService._module_DerivedService_reset_client(self)
+        _DerivedService._module_DerivedService_reset_client(self)
 
     def __dealloc__(RederivedService self):
         if self._cRequestChannel or self._module_RederivedService_client:

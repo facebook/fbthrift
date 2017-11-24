@@ -17,4 +17,4 @@ cdef class SomeService(thrift.py3.client.Client):
     cdef _module_SomeService_set_client(SomeService inst, shared_ptr[cSomeServiceClientWrapper] c_obj)
 
     cdef _module_SomeService_reset_client(SomeService self)
-    
+

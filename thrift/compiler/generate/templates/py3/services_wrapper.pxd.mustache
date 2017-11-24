@@ -28,7 +28,7 @@ from folly cimport cFollyExecutor
 
 {{#program:includeNamespaces}}
 {{#hasServices?}}
-cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services_wrapper
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services_wrapper as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}services_wrapper
 {{/hasServices?}}
 {{/program:includeNamespaces}}
 
@@ -46,8 +46,8 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
       }}{{service:name}}SvIf"(
             c{{service:name}}SvAsyncIf,{{#service:extends}}
             {{#service:externalProgram?}}{{!
-              }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-              }}{{service:programName}}.services_wrapper.{{!
+              }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
+              }}{{service:programName}}_services_wrapper.{{!
             }}{{/service:externalProgram?}}c{{service:name}}SvIf,{{/service:extends}}
             cServerInterface):
         pass
@@ -62,8 +62,8 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/services_wra
     }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}Wrapper"(
         c{{service:name}}SvIf{{#service:extends}},
         {{#service:externalProgram?}}{{!
-          }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-          }}{{service:programName}}.services_wrapper.{{!
+          }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
+          }}{{service:programName}}_services_wrapper.{{!
         }}{{/service:externalProgram?}}c{{service:name}}Wrapper{{/service:extends}}
     ):
         pass

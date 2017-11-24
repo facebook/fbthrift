@@ -30,12 +30,12 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport service.types
-import service.types
-import module.types
-cimport module.types
-import includes.types
-cimport includes.types
+cimport service.types as _service_types
+import service.types as _service_types
+import module.types as _module_types
+cimport module.types as _module_types
+import includes.types as _includes_types
+cimport includes.types as _includes_types
 
 import asyncio
 import functools
@@ -88,14 +88,14 @@ cdef api void call_cy_MyService_query(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[module.types.cMyStruct] s,
-    unique_ptr[includes.types.cIncluded] i
+    unique_ptr[_module_types.cMyStruct] s,
+    unique_ptr[_includes_types.cIncluded] i
 ):
     cdef MyServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
-    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
+    arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
+    arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = None
     if iface._pass_context_query:
         __context = RequestContext.create(ctx)
@@ -145,14 +145,14 @@ cdef api void call_cy_MyService_has_arg_docs(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[module.types.cMyStruct] s,
-    unique_ptr[includes.types.cIncluded] i
+    unique_ptr[_module_types.cMyStruct] s,
+    unique_ptr[_includes_types.cIncluded] i
 ):
     cdef MyServiceInterface iface
     iface = self
     __promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
-    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
+    arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
+    arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = None
     if iface._pass_context_has_arg_docs:
         __context = RequestContext.create(ctx)

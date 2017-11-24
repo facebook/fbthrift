@@ -14,7 +14,7 @@ import typing as _typing
 import sys
 import itertools
 from enum import Enum
-import includes.types
+import includes.types as _includes_types
 
 
 class MyEnumA(Enum):
@@ -544,7 +544,7 @@ class containerStruct(thrift.py3.types.Struct):
         fieldAA: _typing.Sequence[_typing.AbstractSet[SimpleUnion]]=None,
         fieldAB: _typing.Mapping[float, int]=None,
         fieldAC: MyEnumB=None,
-        fieldAD: includes.types.AnEnum=None,
+        fieldAD: _includes_types.AnEnum=None,
         fieldAE: _typing.Mapping[str, int]=None
     ) -> None: ...
 
@@ -593,7 +593,7 @@ class containerStruct(thrift.py3.types.Struct):
         fieldAA: _typing.Union[_typing.Sequence[_typing.AbstractSet[SimpleUnion]], NOTSET, None]=NOTSET,
         fieldAB: _typing.Union[_typing.Mapping[float, int], NOTSET, None]=NOTSET,
         fieldAC: _typing.Union[MyEnumB, NOTSET, None]=NOTSET,
-        fieldAD: _typing.Union[includes.types.AnEnum, NOTSET, None]=NOTSET,
+        fieldAD: _typing.Union[_includes_types.AnEnum, NOTSET, None]=NOTSET,
         fieldAE: _typing.Union[_typing.Mapping[str, int], NOTSET, None]=NOTSET
     ): ...
 
@@ -692,7 +692,7 @@ class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldAC(self) -> MyEnumB: ...
     @property
-    def fieldAD(self) -> includes.types.AnEnum: ...
+    def fieldAD(self) -> _includes_types.AnEnum: ...
     @property
     def fieldAE(self) -> Map__string_i32: ...
 
@@ -701,17 +701,17 @@ class MyIncludedStruct(thrift.py3.types.Struct):
     def __init__(
         self, *,
         MyIncludedInt: int=None,
-        MyIncludedStruct: includes.types.AStruct=None,
-        ARefField: includes.types.AStruct=None,
-        ARequiredField: includes.types.AStruct
+        MyIncludedStruct: _includes_types.AStruct=None,
+        ARefField: _includes_types.AStruct=None,
+        ARequiredField: _includes_types.AStruct
     ) -> None: ...
 
     def __call__(
         self, *,
         MyIncludedInt: _typing.Union[int, NOTSET, None]=NOTSET,
-        MyIncludedStruct: _typing.Union[includes.types.AStruct, NOTSET, None]=NOTSET,
-        ARefField: _typing.Union[includes.types.AStruct, NOTSET, None]=NOTSET,
-        ARequiredField: _typing.Union[includes.types.AStruct, NOTSET]=NOTSET
+        MyIncludedStruct: _typing.Union[_includes_types.AStruct, NOTSET, None]=NOTSET,
+        ARefField: _typing.Union[_includes_types.AStruct, NOTSET, None]=NOTSET,
+        ARequiredField: _typing.Union[_includes_types.AStruct, NOTSET]=NOTSET
     ): ...
 
     def __reduce__(self) -> _typing.Tuple[Callable, _typing.Tuple[_typing.Type[MyIncludedStruct], bytes]]: ...
@@ -725,11 +725,11 @@ class MyIncludedStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedInt(self) -> int: ...
     @property
-    def MyIncludedStruct(self) -> includes.types.AStruct: ...
+    def MyIncludedStruct(self) -> _includes_types.AStruct: ...
     @property
-    def ARefField(self) -> includes.types.AStruct: ...
+    def ARefField(self) -> _includes_types.AStruct: ...
     @property
-    def ARequiredField(self) -> includes.types.AStruct: ...
+    def ARequiredField(self) -> _includes_types.AStruct: ...
 
 
 class AnnotatedStruct(thrift.py3.types.Struct):

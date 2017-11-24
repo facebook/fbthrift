@@ -16,7 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport includes.types
+cimport includes.types as _includes_types
 
 
 
@@ -35,8 +35,8 @@ cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
-        includes.types.cIncluded MyIncludedField
-        includes.types.cIncluded MyOtherIncludedField
+        _includes_types.cIncluded MyIncludedField
+        _includes_types.cIncluded MyOtherIncludedField
         int64_t MyIncludedInt
         cMyStruct__isset __isset
 
@@ -56,8 +56,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef includes.types.Included __MyIncludedField
-    cdef includes.types.Included __MyOtherIncludedField
+    cdef _includes_types.Included __MyIncludedField
+    cdef _includes_types.Included __MyOtherIncludedField
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(

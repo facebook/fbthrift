@@ -17,4 +17,4 @@ cdef class NestedContainers(thrift.py3.client.Client):
     cdef _module_NestedContainers_set_client(NestedContainers inst, shared_ptr[cNestedContainersClientWrapper] c_obj)
 
     cdef _module_NestedContainers_reset_client(NestedContainers self)
-    
+

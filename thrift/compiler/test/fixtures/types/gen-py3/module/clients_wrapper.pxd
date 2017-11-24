@@ -16,8 +16,9 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport module.types
+cimport module.types as _module_types
 
+cimport include.types as _include_types
 
 cdef extern from "src/gen-cpp2/SomeService.h" namespace "apache::thrift::fixtures::types":
   cdef cppclass cSomeServiceAsyncClient "apache::thrift::fixtures::types::SomeServiceAsyncClient":
@@ -33,6 +34,6 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrif
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[module.types.std_unordered_map[int32_t,string]] bounce_map(
-      module.types.std_unordered_map[int32_t,string] arg_m,)
+    cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(
+      _module_types.std_unordered_map[int32_t,string] arg_m,)
 

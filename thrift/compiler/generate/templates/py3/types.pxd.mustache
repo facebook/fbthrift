@@ -36,7 +36,7 @@ from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 {{#program:includeNamespaces}}
-cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/program:includeNamespaces}}
 
 {{#program:cppIncludes}}

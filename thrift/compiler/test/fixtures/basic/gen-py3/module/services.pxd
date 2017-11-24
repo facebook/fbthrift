@@ -34,7 +34,7 @@ cdef class MyServicePrioParentInterface(ServiceInterface):
     cdef public bint _pass_context_pong
     pass
 
-cdef class MyServicePrioChildInterface(module.services.MyServicePrioParentInterface):
+cdef class MyServicePrioChildInterface(_module_services.MyServicePrioParentInterface):
     cdef public bint _pass_context_pang
     pass
 

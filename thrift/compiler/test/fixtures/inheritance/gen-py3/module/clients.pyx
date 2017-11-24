@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 from module.clients_wrapper cimport cMyRootAsyncClient, cMyRootClientWrapper
 from module.clients_wrapper cimport cMyNodeAsyncClient, cMyNodeClientWrapper
@@ -184,12 +183,12 @@ cdef class MyNode(MyRoot):
     cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyNode_client = c_obj
-        MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
+        _MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
 
     cdef _module_MyNode_reset_client(MyNode self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyNode_client.reset()
-        MyRoot._module_MyRoot_reset_client(self)
+        _MyRoot._module_MyRoot_reset_client(self)
 
     def __dealloc__(MyNode self):
         if self._cRequestChannel or self._module_MyNode_client:
@@ -277,12 +276,12 @@ cdef class MyLeaf(MyNode):
     cdef _module_MyLeaf_set_client(MyLeaf inst, shared_ptr[cMyLeafClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyLeaf_client = c_obj
-        MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
+        _MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
 
     cdef _module_MyLeaf_reset_client(MyLeaf self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyLeaf_client.reset()
-        MyNode._module_MyNode_reset_client(self)
+        _MyNode._module_MyNode_reset_client(self)
 
     def __dealloc__(MyLeaf self):
         if self._cRequestChannel or self._module_MyLeaf_client:

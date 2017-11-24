@@ -16,8 +16,8 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport module0.types
-cimport module1.types
+cimport module0.types as _module0_types
+cimport module1.types as _module1_types
 
 
 
@@ -37,8 +37,8 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         cStruct() except +
         cStruct(const cStruct&) except +
         bint operator==(cStruct&)
-        module0.types.cStruct first
-        module1.types.cStruct second
+        _module0_types.cStruct first
+        _module1_types.cStruct second
         cStruct__isset __isset
 
     cdef cppclass cBigStruct__isset "module2::BigStruct::__isset":
@@ -73,8 +73,8 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStruct] _cpp_obj
-    cdef module0.types.Struct __first
-    cdef module1.types.Struct __second
+    cdef _module0_types.Struct __first
+    cdef _module1_types.Struct __second
 
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(

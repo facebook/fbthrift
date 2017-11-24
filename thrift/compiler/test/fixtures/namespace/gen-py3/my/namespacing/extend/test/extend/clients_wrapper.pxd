@@ -16,10 +16,10 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport my.namespacing.extend.test.extend.types
+cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 
-cimport hsmodule.types
-cimport hsmodule.clients_wrapper
+cimport hsmodule.types as _hsmodule_types
+cimport hsmodule.clients_wrapper as _hsmodule_clients_wrapper
 
 cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
   cdef cppclass cExtendTestServiceAsyncClient "cpp2::ExtendTestServiceAsyncClient":
@@ -29,10 +29,10 @@ cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cExtendTestServiceClientWrapper] move(unique_ptr[cExtendTestServiceClientWrapper])
 
 cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(hsmodule.clients_wrapper.cHsTestServiceClientWrapper):
+  cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(_hsmodule_clients_wrapper.cHsTestServiceClientWrapper):
     cExtendTestServiceClientWrapper(
       shared_ptr[cExtendTestServiceAsyncClient] async_client)
 
     cFollyFuture[cbool] check(
-      hsmodule.types.cHsFoo arg_struct1,)
+      _hsmodule_types.cHsFoo arg_struct1,)
 

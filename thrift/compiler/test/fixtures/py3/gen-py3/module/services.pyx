@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 import asyncio
 import functools
@@ -59,16 +59,16 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[int64_t])
     cdef cFollyPromise[double] move(
         cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[module.types.cSimpleStruct]] move(
-        cFollyPromise[unique_ptr[module.types.cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] move(
+        cFollyPromise[unique_ptr[_module_types.cSimpleStruct]])
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(
         cFollyPromise[unique_ptr[vector[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(
         cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(
         cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[module.types.cAnEnum] move(
-        cFollyPromise[module.types.cAnEnum])
+    cdef cFollyPromise[_module_types.cAnEnum] move(
+        cFollyPromise[_module_types.cAnEnum])
     cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(
         cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
     cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(
@@ -79,8 +79,8 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[unique_ptr[cset[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(
         cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] move(
-        cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]])
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move(
+        cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -155,10 +155,10 @@ cdef class Promise_double:
         return inst
 
 cdef class Promise_SimpleStruct:
-    cdef cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
+    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise):
         inst = <Promise_SimpleStruct>Promise_SimpleStruct.__new__(Promise_SimpleStruct)
         inst.cPromise = move(cPromise)
         return inst
@@ -191,10 +191,10 @@ cdef class Promise_Map__string_i16:
         return inst
 
 cdef class Promise_AnEnum:
-    cdef cFollyPromise[module.types.cAnEnum] cPromise
+    cdef cFollyPromise[_module_types.cAnEnum] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[module.types.cAnEnum] cPromise):
+    cdef create(cFollyPromise[_module_types.cAnEnum] cPromise):
         inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
         inst.cPromise = move(cPromise)
         return inst
@@ -254,10 +254,10 @@ cdef class Promise_Set__binary:
         return inst
 
 cdef class Promise_List__AnEnum:
-    cdef cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
         inst = <Promise_List__AnEnum>Promise_List__AnEnum.__new__(Promise_List__AnEnum)
         inst.cPromise = move(cPromise)
         return inst
@@ -511,7 +511,7 @@ cdef class SimpleServiceInterface(
 
 
 cdef class DerivedServiceInterface(
-    module.services.SimpleServiceInterface
+    _module_services.SimpleServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cDerivedServiceInterface(
@@ -525,7 +525,7 @@ cdef class DerivedServiceInterface(
 
 
 cdef class RederivedServiceInterface(
-    module.services.DerivedServiceInterface
+    _module_services.DerivedServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cRederivedServiceInterface(
@@ -742,12 +742,12 @@ cdef api void call_cy_SimpleService_get_value(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[module.types.cSimpleStruct] simple_struct
+    unique_ptr[_module_types.cSimpleStruct] simple_struct
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_simple_struct = module.types.SimpleStruct.create(shared_ptr[module.types.cSimpleStruct](simple_struct.release()))
+    arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
     __context = None
     if iface._pass_context_get_value:
         __context = RequestContext.create(ctx)
@@ -1073,8 +1073,8 @@ async def SimpleService_expected_exception_coro(
             result = await self.expected_exception(ctx,)
         else:
             result = await self.expected_exception()
-    except module.types.SimpleException as ex:
-        promise.cPromise.setException(deref((<module.types.SimpleException> ex)._cpp_obj.get()))
+    except _module_types.SimpleException as ex:
+        promise.cPromise.setException(deref((<_module_types.SimpleException> ex)._cpp_obj.get()))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1145,7 +1145,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i16.create(module.types.move(numbers))
+    arg_numbers = _module_types.List__i16.create(_module_types.move(numbers))
     __context = None
     if iface._pass_context_sum_i16_list:
         __context = RequestContext.create(ctx)
@@ -1196,7 +1196,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i32.create(module.types.move(numbers))
+    arg_numbers = _module_types.List__i32.create(_module_types.move(numbers))
     __context = None
     if iface._pass_context_sum_i32_list:
         __context = RequestContext.create(ctx)
@@ -1247,7 +1247,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i64.create(module.types.move(numbers))
+    arg_numbers = _module_types.List__i64.create(_module_types.move(numbers))
     __context = None
     if iface._pass_context_sum_i64_list:
         __context = RequestContext.create(ctx)
@@ -1298,7 +1298,7 @@ cdef api void call_cy_SimpleService_concat_many(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_string.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
+    arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if iface._pass_context_concat_many:
         __context = RequestContext.create(ctx)
@@ -1344,12 +1344,12 @@ cdef api void call_cy_SimpleService_count_structs(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[module.types.cSimpleStruct]] items
+    unique_ptr[vector[_module_types.cSimpleStruct]] items
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_items = module.types.List__SimpleStruct.create(module.types.move(items))
+    arg_items = _module_types.List__SimpleStruct.create(_module_types.move(items))
     __context = None
     if iface._pass_context_count_structs:
         __context = RequestContext.create(ctx)
@@ -1400,7 +1400,7 @@ cdef api void call_cy_SimpleService_sum_set(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.Set__i32.create(module.types.move(numbers))
+    arg_numbers = _module_types.Set__i32.create(_module_types.move(numbers))
     __context = None
     if iface._pass_context_sum_set:
         __context = RequestContext.create(ctx)
@@ -1452,7 +1452,7 @@ cdef api void call_cy_SimpleService_contains_word(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_bool.create(move(cPromise))
-    arg_words = module.types.Set__string.create(module.types.move(words))
+    arg_words = _module_types.Set__string.create(_module_types.move(words))
     arg_word = (deref(word.get())).decode('UTF-8')
     __context = None
     if iface._pass_context_contains_word:
@@ -1509,7 +1509,7 @@ cdef api void call_cy_SimpleService_get_map_value(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_string.create(move(cPromise))
-    arg_words = module.types.Map__string_string.create(module.types.move(words))
+    arg_words = _module_types.Map__string_string.create(_module_types.move(words))
     arg_key = (deref(key.get())).decode('UTF-8')
     __context = None
     if iface._pass_context_get_map_value:
@@ -1560,12 +1560,12 @@ cdef api void call_cy_SimpleService_map_length(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int16_t] cPromise,
-    unique_ptr[cmap[string,module.types.cSimpleStruct]] items
+    unique_ptr[cmap[string,_module_types.cSimpleStruct]] items
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i16.create(move(cPromise))
-    arg_items = module.types.Map__string_SimpleStruct.create(module.types.move(items))
+    arg_items = _module_types.Map__string_SimpleStruct.create(_module_types.move(items))
     __context = None
     if iface._pass_context_map_length:
         __context = RequestContext.create(ctx)
@@ -1616,7 +1616,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i16.create(move(cPromise))
-    arg_items = module.types.Map__string_i16.create(module.types.move(items))
+    arg_items = _module_types.Map__string_i16.create(_module_types.move(items))
     __context = None
     if iface._pass_context_sum_map_values:
         __context = RequestContext.create(ctx)
@@ -1662,12 +1662,12 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[module.types.cComplexStruct] counter
+    unique_ptr[_module_types.cComplexStruct] counter
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
+    arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
     if iface._pass_context_complex_sum_i32:
         __context = RequestContext.create(ctx)
@@ -1713,12 +1713,12 @@ cdef api void call_cy_SimpleService_repeat_name(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[module.types.cComplexStruct] counter
+    unique_ptr[_module_types.cComplexStruct] counter
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_string.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
+    arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
     if iface._pass_context_repeat_name:
         __context = RequestContext.create(ctx)
@@ -1763,7 +1763,7 @@ async def SimpleService_repeat_name_coro(
 cdef api void call_cy_SimpleService_get_struct(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
+    cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
 ):
     cdef SimpleServiceInterface iface
     iface = self
@@ -1803,7 +1803,7 @@ async def SimpleService_get_struct_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[_module_types.cSimpleStruct](deref((<_module_types.SimpleStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_fib(
     object self,
@@ -1840,7 +1840,7 @@ async def SimpleService_fib_coro(
         else:
             result = await self.fib(
                       n)
-        result = module.types.List__i32(result)
+        result = _module_types.List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1855,7 +1855,7 @@ async def SimpleService_fib_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_unique_words(
     object self,
@@ -1866,7 +1866,7 @@ cdef api void call_cy_SimpleService_unique_words(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_Set__string.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
+    arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if iface._pass_context_unique_words:
         __context = RequestContext.create(ctx)
@@ -1892,7 +1892,7 @@ async def SimpleService_unique_words_coro(
         else:
             result = await self.unique_words(
                       words)
-        result = module.types.Set__string(result)
+        result = _module_types.Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1907,7 +1907,7 @@ async def SimpleService_unique_words_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_words_count(
     object self,
@@ -1918,7 +1918,7 @@ cdef api void call_cy_SimpleService_words_count(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_Map__string_i16.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
+    arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if iface._pass_context_words_count:
         __context = RequestContext.create(ctx)
@@ -1944,7 +1944,7 @@ async def SimpleService_words_count_coro(
         else:
             result = await self.words_count(
                       words)
-        result = module.types.Map__string_i16(result)
+        result = _module_types.Map__string_i16(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1959,18 +1959,18 @@ async def SimpleService_words_count_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<_module_types.Map__string_i16?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_set_enum(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[module.types.cAnEnum] cPromise,
-    module.types.cAnEnum in_enum
+    cFollyPromise[_module_types.cAnEnum] cPromise,
+    _module_types.cAnEnum in_enum
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_AnEnum.create(move(cPromise))
-    arg_in_enum = module.types.AnEnum(<int> in_enum)
+    arg_in_enum = _module_types.AnEnum(<int> in_enum)
     __context = None
     if iface._pass_context_set_enum:
         __context = RequestContext.create(ctx)
@@ -2010,7 +2010,7 @@ async def SimpleService_set_enum_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(module.types.AnEnum_to_cpp(result))
+        promise.cPromise.setValue(_module_types.AnEnum_to_cpp(result))
 
 cdef api void call_cy_SimpleService_list_of_lists(
     object self,
@@ -2053,7 +2053,7 @@ async def SimpleService_list_of_lists_coro(
             result = await self.list_of_lists(
                       num_lists,
                       num_items)
-        result = module.types.List__List__i32(result)
+        result = _module_types.List__List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2068,7 +2068,7 @@ async def SimpleService_list_of_lists_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<_module_types.List__List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_word_character_frequency(
     object self,
@@ -2105,7 +2105,7 @@ async def SimpleService_word_character_frequency_coro(
         else:
             result = await self.word_character_frequency(
                       sentence)
-        result = module.types.Map__string_Map__string_i32(result)
+        result = _module_types.Map__string_Map__string_i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2120,7 +2120,7 @@ async def SimpleService_word_character_frequency_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<_module_types.Map__string_Map__string_i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_list_of_sets(
     object self,
@@ -2157,7 +2157,7 @@ async def SimpleService_list_of_sets_coro(
         else:
             result = await self.list_of_sets(
                       some_words)
-        result = module.types.List__Set__string(result)
+        result = _module_types.List__Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2172,18 +2172,18 @@ async def SimpleService_list_of_sets_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<_module_types.List__Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_nested_map_argument(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[cmap[string,vector[module.types.cSimpleStruct]]] struct_map
+    unique_ptr[cmap[string,vector[_module_types.cSimpleStruct]]] struct_map
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_i32.create(move(cPromise))
-    arg_struct_map = module.types.Map__string_List__SimpleStruct.create(module.types.move(struct_map))
+    arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(_module_types.move(struct_map))
     __context = None
     if iface._pass_context_nested_map_argument:
         __context = RequestContext.create(ctx)
@@ -2234,7 +2234,7 @@ cdef api void call_cy_SimpleService_make_sentence(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_string.create(move(cPromise))
-    arg_word_chars = module.types.List__List__string.create(module.types.move(word_chars))
+    arg_word_chars = _module_types.List__List__string.create(_module_types.move(word_chars))
     __context = None
     if iface._pass_context_make_sentence:
         __context = RequestContext.create(ctx)
@@ -2285,7 +2285,7 @@ cdef api void call_cy_SimpleService_get_union(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_Set__i32.create(move(cPromise))
-    arg_sets = module.types.List__Set__i32.create(module.types.move(sets))
+    arg_sets = _module_types.List__Set__i32.create(_module_types.move(sets))
     __context = None
     if iface._pass_context_get_union:
         __context = RequestContext.create(ctx)
@@ -2311,7 +2311,7 @@ async def SimpleService_get_union_coro(
         else:
             result = await self.get_union(
                       sets)
-        result = module.types.Set__i32(result)
+        result = _module_types.Set__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2326,7 +2326,7 @@ async def SimpleService_get_union_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<_module_types.Set__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_get_keys(
     object self,
@@ -2337,7 +2337,7 @@ cdef api void call_cy_SimpleService_get_keys(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_Set__string.create(move(cPromise))
-    arg_string_map = module.types.List__Map__string_string.create(module.types.move(string_map))
+    arg_string_map = _module_types.List__Map__string_string.create(_module_types.move(string_map))
     __context = None
     if iface._pass_context_get_keys:
         __context = RequestContext.create(ctx)
@@ -2363,7 +2363,7 @@ async def SimpleService_get_keys_coro(
         else:
             result = await self.get_keys(
                       string_map)
-        result = module.types.Set__string(result)
+        result = _module_types.Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2378,7 +2378,7 @@ async def SimpleService_get_keys_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_lookup_double(
     object self,
@@ -2491,7 +2491,7 @@ cdef api void call_cy_SimpleService_contain_binary(
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_Set__binary.create(move(cPromise))
-    arg_binaries = module.types.List__binary.create(module.types.move(binaries))
+    arg_binaries = _module_types.List__binary.create(_module_types.move(binaries))
     __context = None
     if iface._pass_context_contain_binary:
         __context = RequestContext.create(ctx)
@@ -2517,7 +2517,7 @@ async def SimpleService_contain_binary_coro(
         else:
             result = await self.contain_binary(
                       binaries)
-        result = module.types.Set__binary(result)
+        result = _module_types.Set__binary(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2532,18 +2532,18 @@ async def SimpleService_contain_binary_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__binary?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_contain_enum(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
-    unique_ptr[vector[module.types.cAnEnum]] the_enum
+    cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise,
+    unique_ptr[vector[_module_types.cAnEnum]] the_enum
 ):
     cdef SimpleServiceInterface iface
     iface = self
     __promise = Promise_List__AnEnum.create(move(cPromise))
-    arg_the_enum = module.types.List__AnEnum.create(module.types.move(the_enum))
+    arg_the_enum = _module_types.List__AnEnum.create(_module_types.move(the_enum))
     __context = None
     if iface._pass_context_contain_enum:
         __context = RequestContext.create(ctx)
@@ -2569,7 +2569,7 @@ async def SimpleService_contain_enum_coro(
         else:
             result = await self.contain_enum(
                       the_enum)
-        result = module.types.List__AnEnum(result)
+        result = _module_types.List__AnEnum(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2584,7 +2584,7 @@ async def SimpleService_contain_enum_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._cpp_obj)))
+        promise.cPromise.setValue(make_unique[vector[_module_types.cAnEnum]](deref((<_module_types.List__AnEnum?> result)._cpp_obj)))
 
 cdef api void call_cy_DerivedService_get_six(
     object self,

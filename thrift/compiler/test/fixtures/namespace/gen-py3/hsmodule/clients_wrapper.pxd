@@ -16,7 +16,7 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport hsmodule.types
+cimport hsmodule.types as _hsmodule_types
 
 
 cdef extern from "gen-cpp2/HsTestService.h" namespace "cpp2":

@@ -16,7 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport transitive.types
+cimport transitive.types as _transitive_types
 
 
 
@@ -35,7 +35,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
         cIncluded(const cIncluded&) except +
         bint operator==(cIncluded&)
         int64_t MyIntField
-        transitive.types.cFoo MyTransitiveField
+        _transitive_types.cFoo MyTransitiveField
         cIncluded__isset __isset
 
 
@@ -54,7 +54,7 @@ cdef class Included(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cIncluded] _cpp_obj
-    cdef transitive.types.Foo __MyTransitiveField
+    cdef _transitive_types.Foo __MyTransitiveField
 
     @staticmethod
     cdef unique_ptr[cIncluded] _make_instance(

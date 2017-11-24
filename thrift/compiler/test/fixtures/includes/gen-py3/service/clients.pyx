@@ -28,14 +28,13 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport service.types
-import service.types
-cimport module.types
-import module.types
-cimport includes.types
-import includes.types
+cimport service.types as _service_types
+import service.types as _service_types
+cimport module.types as _module_types
+import module.types as _module_types
+cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 from service.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
 
@@ -138,8 +137,8 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def query(
             MyService self,
-            module.types.MyStruct s,
-            includes.types.Included i):
+            _module_types.MyStruct s,
+            _includes_types.Included i):
         if s is None:
             raise TypeError('s can not be None')
         if i is None:
@@ -150,8 +149,8 @@ cdef class MyService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).query(
-                deref((<module.types.MyStruct>s)._cpp_obj),
-                deref((<includes.types.Included>i)._cpp_obj),
+                deref((<_module_types.MyStruct>s)._cpp_obj),
+                deref((<_includes_types.Included>i)._cpp_obj),
             ),
             MyService_query_callback,
             <PyObject *> __future
@@ -161,8 +160,8 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def has_arg_docs(
             MyService self,
-            module.types.MyStruct s,
-            includes.types.Included i):
+            _module_types.MyStruct s,
+            _includes_types.Included i):
         if s is None:
             raise TypeError('s can not be None')
         if i is None:
@@ -173,8 +172,8 @@ cdef class MyService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).has_arg_docs(
-                deref((<module.types.MyStruct>s)._cpp_obj),
-                deref((<includes.types.Included>i)._cpp_obj),
+                deref((<_module_types.MyStruct>s)._cpp_obj),
+                deref((<_includes_types.Included>i)._cpp_obj),
             ),
             MyService_has_arg_docs_callback,
             <PyObject *> __future

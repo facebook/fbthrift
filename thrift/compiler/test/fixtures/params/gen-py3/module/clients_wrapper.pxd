@@ -16,7 +16,7 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport module.types
+cimport module.types as _module_types
 
 
 cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "cpp2":

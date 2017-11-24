@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport hsmodule.types
-import hsmodule.types
+cimport hsmodule.types as _hsmodule_types
+import hsmodule.types as _hsmodule_types
 
 from hsmodule.clients_wrapper cimport cHsTestServiceAsyncClient, cHsTestServiceClientWrapper
 

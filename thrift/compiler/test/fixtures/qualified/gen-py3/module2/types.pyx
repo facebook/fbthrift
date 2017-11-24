@@ -28,10 +28,10 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport module0.types
-import module0.types
-cimport module1.types
-import module1.types
+cimport module0.types as _module0_types
+import module0.types as _module0_types
+cimport module1.types as _module1_types
+import module1.types as _module1_types
 
 
 
@@ -100,11 +100,11 @@ cdef class Struct(thrift.py3.types.Struct):
                 second = None
 
         if first is not None:
-            deref(c_inst).first = deref((<module0.types.Struct?> first)._cpp_obj)
+            deref(c_inst).first = deref((<_module0_types.Struct?> first)._cpp_obj)
             deref(c_inst).__isset.first = True
 
         if second is not None:
-            deref(c_inst).second = deref((<module1.types.Struct?> second)._cpp_obj)
+            deref(c_inst).second = deref((<_module1_types.Struct?> second)._cpp_obj)
             deref(c_inst).__isset.second = True
 
         # in C++ you don't have to call move(), but this doesn't translate
@@ -130,7 +130,7 @@ cdef class Struct(thrift.py3.types.Struct):
             return None
 
         if self.__first is None:
-            self.__first = module0.types.Struct.create(make_shared[module0.types.cStruct](deref(self._cpp_obj).first))
+            self.__first = _module0_types.Struct.create(make_shared[_module0_types.cStruct](deref(self._cpp_obj).first))
         return self.__first
 
     @property
@@ -139,7 +139,7 @@ cdef class Struct(thrift.py3.types.Struct):
             return None
 
         if self.__second is None:
-            self.__second = module1.types.Struct.create(make_shared[module1.types.cStruct](deref(self._cpp_obj).second))
+            self.__second = _module1_types.Struct.create(make_shared[_module1_types.cStruct](deref(self._cpp_obj).second))
         return self.__second
 
 

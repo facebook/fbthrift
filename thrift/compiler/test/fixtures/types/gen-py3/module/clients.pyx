@@ -28,16 +28,17 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
+cimport include.types as _include_types
+import include.types as _include_types
 
 from module.clients_wrapper cimport cSomeServiceAsyncClient, cSomeServiceClientWrapper
 
 
 cdef void SomeService_bounce_map_callback(
-    cFollyTry[module.types.std_unordered_map[int32_t,string]]&& result,
+    cFollyTry[_module_types.std_unordered_map[int32_t,string]]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
@@ -47,7 +48,7 @@ cdef void SomeService_bounce_map_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(module.types.std_unordered_map__Map__i32_string.create(make_shared[module.types.std_unordered_map[int32_t,string]](result.value())))
+        pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[int32_t,string]](result.value())))
 
 
 cdef class SomeService(thrift.py3.client.Client):
@@ -124,15 +125,15 @@ cdef class SomeService(thrift.py3.client.Client):
             m):
         if m is None:
             raise TypeError('m can not be None')
-        if not isinstance(m, module.types.std_unordered_map__Map__i32_string):
-            m = module.types.std_unordered_map__Map__i32_string(m)
+        if not isinstance(m, _module_types.std_unordered_map__Map__i32_string):
+            m = _module_types.std_unordered_map__Map__i32_string(m)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
-        bridgeFutureWith[module.types.std_unordered_map[int32_t,string]](
+        bridgeFutureWith[_module_types.std_unordered_map[int32_t,string]](
             self._executor,
             deref(self._module_SomeService_client).bounce_map(
-                module.types.std_unordered_map[int32_t,string](deref(module.types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
+                _module_types.std_unordered_map[int32_t,string](deref(_module_types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
             ),
             SomeService_bounce_map_callback,
             <PyObject *> __future

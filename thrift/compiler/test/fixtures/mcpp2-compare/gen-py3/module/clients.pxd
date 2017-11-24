@@ -19,7 +19,7 @@ cdef class EmptyService(thrift.py3.client.Client):
     cdef _module_EmptyService_set_client(EmptyService inst, shared_ptr[cEmptyServiceClientWrapper] c_obj)
 
     cdef _module_EmptyService_reset_client(EmptyService self)
-    
+
 cdef class ReturnService(thrift.py3.client.Client):
     cdef shared_ptr[cReturnServiceClientWrapper] _module_ReturnService_client
 
@@ -27,7 +27,7 @@ cdef class ReturnService(thrift.py3.client.Client):
     cdef _module_ReturnService_set_client(ReturnService inst, shared_ptr[cReturnServiceClientWrapper] c_obj)
 
     cdef _module_ReturnService_reset_client(ReturnService self)
-    
+
 cdef class ParamService(thrift.py3.client.Client):
     cdef shared_ptr[cParamServiceClientWrapper] _module_ParamService_client
 
@@ -35,4 +35,4 @@ cdef class ParamService(thrift.py3.client.Client):
     cdef _module_ParamService_set_client(ParamService inst, shared_ptr[cParamServiceClientWrapper] c_obj)
 
     cdef _module_ParamService_reset_client(ParamService self)
-    
+

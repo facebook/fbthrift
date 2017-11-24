@@ -16,7 +16,7 @@ from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
-cimport module.types
+cimport module.types as _module_types
 
 
 cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
@@ -55,7 +55,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       string arg_first,
       string arg_second,)
     cFollyFuture[int32_t] get_value(
-      module.types.cSimpleStruct arg_simple_struct,)
+      _module_types.cSimpleStruct arg_simple_struct,)
     cFollyFuture[cbool] negate(
       cbool arg_input,)
     cFollyFuture[int8_t] tiny(
@@ -77,7 +77,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
     cFollyFuture[string] concat_many(
       vector[string] arg_words,)
     cFollyFuture[int32_t] count_structs(
-      vector[module.types.cSimpleStruct] arg_items,)
+      vector[_module_types.cSimpleStruct] arg_items,)
     cFollyFuture[int32_t] sum_set(
       cset[int32_t] arg_numbers,)
     cFollyFuture[cbool] contains_word(
@@ -87,22 +87,22 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       cmap[string,string] arg_words,
       string arg_key,)
     cFollyFuture[int16_t] map_length(
-      cmap[string,module.types.cSimpleStruct] arg_items,)
+      cmap[string,_module_types.cSimpleStruct] arg_items,)
     cFollyFuture[int16_t] sum_map_values(
       cmap[string,int16_t] arg_items,)
     cFollyFuture[int32_t] complex_sum_i32(
-      module.types.cComplexStruct arg_counter,)
+      _module_types.cComplexStruct arg_counter,)
     cFollyFuture[string] repeat_name(
-      module.types.cComplexStruct arg_counter,)
-    cFollyFuture[module.types.cSimpleStruct] get_struct()
+      _module_types.cComplexStruct arg_counter,)
+    cFollyFuture[_module_types.cSimpleStruct] get_struct()
     cFollyFuture[vector[int32_t]] fib(
       int16_t arg_n,)
     cFollyFuture[cset[string]] unique_words(
       vector[string] arg_words,)
     cFollyFuture[cmap[string,int16_t]] words_count(
       vector[string] arg_words,)
-    cFollyFuture[module.types.cAnEnum] set_enum(
-      module.types.cAnEnum arg_in_enum,)
+    cFollyFuture[_module_types.cAnEnum] set_enum(
+      _module_types.cAnEnum arg_in_enum,)
     cFollyFuture[vector[vector[int32_t]]] list_of_lists(
       int16_t arg_num_lists,
       int16_t arg_num_items,)
@@ -111,7 +111,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
     cFollyFuture[vector[cset[string]]] list_of_sets(
       string arg_some_words,)
     cFollyFuture[int32_t] nested_map_argument(
-      cmap[string,vector[module.types.cSimpleStruct]] arg_struct_map,)
+      cmap[string,vector[_module_types.cSimpleStruct]] arg_struct_map,)
     cFollyFuture[string] make_sentence(
       vector[vector[string]] arg_word_chars,)
     cFollyFuture[cset[int32_t]] get_union(
@@ -124,8 +124,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       string arg_something,)
     cFollyFuture[cset[string]] contain_binary(
       vector[string] arg_binaries,)
-    cFollyFuture[vector[module.types.cAnEnum]] contain_enum(
-      vector[module.types.cAnEnum] arg_the_enum,)
+    cFollyFuture[vector[_module_types.cAnEnum]] contain_enum(
+      vector[_module_types.cAnEnum] arg_the_enum,)
 
 
   cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(cSimpleServiceClientWrapper):

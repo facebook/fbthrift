@@ -16,7 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-cimport hsmodule.types
+cimport hsmodule.types as _hsmodule_types
 
 
 

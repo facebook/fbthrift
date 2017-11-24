@@ -30,8 +30,8 @@ from folly cimport (
 cimport folly.futures
 from folly.executor cimport get_executor
 
-cimport hsmodule.types
-import hsmodule.types
+cimport hsmodule.types as _hsmodule_types
+import hsmodule.types as _hsmodule_types
 
 import asyncio
 import functools

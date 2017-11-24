@@ -14,8 +14,8 @@ import typing as _typing
 import sys
 import itertools
 from enum import Enum
-import module0.types
-import module1.types
+import module0.types as _module0_types
+import module1.types as _module1_types
 
 
 # Forward Definitions for Structs
@@ -26,14 +26,14 @@ class BigStruct(thrift.py3.types.Struct): ...
 class Struct(thrift.py3.types.Struct):
     def __init__(
         self, *,
-        first: module0.types.Struct=None,
-        second: module1.types.Struct=None
+        first: _module0_types.Struct=None,
+        second: _module1_types.Struct=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        first: _typing.Union[module0.types.Struct, NOTSET, None]=NOTSET,
-        second: _typing.Union[module1.types.Struct, NOTSET, None]=NOTSET
+        first: _typing.Union[_module0_types.Struct, NOTSET, None]=NOTSET,
+        second: _typing.Union[_module1_types.Struct, NOTSET, None]=NOTSET
     ): ...
 
     def __reduce__(self) -> _typing.Tuple[Callable, _typing.Tuple[_typing.Type[Struct], bytes]]: ...
@@ -45,9 +45,9 @@ class Struct(thrift.py3.types.Struct):
     def __lt__(self, other: Struct) -> bool: ...
 
     @property
-    def first(self) -> module0.types.Struct: ...
+    def first(self) -> _module0_types.Struct: ...
     @property
-    def second(self) -> module1.types.Struct: ...
+    def second(self) -> _module1_types.Struct: ...
 
 
 class BigStruct(thrift.py3.types.Struct):

@@ -28,8 +28,8 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport includes.types
-import includes.types
+cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 
 class MyEnumA(Enum):
@@ -2773,7 +2773,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.fieldAC = True
 
         if fieldAD is not None:
-            deref(c_inst).fieldAD = includes.types.AnEnum_to_cpp(fieldAD)
+            deref(c_inst).fieldAD = _includes_types.AnEnum_to_cpp(fieldAD)
             deref(c_inst).__isset.fieldAD = True
 
         if fieldAE is not None:
@@ -3148,7 +3148,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldAD:
             return None
 
-        return translate_cpp_enum_to_python(includes.types.AnEnum, <int>deref(self._cpp_obj).fieldAD)
+        return translate_cpp_enum_to_python(_includes_types.AnEnum, <int>deref(self._cpp_obj).fieldAD)
 
     @property
     def fieldAE(self):
@@ -3345,13 +3345,13 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyIncludedInt = True
 
         if MyIncludedStruct is not None:
-            deref(c_inst).MyIncludedStruct = deref((<includes.types.AStruct?> MyIncludedStruct)._cpp_obj)
+            deref(c_inst).MyIncludedStruct = deref((<_includes_types.AStruct?> MyIncludedStruct)._cpp_obj)
             deref(c_inst).__isset.MyIncludedStruct = True
 
         if ARefField is not None:
-            deref(c_inst).ARefField = make_unique[includes.types.cAStruct](deref((<includes.types.AStruct?>ARefField)._cpp_obj))
+            deref(c_inst).ARefField = make_unique[_includes_types.cAStruct](deref((<_includes_types.AStruct?>ARefField)._cpp_obj))
         if ARequiredField is not None:
-            deref(c_inst).ARequiredField = deref((<includes.types.AStruct?> ARequiredField)._cpp_obj)
+            deref(c_inst).ARequiredField = deref((<_includes_types.AStruct?> ARequiredField)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -3381,7 +3381,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             return None
 
         if self.__MyIncludedStruct is None:
-            self.__MyIncludedStruct = includes.types.AStruct.create(make_shared[includes.types.cAStruct](deref(self._cpp_obj).MyIncludedStruct))
+            self.__MyIncludedStruct = _includes_types.AStruct.create(make_shared[_includes_types.cAStruct](deref(self._cpp_obj).MyIncludedStruct))
         return self.__MyIncludedStruct
 
     @property
@@ -3389,13 +3389,13 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         if self.__ARefField is None:
             if not deref(self._cpp_obj).ARefField:
                 return None
-            self.__ARefField = includes.types.AStruct.create(aliasing_constructor_ARefField(self._cpp_obj, (deref(self._cpp_obj).ARefField.get())))
+            self.__ARefField = _includes_types.AStruct.create(aliasing_constructor_ARefField(self._cpp_obj, (deref(self._cpp_obj).ARefField.get())))
         return self.__ARefField
 
     @property
     def ARequiredField(self):
         if self.__ARequiredField is None:
-            self.__ARequiredField = includes.types.AStruct.create(make_shared[includes.types.cAStruct](deref(self._cpp_obj).ARequiredField))
+            self.__ARequiredField = _includes_types.AStruct.create(make_shared[_includes_types.cAStruct](deref(self._cpp_obj).ARequiredField))
         return self.__ARequiredField
 
 
@@ -12508,7 +12508,7 @@ AnIntegerEnum2 = 2
 AnIntegerEnum2 = List__i32.create(make_shared[vector[int32_t]](cAnIntegerEnum2()))
 constEnumA = MyEnumA(<int> (cconstEnumA()))
 constEnumB = MyEnumA(<int> (cconstEnumB()))
-AStruct = includes.types.AStruct
+AStruct = _includes_types.AStruct
 simpleTypeDef = int
 containerTypeDef = Map__i16_string
 complexContainerTypeDef = List__Map__i16_string

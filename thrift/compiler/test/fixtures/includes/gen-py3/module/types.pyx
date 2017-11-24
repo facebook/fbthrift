@@ -28,8 +28,8 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport includes.types
-import includes.types
+cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 
 
@@ -111,11 +111,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 MyIncludedInt = None
 
         if MyIncludedField is not None:
-            deref(c_inst).MyIncludedField = deref((<includes.types.Included?> MyIncludedField)._cpp_obj)
+            deref(c_inst).MyIncludedField = deref((<_includes_types.Included?> MyIncludedField)._cpp_obj)
             deref(c_inst).__isset.MyIncludedField = True
 
         if MyOtherIncludedField is not None:
-            deref(c_inst).MyOtherIncludedField = deref((<includes.types.Included?> MyOtherIncludedField)._cpp_obj)
+            deref(c_inst).MyOtherIncludedField = deref((<_includes_types.Included?> MyOtherIncludedField)._cpp_obj)
             deref(c_inst).__isset.MyOtherIncludedField = True
 
         if MyIncludedInt is not None:
@@ -143,7 +143,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedField(self):
         if self.__MyIncludedField is None:
-            self.__MyIncludedField = includes.types.Included.create(make_shared[includes.types.cIncluded](deref(self._cpp_obj).MyIncludedField))
+            self.__MyIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyIncludedField))
         return self.__MyIncludedField
 
     @property
@@ -152,7 +152,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return None
 
         if self.__MyOtherIncludedField is None:
-            self.__MyOtherIncludedField = includes.types.Included.create(make_shared[includes.types.cIncluded](deref(self._cpp_obj).MyOtherIncludedField))
+            self.__MyOtherIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyOtherIncludedField))
         return self.__MyOtherIncludedField
 
     @property

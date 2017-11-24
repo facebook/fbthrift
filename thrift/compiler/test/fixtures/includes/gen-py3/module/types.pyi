@@ -14,7 +14,7 @@ import typing as _typing
 import sys
 import itertools
 from enum import Enum
-import includes.types
+import includes.types as _includes_types
 
 
 # Forward Definitions for Structs
@@ -24,15 +24,15 @@ class MyStruct(thrift.py3.types.Struct): ...
 class MyStruct(thrift.py3.types.Struct):
     def __init__(
         self, *,
-        MyIncludedField: includes.types.Included=None,
-        MyOtherIncludedField: includes.types.Included=None,
+        MyIncludedField: _includes_types.Included=None,
+        MyOtherIncludedField: _includes_types.Included=None,
         MyIncludedInt: int=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        MyIncludedField: _typing.Union[includes.types.Included, NOTSET, None]=NOTSET,
-        MyOtherIncludedField: _typing.Union[includes.types.Included, NOTSET, None]=NOTSET,
+        MyIncludedField: _typing.Union[_includes_types.Included, NOTSET, None]=NOTSET,
+        MyOtherIncludedField: _typing.Union[_includes_types.Included, NOTSET, None]=NOTSET,
         MyIncludedInt: _typing.Union[int, NOTSET, None]=NOTSET
     ): ...
 
@@ -45,9 +45,9 @@ class MyStruct(thrift.py3.types.Struct):
     def __lt__(self, other: MyStruct) -> bool: ...
 
     @property
-    def MyIncludedField(self) -> includes.types.Included: ...
+    def MyIncludedField(self) -> _includes_types.Included: ...
     @property
-    def MyOtherIncludedField(self) -> includes.types.Included: ...
+    def MyOtherIncludedField(self) -> _includes_types.Included: ...
     @property
     def MyIncludedInt(self) -> int: ...
 

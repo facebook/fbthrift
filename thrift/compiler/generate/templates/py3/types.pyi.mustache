@@ -32,7 +32,7 @@ import itertools
 from enum import Enum
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
-import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/hasTypes?}}
 {{/program:includeNamespaces}}
 

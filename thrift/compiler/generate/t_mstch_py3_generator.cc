@@ -49,7 +49,6 @@ class t_mstch_py3_generator : public t_mstch_generator {
     return true;
   }
 
-  mstch::array get_py3_namespace(const t_program&, const string& tail = "");
   void generate_init_files(const t_program&);
   void generate_structs(const t_program&);
   void generate_services(const t_program&);
@@ -59,6 +58,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
   void add_per_type_data(const t_program&, mstch::map&);
   void add_cpp_includes(const t_program&, mstch::map&);
   mstch::array get_cpp2_namespace(const t_program&);
+  mstch::array get_py3_namespace(
+      const t_program&,
+      std::initializer_list<string> tails = {});
   std::string flatten_type_name(const t_type&);
 
  private:
@@ -84,7 +86,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   const auto& cppNamespaces = get_cpp2_namespace(program);
-  const auto& py3Namespaces = get_py3_namespace(program, "");
+  const auto& py3Namespaces = get_py3_namespace(program);
   const auto& svcs = program.get_services();
   const auto hasServiceFunctions =
       std::any_of(svcs.begin(), svcs.end(), [](auto svc) {
@@ -97,11 +99,13 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       continue;
     }
     const auto ns =
-        get_py3_namespace(*included_program, included_program->get_name());
+        get_py3_namespace(*included_program, {included_program->get_name()});
     auto const hasServices = included_program->get_services().size() > 0;
-    auto const hasStructs = included_program->get_structs().size() > 0;
+    auto const hasStructs = included_program->get_objects().size() > 0;
     auto const hasEnums = included_program->get_enums().size() > 0;
-    auto const hasTypes = hasStructs || hasEnums;
+    auto const hasTypeDefs = included_program->get_typedefs().size() > 0;
+    auto const hasConstants = included_program->get_consts().size() > 0;
+    auto const hasTypes = hasStructs || hasEnums || hasTypeDefs || hasConstants;
 
     const mstch::map include_ns{
         {"includeNamespace", ns},
@@ -176,7 +180,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   const auto type_program = type.get_program();
   const auto program = type_program ? type_program : get_program();
   const auto modulePath =
-      get_py3_namespace(*program, program->get_name() + ".types");
+      get_py3_namespace(*program, {program->get_name(), "types"});
   const auto& cppNamespaces = get_cpp2_namespace(*program);
 
   bool externalProgram = false;
@@ -608,10 +612,10 @@ mstch::array t_mstch_py3_generator::get_cpp2_namespace(
 
 mstch::array t_mstch_py3_generator::get_py3_namespace(
     const t_program& program,
-    const string& tail) {
+    std::initializer_list<string> tails) {
   const auto& py3_namespace = program.get_namespace("py3");
   vector<string> ns = split_namespace(py3_namespace);
-  if (tail != "") {
+  for (auto tail : tails) {
     ns.push_back(tail);
   }
   return dump_elems(ns);

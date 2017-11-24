@@ -28,6 +28,8 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+cimport include.types as _include_types
+import include.types as _include_types
 
 
 class has_bitwise_ops(Enum):

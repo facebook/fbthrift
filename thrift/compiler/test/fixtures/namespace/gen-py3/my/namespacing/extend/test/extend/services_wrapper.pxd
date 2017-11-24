@@ -10,7 +10,7 @@ from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
 from folly cimport cFollyExecutor
 
-cimport hsmodule.services_wrapper
+cimport hsmodule.services_wrapper as _hsmodule_services_wrapper
 
 
 cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
@@ -19,7 +19,7 @@ cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
 
     cdef cppclass cExtendTestServiceSvIf "cpp2::ExtendTestServiceSvIf"(
             cExtendTestServiceSvAsyncIf,
-            hsmodule.services_wrapper.cHsTestServiceSvIf,
+            _hsmodule_services_wrapper.cHsTestServiceSvIf,
             cServerInterface):
         pass
 
@@ -28,7 +28,7 @@ cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
 cdef extern from "src/gen-py3/extend/services_wrapper.h" namespace "cpp2":
     cdef cppclass cExtendTestServiceWrapper "cpp2::ExtendTestServiceWrapper"(
         cExtendTestServiceSvIf,
-        hsmodule.services_wrapper.cHsTestServiceWrapper
+        _hsmodule_services_wrapper.cHsTestServiceWrapper
     ):
         pass
 

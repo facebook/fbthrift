@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport my.namespacing.test.module.module.types
-import my.namespacing.test.module.module.types
+cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
+import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
 from my.namespacing.test.module.module.clients_wrapper cimport cTestServiceAsyncClient, cTestServiceClientWrapper
 

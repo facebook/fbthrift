@@ -28,8 +28,8 @@ import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
-cimport transitive.types
-import transitive.types
+cimport transitive.types as _transitive_types
+import transitive.types as _transitive_types
 
 
 
@@ -102,7 +102,7 @@ cdef class Included(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyIntField = True
 
         if MyTransitiveField is not None:
-            deref(c_inst).MyTransitiveField = deref((<transitive.types.Foo?> MyTransitiveField)._cpp_obj)
+            deref(c_inst).MyTransitiveField = deref((<_transitive_types.Foo?> MyTransitiveField)._cpp_obj)
             deref(c_inst).__isset.MyTransitiveField = True
 
         # in C++ you don't have to call move(), but this doesn't translate
@@ -129,7 +129,7 @@ cdef class Included(thrift.py3.types.Struct):
     @property
     def MyTransitiveField(self):
         if self.__MyTransitiveField is None:
-            self.__MyTransitiveField = transitive.types.Foo.create(make_shared[transitive.types.cFoo](deref(self._cpp_obj).MyTransitiveField))
+            self.__MyTransitiveField = _transitive_types.Foo.create(make_shared[_transitive_types.cFoo](deref(self._cpp_obj).MyTransitiveField))
         return self.__MyTransitiveField
 
 

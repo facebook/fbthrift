@@ -28,10 +28,9 @@ cimport cython
 
 import asyncio
 import sys
-import traceback
 
-cimport module.types
-import module.types
+cimport module.types as _module_types
+import module.types as _module_types
 
 from module.clients_wrapper cimport cNestedContainersAsyncClient, cNestedContainersClientWrapper
 
@@ -176,15 +175,15 @@ cdef class NestedContainers(thrift.py3.client.Client):
             foo):
         if foo is None:
             raise TypeError('foo can not be None')
-        if not isinstance(foo, module.types.Map__i32_List__i32):
-            foo = module.types.Map__i32_List__i32(foo)
+        if not isinstance(foo, _module_types.Map__i32_List__i32):
+            foo = _module_types.Map__i32_List__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).mapList(
-                cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(foo)._cpp_obj.get())),
+                cmap[int32_t,vector[int32_t]](deref(_module_types.Map__i32_List__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapList_callback,
             <PyObject *> __future
@@ -197,15 +196,15 @@ cdef class NestedContainers(thrift.py3.client.Client):
             foo):
         if foo is None:
             raise TypeError('foo can not be None')
-        if not isinstance(foo, module.types.Map__i32_Set__i32):
-            foo = module.types.Map__i32_Set__i32(foo)
+        if not isinstance(foo, _module_types.Map__i32_Set__i32):
+            foo = _module_types.Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).mapSet(
-                cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(foo)._cpp_obj.get())),
+                cmap[int32_t,cset[int32_t]](deref(_module_types.Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapSet_callback,
             <PyObject *> __future
@@ -218,15 +217,15 @@ cdef class NestedContainers(thrift.py3.client.Client):
             foo):
         if foo is None:
             raise TypeError('foo can not be None')
-        if not isinstance(foo, module.types.List__Map__i32_i32):
-            foo = module.types.List__Map__i32_i32(foo)
+        if not isinstance(foo, _module_types.List__Map__i32_i32):
+            foo = _module_types.List__Map__i32_i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listMap(
-                vector[cmap[int32_t,int32_t]](deref(module.types.List__Map__i32_i32(foo)._cpp_obj.get())),
+                vector[cmap[int32_t,int32_t]](deref(_module_types.List__Map__i32_i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listMap_callback,
             <PyObject *> __future
@@ -239,15 +238,15 @@ cdef class NestedContainers(thrift.py3.client.Client):
             foo):
         if foo is None:
             raise TypeError('foo can not be None')
-        if not isinstance(foo, module.types.List__Set__i32):
-            foo = module.types.List__Set__i32(foo)
+        if not isinstance(foo, _module_types.List__Set__i32):
+            foo = _module_types.List__Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listSet(
-                vector[cset[int32_t]](deref(module.types.List__Set__i32(foo)._cpp_obj.get())),
+                vector[cset[int32_t]](deref(_module_types.List__Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listSet_callback,
             <PyObject *> __future
@@ -260,15 +259,15 @@ cdef class NestedContainers(thrift.py3.client.Client):
             foo):
         if foo is None:
             raise TypeError('foo can not be None')
-        if not isinstance(foo, module.types.List__List__Map__i32_Map__i32_Set__i32):
-            foo = module.types.List__List__Map__i32_Map__i32_Set__i32(foo)
+        if not isinstance(foo, _module_types.List__List__Map__i32_Map__i32_Set__i32):
+            foo = _module_types.List__List__Map__i32_Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).turtles(
-                vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(module.types.List__List__Map__i32_Map__i32_Set__i32(foo)._cpp_obj.get())),
+                vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(_module_types.List__List__Map__i32_Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_turtles_callback,
             <PyObject *> __future
