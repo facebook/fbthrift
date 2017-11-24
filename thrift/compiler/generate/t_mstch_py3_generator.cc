@@ -25,66 +25,72 @@
 namespace {
 
 class t_mstch_py3_generator : public t_mstch_generator {
-  public:
-    t_mstch_py3_generator(
-        t_program* program,
-        const std::map<std::string, std::string>& parsed_options,
-        const std::string& /* option_string unused */)
-        : t_mstch_generator(program, "py3", parsed_options) {
-      out_dir_base_ = "gen-py3";
-      auto include_prefix = get_option("include_prefix");
-      if (include_prefix && !include_prefix->empty()) {
-        program->set_include_prefix(*include_prefix);
-      }
+ public:
+  t_mstch_py3_generator(
+      t_program* program,
+      const std::map<std::string, std::string>& parsed_options,
+      const std::string& /* option_string unused */)
+      : t_mstch_generator(program, "py3", parsed_options) {
+    out_dir_base_ = "gen-py3";
+    auto include_prefix = get_option("include_prefix");
+    if (include_prefix && !include_prefix->empty()) {
+      program->set_include_prefix(*include_prefix);
     }
+  }
 
-    void generate_program() override;
-    mstch::map extend_program(const t_program&) override;
-    mstch::map extend_field(const t_field&) override;
-    mstch::map extend_type(const t_type&) override;
-    mstch::map extend_service(const t_service&) override;
+  void generate_program() override;
+  mstch::map extend_program(const t_program&) override;
+  mstch::map extend_field(const t_field&) override;
+  mstch::map extend_type(const t_type&) override;
+  mstch::map extend_service(const t_service&) override;
 
-   protected:
-    bool should_resolve_typedefs() const override {
-      return true;
-    }
+ protected:
+  bool should_resolve_typedefs() const override {
+    return true;
+  }
 
-    void generate_init_files(const t_program&);
-    void generate_structs(const t_program&);
-    void generate_services(const t_program&);
-    void generate_clients(const t_program&);
-    boost::filesystem::path package_to_path(std::string package);
-    mstch::array get_return_types(const t_program&);
-    void add_per_type_data(const t_program&, mstch::map&);
-    void add_cpp_includes(const t_program&, mstch::map&);
-    mstch::array get_cpp2_namespace(const t_program&);
-    mstch::array get_py3_namespace(const t_program&, const string& tail = "");
-    std::string flatten_type_name(const t_type&);
+  mstch::array get_py3_namespace(const t_program&, const string& tail = "");
+  void generate_init_files(const t_program&);
+  void generate_structs(const t_program&);
+  void generate_services(const t_program&);
+  void generate_clients(const t_program&);
+  boost::filesystem::path package_to_path(std::string package);
+  mstch::array get_return_types(const t_program&);
+  void add_per_type_data(const t_program&, mstch::map&);
+  void add_cpp_includes(const t_program&, mstch::map&);
+  mstch::array get_cpp2_namespace(const t_program&);
+  std::string flatten_type_name(const t_type&);
 
-   private:
-    const std::vector<std::string> extensions{".pyx", ".pxd", ".pyi"};
-    struct type_data {
-      vector<const t_type*> containers;
-      std::set<string> container_names;
-      vector<const t_type*> custom_templates;
-      std::set<string> custom_template_names;
-      vector<const t_type*> custom_types;
-      std::set<string> custom_type_names;
-    };
-    void visit_type(t_type* type, type_data& data);
-    void visit_single_type(const t_type& type, type_data& data);
-    string ref_type(const t_field& field) const;
-    string get_cpp_template(const t_type& type) const;
-    string to_cython_template(const string& cpp_template) const;
-    bool is_default_template(const string& cpp_template, const t_type& type)
-        const;
-    string get_cpp_type(const t_type& type) const;
-    string to_cython_type(const string& cpp_template) const;
+ private:
+  const std::vector<std::string> extensions{".pyx", ".pxd", ".pyi"};
+  struct type_data {
+    vector<const t_type*> containers;
+    std::set<string> container_names;
+    vector<const t_type*> custom_templates;
+    std::set<string> custom_template_names;
+    vector<const t_type*> custom_types;
+    std::set<string> custom_type_names;
+  };
+  void visit_type(t_type* type, type_data& data);
+  void visit_single_type(const t_type& type, type_data& data);
+  string ref_type(const t_field& field) const;
+  string get_cpp_template(const t_type& type) const;
+  string to_cython_template(const string& cpp_template) const;
+  bool is_default_template(const string& cpp_template, const t_type& type)
+      const;
+  string get_cpp_type(const t_type& type) const;
+  string to_cython_type(const string& cpp_template) const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   const auto& cppNamespaces = get_cpp2_namespace(program);
   const auto& py3Namespaces = get_py3_namespace(program, "");
+  const auto& svcs = program.get_services();
+  const auto hasServiceFunctions =
+      std::any_of(svcs.begin(), svcs.end(), [](auto svc) {
+        return !svc->get_functions().empty();
+      });
+
   mstch::array includeNamespaces;
   for (const auto included_program : program.get_includes()) {
     if (included_program->get_path() == program.get_path()) {
@@ -96,10 +102,11 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
     auto const hasStructs = included_program->get_structs().size() > 0;
     auto const hasEnums = included_program->get_enums().size() > 0;
     auto const hasTypes = hasStructs || hasEnums;
-    const mstch::map include_ns {
-      {"includeNamespace", ns},
-      {"hasServices?", hasServices},
-      {"hasTypes?", hasTypes},
+
+    const mstch::map include_ns{
+        {"includeNamespace", ns},
+        {"hasServices?", hasServices},
+        {"hasTypes?", hasTypes},
     };
     includeNamespaces.push_back(include_ns);
   }
@@ -108,6 +115,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       {"returnTypes", get_return_types(program)},
       {"cppNamespaces", cppNamespaces},
       {"py3Namespaces", py3Namespaces},
+      {"hasServiceFunctions?", hasServiceFunctions},
       {"includeNamespaces", includeNamespaces},
   };
   add_cpp_includes(program, result);
@@ -308,12 +316,12 @@ mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
   if (prog_path != get_program()->get_path()) {
     externalProgram = true;
   }
-  mstch::map result {
-    {"externalProgram?", externalProgram},
-    {"cppNamespaces", cppNamespaces},
-    {"py3Namespaces", py3Namespaces},
-    {"programName", program->get_name()},
-    {"includePrefix", include_prefix}
+  mstch::map result{
+      {"externalProgram?", externalProgram},
+      {"cppNamespaces", cppNamespaces},
+      {"py3Namespaces", py3Namespaces},
+      {"programName", program->get_name()},
+      {"includePrefix", include_prefix},
   };
   return result;
 }
@@ -343,6 +351,11 @@ void t_mstch_py3_generator::generate_structs(const t_program& program) {
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
+  if (program.get_services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
   mstch::map extra_context{
       {"program:typeContext?", false},
   };
@@ -375,6 +388,11 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
 }
 
 void t_mstch_py3_generator::generate_clients(const t_program& program) {
+  if (program.get_services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
   mstch::map extra_context{
       {"program:typeContext?", false},
   };
@@ -407,8 +425,7 @@ void t_mstch_py3_generator::generate_clients(const t_program& program) {
 }
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path(
-  std::string package
-) {
+    std::string package) {
   boost::algorithm::replace_all(package, ".", "/");
   return boost::filesystem::path{package};
 }
@@ -609,8 +626,7 @@ void t_mstch_py3_generator::generate_program() {
 }
 
 THRIFT_REGISTER_GENERATOR(
-  mstch_py3,
-  "Python 3",
-  "    include_prefix:  Use full include paths in generated files.\n"
-);
-}
+    mstch_py3,
+    "Python 3",
+    "    include_prefix:  Use full include paths in generated files.\n");
+} // namespace
