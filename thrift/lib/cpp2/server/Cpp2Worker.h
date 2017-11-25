@@ -110,6 +110,10 @@ class Cpp2Worker
       std::chrono::milliseconds acceptLatency,
       wangle::SSLErrorEnum error) noexcept override;
 
+  void handleHeader(
+      folly::AsyncTransportWrapper::UniquePtr sock,
+      const folly::SocketAddress* addr);
+
  protected:
   Cpp2Worker(ThriftServer* server,
              DoNotUse /* ignored, never call constructor directly */) :
@@ -151,7 +155,7 @@ class Cpp2Worker
                        wangle::SecureTransportType,
                        const wangle::TransportInfo&) override;
 
-  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(
+  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(  
       folly::AsyncTransportWrapper::UniquePtr);
 
   SSLPolicy getSSLPolicy() {

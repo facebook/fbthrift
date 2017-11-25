@@ -82,11 +82,13 @@ class PeekingManager : public wangle::ManagedConnection,
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
 
-    if (checkTLS_ && checkTLSBytes(peekBytes)) {
-      return;
+    if (checkTLS_) {
+      checkTLSBytes(peekBytes);
+    } else {
+      checkConnectionBytes(peekBytes);
     }
-    checkConnectionBytes(peekBytes);
-}
+    destroy();
+  }
 
   /**
    * This rejects SSL connections with an alert. It is
@@ -94,7 +96,7 @@ class PeekingManager : public wangle::ManagedConnection,
    * a plaintext port and you need to fail fast to tell clients to
    * go away.
    */
-  bool checkTLSBytes(std::vector<uint8_t>& peekBytes) {
+  void checkTLSBytes(std::vector<uint8_t>& peekBytes) {
     if (TLSHelper::looksLikeTLS(peekBytes)) {
       LOG(ERROR) << "Received SSL connection on non SSL port";
       sendPlaintextTLSAlert(peekBytes);
@@ -102,9 +104,14 @@ class PeekingManager : public wangle::ManagedConnection,
         observer_->protocolError();
       }
       dropConnection();
-      return true;
+      return;
     }
-    return false;
+    acceptor_->connectionReady(
+        std::move(socket_),
+        std::move(clientAddr_),
+        std::move(nextProtocolName_),
+        secureTransportType_,
+        tinfo_);
   }
 
   /**
@@ -112,6 +119,8 @@ class PeekingManager : public wangle::ManagedConnection,
    * is able to handle the connection by peeking in the first few bytes.
    */
   void checkConnectionBytes(std::vector<uint8_t>& peekBytes) {
+    // Check for new transports
+    bool acceptedHandler = false;
     for (auto const& handler : *server_->getRoutingHandlers()) {
       if (handler->canAcceptConnection(peekBytes)) {
         handler->handleConnection(
@@ -119,23 +128,23 @@ class PeekingManager : public wangle::ManagedConnection,
             std::move(socket_),
             &clientAddr_,
             tinfo_);
-        if (observer_) {
-          observer_->connAccepted();
-          observer_->activeConnections(
-              acceptor_->getConnectionManager()->getNumConnections() *
-              server_->getNumIOWorkerThreads());
-        }
-        return;
+        acceptedHandler = true;
+        break;
       }
     }
 
-    acceptor_->connectionReady(
-        std::move(socket_),
-        std::move(clientAddr_),
-        std::move(nextProtocolName_),
-        secureTransportType_,
-        tinfo_);
-    destroy();
+    // Default to Header Transport
+    if (!acceptedHandler) {
+      acceptor_->handleHeader(std::move(socket_), &clientAddr_);
+      return;
+    }
+
+    if (observer_) {
+      observer_->connAccepted();
+      observer_->activeConnections(
+          acceptor_->getConnectionManager()->getNumConnections() *
+          server_->getNumIOWorkerThreads());
+    }
   }
 
   void sendPlaintextTLSAlert(const std::vector<uint8_t>& peekBytes) {

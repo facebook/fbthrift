@@ -39,14 +39,14 @@ namespace thrift {
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
-using std::shared_ptr;
 using apache::thrift::concurrency::Util;
+using std::shared_ptr;
 
 void Cpp2Worker::onNewConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     const folly::SocketAddress* addr,
     const std::string& nextProtocolName,
-    wangle::SecureTransportType,
+    wangle::SecureTransportType secureTransportType,
     const wangle::TransportInfo& tinfo) {
   auto observer = server_->getObserver();
   if (server_->maxConnections_ > 0 &&
@@ -59,26 +59,47 @@ void Cpp2Worker::onNewConnection(
     return;
   }
 
-  // Check if this is an encypted connection to perform required transport
-  // routing based on the application protocol.
-  // TODO: (karthiksk) T21334731 We ideally should make connectionReady method
-  // of Acceptor virtual to make it the single place for enforcing routing
-  // decisions.
-  if (!nextProtocolName.empty()) {
-    for (auto& routingHandler : *server_->getRoutingHandlers()) {
-      if (routingHandler->canAcceptEncryptedConnection(nextProtocolName)) {
-        VLOG(4) << "Cpp2Worker: Routing encrypted connection for protocol "
-                << nextProtocolName;
-        routingHandler->handleConnection(
-            getConnectionManager(),
-            std::move(sock),
-            addr,
-            tinfo);
-        return;
+  // Check the security protocol
+  switch (secureTransportType) {
+    // If no security, peek into the socket to determine type
+    case wangle::SecureTransportType::NONE: {
+      auto peekingManager = new PeekingManager(
+          shared_from_this(),
+          *addr,
+          nextProtocolName,
+          secureTransportType,
+          tinfo,
+          server_);
+      peekingManager->start(std::move(sock), server_->getObserver());
+    } break;
+    case wangle::SecureTransportType::TLS:
+      // Use the announced protocol to determine the correct handler
+      if (!nextProtocolName.empty()) {
+        for (auto& routingHandler : *server_->getRoutingHandlers()) {
+          if (routingHandler->canAcceptEncryptedConnection(nextProtocolName)) {
+            VLOG(4) << "Cpp2Worker: Routing encrypted connection for protocol "
+                    << nextProtocolName;
+            routingHandler->handleConnection(
+                getConnectionManager(), std::move(sock), addr, tinfo);
+            return;
+          }
+        }
       }
-    }
+      // Default to header
+      handleHeader(std::move(sock), addr);
+      break;
+    case wangle::SecureTransportType::ZERO:
+      LOG(ERROR) << "Unsupported Secure Transport Type: ZERO";
+      break;
+    default:
+      LOG(ERROR) << "Unsupported Secure Transport Type";
+      break;
   }
+}
 
+void Cpp2Worker::handleHeader(
+    folly::AsyncTransportWrapper::UniquePtr sock,
+    const folly::SocketAddress* addr) {
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()->getFd();
   VLOG(4) << "Cpp2Worker: Creating connection for socket " << fd;
 
@@ -91,6 +112,7 @@ void Cpp2Worker::onNewConnection(
 
   VLOG(4) << "Cpp2Worker: created connection for socket " << fd;
 
+  auto observer = server_->getObserver();
   if (observer) {
     observer->connAccepted();
     observer->activeConnections(
