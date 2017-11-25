@@ -71,13 +71,11 @@ class TransportCompatibilityTest {
   void connectToServer(
       folly::Function<
           void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
-          callMe,
-      CloseCallback* closeCb = nullptr);
+          callMe);
   void connectToServer(
       folly::Function<void(
           std::unique_ptr<testutil::testservice::TestServiceAsyncClient>,
-          std::shared_ptr<ClientConnectionIf>)> callMe,
-      CloseCallback* closeCb = nullptr);
+          std::shared_ptr<ClientConnectionIf>)> callMe);
 
   void callSleep(
       testutil::testservice::TestServiceAsyncClient* client,
