@@ -26,6 +26,12 @@ namespace {
 
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
+  enum class ModuleType {
+    TYPES,
+    CLIENTS,
+    SERVICES,
+  };
+
   t_mstch_py3_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
@@ -50,9 +56,6 @@ class t_mstch_py3_generator : public t_mstch_generator {
   }
 
   void generate_init_files(const t_program&);
-  void generate_structs(const t_program&);
-  void generate_services(const t_program&);
-  void generate_clients(const t_program&);
   boost::filesystem::path package_to_path(std::string package);
   mstch::array get_return_types(const t_program&);
   void add_per_type_data(const t_program&, mstch::map&);
@@ -62,6 +65,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
       const t_program&,
       std::initializer_list<string> tails = {});
   std::string flatten_type_name(const t_type&);
+  std::string get_module_name(ModuleType module);
+  void generate_module(const t_program&, ModuleType moduleType);
 
  private:
   const std::vector<std::string> extensions{".pyx", ".pxd", ".pyi"};
@@ -340,92 +345,55 @@ void t_mstch_py3_generator::generate_init_files(const t_program& program) {
   }
 }
 
-void t_mstch_py3_generator::generate_structs(const t_program& program) {
+std::string t_mstch_py3_generator::get_module_name(
+    t_mstch_py3_generator::ModuleType module) {
+  using ModuleType = ModuleType;
+  switch (module) {
+    case ModuleType::TYPES:
+      return "types";
+    case ModuleType::CLIENTS:
+      return "clients";
+    case ModuleType::SERVICES:
+      return "services";
+  }
+  return nullptr; // This should never happen but it silences compiler warning
+}
+
+void t_mstch_py3_generator::generate_module(
+    const t_program& program,
+    t_mstch_py3_generator::ModuleType moduleType) {
+  using ModuleType = ModuleType;
+  if (moduleType != ModuleType::TYPES && program.get_services().empty()) {
+    // There is no need to generate empty / broken code for non existent
+    // services.
+    return;
+  }
   mstch::map extra_context{
-      {"program:typeContext?", true},
+      {"program:typeContext?", moduleType == ModuleType::TYPES},
   };
 
   auto path = package_to_path(program.get_namespace("py3"));
   auto name = program.get_name();
-  std::string module = "types";
+  auto module = get_module_name(moduleType);
+
   for (auto ext : extensions) {
     render_to_file(
         program, extra_context, module + ext, path / name / (module + ext));
   }
-}
+  if (moduleType != ModuleType::TYPES) {
+    auto basename = module + "_wrapper";
+    auto cpp_path = boost::filesystem::path{name};
+    for (auto ext : {".h", ".cpp"}) {
+      render_to_file(
+          program, extra_context, basename + ext, cpp_path / (basename + ext));
+    }
 
-void t_mstch_py3_generator::generate_services(const t_program& program) {
-  if (program.get_services().empty()) {
-    // There is no need to generate empty / broken code for non existent
-    // services.
-    return;
+    render_to_file(
+        program,
+        extra_context,
+        basename + ".pxd",
+        path / name / (basename + ".pxd"));
   }
-  mstch::map extra_context{
-      {"program:typeContext?", false},
-  };
-
-  auto path = package_to_path(program.get_namespace("py3"));
-
-  auto name = program.get_name();
-  render_to_file(
-      program, extra_context, "services.pxd", path / name / "services.pxd");
-  render_to_file(
-      program, extra_context, "services.pyx", path / name / "services.pyx");
-
-  std::string basename = "services_wrapper";
-  auto cpp_path = boost::filesystem::path{name};
-  render_to_file(
-      program,
-      extra_context,
-      "services_wrapper.h",
-      cpp_path / (basename + ".h"));
-  render_to_file(
-      program,
-      extra_context,
-      "services_wrapper.cpp",
-      cpp_path / (basename + ".cpp"));
-  render_to_file(
-      program,
-      extra_context,
-      "services_wrapper.pxd",
-      path / name / (basename + ".pxd"));
-}
-
-void t_mstch_py3_generator::generate_clients(const t_program& program) {
-  if (program.get_services().empty()) {
-    // There is no need to generate empty / broken code for non existent
-    // services.
-    return;
-  }
-  mstch::map extra_context{
-      {"program:typeContext?", false},
-  };
-
-  auto path = package_to_path(program.get_namespace("py3"));
-
-  auto name = program.get_name();
-  render_to_file(
-      program, extra_context, "clients.pxd", path / name / "clients.pxd");
-  render_to_file(
-      program, extra_context, "clients.pyx", path / name / "clients.pyx");
-
-  std::string basename = "clients_wrapper";
-  auto cpp_path = boost::filesystem::path{name};
-  render_to_file(
-      program,
-      extra_context,
-      "clients_wrapper.h",
-      cpp_path / (basename + ".h"));
-  render_to_file(
-      program,
-      extra_context,
-      "clients_wrapper.cpp",
-      cpp_path / (basename + ".cpp"));
-  render_to_file(
-      program,
-      extra_context,
-      "clients_wrapper.pxd",
-      path / name / (basename + ".pxd"));
 }
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path(
@@ -622,11 +590,12 @@ mstch::array t_mstch_py3_generator::get_py3_namespace(
 }
 
 void t_mstch_py3_generator::generate_program() {
+  using ModuleType = ModuleType;
   mstch::config::escape = [](const std::string& s) { return s; };
   generate_init_files(*get_program());
-  generate_structs(*get_program());
-  generate_services(*get_program());
-  generate_clients(*get_program());
+  generate_module(*get_program(), ModuleType::TYPES);
+  generate_module(*get_program(), ModuleType::SERVICES);
+  generate_module(*get_program(), ModuleType::CLIENTS);
 }
 
 THRIFT_REGISTER_GENERATOR(

@@ -38,9 +38,7 @@ class SSLPolicy(Enum):
 
 
 cdef class ServiceInterface:
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.loop = asyncio.get_event_loop()
+    pass
 
 
 cdef class ThriftServer:

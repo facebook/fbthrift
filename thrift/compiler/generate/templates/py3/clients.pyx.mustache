@@ -73,10 +73,10 @@ from {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:pro
 {{> clients/Callbacks}}
 
 {{#program:services}}
-cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
+cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
     }}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}{{!
-  }}){{/service:extends}}{{^service:extends?}}(thrift.py3.client.Client){{/service:extends?}}:
+  }}{{/service:extends}}{{^service:extends?}}thrift.py3.client.Client{{/service:extends?}}):
 
     def __cinit__({{service:name}} self):
         loop = asyncio.get_event_loop()

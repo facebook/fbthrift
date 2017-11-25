@@ -38,13 +38,9 @@ thrift-py3 specific container types.
   }}{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
   }}{{> types/PEP484Containers}}{{!
 }}{{/type:container?}}{{!
-}}{{#type:void?}}object{{/type:void?}}{{!
+}}{{#type:void?}}None{{/type:void?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
