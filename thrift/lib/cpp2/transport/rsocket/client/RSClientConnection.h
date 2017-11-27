@@ -24,30 +24,7 @@
 
 namespace apache {
 namespace thrift {
-
-class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
- public:
-  bool isConnected() const {
-    return isConnected_;
-  }
-
- private:
-  void onConnected() override {
-    isConnected_ = true;
-  }
-
-  void onDisconnected(const folly::exception_wrapper& ew) override {
-    VLOG(1) << "Connection is disconnected: " << ew.what();
-    isConnected_ = false;
-  }
-
-  void onClosed(const folly::exception_wrapper& ew) override {
-    VLOG(1) << "Connection is closed: " << ew.what();
-    isConnected_ = false;
-  }
-
-  bool isConnected_{false};
-};
+class RSConnectionStatus;
 
 class RSClientConnection : public ClientConnectionIf {
  public:
@@ -58,8 +35,7 @@ class RSClientConnection : public ClientConnectionIf {
   std::shared_ptr<ThriftChannelIf> getChannel(
       RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;
-  // TODO: Fuat, please implement this.
-  void setCloseCallback(ThriftClient*, CloseCallback*) override {}
+  void setCloseCallback(ThriftClient*, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
   apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
   getTransport() override;
@@ -74,7 +50,7 @@ class RSClientConnection : public ClientConnectionIf {
   void closeNow() override;
   CLIENT_TYPE getClientType() override;
 
- protected:
+ private:
   folly::EventBase* evb_;
 
   std::shared_ptr<rsocket::RSocketClient> rsClient_;

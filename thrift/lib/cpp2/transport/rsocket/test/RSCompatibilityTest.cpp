@@ -134,5 +134,9 @@ TEST_F(RSCompatibilityTest, EvbSwitch) {
   // compatibilityTest_->TestEvbSwitch();
 }
 
+TEST_F(RSCompatibilityTest, CloseCallback) {
+  compatibilityTest_->TestCloseCallback();
+}
+
 } // namespace thrift
 } // namespace apache

@@ -22,11 +22,57 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
+#include <unordered_map>
+
 namespace apache {
 namespace thrift {
 
 using namespace rsocket;
 using apache::thrift::transport::TTransportException;
+
+class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
+ public:
+  void setCloseCallback(ThriftClient* client, CloseCallback* ccb) {
+    if (ccb == nullptr) {
+      closeCallbacks_.erase(client);
+    } else {
+      closeCallbacks_[client] = ccb;
+    }
+  }
+
+  bool isConnected() const {
+    return isConnected_;
+  }
+
+ private:
+  void onConnected() override {
+    isConnected_ = true;
+  }
+
+  void onDisconnected(const folly::exception_wrapper&) override {
+    closed();
+  }
+
+  void onClosed(const folly::exception_wrapper&) override {
+    closed();
+  }
+
+  void closed() {
+    if (isConnected_) {
+      isConnected_ = false;
+      for (auto& cb : closeCallbacks_) {
+        cb.second->channelClosed();
+      }
+      closeCallbacks_.clear();
+    }
+  }
+
+  bool isConnected_{false};
+
+  // A map of all registered CloseCallback objects keyed by the
+  // ThriftClient objects that registered the callback.
+  std::unordered_map<ThriftClient*, CloseCallback*> closeCallbacks_;
+};
 
 RSClientConnection::RSClientConnection(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
@@ -143,5 +189,12 @@ CLIENT_TYPE RSClientConnection::getClientType() {
   // TODO: Should we use this value?
   return THRIFT_HTTP_CLIENT_TYPE;
 }
+
+void RSClientConnection::setCloseCallback(
+    ThriftClient* client,
+    CloseCallback* cb) {
+  connectionStatus_->setCloseCallback(client, cb);
+}
+
 } // namespace thrift
 } // namespace apache
