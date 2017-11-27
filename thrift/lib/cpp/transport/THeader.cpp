@@ -95,11 +95,15 @@ template<template <class BaseProt> class ProtocolClass,
 unique_ptr<IOBuf> THeader::removeUnframed(
     IOBufQueue* queue,
     size_t& needed) {
-  const_cast<IOBuf*>(queue->front())->coalesce();
+  auto buf = queue->move();
+  auto range = buf->coalesce();
+  queue->append(std::move(buf));
 
   // Test skip using the protocol to detect the end of the message
-  TMemoryBuffer memBuffer(const_cast<uint8_t*>(queue->front()->data()),
-                          queue->front()->length(), TMemoryBuffer::OBSERVE);
+  TMemoryBuffer memBuffer(
+      const_cast<uint8_t*>(range.begin()),
+      range.size(),
+      TMemoryBuffer::OBSERVE);
   protoId_ = ProtocolID;
   ProtocolClass<TBufferBase> proto(&memBuffer);
   uint32_t msgSize = 0;
