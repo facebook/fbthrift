@@ -17,8 +17,8 @@
 #pragma once
 
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/StreamRequestCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
