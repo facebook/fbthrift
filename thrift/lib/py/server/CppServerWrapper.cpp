@@ -604,44 +604,48 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("call", &CallbackWrapper::call)
     ;
 
-  class_<CppServerWrapper, boost::noncopyable >(
-    "CppServerWrapper")
-    // methods added or customized for the python implementation
-    .def("setAdapter", &CppServerWrapper::setAdapter)
-    .def("setObserver", &CppServerWrapper::setObserverFromPython)
-    .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
-    .def("setTaskExpireTime", &CppServerWrapper::setTaskExpireTime)
-    .def("getAddress", &CppServerWrapper::getAddress)
-    .def("loop", &CppServerWrapper::loop)
-    .def("cleanUp", &CppServerWrapper::cleanUp)
-    .def("setCppServerEventHandler",
-         &CppServerWrapper::setCppServerEventHandler)
-    .def("setNewSimpleThreadManager",
-         &CppServerWrapper::setNewSimpleThreadManager)
-    .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
-    .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)
-    .def("setCppFastOpenOptions", &CppServerWrapper::setCppFastOpenOptions)
-    .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
+  class_<CppServerWrapper, boost::noncopyable>("CppServerWrapper")
+      // methods added or customized for the python implementation
+      .def("setAdapter", &CppServerWrapper::setAdapter)
+      .def(
+          "setAddress",
+          static_cast<void (CppServerWrapper::*)(std::string const&, uint16_t)>(
+              &CppServerWrapper::setAddress))
+      .def("setObserver", &CppServerWrapper::setObserverFromPython)
+      .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
+      .def("setTaskExpireTime", &CppServerWrapper::setTaskExpireTime)
+      .def("getAddress", &CppServerWrapper::getAddress)
+      .def("loop", &CppServerWrapper::loop)
+      .def("cleanUp", &CppServerWrapper::cleanUp)
+      .def(
+          "setCppServerEventHandler",
+          &CppServerWrapper::setCppServerEventHandler)
+      .def(
+          "setNewSimpleThreadManager",
+          &CppServerWrapper::setNewSimpleThreadManager)
+      .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
+      .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)
+      .def("setCppFastOpenOptions", &CppServerWrapper::setCppFastOpenOptions)
+      .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
 
-    // methods directly passed to the C++ impl
-    .def("setup", &CppServerWrapper::setup)
-    .def("setNPoolThreads", &CppServerWrapper::setNPoolThreads)
-    .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
-    .def("setNumCPUWorkerThreads", &CppServerWrapper::setNumCPUWorkerThreads)
-    .def("setNumIOWorkerThreads", &CppServerWrapper::setNumIOWorkerThreads)
-    .def("setListenBacklog", &CppServerWrapper::setListenBacklog)
-    .def("setPort", &CppServerWrapper::setPort)
-    .def("setReusePort", &CppServerWrapper::setReusePort)
-    .def("stop", &CppServerWrapper::stop)
-    .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
-    .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
+      // methods directly passed to the C++ impl
+      .def("setup", &CppServerWrapper::setup)
+      .def("setNPoolThreads", &CppServerWrapper::setNPoolThreads)
+      .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
+      .def("setNumCPUWorkerThreads", &CppServerWrapper::setNumCPUWorkerThreads)
+      .def("setNumIOWorkerThreads", &CppServerWrapper::setNumIOWorkerThreads)
+      .def("setListenBacklog", &CppServerWrapper::setListenBacklog)
+      .def("setPort", &CppServerWrapper::setPort)
+      .def("setReusePort", &CppServerWrapper::setReusePort)
+      .def("stop", &CppServerWrapper::stop)
+      .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
+      .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
 
-    .def("getLoad", &CppServerWrapper::getLoad)
-    .def("getRequestLoad", &CppServerWrapper::getRequestLoad)
-    .def("getPendingCount", &CppServerWrapper::getPendingCount)
-    .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
-    .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper)
-    ;
+      .def("getLoad", &CppServerWrapper::getLoad)
+      .def("getRequestLoad", &CppServerWrapper::getRequestLoad)
+      .def("getPendingCount", &CppServerWrapper::getPendingCount)
+      .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
+      .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper);
 
   class_<ThreadManager, boost::shared_ptr<ThreadManager>, boost::noncopyable>(
     "ThreadManager", no_init
