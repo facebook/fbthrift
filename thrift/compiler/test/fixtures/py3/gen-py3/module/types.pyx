@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -609,14 +610,14 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().name).decode('UTF-8')
 
     @property
     def an_enum(self):
         if not deref(self._cpp_obj).__isset.an_enum:
             return None
 
-        return translate_cpp_enum_to_python(AnEnum, <int>deref(self._cpp_obj).an_enum)
+        return translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum))
 
     @property
     def some_bytes(self):

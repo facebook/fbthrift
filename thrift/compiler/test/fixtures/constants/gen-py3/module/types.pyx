@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -205,14 +206,14 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.title:
             return None
 
-        return (<bytes>(self._cpp_obj.get().title)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().title).decode('UTF-8')
 
     @property
     def employer(self):
         if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        return translate_cpp_enum_to_python(Company, <int>deref(self._cpp_obj).employer)
+        return translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer))
 
 
     def __hash__(Internship self):
@@ -341,7 +342,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     @property
     def city(self):
-        return translate_cpp_enum_to_python(City, <int>deref(self._cpp_obj).city)
+        return translate_cpp_enum_to_python(City, <int>(deref(self._cpp_obj).city))
 
 
     def __hash__(UnEnumStruct self):
@@ -634,7 +635,7 @@ cdef class struct1(thrift.py3.types.Struct):
 
     @property
     def b(self):
-        return (<bytes>(self._cpp_obj.get().b)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().b).decode('UTF-8')
 
 
     def __hash__(struct1 self):
@@ -826,7 +827,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.b:
             return None
 
-        return (<bytes>(self._cpp_obj.get().b)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().b).decode('UTF-8')
 
     @property
     def c(self):
@@ -1013,7 +1014,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.a:
             return None
 
-        return (<bytes>(self._cpp_obj.get().a)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().a).decode('UTF-8')
 
     @property
     def b(self):

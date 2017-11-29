@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -138,7 +139,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @property
     def message(self):
-        return (<bytes>(self._cpp_obj.get().message)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().message).decode('UTF-8')
 
 
     def __hash__(Fiery self):

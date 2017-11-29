@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -669,11 +670,11 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldD:
             return None
 
-        return (<bytes>(self._cpp_obj.get().fieldD)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().fieldD).decode('UTF-8')
 
     @property
     def fieldE(self):
-        return (<bytes>(self._cpp_obj.get().fieldE)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().fieldE).decode('UTF-8')
 
     @property
     def fieldF(self):
@@ -771,7 +772,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldQ:
             return None
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).fieldQ)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ))
 
     @property
     def fieldR(self):

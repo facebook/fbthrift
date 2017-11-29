@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools

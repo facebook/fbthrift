@@ -19,12 +19,15 @@
 This is used to declare a cython type that is referring to or wrapping a
 c++ object specifically in the context of a field on a struct, which means
 it has to cope with the fields being annotated as cpp.ref or similar. Most
-of this is done in CythonCppType; this file just handles references.
+of this is done in CythonCppType; this file just handles references and other
+wrappers.
 
 }}{{#field:reference?}}{{!
 }}{{#field:unique_ref?}}unique_ptr[{{/field:unique_ref?}}{{!
 }}{{#field:shared_ref?}}shared_ptr[{{/field:shared_ref?}}{{!
 }}{{#field:shared_const_ref?}}shared_ptr[const {{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{!
+}}{{#program:optionals?}}{{#field:optional?}}cOptional[{{/field:optional?}}{{/program:optionals?}}{{!
 }}{{> types/CythonCppType}}{{!
-}}{{#field:reference?}}]{{/field:reference?}}
+}}{{#field:reference?}}]{{/field:reference?}}{{!
+}}{{#program:optionals?}}{{#field:optional?}}]{{/field:optional?}}{{/program:optionals?}}

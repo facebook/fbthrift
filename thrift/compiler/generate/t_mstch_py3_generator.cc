@@ -120,12 +120,14 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
     includeNamespaces.push_back(include_ns);
   }
 
+  bool optionals_setting = cache_->parsed_options_.count("optionals") != 0;
   mstch::map result{
       {"returnTypes", get_return_types(program)},
       {"cppNamespaces", cppNamespaces},
       {"py3Namespaces", py3Namespaces},
       {"hasServiceFunctions?", hasServiceFunctions},
       {"includeNamespaces", includeNamespaces},
+      {"optionals?", optionals_setting},
   };
   add_cpp_includes(program, result);
   add_per_type_data(program, result);

@@ -34,43 +34,29 @@ on a struct.
     }}const_pointer_cast((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
-}}{{#type:bool?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:bool?}}{{!
-}}{{#type:byte?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:byte?}}{{!
-}}{{#type:i16?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:i16?}}{{!
-}}{{#type:i32?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:i32?}}{{!
-}}{{#type:i64?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:i64?}}{{!
-}}{{#type:double?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:double?}}{{!
-}}{{#type:float?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:float?}}{{!
-}}{{#type:string?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
-}}{{/type:string?}}{{!
-}}{{#type:binary?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
-}}{{/type:binary?}}{{!
+}}{{#type:base?}}{{!
+  }}deref(c_inst).{{field:name}} = {{!
+  }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
+  }}{{field:name}}{{!
+  }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
+  }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
+}}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
+    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}{{> types/CythonPythonType}}_to_cpp({{field:name}}){{!
+    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
+    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref((<{{> types/CythonPythonType }}?> {{field:name}})._cpp_obj){{!
+    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
+    }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}<{{> types/CythonCppType}}>{{!
     }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
+    }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:container?}}{{/field:reference?}}

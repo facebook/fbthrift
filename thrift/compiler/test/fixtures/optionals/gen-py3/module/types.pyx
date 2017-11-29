@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -417,21 +418,21 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.licensePlate:
             return None
 
-        return (<bytes>(self._cpp_obj.get().licensePlate)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().licensePlate).decode('UTF-8')
 
     @property
     def description(self):
         if not deref(self._cpp_obj).__isset.description:
             return None
 
-        return (<bytes>(self._cpp_obj.get().description)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().description).decode('UTF-8')
 
     @property
     def name(self):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().name).decode('UTF-8')
 
     @property
     def hasAC(self):
@@ -738,7 +739,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return (<bytes>(self._cpp_obj.get().name)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().name).decode('UTF-8')
 
     @property
     def age(self):
@@ -752,7 +753,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.address:
             return None
 
-        return (<bytes>(self._cpp_obj.get().address)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().address).decode('UTF-8')
 
     @property
     def favoriteColor(self):
@@ -793,7 +794,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.afraidOfAnimal:
             return None
 
-        return translate_cpp_enum_to_python(Animal, <int>deref(self._cpp_obj).afraidOfAnimal)
+        return translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal))
 
     @property
     def vehicles(self):

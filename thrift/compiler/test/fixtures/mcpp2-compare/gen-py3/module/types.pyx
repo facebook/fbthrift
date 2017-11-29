@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -703,14 +704,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyStringField(self):
-        return (<bytes>(self._cpp_obj.get().MyStringField)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().MyStringField).decode('UTF-8')
 
     @property
     def MyStringField2(self):
         if not deref(self._cpp_obj).__isset.MyStringField2:
             return None
 
-        return (<bytes>(self._cpp_obj.get().MyStringField2)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().MyStringField2).decode('UTF-8')
 
     @property
     def MyBinaryField(self):
@@ -1773,11 +1774,11 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.message2:
             return None
 
-        return (<bytes>(self._cpp_obj.get().message2)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().message2).decode('UTF-8')
 
     @property
     def req_message(self):
-        return (<bytes>(self._cpp_obj.get().req_message)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().req_message).decode('UTF-8')
 
     @property
     def exception_list(self):
@@ -1814,7 +1815,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.enum_field:
             return None
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).enum_field)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).enum_field))
 
     @property
     def enum_container(self):
@@ -1970,7 +1971,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.message:
             return None
 
-        return (<bytes>(self._cpp_obj.get().message)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().message).decode('UTF-8')
 
 
     def __hash__(AnotherException self):
@@ -2905,19 +2906,19 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldD:
             return None
 
-        return (<bytes>(self._cpp_obj.get().fieldD)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().fieldD).decode('UTF-8')
 
     @property
     def fieldE(self):
-        return (<bytes>(self._cpp_obj.get().fieldE)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().fieldE).decode('UTF-8')
 
     @property
     def req_fieldE(self):
-        return (<bytes>(self._cpp_obj.get().req_fieldE)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().req_fieldE).decode('UTF-8')
 
     @property
     def opt_fieldE(self):
-        return (<bytes>(self._cpp_obj.get().opt_fieldE)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().opt_fieldE).decode('UTF-8')
 
     @property
     def fieldF(self):
@@ -3010,23 +3011,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldQ:
             return None
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).fieldQ)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ))
 
     @property
     def fieldR(self):
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).fieldR)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldR))
 
     @property
     def req_fieldR(self):
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).req_fieldR)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR))
 
     @property
     def opt_fieldR(self):
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).opt_fieldR)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR))
 
     @property
     def fieldS(self):
-        return translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).fieldS)
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldS))
 
     @property
     def fieldT(self):
@@ -3141,14 +3142,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.fieldAC:
             return None
 
-        return translate_cpp_enum_to_python(MyEnumB, <int>deref(self._cpp_obj).fieldAC)
+        return translate_cpp_enum_to_python(MyEnumB, <int>(deref(self._cpp_obj).fieldAC))
 
     @property
     def fieldAD(self):
         if not deref(self._cpp_obj).__isset.fieldAD:
             return None
 
-        return translate_cpp_enum_to_python(_includes_types.AnEnum, <int>deref(self._cpp_obj).fieldAD)
+        return translate_cpp_enum_to_python(_includes_types.AnEnum, <int>(deref(self._cpp_obj).fieldAD))
 
     @property
     def fieldAE(self):

@@ -51,6 +51,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -151,12 +152,21 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 {{#field:reference?}}
                 raise ValueError("Reference-annotated fields may not be initialized to defaults")
                 {{/field:reference?}}{{!
-                }}{{^field:reference?}}
+                }}{{^field:reference?}}{{!
+                }}{{#program:optionals?}}{{!
+                }}{{#field:optional?}}
+                pass
+                {{/field:optional?}}{{!
+                }}{{^field:optional?}}
+                deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
+                {{/field:optional?}}{{!
+                }}{{/program:optionals?}}{{!
+                }}{{^program:optionals?}}
                 deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
                 {{^field:required?}}
                 deref(c_inst).__isset.{{field:name}} = False
                 {{/field:required?}}{{!
-                }}{{/field:reference?}}
+                }}{{/program:optionals?}}{{/field:reference?}}
             elif {{field:name}} is NOTSET:
                 {{field:name}} = None
 
@@ -170,10 +180,10 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             {{> CythonAssignField}}
 
             {{! This should also be inside the if statement, so indent appropriately }}
-            {{^field:required?}}{{^field:reference?}}
+            {{^field:required?}}{{^field:reference?}}{{^program:optionals?}}
             deref(c_inst).__isset.{{field:name}} = True
 
-            {{/field:reference?}}{{/field:required?}}
+            {{/program:optionals?}}{{/field:reference?}}{{/field:required?}}
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -191,10 +201,17 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return {{#struct:fields}}{{!
             }}{{#field:required?}}True{{/field:required?}}{{!
             }}{{^field:required?}}{{!
+            }}{{#program:optionals?}}{{!
+            }}{{^field:optional?}}True{{/field:optional?}}{{!
+            }}{{#field:optional?}}deref(self._cpp_obj).{{field:name}}.has_value(){{/field:optional?}}{{!
+            }}{{/program:optionals?}}{{!
+            }}{{^program:optionals?}}{{!
             }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:name}}){{/field:reference?}}{{!
             }}{{^field:reference?}}{{!
             }}deref(self._cpp_obj).__isset.{{field:name}}{{!
-            }}{{/field:reference?}}{{/field:required?}}{{!
+            }}{{/field:reference?}}{{!
+            }}{{/program:optionals?}}{{!
+            }}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}
 
@@ -209,13 +226,18 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     def {{field:name}}(self):
         {{#field:type}}
         {{^field:value}}
-        {{^field:required?}}{{^field:reference?}}
+        {{^field:required?}}{{^field:reference?}}{{^program:optionals?}}
         {{! If there is no value and not ___isset we can say it's None}}
         if not deref(self._cpp_obj).__isset.{{field:name}}:
             return None
 
-        {{/field:reference?}}{{/field:required?}}
+        {{/program:optionals?}}{{/field:reference?}}{{/field:required?}}
         {{/field:value}}
+        {{! C++ behavior is that the default value is ignored in optionals mode }}
+        {{#program:optionals?}}{{#field:optional?}}
+        if not deref(self._cpp_obj).{{field:name}}.has_value():
+            return None
+        {{/field:optional?}}{{/program:optionals?}}
         {{> CythonStructGetter}}
 
         {{/field:type}}

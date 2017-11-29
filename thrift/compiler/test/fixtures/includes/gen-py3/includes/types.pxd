@@ -16,6 +16,7 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
+from folly.optional cimport cOptional
 cimport transitive.types as _transitive_types
 
 

@@ -39,50 +39,38 @@ if they have been previously retrieved.
 return self.__{{field:name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
-}}{{#type:bool?}}{{!
-  }}return <pbool> self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:bool?}}{{!
-}}{{#type:byte?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:byte?}}{{!
-}}{{#type:i16?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:i16?}}{{!
-}}{{#type:i32?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:i32?}}{{!
-}}{{#type:i64?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:i64?}}{{!
-}}{{#type:double?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:double?}}{{!
-}}{{#type:float?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:float?}}{{!
-}}{{#type:string?}}{{!
-  }}return (<bytes>(self._cpp_obj.get().{{field:name}})).decode('UTF-8'){{!
-}}{{/type:string?}}{{!
-}}{{#type:binary?}}{{!
-  }}return self._cpp_obj.get().{{field:name}}{{!
-}}{{/type:binary?}}{{!
+}}{{#type:base?}}{{!
+  }}return {{!
+  }}{{#type:bool?}}<pbool> {{/type:bool?}}{{!
+  }}{{#type:string?}}(<bytes>{{/type:string?}}{{!
+  }}self._cpp_obj.get().{{field:name}}{{!
+  }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+  }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
+}}{{/type:base?}}{{!
 }}{{#type:enum}}{{!
   }}return translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!
-    }}<int>deref(self._cpp_obj).{{field:name}}){{!
+    }}<int>({{!
+    }}deref(self._cpp_obj).{{field:name}}{{!
+    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+    }})){{!
 }}{{/type:enum}}{{!
 }}{{#type:struct?}}{{!
 }}if self.__{{field:name}} is None:
     self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
       }}make_shared[{{> types/CythonCppType}}]({{!
-      }}deref(self._cpp_obj).{{field:name}}))
+      }}deref(self._cpp_obj).{{field:name}}{{!
+      }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+      }}))
 return self.__{{field:name}}{{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
 }}if self.__{{field:name}} is None:
     self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
       }}make_shared[{{> types/CythonCppType}}]({{!
-      }}deref(self._cpp_obj).{{field:name}}))
+      }}deref(self._cpp_obj).{{field:name}}{{!
+      }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+      }}))
 return self.__{{field:name}}{{!
 }}{{/type:container?}}{{!
 }}{{/field:reference?}}

@@ -22,6 +22,7 @@ from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
+from folly.optional cimport cOptional
 
 import sys
 import itertools
@@ -159,7 +160,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.myString:
             return None
 
-        return (<bytes>(self._cpp_obj.get().myString)).decode('UTF-8')
+        return (<bytes>self._cpp_obj.get().myString).decode('UTF-8')
 
     @property
     def myBools(self):
