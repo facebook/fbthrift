@@ -56,14 +56,6 @@ public:
  }
 };
 
-bool Inner::operator <(const Inner& r) const {
-  return i < r.i;
-}
-
-bool Inner2::operator <(const Inner2& r) const {
-  return i < r.i;
-}
-
 std::shared_ptr<ThriftServer> getServer() {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(0);
