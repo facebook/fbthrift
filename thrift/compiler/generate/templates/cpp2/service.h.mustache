@@ -36,9 +36,6 @@
 <%#service:cpp_includes%>
 #include <%cpp_include%>
 <%/service:cpp_includes%>
-<%#service:any_streams?%>
-#include <yarpl/Flowable.h>
-<%/service:any_streams?%>
 
 namespace folly {
   class IOBuf;
@@ -48,12 +45,6 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
-  <%#service:any_streams?%>
-
-  template <typename T>
-  using Stream = yarpl::Reference<yarpl::flowable::Flowable<T>>;
-  
-  <%/service:any_streams?%>
 <%#service:frozen2?%>
   class Frozen2ProtocolReader;
 <%/service:frozen2?%>

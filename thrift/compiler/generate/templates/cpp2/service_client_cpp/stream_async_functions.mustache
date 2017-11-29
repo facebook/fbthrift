@@ -22,7 +22,7 @@
 
 <% > types/type%> <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
 <%#type:stream?%>
-  <% > service_client_cpp/stream_function %>
+  <% > service_client_cpp/stream_function%>
 
 <%/type:stream?%>
 <%^type:stream?%>
