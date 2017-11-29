@@ -10,6 +10,11 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
+#include <yarpl/Flowable.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
@@ -52,9 +57,27 @@ void PubSubStreamingServiceSvIf::async_tm_both(std::unique_ptr<apache::thrift::H
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_both(foo); });
 }
 
+void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t i32_from, int32_t i32_to) {
+  auto request = callback->getRequest();
+  auto thriftRequest = static_cast<apache::thrift::ThriftRequest*>(request);
+  auto _channel = thriftRequest->getChannel();
+  apache::thrift::detail::si::async_tm_oneway(
+      this, std::move(callback), [&, this] {
+        auto _result = returnstream(i32_from, i32_to);
+        CHECK(_result) << "User defined function should not return nullptr";
+        auto _mappedOutput = _result->map([](const int32_t& item) {
+          using codec = apache::thrift::CompactSerializer;
+          return codec::serialize<folly::IOBufQueue>(item).move();
+        });
+        auto _subscriber = _channel->getOutput(0);
+        _mappedOutput->subscribe(_subscriber);
+      });
+}
+
 yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceSvIf::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
 }
+
 
 void PubSubStreamingServiceSvIf::takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*instream*/, int32_t /*other_param*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("takesstream");

@@ -24,6 +24,13 @@
 <%#service:frozen2?%>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 <%/service:frozen2?%>
+<%#service:any_streams?%>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
+#include <yarpl/Flowable.h>
+<%/service:any_streams?%>
 
 <% > common/namespace_cpp2_begin%>
 

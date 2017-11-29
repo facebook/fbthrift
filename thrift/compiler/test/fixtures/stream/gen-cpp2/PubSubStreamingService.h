@@ -23,6 +23,10 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+
+  template <typename T>
+  using Stream = yarpl::Reference<yarpl::flowable::Flowable<T>>;
+  
   namespace transport { class THeader; }
 }}
 
@@ -37,7 +41,7 @@ class PubSubStreamingServiceSvAsyncIf {
   virtual folly::Future<folly::Unit> future_server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual void async_tm_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
   virtual folly::Future<folly::Unit> future_both(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) = 0;
-  virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::PubsubHandlerCallback<int32_t>> callback, int32_t i32_from, int32_t i32_to) = 0;
+  virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t i32_from, int32_t i32_to) = 0;
   virtual void async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) = 0;
   virtual folly::Future<folly::Unit> future_takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) = 0;
   virtual void async_tm_clientthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) = 0;
@@ -60,6 +64,7 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   folly::Future<folly::Unit> future_both(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) override;
   void async_tm_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) override;
   virtual yarpl::Reference<yarpl::flowable::Flowable<int32_t>> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
+  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t /*i32_from*/, int32_t /*i32_to*/) override;
   virtual void takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*instream*/, int32_t /*other_param*/);
   folly::Future<folly::Unit> future_takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) override;
   void async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) override;
@@ -74,6 +79,7 @@ class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
   void server(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/) override;
   void both(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foo*/) override;
   yarpl::Reference<yarpl::flowable::Flowable<int32_t>> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) override;
+  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t /*i32_from*/, int32_t /*i32_to*/) override {};
   void takesstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*instream*/, int32_t /*other_param*/) override;
   void clientthrows(yarpl::Reference<yarpl::flowable::Flowable<int32_t>> /*foostream*/) override;
 };

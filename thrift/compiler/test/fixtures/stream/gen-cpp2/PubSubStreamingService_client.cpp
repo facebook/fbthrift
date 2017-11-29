@@ -16,6 +16,10 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
+#include <yarpl/Flowable.h>
 
 namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_client_pargs;
@@ -32,35 +36,13 @@ typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_clientthrows
 typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_clientthrows_presult;
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.client", connectionContext_.get());
   PubSubStreamingService_client_pargs args;
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = foo->map([](int32_t /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		foo->map([](int32_t elem) {
-      Protocol_ map_prot;
-			using Result = int32_t;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "client", writer, sizer, false, useSync);
@@ -68,35 +50,13 @@ void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, a
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", connectionContext_.get());
   PubSubStreamingService_server_pargs args;
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = foo->map([](int32_t /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		foo->map([](int32_t elem) {
-      Protocol_ map_prot;
-			using Result = int32_t;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "server", writer, sizer, false, useSync);
@@ -104,35 +64,13 @@ void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, a
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.both", connectionContext_.get());
   PubSubStreamingService_both_pargs args;
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = foo->map([](int32_t /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		foo->map([](int32_t elem) {
-      Protocol_ map_prot;
-			using Result = int32_t;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "both", writer, sizer, false, useSync);
@@ -156,35 +94,13 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useS
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
+void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t other_param) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", connectionContext_.get());
   PubSubStreamingService_takesstream_pargs args;
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = instream->map([](int32_t /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		instream->map([](int32_t elem) {
-      Protocol_ map_prot;
-			using Result = int32_t;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
   args.get<0>().value = &other_param;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -193,35 +109,13 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
 }
 
 template <typename Protocol_>
-void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
+void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.clientthrows", connectionContext_.get());
   PubSubStreamingService_clientthrows_pargs args;
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = foostream->map([](int32_t /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		foostream->map([](int32_t elem) {
-      Protocol_ map_prot;
-			using Result = int32_t;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "clientthrows", writer, sizer, false, useSync);
@@ -230,27 +124,27 @@ void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useS
 
 
 
-void PubSubStreamingServiceAsyncClient::client(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::client(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  clientImpl(false, rpcOptions, std::move(callback), foo);
+  clientImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::client(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
-  clientImpl(false, rpcOptions, std::move(callback), foo);
+void PubSubStreamingServiceAsyncClient::client(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  clientImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::clientImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::clientImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      clientT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      clientT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      clientT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      clientT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -351,27 +245,27 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrappe
   return recv_wrapped_client(state);
 }
 
-void PubSubStreamingServiceAsyncClient::server(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::server(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  serverImpl(false, rpcOptions, std::move(callback), foo);
+  serverImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
-  serverImpl(false, rpcOptions, std::move(callback), foo);
+void PubSubStreamingServiceAsyncClient::server(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  serverImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::serverImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      serverT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      serverT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      serverT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      serverT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -472,27 +366,27 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrappe
   return recv_wrapped_server(state);
 }
 
-void PubSubStreamingServiceAsyncClient::both(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::both(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  bothImpl(false, rpcOptions, std::move(callback), foo);
+  bothImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::both(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
-  bothImpl(false, rpcOptions, std::move(callback), foo);
+void PubSubStreamingServiceAsyncClient::both(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  bothImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::bothImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foo) {
+void PubSubStreamingServiceAsyncClient::bothImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      bothT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      bothT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      bothT(&writer, useSync, rpcOptions, std::move(callback), foo);
+      bothT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -629,28 +523,27 @@ yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceAsync
 }
 
 yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
-  apache::thrift::ClientReceiveState _returnState;
-  // _returnState.setChannel(getChannel());
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
-  returnstreamImpl(true, rpcOptions, std::move(callback), i32_from, i32_to);
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
-  if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    _returnState.exception().throw_exception();
-  }
-
-  return recv_returnstream(_returnState);
+  return yarpl::flowable::Flowables::fromPublisher<std::unique_ptr<
+      folly::IOBuf>>([this, rpcOptions, i32_from, i32_to](
+                         apache::thrift::ThriftChannelIf::SubscriberRef
+                             _subscriber) mutable {
+           auto _callback = std::make_unique<
+               apache::thrift::StreamRequestCallback>(
+               apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+           // Connect the inputs of the callback
+           _callback->setInput(_subscriber);
+           // Perform the RPC call
+           returnstream(rpcOptions, std::move(_callback), i32_from, i32_to);
+         })
+      ->map([](auto buffer) {
+        using codec = apache::thrift::CompactSerializer;
+        return codec::deserialize<int32_t>(buffer.get());
+      });
 }
 
 
-/* function returnstream didn't have future_functions rendered */
 
-
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returnstream(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -665,13 +558,13 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          fname, &reader, state);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state, _return);
+          fname, &reader, state);
     }
     default:
     {
@@ -680,44 +573,34 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_wrapped_returns
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceAsyncClient::recv_returnstream(::apache::thrift::ClientReceiveState& state) {
-  yarpl::Reference<yarpl::flowable::Flowable<int32_t>> _return;
-  auto ew = recv_wrapped_returnstream(_return, state);
+void PubSubStreamingServiceAsyncClient::recv_returnstream(::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_returnstream(state);
   if (ew) {
     ew.throw_exception();
   }
-  return _return;
 }
 
-yarpl::Reference<yarpl::flowable::Flowable<int32_t>> PubSubStreamingServiceAsyncClient::recv_instance_returnstream(::apache::thrift::ClientReceiveState& state) {
-  return recv_returnstream(state);
-}
-
-folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_returnstream(yarpl::Reference<yarpl::flowable::Flowable<int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_returnstream(_return, state);
-}
-
-void PubSubStreamingServiceAsyncClient::takesstream(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
+void PubSubStreamingServiceAsyncClient::takesstream(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t other_param) {
   ::apache::thrift::RpcOptions rpcOptions;
-  takesstreamImpl(false, rpcOptions, std::move(callback), instream, other_param);
+  takesstreamImpl(false, rpcOptions, std::move(callback), other_param);
 }
 
-void PubSubStreamingServiceAsyncClient::takesstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
-  takesstreamImpl(false, rpcOptions, std::move(callback), instream, other_param);
+void PubSubStreamingServiceAsyncClient::takesstream(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t other_param) {
+  takesstreamImpl(false, rpcOptions, std::move(callback), other_param);
 }
 
-void PubSubStreamingServiceAsyncClient::takesstreamImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> instream, int32_t other_param) {
+void PubSubStreamingServiceAsyncClient::takesstreamImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t other_param) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      takesstreamT(&writer, useSync, rpcOptions, std::move(callback), instream, other_param);
+      takesstreamT(&writer, useSync, rpcOptions, std::move(callback), other_param);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      takesstreamT(&writer, useSync, rpcOptions, std::move(callback), instream, other_param);
+      takesstreamT(&writer, useSync, rpcOptions, std::move(callback), other_param);
       break;
     }
     default:
@@ -818,27 +701,27 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrappe
   return recv_wrapped_takesstream(state);
 }
 
-void PubSubStreamingServiceAsyncClient::clientthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
+void PubSubStreamingServiceAsyncClient::clientthrows(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  clientthrowsImpl(false, rpcOptions, std::move(callback), foostream);
+  clientthrowsImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::clientthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
-  clientthrowsImpl(false, rpcOptions, std::move(callback), foostream);
+void PubSubStreamingServiceAsyncClient::clientthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  clientthrowsImpl(false, rpcOptions, std::move(callback));
 }
 
-void PubSubStreamingServiceAsyncClient::clientthrowsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> foostream) {
+void PubSubStreamingServiceAsyncClient::clientthrowsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      clientthrowsT(&writer, useSync, rpcOptions, std::move(callback), foostream);
+      clientthrowsT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      clientthrowsT(&writer, useSync, rpcOptions, std::move(callback), foostream);
+      clientthrowsT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:

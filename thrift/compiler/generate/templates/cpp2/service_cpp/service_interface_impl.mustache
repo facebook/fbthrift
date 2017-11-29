@@ -16,12 +16,19 @@
 
 %><%#service:functions%><%#function:returnType%>
 
+<%#type:stream?%>
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams%>) {
+  <% > service_cpp/stream_function %>
+
+}
+
+<%/type:stream?%>
 <%^type:resolves_to_complex_return?%>
 <% > types/type%> <%service:name%>SvIf::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
-<%^function:returns_stream?%>
 
+<%^function:returns_stream?%>
 folly::Future<<% > types/service_type%>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list%>) {
   return apache::thrift::detail::si::future([&] { return <%function:name%>(<% > service_common/param_list_move%>); });
 }

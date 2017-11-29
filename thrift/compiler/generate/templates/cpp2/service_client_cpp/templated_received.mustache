@@ -16,37 +16,13 @@
 
 %><%#service:functions%><%#function:returnType%>
 template <typename Protocol_>
-void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", connectionContext_.get());
   <%service:name%>_<%function:name%>_pargs args;
-<%#function:args%><%#field:type%><%#type:stream?%><%#type:streamElemType%>
-  // channel generates a stream going to the server
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> untyped_flowable
-    = <%field:name%>->map([](<% > types/type %> /* elem */) {
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      return queue;
-    });
-  /*
-    // TODO: custom map operator wanted, so we don't re-create prot every iteration on every call to the mapping lambda
-		<%field:name%>->map([](<% > types/type %> elem) {
-      Protocol_ map_prot;
-			using Result = <% > types/type %>;
-			folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-			size_t bufSize = apache::thrift::Cpp2Ops<Result>::serializedSizeZC(&map_prot, &elem);
-			map_prot.setOutput(&queue, bufSize);
-			apache::thrift::Cpp2Ops<Result>::write(&map_prot, &elem);
-			return queue;
-		});
-  */
-  // TODO: hook up the outgoing stream of IOBufQueue
-  // this->getChannel()->getStreamContext()->createOutgoingStream(untyped_flowable, this->getProtoSeqId());
-  (void) untyped_flowable;
-<%/type:streamElemType%><%/type:stream?%><%/field:type%><%/function:args%>
 <%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = &<%field:name%>;

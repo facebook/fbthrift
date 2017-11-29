@@ -17,8 +17,13 @@
 %><%#type:void?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
+<%#type:stream?%>
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
+<%/type:stream?%>
 <%^type:void?%>
+<%^type:stream?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+<%/type:stream?%>
 <%/type:void?%>
   if (state.isException()) {
     return std::move(state.exception());
@@ -34,13 +39,13 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
+          fname, &reader, state<%^type:void?%><%^type:stream?%>, _return<%/type:stream?%><%/type:void?%>);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          fname, &reader, state<%^type:void?%>, _return<%/type:void?%>);
+          fname, &reader, state<%^type:void?%><%^type:stream?%>, _return<%/type:stream?%><%/type:void?%>);
     }
 <%#service:frozen2?%>
     case apache::thrift::protocol::T_FROZEN2_PROTOCOL:

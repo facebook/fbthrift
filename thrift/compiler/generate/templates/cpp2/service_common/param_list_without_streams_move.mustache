@@ -14,17 +14,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:args%><%#field:type%><%!
+%><%#function:args_without_streams%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
-%><%^type:stream?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-  %><%field:name%> = std::move(<%field:name%>)<%!
+%><%#type:stack_arguments?%><%!
+  %><%field:name%><%!
+%><%/type:stack_arguments?%><%!
+%><%^type:stack_arguments?%><%!
+  %>std::move(<%field:name%>)<%!
+%><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %><%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
-%><%/type:stream?%><%!
-%><%#type:stream?%><%!
-  %><%field:name%> = std::move(<%field:name%>)<%!
-%><%/type:stream?%><%!
-%><%/field:type%><%/function:args%>
+%><%/field:type%><%/function:args_without_streams%>

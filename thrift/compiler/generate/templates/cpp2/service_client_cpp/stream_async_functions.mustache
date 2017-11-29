@@ -21,8 +21,13 @@
 }
 
 <% > types/type%> <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+<%#type:stream?%>
+  <% > service_client_cpp/stream_function %>
+
+<%/type:stream?%>
+<%^type:stream?%>
   apache::thrift::ClientReceiveState _returnState;
-  // _returnState.setChannel(getChannel());
+
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
   <%function:name%>Impl(true, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   SCOPE_EXIT {
@@ -36,5 +41,5 @@
   }
 
   return recv_<%function:name%>(_returnState);
+<%/type:stream?%>
 }
-

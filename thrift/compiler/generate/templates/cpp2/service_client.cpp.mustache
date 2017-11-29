@@ -30,6 +30,12 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+<%#service:any_streams?%>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
+#include <yarpl/Flowable.h>
+<%/service:any_streams?%>
 
 <% > common/namespace_cpp2_begin%>
 
@@ -43,7 +49,9 @@
 
 
 <%#function:oneway?%>
+<%^type:stream?%>
 <% > service_client_cpp/oneway_sync_functions%>
+<%/type:stream?%>
 <%/function:oneway?%>
 <%^function:oneway?%>
 <%#type:stream?%>
@@ -62,9 +70,6 @@
 <%^function:returns_stream?%>
 <% > service_client_cpp/future_functions%>
 <%/function:returns_stream?%>
-<%#function:returns_stream?%>
-/* function <%function:name%> didn't have future_functions rendered */
-<%/function:returns_stream?%>
 <%/function:oneway?%>
 
 
@@ -75,8 +80,10 @@
 <% > service_client_cpp/received%>
 
 
+<%^function:returns_stream?%>
 <% > service_client_cpp/received_instance%>
 
+<%/function:returns_stream?%>
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>
 <% > common/namespace_cpp2_end%>

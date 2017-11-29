@@ -259,7 +259,8 @@ class mstch_base : public mstch::object {
     register_methods(
         this,
         {
-            {"first?", &mstch_base::first}, {"last?", &mstch_base::last},
+            {"first?", &mstch_base::first},
+            {"last?", &mstch_base::last},
         });
   }
   mstch::node first() {
@@ -756,6 +757,7 @@ class mstch_function : public mstch_base {
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
+            {"function:comma_nostream", &mstch_function::has_args_nostream},
             {"function:eb", &mstch_function::event_based},
             {"function:priority", &mstch_function::priority},
             {"function:args_without_streams",
@@ -777,6 +779,16 @@ class mstch_function : public mstch_base {
   mstch::node has_args() {
     if (!function_->get_arglist()->get_members().empty()) {
       return std::string(", ");
+    }
+    return std::string();
+  }
+  mstch::node has_args_nostream() {
+    auto& members = function_->get_arglist()->get_members();
+    if (!members.empty()) {
+      bool anyStreams = function_->any_stream_params();
+      if (!anyStreams || function_->get_arglist()->get_members().size() > 1) {
+        return std::string(", ");
+      }
     }
     return std::string();
   }

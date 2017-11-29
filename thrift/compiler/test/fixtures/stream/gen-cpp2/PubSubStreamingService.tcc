@@ -62,29 +62,12 @@ void PubSubStreamingServiceAsyncProcessor::process_client(std::unique_ptr<apache
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_client<ProtocolIn_,ProtocolOut_>, throw_wrapped_client<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  using stream_elem_type = int32_t;
-  // TODO: this can likely be moved into an external, not generated helper
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
-  // TODO: hook up inbound stream somehow
-  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
-  /*
-    = inbound_stream->map([](folly::IOBufQueue buf) {
-        stream_elem_type stream_elem;
-        // TODO: do this in a worker thread?
-        ProtocolIn_ prot;
-        prot.setInput(&buf);
-        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
-        return stream_elem;
-    });
-  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_client(std::move(callback), typed_flowable);
+  iface_->async_tm_client(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -150,29 +133,12 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_server<ProtocolIn_,ProtocolOut_>, throw_wrapped_server<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  using stream_elem_type = int32_t;
-  // TODO: this can likely be moved into an external, not generated helper
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
-  // TODO: hook up inbound stream somehow
-  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
-  /*
-    = inbound_stream->map([](folly::IOBufQueue buf) {
-        stream_elem_type stream_elem;
-        // TODO: do this in a worker thread?
-        ProtocolIn_ prot;
-        prot.setInput(&buf);
-        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
-        return stream_elem;
-    });
-  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_server(std::move(callback), typed_flowable);
+  iface_->async_tm_server(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -248,29 +214,12 @@ void PubSubStreamingServiceAsyncProcessor::process_both(std::unique_ptr<apache::
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_both<ProtocolIn_,ProtocolOut_>, throw_wrapped_both<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  using stream_elem_type = int32_t;
-  // TODO: this can likely be moved into an external, not generated helper
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
-  // TODO: hook up inbound stream somehow
-  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
-  /*
-    = inbound_stream->map([](folly::IOBufQueue buf) {
-        stream_elem_type stream_elem;
-        // TODO: do this in a worker thread?
-        ProtocolIn_ prot;
-        prot.setInput(&buf);
-        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
-        return stream_elem;
-    });
-  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_both(std::move(callback), typed_flowable);
+  iface_->async_tm_both(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -320,6 +269,9 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream(std::un
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!req->isOneway()) {
+    req->sendReply(std::unique_ptr<folly::IOBuf>());
+  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -333,61 +285,12 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function returnstream";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("returnstream", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
-      }
-      );
-      return;
-    }
-    else {
-      LOG(ERROR) << ex.what() << " in oneway function returnstream";
-    }
-  }
-  auto callback = std::make_unique<apache::thrift::PubsubHandlerCallback<int32_t>>(std::move(req), std::move(c), ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
+    LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, yarpl::Reference<yarpl::flowable::Flowable<int32_t>> const& _return) {
-  ProtocolOut_ prot;
-  PubSubStreamingService_returnstream_presult result;
-  (void) _return; // TODO: this gets serialized in PubsubHandlerCallback
-  result.setIsSet(0, true);
-  return serializeResponse("returnstream", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
-  if (!ew) {
-    return;
-  }
-  ProtocolOut_ prot;
-   {
-    if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function returnstream";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("returnstream", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function returnstream";
-    }
-  }
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -425,29 +328,12 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_takesstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_takesstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  using stream_elem_type = int32_t;
-  // TODO: this can likely be moved into an external, not generated helper
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
-  // TODO: hook up inbound stream somehow
-  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
-  /*
-    = inbound_stream->map([](folly::IOBufQueue buf) {
-        stream_elem_type stream_elem;
-        // TODO: do this in a worker thread?
-        ProtocolIn_ prot;
-        prot.setInput(&buf);
-        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
-        return stream_elem;
-    });
-  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_takesstream(std::move(callback), typed_flowable, args.get<0>().ref());
+  iface_->async_tm_takesstream(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -513,29 +399,12 @@ void PubSubStreamingServiceAsyncProcessor::process_clientthrows(std::unique_ptr<
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_clientthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_clientthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  using stream_elem_type = int32_t;
-  // TODO: this can likely be moved into an external, not generated helper
-  yarpl::Reference<yarpl::flowable::Flowable<folly::IOBufQueue>> inbound_stream; 
-  // TODO: hook up inbound stream somehow
-  // inbound_stream = ctx->getConnectionContext()->getStreamContext()->incomingStream(); // or something
-  assert(false && "not implemented yet");
-  yarpl::Reference<yarpl::flowable::Flowable<stream_elem_type>> typed_flowable;
-  /*
-    = inbound_stream->map([](folly::IOBufQueue buf) {
-        stream_elem_type stream_elem;
-        // TODO: do this in a worker thread?
-        ProtocolIn_ prot;
-        prot.setInput(&buf);
-        apache::thrift::Cpp2Ops<stream_elem_type>::read(&prot, &stream_elem);
-        return stream_elem;
-    });
-  */
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_clientthrows(std::move(callback), typed_flowable);
+  iface_->async_tm_clientthrows(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

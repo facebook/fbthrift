@@ -417,13 +417,7 @@ mstch::node mstch_function::any_streams() {
 }
 
 mstch::node mstch_function::takes_stream() {
-  auto* stream_field = function_->get_arglist()->get_stream_field();
-  if (stream_field) {
-    return generators_->type_generator_->generate(
-        stream_field->get_type(), generators_, cache_, pos_);
-  } else {
-    return mstch::node();
-  }
+  return function_->any_stream_params();
 }
 
 mstch::node mstch_function::returns_stream() {
