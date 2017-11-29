@@ -5,10 +5,10 @@ eT = TypeVar('eT', bound=Enum)
 
 
 class NOTSETTYPE(Enum):
-    token: int = ...
+    token = 0
 
 
-NOTSET: NOTSETTYPE = ...
+NOTSET = NOTSETTYPE.token
 
 
 class Struct: ...

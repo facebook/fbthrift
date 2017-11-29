@@ -10,20 +10,13 @@ from thrift.py3.server import RequestContext, ServiceInterface
 
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 import hsmodule.services as _hsmodule_services
-cimport hsmodule.types as _hsmodule_types
+import hsmodule.types as _hsmodule_types
 
 
 
 class ExtendTestServiceInterface(
     _hsmodule_services.HsTestServiceInterface
 ):
-    @_typing.overload
-    async def check(
-        self,
-        ctx: RequestContext,
-        struct1: _hsmodule_types.HsFoo
-    ) -> bool: ...
-
     async def check(
         self,
         struct1: _hsmodule_types.HsFoo

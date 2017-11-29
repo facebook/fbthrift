@@ -3,11 +3,20 @@ const list<i16> int_list = [
 ];
 
 typedef list<i32> I32List
+typedef map<string, i64> StrIntMap
+typedef set<I32List> SetI32Lists
 typedef bool Bool
 typedef i64 TimeStamp
 typedef byte Byte
 typedef float Float
 typedef double Double
+
+exception UnusedError {
+    1: string message
+} (
+  message = 'message',
+  cpp.virtual,
+)
 
 enum Color {
   red = 0,

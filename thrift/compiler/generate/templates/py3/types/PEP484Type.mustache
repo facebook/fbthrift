@@ -34,8 +34,14 @@ thrift-py3 specific container types.
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
     }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}{{/program:typeContext?}}{{!
+    We need quotes when refering to in file types from the typing module
+    Because we don't know if there are circular refrences
+  }}{{#program:typeContext?}}'{{/program:typeContext?}}{{!
+  }}{{/type:externalProgram?}}{{!
   }}{{struct:name}}{{!
+    Close the quote
+  }}{{^type:externalProgram?}}{{#program:typeContext?}}'{{/program:typeContext?}}{{/type:externalProgram?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
   }}{{> types/PEP484Containers}}{{!

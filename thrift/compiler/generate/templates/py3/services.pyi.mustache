@@ -30,7 +30,7 @@ import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:n
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}services as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}services
 {{/hasServices?}}
 {{#hasTypes?}}
-cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
+import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/hasTypes?}}
 {{/program:includeNamespaces}}
 
@@ -47,13 +47,6 @@ class {{service:name}}Interface(
     {{/service:extends?}}
 ):
     {{#service:functions}}
-    @_typing.overload
-    async def {{function:name}}(
-        self,
-        ctx: RequestContext{{#function:args}},
-        {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
-    ) -> {{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}: ...
-
     async def {{function:name}}(
         self{{#function:args}},
         {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}

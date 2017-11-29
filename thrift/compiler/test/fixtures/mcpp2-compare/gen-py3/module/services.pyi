@@ -9,7 +9,7 @@ import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 
 import module.types as _module_types
-cimport includes.types as _includes_types
+import includes.types as _includes_types
 
 
 
@@ -21,212 +21,84 @@ class EmptyServiceInterface(
 class ReturnServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def noReturn(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def noReturn(
         self
     ) -> None: ...
-
-    @_typing.overload
-    async def boolReturn(
-        self,
-        ctx: RequestContext
-    ) -> bool: ...
 
     async def boolReturn(
         self
     ) -> bool: ...
 
-    @_typing.overload
-    async def i16Return(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
-
     async def i16Return(
         self
-    ) -> int: ...
-
-    @_typing.overload
-    async def i32Return(
-        self,
-        ctx: RequestContext
     ) -> int: ...
 
     async def i32Return(
         self
     ) -> int: ...
 
-    @_typing.overload
-    async def i64Return(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
-
     async def i64Return(
         self
     ) -> int: ...
 
-    @_typing.overload
-    async def floatReturn(
-        self,
-        ctx: RequestContext
-    ) -> float: ...
-
     async def floatReturn(
         self
-    ) -> float: ...
-
-    @_typing.overload
-    async def doubleReturn(
-        self,
-        ctx: RequestContext
     ) -> float: ...
 
     async def doubleReturn(
         self
     ) -> float: ...
 
-    @_typing.overload
-    async def stringReturn(
-        self,
-        ctx: RequestContext
-    ) -> str: ...
-
     async def stringReturn(
         self
     ) -> str: ...
-
-    @_typing.overload
-    async def binaryReturn(
-        self,
-        ctx: RequestContext
-    ) -> bytes: ...
 
     async def binaryReturn(
         self
     ) -> bytes: ...
 
-    @_typing.overload
-    async def mapReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.Mapping[str, int]: ...
-
     async def mapReturn(
         self
     ) -> _typing.Mapping[str, int]: ...
-
-    @_typing.overload
-    async def simpleTypedefReturn(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
 
     async def simpleTypedefReturn(
         self
     ) -> int: ...
 
-    @_typing.overload
-    async def complexTypedefReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]: ...
-
     async def complexTypedefReturn(
         self
     ) -> _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]: ...
-
-    @_typing.overload
-    async def list_mostComplexTypedefReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]: ...
 
     async def list_mostComplexTypedefReturn(
         self
     ) -> _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]: ...
 
-    @_typing.overload
-    async def enumReturn(
-        self,
-        ctx: RequestContext
-    ) -> _module_types.MyEnumA: ...
-
     async def enumReturn(
         self
     ) -> _module_types.MyEnumA: ...
-
-    @_typing.overload
-    async def list_EnumReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
     async def list_EnumReturn(
         self
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
-    @_typing.overload
-    async def structReturn(
-        self,
-        ctx: RequestContext
-    ) -> _module_types.MyStruct: ...
-
     async def structReturn(
         self
     ) -> _module_types.MyStruct: ...
-
-    @_typing.overload
-    async def set_StructReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
     async def set_StructReturn(
         self
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
-    @_typing.overload
-    async def unionReturn(
-        self,
-        ctx: RequestContext
-    ) -> _module_types.ComplexUnion: ...
-
     async def unionReturn(
         self
     ) -> _module_types.ComplexUnion: ...
-
-    @_typing.overload
-    async def list_UnionReturn(
-        self,
-        ctx: RequestContext
-    ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 
     async def list_UnionReturn(
         self
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 
-    @_typing.overload
     async def readDataEb(
         self,
-        ctx: RequestContext,
-        size: int
-    ) -> bytes: ...
-
-    async def readDataEb(
-        self,
-        size: int
-    ) -> bytes: ...
-
-    @_typing.overload
-    async def readData(
-        self,
-        ctx: RequestContext,
         size: int
     ) -> bytes: ...
 
@@ -240,24 +112,9 @@ class ReturnServiceInterface(
 class ParamServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def void_ret_i16_param(
-        self,
-        ctx: RequestContext,
-        param1: int
-    ) -> None: ...
-
     async def void_ret_i16_param(
         self,
         param1: int
-    ) -> None: ...
-
-    @_typing.overload
-    async def void_ret_byte_i16_param(
-        self,
-        ctx: RequestContext,
-        param1: int,
-        param2: int
     ) -> None: ...
 
     async def void_ret_byte_i16_param(
@@ -266,24 +123,9 @@ class ParamServiceInterface(
         param2: int
     ) -> None: ...
 
-    @_typing.overload
-    async def void_ret_map_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Mapping[str, int]
-    ) -> None: ...
-
     async def void_ret_map_param(
         self,
         param1: _typing.Mapping[str, int]
-    ) -> None: ...
-
-    @_typing.overload
-    async def void_ret_map_setlist_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Mapping[str, int],
-        param2: _typing.AbstractSet[_typing.Sequence[str]]
     ) -> None: ...
 
     async def void_ret_map_setlist_param(
@@ -292,23 +134,9 @@ class ParamServiceInterface(
         param2: _typing.AbstractSet[_typing.Sequence[str]]
     ) -> None: ...
 
-    @_typing.overload
-    async def void_ret_map_typedef_param(
-        self,
-        ctx: RequestContext,
-        param1: int
-    ) -> None: ...
-
     async def void_ret_map_typedef_param(
         self,
         param1: int
-    ) -> None: ...
-
-    @_typing.overload
-    async def void_ret_enum_param(
-        self,
-        ctx: RequestContext,
-        param1: _module_types.MyEnumA
     ) -> None: ...
 
     async def void_ret_enum_param(
@@ -316,23 +144,9 @@ class ParamServiceInterface(
         param1: _module_types.MyEnumA
     ) -> None: ...
 
-    @_typing.overload
-    async def void_ret_struct_param(
-        self,
-        ctx: RequestContext,
-        param1: _module_types.MyStruct
-    ) -> None: ...
-
     async def void_ret_struct_param(
         self,
         param1: _module_types.MyStruct
-    ) -> None: ...
-
-    @_typing.overload
-    async def void_ret_listunion_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Sequence[_module_types.ComplexUnion]
     ) -> None: ...
 
     async def void_ret_listunion_param(
@@ -340,25 +154,10 @@ class ParamServiceInterface(
         param1: _typing.Sequence[_module_types.ComplexUnion]
     ) -> None: ...
 
-    @_typing.overload
-    async def bool_ret_i32_i64_param(
-        self,
-        ctx: RequestContext,
-        param1: int,
-        param2: int
-    ) -> bool: ...
-
     async def bool_ret_i32_i64_param(
         self,
         param1: int,
         param2: int
-    ) -> bool: ...
-
-    @_typing.overload
-    async def bool_ret_map_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Mapping[str, int]
     ) -> bool: ...
 
     async def bool_ret_map_param(
@@ -366,25 +165,10 @@ class ParamServiceInterface(
         param1: _typing.Mapping[str, int]
     ) -> bool: ...
 
-    @_typing.overload
-    async def bool_ret_union_param(
-        self,
-        ctx: RequestContext,
-        param1: _module_types.ComplexUnion
-    ) -> bool: ...
-
     async def bool_ret_union_param(
         self,
         param1: _module_types.ComplexUnion
     ) -> bool: ...
-
-    @_typing.overload
-    async def i64_ret_float_double_param(
-        self,
-        ctx: RequestContext,
-        param1: float,
-        param2: float
-    ) -> int: ...
 
     async def i64_ret_float_double_param(
         self,
@@ -392,29 +176,10 @@ class ParamServiceInterface(
         param2: float
     ) -> int: ...
 
-    @_typing.overload
-    async def i64_ret_string_typedef_param(
-        self,
-        ctx: RequestContext,
-        param1: str,
-        param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]
-    ) -> int: ...
-
     async def i64_ret_string_typedef_param(
         self,
         param1: str,
         param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]
-    ) -> int: ...
-
-    @_typing.overload
-    async def i64_ret_i32_i32_i32_i32_i32_param(
-        self,
-        ctx: RequestContext,
-        param1: int,
-        param2: int,
-        param3: int,
-        param4: int,
-        param5: int
     ) -> int: ...
 
     async def i64_ret_i32_i32_i32_i32_i32_param(
@@ -426,61 +191,25 @@ class ParamServiceInterface(
         param5: int
     ) -> int: ...
 
-    @_typing.overload
-    async def double_ret_setstruct_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.AbstractSet[_module_types.MyStruct]
-    ) -> float: ...
-
     async def double_ret_setstruct_param(
         self,
         param1: _typing.AbstractSet[_module_types.MyStruct]
     ) -> float: ...
-
-    @_typing.overload
-    async def string_ret_string_param(
-        self,
-        ctx: RequestContext,
-        param1: str
-    ) -> str: ...
 
     async def string_ret_string_param(
         self,
         param1: str
     ) -> str: ...
 
-    @_typing.overload
-    async def binary_ret_binary_param(
-        self,
-        ctx: RequestContext,
-        param1: bytes
-    ) -> bytes: ...
-
     async def binary_ret_binary_param(
         self,
         param1: bytes
     ) -> bytes: ...
 
-    @_typing.overload
-    async def map_ret_bool_param(
-        self,
-        ctx: RequestContext,
-        param1: bool
-    ) -> _typing.Mapping[str, int]: ...
-
     async def map_ret_bool_param(
         self,
         param1: bool
     ) -> _typing.Mapping[str, int]: ...
-
-    @_typing.overload
-    async def list_ret_map_setlist_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Mapping[int, _typing.Sequence[str]],
-        param2: _typing.Sequence[str]
-    ) -> _typing.Sequence[bool]: ...
 
     async def list_ret_map_setlist_param(
         self,
@@ -488,60 +217,24 @@ class ParamServiceInterface(
         param2: _typing.Sequence[str]
     ) -> _typing.Sequence[bool]: ...
 
-    @_typing.overload
-    async def mapsetlistmapliststring_ret_listlistlist_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]
-    ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]: ...
-
     async def mapsetlistmapliststring_ret_listlistlist_param(
         self,
         param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]
     ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]: ...
-
-    @_typing.overload
-    async def typedef_ret_i32_param(
-        self,
-        ctx: RequestContext,
-        param1: int
-    ) -> int: ...
 
     async def typedef_ret_i32_param(
         self,
         param1: int
     ) -> int: ...
 
-    @_typing.overload
-    async def listtypedef_ret_typedef_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]
-    ) -> _typing.Sequence[int]: ...
-
     async def listtypedef_ret_typedef_param(
         self,
         param1: _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]
     ) -> _typing.Sequence[int]: ...
 
-    @_typing.overload
-    async def enum_ret_double_param(
-        self,
-        ctx: RequestContext,
-        param1: float
-    ) -> _module_types.MyEnumA: ...
-
     async def enum_ret_double_param(
         self,
         param1: float
-    ) -> _module_types.MyEnumA: ...
-
-    @_typing.overload
-    async def enum_ret_double_enum_param(
-        self,
-        ctx: RequestContext,
-        param1: float,
-        param2: _module_types.MyEnumA
     ) -> _module_types.MyEnumA: ...
 
     async def enum_ret_double_enum_param(
@@ -550,62 +243,26 @@ class ParamServiceInterface(
         param2: _module_types.MyEnumA
     ) -> _module_types.MyEnumA: ...
 
-    @_typing.overload
-    async def listenum_ret_map_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.Mapping[str, int]
-    ) -> _typing.Sequence[_module_types.MyEnumA]: ...
-
     async def listenum_ret_map_param(
         self,
         param1: _typing.Mapping[str, int]
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
-
-    @_typing.overload
-    async def struct_ret_i16_param(
-        self,
-        ctx: RequestContext,
-        param1: int
-    ) -> _module_types.MyStruct: ...
 
     async def struct_ret_i16_param(
         self,
         param1: int
     ) -> _module_types.MyStruct: ...
 
-    @_typing.overload
-    async def setstruct_ret_set_param(
-        self,
-        ctx: RequestContext,
-        param1: _typing.AbstractSet[str]
-    ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
-
     async def setstruct_ret_set_param(
         self,
         param1: _typing.AbstractSet[str]
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
-
-    @_typing.overload
-    async def union_ret_i32_i32_param(
-        self,
-        ctx: RequestContext,
-        param1: int,
-        param2: int
-    ) -> _module_types.ComplexUnion: ...
 
     async def union_ret_i32_i32_param(
         self,
         param1: int,
         param2: int
     ) -> _module_types.ComplexUnion: ...
-
-    @_typing.overload
-    async def listunion_string_param(
-        self,
-        ctx: RequestContext,
-        param1: str
-    ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 
     async def listunion_string_param(
         self,

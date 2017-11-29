@@ -15,21 +15,8 @@ import module.types as _module_types
 class SimpleServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def get_five(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
-
     async def get_five(
         self
-    ) -> int: ...
-
-    @_typing.overload
-    async def add_five(
-        self,
-        ctx: RequestContext,
-        num: int
     ) -> int: ...
 
     async def add_five(
@@ -37,70 +24,28 @@ class SimpleServiceInterface(
         num: int
     ) -> int: ...
 
-    @_typing.overload
-    async def do_nothing(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def do_nothing(
         self
     ) -> None: ...
 
-    @_typing.overload
-    async def concat(
-        self,
-        ctx: RequestContext,
-        first: str,
-        second: str
-    ) -> str: ...
-
     async def concat(
         self,
         first: str,
         second: str
     ) -> str: ...
 
-    @_typing.overload
-    async def get_value(
-        self,
-        ctx: RequestContext,
-        simple_struct: _module_types.SimpleStruct
-    ) -> int: ...
-
     async def get_value(
         self,
         simple_struct: _module_types.SimpleStruct
     ) -> int: ...
-
-    @_typing.overload
-    async def negate(
-        self,
-        ctx: RequestContext,
-        input: bool
-    ) -> bool: ...
 
     async def negate(
         self,
         input: bool
     ) -> bool: ...
 
-    @_typing.overload
     async def tiny(
         self,
-        ctx: RequestContext,
-        input: int
-    ) -> int: ...
-
-    async def tiny(
-        self,
-        input: int
-    ) -> int: ...
-
-    @_typing.overload
-    async def small(
-        self,
-        ctx: RequestContext,
         input: int
     ) -> int: ...
 
@@ -109,66 +54,26 @@ class SimpleServiceInterface(
         input: int
     ) -> int: ...
 
-    @_typing.overload
-    async def big(
-        self,
-        ctx: RequestContext,
-        input: int
-    ) -> int: ...
-
     async def big(
         self,
         input: int
     ) -> int: ...
-
-    @_typing.overload
-    async def two(
-        self,
-        ctx: RequestContext,
-        input: float
-    ) -> float: ...
 
     async def two(
         self,
         input: float
     ) -> float: ...
 
-    @_typing.overload
-    async def expected_exception(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def expected_exception(
         self
     ) -> None: ...
-
-    @_typing.overload
-    async def unexpected_exception(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
 
     async def unexpected_exception(
         self
     ) -> int: ...
 
-    @_typing.overload
     async def sum_i16_list(
         self,
-        ctx: RequestContext,
-        numbers: _typing.Sequence[int]
-    ) -> int: ...
-
-    async def sum_i16_list(
-        self,
-        numbers: _typing.Sequence[int]
-    ) -> int: ...
-
-    @_typing.overload
-    async def sum_i32_list(
-        self,
-        ctx: RequestContext,
         numbers: _typing.Sequence[int]
     ) -> int: ...
 
@@ -177,47 +82,19 @@ class SimpleServiceInterface(
         numbers: _typing.Sequence[int]
     ) -> int: ...
 
-    @_typing.overload
-    async def sum_i64_list(
-        self,
-        ctx: RequestContext,
-        numbers: _typing.Sequence[int]
-    ) -> int: ...
-
     async def sum_i64_list(
         self,
         numbers: _typing.Sequence[int]
     ) -> int: ...
-
-    @_typing.overload
-    async def concat_many(
-        self,
-        ctx: RequestContext,
-        words: _typing.Sequence[str]
-    ) -> str: ...
 
     async def concat_many(
         self,
         words: _typing.Sequence[str]
     ) -> str: ...
 
-    @_typing.overload
-    async def count_structs(
-        self,
-        ctx: RequestContext,
-        items: _typing.Sequence[_module_types.SimpleStruct]
-    ) -> int: ...
-
     async def count_structs(
         self,
         items: _typing.Sequence[_module_types.SimpleStruct]
-    ) -> int: ...
-
-    @_typing.overload
-    async def sum_set(
-        self,
-        ctx: RequestContext,
-        numbers: _typing.AbstractSet[int]
     ) -> int: ...
 
     async def sum_set(
@@ -225,27 +102,11 @@ class SimpleServiceInterface(
         numbers: _typing.AbstractSet[int]
     ) -> int: ...
 
-    @_typing.overload
-    async def contains_word(
-        self,
-        ctx: RequestContext,
-        words: _typing.AbstractSet[str],
-        word: str
-    ) -> bool: ...
-
     async def contains_word(
         self,
         words: _typing.AbstractSet[str],
         word: str
     ) -> bool: ...
-
-    @_typing.overload
-    async def get_map_value(
-        self,
-        ctx: RequestContext,
-        words: _typing.Mapping[str, str],
-        key: str
-    ) -> str: ...
 
     async def get_map_value(
         self,
@@ -253,23 +114,9 @@ class SimpleServiceInterface(
         key: str
     ) -> str: ...
 
-    @_typing.overload
-    async def map_length(
-        self,
-        ctx: RequestContext,
-        items: _typing.Mapping[str, _module_types.SimpleStruct]
-    ) -> int: ...
-
     async def map_length(
         self,
         items: _typing.Mapping[str, _module_types.SimpleStruct]
-    ) -> int: ...
-
-    @_typing.overload
-    async def sum_map_values(
-        self,
-        ctx: RequestContext,
-        items: _typing.Mapping[str, int]
     ) -> int: ...
 
     async def sum_map_values(
@@ -277,95 +124,39 @@ class SimpleServiceInterface(
         items: _typing.Mapping[str, int]
     ) -> int: ...
 
-    @_typing.overload
-    async def complex_sum_i32(
-        self,
-        ctx: RequestContext,
-        counter: _module_types.ComplexStruct
-    ) -> int: ...
-
     async def complex_sum_i32(
         self,
         counter: _module_types.ComplexStruct
     ) -> int: ...
 
-    @_typing.overload
-    async def repeat_name(
-        self,
-        ctx: RequestContext,
-        counter: _module_types.ComplexStruct
-    ) -> str: ...
-
     async def repeat_name(
         self,
         counter: _module_types.ComplexStruct
     ) -> str: ...
-
-    @_typing.overload
-    async def get_struct(
-        self,
-        ctx: RequestContext
-    ) -> _module_types.SimpleStruct: ...
 
     async def get_struct(
         self
     ) -> _module_types.SimpleStruct: ...
 
-    @_typing.overload
-    async def fib(
-        self,
-        ctx: RequestContext,
-        n: int
-    ) -> _typing.Sequence[int]: ...
-
     async def fib(
         self,
         n: int
     ) -> _typing.Sequence[int]: ...
-
-    @_typing.overload
-    async def unique_words(
-        self,
-        ctx: RequestContext,
-        words: _typing.Sequence[str]
-    ) -> _typing.AbstractSet[str]: ...
 
     async def unique_words(
         self,
         words: _typing.Sequence[str]
     ) -> _typing.AbstractSet[str]: ...
 
-    @_typing.overload
-    async def words_count(
-        self,
-        ctx: RequestContext,
-        words: _typing.Sequence[str]
-    ) -> _typing.Mapping[str, int]: ...
-
     async def words_count(
         self,
         words: _typing.Sequence[str]
     ) -> _typing.Mapping[str, int]: ...
 
-    @_typing.overload
-    async def set_enum(
-        self,
-        ctx: RequestContext,
-        in_enum: _module_types.AnEnum
-    ) -> _module_types.AnEnum: ...
-
     async def set_enum(
         self,
         in_enum: _module_types.AnEnum
     ) -> _module_types.AnEnum: ...
-
-    @_typing.overload
-    async def list_of_lists(
-        self,
-        ctx: RequestContext,
-        num_lists: int,
-        num_items: int
-    ) -> _typing.Sequence[_typing.Sequence[int]]: ...
 
     async def list_of_lists(
         self,
@@ -373,120 +164,50 @@ class SimpleServiceInterface(
         num_items: int
     ) -> _typing.Sequence[_typing.Sequence[int]]: ...
 
-    @_typing.overload
-    async def word_character_frequency(
-        self,
-        ctx: RequestContext,
-        sentence: str
-    ) -> _typing.Mapping[str, _typing.Mapping[str, int]]: ...
-
     async def word_character_frequency(
         self,
         sentence: str
     ) -> _typing.Mapping[str, _typing.Mapping[str, int]]: ...
-
-    @_typing.overload
-    async def list_of_sets(
-        self,
-        ctx: RequestContext,
-        some_words: str
-    ) -> _typing.Sequence[_typing.AbstractSet[str]]: ...
 
     async def list_of_sets(
         self,
         some_words: str
     ) -> _typing.Sequence[_typing.AbstractSet[str]]: ...
 
-    @_typing.overload
-    async def nested_map_argument(
-        self,
-        ctx: RequestContext,
-        struct_map: _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]
-    ) -> int: ...
-
     async def nested_map_argument(
         self,
         struct_map: _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]
     ) -> int: ...
-
-    @_typing.overload
-    async def make_sentence(
-        self,
-        ctx: RequestContext,
-        word_chars: _typing.Sequence[_typing.Sequence[str]]
-    ) -> str: ...
 
     async def make_sentence(
         self,
         word_chars: _typing.Sequence[_typing.Sequence[str]]
     ) -> str: ...
 
-    @_typing.overload
-    async def get_union(
-        self,
-        ctx: RequestContext,
-        sets: _typing.Sequence[_typing.AbstractSet[int]]
-    ) -> _typing.AbstractSet[int]: ...
-
     async def get_union(
         self,
         sets: _typing.Sequence[_typing.AbstractSet[int]]
     ) -> _typing.AbstractSet[int]: ...
-
-    @_typing.overload
-    async def get_keys(
-        self,
-        ctx: RequestContext,
-        string_map: _typing.Sequence[_typing.Mapping[str, str]]
-    ) -> _typing.AbstractSet[str]: ...
 
     async def get_keys(
         self,
         string_map: _typing.Sequence[_typing.Mapping[str, str]]
     ) -> _typing.AbstractSet[str]: ...
 
-    @_typing.overload
-    async def lookup_double(
-        self,
-        ctx: RequestContext,
-        key: int
-    ) -> float: ...
-
     async def lookup_double(
         self,
         key: int
     ) -> float: ...
-
-    @_typing.overload
-    async def retrieve_binary(
-        self,
-        ctx: RequestContext,
-        something: bytes
-    ) -> bytes: ...
 
     async def retrieve_binary(
         self,
         something: bytes
     ) -> bytes: ...
 
-    @_typing.overload
-    async def contain_binary(
-        self,
-        ctx: RequestContext,
-        binaries: _typing.Sequence[bytes]
-    ) -> _typing.AbstractSet[bytes]: ...
-
     async def contain_binary(
         self,
         binaries: _typing.Sequence[bytes]
     ) -> _typing.AbstractSet[bytes]: ...
-
-    @_typing.overload
-    async def contain_enum(
-        self,
-        ctx: RequestContext,
-        the_enum: _typing.Sequence[_module_types.AnEnum]
-    ) -> _typing.Sequence[_module_types.AnEnum]: ...
 
     async def contain_enum(
         self,
@@ -498,12 +219,6 @@ class SimpleServiceInterface(
 class DerivedServiceInterface(
     _module_services.SimpleServiceInterface
 ):
-    @_typing.overload
-    async def get_six(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
-
     async def get_six(
         self
     ) -> int: ...
@@ -513,12 +228,6 @@ class DerivedServiceInterface(
 class RederivedServiceInterface(
     _module_services.DerivedServiceInterface
 ):
-    @_typing.overload
-    async def get_seven(
-        self,
-        ctx: RequestContext
-    ) -> int: ...
-
     async def get_seven(
         self
     ) -> int: ...

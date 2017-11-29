@@ -15,13 +15,6 @@ import my.namespacing.test.module.module.types as _my_namespacing_test_module_mo
 class TestServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def init(
-        self,
-        ctx: RequestContext,
-        int1: int
-    ) -> int: ...
-
     async def init(
         self,
         int1: int

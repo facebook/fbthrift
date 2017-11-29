@@ -15,12 +15,6 @@ import module.types as _module_types
 class MyRootInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def do_root(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def do_root(
         self
     ) -> None: ...
@@ -30,12 +24,6 @@ class MyRootInterface(
 class MyNodeInterface(
     _module_services.MyRootInterface
 ):
-    @_typing.overload
-    async def do_mid(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def do_mid(
         self
     ) -> None: ...
@@ -45,12 +33,6 @@ class MyNodeInterface(
 class MyLeafInterface(
     _module_services.MyNodeInterface
 ):
-    @_typing.overload
-    async def do_leaf(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def do_leaf(
         self
     ) -> None: ...

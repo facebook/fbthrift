@@ -15,13 +15,6 @@ import hsmodule.types as _hsmodule_types
 class HsTestServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def init(
-        self,
-        ctx: RequestContext,
-        int1: int
-    ) -> int: ...
-
     async def init(
         self,
         int1: int

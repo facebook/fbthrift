@@ -9,32 +9,16 @@ import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 
 import service.types as _service_types
-cimport module.types as _module_types
-cimport includes.types as _includes_types
+import module.types as _module_types
+import includes.types as _includes_types
 
 
 
 class MyServiceInterface(
     ServiceInterface
 ):
-    @_typing.overload
     async def query(
         self,
-        ctx: RequestContext,
-        s: _module_types.MyStruct,
-        i: _includes_types.Included
-    ) -> None: ...
-
-    async def query(
-        self,
-        s: _module_types.MyStruct,
-        i: _includes_types.Included
-    ) -> None: ...
-
-    @_typing.overload
-    async def has_arg_docs(
-        self,
-        ctx: RequestContext,
         s: _module_types.MyStruct,
         i: _includes_types.Included
     ) -> None: ...

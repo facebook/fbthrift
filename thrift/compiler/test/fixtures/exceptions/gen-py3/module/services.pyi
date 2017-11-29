@@ -15,40 +15,16 @@ import module.types as _module_types
 class RaiserInterface(
     ServiceInterface
 ):
-    @_typing.overload
-    async def doBland(
-        self,
-        ctx: RequestContext
-    ) -> None: ...
-
     async def doBland(
         self
-    ) -> None: ...
-
-    @_typing.overload
-    async def doRaise(
-        self,
-        ctx: RequestContext
     ) -> None: ...
 
     async def doRaise(
         self
     ) -> None: ...
 
-    @_typing.overload
-    async def get200(
-        self,
-        ctx: RequestContext
-    ) -> str: ...
-
     async def get200(
         self
-    ) -> str: ...
-
-    @_typing.overload
-    async def get500(
-        self,
-        ctx: RequestContext
     ) -> str: ...
 
     async def get500(
