@@ -13,10 +13,7 @@ typedef double Double
 
 exception UnusedError {
     1: string message
-} (
-  message = 'message',
-  cpp.virtual,
-)
+}
 
 enum Color {
   red = 0,
