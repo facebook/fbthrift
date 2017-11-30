@@ -113,6 +113,13 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_struct_shape_collection_value_lambda(std::ostream& out,
                                                          t_name_generator& namer,
                                                          t_type* t);
+  void generate_hack_array_from_shape_lambda(std::ostream& out,
+                                             t_name_generator& namer,
+                                             t_type* t);
+  void generate_shape_from_hack_array_lambda(std::ostream& out,
+                                             t_name_generator& namer,
+                                             t_type* t);
+  bool type_has_nested_struct(t_type* t);
   bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
   void generate_php_struct_shape_json_conversion(std::ofstream& out,
                                                  bool nullable,
@@ -1560,6 +1567,110 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(std::os
   }
 }
 
+void t_hack_generator::generate_hack_array_from_shape_lambda(
+    std::ostream& out,
+    t_name_generator& namer,
+    t_type* t) {
+  if (t->is_map()) {
+    out << "Dict\\map(" << endl;
+  } else {
+    out << "Vec\\map(" << endl;
+  }
+  indent_up();
+  indent(out) << "$$," << endl;
+  string tmp = namer("_val");
+  indent(out) << "$" << tmp << " ==> $" << tmp;
+
+  t_type* val_type;
+  if (t->is_map()) {
+    val_type = ((t_map*)t)->get_val_type();
+  } else {
+    val_type = ((t_list*)t)->get_elem_type();
+  }
+  val_type = get_true_type(val_type);
+
+  if (val_type->is_map() || val_type->is_list() || val_type->is_struct()) {
+    indent_up();
+    out << endl;
+    indent(out) << "|> ";
+
+    if (val_type->is_struct()) {
+      string type = hack_name(val_type);
+      out << type << "::__fromShape($$)," << endl;
+    } else {
+      generate_hack_array_from_shape_lambda(out, namer, val_type);
+      out << "," << endl;
+    }
+
+    indent_down();
+  } else {
+    out << "," << endl;
+  }
+
+  indent_down();
+  indent(out) << ")";
+}
+
+void t_hack_generator::generate_shape_from_hack_array_lambda(
+    std::ostream& out,
+    t_name_generator& namer,
+    t_type* t) {
+  if (t->is_map()) {
+    out << "Dict\\map(" << endl;
+  } else {
+    out << "Vec\\map(" << endl;
+  }
+  indent_up();
+  indent(out) << "$$," << endl;
+  string tmp = namer("_val");
+  indent(out) << "$" << tmp << " ==> $" << tmp;
+
+  t_type* val_type;
+  if (t->is_map()) {
+    val_type = ((t_map*)t)->get_val_type();
+  } else {
+    val_type = ((t_list*)t)->get_elem_type();
+  }
+  val_type = get_true_type(val_type);
+
+  if (val_type->is_struct()) {
+    out << "->__toShape()," << endl;
+  } else if (val_type->is_map() || val_type->is_list()) {
+    indent_up();
+    out << endl;
+    indent(out) << "|> ";
+    generate_shape_from_hack_array_lambda(out, namer, val_type);
+    indent_down();
+  } else {
+    out << "," << endl;
+  }
+
+  indent_down();
+  indent(out) << ")," << endl;
+}
+
+bool t_hack_generator::type_has_nested_struct(t_type* t) {
+  bool has_struct = false;
+  t_type* val_type = t;
+  while (true) {
+    if (val_type->is_map()) {
+      val_type = ((t_map*)val_type)->get_val_type();
+    } else {
+      val_type = ((t_list*)val_type)->get_elem_type();
+    }
+    val_type = get_true_type(val_type);
+
+    if (!(val_type->is_map() || val_type->is_list())) {
+      if (val_type->is_struct()) {
+        has_struct = true;
+      }
+      break;
+    }
+  }
+
+  return has_struct;
+}
+
 /**
  * Determine whether a field should be marked nullable.
  */
@@ -1940,87 +2051,98 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
       if (stringify_map_keys) {
         val << "self::__stringifyMapKeys(";
-      } else {
-        val << "(";
       }
 
-      if (t->is_map()) {
-        val << "new Map(";
-      } else {
-        val << "new Vector(";
-      }
-
-      val << source.str() << "))";
-
-      int nest = 0;
-      while (true) {
-        t_type* val_type;
-        if (t->is_map()) {
-          val_type = ((t_map*)t)->get_val_type();
-        } else {
-          val_type = ((t_list*)t)->get_elem_type();
-        }
-        val_type = get_true_type(val_type);
-
-        if ((val_type->is_set() && !arraysets_) ||
-            val_type->is_map() ||
-            val_type->is_list() ||
-            val_type->is_struct()) {
+      if (arrays_) {
+        val << source.str();
+        if (type_has_nested_struct(t)) {
           indent_up();
-          nest++;
-          val << "->map(" << endl;
-
-          if (val_type->is_set()) {
-            string tmp = namer("val");
-            indent(val) << "$" << tmp << " ==> new Set(array_keys($" << tmp << "))," << endl;
-            break;
-          } else if (val_type->is_map() || val_type->is_list()) {
-            string tmp = namer("val");
-
-            stringify_map_keys = false;
-            if (val_type->is_map() && shape_arraykeys_) {
-              t_type *key_type =((t_map*)val_type)->get_key_type();
-              if (key_type->is_base_type() &&
-                  ((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
-                stringify_map_keys = true;
-              }
-            }
-
-            indent(val)  << "$" << tmp
-                         << " ==> "
-                         << (stringify_map_keys ? "self::__stringifyMapKeys" : "")
-                         << "(new ";
-            if (val_type->is_map()) {
-              val << "Map";
-            } else {
-              val << "Vector";
-            }
-            val << "($" << tmp << "))";
-            t = val_type;
-          } else if (val_type->is_struct()) {
-            string tmp = namer("val");
-            string type = hack_name(val_type);
-            indent(val) << "$" << tmp << " ==> " << type << "::__fromShape("
-                        << "$" << tmp << ")," << endl;
-            break;
-          }
+          val << endl;
+          indent(val) << "|> ";
+          generate_hack_array_from_shape_lambda(val, namer, t);
+          indent_down();
+        }
+        val << ";" << endl;
+      } else {
+        val << (stringify_map_keys ? "" : "(");
+        if (t->is_map()) {
+          val << "new Map(";
         } else {
-          if (nest > 0) {
-            val << "," <<  endl;
+          val << "new Vector(";
+        }
+
+        val << source.str() << "))";
+
+        int nest = 0;
+        while (true) {
+          t_type* val_type;
+          if (t->is_map()) {
+            val_type = ((t_map*)t)->get_val_type();
+          } else {
+            val_type = ((t_list*)t)->get_elem_type();
           }
-          break;
+          val_type = get_true_type(val_type);
+
+          if ((val_type->is_set() && !arraysets_) ||
+              val_type->is_map() ||
+              val_type->is_list() ||
+              val_type->is_struct()) {
+            indent_up();
+            nest++;
+            val << "->map(" << endl;
+
+            if (val_type->is_set()) {
+              string tmp = namer("val");
+              indent(val) << "$" << tmp << " ==> new Set(array_keys($" << tmp << "))," << endl;
+              break;
+            } else if (val_type->is_map() || val_type->is_list()) {
+              string tmp = namer("val");
+
+              stringify_map_keys = false;
+              if (val_type->is_map() && shape_arraykeys_) {
+                t_type *key_type =((t_map*)val_type)->get_key_type();
+                if (key_type->is_base_type() &&
+                    ((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
+                  stringify_map_keys = true;
+                }
+              }
+
+              indent(val)  << "$" << tmp
+                           << " ==> "
+                           << (stringify_map_keys ? "self::__stringifyMapKeys" : "")
+                           << "(new ";
+              if (val_type->is_map()) {
+                val << "Map";
+              } else {
+                val << "Vector";
+              }
+              val << "($" << tmp << "))";
+              t = val_type;
+            } else if (val_type->is_struct()) {
+              string tmp = namer("val");
+              string type = hack_name(val_type);
+              indent(val) << "$" << tmp << " ==> " << type << "::__fromShape("
+                          << "$" << tmp << ")," << endl;
+              break;
+            }
+          } else {
+            if (nest > 0) {
+              val << "," <<  endl;
+            }
+            break;
+          }
         }
-      }
-      while (nest-- > 0) {
-        indent_down();
-        indent(val) << ")";
-        if (nest > 0) {
-          val << "," << endl;
+        while (nest-- > 0) {
+          indent_down();
+          indent(val) << ")";
+          if (nest > 0) {
+            val << "," << endl;
+          }
         }
-      }
-      val << ";" << endl;
-      if (nullable) {
-        indent_down();
+        val << ";" << endl;
+        if (nullable) {
+          indent_down();
+        }
       }
     } else if (t->is_struct()) {
       string type = hack_name(t);
@@ -2049,6 +2171,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
   indent_up();
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
+    t_name_generator ngen;
 
     indent(out) << "'" << (*m_iter)->get_name() << "' => ";
 
@@ -2058,26 +2181,38 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
-        val << "$this->" << (*m_iter)->get_name() << (nullable ? "?" :"");
+        val << "$this->" << (*m_iter)->get_name();
 
-        t_type* val_type;
-        if (t->is_map()) {
-          val_type = ((t_map*)t)->get_val_type();
+        if (arrays_) {
+          if (type_has_nested_struct(t)) {
+            val << (nullable ? " ? null :" : "") << endl;
+            indent_up();
+            indent(val) << "|> ";
+            generate_shape_from_hack_array_lambda(val, ngen, t);
+            indent_down();
+          } else {
+            val << "," << endl;
+          }
         } else {
-          val_type = ((t_list*)t)->get_elem_type();
-        }
-        val_type = get_true_type(val_type);
+          val << (nullable ? "?" : "");
 
-        if (val_type->is_container() ||
-            val_type->is_struct()) {
-          val  << "->map(" << endl;
-          indent_up();
-          t_name_generator ngen;
-          generate_php_struct_shape_collection_value_lambda(val, ngen, val_type);
-          indent_down();
-          indent(val) << ")" << (nullable ? "?" :"") << "->toArray()," << endl;
-        } else {
-          val <<  "->toArray()," << endl;
+          t_type* val_type;
+          if (t->is_map()) {
+            val_type = ((t_map*)t)->get_val_type();
+          } else {
+            val_type = ((t_list*)t)->get_elem_type();
+          }
+          val_type = get_true_type(val_type);
+
+          if (val_type->is_container() || val_type->is_struct()) {
+            val << "->map(" << endl;
+            indent_up();
+            generate_php_struct_shape_collection_value_lambda(val, ngen, val_type);
+            indent_down();
+            indent(val) << ")" << (nullable ? "?" :"") << "->toArray()," << endl;
+          } else {
+            val <<  "->toArray()," << endl;
+          }
         }
       } else {
         if (nullable) {
