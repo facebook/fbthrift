@@ -183,12 +183,12 @@ cdef class MyNode(MyRoot):
     cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyNode_client = c_obj
-        _MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
+        MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
 
     cdef _module_MyNode_reset_client(MyNode self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyNode_client.reset()
-        _MyRoot._module_MyRoot_reset_client(self)
+        MyRoot._module_MyRoot_reset_client(self)
 
     def __dealloc__(MyNode self):
         if self._cRequestChannel or self._module_MyNode_client:
@@ -276,12 +276,12 @@ cdef class MyLeaf(MyNode):
     cdef _module_MyLeaf_set_client(MyLeaf inst, shared_ptr[cMyLeafClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyLeaf_client = c_obj
-        _MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
+        MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
 
     cdef _module_MyLeaf_reset_client(MyLeaf self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyLeaf_client.reset()
-        _MyNode._module_MyNode_reset_client(self)
+        MyNode._module_MyNode_reset_client(self)
 
     def __dealloc__(MyLeaf self):
         if self._cRequestChannel or self._module_MyLeaf_client:

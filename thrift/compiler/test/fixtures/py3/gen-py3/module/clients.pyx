@@ -1393,12 +1393,12 @@ cdef class DerivedService(SimpleService):
     cdef _module_DerivedService_set_client(DerivedService inst, shared_ptr[cDerivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_DerivedService_client = c_obj
-        _SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
+        SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
 
     cdef _module_DerivedService_reset_client(DerivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_DerivedService_client.reset()
-        _SimpleService._module_SimpleService_reset_client(self)
+        SimpleService._module_SimpleService_reset_client(self)
 
     def __dealloc__(DerivedService self):
         if self._cRequestChannel or self._module_DerivedService_client:
@@ -1486,12 +1486,12 @@ cdef class RederivedService(DerivedService):
     cdef _module_RederivedService_set_client(RederivedService inst, shared_ptr[cRederivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_RederivedService_client = c_obj
-        _DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
+        DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
 
     cdef _module_RederivedService_reset_client(RederivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_RederivedService_client.reset()
-        _DerivedService._module_DerivedService_reset_client(self)
+        DerivedService._module_DerivedService_reset_client(self)
 
     def __dealloc__(RederivedService self):
         if self._cRequestChannel or self._module_RederivedService_client:

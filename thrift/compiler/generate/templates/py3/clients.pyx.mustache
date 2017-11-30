@@ -92,14 +92,14 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         """So the class hierarchy talks to the correct pointer type"""
         inst._{{program:name}}_{{service:name}}_client = c_obj
 {{#service:extends}}
-        _{{#service:externalProgram?}}{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
+        {{#service:externalProgram?}}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
 {{/service:extends}}
 
     cdef _{{program:name}}_{{service:name}}_reset_client({{service:name}} self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._{{program:name}}_{{service:name}}_client.reset()
 {{#service:extends}}
-        _{{#service:externalProgram?}}{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_reset_client(self)
+        {{#service:externalProgram?}}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_reset_client(self)
 {{/service:extends}}
 
     def __dealloc__({{service:name}} self):

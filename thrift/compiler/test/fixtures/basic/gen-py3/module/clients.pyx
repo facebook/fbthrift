@@ -788,12 +788,12 @@ cdef class MyServicePrioChild(MyServicePrioParent):
     cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServicePrioChild_client = c_obj
-        _MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+        MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
 
     cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self):
         """So the class hierarchy resets the shared pointer up the chain"""
         self._module_MyServicePrioChild_client.reset()
-        _MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
+        MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
 
     def __dealloc__(MyServicePrioChild self):
         if self._cRequestChannel or self._module_MyServicePrioChild_client:
