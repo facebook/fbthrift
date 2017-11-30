@@ -502,7 +502,7 @@ uint32_t CompactProtocolReader::readMessageBegin(std::string& name,
   }
 
   messageType = (MessageType)
-    ((versionAndType & detail::compact::TYPE_MASK) >>
+    ((uint8_t)(versionAndType & detail::compact::TYPE_MASK) >>
      detail::compact::TYPE_SHIFT_AMOUNT);
   rsize += apache::thrift::util::readVarint(in_, seqid);
   rsize += readString(name);
