@@ -26,7 +26,7 @@ from folly.optional cimport cOptional
 
 import sys
 import itertools
-from collections.abc import Sequence, Set, Mapping, Iterable
+from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
 cimport module0.types as _module0_types
