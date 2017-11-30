@@ -121,8 +121,6 @@ cdef class HsTestService(thrift.py3.client.Client):
     async def init(
             HsTestService self,
             int64_t int1):
-        if int1 is None:
-            raise TypeError('int1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

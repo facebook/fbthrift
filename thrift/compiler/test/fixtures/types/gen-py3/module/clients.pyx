@@ -122,9 +122,7 @@ cdef class SomeService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bounce_map(
             SomeService self,
-            m):
-        if m is None:
-            raise TypeError('m can not be None')
+            m not None):
         if not isinstance(m, _module_types.std_unordered_map__Map__i32_string):
             m = _module_types.std_unordered_map__Map__i32_string(m)
         self._check_connect_future()

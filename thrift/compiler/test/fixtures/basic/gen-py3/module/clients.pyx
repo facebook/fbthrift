@@ -337,8 +337,6 @@ cdef class MyService(thrift.py3.client.Client):
     async def hasDataById(
             MyService self,
             int64_t id):
-        if id is None:
-            raise TypeError('id can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -356,8 +354,6 @@ cdef class MyService(thrift.py3.client.Client):
     async def getDataById(
             MyService self,
             int64_t id):
-        if id is None:
-            raise TypeError('id can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -375,11 +371,7 @@ cdef class MyService(thrift.py3.client.Client):
     async def putDataById(
             MyService self,
             int64_t id,
-            str data):
-        if id is None:
-            raise TypeError('id can not be None')
-        if data is None:
-            raise TypeError('data can not be None')
+            str data not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -398,11 +390,7 @@ cdef class MyService(thrift.py3.client.Client):
     async def lobDataById(
             MyService self,
             int64_t id,
-            str data):
-        if id is None:
-            raise TypeError('id can not be None')
-        if data is None:
-            raise TypeError('data can not be None')
+            str data not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -527,8 +515,6 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def hasDataById(
             MyServiceFast self,
             int64_t id):
-        if id is None:
-            raise TypeError('id can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -546,8 +532,6 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def getDataById(
             MyServiceFast self,
             int64_t id):
-        if id is None:
-            raise TypeError('id can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -565,11 +549,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def putDataById(
             MyServiceFast self,
             int64_t id,
-            str data):
-        if id is None:
-            raise TypeError('id can not be None')
-        if data is None:
-            raise TypeError('data can not be None')
+            str data not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -588,11 +568,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def lobDataById(
             MyServiceFast self,
             int64_t id,
-            str data):
-        if id is None:
-            raise TypeError('id can not be None')
-        if data is None:
-            raise TypeError('data can not be None')
+            str data not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

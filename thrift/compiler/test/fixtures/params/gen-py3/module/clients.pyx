@@ -172,9 +172,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def mapList(
             NestedContainers self,
-            foo):
-        if foo is None:
-            raise TypeError('foo can not be None')
+            foo not None):
         if not isinstance(foo, _module_types.Map__i32_List__i32):
             foo = _module_types.Map__i32_List__i32(foo)
         self._check_connect_future()
@@ -193,9 +191,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def mapSet(
             NestedContainers self,
-            foo):
-        if foo is None:
-            raise TypeError('foo can not be None')
+            foo not None):
         if not isinstance(foo, _module_types.Map__i32_Set__i32):
             foo = _module_types.Map__i32_Set__i32(foo)
         self._check_connect_future()
@@ -214,9 +210,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listMap(
             NestedContainers self,
-            foo):
-        if foo is None:
-            raise TypeError('foo can not be None')
+            foo not None):
         if not isinstance(foo, _module_types.List__Map__i32_i32):
             foo = _module_types.List__Map__i32_i32(foo)
         self._check_connect_future()
@@ -235,9 +229,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listSet(
             NestedContainers self,
-            foo):
-        if foo is None:
-            raise TypeError('foo can not be None')
+            foo not None):
         if not isinstance(foo, _module_types.List__Set__i32):
             foo = _module_types.List__Set__i32(foo)
         self._check_connect_future()
@@ -256,9 +248,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def turtles(
             NestedContainers self,
-            foo):
-        if foo is None:
-            raise TypeError('foo can not be None')
+            foo not None):
         if not isinstance(foo, _module_types.List__List__Map__i32_Map__i32_Set__i32):
             foo = _module_types.List__List__Map__i32_Map__i32_Set__i32(foo)
         self._check_connect_future()

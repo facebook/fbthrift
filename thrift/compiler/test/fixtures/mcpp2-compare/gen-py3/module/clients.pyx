@@ -1123,8 +1123,6 @@ cdef class ReturnService(thrift.py3.client.Client):
     async def readDataEb(
             ReturnService self,
             int64_t size):
-        if size is None:
-            raise TypeError('size can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1142,8 +1140,6 @@ cdef class ReturnService(thrift.py3.client.Client):
     async def readData(
             ReturnService self,
             int64_t size):
-        if size is None:
-            raise TypeError('size can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1237,8 +1233,6 @@ cdef class ParamService(thrift.py3.client.Client):
     async def void_ret_i16_param(
             ParamService self,
             int16_t param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1257,10 +1251,6 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             int8_t param1,
             int16_t param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1278,9 +1268,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_map_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.Map__string_i64):
             param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
@@ -1299,14 +1287,10 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_map_setlist_param(
             ParamService self,
-            param1,
-            param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None,
+            param2 not None):
         if not isinstance(param1, _module_types.Map__string_i64):
             param1 = _module_types.Map__string_i64(param1)
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         if not isinstance(param2, _module_types.Set__List__string):
             param2 = _module_types.Set__List__string(param2)
         self._check_connect_future()
@@ -1327,8 +1311,6 @@ cdef class ParamService(thrift.py3.client.Client):
     async def void_ret_map_typedef_param(
             ParamService self,
             int32_t param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1345,11 +1327,9 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_enum_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.MyEnumA):
-            raise ValueError('param1 is not of the enum type { _module_types.MyEnumA }.')
+            raise TypeError(f'param1(value: { param1 !r}) is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1366,9 +1346,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_struct_param(
             ParamService self,
-            _module_types.MyStruct param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            _module_types.MyStruct param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1385,9 +1363,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_listunion_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.List__ComplexUnion):
             param1 = _module_types.List__ComplexUnion(param1)
         self._check_connect_future()
@@ -1408,10 +1384,6 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             int32_t param1,
             int64_t param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1429,9 +1401,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_map_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.Map__string_i64):
             param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
@@ -1450,9 +1420,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_union_param(
             ParamService self,
-            _module_types.ComplexUnion param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            _module_types.ComplexUnion param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1471,10 +1439,6 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             float param1,
             double param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1492,12 +1456,8 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_string_typedef_param(
             ParamService self,
-            str param1,
-            param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
+            str param1 not None,
+            param2 not None):
         if not isinstance(param2, _module_types.Set__List__List__Map__Empty_MyStruct):
             param2 = _module_types.Set__List__List__Map__Empty_MyStruct(param2)
         self._check_connect_future()
@@ -1522,16 +1482,6 @@ cdef class ParamService(thrift.py3.client.Client):
             int32_t param3,
             int32_t param4,
             int32_t param5):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
-        if param3 is None:
-            raise TypeError('param3 can not be None')
-        if param4 is None:
-            raise TypeError('param4 can not be None')
-        if param5 is None:
-            raise TypeError('param5 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1552,9 +1502,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def double_ret_setstruct_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.Set__MyStruct):
             param1 = _module_types.Set__MyStruct(param1)
         self._check_connect_future()
@@ -1573,9 +1521,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def string_ret_string_param(
             ParamService self,
-            str param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            str param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1592,9 +1538,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def binary_ret_binary_param(
             ParamService self,
-            bytes param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            bytes param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1611,9 +1555,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def map_ret_bool_param(
             ParamService self,
-            pbool param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            pbool param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1630,14 +1572,10 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def list_ret_map_setlist_param(
             ParamService self,
-            param1,
-            param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None,
+            param2 not None):
         if not isinstance(param1, _module_types.Map__i32_List__string):
             param1 = _module_types.Map__i32_List__string(param1)
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         if not isinstance(param2, _module_types.List__string):
             param2 = _module_types.List__string(param2)
         self._check_connect_future()
@@ -1657,9 +1595,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def mapsetlistmapliststring_ret_listlistlist_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.List__List__List__List__i32):
             param1 = _module_types.List__List__List__List__i32(param1)
         self._check_connect_future()
@@ -1679,8 +1615,6 @@ cdef class ParamService(thrift.py3.client.Client):
     async def typedef_ret_i32_param(
             ParamService self,
             int32_t param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1697,9 +1631,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listtypedef_ret_typedef_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.List__Map__Empty_MyStruct):
             param1 = _module_types.List__Map__Empty_MyStruct(param1)
         self._check_connect_future()
@@ -1719,8 +1651,6 @@ cdef class ParamService(thrift.py3.client.Client):
     async def enum_ret_double_param(
             ParamService self,
             double param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1738,13 +1668,9 @@ cdef class ParamService(thrift.py3.client.Client):
     async def enum_ret_double_enum_param(
             ParamService self,
             double param1,
-            param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
+            param2 not None):
         if not isinstance(param2, _module_types.MyEnumA):
-            raise ValueError('param2 is not of the enum type { _module_types.MyEnumA }.')
+            raise TypeError(f'param2(value: { param2 !r}) is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1762,9 +1688,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listenum_ret_map_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.Map__string_i64):
             param1 = _module_types.Map__string_i64(param1)
         self._check_connect_future()
@@ -1784,8 +1708,6 @@ cdef class ParamService(thrift.py3.client.Client):
     async def struct_ret_i16_param(
             ParamService self,
             int16_t param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1802,9 +1724,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def setstruct_ret_set_param(
             ParamService self,
-            param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            param1 not None):
         if not isinstance(param1, _module_types.Set__string):
             param1 = _module_types.Set__string(param1)
         self._check_connect_future()
@@ -1825,10 +1745,6 @@ cdef class ParamService(thrift.py3.client.Client):
             ParamService self,
             int32_t param1,
             int32_t param2):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
-        if param2 is None:
-            raise TypeError('param2 can not be None')
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1846,9 +1762,7 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def listunion_string_param(
             ParamService self,
-            str param1):
-        if param1 is None:
-            raise TypeError('param1 can not be None')
+            str param1 not None):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

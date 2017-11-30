@@ -3,7 +3,7 @@ import asyncio
 import unittest
 
 from testing.clients import TestingService
-from testing.types import I32List, Color
+from testing.types import I32List, Color, easy
 from thrift.py3 import TransportError, get_client
 
 
@@ -19,6 +19,21 @@ class ClientTests(unittest.TestCase):
         # This should not raise an exception
         client.complex_action(first='foo', second='bar', third=9, fourth='baz')
         client.complex_action('foo', 'bar', 9, 'baz')
+
+    def test_none_arguments(self):
+        client = TestingService()
+        with self.assertRaises(TypeError):
+            client.take_it_easy(9)
+        with self.assertRaises(TypeError):
+            client.take_it_easy(9, None)  # Should be an easy type
+        with self.assertRaises(TypeError):
+            client.takes_a_list(None)  # Should not be None
+        with self.assertRaises(TypeError):
+            client.invert(None)  # Should be a bool
+        with self.assertRaises(TypeError):
+            client.pick_a_color(None)  # Should not be a None
+        with self.assertRaises(TypeError):
+            client.take_it_easy(None, easy())
 
     def test_TransportError(self):
         """
@@ -64,7 +79,7 @@ class ClientTests(unittest.TestCase):
     def test_rpc_enum_args(self):
         client = TestingService()
         loop = asyncio.get_event_loop()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             loop.run_until_complete(client.pick_a_color(0))
 
         with self.assertRaises(asyncio.InvalidStateError):

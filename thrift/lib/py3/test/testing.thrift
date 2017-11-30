@@ -35,8 +35,10 @@ union Integers {
 }
 
 service TestingService {
+    bool invert(1: bool value)
     i32 complex_action(1: string first, 2: string second, 3: i64 third, 4: string fourth)
     void takes_a_list(1: I32List ints)
+    void take_it_easy(1: i32 how, 2: easy what)
     void pick_a_color(1: Color color)
     void int_sizes(1: byte one, 2: i16 two, 3: i32 three, 4: i64 four)
 }
