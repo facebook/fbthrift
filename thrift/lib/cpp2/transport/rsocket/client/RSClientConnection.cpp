@@ -17,7 +17,6 @@
 
 #include <folly/io/async/EventBase.h>
 #include <rsocket/framing/FramedDuplexConnection.h>
-#include <rsocket/transports/tcp/TcpConnectionFactory.h>
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
@@ -80,19 +79,11 @@ RSClientConnection::RSClientConnection(
     : evb_(socket->getEventBase()),
       isSecure_(isSecure),
       connectionStatus_(std::make_shared<RSConnectionStatus>()) {
-  rsClient_ = RSocket::createClientFromConnection(
-      TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket)),
-      *evb_,
-      SetupParameters(),
-      nullptr, /* ConnectionFactory */
-      std::make_shared<RSocketResponder>(),
-      std::chrono::milliseconds{0}, /* no keepalive timeout */
-      RSocketStats::noop(),
-      connectionStatus_,
-      nullptr /* resumeManager */,
-      nullptr /* coldResumeHandler */);
-  rsRequester_ = rsClient_->getRequester();
-  channel_ = std::make_shared<RSClientThriftChannel>(rsRequester_, counters_);
+  rsRequester_ =
+      std::make_shared<RSRequester>(std::move(socket), evb_, connectionStatus_);
+
+  channel_ =
+      std::make_shared<RSClientThriftChannel>(rsRequester_, counters_, evb_);
 }
 
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel(
@@ -116,14 +107,14 @@ folly::EventBase* RSClientConnection::getEventBase() const {
 
 apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
 RSClientConnection::getTransport() {
-  DCHECK(evb_ && evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (rsRequester_) {
     DuplexConnection* connection = rsRequester_->getConnection();
     if (!connection) {
-      LOG(ERROR) << "Connection is already closed. May be protocol mismatch.";
+      LOG_EVERY_N(ERROR, 100)
+          << "Connection is already closed. May be protocol mismatch x 100";
       channel_.reset();
       rsRequester_.reset();
-      rsClient_.reset();
       return nullptr;
     }
     if (auto framedConnection =
@@ -150,16 +141,43 @@ ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
       counters_.getPendingRequests(), counters_.getMaxPendingRequests());
 }
 
-void RSClientConnection::attachEventBase(folly::EventBase* /*evb*/) {
-  LOG(FATAL) << "RSClientConnection::attachEventBase()";
+void RSClientConnection::attachEventBase(folly::EventBase* evb) {
+  DCHECK(evb->isInEventBaseThread());
+  auto transport = getTransport();
+  if (transport) {
+    transport->attachEventBase(evb);
+  }
+  if (channel_) {
+    channel_->attachEventBase(evb);
+  }
+  if (rsRequester_) {
+    rsRequester_->attachEventBase(evb);
+  }
+  evb_ = evb;
 }
 
 void RSClientConnection::detachEventBase() {
-  LOG(FATAL) << "RSClientConnection::detachEventBase()";
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  auto transport = getTransport();
+  if (transport) {
+    transport->detachEventBase();
+  }
+  if (channel_) {
+    channel_->detachEventBase();
+  }
+  if (rsRequester_) {
+    rsRequester_->detachEventBase();
+  }
+  evb_ = nullptr;
 }
 
 bool RSClientConnection::isDetachable() {
-  return false;
+  auto transport = getTransport();
+  bool result = evb_ == nullptr || transport == nullptr ||
+      channel_ == nullptr || rsRequester_ == nullptr ||
+      (counters_.getPendingRequests() == 0 && transport->isDetachable() &&
+       channel_->isDetachable() && rsRequester_->isDetachable());
+  return result;
 }
 
 bool RSClientConnection::isSecurityActive() {
@@ -176,12 +194,10 @@ void RSClientConnection::setTimeout(uint32_t ms) {
 
 void RSClientConnection::closeNow() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  if (rsClient_) {
+  if (rsRequester_) {
     channel_.reset();
-    rsClient_->disconnect().get();
-    rsRequester_->closeSocket();
+    rsRequester_->closeNow();
     rsRequester_.reset();
-    rsClient_.reset();
   }
 }
 

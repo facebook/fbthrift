@@ -187,6 +187,11 @@ TEST_P(H2CompatibilityTest, EvbSwitch) {
   }
 }
 
+TEST_P(H2CompatibilityTest, EvbSwitch_Failure) {
+  // TODO: @Eddie to make this test pass along with the previous one
+  // compatibilityTest_->TestEvbSwitch_Failure();
+}
+
 TEST_P(H2CompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
 }

@@ -799,6 +799,23 @@ void TransportCompatibilityTest::TestEvbSwitch() {
   });
 }
 
+void TransportCompatibilityTest::TestEvbSwitch_Failure() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
+                     std::shared_ptr<ClientConnectionIf> connection) {
+    auto cb = std::make_unique<MockCallback>(false, false);
+    client->sleep(std::move(cb), 50);
+
+    /* sleep override - make sure request is started */
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+    auto evb = connection->getEventBase();
+    evb->runInEventBaseThreadAndWait([&]() {
+      // As we have an active request, it should not be detachable!
+      EXPECT_FALSE(connection->isDetachable());
+    });
+  });
+}
+
 class CloseCallbackTest : public CloseCallback {
  public:
   void channelClosed() override {

@@ -17,9 +17,9 @@
 #pragma once
 
 #include <folly/futures/Future.h>
-#include <rsocket/RSocketRequester.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
 
 namespace apache {
 namespace thrift {
@@ -50,8 +50,9 @@ class RSClientThriftChannel : public ThriftChannelIf {
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
   explicit RSClientThriftChannel(
-      std::shared_ptr<rsocket::RSocketRequester> rsRequester,
-      apache::thrift::detail::ChannelCounters& counters);
+      std::shared_ptr<RSRequester> rsRequester,
+      apache::thrift::detail::ChannelCounters& counters,
+      folly::EventBase* evb);
 
   virtual ~RSClientThriftChannel() = default;
 
@@ -65,6 +66,10 @@ class RSClientThriftChannel : public ThriftChannelIf {
 
   static std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
       const folly::IOBuf& buffer);
+
+  bool isDetachable();
+  bool attachEventBase(folly::EventBase* evb);
+  void detachEventBase();
 
  protected:
   void setInput(
@@ -107,12 +112,13 @@ class RSClientThriftChannel : public ThriftChannelIf {
   }
 
  protected:
-  std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
+  std::shared_ptr<RSRequester> rsRequester_;
 
   ThriftChannelIf::SubscriberRef input_;
   folly::Promise<ThriftChannelIf::SubscriberRef> outputPromise_;
 
   apache::thrift::detail::ChannelCounters& channelCounters_;
+  folly::EventBase* evb_;
 };
 } // namespace thrift
 } // namespace apache

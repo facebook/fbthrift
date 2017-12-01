@@ -151,14 +151,19 @@ class TimedSingleObserver : public SingleObserver<Payload>,
 } // namespace
 
 RSClientThriftChannel::RSClientThriftChannel(
-    std::shared_ptr<RSocketRequester> rsRequester,
-    ChannelCounters& channelCounters)
-    : rsRequester_(std::move(rsRequester)), channelCounters_(channelCounters) {}
+    std::shared_ptr<RSRequester> rsRequester,
+    ChannelCounters& channelCounters,
+    folly::EventBase* evb)
+    : rsRequester_(std::move(rsRequester)),
+      channelCounters_(channelCounters),
+      evb_(evb) {}
 
 void RSClientThriftChannel::sendThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  evb_->dcheckIsInEventBaseThread();
+
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
     LOG(ERROR) << "Unexpected problem stripping envelope";
     auto evb = callback->getEventBase();
@@ -211,7 +216,8 @@ void RSClientThriftChannel::sendSingleRequestNoResponse(
             rsocket::Payload(std::move(buf), serializeMetadata(*metadata)))
         ->subscribe([] {});
   } else {
-    LOG(ERROR) << "max number of pending requests is exceeded";
+    LOG_EVERY_N(ERROR, 100)
+        << "max number of pending requests is exceeded x100";
   }
 
   auto cbEvb = callback->getEventBase();
@@ -294,6 +300,19 @@ void RSClientThriftChannel::sendSingleRequestStreamResponse(
         return std::move(payload.data);
       })
       ->subscribe(input_);
+}
+
+bool RSClientThriftChannel::isDetachable() {
+  return true;
+}
+
+bool RSClientThriftChannel::attachEventBase(folly::EventBase* evb) {
+  evb_ = evb;
+  return true;
+}
+
+void RSClientThriftChannel::detachEventBase() {
+  evb_ = nullptr;
 }
 
 // ChannelCounters' functions

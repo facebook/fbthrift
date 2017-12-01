@@ -63,6 +63,7 @@ class TransportCompatibilityTest {
   void TestRequestContextIsPreserved();
   void TestBadPayload();
   void TestEvbSwitch();
+  void TestEvbSwitch_Failure();
   void TestCloseCallback();
 
  protected:

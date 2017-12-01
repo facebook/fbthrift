@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
 
 namespace apache {
 namespace thrift {
@@ -53,8 +54,7 @@ class RSClientConnection : public ClientConnectionIf {
  private:
   folly::EventBase* evb_;
 
-  std::shared_ptr<rsocket::RSocketClient> rsClient_;
-  std::shared_ptr<rsocket::RSocketRequester> rsRequester_;
+  std::shared_ptr<RSRequester> rsRequester_;
   std::shared_ptr<RSClientThriftChannel> channel_;
 
   std::chrono::milliseconds timeout_;

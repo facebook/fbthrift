@@ -130,8 +130,11 @@ TEST_F(RSCompatibilityTest, BadPayload) {
 }
 
 TEST_F(RSCompatibilityTest, EvbSwitch) {
-  // TODO: fix EventBase switching for RSocket
-  // compatibilityTest_->TestEvbSwitch();
+  compatibilityTest_->TestEvbSwitch();
+}
+
+TEST_F(RSCompatibilityTest, EvbSwitch_Failure) {
+  compatibilityTest_->TestEvbSwitch_Failure();
 }
 
 TEST_F(RSCompatibilityTest, CloseCallback) {
