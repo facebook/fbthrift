@@ -51,11 +51,11 @@ cdef class SimpleServiceInterface(ServiceInterface):
     cdef public bint _pass_context_contain_enum
     pass
 
-cdef class DerivedServiceInterface(_module_services.SimpleServiceInterface):
+cdef class DerivedServiceInterface(SimpleServiceInterface):
     cdef public bint _pass_context_get_six
     pass
 
-cdef class RederivedServiceInterface(_module_services.DerivedServiceInterface):
+cdef class RederivedServiceInterface(DerivedServiceInterface):
     cdef public bint _pass_context_get_seven
     pass
 
