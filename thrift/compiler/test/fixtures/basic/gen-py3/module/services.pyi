@@ -7,79 +7,159 @@
 
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
+from abc import abstractmethod
 
 import module.types as _module_types
 
+_MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceInterface')
 
 
 class MyServiceInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_ping(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def ping(
         self
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_getRandomData(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext],_typing.Awaitable[str]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT],_typing.Awaitable[str]]: ...
+
+    @abstractmethod
     async def getRandomData(
         self
     ) -> str: ...
 
+    @staticmethod
+    def pass_context_hasDataById(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, int],_typing.Awaitable[bool]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, int],_typing.Awaitable[bool]]: ...
+
+    @abstractmethod
     async def hasDataById(
         self,
         id: int
     ) -> bool: ...
 
+    @staticmethod
+    def pass_context_getDataById(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, int],_typing.Awaitable[str]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, int],_typing.Awaitable[str]]: ...
+
+    @abstractmethod
     async def getDataById(
         self,
         id: int
     ) -> str: ...
 
+    @staticmethod
+    def pass_context_putDataById(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, int, str],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, int, str],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def putDataById(
         self,
         id: int,
         data: str
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_lobDataById(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, int, str],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, int, str],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def lobDataById(
         self,
         id: int,
         data: str
     ) -> None: ...
 
+
+_MyServiceFastInterfaceT = _typing.TypeVar('_MyServiceFastInterfaceT', bound='MyServiceFastInterface')
 
 
 class MyServiceFastInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_ping(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def ping(
         self
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_getRandomData(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext],_typing.Awaitable[str]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT],_typing.Awaitable[str]]: ...
+
+    @abstractmethod
     async def getRandomData(
         self
     ) -> str: ...
 
+    @staticmethod
+    def pass_context_hasDataById(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext, int],_typing.Awaitable[bool]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT, int],_typing.Awaitable[bool]]: ...
+
+    @abstractmethod
     async def hasDataById(
         self,
         id: int
     ) -> bool: ...
 
+    @staticmethod
+    def pass_context_getDataById(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext, int],_typing.Awaitable[str]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT, int],_typing.Awaitable[str]]: ...
+
+    @abstractmethod
     async def getDataById(
         self,
         id: int
     ) -> str: ...
 
+    @staticmethod
+    def pass_context_putDataById(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext, int, str],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT, int, str],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def putDataById(
         self,
         id: int,
         data: str
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_lobDataById(
+        fn: _typing.Callable[[_MyServiceFastInterfaceT, RequestContext, int, str],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceFastInterfaceT, int, str],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def lobDataById(
         self,
         id: int,
         data: str
     ) -> None: ...
 
+
+_MyServiceEmptyInterfaceT = _typing.TypeVar('_MyServiceEmptyInterfaceT', bound='MyServiceEmptyInterface')
 
 
 class MyServiceEmptyInterface(
@@ -87,23 +167,49 @@ class MyServiceEmptyInterface(
 ):
 
 
+_MyServicePrioParentInterfaceT = _typing.TypeVar('_MyServicePrioParentInterfaceT', bound='MyServicePrioParentInterface')
+
+
 class MyServicePrioParentInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_ping(
+        fn: _typing.Callable[[_MyServicePrioParentInterfaceT, RequestContext],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServicePrioParentInterfaceT],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def ping(
         self
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_pong(
+        fn: _typing.Callable[[_MyServicePrioParentInterfaceT, RequestContext],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServicePrioParentInterfaceT],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def pong(
         self
     ) -> None: ...
 
 
+_MyServicePrioChildInterfaceT = _typing.TypeVar('_MyServicePrioChildInterfaceT', bound='MyServicePrioChildInterface')
+
 
 class MyServicePrioChildInterface(
     _module_services.MyServicePrioParentInterface
 ):
+
+    @staticmethod
+    def pass_context_pang(
+        fn: _typing.Callable[[_MyServicePrioChildInterfaceT, RequestContext],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServicePrioChildInterfaceT],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def pang(
         self
     ) -> None: ...
+
 

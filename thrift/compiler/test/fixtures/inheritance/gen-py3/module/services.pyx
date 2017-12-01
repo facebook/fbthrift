@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -66,11 +66,13 @@ cdef class MyRootInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_do_root(fn):
+        return pass_context(fn)
+
     async def do_root(
             self):
         raise NotImplementedError("async def do_root is not implemented")
-
-
 cdef class MyNodeInterface(
     _module_services.MyRootInterface
 ):
@@ -80,11 +82,13 @@ cdef class MyNodeInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_do_mid(fn):
+        return pass_context(fn)
+
     async def do_mid(
             self):
         raise NotImplementedError("async def do_mid is not implemented")
-
-
 cdef class MyLeafInterface(
     _module_services.MyNodeInterface
 ):
@@ -94,11 +98,13 @@ cdef class MyLeafInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_do_leaf(fn):
+        return pass_context(fn)
+
     async def do_leaf(
             self):
         raise NotImplementedError("async def do_leaf is not implemented")
-
-
 
 
 cdef api void call_cy_MyRoot_do_root(

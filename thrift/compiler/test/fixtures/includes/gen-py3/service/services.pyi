@@ -7,25 +7,41 @@
 
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
+from abc import abstractmethod
 
 import service.types as _service_types
 import module.types as _module_types
 import includes.types as _includes_types
 
+_MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceInterface')
 
 
 class MyServiceInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_query(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def query(
         self,
         s: _module_types.MyStruct,
         i: _includes_types.Included
     ) -> None: ...
 
+    @staticmethod
+    def pass_context_has_arg_docs(
+        fn: _typing.Callable[[_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],_typing.Awaitable[None]]
+    ) -> _typing.Callable[[_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],_typing.Awaitable[None]]: ...
+
+    @abstractmethod
     async def has_arg_docs(
         self,
         s: _module_types.MyStruct,
         i: _includes_types.Included
     ) -> None: ...
+
 

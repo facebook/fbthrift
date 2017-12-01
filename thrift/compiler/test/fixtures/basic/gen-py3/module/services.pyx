@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -88,27 +88,43 @@ cdef class MyServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_ping(fn):
+        return pass_context(fn)
+
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
 
+    @staticmethod
+    def pass_context_getRandomData(fn):
+        return pass_context(fn)
 
     async def getRandomData(
             self):
         raise NotImplementedError("async def getRandomData is not implemented")
 
+    @staticmethod
+    def pass_context_hasDataById(fn):
+        return pass_context(fn)
 
     async def hasDataById(
             self,
             id):
         raise NotImplementedError("async def hasDataById is not implemented")
 
+    @staticmethod
+    def pass_context_getDataById(fn):
+        return pass_context(fn)
 
     async def getDataById(
             self,
             id):
         raise NotImplementedError("async def getDataById is not implemented")
 
+    @staticmethod
+    def pass_context_putDataById(fn):
+        return pass_context(fn)
 
     async def putDataById(
             self,
@@ -116,14 +132,15 @@ cdef class MyServiceInterface(
             data):
         raise NotImplementedError("async def putDataById is not implemented")
 
+    @staticmethod
+    def pass_context_lobDataById(fn):
+        return pass_context(fn)
 
     async def lobDataById(
             self,
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-
 cdef class MyServiceFastInterface(
     ServiceInterface
 ):
@@ -133,27 +150,43 @@ cdef class MyServiceFastInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_ping(fn):
+        return pass_context(fn)
+
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
 
+    @staticmethod
+    def pass_context_getRandomData(fn):
+        return pass_context(fn)
 
     async def getRandomData(
             self):
         raise NotImplementedError("async def getRandomData is not implemented")
 
+    @staticmethod
+    def pass_context_hasDataById(fn):
+        return pass_context(fn)
 
     async def hasDataById(
             self,
             id):
         raise NotImplementedError("async def hasDataById is not implemented")
 
+    @staticmethod
+    def pass_context_getDataById(fn):
+        return pass_context(fn)
 
     async def getDataById(
             self,
             id):
         raise NotImplementedError("async def getDataById is not implemented")
 
+    @staticmethod
+    def pass_context_putDataById(fn):
+        return pass_context(fn)
 
     async def putDataById(
             self,
@@ -161,14 +194,15 @@ cdef class MyServiceFastInterface(
             data):
         raise NotImplementedError("async def putDataById is not implemented")
 
+    @staticmethod
+    def pass_context_lobDataById(fn):
+        return pass_context(fn)
 
     async def lobDataById(
             self,
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-
 cdef class MyServiceEmptyInterface(
     ServiceInterface
 ):
@@ -177,7 +211,6 @@ cdef class MyServiceEmptyInterface(
             <PyObject *> self,
             get_executor()
         )
-
 cdef class MyServicePrioParentInterface(
     ServiceInterface
 ):
@@ -187,16 +220,21 @@ cdef class MyServicePrioParentInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_ping(fn):
+        return pass_context(fn)
+
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
 
+    @staticmethod
+    def pass_context_pong(fn):
+        return pass_context(fn)
 
     async def pong(
             self):
         raise NotImplementedError("async def pong is not implemented")
-
-
 cdef class MyServicePrioChildInterface(
     _module_services.MyServicePrioParentInterface
 ):
@@ -206,11 +244,13 @@ cdef class MyServicePrioChildInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_pang(fn):
+        return pass_context(fn)
+
     async def pang(
             self):
         raise NotImplementedError("async def pang is not implemented")
-
-
 
 
 cdef api void call_cy_MyService_ping(

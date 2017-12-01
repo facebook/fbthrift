@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -68,12 +68,14 @@ cdef class ExtendTestServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_check(fn):
+        return pass_context(fn)
+
     async def check(
             self,
             struct1):
         raise NotImplementedError("async def check is not implemented")
-
-
 
 
 cdef api void call_cy_ExtendTestService_check(

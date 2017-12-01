@@ -7,16 +7,26 @@
 
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
+from abc import abstractmethod
 
 import hsmodule.types as _hsmodule_types
 
+_HsTestServiceInterfaceT = _typing.TypeVar('_HsTestServiceInterfaceT', bound='HsTestServiceInterface')
 
 
 class HsTestServiceInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_init(
+        fn: _typing.Callable[[_HsTestServiceInterfaceT, RequestContext, int],_typing.Awaitable[int]]
+    ) -> _typing.Callable[[_HsTestServiceInterfaceT, int],_typing.Awaitable[int]]: ...
+
+    @abstractmethod
     async def init(
         self,
         int1: int
     ) -> int: ...
+
 

@@ -40,7 +40,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -89,14 +89,16 @@ cdef class {{service:name}}Interface(
             <PyObject *> self,
             get_executor()
         )
-
     {{#service:functions}}
+
+    @staticmethod
+    def pass_context_{{function:name}}(fn):
+        return pass_context(fn)
+
     async def {{function:name}}(
             self{{#function:args}},
             {{field:name}}{{/function:args}}):
         raise NotImplementedError("async def {{function:name}} is not implemented")
-
-
     {{/service:functions}}
 {{/program:services}}
 

@@ -23,6 +23,7 @@ This template should always mirror services.pyx but for mypy typing
 
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
+from abc import abstractmethod
 
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:includeNamespaces}}
@@ -35,6 +36,7 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 {{/program:includeNamespaces}}
 
 {{#program:services}}
+_{{service:name}}InterfaceT = _typing.TypeVar('_{{service:name}}InterfaceT', bound='{{service:name}}Interface')
 
 
 class {{service:name}}Interface(
@@ -47,10 +49,18 @@ class {{service:name}}Interface(
     {{/service:extends?}}
 ):
     {{#service:functions}}
+
+    @staticmethod
+    def pass_context_{{function:name}}(
+        fn: _typing.Callable[[_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],_typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]]
+    ) -> _typing.Callable[[_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],_typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]]: ...
+
+    @abstractmethod
     async def {{function:name}}(
         self{{#function:args}},
         {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
     ) -> {{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}: ...
-
     {{/service:functions}}
+
+
 {{/program:services}}

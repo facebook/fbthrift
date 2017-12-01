@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -64,36 +64,50 @@ cdef class NestedContainersInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_mapList(fn):
+        return pass_context(fn)
+
     async def mapList(
             self,
             foo):
         raise NotImplementedError("async def mapList is not implemented")
 
+    @staticmethod
+    def pass_context_mapSet(fn):
+        return pass_context(fn)
 
     async def mapSet(
             self,
             foo):
         raise NotImplementedError("async def mapSet is not implemented")
 
+    @staticmethod
+    def pass_context_listMap(fn):
+        return pass_context(fn)
 
     async def listMap(
             self,
             foo):
         raise NotImplementedError("async def listMap is not implemented")
 
+    @staticmethod
+    def pass_context_listSet(fn):
+        return pass_context(fn)
 
     async def listSet(
             self,
             foo):
         raise NotImplementedError("async def listSet is not implemented")
 
+    @staticmethod
+    def pass_context_turtles(fn):
+        return pass_context(fn)
 
     async def turtles(
             self,
             foo):
         raise NotImplementedError("async def turtles is not implemented")
-
-
 
 
 cdef api void call_cy_NestedContainers_mapList(

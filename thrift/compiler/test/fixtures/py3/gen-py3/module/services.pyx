@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -271,21 +271,34 @@ cdef class SimpleServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_get_five(fn):
+        return pass_context(fn)
+
     async def get_five(
             self):
         raise NotImplementedError("async def get_five is not implemented")
 
+    @staticmethod
+    def pass_context_add_five(fn):
+        return pass_context(fn)
 
     async def add_five(
             self,
             num):
         raise NotImplementedError("async def add_five is not implemented")
 
+    @staticmethod
+    def pass_context_do_nothing(fn):
+        return pass_context(fn)
 
     async def do_nothing(
             self):
         raise NotImplementedError("async def do_nothing is not implemented")
 
+    @staticmethod
+    def pass_context_concat(fn):
+        return pass_context(fn)
 
     async def concat(
             self,
@@ -293,88 +306,133 @@ cdef class SimpleServiceInterface(
             second):
         raise NotImplementedError("async def concat is not implemented")
 
+    @staticmethod
+    def pass_context_get_value(fn):
+        return pass_context(fn)
 
     async def get_value(
             self,
             simple_struct):
         raise NotImplementedError("async def get_value is not implemented")
 
+    @staticmethod
+    def pass_context_negate(fn):
+        return pass_context(fn)
 
     async def negate(
             self,
             input):
         raise NotImplementedError("async def negate is not implemented")
 
+    @staticmethod
+    def pass_context_tiny(fn):
+        return pass_context(fn)
 
     async def tiny(
             self,
             input):
         raise NotImplementedError("async def tiny is not implemented")
 
+    @staticmethod
+    def pass_context_small(fn):
+        return pass_context(fn)
 
     async def small(
             self,
             input):
         raise NotImplementedError("async def small is not implemented")
 
+    @staticmethod
+    def pass_context_big(fn):
+        return pass_context(fn)
 
     async def big(
             self,
             input):
         raise NotImplementedError("async def big is not implemented")
 
+    @staticmethod
+    def pass_context_two(fn):
+        return pass_context(fn)
 
     async def two(
             self,
             input):
         raise NotImplementedError("async def two is not implemented")
 
+    @staticmethod
+    def pass_context_expected_exception(fn):
+        return pass_context(fn)
 
     async def expected_exception(
             self):
         raise NotImplementedError("async def expected_exception is not implemented")
 
+    @staticmethod
+    def pass_context_unexpected_exception(fn):
+        return pass_context(fn)
 
     async def unexpected_exception(
             self):
         raise NotImplementedError("async def unexpected_exception is not implemented")
 
+    @staticmethod
+    def pass_context_sum_i16_list(fn):
+        return pass_context(fn)
 
     async def sum_i16_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i16_list is not implemented")
 
+    @staticmethod
+    def pass_context_sum_i32_list(fn):
+        return pass_context(fn)
 
     async def sum_i32_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i32_list is not implemented")
 
+    @staticmethod
+    def pass_context_sum_i64_list(fn):
+        return pass_context(fn)
 
     async def sum_i64_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i64_list is not implemented")
 
+    @staticmethod
+    def pass_context_concat_many(fn):
+        return pass_context(fn)
 
     async def concat_many(
             self,
             words):
         raise NotImplementedError("async def concat_many is not implemented")
 
+    @staticmethod
+    def pass_context_count_structs(fn):
+        return pass_context(fn)
 
     async def count_structs(
             self,
             items):
         raise NotImplementedError("async def count_structs is not implemented")
 
+    @staticmethod
+    def pass_context_sum_set(fn):
+        return pass_context(fn)
 
     async def sum_set(
             self,
             numbers):
         raise NotImplementedError("async def sum_set is not implemented")
 
+    @staticmethod
+    def pass_context_contains_word(fn):
+        return pass_context(fn)
 
     async def contains_word(
             self,
@@ -382,6 +440,9 @@ cdef class SimpleServiceInterface(
             word):
         raise NotImplementedError("async def contains_word is not implemented")
 
+    @staticmethod
+    def pass_context_get_map_value(fn):
+        return pass_context(fn)
 
     async def get_map_value(
             self,
@@ -389,59 +450,89 @@ cdef class SimpleServiceInterface(
             key):
         raise NotImplementedError("async def get_map_value is not implemented")
 
+    @staticmethod
+    def pass_context_map_length(fn):
+        return pass_context(fn)
 
     async def map_length(
             self,
             items):
         raise NotImplementedError("async def map_length is not implemented")
 
+    @staticmethod
+    def pass_context_sum_map_values(fn):
+        return pass_context(fn)
 
     async def sum_map_values(
             self,
             items):
         raise NotImplementedError("async def sum_map_values is not implemented")
 
+    @staticmethod
+    def pass_context_complex_sum_i32(fn):
+        return pass_context(fn)
 
     async def complex_sum_i32(
             self,
             counter):
         raise NotImplementedError("async def complex_sum_i32 is not implemented")
 
+    @staticmethod
+    def pass_context_repeat_name(fn):
+        return pass_context(fn)
 
     async def repeat_name(
             self,
             counter):
         raise NotImplementedError("async def repeat_name is not implemented")
 
+    @staticmethod
+    def pass_context_get_struct(fn):
+        return pass_context(fn)
 
     async def get_struct(
             self):
         raise NotImplementedError("async def get_struct is not implemented")
 
+    @staticmethod
+    def pass_context_fib(fn):
+        return pass_context(fn)
 
     async def fib(
             self,
             n):
         raise NotImplementedError("async def fib is not implemented")
 
+    @staticmethod
+    def pass_context_unique_words(fn):
+        return pass_context(fn)
 
     async def unique_words(
             self,
             words):
         raise NotImplementedError("async def unique_words is not implemented")
 
+    @staticmethod
+    def pass_context_words_count(fn):
+        return pass_context(fn)
 
     async def words_count(
             self,
             words):
         raise NotImplementedError("async def words_count is not implemented")
 
+    @staticmethod
+    def pass_context_set_enum(fn):
+        return pass_context(fn)
 
     async def set_enum(
             self,
             in_enum):
         raise NotImplementedError("async def set_enum is not implemented")
 
+    @staticmethod
+    def pass_context_list_of_lists(fn):
+        return pass_context(fn)
 
     async def list_of_lists(
             self,
@@ -449,67 +540,95 @@ cdef class SimpleServiceInterface(
             num_items):
         raise NotImplementedError("async def list_of_lists is not implemented")
 
+    @staticmethod
+    def pass_context_word_character_frequency(fn):
+        return pass_context(fn)
 
     async def word_character_frequency(
             self,
             sentence):
         raise NotImplementedError("async def word_character_frequency is not implemented")
 
+    @staticmethod
+    def pass_context_list_of_sets(fn):
+        return pass_context(fn)
 
     async def list_of_sets(
             self,
             some_words):
         raise NotImplementedError("async def list_of_sets is not implemented")
 
+    @staticmethod
+    def pass_context_nested_map_argument(fn):
+        return pass_context(fn)
 
     async def nested_map_argument(
             self,
             struct_map):
         raise NotImplementedError("async def nested_map_argument is not implemented")
 
+    @staticmethod
+    def pass_context_make_sentence(fn):
+        return pass_context(fn)
 
     async def make_sentence(
             self,
             word_chars):
         raise NotImplementedError("async def make_sentence is not implemented")
 
+    @staticmethod
+    def pass_context_get_union(fn):
+        return pass_context(fn)
 
     async def get_union(
             self,
             sets):
         raise NotImplementedError("async def get_union is not implemented")
 
+    @staticmethod
+    def pass_context_get_keys(fn):
+        return pass_context(fn)
 
     async def get_keys(
             self,
             string_map):
         raise NotImplementedError("async def get_keys is not implemented")
 
+    @staticmethod
+    def pass_context_lookup_double(fn):
+        return pass_context(fn)
 
     async def lookup_double(
             self,
             key):
         raise NotImplementedError("async def lookup_double is not implemented")
 
+    @staticmethod
+    def pass_context_retrieve_binary(fn):
+        return pass_context(fn)
 
     async def retrieve_binary(
             self,
             something):
         raise NotImplementedError("async def retrieve_binary is not implemented")
 
+    @staticmethod
+    def pass_context_contain_binary(fn):
+        return pass_context(fn)
 
     async def contain_binary(
             self,
             binaries):
         raise NotImplementedError("async def contain_binary is not implemented")
 
+    @staticmethod
+    def pass_context_contain_enum(fn):
+        return pass_context(fn)
 
     async def contain_enum(
             self,
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
-
-
 cdef class DerivedServiceInterface(
     _module_services.SimpleServiceInterface
 ):
@@ -519,11 +638,13 @@ cdef class DerivedServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_get_six(fn):
+        return pass_context(fn)
+
     async def get_six(
             self):
         raise NotImplementedError("async def get_six is not implemented")
-
-
 cdef class RederivedServiceInterface(
     _module_services.DerivedServiceInterface
 ):
@@ -533,11 +654,13 @@ cdef class RederivedServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_get_seven(fn):
+        return pass_context(fn)
+
     async def get_seven(
             self):
         raise NotImplementedError("async def get_seven is not implemented")
-
-
 
 
 cdef api void call_cy_SimpleService_get_five(

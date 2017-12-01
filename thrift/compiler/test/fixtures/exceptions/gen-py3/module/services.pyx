@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -73,26 +73,37 @@ cdef class RaiserInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_doBland(fn):
+        return pass_context(fn)
+
     async def doBland(
             self):
         raise NotImplementedError("async def doBland is not implemented")
 
+    @staticmethod
+    def pass_context_doRaise(fn):
+        return pass_context(fn)
 
     async def doRaise(
             self):
         raise NotImplementedError("async def doRaise is not implemented")
 
+    @staticmethod
+    def pass_context_get200(fn):
+        return pass_context(fn)
 
     async def get200(
             self):
         raise NotImplementedError("async def get200 is not implemented")
 
+    @staticmethod
+    def pass_context_get500(fn):
+        return pass_context(fn)
 
     async def get500(
             self):
         raise NotImplementedError("async def get500 is not implemented")
-
-
 
 
 cdef api void call_cy_Raiser_doBland(

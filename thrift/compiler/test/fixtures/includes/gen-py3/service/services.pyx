@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -68,20 +68,25 @@ cdef class MyServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_query(fn):
+        return pass_context(fn)
+
     async def query(
             self,
             s,
             i):
         raise NotImplementedError("async def query is not implemented")
 
+    @staticmethod
+    def pass_context_has_arg_docs(fn):
+        return pass_context(fn)
 
     async def has_arg_docs(
             self,
             s,
             i):
         raise NotImplementedError("async def has_arg_docs is not implemented")
-
-
 
 
 cdef api void call_cy_MyService_query(

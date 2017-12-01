@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -283,7 +283,6 @@ cdef class EmptyServiceInterface(
             <PyObject *> self,
             get_executor()
         )
-
 cdef class ReturnServiceInterface(
     ServiceInterface
 ):
@@ -293,113 +292,175 @@ cdef class ReturnServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_noReturn(fn):
+        return pass_context(fn)
+
     async def noReturn(
             self):
         raise NotImplementedError("async def noReturn is not implemented")
 
+    @staticmethod
+    def pass_context_boolReturn(fn):
+        return pass_context(fn)
 
     async def boolReturn(
             self):
         raise NotImplementedError("async def boolReturn is not implemented")
 
+    @staticmethod
+    def pass_context_i16Return(fn):
+        return pass_context(fn)
 
     async def i16Return(
             self):
         raise NotImplementedError("async def i16Return is not implemented")
 
+    @staticmethod
+    def pass_context_i32Return(fn):
+        return pass_context(fn)
 
     async def i32Return(
             self):
         raise NotImplementedError("async def i32Return is not implemented")
 
+    @staticmethod
+    def pass_context_i64Return(fn):
+        return pass_context(fn)
 
     async def i64Return(
             self):
         raise NotImplementedError("async def i64Return is not implemented")
 
+    @staticmethod
+    def pass_context_floatReturn(fn):
+        return pass_context(fn)
 
     async def floatReturn(
             self):
         raise NotImplementedError("async def floatReturn is not implemented")
 
+    @staticmethod
+    def pass_context_doubleReturn(fn):
+        return pass_context(fn)
 
     async def doubleReturn(
             self):
         raise NotImplementedError("async def doubleReturn is not implemented")
 
+    @staticmethod
+    def pass_context_stringReturn(fn):
+        return pass_context(fn)
 
     async def stringReturn(
             self):
         raise NotImplementedError("async def stringReturn is not implemented")
 
+    @staticmethod
+    def pass_context_binaryReturn(fn):
+        return pass_context(fn)
 
     async def binaryReturn(
             self):
         raise NotImplementedError("async def binaryReturn is not implemented")
 
+    @staticmethod
+    def pass_context_mapReturn(fn):
+        return pass_context(fn)
 
     async def mapReturn(
             self):
         raise NotImplementedError("async def mapReturn is not implemented")
 
+    @staticmethod
+    def pass_context_simpleTypedefReturn(fn):
+        return pass_context(fn)
 
     async def simpleTypedefReturn(
             self):
         raise NotImplementedError("async def simpleTypedefReturn is not implemented")
 
+    @staticmethod
+    def pass_context_complexTypedefReturn(fn):
+        return pass_context(fn)
 
     async def complexTypedefReturn(
             self):
         raise NotImplementedError("async def complexTypedefReturn is not implemented")
 
+    @staticmethod
+    def pass_context_list_mostComplexTypedefReturn(fn):
+        return pass_context(fn)
 
     async def list_mostComplexTypedefReturn(
             self):
         raise NotImplementedError("async def list_mostComplexTypedefReturn is not implemented")
 
+    @staticmethod
+    def pass_context_enumReturn(fn):
+        return pass_context(fn)
 
     async def enumReturn(
             self):
         raise NotImplementedError("async def enumReturn is not implemented")
 
+    @staticmethod
+    def pass_context_list_EnumReturn(fn):
+        return pass_context(fn)
 
     async def list_EnumReturn(
             self):
         raise NotImplementedError("async def list_EnumReturn is not implemented")
 
+    @staticmethod
+    def pass_context_structReturn(fn):
+        return pass_context(fn)
 
     async def structReturn(
             self):
         raise NotImplementedError("async def structReturn is not implemented")
 
+    @staticmethod
+    def pass_context_set_StructReturn(fn):
+        return pass_context(fn)
 
     async def set_StructReturn(
             self):
         raise NotImplementedError("async def set_StructReturn is not implemented")
 
+    @staticmethod
+    def pass_context_unionReturn(fn):
+        return pass_context(fn)
 
     async def unionReturn(
             self):
         raise NotImplementedError("async def unionReturn is not implemented")
 
+    @staticmethod
+    def pass_context_list_UnionReturn(fn):
+        return pass_context(fn)
 
     async def list_UnionReturn(
             self):
         raise NotImplementedError("async def list_UnionReturn is not implemented")
 
+    @staticmethod
+    def pass_context_readDataEb(fn):
+        return pass_context(fn)
 
     async def readDataEb(
             self,
             size):
         raise NotImplementedError("async def readDataEb is not implemented")
 
+    @staticmethod
+    def pass_context_readData(fn):
+        return pass_context(fn)
 
     async def readData(
             self,
             size):
         raise NotImplementedError("async def readData is not implemented")
-
-
 cdef class ParamServiceInterface(
     ServiceInterface
 ):
@@ -409,11 +470,18 @@ cdef class ParamServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_void_ret_i16_param(fn):
+        return pass_context(fn)
+
     async def void_ret_i16_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_i16_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_byte_i16_param(fn):
+        return pass_context(fn)
 
     async def void_ret_byte_i16_param(
             self,
@@ -421,12 +489,18 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def void_ret_byte_i16_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_map_param(fn):
+        return pass_context(fn)
 
     async def void_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_map_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_map_setlist_param(fn):
+        return pass_context(fn)
 
     async def void_ret_map_setlist_param(
             self,
@@ -434,30 +508,45 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def void_ret_map_setlist_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_map_typedef_param(fn):
+        return pass_context(fn)
 
     async def void_ret_map_typedef_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_map_typedef_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_enum_param(fn):
+        return pass_context(fn)
 
     async def void_ret_enum_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_enum_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_struct_param(fn):
+        return pass_context(fn)
 
     async def void_ret_struct_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_struct_param is not implemented")
 
+    @staticmethod
+    def pass_context_void_ret_listunion_param(fn):
+        return pass_context(fn)
 
     async def void_ret_listunion_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_listunion_param is not implemented")
 
+    @staticmethod
+    def pass_context_bool_ret_i32_i64_param(fn):
+        return pass_context(fn)
 
     async def bool_ret_i32_i64_param(
             self,
@@ -465,18 +554,27 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def bool_ret_i32_i64_param is not implemented")
 
+    @staticmethod
+    def pass_context_bool_ret_map_param(fn):
+        return pass_context(fn)
 
     async def bool_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def bool_ret_map_param is not implemented")
 
+    @staticmethod
+    def pass_context_bool_ret_union_param(fn):
+        return pass_context(fn)
 
     async def bool_ret_union_param(
             self,
             param1):
         raise NotImplementedError("async def bool_ret_union_param is not implemented")
 
+    @staticmethod
+    def pass_context_i64_ret_float_double_param(fn):
+        return pass_context(fn)
 
     async def i64_ret_float_double_param(
             self,
@@ -484,6 +582,9 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def i64_ret_float_double_param is not implemented")
 
+    @staticmethod
+    def pass_context_i64_ret_string_typedef_param(fn):
+        return pass_context(fn)
 
     async def i64_ret_string_typedef_param(
             self,
@@ -491,6 +592,9 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def i64_ret_string_typedef_param is not implemented")
 
+    @staticmethod
+    def pass_context_i64_ret_i32_i32_i32_i32_i32_param(fn):
+        return pass_context(fn)
 
     async def i64_ret_i32_i32_i32_i32_i32_param(
             self,
@@ -501,30 +605,45 @@ cdef class ParamServiceInterface(
             param5):
         raise NotImplementedError("async def i64_ret_i32_i32_i32_i32_i32_param is not implemented")
 
+    @staticmethod
+    def pass_context_double_ret_setstruct_param(fn):
+        return pass_context(fn)
 
     async def double_ret_setstruct_param(
             self,
             param1):
         raise NotImplementedError("async def double_ret_setstruct_param is not implemented")
 
+    @staticmethod
+    def pass_context_string_ret_string_param(fn):
+        return pass_context(fn)
 
     async def string_ret_string_param(
             self,
             param1):
         raise NotImplementedError("async def string_ret_string_param is not implemented")
 
+    @staticmethod
+    def pass_context_binary_ret_binary_param(fn):
+        return pass_context(fn)
 
     async def binary_ret_binary_param(
             self,
             param1):
         raise NotImplementedError("async def binary_ret_binary_param is not implemented")
 
+    @staticmethod
+    def pass_context_map_ret_bool_param(fn):
+        return pass_context(fn)
 
     async def map_ret_bool_param(
             self,
             param1):
         raise NotImplementedError("async def map_ret_bool_param is not implemented")
 
+    @staticmethod
+    def pass_context_list_ret_map_setlist_param(fn):
+        return pass_context(fn)
 
     async def list_ret_map_setlist_param(
             self,
@@ -532,30 +651,45 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def list_ret_map_setlist_param is not implemented")
 
+    @staticmethod
+    def pass_context_mapsetlistmapliststring_ret_listlistlist_param(fn):
+        return pass_context(fn)
 
     async def mapsetlistmapliststring_ret_listlistlist_param(
             self,
             param1):
         raise NotImplementedError("async def mapsetlistmapliststring_ret_listlistlist_param is not implemented")
 
+    @staticmethod
+    def pass_context_typedef_ret_i32_param(fn):
+        return pass_context(fn)
 
     async def typedef_ret_i32_param(
             self,
             param1):
         raise NotImplementedError("async def typedef_ret_i32_param is not implemented")
 
+    @staticmethod
+    def pass_context_listtypedef_ret_typedef_param(fn):
+        return pass_context(fn)
 
     async def listtypedef_ret_typedef_param(
             self,
             param1):
         raise NotImplementedError("async def listtypedef_ret_typedef_param is not implemented")
 
+    @staticmethod
+    def pass_context_enum_ret_double_param(fn):
+        return pass_context(fn)
 
     async def enum_ret_double_param(
             self,
             param1):
         raise NotImplementedError("async def enum_ret_double_param is not implemented")
 
+    @staticmethod
+    def pass_context_enum_ret_double_enum_param(fn):
+        return pass_context(fn)
 
     async def enum_ret_double_enum_param(
             self,
@@ -563,24 +697,36 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def enum_ret_double_enum_param is not implemented")
 
+    @staticmethod
+    def pass_context_listenum_ret_map_param(fn):
+        return pass_context(fn)
 
     async def listenum_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def listenum_ret_map_param is not implemented")
 
+    @staticmethod
+    def pass_context_struct_ret_i16_param(fn):
+        return pass_context(fn)
 
     async def struct_ret_i16_param(
             self,
             param1):
         raise NotImplementedError("async def struct_ret_i16_param is not implemented")
 
+    @staticmethod
+    def pass_context_setstruct_ret_set_param(fn):
+        return pass_context(fn)
 
     async def setstruct_ret_set_param(
             self,
             param1):
         raise NotImplementedError("async def setstruct_ret_set_param is not implemented")
 
+    @staticmethod
+    def pass_context_union_ret_i32_i32_param(fn):
+        return pass_context(fn)
 
     async def union_ret_i32_i32_param(
             self,
@@ -588,13 +734,14 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def union_ret_i32_i32_param is not implemented")
 
+    @staticmethod
+    def pass_context_listunion_string_param(fn):
+        return pass_context(fn)
 
     async def listunion_string_param(
             self,
             param1):
         raise NotImplementedError("async def listunion_string_param is not implemented")
-
-
 
 
 cdef api void call_cy_ReturnService_noReturn(

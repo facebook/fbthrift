@@ -7,16 +7,26 @@
 
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
+from abc import abstractmethod
 
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
+_TestServiceInterfaceT = _typing.TypeVar('_TestServiceInterfaceT', bound='TestServiceInterface')
 
 
 class TestServiceInterface(
     ServiceInterface
 ):
+
+    @staticmethod
+    def pass_context_init(
+        fn: _typing.Callable[[_TestServiceInterfaceT, RequestContext, int],_typing.Awaitable[int]]
+    ) -> _typing.Callable[[_TestServiceInterfaceT, int],_typing.Awaitable[int]]: ...
+
+    @abstractmethod
     async def init(
         self,
         int1: int
     ) -> int: ...
+
 

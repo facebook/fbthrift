@@ -20,7 +20,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext
+from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -66,12 +66,14 @@ cdef class SomeServiceInterface(
             get_executor()
         )
 
+    @staticmethod
+    def pass_context_bounce_map(fn):
+        return pass_context(fn)
+
     async def bounce_map(
             self,
             m):
         raise NotImplementedError("async def bounce_map is not implemented")
-
-
 
 
 cdef api void call_cy_SomeService_bounce_map(
