@@ -56,6 +56,7 @@ class InMemoryConnection : public ClientConnectionIf {
 
  private:
   folly::ScopedEventBaseThread runner_;
+  std::shared_ptr<AsyncProcessorFactory> pFac_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   std::unique_ptr<ThriftProcessor> processor_;
 };

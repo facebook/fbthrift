@@ -35,6 +35,7 @@ InMemoryConnection::InMemoryConnection(
   processor_ =
       std::make_unique<ThriftProcessor>(pFac->getProcessor(), serverConfigs);
   processor_->setThreadManager(threadManager_.get());
+  pFac_ = pFac;
 }
 
 std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel(
