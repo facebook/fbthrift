@@ -172,7 +172,8 @@ class MockCallback : public RequestCallback {
     EXPECT_FALSE(requestSentCalled_);
     requestSentCalled_ = true;
   }
-  void replyReceived(ClientReceiveState&&) override {
+  void replyReceived(ClientReceiveState&& crs) override {
+    EXPECT_FALSE(crs.isException());
     EXPECT_TRUE(requestSentCalled_);
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(clientError_);
@@ -275,7 +276,7 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
       promise.setValue();
     });
   }
-  folly::collectAll(futures);
+  folly::collectAll(futures).get();
   threads.clear();
 }
 
@@ -751,7 +752,12 @@ void TransportCompatibilityTest::TestBadPayload() {
 
       auto evb = folly::EventBaseManager::get()->getEventBase();
       auto callback = std::make_unique<ThriftClientCallback>(
-          evb, std::move(cb), nullptr, false, (uint16_t)ProtocolId::BINARY);
+          evb,
+          std::move(cb),
+          nullptr,
+          false,
+          (uint16_t)ProtocolId::BINARY,
+          std::chrono::milliseconds(0));
 
       // Put a bad payload!
       auto payload = std::make_unique<folly::IOBuf>();

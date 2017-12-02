@@ -47,106 +47,62 @@ std::unique_ptr<ResponseRpcMetadata> RSClientThriftChannel::deserializeMetadata(
 
 namespace {
 
-// This default value should match with the
-// H2ClientConnection::kDefaultTransactionTimeout's value.
-static constexpr std::chrono::milliseconds kDefaultRequestTimeout =
-    std::chrono::milliseconds(500);
-
-// Adds a timer that timesout if the observer could not get its onSuccess or
-// onError methods being called in a specified time range, which causes onError
-// method to be called.
-class TimedSingleObserver : public SingleObserver<Payload>,
-                            public folly::HHWheelTimer::Callback {
+class CountedSingleObserver : public SingleObserver<Payload> {
  public:
-  TimedSingleObserver(
+  CountedSingleObserver(
       std::unique_ptr<ThriftClientCallback> callback,
-      std::chrono::milliseconds timeout,
-      ChannelCounters& counters)
-      : callback_(std::move(callback)),
-        counters_(counters),
-        timeout_(timeout),
-        timer_(callback_->getEventBase()->timer()) {}
+      ChannelCounters* counters)
+      : callback_(std::move(callback)), counters_(counters) {}
 
-  virtual ~TimedSingleObserver() {
-    complete();
-  }
-
-  void setDecrementPendingRequestCounter() {
-    decrementPendingRequestCounter_ = true;
+  virtual ~CountedSingleObserver() {
+    if (counters_) {
+      counters_->decPendingRequests();
+    }
   }
 
  protected:
   void onSubscribe(Reference<SingleSubscription>) override {
     // Note that we don't need the Subscription object.
-
+    auto ref = this->ref_from_this(this);
     auto evb = callback_->getEventBase();
-    evb->runInEventBaseThread([this]() {
-      callback_->onThriftRequestSent();
-      if (timeout_.count() > 0) {
-        timer_.scheduleTimeout(this, timeout_);
+    evb->runInEventBaseThread([ref]() {
+      if (ref->callback_) {
+        ref->callback_->onThriftRequestSent();
       }
     });
   }
 
   void onSuccess(Payload payload) override {
-    auto ref = this->ref_from_this(this);
-    auto evb = callback_->getEventBase();
-    evb->runInEventBaseThread([ref, payload = std::move(payload)]() mutable {
-      if (ref->complete()) {
-        ref->callback_->onThriftResponse(
+    if (auto callback = std::move(callback_)) {
+      auto evb = callback->getEventBase();
+      evb->runInEventBaseThread([callback = std::move(callback),
+                                 payload = std::move(payload)]() mutable {
+        callback->onThriftResponse(
             payload.metadata
                 ? RSClientThriftChannel::deserializeMetadata(*payload.metadata)
                 : std::make_unique<ResponseRpcMetadata>(),
             std::move(payload.data));
-      }
-    });
+      });
+    }
   }
 
   void onError(folly::exception_wrapper ew) override {
-    auto ref = this->ref_from_this(this);
-    auto evb = callback_->getEventBase();
-    evb->runInEventBaseThread([ref, ew = std::move(ew)]() mutable {
-      if (ref->complete()) {
-        ref->callback_->onError(std::move(ew));
-        // TODO: Inspect the cases where might we end up in this function.
-        // 1- server closes the stream before all the messages are
-        // delievered.
-        // 2- time outs
-      }
-    });
-  }
-
-  void timeoutExpired() noexcept override {
-    onError(folly::make_exception_wrapper<TTransportException>(
-        apache::thrift::transport::TTransportException::TIMED_OUT));
-  }
-
-  void callbackCanceled() noexcept override {
-    // nothing!
-  }
-
-  bool complete() {
-    if (alreadySignalled_) {
-      return false;
+    if (auto callback = std::move(callback_)) {
+      auto evb = callback->getEventBase();
+      evb->runInEventBaseThread(
+          [callback = std::move(callback), ew = std::move(ew)]() mutable {
+            callback->onError(std::move(ew));
+            // TODO: Inspect the cases where might we end up in this function.
+            // 1- server closes the stream before all the messages are
+            // delievered.
+            // 2- time outs
+          });
     }
-    alreadySignalled_ = true;
-
-    if (decrementPendingRequestCounter_) {
-      counters_.decPendingRequests();
-      decrementPendingRequestCounter_ = false;
-    }
-    return true;
   }
 
  private:
   std::unique_ptr<ThriftClientCallback> callback_;
-  apache::thrift::detail::ChannelCounters& counters_;
-
-  std::chrono::milliseconds timeout_;
-  folly::HHWheelTimer& timer_;
-
-  bool alreadySignalled_{false};
-  bool decrementPendingRequestCounter_{false};
+  apache::thrift::detail::ChannelCounters* counters_;
 };
 } // namespace
 
@@ -230,17 +186,12 @@ void RSClientThriftChannel::sendSingleRequestResponse(
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(metadata);
-  auto timeout = kDefaultRequestTimeout;
-  if (metadata->__isset.clientTimeoutMs) {
-    timeout = std::chrono::milliseconds(metadata->clientTimeoutMs);
-  }
+  bool canExecute = channelCounters_.incPendingRequests();
 
-  auto singleObserver = yarpl::make_ref<TimedSingleObserver>(
-      std::move(callback), timeout, channelCounters_);
+  auto singleObserver = yarpl::make_ref<CountedSingleObserver>(
+      std::move(callback), canExecute ? &channelCounters_ : nullptr);
 
-  if (channelCounters_.incPendingRequests()) {
-    singleObserver->setDecrementPendingRequestCounter();
-
+  if (canExecute) {
     // As we send clientTimeoutMs, queueTimeoutMs and priority values using
     // RequestRpcMetadata object, there is no need for RSocket to put them to
     // metadata->otherMetadata map.
@@ -319,9 +270,7 @@ void RSClientThriftChannel::detachEventBase() {
 static constexpr uint32_t kMaxPendingRequests =
     std::numeric_limits<uint32_t>::max();
 
-ChannelCounters::ChannelCounters()
-    : maxPendingRequests_(kMaxPendingRequests),
-      requestTimeout_(kDefaultRequestTimeout) {}
+ChannelCounters::ChannelCounters() : maxPendingRequests_(kMaxPendingRequests) {}
 
 void ChannelCounters::setMaxPendingRequests(uint32_t count) {
   maxPendingRequests_ = count;
@@ -345,14 +294,6 @@ bool ChannelCounters::incPendingRequests() {
 
 void ChannelCounters::decPendingRequests() {
   --pendingRequests_;
-}
-
-void ChannelCounters::setRequestTimeout(std::chrono::milliseconds timeout) {
-  requestTimeout_ = timeout;
-}
-
-std::chrono::milliseconds ChannelCounters::getRequestTimeout() {
-  return requestTimeout_;
 }
 
 } // namespace thrift

@@ -46,10 +46,12 @@ class RSClientConnection : public ClientConnectionIf {
   void detachEventBase() override;
   bool isDetachable() override;
   bool isSecurityActive() override;
-  uint32_t getTimeout() override;
-  void setTimeout(uint32_t ms) override;
   void closeNow() override;
   CLIENT_TYPE getClientType() override;
+
+  // Client timeouts for read, write.
+  uint32_t getTimeout() override;
+  void setTimeout(uint32_t ms) override;
 
  private:
   folly::EventBase* evb_;
@@ -57,7 +59,7 @@ class RSClientConnection : public ClientConnectionIf {
   std::shared_ptr<RSRequester> rsRequester_;
   std::shared_ptr<RSClientThriftChannel> channel_;
 
-  std::chrono::milliseconds timeout_;
+  std::chrono::milliseconds timeout_{ThriftClientCallback::kDefaultTimeout};
   bool isSecure_;
   std::shared_ptr<RSConnectionStatus> connectionStatus_;
 

@@ -54,8 +54,7 @@ class ThriftRequest : public ResponseChannel::Request {
         kind_(metadata->kind),
         seqId_(metadata->seqId),
         active_(true),
-        reqContext_(&connContext_, &header_),
-        timer_(channel_->getEventBase()->timer()) {
+        reqContext_(&connContext_, &header_) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -214,11 +213,13 @@ class ThriftRequest : public ResponseChannel::Request {
 
     if (differentTimeouts) {
       if (queueTimeout > std::chrono::milliseconds(0)) {
-        timer_.scheduleTimeout(&queueTimeout_, queueTimeout);
+        channel_->getEventBase()->timer().scheduleTimeout(
+            &queueTimeout_, queueTimeout);
       }
     }
     if (taskTimeout > std::chrono::milliseconds(0)) {
-      timer_.scheduleTimeout(&taskTimeout_, taskTimeout);
+      channel_->getEventBase()->timer().scheduleTimeout(
+          &taskTimeout_, taskTimeout);
     }
   }
 
@@ -280,8 +281,6 @@ class ThriftRequest : public ResponseChannel::Request {
   Cpp2ConnContext connContext_;
   Cpp2RequestContext reqContext_;
 
-  // Timer is from channel_'s EventBase.
-  folly::HHWheelTimer& timer_;
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;
   bool responseSizeChecked_{false};

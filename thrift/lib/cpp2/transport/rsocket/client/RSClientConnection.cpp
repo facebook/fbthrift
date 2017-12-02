@@ -185,11 +185,13 @@ bool RSClientConnection::isSecurityActive() {
 }
 
 uint32_t RSClientConnection::getTimeout() {
-  return counters_.getRequestTimeout().count();
+  // TODO: Need to inspect this functionality for RSocket
+  return timeout_.count();
 }
 
-void RSClientConnection::setTimeout(uint32_t ms) {
-  counters_.setRequestTimeout(std::chrono::milliseconds(ms));
+void RSClientConnection::setTimeout(uint32_t timeoutMs) {
+  // TODO: Need to inspect this functionality for RSocket
+  timeout_ = std::chrono::milliseconds(timeoutMs);
 }
 
 void RSClientConnection::closeNow() {

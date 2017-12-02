@@ -54,9 +54,6 @@ using proxygen::HTTPUpstreamSession;
 using proxygen::WheelTimerInstance;
 using std::string;
 
-const std::chrono::milliseconds H2ClientConnection::kDefaultTimeout =
-    std::chrono::milliseconds(500);
-
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
     TAsyncTransport::UniquePtr transport) {
   std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(

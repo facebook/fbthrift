@@ -95,10 +95,12 @@ class ClientConnectionIf {
   virtual void detachEventBase() = 0;
   virtual bool isDetachable() = 0;
   virtual bool isSecurityActive() = 0;
-  virtual uint32_t getTimeout() = 0;
-  virtual void setTimeout(uint32_t ms) = 0;
   virtual void closeNow() = 0;
   virtual CLIENT_TYPE getClientType() = 0;
+
+  // Client timeouts for read, write.
+  virtual uint32_t getTimeout() = 0;
+  virtual void setTimeout(uint32_t ms) = 0;
 };
 
 } // namespace thrift

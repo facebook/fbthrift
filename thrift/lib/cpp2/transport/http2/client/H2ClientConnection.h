@@ -21,6 +21,7 @@
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <chrono>
@@ -95,16 +96,14 @@ class H2ClientConnection : public ClientConnectionIf,
   // end HTTPSession::InfoCallback methods
 
  private:
-  // The default timeout for a Thrift RPC.
-  static const std::chrono::milliseconds kDefaultTimeout;
-
   H2ClientConnection(
       async::TAsyncTransport::UniquePtr transport,
       std::unique_ptr<proxygen::HTTPCodec> codec);
 
   proxygen::HTTPUpstreamSession* httpSession_;
   folly::EventBase* evb_{nullptr};
-  std::chrono::milliseconds timeout_{kDefaultTimeout};
+  std::chrono::milliseconds timeout_{
+      apache::thrift::ThriftClientCallback::kDefaultTimeout};
 
   // A map of all registered CloseCallback objects keyed by the
   // ThriftClient objects that registered the callback.

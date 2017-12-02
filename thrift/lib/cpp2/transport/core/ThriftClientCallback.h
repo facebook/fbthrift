@@ -30,16 +30,17 @@ namespace thrift {
 /**
  * Callback object for a single response RPC.
  */
-class ThriftClientCallback {
+class ThriftClientCallback : public folly::HHWheelTimer::Callback {
  public:
   ThriftClientCallback(
       folly::EventBase* evb,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       bool isSecurityActive,
-      uint16_t protoId);
+      uint16_t protoId,
+      std::chrono::milliseconds timeout);
 
-  virtual ~ThriftClientCallback() = default;
+  virtual ~ThriftClientCallback();
 
   ThriftClientCallback(const ThriftClientCallback&) = delete;
   ThriftClientCallback& operator=(const ThriftClientCallback&) = delete;
@@ -70,12 +71,23 @@ class ThriftClientCallback {
   // "onThriftResponse()", and "onError()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
+ protected:
+  void timeoutExpired() noexcept override;
+  void callbackCanceled() noexcept override;
+
+ public:
+  // The default timeout for a Thrift RPC.
+  static const std::chrono::milliseconds kDefaultTimeout;
+
  private:
   folly::EventBase* evb_;
   std::unique_ptr<RequestCallback> cb_;
   std::unique_ptr<ContextStack> ctx_;
   bool isSecurityActive_;
   uint16_t protoId_;
+
+  bool active_;
+  std::chrono::milliseconds timeout_;
 };
 
 } // namespace thrift

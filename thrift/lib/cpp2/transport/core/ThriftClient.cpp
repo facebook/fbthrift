@@ -235,7 +235,8 @@ uint32_t ThriftClient::sendRequestHelper(
       std::move(cb),
       std::move(ctx),
       isSecurityActive(),
-      protocolId_);
+      protocolId_,
+      std::chrono::milliseconds(metadata->clientTimeoutMs));
   auto conn = connection_;
   connection_->getEventBase()->runInEventBaseThread([conn = std::move(conn),
                                                      metadata =
