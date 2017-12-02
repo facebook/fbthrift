@@ -252,3 +252,9 @@ class Map__i32_List__float(_typing.Mapping[int, _typing.Sequence[float]]):
     def __iter__(self) -> _typing.Iterator[int]: ...
 
 
+FloatFeatures = _typing.Mapping[int, float]
+DoubleMapType = _typing.Mapping[int, float]
+OldMapMap = _typing.Mapping[int, _typing.Mapping[int, float]]
+NewMapMap = _typing.Mapping[int, _typing.Mapping[int, float]]
+OldMapList = _typing.Mapping[int, _typing.Sequence[float]]
+NewMapList = _typing.Mapping[int, _typing.Sequence[float]]

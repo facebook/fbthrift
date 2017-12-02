@@ -133,3 +133,4 @@ class Map__i16_string(_typing.Mapping[int, str]):
     def __iter__(self) -> _typing.Iterator[int]: ...
 
 
+containerTypedef = _typing.Mapping[int, str]

@@ -434,3 +434,6 @@ class List__double(_typing.Sequence[float]):
     def __iter__(self) -> _typing.Iterator[float]: ...
 
 
+IndirectionA = int
+IndirectionC = int
+IndirectionB = float

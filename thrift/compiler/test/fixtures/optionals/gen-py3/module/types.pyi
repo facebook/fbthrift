@@ -193,3 +193,4 @@ class List__Vehicle(_typing.Sequence['Vehicle']):
     def __iter__(self) -> _typing.Iterator['Vehicle']: ...
 
 
+PersonID = int

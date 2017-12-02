@@ -126,3 +126,11 @@ class {{type:flat_name}}({{> types/PEP484Containers}}):
 
 
 {{/program:containerTypes}}
+{{#program:constants}}
+{{#constant:type}}
+{{constant:name}}: {{> types/PEP484Type}} = ...
+{{/constant:type}}
+{{/program:constants}}
+{{#program:typedefs}}
+{{typedef:symbolic}} = {{#typedef:type}}{{> types/PEP484Type}}{{/typedef:type}}
+{{/program:typedefs}}

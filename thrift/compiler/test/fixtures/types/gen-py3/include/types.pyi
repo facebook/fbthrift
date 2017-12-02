@@ -25,3 +25,4 @@ class std_unordered_map__Map__i32_string(_typing.Mapping[int, str]):
     def __iter__(self) -> _typing.Iterator[int]: ...
 
 
+SomeMap = _typing.Mapping[int, str]
