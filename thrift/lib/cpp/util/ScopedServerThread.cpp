@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -334,6 +334,10 @@ weak_ptr<TServer> ScopedServerThread::getServer() const {
     return weak_ptr<server::TServer>();
   }
   return helper_->getServer();
+}
+
+bool ScopedServerThread::setServeThreadName(const std::string& name) {
+  return thread_->setName(name);
 }
 
 ServerStartHelper::ServerStartHelper(shared_ptr<TServer> server) {

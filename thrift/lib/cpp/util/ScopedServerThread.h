@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -101,6 +103,13 @@ class ScopedServerThread : public boost::noncopyable {
    * Get the server.
    */
   std::weak_ptr<server::TServer> getServer() const;
+
+  /**
+   * Set name on the underlying server thread.
+   *
+   * @param name The name for the thread.
+   */
+  bool setServeThreadName(const std::string& name);
 
  private:
   class Helper;
