@@ -712,11 +712,12 @@ func (p *Person)  ReadField6(iprot thrift.TProtocol) error {
   tSet := make([]PersonID, 0, size)
   p.Friends =  tSet
   for i := 0; i < size; i ++ {
-var _elem0 int64
+var _elem0 PersonID
     if v, err := iprot.ReadI64(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem0 = v
+    temp := PersonID(v)
+    _elem0 = temp
 }
     p.Friends = append(p.Friends, _elem0)
   }
