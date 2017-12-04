@@ -16,9 +16,11 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 
+#include <folly/compression/Compression.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 #include <folly/Conv.h>
+#include <folly/ExceptionString.h>
 #include <folly/String.h>
 #include <folly/Format.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -33,11 +35,6 @@
 #include <algorithm>
 #include <cassert>
 #include <string>
-#include <zlib.h>
-#include <zstd.h>
-#if THRIFT_HAVE_LIBSNAPPY > 0
-#include "snappy.h"
-#endif
 
 using std::map;
 using std::shared_ptr;
@@ -509,122 +506,37 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
   return buf;
 }
 
-static unique_ptr<IOBuf> decompressZlib(unique_ptr<IOBuf> buf) {
-  size_t bufSize;
-  uint32_t minAllocation =
-    buf->computeChainDataLength() > 1024 * 1024 ? 16 * 1024 : 1024;
-  unique_ptr<IOBuf> out;
-
-  z_stream stream;
-  int err;
-
-  // Setting these to 0 means use the default free/alloc functions
-  stream.zalloc = (alloc_func)0;
-  stream.zfree = (free_func)0;
-  stream.opaque = (voidpf)0;
-  err = inflateInit(&stream);
-  if (err != Z_OK) {
-    throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                "Error while zlib inflate Init");
+static unique_ptr<IOBuf> decompressCodec(
+    IOBuf const& buf,
+    folly::io::CodecType codec) {
+  try {
+    return folly::io::getCodec(codec)->uncompress(&buf);
+  } catch (std::exception const& e) {
+    throw TApplicationException(
+        TApplicationException::MISSING_RESULT,
+        folly::exceptionStr(e).toStdString());
   }
-  {
-    SCOPE_EXIT { err = inflateEnd(&stream); };
-    do {
-      if (nullptr == buf) {
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-            "Not enough zlib data in message");
-      }
-      stream.next_in = buf->writableData();
-      stream.avail_in = buf->length();
-      do {
-        bufSize = std::max(minAllocation, stream.avail_in);
-        unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
-
-        stream.next_out = tmp->writableData();
-        stream.avail_out = bufSize;
-        err = inflate(&stream, Z_NO_FLUSH);
-        if (err == Z_STREAM_ERROR ||
-            err == Z_DATA_ERROR ||
-            err == Z_MEM_ERROR) {
-          throw TApplicationException(TApplicationException::MISSING_RESULT,
-              "Error while zlib inflate");
-        }
-        tmp->append(bufSize - stream.avail_out);
-        if (out) {
-          // Add buffer to end (circular list, same as prepend)
-          out->prependChain(std::move(tmp));
-        } else {
-          out = std::move(tmp);
-        }
-      } while (stream.avail_out == 0);
-      // try the next buffer
-      buf = buf->pop();
-    } while (err != Z_STREAM_END);
-  }
-  if (err != Z_OK) {
-    throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                "Error while zlib inflateEnd");
-  }
-  return out;
-}
-
-#if THRIFT_HAVE_LIBSNAPPY > 0
-static unique_ptr<IOBuf> decompressSnappy(unique_ptr<IOBuf> buf) {
-  buf->coalesce(); // required for snappy uncompression
-  size_t uncompressed_sz;
-  bool result = snappy::GetUncompressedLength((char*)buf->data(),
-                                              buf->length(),
-                                              &uncompressed_sz);
-  unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
-  out->append(uncompressed_sz);
-
-  result = snappy::RawUncompress((char*)buf->data(), buf->length(),
-                                 (char*)out->writableData());
-  if (!result) {
-    throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                "snappy uncompress failure");
-  }
-
-  return out;
-}
-#endif
-
-static unique_ptr<IOBuf> decompressZstd(unique_ptr<IOBuf> buf) {
-  buf->coalesce();
-  size_t uncompressed_sz = ZSTD_getDecompressedSize((char*)buf->data(),
-                                                    buf->length());
-
-  unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
-  uncompressed_sz = ZSTD_decompress(
-    (char*)out->writableData(), uncompressed_sz,
-    (char*)buf->data(), buf->length());
-  out->append(uncompressed_sz);
-
-  if (ZSTD_isError(uncompressed_sz)) {
-    throw TApplicationException(TApplicationException::MISSING_RESULT,
-      folly::sformat(
-          "Error in ZSTD_decompress: {}",
-          ZSTD_getErrorName(uncompressed_sz)));
-  }
-  return out;
 }
 
 unique_ptr<IOBuf> THeader::untransform(
   unique_ptr<IOBuf> buf, std::vector<uint16_t>& readTrans) {
   for (vector<uint16_t>::const_reverse_iterator it = readTrans.rbegin();
        it != readTrans.rend(); ++it) {
+    using folly::io::CodecType;
     const uint16_t transId = *it;
+
     switch (transId) {
       case ZLIB_TRANSFORM:
-        buf = decompressZlib(std::move(buf));
+        buf = decompressCodec(*buf, CodecType::ZLIB);
         break;
       case SNAPPY_TRANSFORM:
-#if THRIFT_HAVE_LIBSNAPPY > 0
-        buf = decompressSnappy(std::move(buf));
-#endif
+        if (THRIFT_HAVE_LIBSNAPPY > 0) {
+          assert(folly::io::hasCodec(CodecType::SNAPPY));
+          buf = decompressCodec(*buf, CodecType::SNAPPY);
+        }
         break;
       case ZSTD_TRANSFORM:
-        buf = decompressZstd(std::move(buf));
+        buf = decompressCodec(*buf, CodecType::ZSTD);
         break;
       case QLZ_TRANSFORM:
         throw TApplicationException(TApplicationException::MISSING_RESULT,
@@ -639,118 +551,17 @@ unique_ptr<IOBuf> THeader::untransform(
   return buf;
 }
 
-static unique_ptr<IOBuf> compressZlib(unique_ptr<IOBuf> buf) {
-  size_t bufSize = 1024;
-  unique_ptr<IOBuf> out;
-
-  z_stream stream;
-  int err;
-
-  stream.next_in = (unsigned char*)buf->data();
-  stream.avail_in = buf->length();
-
-  stream.zalloc = (alloc_func)0;
-  stream.zfree = (free_func)0;
-  stream.opaque = (voidpf)0;
-  err = deflateInit(&stream, Z_DEFAULT_COMPRESSION);
-  if (err != Z_OK) {
-    throw TTransportException(TTransportException::CORRUPTED_DATA,
-                              "Error while zlib deflateInit");
+static unique_ptr<IOBuf> compressCodec(
+    IOBuf const& buf,
+    folly::io::CodecType codec,
+    int level = folly::io::COMPRESSION_LEVEL_DEFAULT) {
+  try {
+    return folly::io::getCodec(codec, level)->compress(&buf);
+  } catch (std::exception const& e) {
+    throw TTransportException(
+        TTransportException::CORRUPTED_DATA,
+        folly::exceptionStr(e).toStdString());
   }
-
-  // Loop until deflate() tells us it's done writing all output
-  while (err != Z_STREAM_END) {
-    // Create a new output chunk
-    unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
-    stream.next_out = tmp->writableData();
-    stream.avail_out = bufSize;
-
-    // Loop while the current output chunk still has space, call deflate to
-    // try and fill it
-    while (stream.avail_out > 0) {
-      // When providing the last bit of input data and thereafter, pass
-      // Z_FINISH to tell zlib it should flush out remaining compressed
-      // data and finish up with an end marker at the end of the output
-      // stream
-      int flush = (buf && buf->isChained()) ? Z_NO_FLUSH : Z_FINISH;
-      err = deflate(&stream, flush);
-      if (err == Z_STREAM_ERROR) {
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "Error while zlib deflate");
-      }
-
-      if (stream.avail_in == 0) {
-        if (buf) {
-          buf = buf->pop();
-        }
-        if (!buf) {
-          // No more input chunks left
-          break;
-        }
-        // Prvoide the next input chunk to zlib
-        stream.next_in = (unsigned char*) buf->data();
-        stream.avail_in = buf->length();
-      }
-    }
-
-    // Tell the tmp IOBuf we wrote some data into it
-    tmp->append(bufSize - stream.avail_out);
-    if (out) {
-      // Add the IOBuf to the end of the chain
-      out->prependChain(std::move(tmp));
-    } else {
-      // This is the first IOBuf, so start the chain
-      out = std::move(tmp);
-    }
-  }
-
-  err = deflateEnd(&stream);
-  if (err != Z_OK) {
-    throw TTransportException(TTransportException::CORRUPTED_DATA,
-                              "Error while zlib deflateEnd");
-  }
-
-  return out;
-}
-
-#if THRIFT_HAVE_LIBSNAPPY > 0
-static unique_ptr<IOBuf> compressSnappy(unique_ptr<IOBuf> buf) {
-  buf->coalesce(); // required for snappy compression
-
-  // Check that we have enough space
-  size_t maxCompressedLength = snappy::MaxCompressedLength(buf->length());
-  unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
-
-  size_t compressed_sz;
-  snappy::RawCompress((char*)buf->data(), buf->length(),
-                      (char*)out->writableData(), &compressed_sz);
-  out->append(compressed_sz);
-  return out;
-}
-#endif
-
-static unique_ptr<IOBuf> compressZstd(unique_ptr<IOBuf> buf) {
-  buf->coalesce();
-
-  // Check that we have enough space
-  size_t maxCompressedLength = ZSTD_compressBound(buf->length());
-  unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
-
-  size_t compressed_sz = ZSTD_compress(
-    (char*)out->writableData(),
-    maxCompressedLength,
-    (char*)buf->data(),
-    buf->length(),
-    1);
-
-  if (ZSTD_isError(compressed_sz)) {
-    throw TTransportException(TTransportException::CORRUPTED_DATA,
-      folly::sformat(
-          "Error in ZSTD_compress: {}", ZSTD_getErrorName(compressed_sz)));
-  }
-
-  out->append(compressed_sz);
-  return out;
 }
 
 unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
@@ -760,6 +571,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
 
   for (vector<uint16_t>::iterator it = writeTrans.begin();
        it != writeTrans.end(); ) {
+    using folly::io::CodecType;
     const uint16_t transId = *it;
 
     switch (transId) {
@@ -768,23 +580,22 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
           it = writeTrans.erase(it);
           continue;
         }
-        buf = compressZlib(std::move(buf));
+        buf = compressCodec(*buf, CodecType::ZLIB);
         break;
       case SNAPPY_TRANSFORM:
-#if THRIFT_HAVE_LIBSNAPPY > 0
-        if (dataSize < minCompressBytes) {
+        if (THRIFT_HAVE_LIBSNAPPY <= 0 || dataSize < minCompressBytes) {
           it = writeTrans.erase(it);
           continue;
         }
-        buf = compressSnappy(std::move(buf));
-#endif
+        assert(folly::io::hasCodec(CodecType::SNAPPY));
+        buf = compressCodec(*buf, CodecType::SNAPPY);
         break;
       case ZSTD_TRANSFORM:
         if (dataSize < minCompressBytes) {
           it = writeTrans.erase(it);
           continue;
         }
-        buf = compressZstd(std::move(buf));
+        buf = compressCodec(*buf, CodecType::ZSTD, 1);
         break;
       case QLZ_TRANSFORM:
         throw TTransportException(TTransportException::CORRUPTED_DATA,
