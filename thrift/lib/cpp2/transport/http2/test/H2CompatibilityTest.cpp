@@ -181,15 +181,11 @@ TEST_P(H2CompatibilityTest, BadPayload) {
 }
 
 TEST_P(H2CompatibilityTest, EvbSwitch) {
-  if (GetParam() != ChannelType::Default &&
-      GetParam() != ChannelType::MultiRpc) {
-    compatibilityTest_->TestEvbSwitch();
-  }
+  compatibilityTest_->TestEvbSwitch();
 }
 
 TEST_P(H2CompatibilityTest, EvbSwitch_Failure) {
-  // TODO: @Eddie to make this test pass along with the previous one
-  // compatibilityTest_->TestEvbSwitch_Failure();
+  compatibilityTest_->TestEvbSwitch_Failure();
 }
 
 TEST_P(H2CompatibilityTest, CloseCallback) {

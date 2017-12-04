@@ -150,7 +150,7 @@ void H2ClientConnection::setIsStable() {
 }
 
 TAsyncTransport* H2ClientConnection::getTransport() {
-  DCHECK(evb_ && evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (httpSession_) {
     return dynamic_cast<TAsyncTransport*>(httpSession_->getTransport());
   } else {
@@ -176,7 +176,7 @@ ClientChannel::SaturationStatus H2ClientConnection::getSaturationStatus() {
 }
 
 void H2ClientConnection::attachEventBase(EventBase* evb) {
-  DCHECK(evb->isInEventBaseThread());
+  DCHECK(evb && evb->isInEventBaseThread());
   if (httpSession_) {
     httpSession_->attachThreadLocals(
         evb,
@@ -192,15 +192,28 @@ void H2ClientConnection::attachEventBase(EventBase* evb) {
 
 void H2ClientConnection::detachEventBase() {
   DCHECK(evb_->isInEventBaseThread());
-  DCHECK(isDetachable());
   if (httpSession_) {
+    httpSession_->detachTransactions();
     httpSession_->detachThreadLocals();
   }
+  channelFactory_.closeOutstandingClient();
   evb_ = nullptr;
 }
 
 bool H2ClientConnection::isDetachable() {
-  return !httpSession_ || httpSession_->isDetachable();
+  // MultiRpcChannel will always have at least one open stream.
+  // This is used to leverage multiple rpcs in one stream. We should
+  // still enable detaching if MultiRpc doesn't have any outstanding
+  // rpcs and the number of streams is <= 1.
+  // SingleRpcChannel should only detach if the number of outgoing
+  // streams == 0. That's how we know there are no pending rpcs to
+  // be fulfilled.
+  auto outgoingStreams = httpSession_->getNumOutgoingStreams();
+  auto session_isDetachable =
+      !httpSession_ || !channelFactory_.hasOutstandingRPCs(outgoingStreams);
+  auto transport = getTransport();
+  auto transport_isDetachable = !transport || transport->isDetachable();
+  return transport_isDetachable && session_isDetachable;
 }
 
 bool H2ClientConnection::isSecurityActive() {
