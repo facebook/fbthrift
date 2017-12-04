@@ -74,7 +74,7 @@ cdef class MyRootInterface(
             self):
         raise NotImplementedError("async def do_root is not implemented")
 cdef class MyNodeInterface(
-    _module_services.MyRootInterface
+MyRootInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyNodeInterface(
@@ -90,7 +90,7 @@ cdef class MyNodeInterface(
             self):
         raise NotImplementedError("async def do_mid is not implemented")
 cdef class MyLeafInterface(
-    _module_services.MyNodeInterface
+MyNodeInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyLeafInterface(

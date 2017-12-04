@@ -236,7 +236,7 @@ cdef class MyServicePrioParentInterface(
             self):
         raise NotImplementedError("async def pong is not implemented")
 cdef class MyServicePrioChildInterface(
-    _module_services.MyServicePrioParentInterface
+MyServicePrioParentInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioChildInterface(

@@ -630,7 +630,7 @@ cdef class SimpleServiceInterface(
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
 cdef class DerivedServiceInterface(
-    _module_services.SimpleServiceInterface
+SimpleServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cDerivedServiceInterface(
@@ -646,7 +646,7 @@ cdef class DerivedServiceInterface(
             self):
         raise NotImplementedError("async def get_six is not implemented")
 cdef class RederivedServiceInterface(
-    _module_services.DerivedServiceInterface
+DerivedServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cRederivedServiceInterface(
