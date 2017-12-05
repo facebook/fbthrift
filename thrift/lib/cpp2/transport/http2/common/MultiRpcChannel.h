@@ -69,9 +69,7 @@ class MultiRpcChannel : public H2Channel {
   bool canDoRpcs() noexcept;
 
   // Closes the outgoing stream on the client side by calling sendEOM().
-  void closeClientSide(bool forceClose = false) noexcept;
-
-  bool hasOutstandingRPCs();
+  void closeClientSide() noexcept;
 
  private:
   // TODO: This is hardwired for now.  We should negotiate this value

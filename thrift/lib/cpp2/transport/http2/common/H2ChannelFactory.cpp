@@ -79,18 +79,5 @@ std::shared_ptr<H2Channel> H2ChannelFactory::getChannel(
   }
 }
 
-bool H2ChannelFactory::hasOutstandingRPCs(uint32_t outstandingStreams) {
-  if (multiRpcChannel_) {
-    return multiRpcChannel_->hasOutstandingRPCs() || outstandingStreams > 1;
-  }
-  return outstandingStreams > 0;
-}
-
-void H2ChannelFactory::closeOutstandingClient() {
-  if (multiRpcChannel_) {
-    multiRpcChannel_->closeClientSide(true);
-  }
-}
-
 } // namespace thrift
 } // namespace apache

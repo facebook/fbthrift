@@ -806,45 +806,19 @@ void TransportCompatibilityTest::TestEvbSwitch() {
 }
 
 void TransportCompatibilityTest::TestEvbSwitch_Failure() {
-  connectToServer([this](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      std::shared_ptr<ClientConnectionIf> connection) {
-    auto evb = connection->getEventBase();
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
+                     std::shared_ptr<ClientConnectionIf> connection) {
     auto cb = std::make_unique<MockCallback>(false, false);
-    auto cb2 = std::make_unique<MockCallback>(false, false);
+    client->sleep(std::move(cb), 50);
 
-    // If isDetachable() is called when a function is executing, it should
-    // not be detachable
-    client->sleep(std::move(cb), 500);
     /* sleep override - make sure request is started */
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+    auto evb = connection->getEventBase();
     evb->runInEventBaseThreadAndWait([&]() {
       // As we have an active request, it should not be detachable!
       EXPECT_FALSE(connection->isDetachable());
     });
-
-    // Once the request finishes, it should be detachable again
-    /* sleep override - make sure request is finished */
-    std::this_thread::sleep_for(std::chrono::milliseconds(600));
-    evb->runInEventBaseThreadAndWait([&]() {
-      // As we have an active request, it should not be detachable!
-      EXPECT_TRUE(connection->isDetachable());
-    });
-
-    // If the latest request is sent while previous ones are still finishing
-    // it should still not be detachable
-    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
-    client->sleep(std::move(cb2), 500);
-    /* sleep override - make sure request is started */
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    client->sync_sumTwoNumbers(1, 2);
-    evb->runInEventBaseThreadAndWait([&]() {
-      // As we have an active request, it should not be detachable!
-      EXPECT_FALSE(connection->isDetachable());
-    });
-
-    /* sleep override - make sure request is finished */
-    std::this_thread::sleep_for(std::chrono::milliseconds(600));
   });
 }
 

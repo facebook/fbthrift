@@ -111,14 +111,6 @@ class H2ChannelFactory {
       H2ClientConnection* toHttp2,
       RequestRpcMetadata* metadata);
 
-  // Checks if the number of sent requests is greater than responses received
-  bool hasOutstandingRPCs(uint32_t outstandingStreams);
-
-  // Force the closing of the client in case there is an outstanding session
-  // This is only valid for MultiRPC as there can be outstanding requests
-  // that have not sent onEOM
-  void closeOutstandingClient();
-
  private:
   // The current MultiRpcChannel in use by the client (if this is the
   // kind of channel the client is using).
