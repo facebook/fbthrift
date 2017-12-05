@@ -102,7 +102,7 @@ template <class T, class CursorT,
 uint8_t readVarint(CursorT& c, T& value) {
   const uint8_t* p = c.data();
   size_t len = c.length();
-  if (LIKELY(len > 0 && !(*p & 0x80))) {
+  if (len > 0 && !(*p & 0x80)) {
     value = static_cast<T>(*p);
     c.skip(1);
     return 1;
