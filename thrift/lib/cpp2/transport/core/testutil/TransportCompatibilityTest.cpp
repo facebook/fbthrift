@@ -845,14 +845,6 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
 
     /* sleep override - make sure request is finished */
     std::this_thread::sleep_for(std::chrono::milliseconds(600));
-
-    // Should be detachable now
-    evb->runInEventBaseThreadAndWait([&]() {
-      // As we have an active request, it should not be detachable!
-      EXPECT_TRUE(connection->isDetachable());
-      // Detach to prove that we can destroy the object even if evb is detached
-      connection->detachEventBase();
-    });
   });
 }
 

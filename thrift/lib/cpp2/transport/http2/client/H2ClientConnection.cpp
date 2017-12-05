@@ -231,7 +231,8 @@ void H2ClientConnection::setTimeout(uint32_t ms) {
 }
 
 void H2ClientConnection::closeNow() {
-  if (evb_ && evb_->isInEventBaseThread() && httpSession_) {
+  DCHECK(evb_ && evb_->isInEventBaseThread());
+  if (httpSession_) {
     httpSession_->dropConnection();
     httpSession_ = nullptr;
   }
