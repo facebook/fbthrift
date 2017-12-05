@@ -76,10 +76,22 @@ struct IsBlitType
           bool,
           (folly::IsTriviallyCopyable<T>::value && !std::is_pointer<T>::value &&
            !std::is_enum<T>::value && !std::is_integral<T>::value)> {};
-}
+
+// std::pair<trivially copyable T1, trivially copyable T2> became
+// trivially copyable too (first fixed in GCC 6.3) and conflicts with
+// the PairLayout specialization.
+template <class T>
+struct IsStdPair : public std::false_type {};
+
+template <class T1, class T2>
+struct IsStdPair<std::pair<T1, T2>> : public std::true_type {};
+
+} // namespace detail
 
 template <class T>
-struct Layout<T, typename std::enable_if<detail::IsBlitType<T>::value>::type>
+struct Layout<
+    T,
+    typename std::enable_if<
+        detail::IsBlitType<T>::value && !detail::IsStdPair<T>::value>::type>
     : detail::TrivialLayout<T> {};
-
 }}}
