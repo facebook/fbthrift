@@ -213,6 +213,8 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   shared_ptr<Runnable> removeNextPending() override;
 
+  void clearPending() override;
+
   void setExpireCallback(ExpireCallback expireCallback) override;
   void setCodelCallback(ExpireCallback expireCallback) override;
   void setThreadInitCallback(InitCallback initCallback) override {

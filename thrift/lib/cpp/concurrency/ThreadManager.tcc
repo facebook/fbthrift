@@ -481,6 +481,12 @@ std::shared_ptr<Runnable> ThreadManager::ImplT<SemType>::removeNextPending() {
 }
 
 template <typename SemType>
+void ThreadManager::ImplT<SemType>::clearPending() {
+  while (removeNextPending() != nullptr) {
+  }
+}
+
+template <typename SemType>
 bool ThreadManager::ImplT<SemType>::shouldStop() {
   // in normal cases, only do a read (prevents cache line bounces)
   if (workersToStop_ <= 0) {
@@ -1014,6 +1020,12 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
   std::shared_ptr<Runnable> removeNextPending() override {
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<Runnable>();
+  }
+
+  void clearPending() override {
+    for (const auto& m : managers_) {
+      m->clearPending();
+    }
   }
 
   void setExpireCallback(ExpireCallback expireCallback) override {

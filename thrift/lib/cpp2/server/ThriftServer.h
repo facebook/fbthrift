@@ -181,6 +181,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   bool trackPendingIO_ = false;
 
   bool stopWorkersOnStopListening_ = true;
+  std::chrono::seconds workersJoinTimeout_{30};
 
   std::shared_ptr<folly::IOThreadPoolExecutor> acceptPool_;
   int nAcceptors_ = 1;
@@ -658,6 +659,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   bool getStopWorkersOnStopListening() const {
     return stopWorkersOnStopListening_;
+  }
+
+  /**
+   * Sets the timeout for joining workers
+   */
+  void setWorkersJoinTimeout(std::chrono::seconds timeout) {
+    workersJoinTimeout_ = timeout;
   }
 
   /**

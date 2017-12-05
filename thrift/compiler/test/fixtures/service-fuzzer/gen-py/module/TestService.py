@@ -576,7 +576,9 @@ class Processor(Iface, TProcessor):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
+    self._priorityMap = {}
     self._processMap["init"] = Processor.process_init
+    self._priorityMap["init"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []
@@ -606,7 +608,9 @@ class ContextProcessor(ContextIface, TProcessor):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
+    self._priorityMap = {}
     self._processMap["init"] = ContextProcessor.process_init
+    self._priorityMap["init"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []

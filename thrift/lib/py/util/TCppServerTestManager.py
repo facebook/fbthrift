@@ -39,16 +39,22 @@ class TCppServerTestManager(object):
         server.setPort(0)
         server.setNumCPUWorkerThreads(1)
         server.setNumIOWorkerThreads(1)
-        server.setNewSimpleThreadManager(1, 5, False, 50)
+        server.setNewSimpleThreadManager(
+            count=1,
+            pendingTaskCountMax=5,
+            enableTaskStats=False,
+            maxQueueLen=50
+        )
         return server
 
-    def __init__(self, obj):
+    def __init__(self, obj, cleanUp=True):
         self.__obj = obj
         self.__handler = None
         self.__processor = None
         self.__server = None
         self.__thread = None
         self.__thread_started_ev = None
+        self.__do_cleanup = cleanUp
 
     def __enter__(self):
         self.start()
@@ -112,7 +118,8 @@ class TCppServerTestManager(object):
         try:
             self.__server.loop()
         finally:
-            self.__server.cleanUp()
+            if self.__do_cleanup:
+                self.__server.cleanUp()
 
     def __is_handler(self, obj):
         return hasattr(obj, '_processor_type') \

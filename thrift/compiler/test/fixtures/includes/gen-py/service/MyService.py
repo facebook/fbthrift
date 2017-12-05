@@ -532,8 +532,11 @@ class Processor(Iface, TProcessor):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
+    self._priorityMap = {}
     self._processMap["query"] = Processor.process_query
+    self._priorityMap["query"] = TPriority.NORMAL
     self._processMap["has_arg_docs"] = Processor.process_has_arg_docs
+    self._priorityMap["has_arg_docs"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []
@@ -574,8 +577,11 @@ class ContextProcessor(ContextIface, TProcessor):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
+    self._priorityMap = {}
     self._processMap["query"] = ContextProcessor.process_query
+    self._priorityMap["query"] = TPriority.NORMAL
     self._processMap["has_arg_docs"] = ContextProcessor.process_has_arg_docs
+    self._priorityMap["has_arg_docs"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []

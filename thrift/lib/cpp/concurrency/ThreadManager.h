@@ -199,6 +199,11 @@ class ThreadManager : public folly::Executor {
   virtual std::shared_ptr<Runnable> removeNextPending() = 0;
 
   /**
+   * Removes all pending tasks.
+   */
+  virtual void clearPending() = 0;
+
+  /**
    * Set a callback to be called when a task is expired and not run.
    *
    * @param expireCallback a function called with the shared_ptr<Runnable> for
@@ -420,6 +425,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 
   void remove(std::shared_ptr<Runnable> /*task*/) override {}
   std::shared_ptr<Runnable> removeNextPending() override { return nullptr; }
+  void clearPending() override {}
 
   void setExpireCallback(ExpireCallback /*expireCallback*/) override {}
   void setCodelCallback(ExpireCallback /*expireCallback*/) override {}

@@ -7,6 +7,7 @@ import traceback
 
 from thrift.protocol.THeaderProtocol import THeaderProtocol
 from thrift.server.TServer import TServer, TConnectionContext
+from thrift.Thrift import TPriority
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
@@ -44,6 +45,7 @@ class TCppConnectionContext(TConnectionContext):
 
     def getSockName(self):
         return self.context_data.getLocalAddress()
+
 
 class _ProcessorAdapter(object):
     CONTEXT_DATA = CppContextData
@@ -118,7 +120,7 @@ class _ProcessorAdapter(object):
                 ret.add_done_callback(lambda x, d=done_callback: d())
             else:
                 done_callback()
-        except:
+        except:  # noqa
             # Don't let exceptions escape back into C++
             traceback.print_exc()
 
@@ -137,11 +139,20 @@ class _ProcessorAdapter(object):
                 trans = THeaderTransport(read_buf, client_types=[client_type])
                 trans.readFrame(len(response))
                 callback.call(trans.cstringio_buf.read())
-        except:
+        except:  # noqa
+            # Don't let exceptions escape back into C++
             traceback.print_exc()
 
     def oneway_methods(self):
         return self.processor.onewayMethods()
+
+    def get_priority(self, fname):
+        try:
+            return self.processor.get_priority(fname)
+        except:  # noqa
+            traceback.print_exc()
+            return TPriority.NORMAL
+
 
 class TSSLConfig(object):
     def __init__(self):
@@ -187,20 +198,25 @@ class TSSLConfig(object):
             raise ValueError("{} is an invalid value".format(val))
         self._verify = val
 
+
 class TSSLCacheOptions(object):
     def __init__(self):
         self.ssl_cache_timeout_seconds = 86400
         self.max_ssl_cache_size = 20480
         self.ssl_cache_flush_size = 200
 
+
 class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
         self.processor = self._getProcessor(processor)
-        self.processorAdapter = _ProcessorAdapter(self.processor)
-        self.setAdapter(self.processorAdapter)
+        self.setAdapter(_ProcessorAdapter(self.processor))
         self._setup_done = False
         self.serverEventHandler = None
+
+    def setAdapter(self, adapter):
+        self.processorAdapter = adapter
+        CppServerWrapper.setAdapter(self, adapter)
 
     def setObserver(self, observer):
         self.processorAdapter.setObserver(observer)

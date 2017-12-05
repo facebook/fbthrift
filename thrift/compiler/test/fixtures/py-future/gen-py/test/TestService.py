@@ -669,9 +669,13 @@ class Processor(Iface, TProcessor):
     self._handler = handler
     self._executor = executor or ThreadPoolExecutor(max_workers=32)
     self._processMap = {}
+    self._priorityMap = {}
     self._processMap["sleep"] = Processor.future_process_sleep
+    self._priorityMap["sleep"] = TPriority.NORMAL
     self._processMap["isPrime"] = Processor.future_process_isPrime
+    self._priorityMap["isPrime"] = TPriority.NORMAL
     self._processMap["getResult"] = Processor.future_process_getResult
+    self._priorityMap["getResult"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []

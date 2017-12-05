@@ -141,6 +141,10 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     return std::shared_ptr<apache::thrift::concurrency::Runnable>();
   }
 
+  void clearPending() override {
+    LOG(FATAL) << "Method not implemented in this fake object";
+  }
+
   void setExpireCallback(ExpireCallback /*expireCallback*/) override {
     LOG(FATAL) << "Method not implemented in this fake object";
   }

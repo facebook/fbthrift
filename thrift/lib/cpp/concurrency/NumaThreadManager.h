@@ -186,6 +186,10 @@ class NumaThreadManager : public ThreadManager {
     return std::shared_ptr<Runnable>();
   }
 
+  void clearPending() override {
+    throw IllegalStateException("Not implemented");
+  }
+
   void setExpireCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setExpireCallback(expireCallback);

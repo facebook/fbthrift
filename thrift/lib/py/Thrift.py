@@ -28,6 +28,7 @@ import threading
 
 UEXW_MAX_LENGTH = 1024
 
+
 class TType:
     STOP = 0
     VOID = 1
@@ -54,6 +55,16 @@ class TMessageType:
     REPLY = 2
     EXCEPTION = 3
     ONEWAY = 4
+
+
+class TPriority:
+    """ apache::thrift::concurrency::PRIORITY """
+    HIGH_IMPORTANT = 0
+    HIGH = 1
+    IMPORTANT = 2
+    NORMAL = 3
+    BEST_EFFORT = 4
+    N_PRIORITIES = 5
 
 
 class TRequestContext:
@@ -122,6 +133,7 @@ class TProcessor:
         self._event_handler = TProcessorEventHandler()  # null object handler
         self._handler = None
         self._processMap = {}
+        self._priorityMap = {}
 
     def setEventHandler(self, event_handler):
         self._event_handler = event_handler
@@ -166,6 +178,9 @@ class TProcessor:
         oprot.writeMessageEnd()
         oprot.trans.flush()
 
+    def get_priority(self, fname):
+        return self._priorityMap.get(fname, TPriority.NORMAL)
+
     def _getReplyType(self, result):
         if isinstance(result, TApplicationException):
             return TMessageType.EXCEPTION
@@ -194,7 +209,6 @@ class TProcessor:
         return None
 
     def writeReply(self, oprot, handler_ctx, fn_name, seqid, result, server_ctx=None):
-
         self._event_handler.preWrite(handler_ctx, fn_name, result)
         reply_type = self._getReplyType(result)
 

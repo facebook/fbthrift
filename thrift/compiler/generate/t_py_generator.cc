@@ -270,13 +270,25 @@ class t_py_generator : public t_concat_generator {
   std::string declare_argument(std::string structname, t_field* tfield);
   std::string render_field_default_value(t_field* tfield);
   std::string type_name(t_type* ttype);
-  std::string function_signature(t_function* tfunction, std::string prefix="");
-  std::string function_signature_if(t_function* tfunction, bool with_context);
+  std::string function_signature(
+      t_function* tfunction,
+      std::string prefix = "");
+  std::string function_signature_if(
+      t_function* tfunction,
+      bool with_context,
+      std::string prefix = "");
   std::string argument_list(t_struct* tstruct);
   std::string type_to_enum(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
   std::string get_real_py_module(const t_program* program);
   std::string render_string(std::string value);
+
+  std::string get_priority(
+      const t_annotated* obj,
+      std::string const& def = "NORMAL");
+  std::string get_priority(
+      const t_function* obj,
+      std::string const& def = "NORMAL");
 
  private:
 
@@ -2144,10 +2156,11 @@ void t_py_generator::generate_service_interface(t_service* tservice,
   indent_up();
   generate_python_docstring(f_service_, tservice);
   if (!tservice->annotations_.empty()) {
-    f_service_ << indent() << "annotations = {";
+    f_service_ << indent() << "annotations = {" << endl;
     generate_py_string_dict(f_service_, tservice->annotations_);
-    f_service_ << "}" << endl << endl;
+    f_service_ << indent() << "}" << endl << endl;
   }
+  std::string service_priority = get_priority(tservice);
   vector<t_function*> functions = tservice->get_functions();
   if (functions.empty()) {
     f_service_ <<
@@ -2720,7 +2733,6 @@ void t_py_generator::generate_service_fuzzer(t_service* /*tservice*/) {
   chmod_to_755(f_fuzzer_name.c_str());
 }
 
-
 /**
  * Generates a service server definition.
  *
@@ -2793,8 +2805,8 @@ void t_py_generator::generate_service_server(t_service* tservice,
         indent() << "self._loop = loop or asyncio.get_event_loop()" << endl;
     }
 
-    f_service_ <<
-      indent() << "self._processMap = {}" << endl;
+    f_service_ << indent() << "self._processMap = {}" << endl
+               << indent() << "self._priorityMap = {}" << endl;
   } else {
     if (gen_twisted_) {
       f_service_ <<
@@ -2811,12 +2823,16 @@ void t_py_generator::generate_service_server(t_service* tservice,
         "Processor.__init__(self, handler)" << endl;
     }
   }
+  auto service_priority = get_priority(tservice);
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    f_service_ <<
-      indent() << "self._processMap[\"" << (*f_iter)->get_name() <<
-      "\"] = " << class_prefix << "Processor." <<
-      (gen_future_ ? "future_process_" : "process_") <<
-      (*f_iter)->get_name() << endl;
+    auto function_prio = get_priority(*f_iter, service_priority);
+    f_service_ << indent() << "self._processMap["
+               << render_string((*f_iter)->get_name()) << "] = " << class_prefix
+               << "Processor." << (gen_future_ ? "future_process_" : "process_")
+               << (*f_iter)->get_name() << endl
+               << indent() << "self._priorityMap["
+               << render_string((*f_iter)->get_name()) << "] = "
+               << "TPriority." << function_prio << endl;
   }
   indent_down();
   f_service_ << endl;
@@ -3745,10 +3761,13 @@ string t_py_generator::function_signature(t_function* tfunction,
  * @param tfunction Function definition
  * @return String of rendered function definition
  */
-string t_py_generator::function_signature_if(t_function* tfunction,
-                                             bool with_context) {
+string t_py_generator::function_signature_if(
+    t_function* tfunction,
+    bool with_context,
+    string prefix) {
   // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
-  string signature = rename_reserved_keywords(tfunction->get_name()) + "(";
+  string signature =
+      prefix + rename_reserved_keywords(tfunction->get_name()) + "(";
   if (!gen_twisted_) {
     signature += "self, ";
   }
@@ -3795,7 +3814,7 @@ string t_py_generator::type_name(t_type* ttype) {
 }
 
 /**
- * Converts the parse type to a Python tyoe
+ * Converts the parse type to a Python type
  */
 string t_py_generator::type_to_enum(t_type* type) {
   type = get_true_type(type);
@@ -3879,6 +3898,27 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
   }
 
   throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
+}
+
+/**
+ * Gets the priority annotation of an object (service / function)
+ */
+std::string t_py_generator::get_priority(
+    const t_annotated* obj,
+    std::string const& def) {
+  if (obj && obj->annotations_.count("priority")) {
+    return obj->annotations_.at("priority");
+  }
+  return def;
+}
+
+/**
+ * Gets the priority of a function
+ */
+std::string t_py_generator::get_priority(
+    const t_function* func,
+    std::string const& def) {
+  return get_priority(func->get_annotations(), def);
 }
 
 THRIFT_REGISTER_GENERATOR(py, "Python",

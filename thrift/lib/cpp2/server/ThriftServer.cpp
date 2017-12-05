@@ -144,7 +144,7 @@ ThriftServer::~ThriftServer() {
     // Everything is already taken care of.
     return;
   }
-  // If the flag is false, neither i/o nor CPU workers aren't stopped at this
+  // If the flag is false, neither i/o nor CPU workers are stopped at this
   // point. Stop them now.
   threadManager_->join();
   stopWorkers();
@@ -546,8 +546,7 @@ void ThriftServer::stopWorkers() {
       worker->requestStop();
     }
   });
-  constexpr std::chrono::seconds kWorkersJoinTimeout{30};
-  auto deadline = std::chrono::system_clock::now() + kWorkersJoinTimeout;
+  auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       worker->waitForStop(deadline);

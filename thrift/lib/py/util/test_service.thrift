@@ -17,3 +17,15 @@ service TestService {
       throws (1: UserException1 ex1, 2: UserException2 ex2)
   i64 throwUncaughtException(1: string msg)
 }
+
+service PriorityService {
+  bool bestEffort() (priority='BEST_EFFORT')
+  bool normal() (priority='NORMAL')
+  bool important() (priority='IMPORTANT')
+  bool unspecified()
+} (priority='HIGH')
+
+service SubPriorityService extends PriorityService {
+  bool child_unspecified()
+  bool child_highImportant() (priority='HIGH_IMPORTANT')
+}
