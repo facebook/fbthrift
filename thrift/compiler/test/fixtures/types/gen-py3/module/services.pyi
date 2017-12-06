@@ -21,8 +21,20 @@ class SomeServiceInterface(
 
     @staticmethod
     def pass_context_bounce_map(
-        fn: _typing.Callable[[_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],_typing.Awaitable[_typing.Mapping[int, str]]]
-    ) -> _typing.Callable[[_SomeServiceInterfaceT, _typing.Mapping[int, str]],_typing.Awaitable[_typing.Mapping[int, str]]]: ...
+        fn: _typing.Callable[
+                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
+                _typing.Awaitable[_typing.Mapping[int, str]]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
+                _typing.Awaitable[_typing.Mapping[int, str]]
+            ],
+            _typing.Callable[
+                [_SomeServiceInterfaceT, _typing.Mapping[int, str]],
+                 _typing.Awaitable[_typing.Mapping[int, str]]
+            ]
+    ]: ...
 
     @abstractmethod
     async def bounce_map(

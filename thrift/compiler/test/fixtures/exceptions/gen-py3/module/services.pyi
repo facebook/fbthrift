@@ -20,8 +20,20 @@ class RaiserInterface(
 
     @staticmethod
     def pass_context_doBland(
-        fn: _typing.Callable[[_RaiserInterfaceT, RequestContext],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_RaiserInterfaceT],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_RaiserInterfaceT],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def doBland(
@@ -30,8 +42,20 @@ class RaiserInterface(
 
     @staticmethod
     def pass_context_doRaise(
-        fn: _typing.Callable[[_RaiserInterfaceT, RequestContext],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_RaiserInterfaceT],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_RaiserInterfaceT],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def doRaise(
@@ -40,8 +64,20 @@ class RaiserInterface(
 
     @staticmethod
     def pass_context_get200(
-        fn: _typing.Callable[[_RaiserInterfaceT, RequestContext],_typing.Awaitable[str]]
-    ) -> _typing.Callable[[_RaiserInterfaceT],_typing.Awaitable[str]]: ...
+        fn: _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[str]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[str]
+            ],
+            _typing.Callable[
+                [_RaiserInterfaceT],
+                 _typing.Awaitable[str]
+            ]
+    ]: ...
 
     @abstractmethod
     async def get200(
@@ -50,8 +86,20 @@ class RaiserInterface(
 
     @staticmethod
     def pass_context_get500(
-        fn: _typing.Callable[[_RaiserInterfaceT, RequestContext],_typing.Awaitable[str]]
-    ) -> _typing.Callable[[_RaiserInterfaceT],_typing.Awaitable[str]]: ...
+        fn: _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[str]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_RaiserInterfaceT, RequestContext],
+                _typing.Awaitable[str]
+            ],
+            _typing.Callable[
+                [_RaiserInterfaceT],
+                 _typing.Awaitable[str]
+            ]
+    ]: ...
 
     @abstractmethod
     async def get500(

@@ -20,8 +20,20 @@ class TestServiceInterface(
 
     @staticmethod
     def pass_context_init(
-        fn: _typing.Callable[[_TestServiceInterfaceT, RequestContext, int],_typing.Awaitable[int]]
-    ) -> _typing.Callable[[_TestServiceInterfaceT, int],_typing.Awaitable[int]]: ...
+        fn: _typing.Callable[
+                [_TestServiceInterfaceT, RequestContext, int],
+                _typing.Awaitable[int]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_TestServiceInterfaceT, RequestContext, int],
+                _typing.Awaitable[int]
+            ],
+            _typing.Callable[
+                [_TestServiceInterfaceT, int],
+                 _typing.Awaitable[int]
+            ]
+    ]: ...
 
     @abstractmethod
     async def init(

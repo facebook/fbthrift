@@ -20,8 +20,20 @@ class NestedContainersInterface(
 
     @staticmethod
     def pass_context_mapList(
-        fn: _typing.Callable[[_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_NestedContainersInterfaceT, _typing.Mapping[int, _typing.Sequence[int]]],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.Sequence[int]]],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def mapList(
@@ -31,8 +43,20 @@ class NestedContainersInterface(
 
     @staticmethod
     def pass_context_mapSet(
-        fn: _typing.Callable[[_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_NestedContainersInterfaceT, _typing.Mapping[int, _typing.AbstractSet[int]]],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.AbstractSet[int]]],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def mapSet(
@@ -42,8 +66,20 @@ class NestedContainersInterface(
 
     @staticmethod
     def pass_context_listMap(
-        fn: _typing.Callable[[_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_NestedContainersInterfaceT, _typing.Sequence[_typing.Mapping[int, int]]],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_NestedContainersInterfaceT, _typing.Sequence[_typing.Mapping[int, int]]],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def listMap(
@@ -53,8 +89,20 @@ class NestedContainersInterface(
 
     @staticmethod
     def pass_context_listSet(
-        fn: _typing.Callable[[_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_NestedContainersInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_NestedContainersInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def listSet(
@@ -64,8 +112,20 @@ class NestedContainersInterface(
 
     @staticmethod
     def pass_context_turtles(
-        fn: _typing.Callable[[_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_NestedContainersInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_NestedContainersInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def turtles(

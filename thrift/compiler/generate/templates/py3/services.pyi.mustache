@@ -40,9 +40,9 @@ _{{service:name}}InterfaceT = _typing.TypeVar('_{{service:name}}InterfaceT', bou
 
 
 class {{service:name}}Interface(
-    {{#service:extends}}
+    {{#service:extends}}{{#service:externalProgram?}}
     _{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
-        }}{{service:programName}}_services.{{service:name}}Interface
+        }}{{service:programName}}_services.{{/service:externalProgram?}}{{service:name}}Interface
     {{/service:extends}}
     {{^service:extends?}}
     ServiceInterface
@@ -52,8 +52,20 @@ class {{service:name}}Interface(
 
     @staticmethod
     def pass_context_{{function:name}}(
-        fn: _typing.Callable[[_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],_typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]]
-    ) -> _typing.Callable[[_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],_typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]]: ...
+        fn: _typing.Callable[
+                [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
+                _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
+                _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
+            ],
+            _typing.Callable[
+                [_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
+                 _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
+            ]
+    ]: ...
 
     @abstractmethod
     async def {{function:name}}(

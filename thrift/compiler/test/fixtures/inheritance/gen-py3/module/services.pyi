@@ -20,8 +20,20 @@ class MyRootInterface(
 
     @staticmethod
     def pass_context_do_root(
-        fn: _typing.Callable[[_MyRootInterfaceT, RequestContext],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_MyRootInterfaceT],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_MyRootInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_MyRootInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_MyRootInterfaceT],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def do_root(
@@ -33,13 +45,25 @@ _MyNodeInterfaceT = _typing.TypeVar('_MyNodeInterfaceT', bound='MyNodeInterface'
 
 
 class MyNodeInterface(
-    _module_services.MyRootInterface
+MyRootInterface
 ):
 
     @staticmethod
     def pass_context_do_mid(
-        fn: _typing.Callable[[_MyNodeInterfaceT, RequestContext],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_MyNodeInterfaceT],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_MyNodeInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_MyNodeInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_MyNodeInterfaceT],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def do_mid(
@@ -51,13 +75,25 @@ _MyLeafInterfaceT = _typing.TypeVar('_MyLeafInterfaceT', bound='MyLeafInterface'
 
 
 class MyLeafInterface(
-    _module_services.MyNodeInterface
+MyNodeInterface
 ):
 
     @staticmethod
     def pass_context_do_leaf(
-        fn: _typing.Callable[[_MyLeafInterfaceT, RequestContext],_typing.Awaitable[None]]
-    ) -> _typing.Callable[[_MyLeafInterfaceT],_typing.Awaitable[None]]: ...
+        fn: _typing.Callable[
+                [_MyLeafInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+        ]
+    ) -> _typing.Union[
+            _typing.Callable[
+                [_MyLeafInterfaceT, RequestContext],
+                _typing.Awaitable[None]
+            ],
+            _typing.Callable[
+                [_MyLeafInterfaceT],
+                 _typing.Awaitable[None]
+            ]
+    ]: ...
 
     @abstractmethod
     async def do_leaf(
