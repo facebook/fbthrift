@@ -33,6 +33,8 @@ class RSClientConnection : public ClientConnectionIf {
       apache::thrift::async::TAsyncTransport::UniquePtr socket,
       bool isSecure = false);
 
+  virtual ~RSClientConnection();
+
   std::shared_ptr<ThriftChannelIf> getChannel(
       RequestRpcMetadata* metadata) override;
   void setMaxPendingRequests(uint32_t num) override;

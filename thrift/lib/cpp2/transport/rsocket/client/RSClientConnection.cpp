@@ -86,6 +86,13 @@ RSClientConnection::RSClientConnection(
       std::make_shared<RSClientThriftChannel>(rsRequester_, counters_, evb_);
 }
 
+RSClientConnection::~RSClientConnection() {
+  if (rsRequester_) {
+    evb_->runInEventBaseThread(
+        [rsRequester = std::move(rsRequester_)]() { rsRequester->closeNow(); });
+  }
+}
+
 std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel(
     RequestRpcMetadata*) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
