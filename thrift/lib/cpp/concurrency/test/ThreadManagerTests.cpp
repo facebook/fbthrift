@@ -22,11 +22,11 @@
 #include <random>
 #include <thread>
 
-#include <folly/Baton.h>
 #include <folly/Synchronized.h>
 #include <folly/executors/Codel.h>
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
+#include <folly/synchronization/Baton.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>

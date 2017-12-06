@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <folly/Baton.h>
 #include <folly/Singleton.h>
 #include <folly/futures/Barrier.h>
+#include <folly/synchronization/Baton.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/test/MockSecurityKillSwitchPoller.h>
 

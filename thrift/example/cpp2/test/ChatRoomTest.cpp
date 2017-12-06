@@ -16,8 +16,8 @@
 
 #include <gtest/gtest.h>
 
-#include <folly/Baton.h>
 #include <folly/futures/Future.h>
+#include <folly/synchronization/Baton.h>
 #include <thrift/example/cpp2/server/ChatRoomService.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>

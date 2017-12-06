@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <folly/Baton.h>
 #include <folly/String.h>
 #include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
+#include <folly/synchronization/Baton.h>
 #include <rsocket/Payload.h>
 #include <yarpl/Flowable.h>
 

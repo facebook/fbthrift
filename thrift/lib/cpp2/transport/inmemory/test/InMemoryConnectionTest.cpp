@@ -16,9 +16,9 @@
 
 #include <gtest/gtest.h>
 
-#include <folly/Baton.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/futures/Future.h>
+#include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>

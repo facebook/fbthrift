@@ -15,9 +15,9 @@
  */
 #include "thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h"
 
-#include <folly/Baton.h>
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/synchronization/Baton.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <gtest/gtest.h>
