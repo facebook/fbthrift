@@ -78,18 +78,6 @@ TEST_P(LegacyCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_P(LegacyCompatibilityTest, Oneway_Simple) {
-  compatibilityTest_->TestOneway_Simple();
-}
-
-TEST_P(LegacyCompatibilityTest, Oneway_WithDelay) {
-  compatibilityTest_->TestOneway_WithDelay();
-}
-
-TEST_P(LegacyCompatibilityTest, Oneway_UnexpectedException) {
-  compatibilityTest_->TestOneway_UnexpectedException();
-}
-
 INSTANTIATE_TEST_CASE_P(
     WithAndWithoutMetadataInBody,
     LegacyCompatibilityTest,

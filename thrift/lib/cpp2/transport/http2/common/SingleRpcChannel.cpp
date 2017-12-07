@@ -53,6 +53,8 @@ using proxygen::IOBufPrinter;
 using proxygen::ProxygenError;
 using proxygen::ResponseHandler;
 
+static constexpr folly::StringPiece RPC_KIND = "rpckind";
+
 SingleRpcChannel::SingleRpcChannel(
     ResponseHandler* toHttp2,
     ThriftProcessor* processor,
@@ -164,6 +166,10 @@ void SingleRpcChannel::sendThriftRequest(
     if (metadata->__isset.priority) {
       metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
           folly::to<string>(metadata->priority);
+    }
+    if (metadata->__isset.kind) {
+      metadata->otherMetadata[RPC_KIND.str()] =
+          folly::to<string>(metadata->kind);
     }
     encodeHeaders(std::move(metadata->otherMetadata), msg);
     httpTransaction_->sendHeaders(msg);
@@ -293,8 +299,7 @@ void SingleRpcChannel::onThriftRequest() noexcept {
       sendThriftErrorResponse("Invalid envelope: see logs for error");
       return;
     }
-    // I don't think there is a way to indicate the kind of call in
-    // legacy mode.  So we just set it to twoway.
+    // Default Single Request Single Response
     metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
     metadata->__isset.kind = true;
     extractHeaderInfo(metadata.get());
@@ -402,6 +407,16 @@ void SingleRpcChannel::extractHeaderInfo(
       }
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad method priority " << iter->second;
+    }
+    headers.erase(iter);
+  }
+  iter = headers.find(RPC_KIND.str());
+  if (iter != headers.end()) {
+    try {
+      metadata->kind = static_cast<RpcKind>(folly::to<int32_t>(iter->second));
+      metadata->__isset.kind = true;
+    } catch (const std::range_error&) {
+      LOG(INFO) << "Bad Request Kind " << iter->second;
     }
     headers.erase(iter);
   }
