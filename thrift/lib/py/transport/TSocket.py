@@ -37,7 +37,7 @@ try:
     import fcntl
 except ImportError:
     # Windows doesn't have this module
-    fcntl = None
+    fcntl = None  # type: ignore
 
 class ConnectionEpoll:
     """ epoll is preferred over select due to its efficiency and ability to

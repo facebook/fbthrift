@@ -59,7 +59,7 @@ except ImportError:
         def decompress(self, buf):
             raise TTransportException(TTransportException.INVALID_TRANSFORM,
                                       'snappy module not available')
-    snappy = DummySnappy()
+    snappy = DummySnappy()  # type: ignore
 
 
 # Definitions from THeader.h
@@ -116,8 +116,6 @@ MAX_BIG_FRAME_SIZE = 2 ** 61 - 1
 class THeaderTransport(TTransportBase, CReadableTransport):
     """Transport that sends headers.  Also understands framed/unframed/HTTP
     transports and and will do the right thing"""
-
-    __supported_client_types = []
 
     __max_frame_size = MAX_FRAME_SIZE
 
