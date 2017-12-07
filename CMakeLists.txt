@@ -89,9 +89,6 @@ if(lib_only OR build_all)
     set(THRIFT_TEMPLATES ${THRIFT_COMPILER_INCLUDE}/thrift/templates)
     include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
   endif(lib_only)
-  if(YARPL_FOUND)
-    add_definitions("-DYARPL_INCLUDED=1")
-  endif(YARPL_FOUND)
 endif(lib_only OR build_all)
 
 # Add the test dependencies
