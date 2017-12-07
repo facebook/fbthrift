@@ -14,6 +14,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
+#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
@@ -59,7 +60,7 @@ void PubSubStreamingServiceSvIf::async_tm_both(std::unique_ptr<apache::thrift::H
 void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t i32_from, int32_t i32_to) {
   auto request = callback->getRequest();
   auto thriftRequest = static_cast<apache::thrift::ThriftRequest*>(request);
-  auto _channel = thriftRequest->getChannel();
+  auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
   apache::thrift::detail::si::async_tm_oneway(
       this, std::move(callback), [&, this] {
         auto _result = returnstream(i32_from, i32_to);

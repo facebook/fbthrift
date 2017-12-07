@@ -16,7 +16,7 @@
 
 %>return yarpl::flowable::Flowables::fromPublisher<std::unique_ptr<
     folly::IOBuf>>([this, rpcOptions<%function:comma%><% > service_common/param_list_move_assignment %>](
-                       apache::thrift::ThriftChannelIf::SubscriberRef
+                       apache::thrift::StreamRequestCallback::SubscriberRef
                            _subscriber) mutable {
          auto _callback = std::make_unique<
              apache::thrift::StreamRequestCallback>(
@@ -28,7 +28,7 @@
              <%/function:takes_stream?%>
          // Connect the inputs of the callback
          <%#function:returns_stream?%>
-         _callback->setInput(_subscriber);
+         _callback->subscribeToOutput(_subscriber);
          <%/function:returns_stream?%>
          <%#function:takes_stream?%>
          <%#function:args%><%#field:type%><%#first?%>

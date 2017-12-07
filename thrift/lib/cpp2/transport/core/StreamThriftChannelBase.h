@@ -24,27 +24,33 @@
 namespace apache {
 namespace thrift {
 
-class RSThriftChannelBase : public ThriftChannelIf {
+/**
+ * The channel object supports streaming as follows:
+ * - Server and client each keep an instance of the channel as duals of
+ *   each other. The input in one side is perceived as output in the other
+ *   side, and vice versa.
+ *
+ * - For RPCs with streaming requests, the channel provides "setInput(stream)"
+ *   method for the server to register a sink that is to receive these messages.
+ *
+ * - For RPCs with streaming responses, the operations are reversed.
+ *   The server uses the channel's "getOutput()" method to obtain a stream and
+ *   to use it for streaming messages.
+ */
+class StreamThriftChannelBase : public ThriftChannelIf {
  public:
-  explicit RSThriftChannelBase(folly::EventBase* evb) : evb_(evb) {}
+  explicit StreamThriftChannelBase(folly::EventBase* evb) : evb_(evb) {}
 
-  virtual ~RSThriftChannelBase() = default;
-
-  virtual void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
-      std::unique_ptr<folly::IOBuf>) noexcept override {
-    LOG(FATAL) << "No response is allowed";
-  }
-
-  virtual void sendErrorWrapped(
-      folly::exception_wrapper,
-      std::string,
-      MessageChannel::SendCallback* /*cb*/ = nullptr) noexcept {
-    LOG(FATAL) << "No response is allowed";
-  }
+  virtual ~StreamThriftChannelBase() = default;
 
   folly::EventBase* getEventBase() noexcept override {
     return evb_;
+  }
+
+  void sendThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata>,
+      std::unique_ptr<folly::IOBuf>) noexcept override {
+    LOG(FATAL) << "No response is allowed";
   }
 
   void sendThriftRequest(
@@ -54,11 +60,11 @@ class RSThriftChannelBase : public ThriftChannelIf {
     LOG(FATAL) << "Server should not call this function.";
   }
 
-  void setInput(int32_t, SubscriberRef) noexcept override {
+  virtual void setInput(int32_t, SubscriberRef) noexcept {
     LOG(FATAL) << "Use StreamingInput/StreamingInputOutput";
   }
 
-  SubscriberRef getOutput(int32_t) noexcept override {
+  virtual SubscriberRef getOutput(int32_t) noexcept {
     LOG(FATAL) << "Use StreamingOutput/StreamingInputOutput";
   }
 

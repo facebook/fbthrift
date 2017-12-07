@@ -18,34 +18,24 @@
 
 #include <rsocket/Payload.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSThriftChannelBase.h>
 #include <yarpl/Single.h>
 
 namespace apache {
 namespace thrift {
 
-class RequestResponseThriftChannel : public RSThriftChannelBase {
+class RequestResponseThriftChannel : public StreamThriftChannelBase {
  public:
   explicit RequestResponseThriftChannel(
       folly::EventBase* evb,
       yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
           subscriber)
-      : RSThriftChannelBase(evb), subscriber_(subscriber) {}
+      : StreamThriftChannelBase(evb), subscriber_(subscriber) {}
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf) noexcept override;
-
-  void sendErrorWrapped(
-      folly::exception_wrapper /* ex */,
-      std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* /* cb */ =
-          nullptr) noexcept override {
-    VLOG(3) << "sendErrorWrapped";
-    subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
-    subscriber_->onError(std::runtime_error(std::move(exCode)));
-  }
 
   folly::EventBase* getEventBase() noexcept override {
     return evb_;

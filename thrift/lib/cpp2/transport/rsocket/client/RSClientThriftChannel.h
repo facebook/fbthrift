@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/futures/Future.h>
+#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
@@ -57,6 +58,11 @@ class RSClientThriftChannel : public ThriftChannelIf {
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
+  void sendStreamThriftRequest(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload,
+      std::unique_ptr<StreamRequestCallback> callback) noexcept;
+
   static std::unique_ptr<folly::IOBuf> serializeMetadata(
       const RequestRpcMetadata& requestMetadata);
 
@@ -91,11 +97,13 @@ class RSClientThriftChannel : public ThriftChannelIf {
 
   void sendStreamRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> payload) noexcept;
+      std::unique_ptr<folly::IOBuf> payload,
+      std::unique_ptr<StreamRequestCallback> callback) noexcept;
 
   void sendSingleRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> payload) noexcept;
+      std::unique_ptr<folly::IOBuf> payload,
+      std::unique_ptr<StreamRequestCallback> callback) noexcept;
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata>,

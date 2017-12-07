@@ -58,34 +58,5 @@ TEST(RequestResponseThriftChannel, SuccessResponse) {
   evb.loop();
 }
 
-TEST(RequestResponseThriftChannel, FailureResponse) {
-  folly::EventBase evb;
-  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
-      subscriberRef;
-  folly::Baton<> subscriberBaton;
-  auto single = yarpl::single::Single<rsocket::Payload>::create(
-      [&subscriberRef, &subscriberBaton](auto subscriber) mutable {
-        subscriberRef = subscriber;
-        subscriberBaton.post();
-      });
-
-  single->subscribe(
-      [](rsocket::Payload) { FAIL() << "Error is expected"; },
-      [](folly::exception_wrapper ex) {
-        CHECK_STREQ(ex.get_exception()->what(), "mock_exception");
-      });
-
-  subscriberBaton.wait();
-
-  auto requestResponse =
-      std::make_shared<RequestResponseThriftChannel>(&evb, subscriberRef);
-
-  evb.runInEventBaseThread([requestResponse = std::move(requestResponse)]() {
-    requestResponse->sendErrorWrapped(
-        folly::exception_wrapper(), "mock_exception", nullptr);
-  });
-
-  evb.loop();
-}
 } // namespace thrift
 } // namespace apache

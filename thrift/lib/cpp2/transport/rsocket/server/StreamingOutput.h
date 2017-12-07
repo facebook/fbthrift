@@ -21,21 +21,19 @@
 #include <folly/io/IOBuf.h>
 #include <folly/synchronization/Baton.h>
 #include <rsocket/Payload.h>
+#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
 #include <yarpl/Flowable.h>
-
 #include <yarpl/flowable/Flowables.h>
-
-#include <thrift/lib/cpp2/transport/rsocket/server/RSThriftChannelBase.h>
 
 namespace apache {
 namespace thrift {
 
-class StreamingOutput : public RSThriftChannelBase {
+class StreamingOutput : public StreamThriftChannelBase {
  public:
   using Result = yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
 
   StreamingOutput(folly::EventBase* evb, int streamId, SubscriberRef subscriber)
-      : RSThriftChannelBase(evb),
+      : StreamThriftChannelBase(evb),
         streamId_(streamId),
         subscriber_(std::move(subscriber)) {}
 

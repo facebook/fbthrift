@@ -524,13 +524,13 @@ apache::thrift::Stream<int32_t> PubSubStreamingServiceAsyncClient::returnstream(
 apache::thrift::Stream<int32_t> PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
   return yarpl::flowable::Flowables::fromPublisher<std::unique_ptr<
       folly::IOBuf>>([this, rpcOptions, i32_from, i32_to](
-                         apache::thrift::ThriftChannelIf::SubscriberRef
+                         apache::thrift::StreamRequestCallback::SubscriberRef
                              _subscriber) mutable {
            auto _callback = std::make_unique<
                apache::thrift::StreamRequestCallback>(
                apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
            // Connect the inputs of the callback
-           _callback->setInput(_subscriber);
+           _callback->subscribeToOutput(_subscriber);
            // Perform the RPC call
            returnstream(rpcOptions, std::move(_callback), i32_from, i32_to);
          })

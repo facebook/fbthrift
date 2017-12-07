@@ -25,7 +25,7 @@
 <%/type:resolves_to_complex_return?%>
 <%#type:stream?%>
 <%#type:streamElemType%>
-  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_commented_out%>) override {};
+  void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> <%function:comma_nostream%><% > service_common/function_param_list_without_streams_commented_out%>) override {}
 <%/type:streamElemType%>
 <%/type:stream?%>
 <%#service:frozen2?%>

@@ -62,7 +62,7 @@ void RSResponder::handleFireAndForget(
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
 
-  auto channel = std::make_shared<RSThriftChannelBase>(evb_);
+  auto channel = std::make_shared<StreamThriftChannelBase>(evb_);
   processor_->onThriftRequest(
       std::move(metadata), std::move(request.data), std::move(channel));
 }

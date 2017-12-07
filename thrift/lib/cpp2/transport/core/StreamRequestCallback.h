@@ -24,11 +24,15 @@
 namespace apache {
 namespace thrift {
 
-// If an RPC function is a stream enabled one, then that function will
-// create an instance of StreamRequestCallback class instead of others.
-// ThriftClient will handle instances of this class.
+/**
+ * If an RPC function is a stream enabled one, then that function will
+ * create an instance of StreamRequestCallback class instead of others.
+ * ThriftClient will handle instances of this class.
+ */
 class StreamRequestCallback : public ClientSyncCallback {
  public:
+  using SubscriberRef = yarpl::Reference<
+      yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
   using FlowableRef = yarpl::Reference<
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
@@ -39,8 +43,8 @@ class StreamRequestCallback : public ClientSyncCallback {
         kind_(kind) {}
 
   // Called from the compiler generated code
-  void setInput(ThriftChannelIf::SubscriberRef subscriber) {
-    inputSubscriber_ = std::move(subscriber);
+  void subscribeToOutput(SubscriberRef subscriber) {
+    subscriber_ = std::move(subscriber);
   }
 
   void setInput(FlowableRef input) {
@@ -48,12 +52,12 @@ class StreamRequestCallback : public ClientSyncCallback {
   }
 
   // Called from the Channel
-  void setChannelOutput(ThriftChannelIf::SubscriberRef subscriber) {
+  void subscribeToInput(SubscriberRef subscriber) {
     inputFlowable_->subscribe(subscriber);
   }
 
-  ThriftChannelIf::SubscriberRef getChannelInput() {
-    return inputSubscriber_;
+  SubscriberRef getOutput() {
+    return subscriber_;
   }
 
   void replyReceived(ClientReceiveState&& rs) override {
@@ -83,7 +87,8 @@ class StreamRequestCallback : public ClientSyncCallback {
  protected:
   ClientReceiveState rs_;
 
-  ThriftChannelIf::SubscriberRef inputSubscriber_;
+  // Write output to this subscriber
+  SubscriberRef subscriber_;
   FlowableRef inputFlowable_;
 
   folly::Promise<folly::Unit> replyPromise_;

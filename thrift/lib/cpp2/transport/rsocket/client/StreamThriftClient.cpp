@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #include <yarpl/single/Singles.h>
@@ -126,34 +127,22 @@ uint32_t StreamThriftClient::sendStreamRequestHelper(
        metadata = std::move(metadata),
        buf = std::move(buf),
        cb = std::move(cb)]() mutable {
+        std::shared_ptr<RSClientThriftChannel> channel{nullptr};
         try {
-          auto channel = conn->getChannel(metadata.get());
-
-          RpcKind rpcKind = cb->kind_;
-          CHECK(rpcKind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
-          CHECK(rpcKind != RpcKind::STREAMING_REQUEST_NO_RESPONSE);
-
-          bool streamingResponse =
-              rpcKind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE ||
-              rpcKind == RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE;
-          if (streamingResponse) {
-            channel->setInput(0, cb->getChannelInput());
-          }
-
-          channel->sendThriftRequest(
-              std::move(metadata), std::move(buf), nullptr);
-
-          bool streamingRequest =
-              rpcKind == RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE;
-          if (streamingRequest) {
-            cb->setChannelOutput(channel->getOutput(0));
+          channel = std::dynamic_pointer_cast<RSClientThriftChannel>(
+              conn->getChannel(metadata.get()));
+          if (!channel) {
+            throw TTransportException("invalid channel type");
           }
         } catch (const TTransportException& te) {
           // Give the error as the stream!
-          cb->getChannelInput()->onSubscribe(
-              yarpl::flowable::Subscription::empty());
-          cb->getChannelInput()->onError(te);
+          cb->getOutput()->onSubscribe(yarpl::flowable::Subscription::empty());
+          cb->getOutput()->onError(te);
+          return;
         }
+
+        channel->sendStreamThriftRequest(
+            std::move(metadata), std::move(buf), std::move(cb));
       });
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }

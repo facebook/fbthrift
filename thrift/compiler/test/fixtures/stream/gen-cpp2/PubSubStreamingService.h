@@ -74,7 +74,7 @@ class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
   void server(apache::thrift::Stream<int32_t> /*foo*/) override;
   void both(apache::thrift::Stream<int32_t> /*foo*/) override;
   apache::thrift::Stream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) override;
-  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t /*i32_from*/, int32_t /*i32_to*/) override {};
+  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> , int32_t /*i32_from*/, int32_t /*i32_to*/) override {}
   void takesstream(apache::thrift::Stream<int32_t> /*instream*/, int32_t /*other_param*/) override;
   void clientthrows(apache::thrift::Stream<int32_t> /*foostream*/) override;
 };

@@ -20,15 +20,14 @@
 #include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
 #include <rsocket/Payload.h>
+#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
 #include <yarpl/Flowable.h>
 #include <yarpl/flowable/Flowables.h>
-
-#include <thrift/lib/cpp2/transport/rsocket/server/RSThriftChannelBase.h>
 
 namespace apache {
 namespace thrift {
 
-class StreamingInput : public RSThriftChannelBase {
+class StreamingInput : public StreamThriftChannelBase {
  public:
   using Input = yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
 
@@ -36,8 +35,8 @@ class StreamingInput : public RSThriftChannelBase {
       folly::EventBase* evb,
       Input input,
       int streamId,
-      std::unique_ptr<RSThriftChannelBase> inner)
-      : RSThriftChannelBase(evb),
+      std::unique_ptr<StreamThriftChannelBase> inner)
+      : StreamThriftChannelBase(evb),
         input_(input),
         streamId_(streamId),
         inner_(std::move(inner)) {}
@@ -48,14 +47,6 @@ class StreamingInput : public RSThriftChannelBase {
     inner_->sendThriftResponse(std::move(metadata), std::move(buf));
   }
 
-  void sendErrorWrapped(
-      folly::exception_wrapper ex,
-      std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* cb =
-          nullptr) noexcept override {
-    inner_->sendErrorWrapped(ex, exCode, cb);
-  }
-
   void setInput(int32_t, SubscriberRef sink) noexcept override {
     input_->map([](auto payload) { return std::move(payload.data); })
         ->subscribe(std::move(sink));
@@ -64,7 +55,7 @@ class StreamingInput : public RSThriftChannelBase {
  private:
   Input input_;
   int streamId_;
-  std::unique_ptr<RSThriftChannelBase> inner_;
+  std::unique_ptr<StreamThriftChannelBase> inner_;
 };
 } // namespace thrift
 } // namespace apache

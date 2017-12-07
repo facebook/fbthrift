@@ -141,12 +141,6 @@ void RSClientThriftChannel::sendThriftRequest(
       sendSingleRequestNoResponse(
           std::move(metadata), std::move(payload), std::move(callback));
       break;
-    case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-      sendStreamRequestStreamResponse(std::move(metadata), std::move(payload));
-      break;
-    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      sendSingleRequestStreamResponse(std::move(metadata), std::move(payload));
-      break;
     default: {
       LOG(ERROR) << "Unknown RpcKind value in the Metadata";
       auto evb = callback->getEventBase();
@@ -154,6 +148,41 @@ void RSClientThriftChannel::sendThriftRequest(
         cb->onError(folly::exception_wrapper(
             TTransportException("Unknown RpcKind value in the Metadata")));
       });
+    }
+  }
+}
+
+void RSClientThriftChannel::sendStreamThriftRequest(
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<folly::IOBuf> payload,
+    std::unique_ptr<StreamRequestCallback> callback) noexcept {
+  evb_->dcheckIsInEventBaseThread();
+
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
+    LOG(ERROR) << "Unexpected problem stripping envelope";
+    callback->getOutput()->onSubscribe(yarpl::flowable::Subscription::empty());
+    callback->getOutput()->onError(folly::exception_wrapper(
+        TTransportException("Unexpected problem stripping envelope")));
+    return;
+  }
+  metadata->seqId = 0;
+  metadata->__isset.seqId = true;
+  DCHECK(metadata->__isset.kind);
+  switch (metadata->kind) {
+    case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
+      sendStreamRequestStreamResponse(
+          std::move(metadata), std::move(payload), std::move(callback));
+      break;
+    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      sendSingleRequestStreamResponse(
+          std::move(metadata), std::move(payload), std::move(callback));
+      break;
+    default: {
+      LOG(ERROR) << "Unknown RpcKind value in the Metadata";
+      callback->getOutput()->onSubscribe(
+          yarpl::flowable::Subscription::empty());
+      callback->getOutput()->onError(folly::exception_wrapper(
+          TTransportException("Unknown RpcKind value in the Metadata")));
     }
   }
 }
@@ -214,14 +243,21 @@ void RSClientThriftChannel::sendSingleRequestResponse(
 
 void RSClientThriftChannel::sendStreamRequestStreamResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf) noexcept {
+    std::unique_ptr<folly::IOBuf> buf,
+    std::unique_ptr<StreamRequestCallback> callback) noexcept {
+  auto output = callback->getOutput();
+
   auto input = yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
-      [this, initialBuf = std::move(buf), metadata = std::move(metadata)](
+      [initialBuf = std::move(buf),
+       metadata = std::move(metadata),
+       callback = std::move(callback)](
           yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
               subscriber) mutable {
         VLOG(3) << "Input is started to be consumed: "
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
-        outputPromise_.setValue(yarpl::make_ref<RPCSubscriber>(
+        StreamRequestCallback* scb =
+            static_cast<StreamRequestCallback*>(callback.get());
+        scb->subscribeToInput(yarpl::make_ref<RPCSubscriber>(
             serializeMetadata(*metadata),
             std::move(initialBuf),
             std::move(subscriber)));
@@ -237,12 +273,13 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
         // TODO - don't drop the headers
         return std::move(payload.data);
       })
-      ->subscribe(input_);
+      ->subscribe(output);
 }
 
 void RSClientThriftChannel::sendSingleRequestStreamResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf) noexcept {
+    std::unique_ptr<folly::IOBuf> buf,
+    std::unique_ptr<StreamRequestCallback> callback) noexcept {
   auto result = rsRequester_->requestStream(
       rsocket::Payload(std::move(buf), serializeMetadata(*metadata)));
   result
@@ -250,7 +287,7 @@ void RSClientThriftChannel::sendSingleRequestStreamResponse(
         // TODO - don't drop the headers
         return std::move(payload.data);
       })
-      ->subscribe(input_);
+      ->subscribe(callback->getOutput());
 }
 
 bool RSClientThriftChannel::isDetachable() {

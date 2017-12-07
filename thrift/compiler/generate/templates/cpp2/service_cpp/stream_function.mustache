@@ -16,7 +16,7 @@
 
 %>auto request = callback->getRequest();
 auto thriftRequest = static_cast<apache::thrift::ThriftRequest*>(request);
-auto _channel = thriftRequest->getChannel();
+auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
 apache::thrift::detail::si::async_tm_oneway(
     this, std::move(callback), [&, this] {
       <%#function:takes_stream?%>
