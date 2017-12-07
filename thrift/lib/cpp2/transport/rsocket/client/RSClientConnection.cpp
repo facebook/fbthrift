@@ -88,8 +88,15 @@ RSClientConnection::RSClientConnection(
 
 RSClientConnection::~RSClientConnection() {
   if (rsRequester_) {
-    evb_->runInEventBaseThread(
-        [rsRequester = std::move(rsRequester_)]() { rsRequester->closeNow(); });
+    if (evb_ && !evb_->isInEventBaseThread()) {
+      evb_->runInEventBaseThread([rsRequester = std::move(rsRequester_)]() {
+        rsRequester->closeNow();
+      });
+    } else {
+      // If evb_ is missing, this function will attach the current event base
+      // instead of the missing one
+      closeNow();
+    }
   }
 }
 
@@ -202,9 +209,14 @@ void RSClientConnection::setTimeout(uint32_t timeoutMs) {
 }
 
 void RSClientConnection::closeNow() {
-  DCHECK(evb_ && evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (rsRequester_) {
     channel_.reset();
+    if (!evb_) {
+      // Add current event base instead of the missing one.
+      LOG(ERROR) << "Closing RSClientConnection with missing EventBase";
+      attachEventBase(folly::EventBaseManager::get()->getEventBase());
+    }
     rsRequester_->closeNow();
     rsRequester_.reset();
   }
