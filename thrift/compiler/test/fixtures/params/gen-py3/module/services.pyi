@@ -24,15 +24,9 @@ class NestedContainersInterface(
                 [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.Sequence[int]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.Sequence[int]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -47,15 +41,9 @@ class NestedContainersInterface(
                 [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.AbstractSet[int]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.AbstractSet[int]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -70,15 +58,9 @@ class NestedContainersInterface(
                 [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_NestedContainersInterfaceT, _typing.Sequence[_typing.Mapping[int, int]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_NestedContainersInterfaceT, _typing.Sequence[_typing.Mapping[int, int]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -93,15 +75,9 @@ class NestedContainersInterface(
                 [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_NestedContainersInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_NestedContainersInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -116,15 +92,9 @@ class NestedContainersInterface(
                 [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_NestedContainersInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_NestedContainersInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod

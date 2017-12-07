@@ -33,15 +33,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -55,15 +49,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -77,15 +65,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -99,15 +81,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -121,15 +97,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -143,15 +113,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[float]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[float]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[float]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[float]
     ]: ...
 
     @abstractmethod
@@ -165,15 +129,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[float]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[float]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[float]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[float]
     ]: ...
 
     @abstractmethod
@@ -187,15 +145,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -209,15 +161,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[bytes]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[bytes]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[bytes]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
@@ -231,15 +177,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.Mapping[str, int]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Mapping[str, int]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.Mapping[str, int]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
@@ -253,15 +193,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -275,15 +209,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
     ]: ...
 
     @abstractmethod
@@ -297,15 +225,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
     ]: ...
 
     @abstractmethod
@@ -319,15 +241,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_module_types.MyEnumA]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.MyEnumA]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_module_types.MyEnumA]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -341,15 +257,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
     ]: ...
 
     @abstractmethod
@@ -363,15 +273,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_module_types.MyStruct]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.MyStruct]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_module_types.MyStruct]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_module_types.MyStruct]
     ]: ...
 
     @abstractmethod
@@ -385,15 +289,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
     ]: ...
 
     @abstractmethod
@@ -407,15 +305,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_module_types.ComplexUnion]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.ComplexUnion]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_module_types.ComplexUnion]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_module_types.ComplexUnion]
     ]: ...
 
     @abstractmethod
@@ -429,15 +321,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext],
                 _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT],
-                 _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT],
+        _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
     ]: ...
 
     @abstractmethod
@@ -451,15 +337,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[bytes]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bytes]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, int],
-                 _typing.Awaitable[bytes]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT, int],
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
@@ -474,15 +354,9 @@ class ReturnServiceInterface(
                 [_ReturnServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[bytes]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bytes]
-            ],
-            _typing.Callable[
-                [_ReturnServiceInterfaceT, int],
-                 _typing.Awaitable[bytes]
-            ]
+    ) -> _typing.Callable[
+        [_ReturnServiceInterfaceT, int],
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
@@ -505,15 +379,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -528,15 +396,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int, int],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int, int],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int, int],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -552,15 +414,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -575,15 +431,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -599,15 +449,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -622,15 +466,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _module_types.MyEnumA],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _module_types.MyEnumA],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _module_types.MyEnumA],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _module_types.MyEnumA],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -645,15 +483,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _module_types.MyStruct],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _module_types.MyStruct],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _module_types.MyStruct],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _module_types.MyStruct],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -668,15 +500,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_module_types.ComplexUnion]],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_module_types.ComplexUnion]],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Sequence[_module_types.ComplexUnion]],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Sequence[_module_types.ComplexUnion]],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -691,15 +517,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int, int],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int, int],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int, int],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -715,15 +535,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -738,15 +552,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _module_types.ComplexUnion],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _module_types.ComplexUnion],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _module_types.ComplexUnion],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _module_types.ComplexUnion],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -761,15 +569,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, float, float],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, float, float],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, float, float],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, float, float],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -785,15 +587,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -809,15 +605,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int, int, int, int, int],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int, int, int, int, int],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int, int, int, int, int],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int, int, int, int, int],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -836,15 +626,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[_module_types.MyStruct]],
                 _typing.Awaitable[float]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[_module_types.MyStruct]],
-                _typing.Awaitable[float]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.AbstractSet[_module_types.MyStruct]],
-                 _typing.Awaitable[float]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.AbstractSet[_module_types.MyStruct]],
+        _typing.Awaitable[float]
     ]: ...
 
     @abstractmethod
@@ -859,15 +643,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, str],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, str],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, str],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -882,15 +660,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, bytes],
                 _typing.Awaitable[bytes]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, bytes],
-                _typing.Awaitable[bytes]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, bytes],
-                 _typing.Awaitable[bytes]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, bytes],
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
@@ -905,15 +677,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, bool],
                 _typing.Awaitable[_typing.Mapping[str, int]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, bool],
-                _typing.Awaitable[_typing.Mapping[str, int]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, bool],
-                 _typing.Awaitable[_typing.Mapping[str, int]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, bool],
+        _typing.Awaitable[_typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
@@ -928,15 +694,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
                 _typing.Awaitable[_typing.Sequence[bool]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
-                _typing.Awaitable[_typing.Sequence[bool]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
-                 _typing.Awaitable[_typing.Sequence[bool]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
+        _typing.Awaitable[_typing.Sequence[bool]]
     ]: ...
 
     @abstractmethod
@@ -952,15 +712,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
                 _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-                _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-                 _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
+        _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
     ]: ...
 
     @abstractmethod
@@ -975,15 +729,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
@@ -998,15 +746,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
                 _typing.Awaitable[_typing.Sequence[int]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
-                _typing.Awaitable[_typing.Sequence[int]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
-                 _typing.Awaitable[_typing.Sequence[int]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
+        _typing.Awaitable[_typing.Sequence[int]]
     ]: ...
 
     @abstractmethod
@@ -1021,15 +763,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, float],
                 _typing.Awaitable[_module_types.MyEnumA]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, float],
-                _typing.Awaitable[_module_types.MyEnumA]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, float],
-                 _typing.Awaitable[_module_types.MyEnumA]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, float],
+        _typing.Awaitable[_module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -1044,15 +780,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, float, _module_types.MyEnumA],
                 _typing.Awaitable[_module_types.MyEnumA]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, float, _module_types.MyEnumA],
-                _typing.Awaitable[_module_types.MyEnumA]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, float, _module_types.MyEnumA],
-                 _typing.Awaitable[_module_types.MyEnumA]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, float, _module_types.MyEnumA],
+        _typing.Awaitable[_module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -1068,15 +798,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-                 _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
+        _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
     ]: ...
 
     @abstractmethod
@@ -1091,15 +815,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[_module_types.MyStruct]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[_module_types.MyStruct]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int],
-                 _typing.Awaitable[_module_types.MyStruct]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int],
+        _typing.Awaitable[_module_types.MyStruct]
     ]: ...
 
     @abstractmethod
@@ -1114,15 +832,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[str]],
                 _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[str]],
-                _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, _typing.AbstractSet[str]],
-                 _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, _typing.AbstractSet[str]],
+        _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
     ]: ...
 
     @abstractmethod
@@ -1137,15 +849,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, int, int],
                 _typing.Awaitable[_module_types.ComplexUnion]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[_module_types.ComplexUnion]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, int, int],
-                 _typing.Awaitable[_module_types.ComplexUnion]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, int, int],
+        _typing.Awaitable[_module_types.ComplexUnion]
     ]: ...
 
     @abstractmethod
@@ -1161,15 +867,9 @@ class ParamServiceInterface(
                 [_ParamServiceInterfaceT, RequestContext, str],
                 _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
-            ],
-            _typing.Callable[
-                [_ParamServiceInterfaceT, str],
-                 _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
-            ]
+    ) -> _typing.Callable[
+        [_ParamServiceInterfaceT, str],
+        _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
     ]: ...
 
     @abstractmethod

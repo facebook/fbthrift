@@ -24,15 +24,9 @@ class TestServiceInterface(
                 [_TestServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_TestServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_TestServiceInterfaceT, int],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_TestServiceInterfaceT, int],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod

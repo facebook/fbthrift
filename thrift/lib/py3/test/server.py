@@ -32,14 +32,15 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
-    def test_ctx_unittest_call(self):
+    def test_ctx_unittest_call(self) -> None:
         # Create a broken client
         h = Handler()
         loop = asyncio.get_event_loop()
-        value = loop.run_until_complete(h.invert(RequestContext(), False))
+        coro = h.invert(RequestContext(), False)  # type: ignore
+        value = loop.run_until_complete(coro)
         self.assertTrue(value)
 
-    def test_unittest_call(self):
+    def test_unittest_call(self) -> None:
         h = Handler()
         loop = asyncio.get_event_loop()
         call = 5

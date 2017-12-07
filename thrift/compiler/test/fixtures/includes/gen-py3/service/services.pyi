@@ -26,15 +26,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -50,15 +44,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod

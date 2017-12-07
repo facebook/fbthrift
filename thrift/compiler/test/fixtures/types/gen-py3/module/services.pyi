@@ -25,15 +25,9 @@ class SomeServiceInterface(
                 [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
                 _typing.Awaitable[_typing.Mapping[int, str]]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
-                _typing.Awaitable[_typing.Mapping[int, str]]
-            ],
-            _typing.Callable[
-                [_SomeServiceInterfaceT, _typing.Mapping[int, str]],
-                 _typing.Awaitable[_typing.Mapping[int, str]]
-            ]
+    ) -> _typing.Callable[
+        [_SomeServiceInterfaceT, _typing.Mapping[int, str]],
+        _typing.Awaitable[_typing.Mapping[int, str]]
     ]: ...
 
     @abstractmethod

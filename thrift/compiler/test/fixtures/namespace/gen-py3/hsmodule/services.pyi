@@ -24,15 +24,9 @@ class HsTestServiceInterface(
                 [_HsTestServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[int]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_HsTestServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
-            ],
-            _typing.Callable[
-                [_HsTestServiceInterfaceT, int],
-                 _typing.Awaitable[int]
-            ]
+    ) -> _typing.Callable[
+        [_HsTestServiceInterfaceT, int],
+        _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod

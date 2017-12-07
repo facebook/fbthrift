@@ -24,15 +24,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -46,15 +40,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -68,15 +56,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, int],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -91,15 +73,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, int],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, int],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -114,15 +90,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, int, str],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int, str],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -138,15 +108,9 @@ class MyServiceInterface(
                 [_MyServiceInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceInterfaceT, int, str],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int, str],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -170,15 +134,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -192,15 +150,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -214,15 +166,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext, int],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, int],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT, int],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
@@ -237,15 +183,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext, int],
                 _typing.Awaitable[str]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Awaitable[str]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, int],
-                 _typing.Awaitable[str]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT, int],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
@@ -260,15 +200,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, int, str],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT, int, str],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -284,15 +218,9 @@ class MyServiceFastInterface(
                 [_MyServiceFastInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServiceFastInterfaceT, int, str],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServiceFastInterfaceT, int, str],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -324,15 +252,9 @@ class MyServicePrioParentInterface(
                 [_MyServicePrioParentInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServicePrioParentInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServicePrioParentInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServicePrioParentInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -346,15 +268,9 @@ class MyServicePrioParentInterface(
                 [_MyServicePrioParentInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServicePrioParentInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServicePrioParentInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServicePrioParentInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -376,15 +292,9 @@ MyServicePrioParentInterface
                 [_MyServicePrioChildInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyServicePrioChildInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyServicePrioChildInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyServicePrioChildInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod

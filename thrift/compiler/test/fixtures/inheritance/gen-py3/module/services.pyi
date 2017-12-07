@@ -24,15 +24,9 @@ class MyRootInterface(
                 [_MyRootInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyRootInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyRootInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyRootInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -54,15 +48,9 @@ MyRootInterface
                 [_MyNodeInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyNodeInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyNodeInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyNodeInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
@@ -84,15 +72,9 @@ MyNodeInterface
                 [_MyLeafInterfaceT, RequestContext],
                 _typing.Awaitable[None]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_MyLeafInterfaceT, RequestContext],
-                _typing.Awaitable[None]
-            ],
-            _typing.Callable[
-                [_MyLeafInterfaceT],
-                 _typing.Awaitable[None]
-            ]
+    ) -> _typing.Callable[
+        [_MyLeafInterfaceT],
+        _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod

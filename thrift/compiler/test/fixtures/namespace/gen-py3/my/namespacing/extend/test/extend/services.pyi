@@ -26,15 +26,9 @@ class ExtendTestServiceInterface(
                 [_ExtendTestServiceInterfaceT, RequestContext, _hsmodule_types.HsFoo],
                 _typing.Awaitable[bool]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_ExtendTestServiceInterfaceT, RequestContext, _hsmodule_types.HsFoo],
-                _typing.Awaitable[bool]
-            ],
-            _typing.Callable[
-                [_ExtendTestServiceInterfaceT, _hsmodule_types.HsFoo],
-                 _typing.Awaitable[bool]
-            ]
+    ) -> _typing.Callable[
+        [_ExtendTestServiceInterfaceT, _hsmodule_types.HsFoo],
+        _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod

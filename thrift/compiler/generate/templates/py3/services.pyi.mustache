@@ -56,15 +56,9 @@ class {{service:name}}Interface(
                 [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
                 _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
         ]
-    ) -> _typing.Union[
-            _typing.Callable[
-                [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-                _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
-            ],
-            _typing.Callable[
-                [_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-                 _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
-            ]
+    ) -> _typing.Callable[
+        [_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
+        _typing.Awaitable[{{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}]
     ]: ...
 
     @abstractmethod
