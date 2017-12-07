@@ -186,14 +186,6 @@ EventBase* MultiRpcChannel::getEventBase() noexcept {
   return evb_;
 }
 
-void MultiRpcChannel::setInput(int32_t, SubscriberRef) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
-ThriftChannelIf::SubscriberRef MultiRpcChannel::getOutput(int32_t) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
 bool MultiRpcChannel::canDoRpcs() noexcept {
   return httpTransaction_ && callbacks_.size() < kMaxRpcs;
 }

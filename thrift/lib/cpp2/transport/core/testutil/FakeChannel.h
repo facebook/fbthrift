@@ -56,16 +56,8 @@ class FakeChannel : public ThriftChannelIf {
     return evb_;
   }
 
-  void setInput(int32_t, SubscriberRef) noexcept override {
-    LOG(FATAL) << "setInput() unused in this fake object.";
-  }
-
   ResponseRpcMetadata* getMetadata() {
     return metadata_.get();
-  }
-
-  SubscriberRef getOutput(int32_t) noexcept override {
-    LOG(FATAL) << "getOutput() unused in this fake object.";
   }
 
   folly::IOBuf* getPayloadBuf() {

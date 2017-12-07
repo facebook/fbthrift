@@ -33,9 +33,7 @@ class SingleRpcChannel : public H2Channel {
       ThriftProcessor* processor,
       bool legacySupport);
 
-  SingleRpcChannel(
-      H2ClientConnection* toHttp2,
-      bool legacySupport);
+  SingleRpcChannel(H2ClientConnection* toHttp2, bool legacySupport);
 
   virtual ~SingleRpcChannel() override;
 
@@ -49,10 +47,6 @@ class SingleRpcChannel : public H2Channel {
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
   folly::EventBase* getEventBase() noexcept override;
-
-  void setInput(int32_t seqId, SubscriberRef sink) noexcept override;
-
-  SubscriberRef getOutput(int32_t seqId) noexcept override;
 
   void onH2StreamBegin(
       std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;

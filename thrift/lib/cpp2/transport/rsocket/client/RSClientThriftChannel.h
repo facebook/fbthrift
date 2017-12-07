@@ -74,17 +74,6 @@ class RSClientThriftChannel : public ThriftChannelIf {
   void detachEventBase();
 
  protected:
-  void setInput(
-      int32_t,
-      ThriftChannelIf::SubscriberRef input) noexcept override {
-    input_ = input;
-  }
-
-  SubscriberRef getOutput(int32_t) noexcept override {
-    auto future = outputPromise_.getFuture();
-    return future.get();
-  }
-
   void sendSingleRequestNoResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
@@ -117,10 +106,6 @@ class RSClientThriftChannel : public ThriftChannelIf {
 
  protected:
   std::shared_ptr<RSRequester> rsRequester_;
-
-  ThriftChannelIf::SubscriberRef input_;
-  folly::Promise<ThriftChannelIf::SubscriberRef> outputPromise_;
-
   apache::thrift::detail::ChannelCounters& channelCounters_;
   folly::EventBase* evb_;
 };

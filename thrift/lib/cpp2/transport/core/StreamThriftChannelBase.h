@@ -39,6 +39,9 @@ namespace thrift {
  */
 class StreamThriftChannelBase : public ThriftChannelIf {
  public:
+  using SubscriberRef = yarpl::Reference<
+      yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
+
   explicit StreamThriftChannelBase(folly::EventBase* evb) : evb_(evb) {}
 
   virtual ~StreamThriftChannelBase() = default;

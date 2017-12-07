@@ -79,13 +79,5 @@ folly::EventBase* InMemoryChannel::getEventBase() noexcept {
   return evb_;
 }
 
-void InMemoryChannel::setInput(int32_t, SubscriberRef) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
-ThriftChannelIf::SubscriberRef InMemoryChannel::getOutput(int32_t) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
 } // namespace thrift
 } // namespace apache

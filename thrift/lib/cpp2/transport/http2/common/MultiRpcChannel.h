@@ -52,10 +52,6 @@ class MultiRpcChannel : public H2Channel {
 
   folly::EventBase* getEventBase() noexcept override;
 
-  void setInput(int32_t seqId, SubscriberRef sink) noexcept override;
-
-  SubscriberRef getOutput(int32_t seqId) noexcept override;
-
   void onH2StreamBegin(
       std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
 

@@ -20,9 +20,6 @@
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#ifdef YARPL_INCLUDED
-#include <yarpl/flowable/Subscriber.h>
-#endif
 
 namespace apache {
 namespace thrift {
@@ -47,38 +44,9 @@ class ThriftClientCallback;
  * the one extreme, a new object may be created for each RPC, while on
  * the other extreme a single object may be use for the lifetime of a
  * connection.
- *
- * The channel object supports streaming as follows:
- * - Server and client each keep an instance of the channel as duals of
- *   each other. The input in one side is perceived as output in the other
- *   side, and vice versa.
- *
- * - For RPCs with streaming requests, the channel provides the
- *   "getOutput()" method to obtain the stream into which the client
- *   streams messages.
- *   The channel also provides "setInput(stream)" method for the server
- *   to register a sink that is to receive these messages.
- *
- * - For RPCs with streaming responses, the operations are reversed.
- *   The client registers a sink for incoming messages via the channel's
- *   "setInput(stream)" method. While the server uses the channel's
- *   "getOutput()" method to obtain a stream and to use it for streaming
- *   messages.
  */
 class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
  public:
-#ifdef YARPL_INCLUDED
-  // yarpl::Reference is a reference counted object, similar to shared_ptr.
-  // Subscriber is an interface with methods: onNext, onComplete and onError.
-  // @see <a
-  // href="https://github.com/reactive-streams/reactive-streams-jvm/blob/v1.0.0/README.md#2-subscriber-code">Reactive
-  // streams' Subscriber specification</a>
-  using SubscriberRef = yarpl::Reference<
-      yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
-#else
-  using SubscriberRef = std::nullptr_t;
-#endif // YARPL_INCLUDED
-
   ThriftChannelIf() {}
 
   virtual ~ThriftChannelIf() = default;
@@ -114,16 +82,6 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // Returns the event base on which calls to "sendThriftRequest()"
   // and "sendThriftResponse()" must be scheduled.
   virtual folly::EventBase* getEventBase() noexcept = 0;
-
-  // Used to manage streams on both the client and server side.
-
-  // Caller provides a Subscriber to the Channel, meaning that, any
-  // data, that is received, to be forwarded to the given subscriber.
-  virtual void setInput(int32_t seqId, SubscriberRef sink) noexcept = 0;
-
-  // Channel provides a Subscriber object to the caller. Caller can
-  // use this object to send data to the receiving side.
-  virtual SubscriberRef getOutput(int32_t seqId) noexcept = 0;
 };
 
 } // namespace thrift

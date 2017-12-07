@@ -218,14 +218,6 @@ EventBase* SingleRpcChannel::getEventBase() noexcept {
   return evb_;
 }
 
-void SingleRpcChannel::setInput(int32_t, SubscriberRef) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
-ThriftChannelIf::SubscriberRef SingleRpcChannel::getOutput(int32_t) noexcept {
-  LOG(FATAL) << "Streaming not supported.";
-}
-
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
   VLOG(2) << "onH2StreamBegin: " << headers->getStatusCode() << " "

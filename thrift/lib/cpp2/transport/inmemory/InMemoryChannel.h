@@ -40,10 +40,6 @@ class InMemoryChannel : public ThriftChannelIf {
 
   folly::EventBase* getEventBase() noexcept override;
 
-  void setInput(int32_t seqId, SubscriberRef sink) noexcept override;
-
-  SubscriberRef getOutput(int32_t seqId) noexcept override;
-
  private:
   // The thrift processor used to execute RPCs.
   // Owned by InMemoryConnection.
