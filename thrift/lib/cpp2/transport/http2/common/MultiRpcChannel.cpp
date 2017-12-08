@@ -190,8 +190,11 @@ bool MultiRpcChannel::canDoRpcs() noexcept {
   return httpTransaction_ && callbacks_.size() < kMaxRpcs;
 }
 
-void MultiRpcChannel::closeClientSide() noexcept {
+void MultiRpcChannel::closeClientSide(bool forceClose) noexcept {
   VLOG(2) << "closing outgoing stream on client";
+  if (forceClose) {
+    httpTransaction_ = nullptr;
+  }
   if (httpTransaction_) {
     httpTransaction_->sendEOM();
   }
@@ -200,6 +203,10 @@ void MultiRpcChannel::closeClientSide() noexcept {
 
 void MultiRpcChannel::onH2StreamBegin(std::unique_ptr<HTTPMessage>) noexcept {
   VLOG(2) << "onH2StreamBegin";
+}
+
+bool MultiRpcChannel::hasOutstandingRPCs() {
+  return rpcsInitiated_ > rpcsCompleted_;
 }
 
 void MultiRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {

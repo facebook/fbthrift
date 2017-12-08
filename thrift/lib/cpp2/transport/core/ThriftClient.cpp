@@ -272,7 +272,7 @@ void ThriftClient::getChannelAndSendThriftRequest(
 }
 
 EventBase* ThriftClient::getEventBase() const {
-  return callbackEvb_;
+  return connection_->getEventBase();
 }
 
 uint16_t ThriftClient::getProtocolId() {
