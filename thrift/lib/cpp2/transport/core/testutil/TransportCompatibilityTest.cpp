@@ -810,9 +810,6 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
                       std::unique_ptr<TestServiceAsyncClient> client,
                       std::shared_ptr<ClientConnectionIf> connection) {
     auto evb = connection->getEventBase();
-    auto cb = std::make_unique<MockCallback>(false, false);
-    auto cb2 = std::make_unique<MockCallback>(false, false);
-
     // If isDetachable() is called when a function is executing, it should
     // not be detachable
     callSleep(client.get(), 5000, 1000);
