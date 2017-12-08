@@ -29,7 +29,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include <folly/Bits.h>
+#include <folly/lang/Bits.h>
 #include <folly/Demangle.h>
 #include <folly/hash/Hash.h>
 #include <folly/MapUtil.h>
