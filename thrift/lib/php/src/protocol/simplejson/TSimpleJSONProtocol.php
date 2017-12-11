@@ -419,12 +419,12 @@ class TSimpleJSONProtocol extends TProtocol {
   public function readDouble(&$value) {
     $this->getContext()->readSeparator();
     $this->skipWhitespace();
-    $value = doubleval($this->readNumStr());
+    $value = (float)$this->readNumStr();
   }
   public function readFloat(&$value) {
     $this->getContext()->readSeparator();
     $this->skipWhitespace();
-    $value = floatval($this->readNumStr());
+    $value = (float)$this->readNumStr();
   }
   public function readString(&$value) {
     $this->getContext()->readSeparator();
