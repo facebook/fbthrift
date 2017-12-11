@@ -51,7 +51,10 @@ cdef void ExtendTestService_check_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(<bint>result.value())
+        try:
+            pyfuture.set_result(<bint>result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class ExtendTestService(_hsmodule_clients.HsTestService):

@@ -46,7 +46,10 @@ cdef void NestedContainers_mapList_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void NestedContainers_mapSet_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -59,7 +62,10 @@ cdef void NestedContainers_mapSet_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void NestedContainers_listMap_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -72,7 +78,10 @@ cdef void NestedContainers_listMap_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void NestedContainers_listSet_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -85,7 +94,10 @@ cdef void NestedContainers_listSet_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void NestedContainers_turtles_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -98,7 +110,10 @@ cdef void NestedContainers_turtles_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class NestedContainers(thrift.py3.client.Client):

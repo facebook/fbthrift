@@ -50,7 +50,10 @@ cdef void MyService_query_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_has_arg_docs_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -63,7 +66,10 @@ cdef void MyService_has_arg_docs_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class MyService(thrift.py3.client.Client):

@@ -48,7 +48,10 @@ cdef void SomeService_bounce_map_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[int32_t,string]](result.value())))
+        try:
+            pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[int32_t,string]](result.value())))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class SomeService(thrift.py3.client.Client):

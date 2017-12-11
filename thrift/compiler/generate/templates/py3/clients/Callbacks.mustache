@@ -45,7 +45,10 @@ cdef void {{service:name}}_{{function:name}}_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})
+        try:
+            pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 {{/service:functions}}
 {{/program:services}}

@@ -46,7 +46,10 @@ cdef void TestService_init_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value())
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class TestService(thrift.py3.client.Client):

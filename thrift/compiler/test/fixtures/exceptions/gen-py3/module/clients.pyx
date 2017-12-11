@@ -46,7 +46,10 @@ cdef void Raiser_doBland_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void Raiser_doRaise_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -63,7 +66,10 @@ cdef void Raiser_doRaise_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void Raiser_get200_callback(
     cFollyTry[string]&& result,
@@ -76,7 +82,10 @@ cdef void Raiser_get200_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void Raiser_get500_callback(
     cFollyTry[string]&& result,
@@ -93,7 +102,10 @@ cdef void Raiser_get500_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class Raiser(thrift.py3.client.Client):

@@ -50,7 +50,10 @@ cdef void MyService_ping_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_getRandomData_callback(
     cFollyTry[string]&& result,
@@ -63,7 +66,10 @@ cdef void MyService_getRandomData_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_hasDataById_callback(
     cFollyTry[cbool]&& result,
@@ -76,7 +82,10 @@ cdef void MyService_hasDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(<bint>result.value())
+        try:
+            pyfuture.set_result(<bint>result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_getDataById_callback(
     cFollyTry[string]&& result,
@@ -89,7 +98,10 @@ cdef void MyService_getDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -102,7 +114,10 @@ cdef void MyService_putDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyService_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -115,7 +130,10 @@ cdef void MyService_lobDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_ping_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -128,7 +146,10 @@ cdef void MyServiceFast_ping_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_getRandomData_callback(
     cFollyTry[string]&& result,
@@ -141,7 +162,10 @@ cdef void MyServiceFast_getRandomData_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_hasDataById_callback(
     cFollyTry[cbool]&& result,
@@ -154,7 +178,10 @@ cdef void MyServiceFast_hasDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(<bint>result.value())
+        try:
+            pyfuture.set_result(<bint>result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_getDataById_callback(
     cFollyTry[string]&& result,
@@ -167,7 +194,10 @@ cdef void MyServiceFast_getDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(result.value().decode('UTF-8'))
+        try:
+            pyfuture.set_result(result.value().decode('UTF-8'))
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -180,7 +210,10 @@ cdef void MyServiceFast_putDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServiceFast_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -193,7 +226,10 @@ cdef void MyServiceFast_lobDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServicePrioParent_ping_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -206,7 +242,10 @@ cdef void MyServicePrioParent_ping_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServicePrioParent_pong_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -219,7 +258,10 @@ cdef void MyServicePrioParent_pong_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 cdef void MyServicePrioChild_pang_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -232,7 +274,10 @@ cdef void MyServicePrioChild_pang_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        pyfuture.set_result(None)
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex)
 
 
 cdef class MyService(thrift.py3.client.Client):
