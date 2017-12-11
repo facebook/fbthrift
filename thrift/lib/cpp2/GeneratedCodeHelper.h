@@ -435,27 +435,27 @@ class Layout<
  protected:
   template <
       typename F,
-      typename Seq = std::make_index_sequence<sizeof...(Args)>>
+      typename Seq = folly::make_index_sequence<sizeof...(Args)>>
   void forEachElement(F&& f) {
     forEachElement(std::forward<F>(f), Seq{});
   }
 
   template <
       typename F,
-      typename Seq = std::make_index_sequence<sizeof...(Args)>>
+      typename Seq = folly::make_index_sequence<sizeof...(Args)>>
   void forEachElement(F&& f) const {
     forEachElement(std::forward<F>(f), Seq{});
   }
 
  private:
   template <typename F, size_t... Idxs>
-  void forEachElement(F&& f, std::index_sequence<Idxs...>) {
+  void forEachElement(F&& f, folly::index_sequence<Idxs...>) {
     using _ = bool[sizeof...(Args)];
     (void)_{(f.template forEach<Idxs>(std::get<Idxs>(asTuple())), false)...};
   }
 
   template <typename F, size_t... Idxs>
-  void forEachElement(F&& f, std::index_sequence<Idxs...>) const {
+  void forEachElement(F&& f, folly::index_sequence<Idxs...>) const {
     using _ = bool[sizeof...(Args)];
     (void)_{(f.template forEach<Idxs>(std::get<Idxs>(asTuple())), false)...};
   }
@@ -607,7 +607,7 @@ template <typename IntegerSequence>
 struct foreach_;
 
 template <std::size_t... I>
-struct foreach_<std::index_sequence<I...>> {
+struct foreach_<folly::index_sequence<I...>> {
   template <typename F, typename... O>
   FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN static void go(
       F&& f,
@@ -628,8 +628,8 @@ FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach(F&& f, O&&... o) {
 template <typename F, std::size_t... I>
 FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach_index_(
     F&& f,
-    std::index_sequence<I...>) {
-  foreach_<std::index_sequence<I...>>::go(std::forward<F>(f), I...);
+    folly::index_sequence<I...>) {
+  foreach_<folly::index_sequence<I...>>::go(std::forward<F>(f), I...);
 }
 
 template <std::size_t Size, typename F>
