@@ -141,7 +141,6 @@ int main(int argc, char* argv[]) {
     sslContext->clientCAFile = FLAGS_client_ca_list;
     sslContext->eccCurveName = FLAGS_ecc_curve;
     server->setSSLConfig(sslContext);
-    server->watchCertForChanges(FLAGS_cert);
   }
   if (!FLAGS_ticket_seeds.empty()) {
     server->watchTicketPathForChanges(FLAGS_ticket_seeds, true);

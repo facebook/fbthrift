@@ -313,7 +313,6 @@ class CppThriftServer : public node::ObjectWrap {
     }
     obj->server_.setSSLPolicy(policy);
 
-    obj->server_.watchCertForChanges(certPath);
     auto ticketFilePath = getStringAttrSafe(sslConfig, "ticketFilePath");
     if (!ticketFilePath.empty()) {
       obj->server_.watchTicketPathForChanges(ticketFilePath, true);

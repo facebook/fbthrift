@@ -553,7 +553,6 @@ public:
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
 
     auto ticketFilePath = getStringAttrSafe(sslConfig, "ticket_file_path");
-    ThriftServer::watchCertForChanges(certPath);
     ThriftServer::watchTicketPathForChanges(ticketFilePath, true);
   }
 

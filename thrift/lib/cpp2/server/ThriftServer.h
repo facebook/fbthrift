@@ -166,6 +166,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   void handleSetupFailure(void);
 
+  void updateCertsToWatch();
+
   // Minimum size of response before it might be compressed
   // Prevents small responses from being compressed,
   // does not by itself turn on compression. Either client
@@ -348,6 +350,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
       context->isDefault = true;
     }
     sslContext_ = context;
+    updateCertsToWatch();
   }
 
   void setSSLCacheOptions(wangle::SSLCacheOptions options) {
@@ -380,13 +383,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
 
   void updateTLSCert();
-
-  /**
-   * Tells the thrift server to update certs when the passed in file at the
-   * given path has been modified.  The cert file previously being watched will
-   * no longer be watched.  This is not threadsafe.
-   */
-  void watchCertForChanges(const std::string& certPath);
 
   /**
    * Tells the thrift server to update ticket seeds with the contents of the

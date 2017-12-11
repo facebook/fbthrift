@@ -618,9 +618,19 @@ void ThriftServer::updateTLSCert() {
   });
 }
 
-void ThriftServer::watchCertForChanges(const std::string& certPath) {
+void ThriftServer::updateCertsToWatch() {
+  std::set<std::string> certPaths;
+  if (sslContext_) {
+    if (!sslContext_->certificates.empty()) {
+      const auto& cert = sslContext_->certificates[0];
+      certPaths.insert(cert.certPath);
+      certPaths.insert(cert.keyPath);
+      certPaths.insert(cert.passwordPath);
+    }
+    certPaths.insert(sslContext_->clientCAFile);
+  }
   auto& processor = getCredProcessor();
-  processor.setCertPathToWatch(certPath);
+  processor.setCertPathsToWatch(std::move(certPaths));
 }
 
 void ThriftServer::watchTicketPathForChanges(
