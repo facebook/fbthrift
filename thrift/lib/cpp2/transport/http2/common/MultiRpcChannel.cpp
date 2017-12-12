@@ -18,6 +18,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/utils/Base64.h>
@@ -34,6 +35,11 @@
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 #include <array>
 #include <chrono>
+
+DEFINE_uint32(
+    max_rpcs_per_stream,
+    1024,
+    "Maximum number of RPCs that a single stream can perform");
 
 namespace apache {
 namespace thrift {
@@ -65,7 +71,7 @@ MultiRpcChannel::MultiRpcChannel(
 MultiRpcChannel::MultiRpcChannel(H2ClientConnection* toHttp2)
     : H2Channel(toHttp2) {
   evb_ = toHttp2->getEventBase();
-  callbacks_.reserve(kMaxRpcs);
+  callbacks_.reserve(FLAGS_max_rpcs_per_stream);
 }
 
 MultiRpcChannel::~MultiRpcChannel() {
@@ -137,7 +143,7 @@ void MultiRpcChannel::sendThriftRequest(
   }
   DCHECK(metadata->__isset.protocol);
   DCHECK(metadata->__isset.name);
-  DCHECK(callbacks_.size() < kMaxRpcs);
+  DCHECK(callbacks_.size() < FLAGS_max_rpcs_per_stream);
   // The sequence id is the next available index in callbacks_.
   metadata->seqId = callbacks_.size();
   metadata->__isset.seqId = true;
@@ -187,7 +193,7 @@ EventBase* MultiRpcChannel::getEventBase() noexcept {
 }
 
 bool MultiRpcChannel::canDoRpcs() noexcept {
-  return httpTransaction_ && callbacks_.size() < kMaxRpcs;
+  return httpTransaction_ && callbacks_.size() < FLAGS_max_rpcs_per_stream;
 }
 
 void MultiRpcChannel::closeClientSide(bool forceClose) noexcept {
@@ -253,6 +259,7 @@ void MultiRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
           ++rpcsCompleted_;
         }
         // Initialize for next payload
+        payload_.reset();
         sizeBytesRemaining_ = 4;
         payloadBytesRemaining_ = 0;
       }

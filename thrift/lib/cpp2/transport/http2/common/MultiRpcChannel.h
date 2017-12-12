@@ -71,10 +71,6 @@ class MultiRpcChannel : public H2Channel {
   bool hasOutstandingRPCs();
 
  private:
-  // TODO: This is hardwired for now.  We should negotiate this value
-  // between client and server.
-  static constexpr uint32_t kMaxRpcs = 1024;
-
   // Server side handling when we have a complete Thrift request.
   virtual void onThriftRequest() noexcept;
 
