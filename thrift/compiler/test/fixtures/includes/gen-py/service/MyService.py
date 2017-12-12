@@ -193,6 +193,14 @@ def query_args__init__(self, s=None, i=None,):
 
 query_args.__init__ = query_args__init__
 
+def query_args__setstate__(self, state):
+  state.setdefault('s', None)
+  state.setdefault('i', None)
+  self.__dict__ = state
+
+query_args.__getstate__ = lambda self: self.__dict__.copy()
+query_args.__setstate__ = query_args__setstate__
+
 class query_result:
 
   thrift_spec = None
@@ -373,6 +381,14 @@ def has_arg_docs_args__init__(self, s=None, i=None,):
   self.i = i
 
 has_arg_docs_args.__init__ = has_arg_docs_args__init__
+
+def has_arg_docs_args__setstate__(self, state):
+  state.setdefault('s', None)
+  state.setdefault('i', None)
+  self.__dict__ = state
+
+has_arg_docs_args.__getstate__ = lambda self: self.__dict__.copy()
+has_arg_docs_args.__setstate__ = has_arg_docs_args__setstate__
 
 class has_arg_docs_result:
 

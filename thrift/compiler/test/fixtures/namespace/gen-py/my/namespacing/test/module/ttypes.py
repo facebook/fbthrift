@@ -123,5 +123,12 @@ def Foo__init__(self, MyInt=None,):
 
 Foo.__init__ = Foo__init__
 
+def Foo__setstate__(self, state):
+  state.setdefault('MyInt', None)
+  self.__dict__ = state
+
+Foo.__getstate__ = lambda self: self.__dict__.copy()
+Foo.__setstate__ = Foo__setstate__
+
 fix_spec(all_structs)
 del all_structs

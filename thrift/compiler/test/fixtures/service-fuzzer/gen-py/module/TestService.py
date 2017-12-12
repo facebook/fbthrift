@@ -400,6 +400,28 @@ def init_args__init__(self, int1=None, int2=None, int3=None, int4=None, int5=Non
 
 init_args.__init__ = init_args__init__
 
+def init_args__setstate__(self, state):
+  state.setdefault('int1', None)
+  state.setdefault('int2', None)
+  state.setdefault('int3', None)
+  state.setdefault('int4', None)
+  state.setdefault('int5', None)
+  state.setdefault('int6', None)
+  state.setdefault('int7', None)
+  state.setdefault('int8', None)
+  state.setdefault('int9', None)
+  state.setdefault('int10', None)
+  state.setdefault('int11', None)
+  state.setdefault('int12', None)
+  state.setdefault('int13', None)
+  state.setdefault('int14', None)
+  state.setdefault('int15', None)
+  state.setdefault('int16', None)
+  self.__dict__ = state
+
+init_args.__getstate__ = lambda self: self.__dict__.copy()
+init_args.__setstate__ = init_args__setstate__
+
 class init_result:
   """
   Attributes:
@@ -492,6 +514,13 @@ def init_result__init__(self, success=None,):
   self.success = success
 
 init_result.__init__ = init_result__init__
+
+def init_result__setstate__(self, state):
+  state.setdefault('success', None)
+  self.__dict__ = state
+
+init_result.__getstate__ = lambda self: self.__dict__.copy()
+init_result.__setstate__ = init_result__setstate__
 
 class Client(Iface):
   def __enter__(self):

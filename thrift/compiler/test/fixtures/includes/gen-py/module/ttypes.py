@@ -171,5 +171,19 @@ def MyStruct__init__(self, MyIncludedField=MyStruct.thrift_spec[1][4], MyOtherIn
 
 MyStruct.__init__ = MyStruct__init__
 
+def MyStruct__setstate__(self, state):
+  state.setdefault('MyIncludedField', includes.ttypes.Included(**{
+    "MyIntField" : 2,
+    "MyTransitiveField" : transitive.ttypes.Foo(**{
+      "a" : 2,
+    }),
+  }))
+  state.setdefault('MyOtherIncludedField', None)
+  state.setdefault('MyIncludedInt', 42)
+  self.__dict__ = state
+
+MyStruct.__getstate__ = lambda self: self.__dict__.copy()
+MyStruct.__setstate__ = MyStruct__setstate__
+
 fix_spec(all_structs)
 del all_structs

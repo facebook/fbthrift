@@ -138,5 +138,13 @@ def TestStruct__init__(self, aLong=None, aString=None,):
 
 TestStruct.__init__ = TestStruct__init__
 
+def TestStruct__setstate__(self, state):
+  state.setdefault('aLong', None)
+  state.setdefault('aString', None)
+  self.__dict__ = state
+
+TestStruct.__getstate__ = lambda self: self.__dict__.copy()
+TestStruct.__setstate__ = TestStruct__setstate__
+
 fix_spec(all_structs)
 del all_structs

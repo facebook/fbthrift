@@ -145,6 +145,13 @@ def init_args__init__(self, int1=None,):
 
 init_args.__init__ = init_args__init__
 
+def init_args__setstate__(self, state):
+  state.setdefault('int1', None)
+  self.__dict__ = state
+
+init_args.__getstate__ = lambda self: self.__dict__.copy()
+init_args.__setstate__ = init_args__setstate__
+
 class init_result:
   """
   Attributes:
@@ -237,6 +244,13 @@ def init_result__init__(self, success=None,):
   self.success = success
 
 init_result.__init__ = init_result__init__
+
+def init_result__setstate__(self, state):
+  state.setdefault('success', None)
+  self.__dict__ = state
+
+init_result.__getstate__ = lambda self: self.__dict__.copy()
+init_result.__setstate__ = init_result__setstate__
 
 class Client(Iface):
   def __enter__(self):

@@ -1468,6 +1468,30 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
                << rename_reserved_keywords(tstruct->get_name())
                << "__init__" << endl << endl;
   }
+
+  // ThriftStruct.__setstate__: Ensure that unpickled objects have all expected
+  // fields.
+  if (members.size() > 0 && !tstruct->is_union() && !gen_slots_) {
+    out << indent() << "def " << rename_reserved_keywords(tstruct->get_name())
+        << "__setstate__(self, state):" << endl;
+
+    indent_up();
+    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+      indent(out) << "state.setdefault('"
+                  << rename_reserved_keywords((*m_iter)->get_name()) << "', "
+                  << render_field_default_value(*m_iter) << ")" << endl;
+    }
+    indent(out) << "self.__dict__ = state" << endl;
+    indent_down();
+
+    out << endl;
+    out << indent() << rename_reserved_keywords(tstruct->get_name())
+        << ".__getstate__ = lambda self: self.__dict__.copy()" << endl;
+    out << indent() << rename_reserved_keywords(tstruct->get_name())
+        << ".__setstate__ = " << rename_reserved_keywords(tstruct->get_name())
+        << "__setstate__" << endl
+        << endl;
+  }
 }
 
 void t_py_generator::generate_py_string_dict(

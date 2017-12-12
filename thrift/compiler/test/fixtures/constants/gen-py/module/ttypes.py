@@ -992,6 +992,15 @@ def Internship__init__(self, weeks=None, title=None, employer=None,):
 
 Internship.__init__ = Internship__init__
 
+def Internship__setstate__(self, state):
+  state.setdefault('weeks', None)
+  state.setdefault('title', None)
+  state.setdefault('employer', None)
+  self.__dict__ = state
+
+Internship.__getstate__ = lambda self: self.__dict__.copy()
+Internship.__setstate__ = Internship__setstate__
+
 all_structs.append(UnEnumStruct)
 UnEnumStruct.thrift_spec = (
   None, # 0
@@ -1007,6 +1016,13 @@ def UnEnumStruct__init__(self, city=UnEnumStruct.thrift_spec[1][4],):
   self.city = city
 
 UnEnumStruct.__init__ = UnEnumStruct__init__
+
+def UnEnumStruct__setstate__(self, state):
+  state.setdefault('city',   -1)
+  self.__dict__ = state
+
+UnEnumStruct.__getstate__ = lambda self: self.__dict__.copy()
+UnEnumStruct.__setstate__ = UnEnumStruct__setstate__
 
 all_structs.append(Range)
 Range.thrift_spec = (
@@ -1026,6 +1042,14 @@ def Range__init__(self, min=None, max=None,):
 
 Range.__init__ = Range__init__
 
+def Range__setstate__(self, state):
+  state.setdefault('min', None)
+  state.setdefault('max', None)
+  self.__dict__ = state
+
+Range.__getstate__ = lambda self: self.__dict__.copy()
+Range.__setstate__ = Range__setstate__
+
 all_structs.append(struct1)
 struct1.thrift_spec = (
   None, # 0
@@ -1043,6 +1067,14 @@ def struct1__init__(self, a=struct1.thrift_spec[1][4], b=struct1.thrift_spec[2][
   self.b = b
 
 struct1.__init__ = struct1__init__
+
+def struct1__setstate__(self, state):
+  state.setdefault('a', 1234567)
+  state.setdefault('b', "<uninitialized>")
+  self.__dict__ = state
+
+struct1.__getstate__ = lambda self: self.__dict__.copy()
+struct1.__setstate__ = struct1__setstate__
 
 all_structs.append(struct2)
 struct2.thrift_spec = (
@@ -1066,6 +1098,16 @@ def struct2__init__(self, a=None, b=None, c=None, d=None,):
 
 struct2.__init__ = struct2__init__
 
+def struct2__setstate__(self, state):
+  state.setdefault('a', None)
+  state.setdefault('b', None)
+  state.setdefault('c', None)
+  state.setdefault('d', None)
+  self.__dict__ = state
+
+struct2.__getstate__ = lambda self: self.__dict__.copy()
+struct2.__setstate__ = struct2__setstate__
+
 all_structs.append(struct3)
 struct3.thrift_spec = (
   None, # 0
@@ -1085,6 +1127,15 @@ def struct3__init__(self, a=None, b=None, c=None,):
   self.c = c
 
 struct3.__init__ = struct3__init__
+
+def struct3__setstate__(self, state):
+  state.setdefault('a', None)
+  state.setdefault('b', None)
+  state.setdefault('c', None)
+  self.__dict__ = state
+
+struct3.__getstate__ = lambda self: self.__dict__.copy()
+struct3.__setstate__ = struct3__setstate__
 
 all_structs.append(union1)
 union1.thrift_spec = (

@@ -310,6 +310,13 @@ def isPrime_args__init__(self, num=None,):
 
 isPrime_args.__init__ = isPrime_args__init__
 
+def isPrime_args__setstate__(self, state):
+  state.setdefault('num', None)
+  self.__dict__ = state
+
+isPrime_args.__getstate__ = lambda self: self.__dict__.copy()
+isPrime_args.__setstate__ = isPrime_args__setstate__
+
 class isPrime_result:
   """
   Attributes:
@@ -402,6 +409,13 @@ def isPrime_result__init__(self, success=None,):
   self.success = success
 
 isPrime_result.__init__ = isPrime_result__init__
+
+def isPrime_result__setstate__(self, state):
+  state.setdefault('success', None)
+  self.__dict__ = state
+
+isPrime_result.__getstate__ = lambda self: self.__dict__.copy()
+isPrime_result.__setstate__ = isPrime_result__setstate__
 
 class getResult_args:
 
@@ -566,6 +580,13 @@ def getResult_result__init__(self, success=None,):
   self.success = success
 
 getResult_result.__init__ = getResult_result__init__
+
+def getResult_result__setstate__(self, state):
+  state.setdefault('success', None)
+  self.__dict__ = state
+
+getResult_result.__getstate__ = lambda self: self.__dict__.copy()
+getResult_result.__setstate__ = getResult_result__setstate__
 
 class Client(Iface):
   def __enter__(self):

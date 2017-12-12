@@ -652,6 +652,13 @@ def OldStructure__init__(self, features=None,):
 
 OldStructure.__init__ = OldStructure__init__
 
+def OldStructure__setstate__(self, state):
+  state.setdefault('features', None)
+  self.__dict__ = state
+
+OldStructure.__getstate__ = lambda self: self.__dict__.copy()
+OldStructure.__setstate__ = OldStructure__setstate__
+
 all_structs.append(NewStructure)
 NewStructure.thrift_spec = (
   None, # 0
@@ -668,6 +675,13 @@ def NewStructure__init__(self, features=None,):
 
 NewStructure.__init__ = NewStructure__init__
 
+def NewStructure__setstate__(self, state):
+  state.setdefault('features', None)
+  self.__dict__ = state
+
+NewStructure.__getstate__ = lambda self: self.__dict__.copy()
+NewStructure.__setstate__ = NewStructure__setstate__
+
 all_structs.append(NewStructure2)
 NewStructure2.thrift_spec = (
   None, # 0
@@ -683,6 +697,13 @@ def NewStructure2__init__(self, features=None,):
   self.features = features
 
 NewStructure2.__init__ = NewStructure2__init__
+
+def NewStructure2__setstate__(self, state):
+  state.setdefault('features', None)
+  self.__dict__ = state
+
+NewStructure2.__getstate__ = lambda self: self.__dict__.copy()
+NewStructure2.__setstate__ = NewStructure2__setstate__
 
 all_structs.append(NewStructureNested)
 NewStructureNested.thrift_spec = (
@@ -704,6 +725,15 @@ def NewStructureNested__init__(self, lst=None, mp=None, s=None,):
 
 NewStructureNested.__init__ = NewStructureNested__init__
 
+def NewStructureNested__setstate__(self, state):
+  state.setdefault('lst', None)
+  state.setdefault('mp', None)
+  state.setdefault('s', None)
+  self.__dict__ = state
+
+NewStructureNested.__getstate__ = lambda self: self.__dict__.copy()
+NewStructureNested.__setstate__ = NewStructureNested__setstate__
+
 all_structs.append(NewStructureNestedField)
 NewStructureNestedField.thrift_spec = (
   None, # 0
@@ -719,6 +749,13 @@ def NewStructureNestedField__init__(self, f=None,):
   self.f = f
 
 NewStructureNestedField.__init__ = NewStructureNestedField__init__
+
+def NewStructureNestedField__setstate__(self, state):
+  state.setdefault('f', None)
+  self.__dict__ = state
+
+NewStructureNestedField.__getstate__ = lambda self: self.__dict__.copy()
+NewStructureNestedField.__setstate__ = NewStructureNestedField__setstate__
 
 fix_spec(all_structs)
 del all_structs

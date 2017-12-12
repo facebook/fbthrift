@@ -147,5 +147,15 @@ def Included__init__(self, MyIntField=Included.thrift_spec[1][4], MyTransitiveFi
 
 Included.__init__ = Included__init__
 
+def Included__setstate__(self, state):
+  state.setdefault('MyIntField', 0)
+  state.setdefault('MyTransitiveField', transitive.ttypes.Foo(**{
+    "a" : 2,
+  }))
+  self.__dict__ = state
+
+Included.__getstate__ = lambda self: self.__dict__.copy()
+Included.__setstate__ = Included__setstate__
+
 fix_spec(all_structs)
 del all_structs
