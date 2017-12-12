@@ -35,7 +35,7 @@ TEST(PollerTest, StartsCleanly) {
     return true;
   };
   MockSecurityKillSwitchPoller poller(counter);
-  EXPECT_TRUE(b.timed_wait(chrono::seconds(5)));
+  EXPECT_TRUE(b.try_wait_for(chrono::seconds(5)));
   EXPECT_EQ(numCalls, 1);
 }
 
@@ -51,7 +51,7 @@ TEST(PollerTest, PollsInSeparateThread) {
     return current != this_thread::get_id();
   };
   MockSecurityKillSwitchPoller poller(func);
-  EXPECT_TRUE(b.timed_wait(chrono::seconds(5)));
+  EXPECT_TRUE(b.try_wait_for(chrono::seconds(5)));
   EXPECT_TRUE(poller.isKillSwitchEnabled());
 }
 

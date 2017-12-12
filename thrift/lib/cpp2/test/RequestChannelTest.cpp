@@ -105,8 +105,9 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   opts.setTimeout(milliseconds(1));
   auto done = make_shared<Baton<>>();
   SCOPE_EXIT { done->post(); };
-  EXPECT_CALL(*handler, voidResponse())
-    .WillOnce(Invoke([done] { EXPECT_TRUE(done->timed_wait(seconds(1))); }));
+  EXPECT_CALL(*handler, voidResponse()).WillOnce(Invoke([done] {
+    EXPECT_TRUE(done->try_wait_for(seconds(1)));
+  }));
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
@@ -170,6 +171,6 @@ TEST_F(FunctionSendCallbackTest, with_throwing_server_passes) {
   sendOnewayMessage(ssit.getAddress(), [&](CSR&& state) {
     exn = std::move(state.exception());
   });
-  done.timed_wait(chrono::steady_clock::now() + chrono::milliseconds(50));
+  done.try_wait_for(chrono::milliseconds(50));
   EXPECT_FALSE(exn);
 }

@@ -265,7 +265,7 @@ void Cpp2Worker::requestStop() {
 }
 
 void Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
-  if (!stopBaton_.timed_wait(deadline)) {
+  if (!stopBaton_.try_wait_until(deadline)) {
     LOG(ERROR) << "Failed to join outstanding requests.";
   }
 }
