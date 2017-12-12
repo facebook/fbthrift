@@ -2487,7 +2487,11 @@ void t_py_generator::generate_service_client(t_service* tservice) {
           indent() << "  fut.set_exception(x)" << endl <<
           indent() << "  return" << endl <<
           indent() << "result = " << resultname << "()" << endl <<
-          indent() << "result.read(iprot)" << endl <<
+          indent() << "try:" << endl <<
+          indent() << "  result.read(iprot)" << endl <<
+          indent() << "except Exception as e:" << endl <<
+          indent() << "  fut.set_exception(e)" << endl <<
+          indent() << "  return" << endl <<
           indent() << "iprot.readMessageEnd()" << endl;
       } else {
         f_service_ <<
