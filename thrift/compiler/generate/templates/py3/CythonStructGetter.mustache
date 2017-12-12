@@ -47,14 +47,14 @@ return self.__{{field:name}}{{!
   }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
   }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
-}}{{#type:enum}}{{!
+}}{{#type:enum?}}{{!
   }}return translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!
     }}<int>({{!
     }}deref(self._cpp_obj).{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }})){{!
-}}{{/type:enum}}{{!
+}}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
 }}if self.__{{field:name}} is None:
     self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!

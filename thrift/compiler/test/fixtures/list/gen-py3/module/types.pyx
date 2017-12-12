@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -49,8 +50,10 @@ cdef class List__string:
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -197,8 +200,13 @@ cdef class Map__i64_List__string:
     @staticmethod
     cdef unique_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int64_t,vector[string]]] c_inst = make_unique[cmap[int64_t,vector[string]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Sequence[str]")
+                if not isinstance(item, List__string):
+                    item = List__string(item)
+
                 deref(c_inst).insert(cpair[int64_t,vector[string]](key,vector[string](deref(List__string(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 

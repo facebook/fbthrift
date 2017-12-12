@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 cimport include.types as _include_types
 import include.types as _include_types
 
@@ -85,8 +86,8 @@ cdef cdecorated_struct _decorated_struct_defaults = cdecorated_struct()
 cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __init__(
-        decorated_struct self,
-        field=None
+        decorated_struct self, *,
+        str field=None
     ):
         self._cpp_obj = move(decorated_struct._make_instance(
           NULL,
@@ -95,14 +96,18 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __call__(
         decorated_struct self,
-        field=NOTSET
+        field=__NOTSET
     ):
         changes = any((
-            field is not NOTSET,
+            field is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not field is not __NOTSET:
+            if not isinstance(field, str):
+                raise TypeError(f'field is not a { str !r}.')
 
         inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
         inst._cpp_obj = move(decorated_struct._make_instance(
@@ -123,17 +128,17 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             c_inst = make_unique[cdecorated_struct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if field is None:
                 deref(c_inst).field = _decorated_struct_defaults.field
                 deref(c_inst).__isset.field = False
-            elif field is NOTSET:
+                pass
+            elif field is __NOTSET:
                 field = None
 
         if field is not None:
             deref(c_inst).field = field.encode('UTF-8')
             deref(c_inst).__isset.field = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -142,7 +147,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         yield 'field', self.field
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.field
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct] cpp_obj):
@@ -152,8 +157,6 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     @property
     def field(self):
-        if not deref(self._cpp_obj).__isset.field:
-            return None
 
         return (<bytes>self._cpp_obj.get().field).decode('UTF-8')
 
@@ -215,7 +218,7 @@ cdef cContainerStruct _ContainerStruct_defaults = cContainerStruct()
 cdef class ContainerStruct(thrift.py3.types.Struct):
 
     def __init__(
-        ContainerStruct self,
+        ContainerStruct self, *,
         fieldA=None,
         fieldB=None,
         fieldC=None,
@@ -239,35 +242,67 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     def __call__(
         ContainerStruct self,
-        fieldA=NOTSET,
-        fieldB=NOTSET,
-        fieldC=NOTSET,
-        fieldD=NOTSET,
-        fieldE=NOTSET,
-        fieldF=NOTSET,
-        fieldG=NOTSET,
-        fieldH=NOTSET
+        fieldA=__NOTSET,
+        fieldB=__NOTSET,
+        fieldC=__NOTSET,
+        fieldD=__NOTSET,
+        fieldE=__NOTSET,
+        fieldF=__NOTSET,
+        fieldG=__NOTSET,
+        fieldH=__NOTSET
     ):
         changes = any((
-            fieldA is not NOTSET,
+            fieldA is not __NOTSET,
 
-            fieldB is not NOTSET,
+            fieldB is not __NOTSET,
 
-            fieldC is not NOTSET,
+            fieldC is not __NOTSET,
 
-            fieldD is not NOTSET,
+            fieldD is not __NOTSET,
 
-            fieldE is not NOTSET,
+            fieldE is not __NOTSET,
 
-            fieldF is not NOTSET,
+            fieldF is not __NOTSET,
 
-            fieldG is not NOTSET,
+            fieldG is not __NOTSET,
 
-            fieldH is not NOTSET,
+            fieldH is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not fieldA is not __NOTSET:
+            if not isinstance(fieldA, List__i32):
+                fieldA = List__i32(fieldA)
+
+        if None is not fieldB is not __NOTSET:
+            if not isinstance(fieldB, std_list__List__i32):
+                fieldB = std_list__List__i32(fieldB)
+
+        if None is not fieldC is not __NOTSET:
+            if not isinstance(fieldC, std_deque__List__i32):
+                fieldC = std_deque__List__i32(fieldC)
+
+        if None is not fieldD is not __NOTSET:
+            if not isinstance(fieldD, folly_fbvector__List__i32):
+                fieldD = folly_fbvector__List__i32(fieldD)
+
+        if None is not fieldE is not __NOTSET:
+            if not isinstance(fieldE, folly_small_vector__List__i32):
+                fieldE = folly_small_vector__List__i32(fieldE)
+
+        if None is not fieldF is not __NOTSET:
+            if not isinstance(fieldF, folly_sorted_vector_set__Set__i32):
+                fieldF = folly_sorted_vector_set__Set__i32(fieldF)
+
+        if None is not fieldG is not __NOTSET:
+            if not isinstance(fieldG, folly_sorted_vector_map__Map__i32_string):
+                fieldG = folly_sorted_vector_map__Map__i32_string(fieldG)
+
+        if None is not fieldH is not __NOTSET:
+            if not isinstance(fieldH, std_unordered_map__Map__i32_string):
+                fieldH = std_unordered_map__Map__i32_string(fieldH)
 
         inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
         inst._cpp_obj = move(ContainerStruct._make_instance(
@@ -302,87 +337,87 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cContainerStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if fieldA is None:
                 deref(c_inst).fieldA = _ContainerStruct_defaults.fieldA
                 deref(c_inst).__isset.fieldA = False
-            elif fieldA is NOTSET:
+                pass
+            elif fieldA is __NOTSET:
                 fieldA = None
 
             if fieldB is None:
                 deref(c_inst).fieldB = _ContainerStruct_defaults.fieldB
                 deref(c_inst).__isset.fieldB = False
-            elif fieldB is NOTSET:
+                pass
+            elif fieldB is __NOTSET:
                 fieldB = None
 
             if fieldC is None:
                 deref(c_inst).fieldC = _ContainerStruct_defaults.fieldC
                 deref(c_inst).__isset.fieldC = False
-            elif fieldC is NOTSET:
+                pass
+            elif fieldC is __NOTSET:
                 fieldC = None
 
             if fieldD is None:
                 deref(c_inst).fieldD = _ContainerStruct_defaults.fieldD
                 deref(c_inst).__isset.fieldD = False
-            elif fieldD is NOTSET:
+                pass
+            elif fieldD is __NOTSET:
                 fieldD = None
 
             if fieldE is None:
                 deref(c_inst).fieldE = _ContainerStruct_defaults.fieldE
                 deref(c_inst).__isset.fieldE = False
-            elif fieldE is NOTSET:
+                pass
+            elif fieldE is __NOTSET:
                 fieldE = None
 
             if fieldF is None:
                 deref(c_inst).fieldF = _ContainerStruct_defaults.fieldF
                 deref(c_inst).__isset.fieldF = False
-            elif fieldF is NOTSET:
+                pass
+            elif fieldF is __NOTSET:
                 fieldF = None
 
             if fieldG is None:
                 deref(c_inst).fieldG = _ContainerStruct_defaults.fieldG
                 deref(c_inst).__isset.fieldG = False
-            elif fieldG is NOTSET:
+                pass
+            elif fieldG is __NOTSET:
                 fieldG = None
 
             if fieldH is None:
                 deref(c_inst).fieldH = _ContainerStruct_defaults.fieldH
                 deref(c_inst).__isset.fieldH = False
-            elif fieldH is NOTSET:
+                pass
+            elif fieldH is __NOTSET:
                 fieldH = None
 
         if fieldA is not None:
             deref(c_inst).fieldA = <vector[int32_t]>deref(List__i32(fieldA)._cpp_obj)
             deref(c_inst).__isset.fieldA = True
-
         if fieldB is not None:
             deref(c_inst).fieldB = <std_list[int32_t]>deref(std_list__List__i32(fieldB)._cpp_obj)
             deref(c_inst).__isset.fieldB = True
-
         if fieldC is not None:
             deref(c_inst).fieldC = <std_deque[int32_t]>deref(std_deque__List__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
-
         if fieldD is not None:
             deref(c_inst).fieldD = <folly_fbvector[int32_t]>deref(folly_fbvector__List__i32(fieldD)._cpp_obj)
             deref(c_inst).__isset.fieldD = True
-
         if fieldE is not None:
             deref(c_inst).fieldE = <folly_small_vector[int32_t]>deref(folly_small_vector__List__i32(fieldE)._cpp_obj)
             deref(c_inst).__isset.fieldE = True
-
         if fieldF is not None:
             deref(c_inst).fieldF = <folly_sorted_vector_set[int32_t]>deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj)
             deref(c_inst).__isset.fieldF = True
-
         if fieldG is not None:
             deref(c_inst).fieldG = <folly_sorted_vector_map[int32_t,string]>deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj)
             deref(c_inst).__isset.fieldG = True
-
         if fieldH is not None:
             deref(c_inst).fieldH = <std_unordered_map[int32_t,string]>deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj)
             deref(c_inst).__isset.fieldH = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -398,7 +433,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         yield 'fieldH', self.fieldH
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.fieldA or deref(self._cpp_obj).__isset.fieldB or deref(self._cpp_obj).__isset.fieldC or deref(self._cpp_obj).__isset.fieldD or deref(self._cpp_obj).__isset.fieldE or deref(self._cpp_obj).__isset.fieldF or deref(self._cpp_obj).__isset.fieldG or deref(self._cpp_obj).__isset.fieldH
+        return True or True or True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
@@ -408,8 +443,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldA(self):
-        if not deref(self._cpp_obj).__isset.fieldA:
-            return None
 
         if self.__fieldA is None:
             self.__fieldA = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldA))
@@ -417,8 +450,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldB(self):
-        if not deref(self._cpp_obj).__isset.fieldB:
-            return None
 
         if self.__fieldB is None:
             self.__fieldB = std_list__List__i32.create(make_shared[std_list[int32_t]](deref(self._cpp_obj).fieldB))
@@ -426,8 +457,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldC(self):
-        if not deref(self._cpp_obj).__isset.fieldC:
-            return None
 
         if self.__fieldC is None:
             self.__fieldC = std_deque__List__i32.create(make_shared[std_deque[int32_t]](deref(self._cpp_obj).fieldC))
@@ -435,8 +464,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldD(self):
-        if not deref(self._cpp_obj).__isset.fieldD:
-            return None
 
         if self.__fieldD is None:
             self.__fieldD = folly_fbvector__List__i32.create(make_shared[folly_fbvector[int32_t]](deref(self._cpp_obj).fieldD))
@@ -444,8 +471,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldE(self):
-        if not deref(self._cpp_obj).__isset.fieldE:
-            return None
 
         if self.__fieldE is None:
             self.__fieldE = folly_small_vector__List__i32.create(make_shared[folly_small_vector[int32_t]](deref(self._cpp_obj).fieldE))
@@ -453,8 +478,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldF(self):
-        if not deref(self._cpp_obj).__isset.fieldF:
-            return None
 
         if self.__fieldF is None:
             self.__fieldF = folly_sorted_vector_set__Set__i32.create(make_shared[folly_sorted_vector_set[int32_t]](deref(self._cpp_obj).fieldF))
@@ -462,8 +485,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldG(self):
-        if not deref(self._cpp_obj).__isset.fieldG:
-            return None
 
         if self.__fieldG is None:
             self.__fieldG = folly_sorted_vector_map__Map__i32_string.create(make_shared[folly_sorted_vector_map[int32_t,string]](deref(self._cpp_obj).fieldG))
@@ -471,8 +492,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @property
     def fieldH(self):
-        if not deref(self._cpp_obj).__isset.fieldH:
-            return None
 
         if self.__fieldH is None:
             self.__fieldH = std_unordered_map__Map__i32_string.create(make_shared[std_unordered_map[int32_t,string]](deref(self._cpp_obj).fieldH))
@@ -543,7 +562,7 @@ cdef cVirtualStruct _VirtualStruct_defaults = cVirtualStruct()
 cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __init__(
-        VirtualStruct self,
+        VirtualStruct self, *,
         MyIntField=None
     ):
         self._cpp_obj = move(VirtualStruct._make_instance(
@@ -553,14 +572,18 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __call__(
         VirtualStruct self,
-        MyIntField=NOTSET
+        MyIntField=__NOTSET
     ):
         changes = any((
-            MyIntField is not NOTSET,
+            MyIntField is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not MyIntField is not __NOTSET:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
 
         inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
         inst._cpp_obj = move(VirtualStruct._make_instance(
@@ -581,17 +604,17 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cVirtualStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if MyIntField is None:
                 deref(c_inst).MyIntField = _VirtualStruct_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
-            elif MyIntField is NOTSET:
+                pass
+            elif MyIntField is __NOTSET:
                 MyIntField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -600,7 +623,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIntField
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct] cpp_obj):
@@ -610,8 +633,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     @property
     def MyIntField(self):
-        if not deref(self._cpp_obj).__isset.MyIntField:
-            return None
 
         return self._cpp_obj.get().MyIntField
 
@@ -684,8 +705,11 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *:
         cdef unique_ptr[std_unordered_map[int32_t,string]] c_inst = make_unique[std_unordered_map[int32_t,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
 
@@ -797,7 +821,7 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -945,7 +969,7 @@ cdef class std_list__List__i32:
     @staticmethod
     cdef unique_ptr[std_list[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[std_list[int32_t]] c_inst = make_unique[std_list[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1093,7 +1117,7 @@ cdef class std_deque__List__i32:
     @staticmethod
     cdef unique_ptr[std_deque[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[std_deque[int32_t]] c_inst = make_unique[std_deque[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1241,7 +1265,7 @@ cdef class folly_fbvector__List__i32:
     @staticmethod
     cdef unique_ptr[folly_fbvector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[folly_fbvector[int32_t]] c_inst = make_unique[folly_fbvector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1389,7 +1413,7 @@ cdef class folly_small_vector__List__i32:
     @staticmethod
     cdef unique_ptr[folly_small_vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[folly_small_vector[int32_t]] c_inst = make_unique[folly_small_vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1537,7 +1561,7 @@ cdef class folly_sorted_vector_set__Set__i32:
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_set[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[folly_sorted_vector_set[int32_t]] c_inst = make_unique[folly_sorted_vector_set[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
@@ -1722,8 +1746,11 @@ cdef class folly_sorted_vector_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *:
         cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] c_inst = make_unique[folly_sorted_vector_map[int32_t,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
 

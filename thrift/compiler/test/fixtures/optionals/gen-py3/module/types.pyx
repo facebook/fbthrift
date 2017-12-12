@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class Animal(Enum):
@@ -59,7 +60,7 @@ cdef cColor _Color_defaults = cColor()
 cdef class Color(thrift.py3.types.Struct):
 
     def __init__(
-        Color self,
+        Color self, *,
         red=None,
         green=None,
         blue=None,
@@ -75,23 +76,39 @@ cdef class Color(thrift.py3.types.Struct):
 
     def __call__(
         Color self,
-        red=NOTSET,
-        green=NOTSET,
-        blue=NOTSET,
-        alpha=NOTSET
+        red=__NOTSET,
+        green=__NOTSET,
+        blue=__NOTSET,
+        alpha=__NOTSET
     ):
         changes = any((
-            red is not NOTSET,
+            red is not __NOTSET,
 
-            green is not NOTSET,
+            green is not __NOTSET,
 
-            blue is not NOTSET,
+            blue is not __NOTSET,
 
-            alpha is not NOTSET,
+            alpha is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not red is not __NOTSET:
+            if not isinstance(red, float):
+                raise TypeError(f'red is not a { float !r}.')
+
+        if None is not green is not __NOTSET:
+            if not isinstance(green, float):
+                raise TypeError(f'green is not a { float !r}.')
+
+        if None is not blue is not __NOTSET:
+            if not isinstance(blue, float):
+                raise TypeError(f'blue is not a { float !r}.')
+
+        if None is not alpha is not __NOTSET:
+            if not isinstance(alpha, float):
+                raise TypeError(f'alpha is not a { float !r}.')
 
         inst = <Color>Color.__new__(Color)
         inst._cpp_obj = move(Color._make_instance(
@@ -118,47 +135,47 @@ cdef class Color(thrift.py3.types.Struct):
             c_inst = make_unique[cColor]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if red is None:
                 deref(c_inst).red = _Color_defaults.red
                 deref(c_inst).__isset.red = False
-            elif red is NOTSET:
+                pass
+            elif red is __NOTSET:
                 red = None
 
             if green is None:
                 deref(c_inst).green = _Color_defaults.green
                 deref(c_inst).__isset.green = False
-            elif green is NOTSET:
+                pass
+            elif green is __NOTSET:
                 green = None
 
             if blue is None:
                 deref(c_inst).blue = _Color_defaults.blue
                 deref(c_inst).__isset.blue = False
-            elif blue is NOTSET:
+                pass
+            elif blue is __NOTSET:
                 blue = None
 
             if alpha is None:
                 deref(c_inst).alpha = _Color_defaults.alpha
                 deref(c_inst).__isset.alpha = False
-            elif alpha is NOTSET:
+                pass
+            elif alpha is __NOTSET:
                 alpha = None
 
         if red is not None:
             deref(c_inst).red = red
             deref(c_inst).__isset.red = True
-
         if green is not None:
             deref(c_inst).green = green
             deref(c_inst).__isset.green = True
-
         if blue is not None:
             deref(c_inst).blue = blue
             deref(c_inst).__isset.blue = True
-
         if alpha is not None:
             deref(c_inst).alpha = alpha
             deref(c_inst).__isset.alpha = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -170,7 +187,7 @@ cdef class Color(thrift.py3.types.Struct):
         yield 'alpha', self.alpha
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.red or deref(self._cpp_obj).__isset.green or deref(self._cpp_obj).__isset.blue or deref(self._cpp_obj).__isset.alpha
+        return True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
@@ -180,29 +197,21 @@ cdef class Color(thrift.py3.types.Struct):
 
     @property
     def red(self):
-        if not deref(self._cpp_obj).__isset.red:
-            return None
 
         return self._cpp_obj.get().red
 
     @property
     def green(self):
-        if not deref(self._cpp_obj).__isset.green:
-            return None
 
         return self._cpp_obj.get().green
 
     @property
     def blue(self):
-        if not deref(self._cpp_obj).__isset.blue:
-            return None
 
         return self._cpp_obj.get().blue
 
     @property
     def alpha(self):
-        if not deref(self._cpp_obj).__isset.alpha:
-            return None
 
         return self._cpp_obj.get().alpha
 
@@ -267,12 +276,12 @@ cdef cVehicle _Vehicle_defaults = cVehicle()
 cdef class Vehicle(thrift.py3.types.Struct):
 
     def __init__(
-        Vehicle self,
-        color=None,
-        licensePlate=None,
-        description=None,
-        name=None,
-        hasAC=None
+        Vehicle self, *,
+        Color color=None,
+        str licensePlate=None,
+        str description=None,
+        str name=None,
+        pbool hasAC=None
     ):
         self._cpp_obj = move(Vehicle._make_instance(
           NULL,
@@ -285,26 +294,46 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     def __call__(
         Vehicle self,
-        color=NOTSET,
-        licensePlate=NOTSET,
-        description=NOTSET,
-        name=NOTSET,
-        hasAC=NOTSET
+        color=__NOTSET,
+        licensePlate=__NOTSET,
+        description=__NOTSET,
+        name=__NOTSET,
+        hasAC=__NOTSET
     ):
         changes = any((
-            color is not NOTSET,
+            color is not __NOTSET,
 
-            licensePlate is not NOTSET,
+            licensePlate is not __NOTSET,
 
-            description is not NOTSET,
+            description is not __NOTSET,
 
-            name is not NOTSET,
+            name is not __NOTSET,
 
-            hasAC is not NOTSET,
+            hasAC is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not color is not __NOTSET:
+            if not isinstance(color, Color):
+                raise TypeError(f'color is not a { Color !r}.')
+
+        if None is not licensePlate is not __NOTSET:
+            if not isinstance(licensePlate, str):
+                raise TypeError(f'licensePlate is not a { str !r}.')
+
+        if None is not description is not __NOTSET:
+            if not isinstance(description, str):
+                raise TypeError(f'description is not a { str !r}.')
+
+        if None is not name is not __NOTSET:
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
+
+        if None is not hasAC is not __NOTSET:
+            if not isinstance(hasAC, bool):
+                raise TypeError(f'hasAC is not a { bool !r}.')
 
         inst = <Vehicle>Vehicle.__new__(Vehicle)
         inst._cpp_obj = move(Vehicle._make_instance(
@@ -333,57 +362,54 @@ cdef class Vehicle(thrift.py3.types.Struct):
             c_inst = make_unique[cVehicle]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if color is None:
                 deref(c_inst).color = _Vehicle_defaults.color
                 deref(c_inst).__isset.color = False
-            elif color is NOTSET:
+                pass
+            elif color is __NOTSET:
                 color = None
 
             if licensePlate is None:
-                deref(c_inst).licensePlate = _Vehicle_defaults.licensePlate
                 deref(c_inst).__isset.licensePlate = False
-            elif licensePlate is NOTSET:
+                pass
+            elif licensePlate is __NOTSET:
                 licensePlate = None
 
             if description is None:
-                deref(c_inst).description = _Vehicle_defaults.description
                 deref(c_inst).__isset.description = False
-            elif description is NOTSET:
+                pass
+            elif description is __NOTSET:
                 description = None
 
             if name is None:
-                deref(c_inst).name = _Vehicle_defaults.name
                 deref(c_inst).__isset.name = False
-            elif name is NOTSET:
+                pass
+            elif name is __NOTSET:
                 name = None
 
             if hasAC is None:
                 deref(c_inst).hasAC = _Vehicle_defaults.hasAC
                 deref(c_inst).__isset.hasAC = False
-            elif hasAC is NOTSET:
+                pass
+            elif hasAC is __NOTSET:
                 hasAC = None
 
         if color is not None:
             deref(c_inst).color = deref((<Color?> color)._cpp_obj)
             deref(c_inst).__isset.color = True
-
         if licensePlate is not None:
             deref(c_inst).licensePlate = licensePlate.encode('UTF-8')
             deref(c_inst).__isset.licensePlate = True
-
         if description is not None:
             deref(c_inst).description = description.encode('UTF-8')
             deref(c_inst).__isset.description = True
-
         if name is not None:
             deref(c_inst).name = name.encode('UTF-8')
             deref(c_inst).__isset.name = True
-
         if hasAC is not None:
             deref(c_inst).hasAC = hasAC
             deref(c_inst).__isset.hasAC = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -396,7 +422,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         yield 'hasAC', self.hasAC
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.color or deref(self._cpp_obj).__isset.licensePlate or deref(self._cpp_obj).__isset.description or deref(self._cpp_obj).__isset.name or deref(self._cpp_obj).__isset.hasAC
+        return True or deref(self._cpp_obj).__isset.licensePlate or deref(self._cpp_obj).__isset.description or deref(self._cpp_obj).__isset.name or True
 
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
@@ -406,8 +432,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     @property
     def color(self):
-        if not deref(self._cpp_obj).__isset.color:
-            return None
 
         if self.__color is None:
             self.__color = Color.create(make_shared[cColor](deref(self._cpp_obj).color))
@@ -436,6 +460,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     @property
     def hasAC(self):
+
         return <pbool> self._cpp_obj.get().hasAC
 
 
@@ -500,12 +525,12 @@ cdef cPerson _Person_defaults = cPerson()
 cdef class Person(thrift.py3.types.Struct):
 
     def __init__(
-        Person self,
+        Person self, *,
         id=None,
-        name=None,
+        str name=None,
         age=None,
-        address=None,
-        favoriteColor=None,
+        str address=None,
+        Color favoriteColor=None,
         friends=None,
         bestFriend=None,
         petNames=None,
@@ -528,41 +553,81 @@ cdef class Person(thrift.py3.types.Struct):
 
     def __call__(
         Person self,
-        id=NOTSET,
-        name=NOTSET,
-        age=NOTSET,
-        address=NOTSET,
-        favoriteColor=NOTSET,
-        friends=NOTSET,
-        bestFriend=NOTSET,
-        petNames=NOTSET,
-        afraidOfAnimal=NOTSET,
-        vehicles=NOTSET
+        id=__NOTSET,
+        name=__NOTSET,
+        age=__NOTSET,
+        address=__NOTSET,
+        favoriteColor=__NOTSET,
+        friends=__NOTSET,
+        bestFriend=__NOTSET,
+        petNames=__NOTSET,
+        afraidOfAnimal=__NOTSET,
+        vehicles=__NOTSET
     ):
         changes = any((
-            id is not NOTSET,
+            id is not __NOTSET,
 
-            name is not NOTSET,
+            name is not __NOTSET,
 
-            age is not NOTSET,
+            age is not __NOTSET,
 
-            address is not NOTSET,
+            address is not __NOTSET,
 
-            favoriteColor is not NOTSET,
+            favoriteColor is not __NOTSET,
 
-            friends is not NOTSET,
+            friends is not __NOTSET,
 
-            bestFriend is not NOTSET,
+            bestFriend is not __NOTSET,
 
-            petNames is not NOTSET,
+            petNames is not __NOTSET,
 
-            afraidOfAnimal is not NOTSET,
+            afraidOfAnimal is not __NOTSET,
 
-            vehicles is not NOTSET,
+            vehicles is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not id is not __NOTSET:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
+
+        if None is not name is not __NOTSET:
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
+
+        if None is not age is not __NOTSET:
+            if not isinstance(age, int):
+                raise TypeError(f'age is not a { int !r}.')
+
+        if None is not address is not __NOTSET:
+            if not isinstance(address, str):
+                raise TypeError(f'address is not a { str !r}.')
+
+        if None is not favoriteColor is not __NOTSET:
+            if not isinstance(favoriteColor, Color):
+                raise TypeError(f'favoriteColor is not a { Color !r}.')
+
+        if None is not friends is not __NOTSET:
+            if not isinstance(friends, Set__i64):
+                friends = Set__i64(friends)
+
+        if None is not bestFriend is not __NOTSET:
+            if not isinstance(bestFriend, int):
+                raise TypeError(f'bestFriend is not a { int !r}.')
+
+        if None is not petNames is not __NOTSET:
+            if not isinstance(petNames, Map__Animal_string):
+                petNames = Map__Animal_string(petNames)
+
+        if None is not afraidOfAnimal is not __NOTSET:
+            if not isinstance(afraidOfAnimal, Animal):
+                raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
+
+        if None is not vehicles is not __NOTSET:
+            if not isinstance(vehicles, List__Vehicle):
+                vehicles = List__Vehicle(vehicles)
 
         inst = <Person>Person.__new__(Person)
         inst._cpp_obj = move(Person._make_instance(
@@ -601,107 +666,99 @@ cdef class Person(thrift.py3.types.Struct):
             c_inst = make_unique[cPerson]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if id is None:
                 deref(c_inst).id = _Person_defaults.id
                 deref(c_inst).__isset.id = False
-            elif id is NOTSET:
+                pass
+            elif id is __NOTSET:
                 id = None
 
             if name is None:
                 deref(c_inst).name = _Person_defaults.name
                 deref(c_inst).__isset.name = False
-            elif name is NOTSET:
+                pass
+            elif name is __NOTSET:
                 name = None
 
             if age is None:
-                deref(c_inst).age = _Person_defaults.age
                 deref(c_inst).__isset.age = False
-            elif age is NOTSET:
+                pass
+            elif age is __NOTSET:
                 age = None
 
             if address is None:
-                deref(c_inst).address = _Person_defaults.address
                 deref(c_inst).__isset.address = False
-            elif address is NOTSET:
+                pass
+            elif address is __NOTSET:
                 address = None
 
             if favoriteColor is None:
-                deref(c_inst).favoriteColor = _Person_defaults.favoriteColor
                 deref(c_inst).__isset.favoriteColor = False
-            elif favoriteColor is NOTSET:
+                pass
+            elif favoriteColor is __NOTSET:
                 favoriteColor = None
 
             if friends is None:
-                deref(c_inst).friends = _Person_defaults.friends
                 deref(c_inst).__isset.friends = False
-            elif friends is NOTSET:
+                pass
+            elif friends is __NOTSET:
                 friends = None
 
             if bestFriend is None:
-                deref(c_inst).bestFriend = _Person_defaults.bestFriend
                 deref(c_inst).__isset.bestFriend = False
-            elif bestFriend is NOTSET:
+                pass
+            elif bestFriend is __NOTSET:
                 bestFriend = None
 
             if petNames is None:
-                deref(c_inst).petNames = _Person_defaults.petNames
                 deref(c_inst).__isset.petNames = False
-            elif petNames is NOTSET:
+                pass
+            elif petNames is __NOTSET:
                 petNames = None
 
             if afraidOfAnimal is None:
-                deref(c_inst).afraidOfAnimal = _Person_defaults.afraidOfAnimal
                 deref(c_inst).__isset.afraidOfAnimal = False
-            elif afraidOfAnimal is NOTSET:
+                pass
+            elif afraidOfAnimal is __NOTSET:
                 afraidOfAnimal = None
 
             if vehicles is None:
-                deref(c_inst).vehicles = _Person_defaults.vehicles
                 deref(c_inst).__isset.vehicles = False
-            elif vehicles is NOTSET:
+                pass
+            elif vehicles is __NOTSET:
                 vehicles = None
 
         if id is not None:
             deref(c_inst).id = id
             deref(c_inst).__isset.id = True
-
         if name is not None:
             deref(c_inst).name = name.encode('UTF-8')
             deref(c_inst).__isset.name = True
-
         if age is not None:
             deref(c_inst).age = age
             deref(c_inst).__isset.age = True
-
         if address is not None:
             deref(c_inst).address = address.encode('UTF-8')
             deref(c_inst).__isset.address = True
-
         if favoriteColor is not None:
             deref(c_inst).favoriteColor = deref((<Color?> favoriteColor)._cpp_obj)
             deref(c_inst).__isset.favoriteColor = True
-
         if friends is not None:
             deref(c_inst).friends = <cset[int64_t]>deref(Set__i64(friends)._cpp_obj)
             deref(c_inst).__isset.friends = True
-
         if bestFriend is not None:
             deref(c_inst).bestFriend = bestFriend
             deref(c_inst).__isset.bestFriend = True
-
         if petNames is not None:
             deref(c_inst).petNames = <cmap[cAnimal,string]>deref(Map__Animal_string(petNames)._cpp_obj)
             deref(c_inst).__isset.petNames = True
-
         if afraidOfAnimal is not None:
             deref(c_inst).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
             deref(c_inst).__isset.afraidOfAnimal = True
-
         if vehicles is not None:
             deref(c_inst).vehicles = <vector[cVehicle]>deref(List__Vehicle(vehicles)._cpp_obj)
             deref(c_inst).__isset.vehicles = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -719,7 +776,7 @@ cdef class Person(thrift.py3.types.Struct):
         yield 'vehicles', self.vehicles
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.id or deref(self._cpp_obj).__isset.name or deref(self._cpp_obj).__isset.age or deref(self._cpp_obj).__isset.address or deref(self._cpp_obj).__isset.favoriteColor or deref(self._cpp_obj).__isset.friends or deref(self._cpp_obj).__isset.bestFriend or deref(self._cpp_obj).__isset.petNames or deref(self._cpp_obj).__isset.afraidOfAnimal or deref(self._cpp_obj).__isset.vehicles
+        return True or True or deref(self._cpp_obj).__isset.age or deref(self._cpp_obj).__isset.address or deref(self._cpp_obj).__isset.favoriteColor or deref(self._cpp_obj).__isset.friends or deref(self._cpp_obj).__isset.bestFriend or deref(self._cpp_obj).__isset.petNames or deref(self._cpp_obj).__isset.afraidOfAnimal or deref(self._cpp_obj).__isset.vehicles
 
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):
@@ -729,15 +786,11 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def id(self):
-        if not deref(self._cpp_obj).__isset.id:
-            return None
 
         return self._cpp_obj.get().id
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
-            return None
 
         return (<bytes>self._cpp_obj.get().name).decode('UTF-8')
 
@@ -883,7 +936,7 @@ cdef class Set__i64:
     @staticmethod
     cdef unique_ptr[cset[int64_t]] _make_instance(object items) except *:
         cdef unique_ptr[cset[int64_t]] c_inst = make_unique[cset[int64_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
@@ -1068,8 +1121,11 @@ cdef class Map__Animal_string:
     @staticmethod
     cdef unique_ptr[cmap[cAnimal,string]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[cAnimal,string]] c_inst = make_unique[cmap[cAnimal,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[cAnimal,string](Animal_to_cpp(key),item.encode('UTF-8')))
         return move_unique(c_inst)
 
@@ -1181,8 +1237,10 @@ cdef class List__Vehicle:
     @staticmethod
     cdef unique_ptr[vector[cVehicle]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cVehicle]] c_inst = make_unique[vector[cVehicle]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, Vehicle):
+                    raise TypeError(f"{item!r} is not of type 'Vehicle'")
                 deref(c_inst).push_back(deref((<Vehicle>item)._cpp_obj))
         return move_unique(c_inst)
 

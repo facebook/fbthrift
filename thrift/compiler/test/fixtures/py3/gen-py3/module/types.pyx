@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class AnEnum(Enum):
@@ -67,6 +68,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
           NULL,
           err_code,
         ))
+        _builtins.Exception.__init__(self, self.err_code)
 
 
     @staticmethod
@@ -83,7 +85,6 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         if err_code is not None:
             deref(c_inst).err_code = err_code
             deref(c_inst).__isset.err_code = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -92,18 +93,17 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         yield 'err_code', self.err_code
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.err_code
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cSimpleException] cpp_obj):
-        inst = <SimpleException>SimpleException.__new__(SimpleException)
+        inst = <SimpleException>SimpleException.__new__(SimpleException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         inst._cpp_obj = cpp_obj
+        _builtins.Exception.__init__(inst, inst.err_code)
         return inst
 
     @property
     def err_code(self):
-        if not deref(self._cpp_obj).__isset.err_code:
-            return None
 
         return self._cpp_obj.get().err_code
 
@@ -139,8 +139,8 @@ cdef cSimpleStruct _SimpleStruct_defaults = cSimpleStruct()
 cdef class SimpleStruct(thrift.py3.types.Struct):
 
     def __init__(
-        SimpleStruct self,
-        is_on=None,
+        SimpleStruct self, *,
+        pbool is_on=None,
         tiny_int=None,
         small_int=None,
         nice_sized_int=None,
@@ -161,32 +161,60 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
     def __call__(
         SimpleStruct self,
-        is_on=NOTSET,
-        tiny_int=NOTSET,
-        small_int=NOTSET,
-        nice_sized_int=NOTSET,
-        big_int=NOTSET,
-        real=NOTSET,
-        smaller_real=NOTSET
+        is_on=__NOTSET,
+        tiny_int=__NOTSET,
+        small_int=__NOTSET,
+        nice_sized_int=__NOTSET,
+        big_int=__NOTSET,
+        real=__NOTSET,
+        smaller_real=__NOTSET
     ):
         changes = any((
-            is_on is not NOTSET,
+            is_on is not __NOTSET,
 
-            tiny_int is not NOTSET,
+            tiny_int is not __NOTSET,
 
-            small_int is not NOTSET,
+            small_int is not __NOTSET,
 
-            nice_sized_int is not NOTSET,
+            nice_sized_int is not __NOTSET,
 
-            big_int is not NOTSET,
+            big_int is not __NOTSET,
 
-            real is not NOTSET,
+            real is not __NOTSET,
 
-            smaller_real is not NOTSET,
+            smaller_real is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not is_on is not __NOTSET:
+            if not isinstance(is_on, bool):
+                raise TypeError(f'is_on is not a { bool !r}.')
+
+        if None is not tiny_int is not __NOTSET:
+            if not isinstance(tiny_int, int):
+                raise TypeError(f'tiny_int is not a { int !r}.')
+
+        if None is not small_int is not __NOTSET:
+            if not isinstance(small_int, int):
+                raise TypeError(f'small_int is not a { int !r}.')
+
+        if None is not nice_sized_int is not __NOTSET:
+            if not isinstance(nice_sized_int, int):
+                raise TypeError(f'nice_sized_int is not a { int !r}.')
+
+        if None is not big_int is not __NOTSET:
+            if not isinstance(big_int, int):
+                raise TypeError(f'big_int is not a { int !r}.')
+
+        if None is not real is not __NOTSET:
+            if not isinstance(real, float):
+                raise TypeError(f'real is not a { float !r}.')
+
+        if None is not smaller_real is not __NOTSET:
+            if not isinstance(smaller_real, float):
+                raise TypeError(f'smaller_real is not a { float !r}.')
 
         inst = <SimpleStruct>SimpleStruct.__new__(SimpleStruct)
         inst._cpp_obj = move(SimpleStruct._make_instance(
@@ -219,77 +247,77 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cSimpleStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if is_on is None:
                 deref(c_inst).is_on = _SimpleStruct_defaults.is_on
                 deref(c_inst).__isset.is_on = False
-            elif is_on is NOTSET:
+                pass
+            elif is_on is __NOTSET:
                 is_on = None
 
             if tiny_int is None:
                 deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
                 deref(c_inst).__isset.tiny_int = False
-            elif tiny_int is NOTSET:
+                pass
+            elif tiny_int is __NOTSET:
                 tiny_int = None
 
             if small_int is None:
                 deref(c_inst).small_int = _SimpleStruct_defaults.small_int
                 deref(c_inst).__isset.small_int = False
-            elif small_int is NOTSET:
+                pass
+            elif small_int is __NOTSET:
                 small_int = None
 
             if nice_sized_int is None:
                 deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
                 deref(c_inst).__isset.nice_sized_int = False
-            elif nice_sized_int is NOTSET:
+                pass
+            elif nice_sized_int is __NOTSET:
                 nice_sized_int = None
 
             if big_int is None:
                 deref(c_inst).big_int = _SimpleStruct_defaults.big_int
                 deref(c_inst).__isset.big_int = False
-            elif big_int is NOTSET:
+                pass
+            elif big_int is __NOTSET:
                 big_int = None
 
             if real is None:
                 deref(c_inst).real = _SimpleStruct_defaults.real
                 deref(c_inst).__isset.real = False
-            elif real is NOTSET:
+                pass
+            elif real is __NOTSET:
                 real = None
 
             if smaller_real is None:
                 deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
                 deref(c_inst).__isset.smaller_real = False
-            elif smaller_real is NOTSET:
+                pass
+            elif smaller_real is __NOTSET:
                 smaller_real = None
 
         if is_on is not None:
             deref(c_inst).is_on = is_on
             deref(c_inst).__isset.is_on = True
-
         if tiny_int is not None:
             deref(c_inst).tiny_int = tiny_int
             deref(c_inst).__isset.tiny_int = True
-
         if small_int is not None:
             deref(c_inst).small_int = small_int
             deref(c_inst).__isset.small_int = True
-
         if nice_sized_int is not None:
             deref(c_inst).nice_sized_int = nice_sized_int
             deref(c_inst).__isset.nice_sized_int = True
-
         if big_int is not None:
             deref(c_inst).big_int = big_int
             deref(c_inst).__isset.big_int = True
-
         if real is not None:
             deref(c_inst).real = real
             deref(c_inst).__isset.real = True
-
         if smaller_real is not None:
             deref(c_inst).smaller_real = smaller_real
             deref(c_inst).__isset.smaller_real = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -304,7 +332,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         yield 'smaller_real', self.smaller_real
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.is_on or deref(self._cpp_obj).__isset.tiny_int or deref(self._cpp_obj).__isset.small_int or deref(self._cpp_obj).__isset.nice_sized_int or deref(self._cpp_obj).__isset.big_int or deref(self._cpp_obj).__isset.real or deref(self._cpp_obj).__isset.smaller_real
+        return True or True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] cpp_obj):
@@ -314,50 +342,36 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
     @property
     def is_on(self):
-        if not deref(self._cpp_obj).__isset.is_on:
-            return None
 
         return <pbool> self._cpp_obj.get().is_on
 
     @property
     def tiny_int(self):
-        if not deref(self._cpp_obj).__isset.tiny_int:
-            return None
 
         return self._cpp_obj.get().tiny_int
 
     @property
     def small_int(self):
-        if not deref(self._cpp_obj).__isset.small_int:
-            return None
 
         return self._cpp_obj.get().small_int
 
     @property
     def nice_sized_int(self):
-        if not deref(self._cpp_obj).__isset.nice_sized_int:
-            return None
 
         return self._cpp_obj.get().nice_sized_int
 
     @property
     def big_int(self):
-        if not deref(self._cpp_obj).__isset.big_int:
-            return None
 
         return self._cpp_obj.get().big_int
 
     @property
     def real(self):
-        if not deref(self._cpp_obj).__isset.real:
-            return None
 
         return self._cpp_obj.get().real
 
     @property
     def smaller_real(self):
-        if not deref(self._cpp_obj).__isset.smaller_real:
-            return None
 
         return self._cpp_obj.get().smaller_real
 
@@ -425,13 +439,13 @@ cdef cComplexStruct _ComplexStruct_defaults = cComplexStruct()
 cdef class ComplexStruct(thrift.py3.types.Struct):
 
     def __init__(
-        ComplexStruct self,
-        structOne=None,
-        structTwo=None,
+        ComplexStruct self, *,
+        SimpleStruct structOne=None,
+        SimpleStruct structTwo=None,
         an_integer=None,
-        name=None,
+        str name=None,
         an_enum=None,
-        some_bytes=None
+        bytes some_bytes=None
     ):
         self._cpp_obj = move(ComplexStruct._make_instance(
           NULL,
@@ -445,29 +459,53 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     def __call__(
         ComplexStruct self,
-        structOne=NOTSET,
-        structTwo=NOTSET,
-        an_integer=NOTSET,
-        name=NOTSET,
-        an_enum=NOTSET,
-        some_bytes=NOTSET
+        structOne=__NOTSET,
+        structTwo=__NOTSET,
+        an_integer=__NOTSET,
+        name=__NOTSET,
+        an_enum=__NOTSET,
+        some_bytes=__NOTSET
     ):
         changes = any((
-            structOne is not NOTSET,
+            structOne is not __NOTSET,
 
-            structTwo is not NOTSET,
+            structTwo is not __NOTSET,
 
-            an_integer is not NOTSET,
+            an_integer is not __NOTSET,
 
-            name is not NOTSET,
+            name is not __NOTSET,
 
-            an_enum is not NOTSET,
+            an_enum is not __NOTSET,
 
-            some_bytes is not NOTSET,
+            some_bytes is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not structOne is not __NOTSET:
+            if not isinstance(structOne, SimpleStruct):
+                raise TypeError(f'structOne is not a { SimpleStruct !r}.')
+
+        if None is not structTwo is not __NOTSET:
+            if not isinstance(structTwo, SimpleStruct):
+                raise TypeError(f'structTwo is not a { SimpleStruct !r}.')
+
+        if None is not an_integer is not __NOTSET:
+            if not isinstance(an_integer, int):
+                raise TypeError(f'an_integer is not a { int !r}.')
+
+        if None is not name is not __NOTSET:
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
+
+        if None is not an_enum is not __NOTSET:
+            if not isinstance(an_enum, AnEnum):
+                raise TypeError(f'field an_enum value: { an_enum !r} is not of the enum type { AnEnum }.')
+
+        if None is not some_bytes is not __NOTSET:
+            if not isinstance(some_bytes, bytes):
+                raise TypeError(f'some_bytes is not a { bytes !r}.')
 
         inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
         inst._cpp_obj = move(ComplexStruct._make_instance(
@@ -498,67 +536,67 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cComplexStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if structOne is None:
                 deref(c_inst).structOne = _ComplexStruct_defaults.structOne
                 deref(c_inst).__isset.structOne = False
-            elif structOne is NOTSET:
+                pass
+            elif structOne is __NOTSET:
                 structOne = None
 
             if structTwo is None:
                 deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
                 deref(c_inst).__isset.structTwo = False
-            elif structTwo is NOTSET:
+                pass
+            elif structTwo is __NOTSET:
                 structTwo = None
 
             if an_integer is None:
                 deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
                 deref(c_inst).__isset.an_integer = False
-            elif an_integer is NOTSET:
+                pass
+            elif an_integer is __NOTSET:
                 an_integer = None
 
             if name is None:
                 deref(c_inst).name = _ComplexStruct_defaults.name
                 deref(c_inst).__isset.name = False
-            elif name is NOTSET:
+                pass
+            elif name is __NOTSET:
                 name = None
 
             if an_enum is None:
                 deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
                 deref(c_inst).__isset.an_enum = False
-            elif an_enum is NOTSET:
+                pass
+            elif an_enum is __NOTSET:
                 an_enum = None
 
             if some_bytes is None:
                 deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
                 deref(c_inst).__isset.some_bytes = False
-            elif some_bytes is NOTSET:
+                pass
+            elif some_bytes is __NOTSET:
                 some_bytes = None
 
         if structOne is not None:
             deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
             deref(c_inst).__isset.structOne = True
-
         if structTwo is not None:
             deref(c_inst).structTwo = deref((<SimpleStruct?> structTwo)._cpp_obj)
             deref(c_inst).__isset.structTwo = True
-
         if an_integer is not None:
             deref(c_inst).an_integer = an_integer
             deref(c_inst).__isset.an_integer = True
-
         if name is not None:
             deref(c_inst).name = name.encode('UTF-8')
             deref(c_inst).__isset.name = True
-
         if an_enum is not None:
             deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
             deref(c_inst).__isset.an_enum = True
-
         if some_bytes is not None:
             deref(c_inst).some_bytes = some_bytes
             deref(c_inst).__isset.some_bytes = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -572,7 +610,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         yield 'some_bytes', self.some_bytes
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.structOne or deref(self._cpp_obj).__isset.structTwo or deref(self._cpp_obj).__isset.an_integer or deref(self._cpp_obj).__isset.name or deref(self._cpp_obj).__isset.an_enum or deref(self._cpp_obj).__isset.some_bytes
+        return True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] cpp_obj):
@@ -582,8 +620,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @property
     def structOne(self):
-        if not deref(self._cpp_obj).__isset.structOne:
-            return None
 
         if self.__structOne is None:
             self.__structOne = SimpleStruct.create(make_shared[cSimpleStruct](deref(self._cpp_obj).structOne))
@@ -591,8 +627,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @property
     def structTwo(self):
-        if not deref(self._cpp_obj).__isset.structTwo:
-            return None
 
         if self.__structTwo is None:
             self.__structTwo = SimpleStruct.create(make_shared[cSimpleStruct](deref(self._cpp_obj).structTwo))
@@ -600,29 +634,21 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @property
     def an_integer(self):
-        if not deref(self._cpp_obj).__isset.an_integer:
-            return None
 
         return self._cpp_obj.get().an_integer
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
-            return None
 
         return (<bytes>self._cpp_obj.get().name).decode('UTF-8')
 
     @property
     def an_enum(self):
-        if not deref(self._cpp_obj).__isset.an_enum:
-            return None
 
         return translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum))
 
     @property
     def some_bytes(self):
-        if not deref(self._cpp_obj).__isset.some_bytes:
-            return None
 
         return self._cpp_obj.get().some_bytes
 
@@ -700,7 +726,7 @@ cdef class List__i16:
     @staticmethod
     cdef unique_ptr[vector[int16_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int16_t]] c_inst = make_unique[vector[int16_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -848,7 +874,7 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -996,7 +1022,7 @@ cdef class List__i64:
     @staticmethod
     cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int64_t]] c_inst = make_unique[vector[int64_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1144,8 +1170,10 @@ cdef class List__string:
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -1292,8 +1320,10 @@ cdef class List__SimpleStruct:
     @staticmethod
     cdef unique_ptr[vector[cSimpleStruct]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cSimpleStruct]] c_inst = make_unique[vector[cSimpleStruct]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, SimpleStruct):
+                    raise TypeError(f"{item!r} is not of type 'SimpleStruct'")
                 deref(c_inst).push_back(deref((<SimpleStruct>item)._cpp_obj))
         return move_unique(c_inst)
 
@@ -1440,7 +1470,7 @@ cdef class Set__i32:
     @staticmethod
     cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
@@ -1625,8 +1655,10 @@ cdef class Set__string:
     @staticmethod
     cdef unique_ptr[cset[string]] _make_instance(object items) except *:
         cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).insert(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -1810,8 +1842,13 @@ cdef class Map__string_string:
     @staticmethod
     cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,string]] c_inst = make_unique[cmap[string,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[string,string](key.encode('UTF-8'),item.encode('UTF-8')))
         return move_unique(c_inst)
 
@@ -1923,8 +1960,13 @@ cdef class Map__string_SimpleStruct:
     @staticmethod
     cdef unique_ptr[cmap[string,cSimpleStruct]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,cSimpleStruct]] c_inst = make_unique[cmap[string,cSimpleStruct]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, SimpleStruct):
+                    raise TypeError(f"{item!r} is not of type 'SimpleStruct'")
+
                 deref(c_inst).insert(cpair[string,cSimpleStruct](key.encode('UTF-8'),deref((<SimpleStruct>item)._cpp_obj)))
         return move_unique(c_inst)
 
@@ -2036,8 +2078,11 @@ cdef class Map__string_i16:
     @staticmethod
     cdef unique_ptr[cmap[string,int16_t]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,int16_t]] c_inst = make_unique[cmap[string,int16_t]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+
                 deref(c_inst).insert(cpair[string,int16_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
 
@@ -2149,8 +2194,12 @@ cdef class List__List__i32:
     @staticmethod
     cdef unique_ptr[vector[vector[int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[vector[int32_t]]] c_inst = make_unique[vector[vector[int32_t]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Sequence[int]")
+                if not isinstance(item, List__i32):
+                    item = List__i32(item)
                 deref(c_inst).push_back(vector[int32_t](deref(List__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -2300,8 +2349,11 @@ cdef class Map__string_i32:
     @staticmethod
     cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
 
@@ -2413,8 +2465,15 @@ cdef class Map__string_Map__string_i32:
     @staticmethod
     cdef unique_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,cmap[string,int32_t]]] c_inst = make_unique[cmap[string,cmap[string,int32_t]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[str, int]")
+                if not isinstance(item, Map__string_i32):
+                    item = Map__string_i32(item)
+
                 deref(c_inst).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'),cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -2530,8 +2589,12 @@ cdef class List__Set__string:
     @staticmethod
     cdef unique_ptr[vector[cset[string]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cset[string]]] c_inst = make_unique[vector[cset[string]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.AbstractSet[str]")
+                if not isinstance(item, Set__string):
+                    item = Set__string(item)
                 deref(c_inst).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -2681,8 +2744,15 @@ cdef class Map__string_List__SimpleStruct:
     @staticmethod
     cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] c_inst = make_unique[cmap[string,vector[cSimpleStruct]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if item is None:
+                    raise TypeError("None is not of type _typing.Sequence['SimpleStruct']")
+                if not isinstance(item, List__SimpleStruct):
+                    item = List__SimpleStruct(item)
+
                 deref(c_inst).insert(cpair[string,vector[cSimpleStruct]](key.encode('UTF-8'),vector[cSimpleStruct](deref(List__SimpleStruct(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -2798,8 +2868,12 @@ cdef class List__List__string:
     @staticmethod
     cdef unique_ptr[vector[vector[string]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[vector[string]]] c_inst = make_unique[vector[vector[string]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Sequence[str]")
+                if not isinstance(item, List__string):
+                    item = List__string(item)
                 deref(c_inst).push_back(vector[string](deref(List__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -2949,8 +3023,12 @@ cdef class List__Set__i32:
     @staticmethod
     cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cset[int32_t]]] c_inst = make_unique[vector[cset[int32_t]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.AbstractSet[int]")
+                if not isinstance(item, Set__i32):
+                    item = Set__i32(item)
                 deref(c_inst).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -3100,8 +3178,12 @@ cdef class List__Map__string_string:
     @staticmethod
     cdef unique_ptr[vector[cmap[string,string]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[string,string]]] c_inst = make_unique[vector[cmap[string,string]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[str, str]")
+                if not isinstance(item, Map__string_string):
+                    item = Map__string_string(item)
                 deref(c_inst).push_back(cmap[string,string](deref(Map__string_string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -3251,8 +3333,10 @@ cdef class List__binary:
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, bytes):
+                    raise TypeError(f"{item!r} is not of type bytes")
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -3399,8 +3483,10 @@ cdef class Set__binary:
     @staticmethod
     cdef unique_ptr[cset[string]] _make_instance(object items) except *:
         cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, bytes):
+                    raise TypeError(f"{item!r} is not of type bytes")
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -3584,7 +3670,7 @@ cdef class List__AnEnum:
     @staticmethod
     cdef unique_ptr[vector[cAnEnum]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cAnEnum]] c_inst = make_unique[vector[cAnEnum]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(AnEnum_to_cpp(item))
         return move_unique(c_inst)
@@ -3732,8 +3818,9 @@ cdef class Map__i32_double:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,double]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,double]] c_inst = make_unique[cmap[int32_t,double]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int32_t,double](key,item))
         return move_unique(c_inst)
 
@@ -3845,8 +3932,12 @@ cdef class List__Map__i32_double:
     @staticmethod
     cdef unique_ptr[vector[cmap[int32_t,double]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[int32_t,double]]] c_inst = make_unique[vector[cmap[int32_t,double]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i32_double):
+                    item = Map__i32_double(item)
                 deref(c_inst).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get())))
         return move_unique(c_inst)
 

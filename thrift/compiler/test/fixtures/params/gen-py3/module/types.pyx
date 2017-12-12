@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -49,7 +50,7 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -197,8 +198,13 @@ cdef class Map__i32_List__i32:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,vector[int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,vector[int32_t]]] c_inst = make_unique[cmap[int32_t,vector[int32_t]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Sequence[int]")
+                if not isinstance(item, List__i32):
+                    item = List__i32(item)
+
                 deref(c_inst).insert(cpair[int32_t,vector[int32_t]](key,vector[int32_t](deref(List__i32(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -314,7 +320,7 @@ cdef class Set__i32:
     @staticmethod
     cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
@@ -499,8 +505,13 @@ cdef class Map__i32_Set__i32:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,cset[int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,cset[int32_t]]] c_inst = make_unique[cmap[int32_t,cset[int32_t]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.AbstractSet[int]")
+                if not isinstance(item, Set__i32):
+                    item = Set__i32(item)
+
                 deref(c_inst).insert(cpair[int32_t,cset[int32_t]](key,cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -616,8 +627,9 @@ cdef class Map__i32_i32:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,int32_t]] c_inst = make_unique[cmap[int32_t,int32_t]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)
 
@@ -729,8 +741,12 @@ cdef class List__Map__i32_i32:
     @staticmethod
     cdef unique_ptr[vector[cmap[int32_t,int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[int32_t,int32_t]]] c_inst = make_unique[vector[cmap[int32_t,int32_t]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, int]")
+                if not isinstance(item, Map__i32_i32):
+                    item = Map__i32_i32(item)
                 deref(c_inst).push_back(cmap[int32_t,int32_t](deref(Map__i32_i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -880,8 +896,12 @@ cdef class List__Set__i32:
     @staticmethod
     cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cset[int32_t]]] c_inst = make_unique[vector[cset[int32_t]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.AbstractSet[int]")
+                if not isinstance(item, Set__i32):
+                    item = Set__i32(item)
                 deref(c_inst).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -1031,8 +1051,13 @@ cdef class Map__i32_Map__i32_Set__i32:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] c_inst = make_unique[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[int, _typing.AbstractSet[int]]")
+                if not isinstance(item, Map__i32_Set__i32):
+                    item = Map__i32_Set__i32(item)
+
                 deref(c_inst).insert(cpair[int32_t,cmap[int32_t,cset[int32_t]]](key,cmap[int32_t,cset[int32_t]](deref(Map__i32_Set__i32(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -1148,8 +1173,12 @@ cdef class List__Map__i32_Map__i32_Set__i32:
     @staticmethod
     cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] c_inst = make_unique[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]")
+                if not isinstance(item, Map__i32_Map__i32_Set__i32):
+                    item = Map__i32_Map__i32_Set__i32(item)
                 deref(c_inst).push_back(cmap[int32_t,cmap[int32_t,cset[int32_t]]](deref(Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -1299,8 +1328,12 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     @staticmethod
     cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] c_inst = make_unique[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]")
+                if not isinstance(item, List__Map__i32_Map__i32_Set__i32):
+                    item = List__Map__i32_Map__i32_Set__i32(item)
                 deref(c_inst).push_back(vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 

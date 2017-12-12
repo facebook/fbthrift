@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class MyEnum(Enum):
@@ -56,10 +57,10 @@ cdef cMyStruct _MyStruct_defaults = cMyStruct()
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
-        MyStruct self,
+        MyStruct self, *,
         MyIntField=None,
-        MyStringField=None,
-        MyDataField=None
+        str MyStringField=None,
+        MyDataItem MyDataField=None
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -70,20 +71,32 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __call__(
         MyStruct self,
-        MyIntField=NOTSET,
-        MyStringField=NOTSET,
-        MyDataField=NOTSET
+        MyIntField=__NOTSET,
+        MyStringField=__NOTSET,
+        MyDataField=__NOTSET
     ):
         changes = any((
-            MyIntField is not NOTSET,
+            MyIntField is not __NOTSET,
 
-            MyStringField is not NOTSET,
+            MyStringField is not __NOTSET,
 
-            MyDataField is not NOTSET,
+            MyDataField is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not MyIntField is not __NOTSET:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+
+        if None is not MyStringField is not __NOTSET:
+            if not isinstance(MyStringField, str):
+                raise TypeError(f'MyStringField is not a { str !r}.')
+
+        if None is not MyDataField is not __NOTSET:
+            if not isinstance(MyDataField, MyDataItem):
+                raise TypeError(f'MyDataField is not a { MyDataItem !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
@@ -108,37 +121,37 @@ cdef class MyStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cMyStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if MyIntField is None:
                 deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
-            elif MyIntField is NOTSET:
+                pass
+            elif MyIntField is __NOTSET:
                 MyIntField = None
 
             if MyStringField is None:
                 deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
                 deref(c_inst).__isset.MyStringField = False
-            elif MyStringField is NOTSET:
+                pass
+            elif MyStringField is __NOTSET:
                 MyStringField = None
 
             if MyDataField is None:
                 deref(c_inst).MyDataField = _MyStruct_defaults.MyDataField
                 deref(c_inst).__isset.MyDataField = False
-            elif MyDataField is NOTSET:
+                pass
+            elif MyDataField is __NOTSET:
                 MyDataField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
-
         if MyStringField is not None:
             deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
             deref(c_inst).__isset.MyStringField = True
-
         if MyDataField is not None:
             deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
             deref(c_inst).__isset.MyDataField = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -149,7 +162,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyDataField', self.MyDataField
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIntField or deref(self._cpp_obj).__isset.MyStringField or deref(self._cpp_obj).__isset.MyDataField
+        return True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -159,22 +172,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIntField(self):
-        if not deref(self._cpp_obj).__isset.MyIntField:
-            return None
 
         return self._cpp_obj.get().MyIntField
 
     @property
     def MyStringField(self):
-        if not deref(self._cpp_obj).__isset.MyStringField:
-            return None
 
         return (<bytes>self._cpp_obj.get().MyStringField).decode('UTF-8')
 
     @property
     def MyDataField(self):
-        if not deref(self._cpp_obj).__isset.MyDataField:
-            return None
 
         if self.__MyDataField is None:
             self.__MyDataField = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).MyDataField))
@@ -240,7 +247,7 @@ cdef cMyDataItem _MyDataItem_defaults = cMyDataItem()
 cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __init__(
-        MyDataItem self
+        MyDataItem self, *
     ):
         self._cpp_obj = move(MyDataItem._make_instance(
           NULL,
@@ -253,7 +260,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
         if not changes:
             return self
-
         inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
         inst._cpp_obj = move(MyDataItem._make_instance(
           self._cpp_obj.get(),
@@ -271,7 +277,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
             c_inst = make_unique[cMyDataItem]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

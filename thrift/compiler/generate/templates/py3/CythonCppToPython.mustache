@@ -30,8 +30,8 @@ to be converted from unicode to binary representation.
 }}{{#type:float?}}{{field:name}}{{/type:float?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}(deref({{field:name}}.get())){{/type:binary?}}{{!
-}}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
-  }}shared_ptr[{{> types/CythonCppType}}]({{field:name}}.release())){{/type:struct}}{{!
+}}{{#type:struct?}}{{> types/CythonPythonType}}.create({{!
+  }}shared_ptr[{{> types/CythonCppType}}]({{field:name}}.release())){{/type:struct?}}{{!
 }}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
   }}{{> common/ModulePath}}.move({{field:name}})){{/type:container?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}(<int> {{field:name}}){{/type:enum}}
+}}{{#type:enum?}}{{> types/CythonPythonType}}(<int> {{field:name}}){{/type:enum?}}

@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -41,6 +42,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
         self._cpp_obj = move(Banal._make_instance(
           NULL,
         ))
+        _builtins.Exception.__init__(self, )
 
 
     @staticmethod
@@ -65,8 +67,9 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
     @staticmethod
     cdef create(shared_ptr[cBanal] cpp_obj):
-        inst = <Banal>Banal.__new__(Banal)
+        inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         inst._cpp_obj = cpp_obj
+        _builtins.Exception.__init__(inst, )
         return inst
 
 
@@ -100,12 +103,15 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     def __init__(
         Fiery self,
-        message=None
+        str message=None
     ):
+        if message is None:
+            raise TypeError("__init__() needs required argument 'message'")
         self._cpp_obj = move(Fiery._make_instance(
           NULL,
           message,
         ))
+        _builtins.Exception.__init__(self, self.message)
 
 
     @staticmethod
@@ -133,12 +139,14 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @staticmethod
     cdef create(shared_ptr[cFiery] cpp_obj):
-        inst = <Fiery>Fiery.__new__(Fiery)
+        inst = <Fiery>Fiery.__new__(Fiery, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         inst._cpp_obj = cpp_obj
+        _builtins.Exception.__init__(inst, inst.message)
         return inst
 
     @property
     def message(self):
+
         return (<bytes>self._cpp_obj.get().message).decode('UTF-8')
 
 

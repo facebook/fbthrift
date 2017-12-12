@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -38,11 +39,11 @@ cdef cFoo _Foo_defaults = cFoo()
 cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
-        Foo self,
-        myInteger=None,
-        myString=None,
+        Foo self, *,
+        int32_t myInteger,
+        str myString=None,
         myBools=None,
-        myNumbers=None
+        myNumbers not None
     ):
         self._cpp_obj = move(Foo._make_instance(
           NULL,
@@ -54,23 +55,43 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __call__(
         Foo self,
-        myInteger=NOTSET,
-        myString=NOTSET,
-        myBools=NOTSET,
-        myNumbers=NOTSET
+        myInteger=__NOTSET,
+        myString=__NOTSET,
+        myBools=__NOTSET,
+        myNumbers=__NOTSET
     ):
         changes = any((
-            myInteger is not NOTSET,
+            myInteger is not __NOTSET,
 
-            myString is not NOTSET,
+            myString is not __NOTSET,
 
-            myBools is not NOTSET,
+            myBools is not __NOTSET,
 
-            myNumbers is not NOTSET,
+            myNumbers is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if myInteger is None:
+            raise TypeError('field myInteger is required and has no default, it can not be unset')
+        if None is not myInteger is not __NOTSET:
+            if not isinstance(myInteger, int):
+                raise TypeError(f'myInteger is not a { int !r}.')
+
+        if None is not myString is not __NOTSET:
+            if not isinstance(myString, str):
+                raise TypeError(f'myString is not a { str !r}.')
+
+        if None is not myBools is not __NOTSET:
+            if not isinstance(myBools, List__bool):
+                myBools = List__bool(myBools)
+
+        if myNumbers is None:
+            raise TypeError('field myNumbers is required and has no default, it can not be unset')
+        if None is not myNumbers is not __NOTSET:
+            if not isinstance(myNumbers, List__i32):
+                myNumbers = List__i32(myNumbers)
 
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
@@ -97,27 +118,28 @@ cdef class Foo(thrift.py3.types.Struct):
             c_inst = make_unique[cFoo]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if myInteger is None:
-                deref(c_inst).myInteger = _Foo_defaults.myInteger
-            elif myInteger is NOTSET:
+                pass
+            elif myInteger is __NOTSET:
                 myInteger = None
 
             if myString is None:
-                deref(c_inst).myString = _Foo_defaults.myString
                 deref(c_inst).__isset.myString = False
-            elif myString is NOTSET:
+                pass
+            elif myString is __NOTSET:
                 myString = None
 
             if myBools is None:
                 deref(c_inst).myBools = _Foo_defaults.myBools
                 deref(c_inst).__isset.myBools = False
-            elif myBools is NOTSET:
+                pass
+            elif myBools is __NOTSET:
                 myBools = None
 
             if myNumbers is None:
-                deref(c_inst).myNumbers = _Foo_defaults.myNumbers
-            elif myNumbers is NOTSET:
+                pass
+            elif myNumbers is __NOTSET:
                 myNumbers = None
 
         if myInteger is not None:
@@ -125,11 +147,9 @@ cdef class Foo(thrift.py3.types.Struct):
         if myString is not None:
             deref(c_inst).myString = myString.encode('UTF-8')
             deref(c_inst).__isset.myString = True
-
         if myBools is not None:
             deref(c_inst).myBools = <vector[cbool]>deref(List__bool(myBools)._cpp_obj)
             deref(c_inst).__isset.myBools = True
-
         if myNumbers is not None:
             deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
@@ -143,7 +163,7 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'myNumbers', self.myNumbers
 
     def __bool__(self):
-        return True or deref(self._cpp_obj).__isset.myString or deref(self._cpp_obj).__isset.myBools or True
+        return True or deref(self._cpp_obj).__isset.myString or True or True
 
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
@@ -153,6 +173,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myInteger(self):
+
         return self._cpp_obj.get().myInteger
 
     @property
@@ -164,8 +185,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myBools(self):
-        if not deref(self._cpp_obj).__isset.myBools:
-            return None
 
         if self.__myBools is None:
             self.__myBools = List__bool.create(make_shared[vector[cbool]](deref(self._cpp_obj).myBools))
@@ -173,6 +192,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myNumbers(self):
+
         if self.__myNumbers is None:
             self.__myNumbers = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).myNumbers))
         return self.__myNumbers
@@ -249,8 +269,10 @@ cdef class List__bool:
     @staticmethod
     cdef unique_ptr[vector[cbool]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cbool]] c_inst = make_unique[vector[cbool]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, bool):
+                    raise TypeError(f"{item!r} is not of type bool")
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -397,7 +419,7 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)

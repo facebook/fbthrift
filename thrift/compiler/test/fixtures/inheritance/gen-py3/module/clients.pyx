@@ -156,7 +156,8 @@ cdef class MyRoot(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def do_root(
-            MyRoot self):
+            MyRoot self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -249,7 +250,8 @@ cdef class MyNode(MyRoot):
 
     @cython.always_allow_keywords(True)
     async def do_mid(
-            MyNode self):
+            MyNode self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -342,7 +344,8 @@ cdef class MyLeaf(MyNode):
 
     @cython.always_allow_keywords(True)
     async def do_leaf(
-            MyLeaf self):
+            MyLeaf self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

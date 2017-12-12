@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -49,8 +50,11 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *:
         cdef unique_ptr[std_unordered_map[int32_t,string]] c_inst = make_unique[std_unordered_map[int32_t,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
 

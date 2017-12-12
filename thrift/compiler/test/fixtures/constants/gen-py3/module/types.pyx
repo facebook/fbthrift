@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class EmptyEnum(Enum):
@@ -99,9 +100,9 @@ cdef cInternship _Internship_defaults = cInternship()
 cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
-        Internship self,
-        weeks=None,
-        title=None,
+        Internship self, *,
+        int32_t weeks,
+        str title=None,
         employer=None
     ):
         self._cpp_obj = move(Internship._make_instance(
@@ -113,20 +114,34 @@ cdef class Internship(thrift.py3.types.Struct):
 
     def __call__(
         Internship self,
-        weeks=NOTSET,
-        title=NOTSET,
-        employer=NOTSET
+        weeks=__NOTSET,
+        title=__NOTSET,
+        employer=__NOTSET
     ):
         changes = any((
-            weeks is not NOTSET,
+            weeks is not __NOTSET,
 
-            title is not NOTSET,
+            title is not __NOTSET,
 
-            employer is not NOTSET,
+            employer is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if weeks is None:
+            raise TypeError('field weeks is required and has no default, it can not be unset')
+        if None is not weeks is not __NOTSET:
+            if not isinstance(weeks, int):
+                raise TypeError(f'weeks is not a { int !r}.')
+
+        if None is not title is not __NOTSET:
+            if not isinstance(title, str):
+                raise TypeError(f'title is not a { str !r}.')
+
+        if None is not employer is not __NOTSET:
+            if not isinstance(employer, Company):
+                raise TypeError(f'field employer value: { employer !r} is not of the enum type { Company }.')
 
         inst = <Internship>Internship.__new__(Internship)
         inst._cpp_obj = move(Internship._make_instance(
@@ -151,22 +166,23 @@ cdef class Internship(thrift.py3.types.Struct):
             c_inst = make_unique[cInternship]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if weeks is None:
-                deref(c_inst).weeks = _Internship_defaults.weeks
-            elif weeks is NOTSET:
+                pass
+            elif weeks is __NOTSET:
                 weeks = None
 
             if title is None:
                 deref(c_inst).title = _Internship_defaults.title
                 deref(c_inst).__isset.title = False
-            elif title is NOTSET:
+                pass
+            elif title is __NOTSET:
                 title = None
 
             if employer is None:
-                deref(c_inst).employer = _Internship_defaults.employer
                 deref(c_inst).__isset.employer = False
-            elif employer is NOTSET:
+                pass
+            elif employer is __NOTSET:
                 employer = None
 
         if weeks is not None:
@@ -174,11 +190,9 @@ cdef class Internship(thrift.py3.types.Struct):
         if title is not None:
             deref(c_inst).title = title.encode('UTF-8')
             deref(c_inst).__isset.title = True
-
         if employer is not None:
             deref(c_inst).employer = Company_to_cpp(employer)
             deref(c_inst).__isset.employer = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -189,7 +203,7 @@ cdef class Internship(thrift.py3.types.Struct):
         yield 'employer', self.employer
 
     def __bool__(self):
-        return True or deref(self._cpp_obj).__isset.title or deref(self._cpp_obj).__isset.employer
+        return True or True or deref(self._cpp_obj).__isset.employer
 
     @staticmethod
     cdef create(shared_ptr[cInternship] cpp_obj):
@@ -199,12 +213,11 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def weeks(self):
+
         return self._cpp_obj.get().weeks
 
     @property
     def title(self):
-        if not deref(self._cpp_obj).__isset.title:
-            return None
 
         return (<bytes>self._cpp_obj.get().title).decode('UTF-8')
 
@@ -275,7 +288,7 @@ cdef cUnEnumStruct _UnEnumStruct_defaults = cUnEnumStruct()
 cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     def __init__(
-        UnEnumStruct self,
+        UnEnumStruct self, *,
         city=None
     ):
         self._cpp_obj = move(UnEnumStruct._make_instance(
@@ -285,14 +298,18 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     def __call__(
         UnEnumStruct self,
-        city=NOTSET
+        city=__NOTSET
     ):
         changes = any((
-            city is not NOTSET,
+            city is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not city is not __NOTSET:
+            if not isinstance(city, City):
+                raise TypeError(f'field city value: { city !r} is not of the enum type { City }.')
 
         inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
         inst._cpp_obj = move(UnEnumStruct._make_instance(
@@ -313,17 +330,17 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cUnEnumStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if city is None:
                 deref(c_inst).city = _UnEnumStruct_defaults.city
                 deref(c_inst).__isset.city = False
-            elif city is NOTSET:
+                pass
+            elif city is __NOTSET:
                 city = None
 
         if city is not None:
             deref(c_inst).city = City_to_cpp(city)
             deref(c_inst).__isset.city = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -332,7 +349,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         yield 'city', self.city
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.city
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cUnEnumStruct] cpp_obj):
@@ -342,6 +359,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     @property
     def city(self):
+
         return translate_cpp_enum_to_python(City, <int>(deref(self._cpp_obj).city))
 
 
@@ -402,9 +420,9 @@ cdef cRange _Range_defaults = cRange()
 cdef class Range(thrift.py3.types.Struct):
 
     def __init__(
-        Range self,
-        min=None,
-        max=None
+        Range self, *,
+        int32_t min,
+        int32_t max
     ):
         self._cpp_obj = move(Range._make_instance(
           NULL,
@@ -414,17 +432,29 @@ cdef class Range(thrift.py3.types.Struct):
 
     def __call__(
         Range self,
-        min=NOTSET,
-        max=NOTSET
+        min=__NOTSET,
+        max=__NOTSET
     ):
         changes = any((
-            min is not NOTSET,
+            min is not __NOTSET,
 
-            max is not NOTSET,
+            max is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if min is None:
+            raise TypeError('field min is required and has no default, it can not be unset')
+        if None is not min is not __NOTSET:
+            if not isinstance(min, int):
+                raise TypeError(f'min is not a { int !r}.')
+
+        if max is None:
+            raise TypeError('field max is required and has no default, it can not be unset')
+        if None is not max is not __NOTSET:
+            if not isinstance(max, int):
+                raise TypeError(f'max is not a { int !r}.')
 
         inst = <Range>Range.__new__(Range)
         inst._cpp_obj = move(Range._make_instance(
@@ -447,15 +477,15 @@ cdef class Range(thrift.py3.types.Struct):
             c_inst = make_unique[cRange]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if min is None:
-                deref(c_inst).min = _Range_defaults.min
-            elif min is NOTSET:
+                pass
+            elif min is __NOTSET:
                 min = None
 
             if max is None:
-                deref(c_inst).max = _Range_defaults.max
-            elif max is NOTSET:
+                pass
+            elif max is __NOTSET:
                 max = None
 
         if min is not None:
@@ -481,10 +511,12 @@ cdef class Range(thrift.py3.types.Struct):
 
     @property
     def min(self):
+
         return self._cpp_obj.get().min
 
     @property
     def max(self):
+
         return self._cpp_obj.get().max
 
 
@@ -546,9 +578,9 @@ cdef cstruct1 _struct1_defaults = cstruct1()
 cdef class struct1(thrift.py3.types.Struct):
 
     def __init__(
-        struct1 self,
+        struct1 self, *,
         a=None,
-        b=None
+        str b=None
     ):
         self._cpp_obj = move(struct1._make_instance(
           NULL,
@@ -558,17 +590,25 @@ cdef class struct1(thrift.py3.types.Struct):
 
     def __call__(
         struct1 self,
-        a=NOTSET,
-        b=NOTSET
+        a=__NOTSET,
+        b=__NOTSET
     ):
         changes = any((
-            a is not NOTSET,
+            a is not __NOTSET,
 
-            b is not NOTSET,
+            b is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+
+        if None is not b is not __NOTSET:
+            if not isinstance(b, str):
+                raise TypeError(f'b is not a { str !r}.')
 
         inst = <struct1>struct1.__new__(struct1)
         inst._cpp_obj = move(struct1._make_instance(
@@ -591,27 +631,27 @@ cdef class struct1(thrift.py3.types.Struct):
             c_inst = make_unique[cstruct1]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if a is None:
                 deref(c_inst).a = _struct1_defaults.a
                 deref(c_inst).__isset.a = False
-            elif a is NOTSET:
+                pass
+            elif a is __NOTSET:
                 a = None
 
             if b is None:
                 deref(c_inst).b = _struct1_defaults.b
                 deref(c_inst).__isset.b = False
-            elif b is NOTSET:
+                pass
+            elif b is __NOTSET:
                 b = None
 
         if a is not None:
             deref(c_inst).a = a
             deref(c_inst).__isset.a = True
-
         if b is not None:
             deref(c_inst).b = b.encode('UTF-8')
             deref(c_inst).__isset.b = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -621,7 +661,7 @@ cdef class struct1(thrift.py3.types.Struct):
         yield 'b', self.b
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cstruct1] cpp_obj):
@@ -631,10 +671,12 @@ cdef class struct1(thrift.py3.types.Struct):
 
     @property
     def a(self):
+
         return self._cpp_obj.get().a
 
     @property
     def b(self):
+
         return (<bytes>self._cpp_obj.get().b).decode('UTF-8')
 
 
@@ -696,10 +738,10 @@ cdef cstruct2 _struct2_defaults = cstruct2()
 cdef class struct2(thrift.py3.types.Struct):
 
     def __init__(
-        struct2 self,
+        struct2 self, *,
         a=None,
-        b=None,
-        c=None,
+        str b=None,
+        struct1 c=None,
         d=None
     ):
         self._cpp_obj = move(struct2._make_instance(
@@ -712,23 +754,39 @@ cdef class struct2(thrift.py3.types.Struct):
 
     def __call__(
         struct2 self,
-        a=NOTSET,
-        b=NOTSET,
-        c=NOTSET,
-        d=NOTSET
+        a=__NOTSET,
+        b=__NOTSET,
+        c=__NOTSET,
+        d=__NOTSET
     ):
         changes = any((
-            a is not NOTSET,
+            a is not __NOTSET,
 
-            b is not NOTSET,
+            b is not __NOTSET,
 
-            c is not NOTSET,
+            c is not __NOTSET,
 
-            d is not NOTSET,
+            d is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+
+        if None is not b is not __NOTSET:
+            if not isinstance(b, str):
+                raise TypeError(f'b is not a { str !r}.')
+
+        if None is not c is not __NOTSET:
+            if not isinstance(c, struct1):
+                raise TypeError(f'c is not a { struct1 !r}.')
+
+        if None is not d is not __NOTSET:
+            if not isinstance(d, List__i32):
+                d = List__i32(d)
 
         inst = <struct2>struct2.__new__(struct2)
         inst._cpp_obj = move(struct2._make_instance(
@@ -755,47 +813,47 @@ cdef class struct2(thrift.py3.types.Struct):
             c_inst = make_unique[cstruct2]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if a is None:
                 deref(c_inst).a = _struct2_defaults.a
                 deref(c_inst).__isset.a = False
-            elif a is NOTSET:
+                pass
+            elif a is __NOTSET:
                 a = None
 
             if b is None:
                 deref(c_inst).b = _struct2_defaults.b
                 deref(c_inst).__isset.b = False
-            elif b is NOTSET:
+                pass
+            elif b is __NOTSET:
                 b = None
 
             if c is None:
                 deref(c_inst).c = _struct2_defaults.c
                 deref(c_inst).__isset.c = False
-            elif c is NOTSET:
+                pass
+            elif c is __NOTSET:
                 c = None
 
             if d is None:
                 deref(c_inst).d = _struct2_defaults.d
                 deref(c_inst).__isset.d = False
-            elif d is NOTSET:
+                pass
+            elif d is __NOTSET:
                 d = None
 
         if a is not None:
             deref(c_inst).a = a
             deref(c_inst).__isset.a = True
-
         if b is not None:
             deref(c_inst).b = b.encode('UTF-8')
             deref(c_inst).__isset.b = True
-
         if c is not None:
             deref(c_inst).c = deref((<struct1?> c)._cpp_obj)
             deref(c_inst).__isset.c = True
-
         if d is not None:
             deref(c_inst).d = <vector[int32_t]>deref(List__i32(d)._cpp_obj)
             deref(c_inst).__isset.d = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -807,7 +865,7 @@ cdef class struct2(thrift.py3.types.Struct):
         yield 'd', self.d
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b or deref(self._cpp_obj).__isset.c or deref(self._cpp_obj).__isset.d
+        return True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cstruct2] cpp_obj):
@@ -817,22 +875,16 @@ cdef class struct2(thrift.py3.types.Struct):
 
     @property
     def a(self):
-        if not deref(self._cpp_obj).__isset.a:
-            return None
 
         return self._cpp_obj.get().a
 
     @property
     def b(self):
-        if not deref(self._cpp_obj).__isset.b:
-            return None
 
         return (<bytes>self._cpp_obj.get().b).decode('UTF-8')
 
     @property
     def c(self):
-        if not deref(self._cpp_obj).__isset.c:
-            return None
 
         if self.__c is None:
             self.__c = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).c))
@@ -840,8 +892,6 @@ cdef class struct2(thrift.py3.types.Struct):
 
     @property
     def d(self):
-        if not deref(self._cpp_obj).__isset.d:
-            return None
 
         if self.__d is None:
             self.__d = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).d))
@@ -908,10 +958,10 @@ cdef cstruct3 _struct3_defaults = cstruct3()
 cdef class struct3(thrift.py3.types.Struct):
 
     def __init__(
-        struct3 self,
-        a=None,
+        struct3 self, *,
+        str a=None,
         b=None,
-        c=None
+        struct2 c=None
     ):
         self._cpp_obj = move(struct3._make_instance(
           NULL,
@@ -922,20 +972,32 @@ cdef class struct3(thrift.py3.types.Struct):
 
     def __call__(
         struct3 self,
-        a=NOTSET,
-        b=NOTSET,
-        c=NOTSET
+        a=__NOTSET,
+        b=__NOTSET,
+        c=__NOTSET
     ):
         changes = any((
-            a is not NOTSET,
+            a is not __NOTSET,
 
-            b is not NOTSET,
+            b is not __NOTSET,
 
-            c is not NOTSET,
+            c is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, str):
+                raise TypeError(f'a is not a { str !r}.')
+
+        if None is not b is not __NOTSET:
+            if not isinstance(b, int):
+                raise TypeError(f'b is not a { int !r}.')
+
+        if None is not c is not __NOTSET:
+            if not isinstance(c, struct2):
+                raise TypeError(f'c is not a { struct2 !r}.')
 
         inst = <struct3>struct3.__new__(struct3)
         inst._cpp_obj = move(struct3._make_instance(
@@ -960,37 +1022,37 @@ cdef class struct3(thrift.py3.types.Struct):
             c_inst = make_unique[cstruct3]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if a is None:
                 deref(c_inst).a = _struct3_defaults.a
                 deref(c_inst).__isset.a = False
-            elif a is NOTSET:
+                pass
+            elif a is __NOTSET:
                 a = None
 
             if b is None:
                 deref(c_inst).b = _struct3_defaults.b
                 deref(c_inst).__isset.b = False
-            elif b is NOTSET:
+                pass
+            elif b is __NOTSET:
                 b = None
 
             if c is None:
                 deref(c_inst).c = _struct3_defaults.c
                 deref(c_inst).__isset.c = False
-            elif c is NOTSET:
+                pass
+            elif c is __NOTSET:
                 c = None
 
         if a is not None:
             deref(c_inst).a = a.encode('UTF-8')
             deref(c_inst).__isset.a = True
-
         if b is not None:
             deref(c_inst).b = b
             deref(c_inst).__isset.b = True
-
         if c is not None:
             deref(c_inst).c = deref((<struct2?> c)._cpp_obj)
             deref(c_inst).__isset.c = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1001,7 +1063,7 @@ cdef class struct3(thrift.py3.types.Struct):
         yield 'c', self.c
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b or deref(self._cpp_obj).__isset.c
+        return True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cstruct3] cpp_obj):
@@ -1011,22 +1073,16 @@ cdef class struct3(thrift.py3.types.Struct):
 
     @property
     def a(self):
-        if not deref(self._cpp_obj).__isset.a:
-            return None
 
         return (<bytes>self._cpp_obj.get().a).decode('UTF-8')
 
     @property
     def b(self):
-        if not deref(self._cpp_obj).__isset.b:
-            return None
 
         return self._cpp_obj.get().b
 
     @property
     def c(self):
-        if not deref(self._cpp_obj).__isset.c:
-            return None
 
         if self.__c is None:
             self.__c = struct2.create(make_shared[cstruct2](deref(self._cpp_obj).c))
@@ -1094,10 +1150,18 @@ class union1Type(Enum):
 
 cdef class union1(thrift.py3.types.Union):
     def __init__(
-        union1 self,
+        union1 self, *,
         i=None,
         d=None
     ):
+        if i is not None:
+            if not isinstance(i, int):
+                raise TypeError(f'i is not a { int !r}.')
+
+        if d is not None:
+            if not isinstance(d, float):
+                raise TypeError(f'd is not a { float !r}.')
+
         self._cpp_obj = move(union1._make_instance(
           NULL,
           i,
@@ -1239,12 +1303,20 @@ class union2Type(Enum):
 
 cdef class union2(thrift.py3.types.Union):
     def __init__(
-        union2 self,
+        union2 self, *,
         i=None,
         d=None,
-        s=None,
-        u=None
+        struct1 s=None,
+        union1 u=None
     ):
+        if i is not None:
+            if not isinstance(i, int):
+                raise TypeError(f'i is not a { int !r}.')
+
+        if d is not None:
+            if not isinstance(d, float):
+                raise TypeError(f'd is not a { float !r}.')
+
         self._cpp_obj = move(union2._make_instance(
           NULL,
           i,
@@ -1423,7 +1495,7 @@ cdef class List__i32:
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1571,8 +1643,11 @@ cdef class Map__string_i32:
     @staticmethod
     cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
 
@@ -1684,8 +1759,12 @@ cdef class List__Map__string_i32:
     @staticmethod
     cdef unique_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[string,int32_t]]] c_inst = make_unique[vector[cmap[string,int32_t]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[str, int]")
+                if not isinstance(item, Map__string_i32):
+                    item = Map__string_i32(item)
                 deref(c_inst).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -1835,8 +1914,10 @@ cdef class List__Range:
     @staticmethod
     cdef unique_ptr[vector[cRange]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cRange]] c_inst = make_unique[vector[cRange]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, Range):
+                    raise TypeError(f"{item!r} is not of type 'Range'")
                 deref(c_inst).push_back(deref((<Range>item)._cpp_obj))
         return move_unique(c_inst)
 
@@ -1983,8 +2064,10 @@ cdef class List__Internship:
     @staticmethod
     cdef unique_ptr[vector[cInternship]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cInternship]] c_inst = make_unique[vector[cInternship]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, Internship):
+                    raise TypeError(f"{item!r} is not of type 'Internship'")
                 deref(c_inst).push_back(deref((<Internship>item)._cpp_obj))
         return move_unique(c_inst)
 
@@ -2131,8 +2214,10 @@ cdef class List__string:
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -2279,7 +2364,7 @@ cdef class Set__i32:
     @staticmethod
     cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
@@ -2464,8 +2549,10 @@ cdef class Set__string:
     @staticmethod
     cdef unique_ptr[cset[string]] _make_instance(object items) except *:
         cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).insert(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -2649,8 +2736,9 @@ cdef class Map__i32_i32:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,int32_t]] c_inst = make_unique[cmap[int32_t,int32_t]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)
 
@@ -2762,8 +2850,11 @@ cdef class Map__i32_string:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,string]] c_inst = make_unique[cmap[int32_t,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
 
@@ -2875,8 +2966,13 @@ cdef class Map__string_string:
     @staticmethod
     cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[string,string]] c_inst = make_unique[cmap[string,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[string,string](key.encode('UTF-8'),item.encode('UTF-8')))
         return move_unique(c_inst)
 

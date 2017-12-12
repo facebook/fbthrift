@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -44,14 +45,30 @@ class ComplexUnionType(Enum):
 
 cdef class ComplexUnion(thrift.py3.types.Union):
     def __init__(
-        ComplexUnion self,
+        ComplexUnion self, *,
         intValue=None,
-        stringValue=None,
+        str stringValue=None,
         intListValue=None,
         stringListValue=None,
         typedefValue=None,
-        stringRef=None
+        str stringRef=None
     ):
+        if intValue is not None:
+            if not isinstance(intValue, int):
+                raise TypeError(f'intValue is not a { int !r}.')
+
+        if intListValue is not None:
+            if not isinstance(intListValue, List__i64):
+                intListValue = List__i64(intListValue)
+
+        if stringListValue is not None:
+            if not isinstance(stringListValue, List__string):
+                stringListValue = List__string(stringListValue)
+
+        if typedefValue is not None:
+            if not isinstance(typedefValue, Map__i16_string):
+                typedefValue = Map__i16_string(typedefValue)
+
         self._cpp_obj = move(ComplexUnion._make_instance(
           NULL,
           intValue,
@@ -254,9 +271,9 @@ class VirtualComplexUnionType(Enum):
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def __init__(
-        VirtualComplexUnion self,
-        thingOne=None,
-        thingTwo=None
+        VirtualComplexUnion self, *,
+        str thingOne=None,
+        str thingTwo=None
     ):
         self._cpp_obj = move(VirtualComplexUnion._make_instance(
           NULL,
@@ -406,7 +423,7 @@ cdef class List__i64:
     @staticmethod
     cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *:
         cdef unique_ptr[vector[int64_t]] c_inst = make_unique[vector[int64_t]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -554,8 +571,10 @@ cdef class List__string:
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
-        if items:
+        if items is not None:
             for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -702,8 +721,11 @@ cdef class Map__i16_string:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,string]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,string]] c_inst = make_unique[cmap[int16_t,string]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
                 deref(c_inst).insert(cpair[int16_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
 

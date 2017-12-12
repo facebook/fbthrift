@@ -178,7 +178,8 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def doBland(
-            Raiser self):
+            Raiser self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -193,7 +194,8 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def doRaise(
-            Raiser self):
+            Raiser self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -208,7 +210,8 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def get200(
-            Raiser self):
+            Raiser self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -223,7 +226,8 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def get500(
-            Raiser self):
+            Raiser self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

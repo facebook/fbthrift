@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -38,7 +39,7 @@ cdef cOldStructure _OldStructure_defaults = cOldStructure()
 cdef class OldStructure(thrift.py3.types.Struct):
 
     def __init__(
-        OldStructure self,
+        OldStructure self, *,
         features=None
     ):
         self._cpp_obj = move(OldStructure._make_instance(
@@ -48,14 +49,18 @@ cdef class OldStructure(thrift.py3.types.Struct):
 
     def __call__(
         OldStructure self,
-        features=NOTSET
+        features=__NOTSET
     ):
         changes = any((
-            features is not NOTSET,
+            features is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not features is not __NOTSET:
+            if not isinstance(features, Map__i16_double):
+                features = Map__i16_double(features)
 
         inst = <OldStructure>OldStructure.__new__(OldStructure)
         inst._cpp_obj = move(OldStructure._make_instance(
@@ -76,17 +81,17 @@ cdef class OldStructure(thrift.py3.types.Struct):
             c_inst = make_unique[cOldStructure]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if features is None:
                 deref(c_inst).features = _OldStructure_defaults.features
                 deref(c_inst).__isset.features = False
-            elif features is NOTSET:
+                pass
+            elif features is __NOTSET:
                 features = None
 
         if features is not None:
             deref(c_inst).features = <cmap[int16_t,double]>deref(Map__i16_double(features)._cpp_obj)
             deref(c_inst).__isset.features = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -95,7 +100,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
         yield 'features', self.features
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.features
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cOldStructure] cpp_obj):
@@ -105,8 +110,6 @@ cdef class OldStructure(thrift.py3.types.Struct):
 
     @property
     def features(self):
-        if not deref(self._cpp_obj).__isset.features:
-            return None
 
         if self.__features is None:
             self.__features = Map__i16_double.create(make_shared[cmap[int16_t,double]](deref(self._cpp_obj).features))
@@ -170,7 +173,7 @@ cdef cNewStructure _NewStructure_defaults = cNewStructure()
 cdef class NewStructure(thrift.py3.types.Struct):
 
     def __init__(
-        NewStructure self,
+        NewStructure self, *,
         features=None
     ):
         self._cpp_obj = move(NewStructure._make_instance(
@@ -180,14 +183,18 @@ cdef class NewStructure(thrift.py3.types.Struct):
 
     def __call__(
         NewStructure self,
-        features=NOTSET
+        features=__NOTSET
     ):
         changes = any((
-            features is not NOTSET,
+            features is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not features is not __NOTSET:
+            if not isinstance(features, Map__i16_double):
+                features = Map__i16_double(features)
 
         inst = <NewStructure>NewStructure.__new__(NewStructure)
         inst._cpp_obj = move(NewStructure._make_instance(
@@ -208,17 +215,17 @@ cdef class NewStructure(thrift.py3.types.Struct):
             c_inst = make_unique[cNewStructure]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if features is None:
                 deref(c_inst).features = _NewStructure_defaults.features
                 deref(c_inst).__isset.features = False
-            elif features is NOTSET:
+                pass
+            elif features is __NOTSET:
                 features = None
 
         if features is not None:
             deref(c_inst).features = <cmap[int16_t,double]>deref(Map__i16_double(features)._cpp_obj)
             deref(c_inst).__isset.features = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -227,7 +234,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
         yield 'features', self.features
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.features
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cNewStructure] cpp_obj):
@@ -237,8 +244,6 @@ cdef class NewStructure(thrift.py3.types.Struct):
 
     @property
     def features(self):
-        if not deref(self._cpp_obj).__isset.features:
-            return None
 
         if self.__features is None:
             self.__features = Map__i16_double.create(make_shared[cmap[int16_t,double]](deref(self._cpp_obj).features))
@@ -302,7 +307,7 @@ cdef cNewStructure2 _NewStructure2_defaults = cNewStructure2()
 cdef class NewStructure2(thrift.py3.types.Struct):
 
     def __init__(
-        NewStructure2 self,
+        NewStructure2 self, *,
         features=None
     ):
         self._cpp_obj = move(NewStructure2._make_instance(
@@ -312,14 +317,18 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
     def __call__(
         NewStructure2 self,
-        features=NOTSET
+        features=__NOTSET
     ):
         changes = any((
-            features is not NOTSET,
+            features is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not features is not __NOTSET:
+            if not isinstance(features, Map__i16_float):
+                features = Map__i16_float(features)
 
         inst = <NewStructure2>NewStructure2.__new__(NewStructure2)
         inst._cpp_obj = move(NewStructure2._make_instance(
@@ -340,17 +349,17 @@ cdef class NewStructure2(thrift.py3.types.Struct):
             c_inst = make_unique[cNewStructure2]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if features is None:
                 deref(c_inst).features = _NewStructure2_defaults.features
                 deref(c_inst).__isset.features = False
-            elif features is NOTSET:
+                pass
+            elif features is __NOTSET:
                 features = None
 
         if features is not None:
             deref(c_inst).features = <cmap[int16_t,float]>deref(Map__i16_float(features)._cpp_obj)
             deref(c_inst).__isset.features = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -359,7 +368,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         yield 'features', self.features
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.features
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cNewStructure2] cpp_obj):
@@ -369,8 +378,6 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
     @property
     def features(self):
-        if not deref(self._cpp_obj).__isset.features:
-            return None
 
         if self.__features is None:
             self.__features = Map__i16_float.create(make_shared[cmap[int16_t,float]](deref(self._cpp_obj).features))
@@ -434,7 +441,7 @@ cdef cNewStructureNested _NewStructureNested_defaults = cNewStructureNested()
 cdef class NewStructureNested(thrift.py3.types.Struct):
 
     def __init__(
-        NewStructureNested self,
+        NewStructureNested self, *,
         lst=None,
         mp=None,
         s=None
@@ -448,20 +455,32 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     def __call__(
         NewStructureNested self,
-        lst=NOTSET,
-        mp=NOTSET,
-        s=NOTSET
+        lst=__NOTSET,
+        mp=__NOTSET,
+        s=__NOTSET
     ):
         changes = any((
-            lst is not NOTSET,
+            lst is not __NOTSET,
 
-            mp is not NOTSET,
+            mp is not __NOTSET,
 
-            s is not NOTSET,
+            s is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not lst is not __NOTSET:
+            if not isinstance(lst, List__Map__i16_float):
+                lst = List__Map__i16_float(lst)
+
+        if None is not mp is not __NOTSET:
+            if not isinstance(mp, Map__i16_Map__i16_float):
+                mp = Map__i16_Map__i16_float(mp)
+
+        if None is not s is not __NOTSET:
+            if not isinstance(s, Set__Map__i16_float):
+                s = Set__Map__i16_float(s)
 
         inst = <NewStructureNested>NewStructureNested.__new__(NewStructureNested)
         inst._cpp_obj = move(NewStructureNested._make_instance(
@@ -486,37 +505,37 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
             c_inst = make_unique[cNewStructureNested]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if lst is None:
                 deref(c_inst).lst = _NewStructureNested_defaults.lst
                 deref(c_inst).__isset.lst = False
-            elif lst is NOTSET:
+                pass
+            elif lst is __NOTSET:
                 lst = None
 
             if mp is None:
                 deref(c_inst).mp = _NewStructureNested_defaults.mp
                 deref(c_inst).__isset.mp = False
-            elif mp is NOTSET:
+                pass
+            elif mp is __NOTSET:
                 mp = None
 
             if s is None:
                 deref(c_inst).s = _NewStructureNested_defaults.s
                 deref(c_inst).__isset.s = False
-            elif s is NOTSET:
+                pass
+            elif s is __NOTSET:
                 s = None
 
         if lst is not None:
             deref(c_inst).lst = <vector[cmap[int16_t,float]]>deref(List__Map__i16_float(lst)._cpp_obj)
             deref(c_inst).__isset.lst = True
-
         if mp is not None:
             deref(c_inst).mp = <cmap[int16_t,cmap[int16_t,float]]>deref(Map__i16_Map__i16_float(mp)._cpp_obj)
             deref(c_inst).__isset.mp = True
-
         if s is not None:
             deref(c_inst).s = <cset[cmap[int16_t,float]]>deref(Set__Map__i16_float(s)._cpp_obj)
             deref(c_inst).__isset.s = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -527,7 +546,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         yield 's', self.s
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.lst or deref(self._cpp_obj).__isset.mp or deref(self._cpp_obj).__isset.s
+        return True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cNewStructureNested] cpp_obj):
@@ -537,8 +556,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     @property
     def lst(self):
-        if not deref(self._cpp_obj).__isset.lst:
-            return None
 
         if self.__lst is None:
             self.__lst = List__Map__i16_float.create(make_shared[vector[cmap[int16_t,float]]](deref(self._cpp_obj).lst))
@@ -546,8 +563,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     @property
     def mp(self):
-        if not deref(self._cpp_obj).__isset.mp:
-            return None
 
         if self.__mp is None:
             self.__mp = Map__i16_Map__i16_float.create(make_shared[cmap[int16_t,cmap[int16_t,float]]](deref(self._cpp_obj).mp))
@@ -555,8 +570,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     @property
     def s(self):
-        if not deref(self._cpp_obj).__isset.s:
-            return None
 
         if self.__s is None:
             self.__s = Set__Map__i16_float.create(make_shared[cset[cmap[int16_t,float]]](deref(self._cpp_obj).s))
@@ -622,8 +635,8 @@ cdef cNewStructureNestedField _NewStructureNestedField_defaults = cNewStructureN
 cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     def __init__(
-        NewStructureNestedField self,
-        f=None
+        NewStructureNestedField self, *,
+        NewStructureNested f=None
     ):
         self._cpp_obj = move(NewStructureNestedField._make_instance(
           NULL,
@@ -632,14 +645,18 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     def __call__(
         NewStructureNestedField self,
-        f=NOTSET
+        f=__NOTSET
     ):
         changes = any((
-            f is not NOTSET,
+            f is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not f is not __NOTSET:
+            if not isinstance(f, NewStructureNested):
+                raise TypeError(f'f is not a { NewStructureNested !r}.')
 
         inst = <NewStructureNestedField>NewStructureNestedField.__new__(NewStructureNestedField)
         inst._cpp_obj = move(NewStructureNestedField._make_instance(
@@ -660,17 +677,17 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
             c_inst = make_unique[cNewStructureNestedField]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if f is None:
                 deref(c_inst).f = _NewStructureNestedField_defaults.f
                 deref(c_inst).__isset.f = False
-            elif f is NOTSET:
+                pass
+            elif f is __NOTSET:
                 f = None
 
         if f is not None:
             deref(c_inst).f = deref((<NewStructureNested?> f)._cpp_obj)
             deref(c_inst).__isset.f = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -679,7 +696,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         yield 'f', self.f
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.f
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cNewStructureNestedField] cpp_obj):
@@ -689,8 +706,6 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     @property
     def f(self):
-        if not deref(self._cpp_obj).__isset.f:
-            return None
 
         if self.__f is None:
             self.__f = NewStructureNested.create(make_shared[cNewStructureNested](deref(self._cpp_obj).f))
@@ -765,8 +780,9 @@ cdef class Map__i16_double:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,double]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,double]] c_inst = make_unique[cmap[int16_t,double]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int16_t,double](key,item))
         return move_unique(c_inst)
 
@@ -878,8 +894,9 @@ cdef class Map__i16_float:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,float]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,float]] c_inst = make_unique[cmap[int16_t,float]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int16_t,float](key,item))
         return move_unique(c_inst)
 
@@ -991,8 +1008,12 @@ cdef class List__Map__i16_float:
     @staticmethod
     cdef unique_ptr[vector[cmap[int16_t,float]]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cmap[int16_t,float]]] c_inst = make_unique[vector[cmap[int16_t,float]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i16_float):
+                    item = Map__i16_float(item)
                 deref(c_inst).push_back(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -1142,8 +1163,13 @@ cdef class Map__i16_Map__i16_float:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] c_inst = make_unique[cmap[int16_t,cmap[int16_t,float]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i16_float):
+                    item = Map__i16_float(item)
+
                 deref(c_inst).insert(cpair[int16_t,cmap[int16_t,float]](key,cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -1259,8 +1285,12 @@ cdef class Set__Map__i16_float:
     @staticmethod
     cdef unique_ptr[cset[cmap[int16_t,float]]] _make_instance(object items) except *:
         cdef unique_ptr[cset[cmap[int16_t,float]]] c_inst = make_unique[cset[cmap[int16_t,float]]]()
-        if items:
+        if items is not None:
             for item in items:
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i16_float):
+                    item = Map__i16_float(item)
                 deref(c_inst).insert(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
@@ -1445,8 +1475,9 @@ cdef class Map__i64_double:
     @staticmethod
     cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int64_t,double]] c_inst = make_unique[cmap[int64_t,double]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+
                 deref(c_inst).insert(cpair[int64_t,double](key,item))
         return move_unique(c_inst)
 
@@ -1558,8 +1589,13 @@ cdef class Map__i16_Map__i64_double:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int16_t,cmap[int64_t,double]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i64_double):
+                    item = Map__i64_double(item)
+
                 deref(c_inst).insert(cpair[int16_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -1675,8 +1711,13 @@ cdef class Map__i32_Map__i64_double:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int32_t,cmap[int64_t,double]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Mapping[int, float]")
+                if not isinstance(item, Map__i64_double):
+                    item = Map__i64_double(item)
+
                 deref(c_inst).insert(cpair[int32_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -1792,7 +1833,7 @@ cdef class List__float:
     @staticmethod
     cdef unique_ptr[vector[float]] _make_instance(object items) except *:
         cdef unique_ptr[vector[float]] c_inst = make_unique[vector[float]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
@@ -1940,8 +1981,13 @@ cdef class Map__i16_List__float:
     @staticmethod
     cdef unique_ptr[cmap[int16_t,vector[float]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int16_t,vector[float]]] c_inst = make_unique[cmap[int16_t,vector[float]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Sequence[float]")
+                if not isinstance(item, List__float):
+                    item = List__float(item)
+
                 deref(c_inst).insert(cpair[int16_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
@@ -2057,8 +2103,13 @@ cdef class Map__i32_List__float:
     @staticmethod
     cdef unique_ptr[cmap[int32_t,vector[float]]] _make_instance(object items) except *:
         cdef unique_ptr[cmap[int32_t,vector[float]]] c_inst = make_unique[cmap[int32_t,vector[float]]]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                if item is None:
+                    raise TypeError("None is not of type _typing.Sequence[float]")
+                if not isinstance(item, List__float):
+                    item = List__float(item)
+
                 deref(c_inst).insert(cpair[int32_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 

@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 cimport module0.types as _module0_types
 import module0.types as _module0_types
 cimport module1.types as _module1_types
@@ -42,9 +43,9 @@ cdef cStruct _Struct_defaults = cStruct()
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
-        Struct self,
-        first=None,
-        second=None
+        Struct self, *,
+        _module0_types.Struct first=None,
+        _module1_types.Struct second=None
     ):
         self._cpp_obj = move(Struct._make_instance(
           NULL,
@@ -54,17 +55,25 @@ cdef class Struct(thrift.py3.types.Struct):
 
     def __call__(
         Struct self,
-        first=NOTSET,
-        second=NOTSET
+        first=__NOTSET,
+        second=__NOTSET
     ):
         changes = any((
-            first is not NOTSET,
+            first is not __NOTSET,
 
-            second is not NOTSET,
+            second is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not first is not __NOTSET:
+            if not isinstance(first, _module0_types.Struct):
+                raise TypeError(f'first is not a { _module0_types.Struct !r}.')
+
+        if None is not second is not __NOTSET:
+            if not isinstance(second, _module1_types.Struct):
+                raise TypeError(f'second is not a { _module1_types.Struct !r}.')
 
         inst = <Struct>Struct.__new__(Struct)
         inst._cpp_obj = move(Struct._make_instance(
@@ -87,27 +96,27 @@ cdef class Struct(thrift.py3.types.Struct):
             c_inst = make_unique[cStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if first is None:
                 deref(c_inst).first = _Struct_defaults.first
                 deref(c_inst).__isset.first = False
-            elif first is NOTSET:
+                pass
+            elif first is __NOTSET:
                 first = None
 
             if second is None:
                 deref(c_inst).second = _Struct_defaults.second
                 deref(c_inst).__isset.second = False
-            elif second is NOTSET:
+                pass
+            elif second is __NOTSET:
                 second = None
 
         if first is not None:
             deref(c_inst).first = deref((<_module0_types.Struct?> first)._cpp_obj)
             deref(c_inst).__isset.first = True
-
         if second is not None:
             deref(c_inst).second = deref((<_module1_types.Struct?> second)._cpp_obj)
             deref(c_inst).__isset.second = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -117,7 +126,7 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'second', self.second
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.first or deref(self._cpp_obj).__isset.second
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
@@ -127,8 +136,6 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @property
     def first(self):
-        if not deref(self._cpp_obj).__isset.first:
-            return None
 
         if self.__first is None:
             self.__first = _module0_types.Struct.create(make_shared[_module0_types.cStruct](deref(self._cpp_obj).first))
@@ -136,8 +143,6 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @property
     def second(self):
-        if not deref(self._cpp_obj).__isset.second:
-            return None
 
         if self.__second is None:
             self.__second = _module1_types.Struct.create(make_shared[_module1_types.cStruct](deref(self._cpp_obj).second))
@@ -202,8 +207,8 @@ cdef cBigStruct _BigStruct_defaults = cBigStruct()
 cdef class BigStruct(thrift.py3.types.Struct):
 
     def __init__(
-        BigStruct self,
-        s=None,
+        BigStruct self, *,
+        Struct s=None,
         id=None
     ):
         self._cpp_obj = move(BigStruct._make_instance(
@@ -214,17 +219,25 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     def __call__(
         BigStruct self,
-        s=NOTSET,
-        id=NOTSET
+        s=__NOTSET,
+        id=__NOTSET
     ):
         changes = any((
-            s is not NOTSET,
+            s is not __NOTSET,
 
-            id is not NOTSET,
+            id is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not s is not __NOTSET:
+            if not isinstance(s, Struct):
+                raise TypeError(f's is not a { Struct !r}.')
+
+        if None is not id is not __NOTSET:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
 
         inst = <BigStruct>BigStruct.__new__(BigStruct)
         inst._cpp_obj = move(BigStruct._make_instance(
@@ -247,27 +260,27 @@ cdef class BigStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cBigStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if s is None:
                 deref(c_inst).s = _BigStruct_defaults.s
                 deref(c_inst).__isset.s = False
-            elif s is NOTSET:
+                pass
+            elif s is __NOTSET:
                 s = None
 
             if id is None:
                 deref(c_inst).id = _BigStruct_defaults.id
                 deref(c_inst).__isset.id = False
-            elif id is NOTSET:
+                pass
+            elif id is __NOTSET:
                 id = None
 
         if s is not None:
             deref(c_inst).s = deref((<Struct?> s)._cpp_obj)
             deref(c_inst).__isset.s = True
-
         if id is not None:
             deref(c_inst).id = id
             deref(c_inst).__isset.id = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -277,7 +290,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
         yield 'id', self.id
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.s or deref(self._cpp_obj).__isset.id
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct] cpp_obj):
@@ -287,8 +300,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @property
     def s(self):
-        if not deref(self._cpp_obj).__isset.s:
-            return None
 
         if self.__s is None:
             self.__s = Struct.create(make_shared[cStruct](deref(self._cpp_obj).s))
@@ -296,8 +307,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @property
     def id(self):
-        if not deref(self._cpp_obj).__isset.id:
-            return None
 
         return self._cpp_obj.get().id
 

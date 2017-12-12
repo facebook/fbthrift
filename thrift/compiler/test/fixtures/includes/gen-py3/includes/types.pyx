@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 
@@ -40,9 +41,9 @@ cdef cIncluded _Included_defaults = cIncluded()
 cdef class Included(thrift.py3.types.Struct):
 
     def __init__(
-        Included self,
+        Included self, *,
         MyIntField=None,
-        MyTransitiveField=None
+        _transitive_types.Foo MyTransitiveField=None
     ):
         self._cpp_obj = move(Included._make_instance(
           NULL,
@@ -52,17 +53,25 @@ cdef class Included(thrift.py3.types.Struct):
 
     def __call__(
         Included self,
-        MyIntField=NOTSET,
-        MyTransitiveField=NOTSET
+        MyIntField=__NOTSET,
+        MyTransitiveField=__NOTSET
     ):
         changes = any((
-            MyIntField is not NOTSET,
+            MyIntField is not __NOTSET,
 
-            MyTransitiveField is not NOTSET,
+            MyTransitiveField is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not MyIntField is not __NOTSET:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+
+        if None is not MyTransitiveField is not __NOTSET:
+            if not isinstance(MyTransitiveField, _transitive_types.Foo):
+                raise TypeError(f'MyTransitiveField is not a { _transitive_types.Foo !r}.')
 
         inst = <Included>Included.__new__(Included)
         inst._cpp_obj = move(Included._make_instance(
@@ -85,27 +94,27 @@ cdef class Included(thrift.py3.types.Struct):
             c_inst = make_unique[cIncluded]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if MyIntField is None:
                 deref(c_inst).MyIntField = _Included_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
-            elif MyIntField is NOTSET:
+                pass
+            elif MyIntField is __NOTSET:
                 MyIntField = None
 
             if MyTransitiveField is None:
                 deref(c_inst).MyTransitiveField = _Included_defaults.MyTransitiveField
                 deref(c_inst).__isset.MyTransitiveField = False
-            elif MyTransitiveField is NOTSET:
+                pass
+            elif MyTransitiveField is __NOTSET:
                 MyTransitiveField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
-
         if MyTransitiveField is not None:
             deref(c_inst).MyTransitiveField = deref((<_transitive_types.Foo?> MyTransitiveField)._cpp_obj)
             deref(c_inst).__isset.MyTransitiveField = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -115,7 +124,7 @@ cdef class Included(thrift.py3.types.Struct):
         yield 'MyTransitiveField', self.MyTransitiveField
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIntField or deref(self._cpp_obj).__isset.MyTransitiveField
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cIncluded] cpp_obj):
@@ -125,10 +134,12 @@ cdef class Included(thrift.py3.types.Struct):
 
     @property
     def MyIntField(self):
+
         return self._cpp_obj.get().MyIntField
 
     @property
     def MyTransitiveField(self):
+
         if self.__MyTransitiveField is None:
             self.__MyTransitiveField = _transitive_types.Foo.create(make_shared[_transitive_types.cFoo](deref(self._cpp_obj).MyTransitiveField))
         return self.__MyTransitiveField

@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class AnEnum(Enum):
@@ -56,7 +57,7 @@ cdef cAStruct _AStruct_defaults = cAStruct()
 cdef class AStruct(thrift.py3.types.Struct):
 
     def __init__(
-        AStruct self,
+        AStruct self, *,
         FieldA=None
     ):
         self._cpp_obj = move(AStruct._make_instance(
@@ -66,14 +67,18 @@ cdef class AStruct(thrift.py3.types.Struct):
 
     def __call__(
         AStruct self,
-        FieldA=NOTSET
+        FieldA=__NOTSET
     ):
         changes = any((
-            FieldA is not NOTSET,
+            FieldA is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not FieldA is not __NOTSET:
+            if not isinstance(FieldA, int):
+                raise TypeError(f'FieldA is not a { int !r}.')
 
         inst = <AStruct>AStruct.__new__(AStruct)
         inst._cpp_obj = move(AStruct._make_instance(
@@ -94,17 +99,17 @@ cdef class AStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cAStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if FieldA is None:
                 deref(c_inst).FieldA = _AStruct_defaults.FieldA
                 deref(c_inst).__isset.FieldA = False
-            elif FieldA is NOTSET:
+                pass
+            elif FieldA is __NOTSET:
                 FieldA = None
 
         if FieldA is not None:
             deref(c_inst).FieldA = FieldA
             deref(c_inst).__isset.FieldA = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -113,7 +118,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         yield 'FieldA', self.FieldA
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.FieldA
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cAStruct] cpp_obj):
@@ -123,8 +128,6 @@ cdef class AStruct(thrift.py3.types.Struct):
 
     @property
     def FieldA(self):
-        if not deref(self._cpp_obj).__isset.FieldA:
-            return None
 
         return self._cpp_obj.get().FieldA
 
@@ -186,8 +189,8 @@ cdef cAStructB _AStructB_defaults = cAStructB()
 cdef class AStructB(thrift.py3.types.Struct):
 
     def __init__(
-        AStructB self,
-        FieldA=None
+        AStructB self, *,
+        AStruct FieldA=None
     ):
         self._cpp_obj = move(AStructB._make_instance(
           NULL,
@@ -196,14 +199,18 @@ cdef class AStructB(thrift.py3.types.Struct):
 
     def __call__(
         AStructB self,
-        FieldA=NOTSET
+        FieldA=__NOTSET
     ):
         changes = any((
-            FieldA is not NOTSET,
+            FieldA is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not FieldA is not __NOTSET:
+            if not isinstance(FieldA, AStruct):
+                raise TypeError(f'FieldA is not a { AStruct !r}.')
 
         inst = <AStructB>AStructB.__new__(AStructB)
         inst._cpp_obj = move(AStructB._make_instance(
@@ -224,10 +231,11 @@ cdef class AStructB(thrift.py3.types.Struct):
             c_inst = make_unique[cAStructB]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if FieldA is None:
-                raise ValueError("Reference-annotated fields may not be initialized to defaults")
-            elif FieldA is NOTSET:
+                deref(c_inst).FieldA.reset()
+                pass
+            elif FieldA is __NOTSET:
                 FieldA = None
 
         if FieldA is not None:
@@ -250,6 +258,7 @@ cdef class AStructB(thrift.py3.types.Struct):
 
     @property
     def FieldA(self):
+
         if self.__FieldA is None:
             if not deref(self._cpp_obj).FieldA:
                 return None

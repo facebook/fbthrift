@@ -2,7 +2,7 @@
 import unittest
 import itertools
 
-from testing.types import int_list, I32List
+from testing.types import int_list, I32List, StrList2D
 
 
 class ListTests(unittest.TestCase):
@@ -13,6 +13,19 @@ class ListTests(unittest.TestCase):
 
         with self.assertRaises(IndexError):
             int_list[-length - 1]
+
+    def test_list_of_None(self):
+        with self.assertRaises(TypeError):
+            I32List([None, None, None])
+
+    def test_list_creation_with_list_items(self):
+        a = ['one', 'two', 'three']
+        b = ['cyan', 'magenta', 'yellow']
+        c = ['foo', 'bar', 'baz']
+        d = ['I', 'II', 'III']
+        StrList2D([a, b, c, d])
+        with self.assertRaises(TypeError):
+            StrList2D([a, [None]])
 
     def test_list_add(self):
         other_list = [99, 88, 77, 66, 55]

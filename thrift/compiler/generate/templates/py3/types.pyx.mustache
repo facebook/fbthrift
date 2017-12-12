@@ -44,7 +44,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -58,6 +58,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
@@ -100,28 +101,110 @@ cdef c{{struct:name}} _{{struct:name}}_defaults = c{{struct:name}}()
 {{/struct:plain?}}
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
+    {{^struct:exception?}}
+    def __init__(
+        {{struct:name}} self, *{{#struct:fields}},
+        {{#field:type}}{{!
+            }}{{^field:requireValue?}}{{!  # If we can set a None then type it
+                }}{{#type:cythonTypeNoneable?}}{{!
+                    }}{{> types/CythonPythonType}} {{!
+                }}{{/type:cythonTypeNoneable?}}{{!
+            }}{{/field:requireValue?}}{{!
+            }}{{#field:requireValue?}}{{! We have no concept of default
+                }}{{#type:hasCythonType?}}{{!
+                    }}{{> types/CythonPythonType}} {{!
+                }}{{/type:hasCythonType?}}{{!
+            }}{{/field:requireValue?}}{{!
+            }}{{field:name}}{{!
+                }}{{^field:requireValue?}}=None{{/field:requireValue?}}{{!
+                }}{{#field:requireValue?}}{{^type:number?}} not None{{/type:number?}}{{/field:requireValue?}}{{!
+        }}{{/field:type}}{{/struct:fields}}
+    ):
+    {{/struct:exception?}}
+    {{#struct:exception?}}{{! Python exceptions are weird about keyword only}}
     def __init__(
         {{struct:name}} self{{#struct:fields}},
-        {{field:name}}=None{{/struct:fields}}
+        {{#field:type}}{{!
+                }}{{#type:cythonTypeNoneable?}}{{!
+                    }}{{> types/CythonPythonType}} {{!
+                }}{{/type:cythonTypeNoneable?}}{{!
+            }}{{field:name}}=None{{!
+        }}{{/field:type}}{{/struct:fields}}
     ):
+        {{#struct:fields}}
+        {{#field:requireValue?}}
+        if {{field:name}} is None:
+            raise TypeError("__init__() needs required argument '{{field:name}}'")
+        {{/field:requireValue?}}
+        {{/struct:fields}}
+    {{/struct:exception?}}
+        {{#struct:fields}}
+        {{#field:type}}
+        {{^type:cythonTypeNoneable}}
+        if {{field:name}} is not None:
+            {{#type:container?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
+            {{/type:container?}}
+            {{#type:enum?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
+            {{/type:enum?}}
+            {{#type:number?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
+            {{/type:number?}}
+
+        {{/type:cythonTypeNoneable?}}
+        {{/field:type}}
+        {{/struct:fields}}
         self._cpp_obj = move({{struct:name}}._make_instance(
           NULL,{{#struct:fields}}
           {{field:name}},{{/struct:fields}}
         ))
+        {{#struct:exception?}}
+        _builtins.Exception.__init__(self, {{#struct:fields}}self.{{field:name}}{{^last?}}, {{/last?}}{{/struct:fields}})
+        {{/struct:exception?}}
 
     {{^struct:exception?}}
     def __call__(
         {{struct:name}} self{{#struct:fields}},
-        {{field:name}}=NOTSET{{/struct:fields}}
+        {{field:name}}=__NOTSET{{/struct:fields}}
     ):
         changes = any(({{#struct:fields}}
-            {{field:name}} is not NOTSET,
+            {{field:name}} is not __NOTSET,
             {{/struct:fields}}
         ))
 
         if not changes:
             return self
+        {{#struct:fields}}
+        {{#first?}}
 
+        {{/first?}}
+        {{#field:requireValue?}}
+        if {{field:name}} is None:
+            raise TypeError('field {{field:name}} is required and has no default, it can not be unset')
+        {{/field:requireValue?}}
+        {{#field:type}}
+        if None is not {{field:name}} is not __NOTSET:
+            {{#type:container?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
+            {{/type:container?}}
+            {{#type:enum?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
+            {{/type:enum?}}
+            {{^type:container?}}
+            {{^type:enum?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
+            {{/type:enum?}}
+            {{/type:container?}}
+
+        {{/field:type}}
+        {{/struct:fields}}
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
         inst._cpp_obj = move({{struct:name}}._make_instance(
           self._cpp_obj.get(),{{#struct:fields}}
@@ -146,28 +229,25 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             references the _defaults object, which they also don't have )}}
         {{^struct:exception?}}
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             {{#struct:fields}}
             if {{field:name}} is None:
-                {{#field:reference?}}
-                raise ValueError("Reference-annotated fields may not be initialized to defaults")
-                {{/field:reference?}}{{!
-                }}{{^field:reference?}}{{!
-                }}{{#program:optionals?}}{{!
-                }}{{#field:optional?}}
-                pass
-                {{/field:optional?}}{{!
-                }}{{^field:optional?}}
+                {{#field:follyOptional?}}
+                deref(c_inst).{{field:name}}.reset()
+                {{/field:follyOptional?}}
+                {{^field:follyOptional?}}
+                {{#field:hasDefaultValue?}}
                 deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
-                {{/field:optional?}}{{!
-                }}{{/program:optionals?}}{{!
-                }}{{^program:optionals?}}
-                deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
-                {{^field:required?}}
+                {{/field:hasDefaultValue?}}
+                {{#field:isset?}}
                 deref(c_inst).__isset.{{field:name}} = False
-                {{/field:required?}}{{!
-                }}{{/program:optionals?}}{{/field:reference?}}
-            elif {{field:name}} is NOTSET:
+                {{/field:isset?}}
+                {{/field:follyOptional?}}
+                {{#field:reference?}}
+                deref(c_inst).{{field:name}}.reset()
+                {{/field:reference?}}
+                pass
+            elif {{field:name}} is __NOTSET:
                 {{field:name}} = None
 
             {{/struct:fields}}{{!
@@ -180,10 +260,9 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             {{> CythonAssignField}}
 
             {{! This should also be inside the if statement, so indent appropriately }}
-            {{^field:required?}}{{^field:reference?}}{{^program:optionals?}}
+            {{#field:isset?}}
             deref(c_inst).__isset.{{field:name}} = True
-
-            {{/program:optionals?}}{{/field:reference?}}{{/field:required?}}
+            {{/field:isset?}}
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -201,43 +280,48 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return {{#struct:fields}}{{!
             }}{{#field:required?}}True{{/field:required?}}{{!
             }}{{^field:required?}}{{!
-            }}{{#program:optionals?}}{{!
-            }}{{^field:optional?}}True{{/field:optional?}}{{!
-            }}{{#field:optional?}}deref(self._cpp_obj).{{field:name}}.has_value(){{/field:optional?}}{{!
-            }}{{/program:optionals?}}{{!
-            }}{{^program:optionals?}}{{!
+            }}{{#field:follyOptional?}}{{!
+            }}deref(self._cpp_obj).{{field:name}}.has_value(){{!
+            }}{{/field:follyOptional?}}{{!
+            }}{{#field:hasDefaultValue?}}True{{/field:hasDefaultValue?}}{{!
+            }}{{^field:follyOptional?}}{{!
+            }}{{^field:hasDefaultValue?}}{{!
+            }}{{#field:isset?}}deref(self._cpp_obj).__isset.{{field:name}}{{/field:isset?}}{{!
             }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:name}}){{/field:reference?}}{{!
-            }}{{^field:reference?}}{{!
-            }}deref(self._cpp_obj).__isset.{{field:name}}{{!
-            }}{{/field:reference?}}{{!
-            }}{{/program:optionals?}}{{!
+            }}{{/field:hasDefaultValue?}}{{!
+            }}{{/field:follyOptional?}}{{!
             }}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
-        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
         inst._cpp_obj = cpp_obj
+        {{#struct:exception?}}
+        _builtins.Exception.__init__(inst, {{#struct:fields}}inst.{{field:name}}{{^last?}}, {{/last?}}{{/struct:fields}})
+        {{/struct:exception?}}
         return inst
 
     {{#struct:fields}}
     @property
     def {{field:name}}(self):
-        {{#field:type}}
-        {{^field:value}}
-        {{^field:required?}}{{^field:reference?}}{{^program:optionals?}}
-        {{! If there is no value and not ___isset we can say it's None}}
-        if not deref(self._cpp_obj).__isset.{{field:name}}:
-            return None
-
-        {{/program:optionals?}}{{/field:reference?}}{{/field:required?}}
-        {{/field:value}}
-        {{! C++ behavior is that the default value is ignored in optionals mode }}
-        {{#program:optionals?}}{{#field:optional?}}
+        {{#field:optional?}}
+        {{#field:follyOptional?}}
         if not deref(self._cpp_obj).{{field:name}}.has_value():
             return None
-        {{/field:optional?}}{{/program:optionals?}}
+        {{/field:follyOptional?}}
+        {{^field:follyOptional?}}
+        {{^field:hasDefaultValue?}}
+        {{#field:isset?}}
+        if not deref(self._cpp_obj).__isset.{{field:name}}:
+            return None
+        {{/field:isset?}}
+        {{/field:hasDefaultValue?}}
+        {{/field:follyOptional?}}
+        {{/field:optional?}}
+        {{#field:type}}
+
         {{> CythonStructGetter}}
 
         {{/field:type}}
@@ -273,9 +357,35 @@ class {{struct:name}}Type(Enum):
 
 cdef class {{struct:name}}(thrift.py3.types.Union):
     def __init__(
-        {{struct:name}} self{{#struct:fields}},
-        {{field:name}}=None{{/struct:fields}}
+        {{struct:name}} self, *{{#struct:fields}},
+        {{#field:type}}{{!
+            }}{{#type:cythonTypeNoneable?}}{{!
+                }}{{> types/CythonPythonType}} {{!
+            }}{{/type:cythonTypeNoneable?}}{{!
+        }}{{/field:type}}{{!
+            }}{{field:name}}=None{{!
+        }}{{/struct:fields}}
     ):
+        {{#struct:fields}}
+        {{#field:type}}
+        {{^type:cythonTypeNoneable?}}
+        if {{field:name}} is not None:
+            {{#type:container?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
+            {{/type:container?}}
+            {{#type:enum?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
+            {{/type:enum?}}
+            {{#type:number?}}
+            if not isinstance({{field:name}}, {{> types/PythonType}}):
+                raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
+            {{/type:number?}}
+
+        {{/type:cythonTypeNoneable?}}
+        {{/field:type}}
+        {{/struct:fields}}
         self._cpp_obj = move({{struct:name}}._make_instance(
           NULL,{{#struct:fields}}
           {{field:name}},{{/struct:fields}}
@@ -426,10 +536,21 @@ cdef class {{type:flat_name}}:
     @staticmethod
     cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
         cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
-        if items:
+        if items is not None:
             for item in items:
-                deref(c_inst).push_back({{#type:listElemType}}{{!
-                    }}{{> CythonPythonToCppItem}}{{/type:listElemType}})
+                {{#type:listElemType}}
+                {{#type:container?}}
+                if item is None:
+                    raise TypeError("None is not of the type {{> types/PEP484Type}}")
+                if not isinstance(item, {{> types/PythonType}}):
+                    item = {{> types/PythonType}}(item)
+                {{/type:container?}}
+                {{#type:cythonTypeNoneable?}}
+                if not isinstance(item, {{> types/PythonType}}):
+                    raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
+                {{/type:cythonTypeNoneable?}}
+                deref(c_inst).push_back({{> CythonPythonToCppItem}})
+                {{/type:listElemType}}
         return move_unique(c_inst)
 
     def __add__(object self, object other):
@@ -582,10 +703,21 @@ Sequence.register({{type:flat_name}})
     @staticmethod
     cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
         cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
-        if items:
+        if items is not None:
             for item in items:
-                deref(c_inst).insert({{#type:setElemType}}{{!
-                    }}{{> CythonPythonToCppItem}}{{/type:setElemType}})
+                {{#type:setElemType}}
+                {{#type:container?}}
+                if item is None:
+                    raise TypeError("None is not of type {{> types/PEP484Type}}")
+                if not isinstance(item, {{> types/PythonType}}):
+                    item = {{> types/PythonType}}(item)
+                {{/type:container?}}
+                {{#type:cythonTypeNoneable?}}
+                if not isinstance(item, {{> types/PythonType}}):
+                    raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
+                {{/type:cythonTypeNoneable?}}
+                deref(c_inst).insert({{> CythonPythonToCppItem}})
+                {{/type:setElemType}}
         return move_unique(c_inst)
 
     def __contains__(self, item):
@@ -758,8 +890,33 @@ Set.register({{type:flat_name}})
     @staticmethod
     cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
         cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
-        if items:
+        if items is not None:
             for key, item in items.items():
+                {{#type:keyType}}
+                {{#type:container?}}
+                if key is None:
+                    raise TypeError("None is not of type {{> types/PEP484Type}}")
+                if not isinstance(key, {{> types/PythonType}}):
+                    key = {{> types/PythonType}}(key)
+                {{/type:container?}}
+                {{#type:cythonTypeNoneable?}}
+                if not isinstance(key, {{> types/PythonType}}):
+                    raise TypeError(f"{key!r} is not of type {{> types/PEP484Type}}")
+                {{/type:cythonTypeNoneable?}}
+                {{/type:keyType}}
+                {{#type:valueType}}
+                {{#type:container?}}
+                if item is None:
+                    raise TypeError("None is not of type {{> types/PEP484Type}}")
+                if not isinstance(item, {{> types/PythonType}}):
+                    item = {{> types/PythonType}}(item)
+                {{/type:container?}}
+                {{#type:cythonTypeNoneable?}}
+                if not isinstance(item, {{> types/PythonType}}):
+                    raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
+                {{/type:cythonTypeNoneable?}}
+                {{/type:valueType}}
+
                 deref(c_inst).insert(cpair[{{!
                     }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
                     }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!

@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types
 
@@ -40,9 +41,9 @@ cdef cMyStruct _MyStruct_defaults = cMyStruct()
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
-        MyStruct self,
-        MyIncludedField=None,
-        MyOtherIncludedField=None,
+        MyStruct self, *,
+        _includes_types.Included MyIncludedField=None,
+        _includes_types.Included MyOtherIncludedField=None,
         MyIncludedInt=None
     ):
         self._cpp_obj = move(MyStruct._make_instance(
@@ -54,20 +55,32 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __call__(
         MyStruct self,
-        MyIncludedField=NOTSET,
-        MyOtherIncludedField=NOTSET,
-        MyIncludedInt=NOTSET
+        MyIncludedField=__NOTSET,
+        MyOtherIncludedField=__NOTSET,
+        MyIncludedInt=__NOTSET
     ):
         changes = any((
-            MyIncludedField is not NOTSET,
+            MyIncludedField is not __NOTSET,
 
-            MyOtherIncludedField is not NOTSET,
+            MyOtherIncludedField is not __NOTSET,
 
-            MyIncludedInt is not NOTSET,
+            MyIncludedInt is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not MyIncludedField is not __NOTSET:
+            if not isinstance(MyIncludedField, _includes_types.Included):
+                raise TypeError(f'MyIncludedField is not a { _includes_types.Included !r}.')
+
+        if None is not MyOtherIncludedField is not __NOTSET:
+            if not isinstance(MyOtherIncludedField, _includes_types.Included):
+                raise TypeError(f'MyOtherIncludedField is not a { _includes_types.Included !r}.')
+
+        if None is not MyIncludedInt is not __NOTSET:
+            if not isinstance(MyIncludedInt, int):
+                raise TypeError(f'MyIncludedInt is not a { int !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
@@ -92,37 +105,37 @@ cdef class MyStruct(thrift.py3.types.Struct):
             c_inst = make_unique[cMyStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if MyIncludedField is None:
                 deref(c_inst).MyIncludedField = _MyStruct_defaults.MyIncludedField
                 deref(c_inst).__isset.MyIncludedField = False
-            elif MyIncludedField is NOTSET:
+                pass
+            elif MyIncludedField is __NOTSET:
                 MyIncludedField = None
 
             if MyOtherIncludedField is None:
                 deref(c_inst).MyOtherIncludedField = _MyStruct_defaults.MyOtherIncludedField
                 deref(c_inst).__isset.MyOtherIncludedField = False
-            elif MyOtherIncludedField is NOTSET:
+                pass
+            elif MyOtherIncludedField is __NOTSET:
                 MyOtherIncludedField = None
 
             if MyIncludedInt is None:
                 deref(c_inst).MyIncludedInt = _MyStruct_defaults.MyIncludedInt
                 deref(c_inst).__isset.MyIncludedInt = False
-            elif MyIncludedInt is NOTSET:
+                pass
+            elif MyIncludedInt is __NOTSET:
                 MyIncludedInt = None
 
         if MyIncludedField is not None:
             deref(c_inst).MyIncludedField = deref((<_includes_types.Included?> MyIncludedField)._cpp_obj)
             deref(c_inst).__isset.MyIncludedField = True
-
         if MyOtherIncludedField is not None:
             deref(c_inst).MyOtherIncludedField = deref((<_includes_types.Included?> MyOtherIncludedField)._cpp_obj)
             deref(c_inst).__isset.MyOtherIncludedField = True
-
         if MyIncludedInt is not None:
             deref(c_inst).MyIncludedInt = MyIncludedInt
             deref(c_inst).__isset.MyIncludedInt = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -133,7 +146,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyIncludedInt', self.MyIncludedInt
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyIncludedField or deref(self._cpp_obj).__isset.MyOtherIncludedField or deref(self._cpp_obj).__isset.MyIncludedInt
+        return True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -143,14 +156,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIncludedField(self):
+
         if self.__MyIncludedField is None:
             self.__MyIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyIncludedField))
         return self.__MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
-        if not deref(self._cpp_obj).__isset.MyOtherIncludedField:
-            return None
 
         if self.__MyOtherIncludedField is None:
             self.__MyOtherIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyOtherIncludedField))
@@ -158,6 +170,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIncludedInt(self):
+
         return self._cpp_obj.get().MyIncludedInt
 
 

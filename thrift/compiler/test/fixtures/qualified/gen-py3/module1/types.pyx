@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 class Enum(Enum):
@@ -59,9 +60,9 @@ cdef cStruct _Struct_defaults = cStruct()
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
-        Struct self,
+        Struct self, *,
         first=None,
-        second=None
+        str second=None
     ):
         self._cpp_obj = move(Struct._make_instance(
           NULL,
@@ -71,17 +72,25 @@ cdef class Struct(thrift.py3.types.Struct):
 
     def __call__(
         Struct self,
-        first=NOTSET,
-        second=NOTSET
+        first=__NOTSET,
+        second=__NOTSET
     ):
         changes = any((
-            first is not NOTSET,
+            first is not __NOTSET,
 
-            second is not NOTSET,
+            second is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not first is not __NOTSET:
+            if not isinstance(first, int):
+                raise TypeError(f'first is not a { int !r}.')
+
+        if None is not second is not __NOTSET:
+            if not isinstance(second, str):
+                raise TypeError(f'second is not a { str !r}.')
 
         inst = <Struct>Struct.__new__(Struct)
         inst._cpp_obj = move(Struct._make_instance(
@@ -104,27 +113,27 @@ cdef class Struct(thrift.py3.types.Struct):
             c_inst = make_unique[cStruct]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if first is None:
                 deref(c_inst).first = _Struct_defaults.first
                 deref(c_inst).__isset.first = False
-            elif first is NOTSET:
+                pass
+            elif first is __NOTSET:
                 first = None
 
             if second is None:
                 deref(c_inst).second = _Struct_defaults.second
                 deref(c_inst).__isset.second = False
-            elif second is NOTSET:
+                pass
+            elif second is __NOTSET:
                 second = None
 
         if first is not None:
             deref(c_inst).first = first
             deref(c_inst).__isset.first = True
-
         if second is not None:
             deref(c_inst).second = second.encode('UTF-8')
             deref(c_inst).__isset.second = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -134,7 +143,7 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'second', self.second
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.first or deref(self._cpp_obj).__isset.second
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
@@ -144,15 +153,11 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @property
     def first(self):
-        if not deref(self._cpp_obj).__isset.first:
-            return None
 
         return self._cpp_obj.get().first
 
     @property
     def second(self):
-        if not deref(self._cpp_obj).__isset.second:
-            return None
 
         return (<bytes>self._cpp_obj.get().second).decode('UTF-8')
 
@@ -226,7 +231,7 @@ cdef class List__Enum:
     @staticmethod
     cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *:
         cdef unique_ptr[vector[cEnum]] c_inst = make_unique[vector[cEnum]]()
-        if items:
+        if items is not None:
             for item in items:
                 deref(c_inst).push_back(Enum_to_cpp(item))
         return move_unique(c_inst)

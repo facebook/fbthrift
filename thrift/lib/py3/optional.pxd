@@ -4,3 +4,4 @@ cdef extern from "folly/Optional.h" namespace "folly" nogil:
         cOptional(T val)
         bint has_value()
         T value()
+        void reset()

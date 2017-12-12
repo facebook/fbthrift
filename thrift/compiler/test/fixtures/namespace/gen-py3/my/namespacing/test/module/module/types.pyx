@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -38,7 +39,7 @@ cdef cFoo _Foo_defaults = cFoo()
 cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
-        Foo self,
+        Foo self, *,
         MyInt=None
     ):
         self._cpp_obj = move(Foo._make_instance(
@@ -48,14 +49,18 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __call__(
         Foo self,
-        MyInt=NOTSET
+        MyInt=__NOTSET
     ):
         changes = any((
-            MyInt is not NOTSET,
+            MyInt is not __NOTSET,
         ))
 
         if not changes:
             return self
+
+        if None is not MyInt is not __NOTSET:
+            if not isinstance(MyInt, int):
+                raise TypeError(f'MyInt is not a { int !r}.')
 
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
@@ -76,17 +81,17 @@ cdef class Foo(thrift.py3.types.Struct):
             c_inst = make_unique[cFoo]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             if MyInt is None:
                 deref(c_inst).MyInt = _Foo_defaults.MyInt
                 deref(c_inst).__isset.MyInt = False
-            elif MyInt is NOTSET:
+                pass
+            elif MyInt is __NOTSET:
                 MyInt = None
 
         if MyInt is not None:
             deref(c_inst).MyInt = MyInt
             deref(c_inst).__isset.MyInt = True
-
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -95,7 +100,7 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'MyInt', self.MyInt
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.MyInt
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
@@ -105,8 +110,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def MyInt(self):
-        if not deref(self._cpp_obj).__isset.MyInt:
-            return None
 
         return self._cpp_obj.get().MyInt
 

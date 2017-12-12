@@ -59,14 +59,14 @@ class {{struct:name}}Type(Enum):
 class {{struct:name}}({{> types/PythonStructClass}}):
     def __init__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:required?}}=None{{/field:required?}}{{/struct:fields}}
+        {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:requireValue?}}=None{{/field:requireValue?}}{{/struct:fields}}
     ) -> None: ...
 
     {{#struct:plain?}}
     def __call__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE{{^field:required?}}, None{{/field:required?}}]=NOTSET{{/struct:fields}}
-    ): ...
+        {{field:name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE{{^field:requireValue?}}, None{{/field:requireValue?}}]=NOTSET{{/struct:fields}}
+    ) -> {{struct:name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...
     {{/struct:plain?}}
@@ -78,7 +78,9 @@ class {{struct:name}}({{> types/PythonStructClass}}):
 
     {{#struct:fields}}
     @property
-    def {{field:name}}(self) -> {{#field:type}}{{> types/PEP484Type}}{{/field:type}}: ...
+    def {{field:name}}(self) -> {{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
+        }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!
+        }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
     {{/struct:fields}}
     {{#struct:union?}}
     @property

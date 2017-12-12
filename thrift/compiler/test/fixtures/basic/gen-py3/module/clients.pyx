@@ -350,7 +350,8 @@ cdef class MyService(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def ping(
-            MyService self):
+            MyService self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -365,7 +366,8 @@ cdef class MyService(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def getRandomData(
-            MyService self):
+            MyService self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -381,7 +383,8 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyService self,
-            int64_t id):
+            int64_t id
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -398,7 +401,8 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyService self,
-            int64_t id):
+            int64_t id
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -416,7 +420,8 @@ cdef class MyService(thrift.py3.client.Client):
     async def putDataById(
             MyService self,
             int64_t id,
-            str data not None):
+            str data not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -435,7 +440,8 @@ cdef class MyService(thrift.py3.client.Client):
     async def lobDataById(
             MyService self,
             int64_t id,
-            str data not None):
+            str data not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -528,7 +534,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def ping(
-            MyServiceFast self):
+            MyServiceFast self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -543,7 +550,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def getRandomData(
-            MyServiceFast self):
+            MyServiceFast self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -559,7 +567,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyServiceFast self,
-            int64_t id):
+            int64_t id
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -576,7 +585,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyServiceFast self,
-            int64_t id):
+            int64_t id
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -594,7 +604,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def putDataById(
             MyServiceFast self,
             int64_t id,
-            str data not None):
+            str data not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -613,7 +624,8 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     async def lobDataById(
             MyServiceFast self,
             int64_t id,
-            str data not None):
+            str data not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -782,7 +794,8 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def ping(
-            MyServicePrioParent self):
+            MyServicePrioParent self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -797,7 +810,8 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     async def pong(
-            MyServicePrioParent self):
+            MyServicePrioParent self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -890,7 +904,8 @@ cdef class MyServicePrioChild(MyServicePrioParent):
 
     @cython.always_allow_keywords(True)
     async def pang(
-            MyServicePrioChild self):
+            MyServicePrioChild self
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

@@ -144,7 +144,8 @@ cdef class MyService(thrift.py3.client.Client):
     async def query(
             MyService self,
             _module_types.MyStruct s not None,
-            _includes_types.Included i not None):
+            _includes_types.Included i not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -163,7 +164,8 @@ cdef class MyService(thrift.py3.client.Client):
     async def has_arg_docs(
             MyService self,
             _module_types.MyStruct s not None,
-            _includes_types.Included i not None):
+            _includes_types.Included i not None
+    ):
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

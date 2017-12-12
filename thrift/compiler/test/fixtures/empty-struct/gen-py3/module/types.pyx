@@ -15,7 +15,7 @@ from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
@@ -29,6 +29,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 from enum import Enum
 import warnings
+import builtins as _builtins
 
 
 
@@ -38,7 +39,7 @@ cdef cEmpty _Empty_defaults = cEmpty()
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
-        Empty self
+        Empty self, *
     ):
         self._cpp_obj = move(Empty._make_instance(
           NULL,
@@ -51,7 +52,6 @@ cdef class Empty(thrift.py3.types.Struct):
 
         if not changes:
             return self
-
         inst = <Empty>Empty.__new__(Empty)
         inst._cpp_obj = move(Empty._make_instance(
           self._cpp_obj.get(),
@@ -69,7 +69,7 @@ cdef class Empty(thrift.py3.types.Struct):
             c_inst = make_unique[cEmpty]()
 
         if base_instance:
-            # Convert None's to default value.
+            # Convert None's to default value. (or unset)
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -145,7 +145,7 @@ class NadaType(Enum):
 
 cdef class Nada(thrift.py3.types.Union):
     def __init__(
-        Nada self
+        Nada self, *
     ):
         self._cpp_obj = move(Nada._make_instance(
           NULL,

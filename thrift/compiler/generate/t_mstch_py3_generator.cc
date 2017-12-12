@@ -136,13 +136,33 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
 
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   string ref_type = this->ref_type(field);
+  auto req = field.get_req();
+  const auto required = req == t_field::e_req::T_REQUIRED;
+  const auto optional = req == t_field::e_req::T_OPTIONAL;
+  const auto unqualified = !required && !optional;
+  const auto hasValue = field.get_value() != nullptr;
+  const auto reference = ref_type != "";
+  const auto flag_optionals = cache_->parsed_options_.count("optionals") != 0;
+  const auto follyOptional = optional && flag_optionals;
+  const auto hasDefaultValue =
+      !follyOptional && !reference && (hasValue || unqualified);
+  const auto requireValue = required && !hasDefaultValue;
+  const auto isset = !flag_optionals && !reference && !required;
+  // For typing, can a property getter return None, if so it needs to Optional[]
+  const auto isPEP484Optional =
+      ((!hasDefaultValue && !required) || follyOptional);
 
   mstch::map result{
-      {"reference?", (ref_type != "")},
+      {"reference?", reference},
       {"ref_type", ref_type},
       {"unique_ref?", (ref_type == "unique")},
       {"shared_ref?", (ref_type == "shared")},
       {"shared_const_ref?", (ref_type == "shared_const")},
+      {"hasDefaultValue?", hasDefaultValue},
+      {"requireValue?", requireValue},
+      {"follyOptional?", follyOptional},
+      {"PEP484Optional?", isPEP484Optional},
+      {"isset?", isset},
   };
   return result;
 }
@@ -203,6 +223,11 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   string cpp_type = this->get_cpp_type(type);
   bool has_custom_type = (cpp_type != "");
   string cython_type = this->to_cython_type(cpp_type);
+  const auto is_number = type.is_byte() || type.is_i16() || type.is_i32() ||
+      type.is_i64() || type.is_double() || type.is_float();
+  // We don't use the Cython Type for Containers, and enums are Python Only
+  const auto hasCythonType = !type.is_container() && !type.is_enum();
+  const auto cythonTypeNoneable = !is_number && hasCythonType;
 
   mstch::map result{
       {"modulePath", modulePath},
@@ -215,6 +240,9 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"cppCustomType", cpp_type},
       {"cythonCustomType", cython_type},
       {"hasCustomType?", has_custom_type},
+      {"number?", is_number},
+      {"cythonTypeNoneable?", cythonTypeNoneable},
+      {"hasCythonType?", hasCythonType},
   };
   return result;
 }

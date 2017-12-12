@@ -158,16 +158,20 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     @cython.always_allow_keywords(True)
     async def {{function:name}}(
             {{service:name}} self{{#function:args}},
-            {{#field:type}}{{^type:enum?}}{{^type:container?}}{{> types/CythonPythonType}} {{/type:container?}}{{/type:enum?}}{{field:name}}{{> types/CythonNotNone}}{{/field:type}}{{/function:args}}):
+            {{#field:type}}{{!
+                }}{{#type:hasCythonType?}}{{> types/CythonPythonType}} {{/type:hasCythonType?}}{{!
+                }}{{field:name}}{{^type:number?}} not None{{/type:number?}}{{!
+            }}{{/field:type}}{{/function:args}}
+    ):
         {{#function:args}}
         {{#field:type}}
         {{#type:container?}}
-        if not isinstance({{field:name}}, {{> types/CythonPythonType}}):
-            {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
+        if not isinstance({{field:name}}, {{> types/PythonType}}):
+            {{field:name}} = {{> types/PythonType}}({{field:name}})
         {{/type:container?}}
         {{#type:enum?}}
-        if not isinstance({{field:name}}, {{> types/CythonPythonType}}):
-            raise TypeError(f'{{field:name}}(value: { {{field:name}} !r}) is not of the enum type { {{> types/CythonPythonType}} }.')
+        if not isinstance({{field:name}}, {{> types/PythonType}}):
+            raise TypeError(f'argument {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
         {{/type:enum?}}
         {{/field:type}}
         {{/function:args}}
