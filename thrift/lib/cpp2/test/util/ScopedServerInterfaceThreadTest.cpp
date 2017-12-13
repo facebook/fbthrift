@@ -147,7 +147,7 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
           })
           .get();
 
-  folly::stop_watch<chrono::milliseconds> timer;
+  folly::stop_watch<std::chrono::milliseconds> timer;
 
   auto future =
       via(eb.getEventBase()).then([&] { return cli->future_add(2000, 0); });
@@ -178,7 +178,7 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
           })
           .get();
 
-  folly::stop_watch<chrono::milliseconds> timer;
+  folly::stop_watch<std::chrono::milliseconds> timer;
 
   std::atomic<bool> stopping{false};
   std::thread schedulerThread([&] {

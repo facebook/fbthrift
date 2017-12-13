@@ -171,6 +171,6 @@ TEST_F(FunctionSendCallbackTest, with_throwing_server_passes) {
   sendOnewayMessage(ssit.getAddress(), [&](CSR&& state) {
     exn = std::move(state.exception());
   });
-  done.try_wait_for(chrono::milliseconds(50));
+  done.try_wait_for(std::chrono::milliseconds(50));
   EXPECT_FALSE(exn);
 }
