@@ -184,6 +184,7 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     cdef uint32_t _deserialize(MyUnion self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyUnion]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cMyUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -375,6 +376,7 @@ cdef class MyField(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(MyField self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyField]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cMyField](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -571,6 +573,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyStruct]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -763,6 +766,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithUnion self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithUnion]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -898,6 +902,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(RecursiveStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cRecursiveStruct]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cRecursiveStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -1182,6 +1187,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithContainers self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithContainers]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithContainers](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -1378,6 +1384,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithSharedConst self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithSharedConst]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithSharedConst](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -1484,6 +1491,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cEmpty]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -1680,6 +1688,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithRef self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithRef]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithRef](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -1876,6 +1885,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithRefTypeUnique self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithRefTypeUnique]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithRefTypeUnique](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -2072,6 +2082,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithRefTypeShared self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithRefTypeShared]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithRefTypeShared](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -2268,6 +2279,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(StructWithRefTypeSharedConst self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithRefTypeSharedConst]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cStructWithRefTypeSharedConst](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

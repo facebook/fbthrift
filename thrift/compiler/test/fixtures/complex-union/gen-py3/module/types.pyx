@@ -249,6 +249,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     cdef uint32_t _deserialize(ComplexUnion self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cComplexUnion]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -392,6 +393,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     cdef uint32_t _deserialize(VirtualComplexUnion self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cVirtualComplexUnion]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cVirtualComplexUnion](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

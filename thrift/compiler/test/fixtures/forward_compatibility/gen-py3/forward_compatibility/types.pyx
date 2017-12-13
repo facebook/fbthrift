@@ -156,6 +156,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(OldStructure self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cOldStructure]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cOldStructure](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -290,6 +291,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(NewStructure self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cNewStructure]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cNewStructure](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -424,6 +426,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(NewStructure2 self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cNewStructure2]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cNewStructure2](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -618,6 +621,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(NewStructureNested self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cNewStructureNested]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cNewStructureNested](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -752,6 +756,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(NewStructureNestedField self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cNewStructureNestedField]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cNewStructureNestedField](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

@@ -499,6 +499,14 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
 
     cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        {{!
+            This is a special case, we need to construct an empty _cpp_obj because
+            thrift.py3.serializer.deserialize will just call __new__ to skip
+            all of our runtime type checks. We do it like this because
+            thrift.py3.serializer.deserialize does not have enough type information
+            to call the staticmethod .create()
+        }}
+        self._cpp_obj = make_shared[c{{struct:name}}]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

@@ -203,6 +203,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(SmallStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cSmallStruct]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cSmallStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -957,6 +958,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(containerStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[ccontainerStruct]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[ccontainerStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

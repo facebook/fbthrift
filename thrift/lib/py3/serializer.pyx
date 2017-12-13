@@ -25,7 +25,7 @@ def deserialize(structKlass, bytes buf, protocol=Protocol.COMPACT):
     assert isinstance(protocol, Protocol), "protocol must of type Protocol"
     cdef const_uchar* c_str = buf
     cdef uint64_t capacity = len(buf)
-    cdef Struct cy_struct = <Struct> structKlass()
+    cdef Struct cy_struct = <Struct> structKlass.__new__(structKlass)
     c_buf = move(wrapBuffer(c_str, capacity))
     cy_struct._deserialize(c_buf.get(), protocol)
     return cy_struct

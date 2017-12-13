@@ -259,6 +259,7 @@ cdef class Color(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(Color self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cColor]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cColor](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -508,6 +509,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(Vehicle self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cVehicle]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -908,6 +910,7 @@ cdef class Person(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(Person self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cPerson]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

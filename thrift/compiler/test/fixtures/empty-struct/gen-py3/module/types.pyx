@@ -128,6 +128,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
     cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cEmpty]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
@@ -234,6 +235,7 @@ cdef class Nada(thrift.py3.types.Union):
 
     cdef uint32_t _deserialize(Nada self, const IOBuf* buf, proto):
         cdef uint32_t needed
+        self._cpp_obj = make_shared[cNada]()
         if proto is Protocol.COMPACT:
             needed = serializer.CompactDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:

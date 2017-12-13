@@ -8,9 +8,9 @@ sT = TypeVar('sT', bound=Struct)
 
 
 class Protocol(Enum):
-    COMPACT: int
-    BINARY: int
-    JSON: int
+    COMPACT = ...
+    BINARY = ...
+    JSON = ...
     value: int
 
 
