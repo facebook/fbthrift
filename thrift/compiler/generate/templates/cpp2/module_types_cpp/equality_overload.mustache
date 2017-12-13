@@ -32,7 +32,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
     return false;
   }
 <%#type:binary?%>
-  else if (__isset.<%field:name%> && !(apache::thrift::StringTraits<<%#type:cpp_typedef_type%><%type:cpp_typedef_type%><%/type:cpp_typedef_type%><%^type:cpp_typedef_type%>std::string<%/type:cpp_typedef_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
+  else if (__isset.<%field:name%> && !(apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
     return false;
   }
 <%/type:binary?%>
@@ -49,7 +49,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
 <%/field:optionals?%>
 <%^field:optional?%>
 <%#type:binary?%>
-  if (!(apache::thrift::StringTraits<<%#type:cpp_typedef_type%><%type:cpp_typedef_type%><%/type:cpp_typedef_type%><%^type:cpp_typedef_type%>std::string<%/type:cpp_typedef_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
+  if (!(apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
     return false;
   }
 <%/type:binary?%>

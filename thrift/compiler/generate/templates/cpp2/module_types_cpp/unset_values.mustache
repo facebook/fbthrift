@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#type:string_or_binary?%><%!
-  %>apache::thrift::StringTraits< <%#type:cpp_typedef_type%><%type:cpp_typedef_type%><%/type:cpp_typedef_type%><%^type:cpp_typedef_type%>std::string<%/type:cpp_typedef_type%>>::fromStringLiteral("")<%!
+  %>apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::fromStringLiteral("")<%!
 %><%/type:string_or_binary?%><%!
 
 %><%#type:enum?%><%#type:enum%><%#enum:has_zero%><% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%><%/enum:has_zero%><%^enum:has_zero%>static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(0)<%/enum:has_zero%><%/type:enum%><%/type:enum?%><%!

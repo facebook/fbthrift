@@ -192,7 +192,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
-            {"type:cpp_typedef_type", &mstch_cpp2_type::cpp_typedef_type},
+            {"type:cpp_custom_type", &mstch_cpp2_type::cpp_custom_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
@@ -248,14 +248,20 @@ class mstch_cpp2_type : public mstch_type {
     }
     return std::string();
   }
-  mstch::node cpp_typedef_type() {
-    if (type_->is_typedef()) {
-      if (resolved_type_->annotations_.count("cpp.type")) {
-        return resolved_type_->annotations_.at("cpp.type");
-      } else if (resolved_type_->annotations_.count("cpp2.type")) {
-        return resolved_type_->annotations_.at("cpp2.type");
-      }
+  mstch::node cpp_custom_type() {
+    if (resolved_type_->annotations_.count("cpp.indirection") ||
+        resolved_type_->annotations_.count("cpp2.indirection")) {
+      // If the field is indirected, the field's cpp type is assumed
+      // to be the base type.
+      return std::string();
     }
+
+    if (resolved_type_->annotations_.count("cpp.type")) {
+      return resolved_type_->annotations_.at("cpp.type");
+    } else if (resolved_type_->annotations_.count("cpp2.type")) {
+      return resolved_type_->annotations_.at("cpp2.type");
+    }
+
     return std::string();
   }
   mstch::node is_string_or_binary() {

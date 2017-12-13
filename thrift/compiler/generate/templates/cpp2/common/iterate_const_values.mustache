@@ -20,7 +20,7 @@ Base Types:
 
 %><%^value:container?%><%!
   %><%#value:string?%><%!
-    %>apache::thrift::StringTraits< <%#type:cpp_typedef_type%><%type:cpp_typedef_type%><%/type:cpp_typedef_type%><%^type:cpp_typedef_type%>std::string<%/type:cpp_typedef_type%>>::fromStringLiteral(<% > common/const_value%>)<%!
+    %>apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::fromStringLiteral(<% > common/const_value%>)<%!
   %><%/value:string?%><%!
 
   %><%^value:string?%><% > common/const_value%><%/value:string?%><%!
