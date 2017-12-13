@@ -144,6 +144,7 @@ cdef extern from *:
   ctypedef string std_unique_ptr_folly_IOBuf "std::unique_ptr<folly::IOBuf>"
   ctypedef double Bar "Bar"
   ctypedef int32_t Baz "Baz"
+  ctypedef string FooBar "FooBar"
   ctypedef int32_t CppFakeI32 "CppFakeI32"
   ctypedef vector[int64_t] folly_small_vector_int64_t_8  "folly::small_vector<int64_t, 8 /* maxInline */>"
   ctypedef cset[string] folly_sorted_vector_set_std_string "folly::sorted_vector_set<std::string>"
@@ -478,6 +479,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         bint fieldAC
         bint fieldAD
         bint fieldAE
+        bint fieldSD
 
     cdef cppclass ccontainerStruct "some::valid::ns::containerStruct":
         ccontainerStruct() except +
@@ -528,6 +530,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cMyEnumB fieldAC
         _includes_types.cAnEnum fieldAD
         cmap[string,int32_t] fieldAE
+        FooBar fieldSD
         ccontainerStruct__isset __isset
 
     cdef cppclass cMyIncludedStruct__isset "some::valid::ns::MyIncludedStruct::__isset":
@@ -1032,7 +1035,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
         object fieldAB,
         object fieldAC,
         object fieldAD,
-        object fieldAE
+        object fieldAE,
+        object fieldSD
     ) except *
 
     @staticmethod

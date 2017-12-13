@@ -2787,6 +2787,16 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 33:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->fieldSD.value);
+          this->__isset.fieldSD = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -2929,6 +2939,8 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::a::different::ns::AnEnum>::serializedSize<false>(*prot_, this->fieldAD);
   xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
+  xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
+  xfer += prot_->serializedSizeString(this->fieldSD.value);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3041,6 +3053,8 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::a::different::ns::AnEnum>::serializedSize<false>(*prot_, this->fieldAD);
   xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
+  xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
+  xfer += prot_->serializedSizeString(this->fieldSD.value);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3197,6 +3211,9 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldAE", apache::thrift::protocol::T_MAP, 32);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->fieldAE);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldSD", apache::thrift::protocol::T_STRING, 33);
+  xfer += prot_->writeString(this->fieldSD.value);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

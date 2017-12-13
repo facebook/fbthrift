@@ -468,7 +468,8 @@ class containerStruct(thrift.py3.types.Struct):
         fieldAB: _typing.Mapping[float, int]=None,
         fieldAC: MyEnumB=None,
         fieldAD: _includes_types.AnEnum=None,
-        fieldAE: _typing.Mapping[str, int]=None
+        fieldAE: _typing.Mapping[str, int]=None,
+        fieldSD: str=None
     ) -> None: ...
 
     def __call__(
@@ -517,7 +518,8 @@ class containerStruct(thrift.py3.types.Struct):
         fieldAB: _typing.Union[_typing.Mapping[float, int], NOTSETTYPE, None]=NOTSET,
         fieldAC: _typing.Union[MyEnumB, NOTSETTYPE, None]=NOTSET,
         fieldAD: _typing.Union[_includes_types.AnEnum, NOTSETTYPE, None]=NOTSET,
-        fieldAE: _typing.Union[_typing.Mapping[str, int], NOTSETTYPE, None]=NOTSET
+        fieldAE: _typing.Union[_typing.Mapping[str, int], NOTSETTYPE, None]=NOTSET,
+        fieldSD: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> containerStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['containerStruct'], bytes]]: ...
@@ -617,6 +619,8 @@ class containerStruct(thrift.py3.types.Struct):
     def fieldAD(self) -> _includes_types.AnEnum: ...
     @property
     def fieldAE(self) -> _typing.Mapping[str, int]: ...
+    @property
+    def fieldSD(self) -> str: ...
 
 
 class MyIncludedStruct(thrift.py3.types.Struct):
@@ -1608,6 +1612,7 @@ mostComplexTypeDef = _typing.Sequence[_typing.Sequence[_typing.Mapping['Empty', 
 IndirectionA = int
 IndirectionC = int
 IndirectionB = float
+IndirectionD = str
 HashedTypedef = _typing.Mapping[MyEnumA, str]
 CppFakeI32 = int
 FollySmallVectorI64 = _typing.Sequence[int]

@@ -297,6 +297,16 @@ struct apache_thrift_indirection_module_IndirectionB {
   }
 };
 
+struct apache_thrift_indirection_module_IndirectionD {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
 
 }}} // some::valid::ns
 // END struct_indirection
@@ -330,6 +340,7 @@ typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef
 typedef Foo IndirectionA;
 typedef Baz IndirectionC;
 typedef Bar IndirectionB;
+typedef FooBar IndirectionD;
 typedef std::map< ::some::valid::ns::MyEnumA, std::string> HashedTypedef;
 typedef CppFakeI32 CppFakeI32;
 typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
@@ -3772,7 +3783,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   containerStruct();
 
   // FragileConstructor for use in initialization lists only.
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -4081,6 +4092,13 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     fieldAE = arg.move();
     __isset.fieldAE = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<33, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldSD = arg.move();
+    __isset.fieldSD = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -4134,6 +4152,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
    ::some::valid::ns::MyEnumB fieldAC;
    ::a::different::ns::AnEnum fieldAD;
   std::map<std::string, int32_t> fieldAE;
+   ::some::valid::ns::IndirectionD fieldSD;
 
   struct __isset {
     bool fieldA;
@@ -4174,6 +4193,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     bool fieldAC;
     bool fieldAD;
     bool fieldAE;
+    bool fieldSD;
   } __isset = {};
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -4625,6 +4645,21 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     fieldAE = std::forward<T_containerStruct_fieldAE_struct_setter>(fieldAE_);
     __isset.fieldAE = true;
     return fieldAE;
+  }
+
+  const  ::some::valid::ns::IndirectionD& get_fieldSD() const& {
+    return fieldSD;
+  }
+
+   ::some::valid::ns::IndirectionD get_fieldSD() && {
+    return std::move(fieldSD);
+  }
+
+  template <typename T_containerStruct_fieldSD_struct_setter>
+   ::some::valid::ns::IndirectionD& set_fieldSD(T_containerStruct_fieldSD_struct_setter&& fieldSD_) {
+    fieldSD = std::forward<T_containerStruct_fieldSD_struct_setter>(fieldSD_);
+    __isset.fieldSD = true;
+    return fieldSD;
   }
 
   template <class Protocol_>

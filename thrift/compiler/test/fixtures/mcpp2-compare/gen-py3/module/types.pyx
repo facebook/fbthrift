@@ -2146,7 +2146,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldAB=None,
         fieldAC=None,
         fieldAD=None,
-        fieldAE=None
+        fieldAE=None,
+        str fieldSD=None
     ):
         self._cpp_obj = move(containerStruct._make_instance(
           NULL,
@@ -2195,6 +2196,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
           fieldAC,
           fieldAD,
           fieldAE,
+          fieldSD,
         ))
 
     def __call__(
@@ -2243,7 +2245,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldAB=__NOTSET,
         fieldAC=__NOTSET,
         fieldAD=__NOTSET,
-        fieldAE=__NOTSET
+        fieldAE=__NOTSET,
+        fieldSD=__NOTSET
     ):
         changes = any((
             fieldA is not __NOTSET,
@@ -2335,6 +2338,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
             fieldAD is not __NOTSET,
 
             fieldAE is not __NOTSET,
+
+            fieldSD is not __NOTSET,
         ))
 
         if not changes:
@@ -2528,6 +2533,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldAE, Map__string_i32):
                 fieldAE = Map__string_i32(fieldAE)
 
+        if None is not fieldSD is not __NOTSET:
+            if not isinstance(fieldSD, str):
+                raise TypeError(f'fieldSD is not a { str !r}.')
+
         inst = <containerStruct>containerStruct.__new__(containerStruct)
         inst._cpp_obj = move(containerStruct._make_instance(
           self._cpp_obj.get(),
@@ -2576,6 +2585,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
           fieldAC,
           fieldAD,
           fieldAE,
+          fieldSD,
         ))
         return inst
 
@@ -2626,7 +2636,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
         object fieldAB,
         object fieldAC,
         object fieldAD,
-        object fieldAE
+        object fieldAE,
+        object fieldSD
     ) except *:
         cdef unique_ptr[ccontainerStruct] c_inst
         if base_instance:
@@ -2936,6 +2947,13 @@ cdef class containerStruct(thrift.py3.types.Struct):
             elif fieldAE is __NOTSET:
                 fieldAE = None
 
+            if fieldSD is None:
+                deref(c_inst).fieldSD = _containerStruct_defaults.fieldSD
+                deref(c_inst).__isset.fieldSD = False
+                pass
+            elif fieldSD is __NOTSET:
+                fieldSD = None
+
         if fieldA is not None:
             deref(c_inst).fieldA = fieldA
             deref(c_inst).__isset.fieldA = True
@@ -3064,6 +3082,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if fieldAE is not None:
             deref(c_inst).fieldAE = <cmap[string,int32_t]>deref(Map__string_i32(fieldAE)._cpp_obj)
             deref(c_inst).__isset.fieldAE = True
+        if fieldSD is not None:
+            deref(c_inst).fieldSD = fieldSD.encode('UTF-8')
+            deref(c_inst).__isset.fieldSD = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -3114,9 +3135,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
         yield 'fieldAC', self.fieldAC
         yield 'fieldAD', self.fieldAD
         yield 'fieldAE', self.fieldAE
+        yield 'fieldSD', self.fieldSD
 
     def __bool__(self):
-        return True or True or deref(self._cpp_obj).__isset.opt_fieldA or True or True or deref(self._cpp_obj).__isset.opt_fieldB or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or deref(self._cpp_obj).__isset.opt_fieldV or True or True or True or deref(self._cpp_obj).__isset.opt_fieldX or True or True or True or True or True or True or True
+        return True or True or deref(self._cpp_obj).__isset.opt_fieldA or True or True or deref(self._cpp_obj).__isset.opt_fieldB or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or deref(self._cpp_obj).__isset.opt_fieldV or True or True or True or deref(self._cpp_obj).__isset.opt_fieldX or True or True or True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
@@ -3415,6 +3437,11 @@ cdef class containerStruct(thrift.py3.types.Struct):
             self.__fieldAE = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).fieldAE))
         return self.__fieldAE
 
+    @property
+    def fieldSD(self):
+
+        return (<bytes>self._cpp_obj.get().fieldSD).decode('UTF-8')
+
 
     def __hash__(containerStruct self):
         if not self.__hash:
@@ -3464,11 +3491,12 @@ cdef class containerStruct(thrift.py3.types.Struct):
             self.fieldAC,
             self.fieldAD,
             self.fieldAE,
+            self.fieldSD,
             ))
         return self.__hash
 
     def __repr__(containerStruct self):
-        return f'containerStruct(fieldA={repr(self.fieldA)}, req_fieldA={repr(self.req_fieldA)}, opt_fieldA={repr(self.opt_fieldA)}, fieldB={repr(self.fieldB)}, req_fieldB={repr(self.req_fieldB)}, opt_fieldB={repr(self.opt_fieldB)}, fieldC={repr(self.fieldC)}, req_fieldC={repr(self.req_fieldC)}, opt_fieldC={repr(self.opt_fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, req_fieldE={repr(self.req_fieldE)}, opt_fieldE={repr(self.opt_fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)}, fieldI={repr(self.fieldI)}, fieldJ={repr(self.fieldJ)}, fieldK={repr(self.fieldK)}, fieldL={repr(self.fieldL)}, fieldM={repr(self.fieldM)}, fieldN={repr(self.fieldN)}, fieldO={repr(self.fieldO)}, fieldP={repr(self.fieldP)}, fieldQ={repr(self.fieldQ)}, fieldR={repr(self.fieldR)}, req_fieldR={repr(self.req_fieldR)}, opt_fieldR={repr(self.opt_fieldR)}, fieldS={repr(self.fieldS)}, fieldT={repr(self.fieldT)}, fieldU={repr(self.fieldU)}, fieldV={repr(self.fieldV)}, req_fieldV={repr(self.req_fieldV)}, opt_fieldV={repr(self.opt_fieldV)}, fieldW={repr(self.fieldW)}, fieldX={repr(self.fieldX)}, req_fieldX={repr(self.req_fieldX)}, opt_fieldX={repr(self.opt_fieldX)}, fieldY={repr(self.fieldY)}, fieldZ={repr(self.fieldZ)}, fieldAA={repr(self.fieldAA)}, fieldAB={repr(self.fieldAB)}, fieldAC={repr(self.fieldAC)}, fieldAD={repr(self.fieldAD)}, fieldAE={repr(self.fieldAE)})'
+        return f'containerStruct(fieldA={repr(self.fieldA)}, req_fieldA={repr(self.req_fieldA)}, opt_fieldA={repr(self.opt_fieldA)}, fieldB={repr(self.fieldB)}, req_fieldB={repr(self.req_fieldB)}, opt_fieldB={repr(self.opt_fieldB)}, fieldC={repr(self.fieldC)}, req_fieldC={repr(self.req_fieldC)}, opt_fieldC={repr(self.opt_fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, req_fieldE={repr(self.req_fieldE)}, opt_fieldE={repr(self.opt_fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)}, fieldI={repr(self.fieldI)}, fieldJ={repr(self.fieldJ)}, fieldK={repr(self.fieldK)}, fieldL={repr(self.fieldL)}, fieldM={repr(self.fieldM)}, fieldN={repr(self.fieldN)}, fieldO={repr(self.fieldO)}, fieldP={repr(self.fieldP)}, fieldQ={repr(self.fieldQ)}, fieldR={repr(self.fieldR)}, req_fieldR={repr(self.req_fieldR)}, opt_fieldR={repr(self.opt_fieldR)}, fieldS={repr(self.fieldS)}, fieldT={repr(self.fieldT)}, fieldU={repr(self.fieldU)}, fieldV={repr(self.fieldV)}, req_fieldV={repr(self.req_fieldV)}, opt_fieldV={repr(self.opt_fieldV)}, fieldW={repr(self.fieldW)}, fieldX={repr(self.fieldX)}, req_fieldX={repr(self.req_fieldX)}, opt_fieldX={repr(self.opt_fieldX)}, fieldY={repr(self.fieldY)}, fieldZ={repr(self.fieldZ)}, fieldAA={repr(self.fieldAA)}, fieldAB={repr(self.fieldAB)}, fieldAC={repr(self.fieldAC)}, fieldAD={repr(self.fieldAD)}, fieldAE={repr(self.fieldAE)}, fieldSD={repr(self.fieldSD)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -13153,6 +13181,7 @@ mostComplexTypeDef = List__List__Map__Empty_MyStruct
 IndirectionA = int
 IndirectionC = int
 IndirectionB = float
+IndirectionD = str
 HashedTypedef = Map__MyEnumA_string
 CppFakeI32 = int
 FollySmallVectorI64 = List__i64

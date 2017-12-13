@@ -160,6 +160,7 @@ exception AnotherException {
 typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
 typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
 typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
+typedef string (cpp.type = "FooBar", cpp.indirection=".value") IndirectionD
 typedef map<MyEnumA, string>
   (cpp.declare_hash, cpp.declare_equal_to) HashedTypedef
 
@@ -212,6 +213,7 @@ struct containerStruct {
   30: MyEnumB fieldAC
   31: includes.AnEnum fieldAD
   32: map<string, i32> fieldAE = {}
+  33: IndirectionD fieldSD
 } (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 enum MyEnumB {
