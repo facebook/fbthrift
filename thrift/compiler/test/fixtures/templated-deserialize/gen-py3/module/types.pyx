@@ -64,6 +64,11 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         pbool small_A=None,
         small_B=None
     ):
+        if small_B is not None:
+            if not isinstance(small_B, int):
+                raise TypeError(f'small_B is not a { int !r}.')
+            <int32_t> small_B
+
         self._cpp_obj = move(SmallStruct._make_instance(
           NULL,
           small_A,
@@ -91,6 +96,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         if None is not small_B is not __NOTSET:
             if not isinstance(small_B, int):
                 raise TypeError(f'small_B is not a { int !r}.')
+            <int32_t> small_B
 
         inst = <SmallStruct>SmallStruct.__new__(SmallStruct)
         inst._cpp_obj = move(SmallStruct._make_instance(
@@ -245,6 +251,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
         SmallStruct fieldU=None,
         SmallStruct fieldX=None
     ):
+        if fieldQ is not None:
+            if not isinstance(fieldQ, MyEnumA):
+                raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
+
         self._cpp_obj = move(containerStruct._make_instance(
           NULL,
           fieldA,
@@ -349,14 +359,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldA, bool):
                 raise TypeError(f'fieldA is not a { bool !r}.')
 
-        if None is not fieldB is not __NOTSET:
-            if not isinstance(fieldB, Map__string_bool):
-                fieldB = Map__string_bool(fieldB)
-
-        if None is not fieldC is not __NOTSET:
-            if not isinstance(fieldC, Set__i32):
-                fieldC = Set__i32(fieldC)
-
         if None is not fieldD is not __NOTSET:
             if not isinstance(fieldD, str):
                 raise TypeError(f'fieldD is not a { str !r}.')
@@ -365,57 +367,13 @@ cdef class containerStruct(thrift.py3.types.Struct):
             if not isinstance(fieldE, str):
                 raise TypeError(f'fieldE is not a { str !r}.')
 
-        if None is not fieldF is not __NOTSET:
-            if not isinstance(fieldF, List__List__List__i32):
-                fieldF = List__List__List__i32(fieldF)
-
-        if None is not fieldG is not __NOTSET:
-            if not isinstance(fieldG, Map__string_Map__string_Map__string_i32):
-                fieldG = Map__string_Map__string_Map__string_i32(fieldG)
-
-        if None is not fieldH is not __NOTSET:
-            if not isinstance(fieldH, List__Set__i32):
-                fieldH = List__Set__i32(fieldH)
-
         if None is not fieldI is not __NOTSET:
             if not isinstance(fieldI, bool):
                 raise TypeError(f'fieldI is not a { bool !r}.')
 
-        if None is not fieldJ is not __NOTSET:
-            if not isinstance(fieldJ, Map__string_List__i32):
-                fieldJ = Map__string_List__i32(fieldJ)
-
-        if None is not fieldK is not __NOTSET:
-            if not isinstance(fieldK, List__List__List__List__i32):
-                fieldK = List__List__List__List__i32(fieldK)
-
-        if None is not fieldL is not __NOTSET:
-            if not isinstance(fieldL, Set__Set__Set__bool):
-                fieldL = Set__Set__Set__bool(fieldL)
-
-        if None is not fieldM is not __NOTSET:
-            if not isinstance(fieldM, Map__Set__List__i32_Map__List__Set__string_string):
-                fieldM = Map__Set__List__i32_Map__List__Set__string_string(fieldM)
-
-        if None is not fieldN is not __NOTSET:
-            if not isinstance(fieldN, List__i64):
-                fieldN = List__i64(fieldN)
-
-        if None is not fieldO is not __NOTSET:
-            if not isinstance(fieldO, List__double):
-                fieldO = List__double(fieldO)
-
-        if None is not fieldP is not __NOTSET:
-            if not isinstance(fieldP, List__i32):
-                fieldP = List__i32(fieldP)
-
         if None is not fieldQ is not __NOTSET:
             if not isinstance(fieldQ, MyEnumA):
                 raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
-
-        if None is not fieldR is not __NOTSET:
-            if not isinstance(fieldR, Map__string_bool):
-                fieldR = Map__string_bool(fieldR)
 
         if None is not fieldS is not __NOTSET:
             if not isinstance(fieldS, SmallStruct):
@@ -1107,6 +1065,9 @@ cdef class Set__i32:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -1292,6 +1253,9 @@ cdef class List__i32:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1752,6 +1716,9 @@ cdef class Map__string_i32:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
 
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -3895,6 +3862,9 @@ cdef class List__i64:
         cdef unique_ptr[vector[Foo]] c_inst = make_unique[vector[Foo]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int64_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -4043,6 +4013,8 @@ cdef class List__double:
         cdef unique_ptr[vector[Bar]] c_inst = make_unique[vector[Bar]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 

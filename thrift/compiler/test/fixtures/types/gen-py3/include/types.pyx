@@ -52,6 +52,9 @@ cdef class std_unordered_map__Map__i32_string:
         cdef unique_ptr[std_unordered_map[int32_t,string]] c_inst = make_unique[std_unordered_map[int32_t,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

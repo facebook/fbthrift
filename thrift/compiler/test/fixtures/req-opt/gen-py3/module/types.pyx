@@ -40,11 +40,16 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
         Foo self, *,
-        int32_t myInteger,
+        myInteger,
         str myString=None,
         myBools=None,
         myNumbers not None
     ):
+        if myInteger is not None:
+            if not isinstance(myInteger, int):
+                raise TypeError(f'myInteger is not a { int !r}.')
+            <int32_t> myInteger
+
         self._cpp_obj = move(Foo._make_instance(
           NULL,
           myInteger,
@@ -78,21 +83,14 @@ cdef class Foo(thrift.py3.types.Struct):
         if None is not myInteger is not __NOTSET:
             if not isinstance(myInteger, int):
                 raise TypeError(f'myInteger is not a { int !r}.')
+            <int32_t> myInteger
 
         if None is not myString is not __NOTSET:
             if not isinstance(myString, str):
                 raise TypeError(f'myString is not a { str !r}.')
 
-        if None is not myBools is not __NOTSET:
-            if not isinstance(myBools, List__bool):
-                myBools = List__bool(myBools)
-
         if myNumbers is None:
             raise TypeError('field myNumbers is required and has no default, it can not be unset')
-        if None is not myNumbers is not __NOTSET:
-            if not isinstance(myNumbers, List__i32):
-                myNumbers = List__i32(myNumbers)
-
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
           self._cpp_obj.get(),
@@ -422,6 +420,9 @@ cdef class List__i32:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 

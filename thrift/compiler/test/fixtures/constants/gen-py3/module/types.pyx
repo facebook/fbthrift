@@ -101,10 +101,19 @@ cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
         Internship self, *,
-        int32_t weeks,
+        weeks,
         str title=None,
         employer=None
     ):
+        if weeks is not None:
+            if not isinstance(weeks, int):
+                raise TypeError(f'weeks is not a { int !r}.')
+            <int32_t> weeks
+
+        if employer is not None:
+            if not isinstance(employer, Company):
+                raise TypeError(f'field employer value: { employer !r} is not of the enum type { Company }.')
+
         self._cpp_obj = move(Internship._make_instance(
           NULL,
           weeks,
@@ -134,6 +143,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if None is not weeks is not __NOTSET:
             if not isinstance(weeks, int):
                 raise TypeError(f'weeks is not a { int !r}.')
+            <int32_t> weeks
 
         if None is not title is not __NOTSET:
             if not isinstance(title, str):
@@ -292,6 +302,10 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         UnEnumStruct self, *,
         city=None
     ):
+        if city is not None:
+            if not isinstance(city, City):
+                raise TypeError(f'field city value: { city !r} is not of the enum type { City }.')
+
         self._cpp_obj = move(UnEnumStruct._make_instance(
           NULL,
           city,
@@ -423,9 +437,19 @@ cdef class Range(thrift.py3.types.Struct):
 
     def __init__(
         Range self, *,
-        int32_t min,
-        int32_t max
+        min,
+        max
     ):
+        if min is not None:
+            if not isinstance(min, int):
+                raise TypeError(f'min is not a { int !r}.')
+            <int32_t> min
+
+        if max is not None:
+            if not isinstance(max, int):
+                raise TypeError(f'max is not a { int !r}.')
+            <int32_t> max
+
         self._cpp_obj = move(Range._make_instance(
           NULL,
           min,
@@ -451,12 +475,14 @@ cdef class Range(thrift.py3.types.Struct):
         if None is not min is not __NOTSET:
             if not isinstance(min, int):
                 raise TypeError(f'min is not a { int !r}.')
+            <int32_t> min
 
         if max is None:
             raise TypeError('field max is required and has no default, it can not be unset')
         if None is not max is not __NOTSET:
             if not isinstance(max, int):
                 raise TypeError(f'max is not a { int !r}.')
+            <int32_t> max
 
         inst = <Range>Range.__new__(Range)
         inst._cpp_obj = move(Range._make_instance(
@@ -585,6 +611,11 @@ cdef class struct1(thrift.py3.types.Struct):
         a=None,
         str b=None
     ):
+        if a is not None:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            <int32_t> a
+
         self._cpp_obj = move(struct1._make_instance(
           NULL,
           a,
@@ -608,6 +639,7 @@ cdef class struct1(thrift.py3.types.Struct):
         if None is not a is not __NOTSET:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
+            <int32_t> a
 
         if None is not b is not __NOTSET:
             if not isinstance(b, str):
@@ -748,6 +780,11 @@ cdef class struct2(thrift.py3.types.Struct):
         struct1 c=None,
         d=None
     ):
+        if a is not None:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            <int32_t> a
+
         self._cpp_obj = move(struct2._make_instance(
           NULL,
           a,
@@ -779,6 +816,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if None is not a is not __NOTSET:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
+            <int32_t> a
 
         if None is not b is not __NOTSET:
             if not isinstance(b, str):
@@ -787,10 +825,6 @@ cdef class struct2(thrift.py3.types.Struct):
         if None is not c is not __NOTSET:
             if not isinstance(c, struct1):
                 raise TypeError(f'c is not a { struct1 !r}.')
-
-        if None is not d is not __NOTSET:
-            if not isinstance(d, List__i32):
-                d = List__i32(d)
 
         inst = <struct2>struct2.__new__(struct2)
         inst._cpp_obj = move(struct2._make_instance(
@@ -968,6 +1002,11 @@ cdef class struct3(thrift.py3.types.Struct):
         b=None,
         struct2 c=None
     ):
+        if b is not None:
+            if not isinstance(b, int):
+                raise TypeError(f'b is not a { int !r}.')
+            <int32_t> b
+
         self._cpp_obj = move(struct3._make_instance(
           NULL,
           a,
@@ -999,6 +1038,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if None is not b is not __NOTSET:
             if not isinstance(b, int):
                 raise TypeError(f'b is not a { int !r}.')
+            <int32_t> b
 
         if None is not c is not __NOTSET:
             if not isinstance(c, struct2):
@@ -1163,9 +1203,10 @@ cdef class union1(thrift.py3.types.Union):
         if i is not None:
             if not isinstance(i, int):
                 raise TypeError(f'i is not a { int !r}.')
+            <int32_t> i
 
         if d is not None:
-            if not isinstance(d, float):
+            if not isinstance(d, (float, int)):
                 raise TypeError(f'd is not a { float !r}.')
 
         self._cpp_obj = move(union1._make_instance(
@@ -1319,9 +1360,10 @@ cdef class union2(thrift.py3.types.Union):
         if i is not None:
             if not isinstance(i, int):
                 raise TypeError(f'i is not a { int !r}.')
+            <int32_t> i
 
         if d is not None:
-            if not isinstance(d, float):
+            if not isinstance(d, (float, int)):
                 raise TypeError(f'd is not a { float !r}.')
 
         self._cpp_obj = move(union2._make_instance(
@@ -1505,6 +1547,9 @@ cdef class List__i32:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1655,6 +1700,9 @@ cdef class Map__string_i32:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
 
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -2374,6 +2422,9 @@ cdef class Set__i32:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -2746,6 +2797,12 @@ cdef class Map__i32_i32:
         cdef unique_ptr[cmap[int32_t,int32_t]] c_inst = make_unique[cmap[int32_t,int32_t]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
 
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)
@@ -2860,6 +2917,9 @@ cdef class Map__i32_string:
         cdef unique_ptr[cmap[int32_t,string]] c_inst = make_unique[cmap[int32_t,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

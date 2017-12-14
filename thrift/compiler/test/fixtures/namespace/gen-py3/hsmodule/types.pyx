@@ -42,6 +42,11 @@ cdef class HsFoo(thrift.py3.types.Struct):
         HsFoo self, *,
         MyInt=None
     ):
+        if MyInt is not None:
+            if not isinstance(MyInt, int):
+                raise TypeError(f'MyInt is not a { int !r}.')
+            <int64_t> MyInt
+
         self._cpp_obj = move(HsFoo._make_instance(
           NULL,
           MyInt,
@@ -61,6 +66,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
         if None is not MyInt is not __NOTSET:
             if not isinstance(MyInt, int):
                 raise TypeError(f'MyInt is not a { int !r}.')
+            <int64_t> MyInt
 
         inst = <HsFoo>HsFoo.__new__(HsFoo)
         inst._cpp_obj = move(HsFoo._make_instance(

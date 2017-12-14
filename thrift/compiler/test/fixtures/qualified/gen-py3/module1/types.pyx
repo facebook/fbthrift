@@ -64,6 +64,11 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         str second=None
     ):
+        if first is not None:
+            if not isinstance(first, int):
+                raise TypeError(f'first is not a { int !r}.')
+            <int32_t> first
+
         self._cpp_obj = move(Struct._make_instance(
           NULL,
           first,
@@ -87,6 +92,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if None is not first is not __NOTSET:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
+            <int32_t> first
 
         if None is not second is not __NOTSET:
             if not isinstance(second, str):
@@ -234,6 +240,8 @@ cdef class List__Enum:
         cdef unique_ptr[vector[cEnum]] c_inst = make_unique[vector[cEnum]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, Enum):
+                    raise TypeError(f"{item!r} is not of type Enum")
                 deref(c_inst).push_back(Enum_to_cpp(item))
         return move_unique(c_inst)
 

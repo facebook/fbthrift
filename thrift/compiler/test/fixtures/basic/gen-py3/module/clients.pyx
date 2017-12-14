@@ -383,8 +383,12 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyService self,
-            int64_t id
+            id not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -401,8 +405,12 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyService self,
-            int64_t id
+            id not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -419,9 +427,13 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def putDataById(
             MyService self,
-            int64_t id,
+            id not None,
             str data not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -439,9 +451,13 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lobDataById(
             MyService self,
-            int64_t id,
+            id not None,
             str data not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -567,8 +583,12 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def hasDataById(
             MyServiceFast self,
-            int64_t id
+            id not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -585,8 +605,12 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def getDataById(
             MyServiceFast self,
-            int64_t id
+            id not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -603,9 +627,13 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def putDataById(
             MyServiceFast self,
-            int64_t id,
+            id not None,
             str data not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -623,9 +651,13 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lobDataById(
             MyServiceFast self,
-            int64_t id,
+            id not None,
             str data not None
     ):
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            <int64_t> id
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

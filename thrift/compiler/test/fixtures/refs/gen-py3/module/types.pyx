@@ -66,6 +66,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         if anInteger is not None:
             if not isinstance(anInteger, int):
                 raise TypeError(f'anInteger is not a { int !r}.')
+            <int32_t> anInteger
 
         self._cpp_obj = move(MyUnion._make_instance(
           NULL,
@@ -208,8 +209,23 @@ cdef class MyField(thrift.py3.types.Struct):
         MyField self, *,
         opt_value=None,
         value=None,
-        int64_t req_value
+        req_value
     ):
+        if opt_value is not None:
+            if not isinstance(opt_value, int):
+                raise TypeError(f'opt_value is not a { int !r}.')
+            <int64_t> opt_value
+
+        if value is not None:
+            if not isinstance(value, int):
+                raise TypeError(f'value is not a { int !r}.')
+            <int64_t> value
+
+        if req_value is not None:
+            if not isinstance(req_value, int):
+                raise TypeError(f'req_value is not a { int !r}.')
+            <int64_t> req_value
+
         self._cpp_obj = move(MyField._make_instance(
           NULL,
           opt_value,
@@ -237,16 +253,19 @@ cdef class MyField(thrift.py3.types.Struct):
         if None is not opt_value is not __NOTSET:
             if not isinstance(opt_value, int):
                 raise TypeError(f'opt_value is not a { int !r}.')
+            <int64_t> opt_value
 
         if None is not value is not __NOTSET:
             if not isinstance(value, int):
                 raise TypeError(f'value is not a { int !r}.')
+            <int64_t> value
 
         if req_value is None:
             raise TypeError('field req_value is required and has no default, it can not be unset')
         if None is not req_value is not __NOTSET:
             if not isinstance(req_value, int):
                 raise TypeError(f'req_value is not a { int !r}.')
+            <int64_t> req_value
 
         inst = <MyField>MyField.__new__(MyField)
         inst._cpp_obj = move(MyField._make_instance(
@@ -596,6 +615,10 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         aDouble=None,
         MyField f=None
     ):
+        if aDouble is not None:
+            if not isinstance(aDouble, (float, int)):
+                raise TypeError(f'aDouble is not a { float !r}.')
+
         self._cpp_obj = move(StructWithUnion._make_instance(
           NULL,
           u,
@@ -625,7 +648,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 raise TypeError(f'u is not a { MyUnion !r}.')
 
         if None is not aDouble is not __NOTSET:
-            if not isinstance(aDouble, float):
+            if not isinstance(aDouble, (float, int)):
                 raise TypeError(f'aDouble is not a { float !r}.')
 
         if None is not f is not __NOTSET:
@@ -803,10 +826,6 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if None is not mes is not __NOTSET:
-            if not isinstance(mes, List__RecursiveStruct):
-                mes = List__RecursiveStruct(mes)
-
         inst = <RecursiveStruct>RecursiveStruct.__new__(RecursiveStruct)
         inst._cpp_obj = move(RecursiveStruct._make_instance(
           self._cpp_obj.get(),
@@ -963,30 +982,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
         if not changes:
             return self
-
-        if None is not list_ref is not __NOTSET:
-            if not isinstance(list_ref, List__i32):
-                list_ref = List__i32(list_ref)
-
-        if None is not set_ref is not __NOTSET:
-            if not isinstance(set_ref, Set__i32):
-                set_ref = Set__i32(set_ref)
-
-        if None is not map_ref is not __NOTSET:
-            if not isinstance(map_ref, Map__i32_i32):
-                map_ref = Map__i32_i32(map_ref)
-
-        if None is not list_ref_unique is not __NOTSET:
-            if not isinstance(list_ref_unique, List__i32):
-                list_ref_unique = List__i32(list_ref_unique)
-
-        if None is not set_ref_shared is not __NOTSET:
-            if not isinstance(set_ref_shared, Set__i32):
-                set_ref_shared = Set__i32(set_ref_shared)
-
-        if None is not list_ref_shared_const is not __NOTSET:
-            if not isinstance(list_ref_shared_const, List__i32):
-                list_ref_shared_const = List__i32(list_ref_shared_const)
 
         inst = <StructWithContainers>StructWithContainers.__new__(StructWithContainers)
         inst._cpp_obj = move(StructWithContainers._make_instance(
@@ -2460,6 +2455,9 @@ cdef class List__i32:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -2608,6 +2606,9 @@ cdef class Set__i32:
         cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -2793,6 +2794,12 @@ cdef class Map__i32_i32:
         cdef unique_ptr[cmap[int32_t,int32_t]] c_inst = make_unique[cmap[int32_t,int32_t]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
 
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)

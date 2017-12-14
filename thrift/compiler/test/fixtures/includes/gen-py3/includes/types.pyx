@@ -45,6 +45,11 @@ cdef class Included(thrift.py3.types.Struct):
         MyIntField=None,
         _transitive_types.Foo MyTransitiveField=None
     ):
+        if MyIntField is not None:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
+
         self._cpp_obj = move(Included._make_instance(
           NULL,
           MyIntField,
@@ -68,6 +73,7 @@ cdef class Included(thrift.py3.types.Struct):
         if None is not MyIntField is not __NOTSET:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
 
         if None is not MyTransitiveField is not __NOTSET:
             if not isinstance(MyTransitiveField, _transitive_types.Foo):

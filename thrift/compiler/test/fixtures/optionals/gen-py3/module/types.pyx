@@ -66,6 +66,22 @@ cdef class Color(thrift.py3.types.Struct):
         blue=None,
         alpha=None
     ):
+        if red is not None:
+            if not isinstance(red, (float, int)):
+                raise TypeError(f'red is not a { float !r}.')
+
+        if green is not None:
+            if not isinstance(green, (float, int)):
+                raise TypeError(f'green is not a { float !r}.')
+
+        if blue is not None:
+            if not isinstance(blue, (float, int)):
+                raise TypeError(f'blue is not a { float !r}.')
+
+        if alpha is not None:
+            if not isinstance(alpha, (float, int)):
+                raise TypeError(f'alpha is not a { float !r}.')
+
         self._cpp_obj = move(Color._make_instance(
           NULL,
           red,
@@ -95,19 +111,19 @@ cdef class Color(thrift.py3.types.Struct):
             return self
 
         if None is not red is not __NOTSET:
-            if not isinstance(red, float):
+            if not isinstance(red, (float, int)):
                 raise TypeError(f'red is not a { float !r}.')
 
         if None is not green is not __NOTSET:
-            if not isinstance(green, float):
+            if not isinstance(green, (float, int)):
                 raise TypeError(f'green is not a { float !r}.')
 
         if None is not blue is not __NOTSET:
-            if not isinstance(blue, float):
+            if not isinstance(blue, (float, int)):
                 raise TypeError(f'blue is not a { float !r}.')
 
         if None is not alpha is not __NOTSET:
-            if not isinstance(alpha, float):
+            if not isinstance(alpha, (float, int)):
                 raise TypeError(f'alpha is not a { float !r}.')
 
         inst = <Color>Color.__new__(Color)
@@ -539,6 +555,25 @@ cdef class Person(thrift.py3.types.Struct):
         afraidOfAnimal=None,
         vehicles=None
     ):
+        if id is not None:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
+            <int64_t> id
+
+        if age is not None:
+            if not isinstance(age, int):
+                raise TypeError(f'age is not a { int !r}.')
+            <int16_t> age
+
+        if bestFriend is not None:
+            if not isinstance(bestFriend, int):
+                raise TypeError(f'bestFriend is not a { int !r}.')
+            <int64_t> bestFriend
+
+        if afraidOfAnimal is not None:
+            if not isinstance(afraidOfAnimal, Animal):
+                raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
+
         self._cpp_obj = move(Person._make_instance(
           NULL,
           id,
@@ -594,6 +629,7 @@ cdef class Person(thrift.py3.types.Struct):
         if None is not id is not __NOTSET:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
+            <int64_t> id
 
         if None is not name is not __NOTSET:
             if not isinstance(name, str):
@@ -602,6 +638,7 @@ cdef class Person(thrift.py3.types.Struct):
         if None is not age is not __NOTSET:
             if not isinstance(age, int):
                 raise TypeError(f'age is not a { int !r}.')
+            <int16_t> age
 
         if None is not address is not __NOTSET:
             if not isinstance(address, str):
@@ -611,25 +648,14 @@ cdef class Person(thrift.py3.types.Struct):
             if not isinstance(favoriteColor, Color):
                 raise TypeError(f'favoriteColor is not a { Color !r}.')
 
-        if None is not friends is not __NOTSET:
-            if not isinstance(friends, Set__i64):
-                friends = Set__i64(friends)
-
         if None is not bestFriend is not __NOTSET:
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
-
-        if None is not petNames is not __NOTSET:
-            if not isinstance(petNames, Map__Animal_string):
-                petNames = Map__Animal_string(petNames)
+            <int64_t> bestFriend
 
         if None is not afraidOfAnimal is not __NOTSET:
             if not isinstance(afraidOfAnimal, Animal):
                 raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
-
-        if None is not vehicles is not __NOTSET:
-            if not isinstance(vehicles, List__Vehicle):
-                vehicles = List__Vehicle(vehicles)
 
         inst = <Person>Person.__new__(Person)
         inst._cpp_obj = move(Person._make_instance(
@@ -941,6 +967,9 @@ cdef class Set__i64:
         cdef unique_ptr[cset[int64_t]] c_inst = make_unique[cset[int64_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int64_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -1126,6 +1155,8 @@ cdef class Map__Animal_string:
         cdef unique_ptr[cmap[cAnimal,string]] c_inst = make_unique[cmap[cAnimal,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, Animal):
+                    raise TypeError(f"{key!r} is not of type Animal")
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

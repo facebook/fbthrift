@@ -1291,8 +1291,12 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readDataEb(
             ReturnService self,
-            int64_t size
+            size not None
     ):
+        if not isinstance(size, int):
+            raise TypeError(f'size is not a {int !r}.')
+        else:
+            <int64_t> size
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1309,8 +1313,12 @@ cdef class ReturnService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def readData(
             ReturnService self,
-            int64_t size
+            size not None
     ):
+        if not isinstance(size, int):
+            raise TypeError(f'size is not a {int !r}.')
+        else:
+            <int64_t> size
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1403,8 +1411,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_i16_param(
             ParamService self,
-            int16_t param1
+            param1 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int16_t> param1
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1421,9 +1433,17 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_byte_i16_param(
             ParamService self,
-            int8_t param1,
-            int16_t param2
+            param1 not None,
+            param2 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int8_t> param1
+        if not isinstance(param2, int):
+            raise TypeError(f'param2 is not a {int !r}.')
+        else:
+            <int16_t> param2
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1485,8 +1505,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def void_ret_map_typedef_param(
             ParamService self,
-            int32_t param1
+            param1 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int32_t> param1
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1561,9 +1585,17 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def bool_ret_i32_i64_param(
             ParamService self,
-            int32_t param1,
-            int64_t param2
+            param1 not None,
+            param2 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int32_t> param1
+        if not isinstance(param2, int):
+            raise TypeError(f'param2 is not a {int !r}.')
+        else:
+            <int64_t> param2
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1661,12 +1693,32 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def i64_ret_i32_i32_i32_i32_i32_param(
             ParamService self,
-            int32_t param1,
-            int32_t param2,
-            int32_t param3,
-            int32_t param4,
-            int32_t param5
+            param1 not None,
+            param2 not None,
+            param3 not None,
+            param4 not None,
+            param5 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int32_t> param1
+        if not isinstance(param2, int):
+            raise TypeError(f'param2 is not a {int !r}.')
+        else:
+            <int32_t> param2
+        if not isinstance(param3, int):
+            raise TypeError(f'param3 is not a {int !r}.')
+        else:
+            <int32_t> param3
+        if not isinstance(param4, int):
+            raise TypeError(f'param4 is not a {int !r}.')
+        else:
+            <int32_t> param4
+        if not isinstance(param5, int):
+            raise TypeError(f'param5 is not a {int !r}.')
+        else:
+            <int32_t> param5
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1805,8 +1857,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def typedef_ret_i32_param(
             ParamService self,
-            int32_t param1
+            param1 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int32_t> param1
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1903,8 +1959,12 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def struct_ret_i16_param(
             ParamService self,
-            int16_t param1
+            param1 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int16_t> param1
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1941,9 +2001,17 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def union_ret_i32_i32_param(
             ParamService self,
-            int32_t param1,
-            int32_t param2
+            param1 not None,
+            param2 not None
     ):
+        if not isinstance(param1, int):
+            raise TypeError(f'param1 is not a {int !r}.')
+        else:
+            <int32_t> param1
+        if not isinstance(param2, int):
+            raise TypeError(f'param2 is not a {int !r}.')
+        else:
+            <int32_t> param2
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

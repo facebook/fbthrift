@@ -223,8 +223,9 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   string cpp_type = this->get_cpp_type(type);
   bool has_custom_type = (cpp_type != "");
   string cython_type = this->to_cython_type(cpp_type);
-  const auto is_number = type.is_byte() || type.is_i16() || type.is_i32() ||
-      type.is_i64() || type.is_double() || type.is_float();
+  const auto is_integer =
+      type.is_byte() || type.is_i16() || type.is_i32() || type.is_i64();
+  const auto is_number = is_integer || type.is_floating_point();
   // We don't use the Cython Type for Containers, and enums are Python Only
   const auto hasCythonType = !type.is_container() && !type.is_enum();
   const auto cythonTypeNoneable = !is_number && hasCythonType;
@@ -241,6 +242,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"cythonCustomType", cython_type},
       {"hasCustomType?", has_custom_type},
       {"number?", is_number},
+      {"integer?", is_integer},
       {"cythonTypeNoneable?", cythonTypeNoneable},
       {"hasCythonType?", hasCythonType},
   };

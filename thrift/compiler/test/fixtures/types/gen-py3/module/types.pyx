@@ -273,38 +273,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if None is not fieldA is not __NOTSET:
-            if not isinstance(fieldA, List__i32):
-                fieldA = List__i32(fieldA)
-
-        if None is not fieldB is not __NOTSET:
-            if not isinstance(fieldB, std_list__List__i32):
-                fieldB = std_list__List__i32(fieldB)
-
-        if None is not fieldC is not __NOTSET:
-            if not isinstance(fieldC, std_deque__List__i32):
-                fieldC = std_deque__List__i32(fieldC)
-
-        if None is not fieldD is not __NOTSET:
-            if not isinstance(fieldD, folly_fbvector__List__i32):
-                fieldD = folly_fbvector__List__i32(fieldD)
-
-        if None is not fieldE is not __NOTSET:
-            if not isinstance(fieldE, folly_small_vector__List__i32):
-                fieldE = folly_small_vector__List__i32(fieldE)
-
-        if None is not fieldF is not __NOTSET:
-            if not isinstance(fieldF, folly_sorted_vector_set__Set__i32):
-                fieldF = folly_sorted_vector_set__Set__i32(fieldF)
-
-        if None is not fieldG is not __NOTSET:
-            if not isinstance(fieldG, folly_sorted_vector_map__Map__i32_string):
-                fieldG = folly_sorted_vector_map__Map__i32_string(fieldG)
-
-        if None is not fieldH is not __NOTSET:
-            if not isinstance(fieldH, std_unordered_map__Map__i32_string):
-                fieldH = std_unordered_map__Map__i32_string(fieldH)
-
         inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
         inst._cpp_obj = move(ContainerStruct._make_instance(
           self._cpp_obj.get(),
@@ -567,6 +535,11 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         VirtualStruct self, *,
         MyIntField=None
     ):
+        if MyIntField is not None:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
+
         self._cpp_obj = move(VirtualStruct._make_instance(
           NULL,
           MyIntField,
@@ -586,6 +559,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if None is not MyIntField is not __NOTSET:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
 
         inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
         inst._cpp_obj = move(VirtualStruct._make_instance(
@@ -710,6 +684,9 @@ cdef class std_unordered_map__Map__i32_string:
         cdef unique_ptr[std_unordered_map[int32_t,string]] c_inst = make_unique[std_unordered_map[int32_t,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
@@ -826,6 +803,9 @@ cdef class List__i32:
         cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -974,6 +954,9 @@ cdef class std_list__List__i32:
         cdef unique_ptr[std_list[int32_t]] c_inst = make_unique[std_list[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1122,6 +1105,9 @@ cdef class std_deque__List__i32:
         cdef unique_ptr[std_deque[int32_t]] c_inst = make_unique[std_deque[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1270,6 +1256,9 @@ cdef class folly_fbvector__List__i32:
         cdef unique_ptr[folly_fbvector[int32_t]] c_inst = make_unique[folly_fbvector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1418,6 +1407,9 @@ cdef class folly_small_vector__List__i32:
         cdef unique_ptr[folly_small_vector[int32_t]] c_inst = make_unique[folly_small_vector[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1566,6 +1558,9 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef unique_ptr[folly_sorted_vector_set[int32_t]] c_inst = make_unique[folly_sorted_vector_set[int32_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -1751,6 +1746,9 @@ cdef class folly_sorted_vector_map__Map__i32_string:
         cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] c_inst = make_unique[folly_sorted_vector_map[int32_t,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

@@ -123,8 +123,12 @@ cdef class HsTestService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def init(
             HsTestService self,
-            int64_t int1
+            int1 not None
     ):
+        if not isinstance(int1, int):
+            raise TypeError(f'int1 is not a {int !r}.')
+        else:
+            <int64_t> int1
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

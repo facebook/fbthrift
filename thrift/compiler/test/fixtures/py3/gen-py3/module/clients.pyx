@@ -799,8 +799,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def add_five(
             SimpleService self,
-            int32_t num
+            num not None
     ):
+        if not isinstance(num, int):
+            raise TypeError(f'num is not a {int !r}.')
+        else:
+            <int32_t> num
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -889,8 +893,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def tiny(
             SimpleService self,
-            int8_t input
+            input not None
     ):
+        if not isinstance(input, int):
+            raise TypeError(f'input is not a {int !r}.')
+        else:
+            <int8_t> input
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -907,8 +915,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def small(
             SimpleService self,
-            int16_t input
+            input not None
     ):
+        if not isinstance(input, int):
+            raise TypeError(f'input is not a {int !r}.')
+        else:
+            <int16_t> input
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -925,8 +937,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def big(
             SimpleService self,
-            int64_t input
+            input not None
     ):
+        if not isinstance(input, int):
+            raise TypeError(f'input is not a {int !r}.')
+        else:
+            <int64_t> input
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1249,8 +1265,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def fib(
             SimpleService self,
-            int16_t n
+            n not None
     ):
+        if not isinstance(n, int):
+            raise TypeError(f'n is not a {int !r}.')
+        else:
+            <int16_t> n
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1327,9 +1347,17 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def list_of_lists(
             SimpleService self,
-            int16_t num_lists,
-            int16_t num_items
+            num_lists not None,
+            num_items not None
     ):
+        if not isinstance(num_lists, int):
+            raise TypeError(f'num_lists is not a {int !r}.')
+        else:
+            <int16_t> num_lists
+        if not isinstance(num_items, int):
+            raise TypeError(f'num_items is not a {int !r}.')
+        else:
+            <int16_t> num_items
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
@@ -1463,8 +1491,12 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     async def lookup_double(
             SimpleService self,
-            int32_t key
+            key not None
     ):
+        if not isinstance(key, int):
+            raise TypeError(f'key is not a {int !r}.')
+        else:
+            <int32_t> key
         self._check_connect_future()
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()

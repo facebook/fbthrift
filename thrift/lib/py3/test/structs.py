@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import unittest
+import math
 
-from testing.types import easy, hard, Integers, mixed
+from testing.types import easy, hard, Integers, mixed, Runtime, numerical
 
 
 class StructTests(unittest.TestCase):
@@ -71,3 +72,61 @@ class StructTests(unittest.TestCase):
         self.assertEqual(y, x)
         with self.assertRaises(TypeError):
             z(req_easy_ref=None)  # type: ignore
+
+    def test_runtime_checks(self) -> None:
+        x = Runtime()
+        with self.assertRaises(TypeError):
+            x(bool_val=5)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            Runtime(bool_val=5)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            x(enum_val=2)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            Runtime(enum_val=2)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            x(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
+
+        with self.assertRaises(TypeError):
+            Runtime(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
+
+
+class NumericalConversionsTests(unittest.TestCase):
+
+    def test_overflow(self) -> None:
+        with self.assertRaises(OverflowError):
+            numerical(req_float_val=5, req_int_val=2 ** 63 - 1)
+
+        with self.assertRaises(OverflowError):
+            numerical(req_float_val=5, req_int_val=2, int_list=[5, 2 ** 32])
+
+    def test_int_to_float(self) -> None:
+        x = numerical(req_int_val=5, req_float_val=5, float_val=5,
+                      float_list=[1, 5, 6])
+        x(req_float_val=10)
+        x(float_val=10)
+        x(float_list=[6, 7, 8])
+
+    def test_float_to_int_required_field(self) -> None:
+        with self.assertRaises(TypeError):
+            numerical(req_int_val=math.pi,   # type: ignore
+                      req_float_val=math.pi)
+
+    def test_float_to_int_unqualified_field(self) -> None:
+        with self.assertRaises(TypeError):
+            numerical(  # type: ignore
+                req_int_val=5,
+                req_float_val=math.pi,
+                int_val=math.pi
+            )
+
+    def test_float_to_int_list(self) -> None:
+        with self.assertRaises(TypeError):
+            numerical(
+                req_int_val=5,
+                req_float_val=math.pi,
+                int_list=[math.pi, math.e]  # type: ignore
+            )

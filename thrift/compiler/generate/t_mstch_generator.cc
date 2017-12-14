@@ -138,6 +138,7 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
       {"i64?", type.is_i64()},
       {"double?", type.is_double()},
       {"float?", type.is_float()},
+      {"floating_point?", type.is_floating_point()},
       {"struct?", type.is_struct() || type.is_xception()},
       {"enum?", type.is_enum()},
       {"stream?", type.is_stream()},

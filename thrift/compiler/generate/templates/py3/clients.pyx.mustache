@@ -159,8 +159,8 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     async def {{function:name}}(
             {{service:name}} self{{#function:args}},
             {{#field:type}}{{!
-                }}{{#type:hasCythonType?}}{{> types/CythonPythonType}} {{/type:hasCythonType?}}{{!
-                }}{{field:name}}{{^type:number?}} not None{{/type:number?}}{{!
+                }}{{#type:hasCythonType?}}{{^type:integer?}}{{> types/CythonPythonType}} {{/type:integer?}}{{/type:hasCythonType?}}{{!
+                }}{{field:name}}{{#type:integer?}} not None{{/type:integer?}}{{^type:number?}} not None{{/type:number?}}{{!
             }}{{/field:type}}{{/function:args}}
     ):
         {{#function:args}}
@@ -173,6 +173,13 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         if not isinstance({{field:name}}, {{> types/PythonType}}):
             raise TypeError(f'argument {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
         {{/type:enum?}}
+        {{#type:integer?}}
+        if not isinstance({{field:name}}, int):
+            raise TypeError(f'{{field:name}} is not a {int !r}.')
+        else:
+            {{! inject cython int Overflow checks }}
+            <{{> types/CythonPythonType}}> {{field:name}}
+        {{/type:integer?}}
         {{/field:type}}
         {{/function:args}}
         self._check_connect_future()

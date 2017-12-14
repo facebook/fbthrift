@@ -111,13 +111,15 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 }}{{/type:cythonTypeNoneable?}}{{!
             }}{{/field:requireValue?}}{{!
             }}{{#field:requireValue?}}{{! We have no concept of default
-                }}{{#type:hasCythonType?}}{{!
-                    }}{{> types/CythonPythonType}} {{!
-                }}{{/type:hasCythonType?}}{{!
+                }}{{^type:integer?}}{{!
+                    }}{{#type:hasCythonType?}}{{!
+                        }}{{> types/CythonPythonType}} {{!
+                    }}{{/type:hasCythonType?}}{{!
+                }}{{/type:integer?}}{{!
             }}{{/field:requireValue?}}{{!
             }}{{field:name}}{{!
                 }}{{^field:requireValue?}}=None{{/field:requireValue?}}{{!
-                }}{{#field:requireValue?}}{{^type:number?}} not None{{/type:number?}}{{/field:requireValue?}}{{!
+                }}{{#field:requireValue?}}{{#type:Integers?}} not None{{/type:Integers?}}{{^type:number?}} not None{{/type:number?}}{{/field:requireValue?}}{{!
         }}{{/field:type}}{{/struct:fields}}
     ):
     {{/struct:exception?}}
@@ -140,21 +142,23 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/struct:exception?}}
         {{#struct:fields}}
         {{#field:type}}
-        {{^type:cythonTypeNoneable}}
+        {{^type:cythonTypeNoneable?}}
+        {{^type:container?}}
         if {{field:name}} is not None:
-            {{#type:container?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
-                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
-            {{/type:container?}}
             {{#type:enum?}}
             if not isinstance({{field:name}}, {{> types/PythonType}}):
                 raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
             {{/type:enum?}}
             {{#type:number?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
+            if not isinstance({{field:name}}, {{> types/PythonIsInstanceType}}):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
+            {{#type:integer?}}
+            {{! inject cython int overflow checks }}
+            <{{> types/CythonPythonType}}> {{field:name}}
+            {{/type:integer?}}
             {{/type:number?}}
 
+        {{/type:container?}}
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
@@ -187,22 +191,22 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             raise TypeError('field {{field:name}} is required and has no default, it can not be unset')
         {{/field:requireValue?}}
         {{#field:type}}
+        {{^type:container?}}
         if None is not {{field:name}} is not __NOTSET:
-            {{#type:container?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
-                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
-            {{/type:container?}}
             {{#type:enum?}}
             if not isinstance({{field:name}}, {{> types/PythonType}}):
                 raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
             {{/type:enum?}}
-            {{^type:container?}}
             {{^type:enum?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
+            if not isinstance({{field:name}}, {{> types/PythonIsInstanceType}}):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
+            {{#type:integer?}}
+            {{! inject cython int overflow checks }}
+            <{{> types/CythonPythonType}}> {{field:name}}
+            {{/type:integer?}}
             {{/type:enum?}}
-            {{/type:container?}}
 
+        {{/type:container?}}
         {{/field:type}}
         {{/struct:fields}}
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
@@ -369,20 +373,22 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{#struct:fields}}
         {{#field:type}}
         {{^type:cythonTypeNoneable?}}
+        {{^type:container?}}
         if {{field:name}} is not None:
-            {{#type:container?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
-                {{field:name}} = {{> types/CythonPythonType}}({{field:name}})
-            {{/type:container?}}
             {{#type:enum?}}
             if not isinstance({{field:name}}, {{> types/PythonType}}):
                 raise TypeError(f'field {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
             {{/type:enum?}}
-            {{#type:number?}}
-            if not isinstance({{field:name}}, {{> types/PythonType}}):
+            {{^type:cythonTypeNoneable?}}
+            if not isinstance({{field:name}}, {{> types/PythonIsInstanceType}}):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
-            {{/type:number?}}
+            {{#type:integer?}}
+            {{! inject cython int overflow checks }}
+            <{{> types/CythonPythonType}}> {{field:name}}
+            {{/type:integer?}}
+            {{/type:cythonTypeNoneable?}}
 
+        {{/type:container?}}
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
@@ -553,10 +559,14 @@ cdef class {{type:flat_name}}:
                 if not isinstance(item, {{> types/PythonType}}):
                     item = {{> types/PythonType}}(item)
                 {{/type:container?}}
-                {{#type:cythonTypeNoneable?}}
-                if not isinstance(item, {{> types/PythonType}}):
+                {{^type:container?}}
+                if not isinstance(item, {{> types/PythonIsInstanceType}}):
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
-                {{/type:cythonTypeNoneable?}}
+                {{#type:integer?}}
+                {{! inject cython int overflow checks }}
+                <{{> types/CythonPythonType}}> item
+                {{/type:integer?}}
+                {{/type:container?}}
                 deref(c_inst).push_back({{> CythonPythonToCppItem}})
                 {{/type:listElemType}}
         return move_unique(c_inst)
@@ -720,10 +730,14 @@ Sequence.register({{type:flat_name}})
                 if not isinstance(item, {{> types/PythonType}}):
                     item = {{> types/PythonType}}(item)
                 {{/type:container?}}
-                {{#type:cythonTypeNoneable?}}
-                if not isinstance(item, {{> types/PythonType}}):
+                {{^type:container?}}
+                if not isinstance(item, {{> types/PythonIsInstanceType}}):
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
-                {{/type:cythonTypeNoneable?}}
+                {{#type:integer?}}
+                {{! inject cython int overflow checks }}
+                <{{> types/CythonPythonType}}> item
+                {{/type:integer?}}
+                {{/type:container?}}
                 deref(c_inst).insert({{> CythonPythonToCppItem}})
                 {{/type:setElemType}}
         return move_unique(c_inst)
@@ -907,10 +921,14 @@ Set.register({{type:flat_name}})
                 if not isinstance(key, {{> types/PythonType}}):
                     key = {{> types/PythonType}}(key)
                 {{/type:container?}}
-                {{#type:cythonTypeNoneable?}}
-                if not isinstance(key, {{> types/PythonType}}):
+                {{^type:container?}}
+                if not isinstance(key, {{> types/PythonIsInstanceType}}):
                     raise TypeError(f"{key!r} is not of type {{> types/PEP484Type}}")
-                {{/type:cythonTypeNoneable?}}
+                {{#type:integer?}}
+                {{! inject cython int overflow checks }}
+                <{{> types/CythonPythonType}}> key
+                {{/type:integer?}}
+                {{/type:container?}}
                 {{/type:keyType}}
                 {{#type:valueType}}
                 {{#type:container?}}
@@ -919,10 +937,14 @@ Set.register({{type:flat_name}})
                 if not isinstance(item, {{> types/PythonType}}):
                     item = {{> types/PythonType}}(item)
                 {{/type:container?}}
-                {{#type:cythonTypeNoneable?}}
-                if not isinstance(item, {{> types/PythonType}}):
+                {{^type:container?}}
+                if not isinstance(item, {{> types/PythonIsInstanceType}}):
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
-                {{/type:cythonTypeNoneable?}}
+                {{#type:integer?}}
+                {{! inject cython int overflow checks }}
+                <{{> types/CythonPythonType}}> item
+                {{/type:integer?}}
+                {{/type:container?}}
                 {{/type:valueType}}
 
                 deref(c_inst).insert(cpair[{{!

@@ -91,15 +91,19 @@ class ClientTests(unittest.TestCase):
         three = 2 ** 31 - 1
         four = 2 ** 63 - 1
         client = TestingService()
-        client.int_sizes(one, two, three, four)
-        with self.assertRaises(OverflowError):
-            client.int_sizes(two, two, three, four)
+        loop = asyncio.get_event_loop()
+        with self.assertRaises(asyncio.InvalidStateError):
+            # means we passed type checks
+            loop.run_until_complete(client.int_sizes(one, two, three, four))
 
         with self.assertRaises(OverflowError):
-            client.int_sizes(one, three, three, four)
+            loop.run_until_complete(client.int_sizes(two, two, three, four))
 
         with self.assertRaises(OverflowError):
-            client.int_sizes(one, two, four, four)
+            loop.run_until_complete(client.int_sizes(one, three, three, four))
 
         with self.assertRaises(OverflowError):
-            client.int_sizes(one, two, three, four * 10)
+            loop.run_until_complete(client.int_sizes(one, two, four, four))
+
+        with self.assertRaises(OverflowError):
+            loop.run_until_complete(client.int_sizes(one, two, three, four * 10))

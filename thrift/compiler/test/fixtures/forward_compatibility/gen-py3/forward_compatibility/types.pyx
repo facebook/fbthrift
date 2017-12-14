@@ -58,10 +58,6 @@ cdef class OldStructure(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if None is not features is not __NOTSET:
-            if not isinstance(features, Map__i16_double):
-                features = Map__i16_double(features)
-
         inst = <OldStructure>OldStructure.__new__(OldStructure)
         inst._cpp_obj = move(OldStructure._make_instance(
           self._cpp_obj.get(),
@@ -193,10 +189,6 @@ cdef class NewStructure(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        if None is not features is not __NOTSET:
-            if not isinstance(features, Map__i16_double):
-                features = Map__i16_double(features)
-
         inst = <NewStructure>NewStructure.__new__(NewStructure)
         inst._cpp_obj = move(NewStructure._make_instance(
           self._cpp_obj.get(),
@@ -327,10 +319,6 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
         if not changes:
             return self
-
-        if None is not features is not __NOTSET:
-            if not isinstance(features, Map__i16_float):
-                features = Map__i16_float(features)
 
         inst = <NewStructure2>NewStructure2.__new__(NewStructure2)
         inst._cpp_obj = move(NewStructure2._make_instance(
@@ -472,18 +460,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
         if not changes:
             return self
-
-        if None is not lst is not __NOTSET:
-            if not isinstance(lst, List__Map__i16_float):
-                lst = List__Map__i16_float(lst)
-
-        if None is not mp is not __NOTSET:
-            if not isinstance(mp, Map__i16_Map__i16_float):
-                mp = Map__i16_Map__i16_float(mp)
-
-        if None is not s is not __NOTSET:
-            if not isinstance(s, Set__Map__i16_float):
-                s = Set__Map__i16_float(s)
 
         inst = <NewStructureNested>NewStructureNested.__new__(NewStructureNested)
         inst._cpp_obj = move(NewStructureNested._make_instance(
@@ -787,6 +763,11 @@ cdef class Map__i16_double:
         cdef unique_ptr[cmap[int16_t,double]] c_inst = make_unique[cmap[int16_t,double]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
 
                 deref(c_inst).insert(cpair[int16_t,double](key,item))
         return move_unique(c_inst)
@@ -901,6 +882,11 @@ cdef class Map__i16_float:
         cdef unique_ptr[cmap[int16_t,float]] c_inst = make_unique[cmap[int16_t,float]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
 
                 deref(c_inst).insert(cpair[int16_t,float](key,item))
         return move_unique(c_inst)
@@ -1170,6 +1156,9 @@ cdef class Map__i16_Map__i16_float:
         cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] c_inst = make_unique[cmap[int16_t,cmap[int16_t,float]]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i16_float):
@@ -1482,6 +1471,11 @@ cdef class Map__i64_double:
         cdef unique_ptr[cmap[int64_t,double]] c_inst = make_unique[cmap[int64_t,double]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int64_t> key
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
 
                 deref(c_inst).insert(cpair[int64_t,double](key,item))
         return move_unique(c_inst)
@@ -1596,6 +1590,9 @@ cdef class Map__i16_Map__i64_double:
         cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int16_t,cmap[int64_t,double]]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i64_double):
@@ -1718,6 +1715,9 @@ cdef class Map__i32_Map__i64_double:
         cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] c_inst = make_unique[cmap[int32_t,cmap[int64_t,double]]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i64_double):
@@ -1840,6 +1840,8 @@ cdef class List__float:
         cdef unique_ptr[vector[float]] c_inst = make_unique[vector[float]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, (float, int)):
+                    raise TypeError(f"{item!r} is not of type float")
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1988,6 +1990,9 @@ cdef class Map__i16_List__float:
         cdef unique_ptr[cmap[int16_t,vector[float]]] c_inst = make_unique[cmap[int16_t,vector[float]]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[float]")
                 if not isinstance(item, List__float):
@@ -2110,6 +2115,9 @@ cdef class Map__i32_List__float:
         cdef unique_ptr[cmap[int32_t,vector[float]]] c_inst = make_unique[cmap[int32_t,vector[float]]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int32_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[float]")
                 if not isinstance(item, List__float):

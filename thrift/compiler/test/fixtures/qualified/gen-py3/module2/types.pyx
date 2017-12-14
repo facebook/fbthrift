@@ -212,6 +212,11 @@ cdef class BigStruct(thrift.py3.types.Struct):
         Struct s=None,
         id=None
     ):
+        if id is not None:
+            if not isinstance(id, int):
+                raise TypeError(f'id is not a { int !r}.')
+            <int32_t> id
+
         self._cpp_obj = move(BigStruct._make_instance(
           NULL,
           s,
@@ -239,6 +244,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
         if None is not id is not __NOTSET:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
+            <int32_t> id
 
         inst = <BigStruct>BigStruct.__new__(BigStruct)
         inst._cpp_obj = move(BigStruct._make_instance(

@@ -53,12 +53,27 @@ struct hard {
     5: required string other = "some default",
 }
 
+struct Runtime {
+    1: bool bool_val,
+    2: Color enum_val,
+    3: list<i64> int_list_val,
+}
+
 struct mixed {
     1: optional string opt_field = "optional",
     2: required string req_field = "required",
     3: string unq_field = "unqualified",
     4: easy opt_easy_ref (cpp.ref="True"),
     5: required easy req_easy_ref (cpp.ref="True"),
+}
+
+struct numerical {
+    1: i32 int_val,
+    2: double float_val,
+    3: required i32 req_int_val,
+    4: required double req_float_val,
+    5: I32List int_list,
+    6: list<double> float_list,
 }
 
 service TestingService {

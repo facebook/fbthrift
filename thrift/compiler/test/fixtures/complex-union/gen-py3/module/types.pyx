@@ -56,18 +56,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         if intValue is not None:
             if not isinstance(intValue, int):
                 raise TypeError(f'intValue is not a { int !r}.')
-
-        if intListValue is not None:
-            if not isinstance(intListValue, List__i64):
-                intListValue = List__i64(intListValue)
-
-        if stringListValue is not None:
-            if not isinstance(stringListValue, List__string):
-                stringListValue = List__string(stringListValue)
-
-        if typedefValue is not None:
-            if not isinstance(typedefValue, Map__i16_string):
-                typedefValue = Map__i16_string(typedefValue)
+            <int64_t> intValue
 
         self._cpp_obj = move(ComplexUnion._make_instance(
           NULL,
@@ -427,6 +416,9 @@ cdef class List__i64:
         cdef unique_ptr[vector[int64_t]] c_inst = make_unique[vector[int64_t]]()
         if items is not None:
             for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int64_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -725,6 +717,9 @@ cdef class Map__i16_string:
         cdef unique_ptr[cmap[int16_t,string]] c_inst = make_unique[cmap[int16_t,string]]()
         if items is not None:
             for key, item in items.items():
+                if not isinstance(key, int):
+                    raise TypeError(f"{key!r} is not of type int")
+                <int16_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

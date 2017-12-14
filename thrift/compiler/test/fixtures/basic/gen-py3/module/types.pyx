@@ -62,6 +62,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         str MyStringField=None,
         MyDataItem MyDataField=None
     ):
+        if MyIntField is not None:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
+
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           MyIntField,
@@ -89,6 +94,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if None is not MyIntField is not __NOTSET:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
+            <int64_t> MyIntField
 
         if None is not MyStringField is not __NOTSET:
             if not isinstance(MyStringField, str):
