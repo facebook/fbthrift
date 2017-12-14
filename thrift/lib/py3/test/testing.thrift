@@ -45,6 +45,19 @@ struct easy {
     4: Integers an_int,
 }
 
+union ComplexUnion {
+    1: Color color,
+    2: easy easy_struct,
+    3: Integers union_val,
+    4: float float_val,
+    5: double double_val,
+    6: i16 tiny,
+    7: i64 large,
+    9: string text,
+    10: binary raw,
+    11: bool truthy,
+}
+
 struct hard {
     1: required i32 val,
     2: required I32List val_list,

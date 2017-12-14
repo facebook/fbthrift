@@ -399,6 +399,52 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return {{struct:name}}()
+        {{! We do this with strict types first, then we will do int to float conversion}}
+        {{#struct:fields}}
+        {{#field:type}}
+        if isinstance(value, {{> types/PythonType}}):
+            {{#type:number?}}
+            if not isinstance(value, pbool):
+                try:
+                    {{#type:integer?}}
+                    {{! Cython does OverflowError checking for us }}
+                    <{{> types/CythonPythonType}}> value
+                    {{/type:integer?}}
+                    {{#type:float?}}
+                    {{! This will probably fail most of the time
+                        if it does then when we try again to use floating point
+                        below it will just accept the loss of precision,
+                        or just maybe there is a double field comming up }}
+                    if <{{> types/CythonPythonType}}>value != value:
+                        raise OverflowError
+                    {{/type:float?}}
+                    return {{struct:name}}({{field:name}}=value)
+                except OverflowError:
+                    pass
+            {{/type:number?}}
+            {{^type:number?}}
+            return {{struct:name}}({{field:name}}=value)
+            {{/type:number?}}
+        {{/field:type}}
+        {{/struct:fields}}
+        {{#struct:fields}}
+        {{#field:type}}
+        {{#type:floating_point?}}
+        if isinstance(value, {{> types/PythonIsInstanceType}}):
+            try:
+                <{{> types/CythonPythonType}}> value
+                return {{struct:name}}({{field:name}}=value)
+            except OverflowError:
+                pass
+        {{/type:floating_point?}}
+        {{/field:type}}
+        {{/struct:fields}}
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(
         c{{struct:name}}* base_instance{{#struct:fields}},
         {{field:name}}{{/struct:fields}}
@@ -418,7 +464,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != {{struct:name}}Type.EMPTY
+        return self.type != {{struct:name}}Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
@@ -430,46 +476,35 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     {{#struct:fields}}
     @property
     def {{field:name}}(self):
-        if self.__type != {{struct:name}}Type.{{field:name}}:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not {{field:name}}')
-        return self.__cached
+        if self.type != {{struct:name}}Type.{{field:name}}:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not {{field:name}}')
+        return self.value
 
     {{/struct:fields}}
 
     def __hash__({{struct:name}} self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__({{struct:name}} self):
-        return f'{{struct:name}}(type={self.__type.name}, value={self.__cached!r})'
+        return f'{{struct:name}}(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache({{struct:name}} self):
-        if self.__type is not None:
-            return
-
-        self.__type = {{struct:name}}Type(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == {{struct:name}}Type.EMPTY:
-            self.__cached = None
+        self.type = {{struct:name}}Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == {{struct:name}}Type.EMPTY:
+            self.value = None
         {{#struct:fields}}{{#field:type}}
-        elif self.__type == {{struct:name}}Type.{{field:name}}:
+        elif self.type == {{struct:name}}Type.{{field:name}}:
             {{> CythonUnionGetter}}
 
         {{/field:type}}{{/struct:fields}}
 
-    @property
-    def value({{struct:name}} self):
-        return self.__cached
-
-    @property
-    def type({{struct:name}} self):
-        return self.__type
-
     def get_type({{struct:name}} self):
-        return self.__type
+        return self.type
 
 {{/struct:union?}}
     {{! Below are some things that are common to structs and unions: }}
@@ -521,7 +556,6 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
             needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         {{#struct:union?}}
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         {{/struct:union?}}
         return needed

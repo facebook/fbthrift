@@ -1217,6 +1217,31 @@ cdef class union1(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return union1()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <int32_t> value
+                    return union1(i=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, float):
+            if not isinstance(value, pbool):
+                try:
+                    return union1(d=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, (float, int)):
+            try:
+                <double> value
+                return union1(d=value)
+            except OverflowError:
+                pass
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cunion1] _make_instance(
         cunion1* base_instance,
         i,
@@ -1239,7 +1264,7 @@ cdef class union1(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != union1Type.EMPTY
+        return self.type != union1Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cunion1] cpp_obj):
@@ -1250,50 +1275,39 @@ cdef class union1(thrift.py3.types.Union):
 
     @property
     def i(self):
-        if self.__type != union1Type.i:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not i')
-        return self.__cached
+        if self.type != union1Type.i:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not i')
+        return self.value
 
     @property
     def d(self):
-        if self.__type != union1Type.d:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not d')
-        return self.__cached
+        if self.type != union1Type.d:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not d')
+        return self.value
 
 
     def __hash__(union1 self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(union1 self):
-        return f'union1(type={self.__type.name}, value={self.__cached!r})'
+        return f'union1(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(union1 self):
-        if self.__type is not None:
-            return
-
-        self.__type = union1Type(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == union1Type.EMPTY:
-            self.__cached = None
-        elif self.__type == union1Type.i:
-            self.__cached = deref(self._cpp_obj).get_i()
-        elif self.__type == union1Type.d:
-            self.__cached = deref(self._cpp_obj).get_d()
-
-    @property
-    def value(union1 self):
-        return self.__cached
-
-    @property
-    def type(union1 self):
-        return self.__type
+        self.type = union1Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == union1Type.EMPTY:
+            self.value = None
+        elif self.type == union1Type.i:
+            self.value = deref(self._cpp_obj).get_i()
+        elif self.type == union1Type.d:
+            self.value = deref(self._cpp_obj).get_d()
 
     def get_type(union1 self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1334,7 +1348,6 @@ cdef class union1(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cunion1](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 
@@ -1376,6 +1389,35 @@ cdef class union2(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return union2()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <int32_t> value
+                    return union2(i=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, float):
+            if not isinstance(value, pbool):
+                try:
+                    return union2(d=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, struct1):
+            return union2(s=value)
+        if isinstance(value, union1):
+            return union2(u=value)
+        if isinstance(value, (float, int)):
+            try:
+                <double> value
+                return union2(d=value)
+            except OverflowError:
+                pass
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cunion2] _make_instance(
         cunion2* base_instance,
         i,
@@ -1410,7 +1452,7 @@ cdef class union2(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != union2Type.EMPTY
+        return self.type != union2Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cunion2] cpp_obj):
@@ -1421,66 +1463,55 @@ cdef class union2(thrift.py3.types.Union):
 
     @property
     def i(self):
-        if self.__type != union2Type.i:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not i')
-        return self.__cached
+        if self.type != union2Type.i:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not i')
+        return self.value
 
     @property
     def d(self):
-        if self.__type != union2Type.d:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not d')
-        return self.__cached
+        if self.type != union2Type.d:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not d')
+        return self.value
 
     @property
     def s(self):
-        if self.__type != union2Type.s:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not s')
-        return self.__cached
+        if self.type != union2Type.s:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not s')
+        return self.value
 
     @property
     def u(self):
-        if self.__type != union2Type.u:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not u')
-        return self.__cached
+        if self.type != union2Type.u:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not u')
+        return self.value
 
 
     def __hash__(union2 self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(union2 self):
-        return f'union2(type={self.__type.name}, value={self.__cached!r})'
+        return f'union2(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(union2 self):
-        if self.__type is not None:
-            return
-
-        self.__type = union2Type(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == union2Type.EMPTY:
-            self.__cached = None
-        elif self.__type == union2Type.i:
-            self.__cached = deref(self._cpp_obj).get_i()
-        elif self.__type == union2Type.d:
-            self.__cached = deref(self._cpp_obj).get_d()
-        elif self.__type == union2Type.s:
-            self.__cached = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
-        elif self.__type == union2Type.u:
-            self.__cached = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
-
-    @property
-    def value(union2 self):
-        return self.__cached
-
-    @property
-    def type(union2 self):
-        return self.__type
+        self.type = union2Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == union2Type.EMPTY:
+            self.value = None
+        elif self.type == union2Type.i:
+            self.value = deref(self._cpp_obj).get_i()
+        elif self.type == union2Type.d:
+            self.value = deref(self._cpp_obj).get_d()
+        elif self.type == union2Type.s:
+            self.value = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
+        elif self.type == union2Type.u:
+            self.value = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
 
     def get_type(union2 self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1521,7 +1552,6 @@ cdef class union2(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cunion2](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 

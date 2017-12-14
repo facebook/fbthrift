@@ -91,8 +91,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(ComplexUnion self)
 
     @staticmethod
@@ -116,8 +116,8 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cVirtualComplexUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(VirtualComplexUnion self)
 
     @staticmethod

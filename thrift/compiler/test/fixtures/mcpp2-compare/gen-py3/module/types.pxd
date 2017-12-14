@@ -826,8 +826,8 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSimpleUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(SimpleUnion self)
 
     @staticmethod
@@ -847,8 +847,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(ComplexUnion self)
 
     @staticmethod
@@ -1180,8 +1180,8 @@ cdef class FloatUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFloatUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(FloatUnion self)
 
     @staticmethod

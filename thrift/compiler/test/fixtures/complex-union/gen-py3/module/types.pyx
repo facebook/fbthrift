@@ -70,6 +70,29 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return ComplexUnion()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <int64_t> value
+                    return ComplexUnion(intValue=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, str):
+            return ComplexUnion(stringValue=value)
+        if isinstance(value, List__i64):
+            return ComplexUnion(intListValue=value)
+        if isinstance(value, List__string):
+            return ComplexUnion(stringListValue=value)
+        if isinstance(value, Map__i16_string):
+            return ComplexUnion(typedefValue=value)
+        if isinstance(value, str):
+            return ComplexUnion(stringRef=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
         intValue,
@@ -116,7 +139,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != ComplexUnionType.EMPTY
+        return self.type != ComplexUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cComplexUnion] cpp_obj):
@@ -127,85 +150,74 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @property
     def intValue(self):
-        if self.__type != ComplexUnionType.intValue:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not intValue')
-        return self.__cached
+        if self.type != ComplexUnionType.intValue:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
+        return self.value
 
     @property
     def stringValue(self):
-        if self.__type != ComplexUnionType.stringValue:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringValue')
-        return self.__cached
+        if self.type != ComplexUnionType.stringValue:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
+        return self.value
 
     @property
     def intListValue(self):
-        if self.__type != ComplexUnionType.intListValue:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not intListValue')
-        return self.__cached
+        if self.type != ComplexUnionType.intListValue:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not intListValue')
+        return self.value
 
     @property
     def stringListValue(self):
-        if self.__type != ComplexUnionType.stringListValue:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringListValue')
-        return self.__cached
+        if self.type != ComplexUnionType.stringListValue:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not stringListValue')
+        return self.value
 
     @property
     def typedefValue(self):
-        if self.__type != ComplexUnionType.typedefValue:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not typedefValue')
-        return self.__cached
+        if self.type != ComplexUnionType.typedefValue:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not typedefValue')
+        return self.value
 
     @property
     def stringRef(self):
-        if self.__type != ComplexUnionType.stringRef:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not stringRef')
-        return self.__cached
+        if self.type != ComplexUnionType.stringRef:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not stringRef')
+        return self.value
 
 
     def __hash__(ComplexUnion self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(ComplexUnion self):
-        return f'ComplexUnion(type={self.__type.name}, value={self.__cached!r})'
+        return f'ComplexUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(ComplexUnion self):
-        if self.__type is not None:
-            return
-
-        self.__type = ComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == ComplexUnionType.EMPTY:
-            self.__cached = None
-        elif self.__type == ComplexUnionType.intValue:
-            self.__cached = deref(self._cpp_obj).get_intValue()
-        elif self.__type == ComplexUnionType.stringValue:
-            self.__cached = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
-        elif self.__type == ComplexUnionType.intListValue:
-            self.__cached = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).get_intListValue()))
-        elif self.__type == ComplexUnionType.stringListValue:
-            self.__cached = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
-        elif self.__type == ComplexUnionType.typedefValue:
-            self.__cached = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).get_typedefValue()))
-        elif self.__type == ComplexUnionType.stringRef:
+        self.type = ComplexUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.type == ComplexUnionType.EMPTY:
+            self.value = None
+        elif self.type == ComplexUnionType.intValue:
+            self.value = deref(self._cpp_obj).get_intValue()
+        elif self.type == ComplexUnionType.stringValue:
+            self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
+        elif self.type == ComplexUnionType.intListValue:
+            self.value = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).get_intListValue()))
+        elif self.type == ComplexUnionType.stringListValue:
+            self.value = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
+        elif self.type == ComplexUnionType.typedefValue:
+            self.value = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).get_typedefValue()))
+        elif self.type == ComplexUnionType.stringRef:
             if not deref(self._cpp_obj).get_stringRef():
-                self.__cached = None
+                self.value = None
             else:
-                self.__cached = str.create(aliasing_constructor_stringRef(self._cpp_obj, (deref(self._cpp_obj).get_stringRef()).get()))
-
-    @property
-    def value(ComplexUnion self):
-        return self.__cached
-
-    @property
-    def type(ComplexUnion self):
-        return self.__type
+                self.value = str.create(aliasing_constructor_stringRef(self._cpp_obj, (deref(self._cpp_obj).get_stringRef()).get()))
 
     def get_type(ComplexUnion self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -246,7 +258,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cComplexUnion](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 
@@ -273,6 +284,16 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return VirtualComplexUnion()
+        if isinstance(value, str):
+            return VirtualComplexUnion(thingOne=value)
+        if isinstance(value, str):
+            return VirtualComplexUnion(thingTwo=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cVirtualComplexUnion] _make_instance(
         cVirtualComplexUnion* base_instance,
         thingOne,
@@ -295,7 +316,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != VirtualComplexUnionType.EMPTY
+        return self.type != VirtualComplexUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion] cpp_obj):
@@ -306,50 +327,39 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     @property
     def thingOne(self):
-        if self.__type != VirtualComplexUnionType.thingOne:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not thingOne')
-        return self.__cached
+        if self.type != VirtualComplexUnionType.thingOne:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not thingOne')
+        return self.value
 
     @property
     def thingTwo(self):
-        if self.__type != VirtualComplexUnionType.thingTwo:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not thingTwo')
-        return self.__cached
+        if self.type != VirtualComplexUnionType.thingTwo:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not thingTwo')
+        return self.value
 
 
     def __hash__(VirtualComplexUnion self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(VirtualComplexUnion self):
-        return f'VirtualComplexUnion(type={self.__type.name}, value={self.__cached!r})'
+        return f'VirtualComplexUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(VirtualComplexUnion self):
-        if self.__type is not None:
-            return
-
-        self.__type = VirtualComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == VirtualComplexUnionType.EMPTY:
-            self.__cached = None
-        elif self.__type == VirtualComplexUnionType.thingOne:
-            self.__cached = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
-        elif self.__type == VirtualComplexUnionType.thingTwo:
-            self.__cached = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
-
-    @property
-    def value(VirtualComplexUnion self):
-        return self.__cached
-
-    @property
-    def type(VirtualComplexUnion self):
-        return self.__type
+        self.type = VirtualComplexUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.type == VirtualComplexUnionType.EMPTY:
+            self.value = None
+        elif self.type == VirtualComplexUnionType.thingOne:
+            self.value = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
+        elif self.type == VirtualComplexUnionType.thingTwo:
+            self.value = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
 
     def get_type(VirtualComplexUnion self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -390,7 +400,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cVirtualComplexUnion](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 

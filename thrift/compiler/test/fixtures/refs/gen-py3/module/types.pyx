@@ -76,6 +76,21 @@ cdef class MyUnion(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return MyUnion()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <int32_t> value
+                    return MyUnion(anInteger=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, str):
+            return MyUnion(aString=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cMyUnion] _make_instance(
         cMyUnion* base_instance,
         anInteger,
@@ -98,7 +113,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != MyUnionType.EMPTY
+        return self.type != MyUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
@@ -109,50 +124,39 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     @property
     def anInteger(self):
-        if self.__type != MyUnionType.anInteger:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not anInteger')
-        return self.__cached
+        if self.type != MyUnionType.anInteger:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not anInteger')
+        return self.value
 
     @property
     def aString(self):
-        if self.__type != MyUnionType.aString:
-            raise TypeError(f'Union contains a value of type {self.__type.name}, not aString')
-        return self.__cached
+        if self.type != MyUnionType.aString:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not aString')
+        return self.value
 
 
     def __hash__(MyUnion self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(MyUnion self):
-        return f'MyUnion(type={self.__type.name}, value={self.__cached!r})'
+        return f'MyUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(MyUnion self):
-        if self.__type is not None:
-            return
-
-        self.__type = MyUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == MyUnionType.EMPTY:
-            self.__cached = None
-        elif self.__type == MyUnionType.anInteger:
-            self.__cached = deref(self._cpp_obj).get_anInteger()
-        elif self.__type == MyUnionType.aString:
-            self.__cached = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
-
-    @property
-    def value(MyUnion self):
-        return self.__cached
-
-    @property
-    def type(MyUnion self):
-        return self.__type
+        self.type = MyUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.type == MyUnionType.EMPTY:
+            self.value = None
+        elif self.type == MyUnionType.anInteger:
+            self.value = deref(self._cpp_obj).get_anInteger()
+        elif self.type == MyUnionType.aString:
+            self.value = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
 
     def get_type(MyUnion self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -193,7 +197,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cMyUnion](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 

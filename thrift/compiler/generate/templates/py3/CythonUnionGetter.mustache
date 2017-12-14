@@ -17,15 +17,15 @@
 }}{{!
 
 Included on Cython unions to retrieve the current value of the union and stick
-it in the __cached variable.
+it in the self.value variable.
 
 }}{{#field:reference?}}{{!
 }}if not deref(self._cpp_obj).get_{{field:name}}():
-    self.__cached = None
+    self.value = None
 else:
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.__cached = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
+    self.value = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
       }}self._cpp_obj, {{!
         If this is a shared_const ref, we cast away the constness as part of
         creating the new object (since the new object needs a plain shared_ptr).
@@ -36,44 +36,44 @@ else:
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
 }}{{#type:bool?}}{{!
-  }}self.__cached = <bint>(deref(self._cpp_obj).get_{{field:name}}()){{!
+  }}self.value = <bint>(deref(self._cpp_obj).get_{{field:name}}()){{!
 }}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:i64?}}{{!
 }}{{#type:double?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:double?}}{{!
 }}{{#type:float?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}self.__cached = bytes(deref(self._cpp_obj).get_{{field:name}}()).decode('UTF-8'){{!
+  }}self.value = bytes(deref(self._cpp_obj).get_{{field:name}}()).decode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}self.__cached = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
 }}{{/type:binary?}}{{!
 }}{{#type:enum}}{{!
-  }}self.__cached = translate_cpp_enum_to_python({{!
+  }}self.value = translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!
     }}<int>deref(self._cpp_obj).get_{{field:name}}()){{!
 }}{{/type:enum}}{{!
 }}{{#type:struct?}}{{!
-}}self.__cached = {{> types/CythonPythonType}}.create({{!
+}}self.value = {{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}deref(self._cpp_obj).get_{{field:name}}())){{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-}}self.__cached = {{> types/CythonPythonType}}.create({{!
+}}self.value = {{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}deref(self._cpp_obj).get_{{field:name}}())){{!
 }}{{/type:container?}}{{!

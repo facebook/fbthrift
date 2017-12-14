@@ -167,8 +167,8 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/type:container?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache({{struct:name}} self)
     {{/struct:union?}}
 

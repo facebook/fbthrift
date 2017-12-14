@@ -305,8 +305,8 @@ cdef class MyUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyUnion] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(MyUnion self)
 
     @staticmethod

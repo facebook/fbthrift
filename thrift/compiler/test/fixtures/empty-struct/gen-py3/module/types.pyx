@@ -154,6 +154,12 @@ cdef class Nada(thrift.py3.types.Union):
         self._load_cache()
 
     @staticmethod
+    def fromValue(value):
+        if value is None:
+            return Nada()
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
     cdef unique_ptr[cNada] _make_instance(
         cNada* base_instance
     ) except *:
@@ -164,7 +170,7 @@ cdef class Nada(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.__type != NadaType.EMPTY
+        return self.type != NadaType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
@@ -177,32 +183,21 @@ cdef class Nada(thrift.py3.types.Union):
     def __hash__(Nada self):
         if not self.__hash:
             self.__hash = hash((
-                self.__type,
-                self.__cached,
+                self.type,
+                self.value,
             ))
         return self.__hash
 
     def __repr__(Nada self):
-        return f'Nada(type={self.__type.name}, value={self.__cached!r})'
+        return f'Nada(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(Nada self):
-        if self.__type is not None:
-            return
-
-        self.__type = NadaType(<int>(deref(self._cpp_obj).getType()))
-        if self.__type == NadaType.EMPTY:
-            self.__cached = None
-
-    @property
-    def value(Nada self):
-        return self.__cached
-
-    @property
-    def type(Nada self):
-        return self.__type
+        self.type = NadaType(<int>(deref(self._cpp_obj).getType()))
+        if self.type == NadaType.EMPTY:
+            self.value = None
 
     def get_type(Nada self):
-        return self.__type
+        return self.type
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -243,7 +238,6 @@ cdef class Nada(thrift.py3.types.Union):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         # force a cache reload since the underlying data's changed
-        self.__type = None
         self._load_cache()
         return needed
 

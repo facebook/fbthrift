@@ -82,8 +82,8 @@ cdef class Nada(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNada] _cpp_obj
-    cdef object __type
-    cdef object __cached
+    cdef readonly object type
+    cdef readonly object value
     cdef _load_cache(Nada self)
 
     @staticmethod
