@@ -13,7 +13,7 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
 _List__stringT = _typing.TypeVar('_List__stringT', bound=_typing.Sequence[str])

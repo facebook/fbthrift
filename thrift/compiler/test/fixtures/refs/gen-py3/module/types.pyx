@@ -27,16 +27,16 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
 
-class TypedEnum(Enum):
+class TypedEnum(__enum.Enum):
     VAL1 = <int> (TypedEnum__VAL1)
     VAL2 = <int> (TypedEnum__VAL2)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -52,7 +52,7 @@ cdef cTypedEnum TypedEnum_to_cpp(value):
         return TypedEnum__VAL2
 
 
-class MyUnionType(Enum):
+class MyUnionType(__enum.Enum):
     EMPTY = <int>cMyUnion__type___EMPTY__
     anInteger = <int>cMyUnion__type_anInteger
     aString = <int>cMyUnion__type_aString

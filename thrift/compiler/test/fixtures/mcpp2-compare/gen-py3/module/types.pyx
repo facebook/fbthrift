@@ -27,19 +27,19 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types
 
 
-class MyEnumA(Enum):
+class MyEnumA(__enum.Enum):
     fieldA = <int> (MyEnumA__fieldA)
     fieldB = <int> (MyEnumA__fieldB)
     fieldC = <int> (MyEnumA__fieldC)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -55,12 +55,12 @@ cdef cMyEnumA MyEnumA_to_cpp(value):
         return MyEnumA__fieldB
     elif value == MyEnumA.fieldC:
         return MyEnumA__fieldC
-class AnnotatedEnum(Enum):
+class AnnotatedEnum(__enum.Enum):
     FIELDA = <int> (AnnotatedEnum__FIELDA)
     FIELDB = <int> (AnnotatedEnum__FIELDB)
     FIELDC = <int> (AnnotatedEnum__FIELDC)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -76,12 +76,12 @@ cdef cAnnotatedEnum AnnotatedEnum_to_cpp(value):
         return AnnotatedEnum__FIELDB
     elif value == AnnotatedEnum.FIELDC:
         return AnnotatedEnum__FIELDC
-class AnnotatedEnum2(Enum):
+class AnnotatedEnum2(__enum.Enum):
     FIELDA = <int> (AnnotatedEnum2__FIELDA)
     FIELDB = <int> (AnnotatedEnum2__FIELDB)
     FIELDC = <int> (AnnotatedEnum2__FIELDC)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -97,10 +97,10 @@ cdef cAnnotatedEnum2 AnnotatedEnum2_to_cpp(value):
         return AnnotatedEnum2__FIELDB
     elif value == AnnotatedEnum2.FIELDC:
         return AnnotatedEnum2__FIELDC
-class MyEnumB(Enum):
+class MyEnumB(__enum.Enum):
     AField = <int> (MyEnumB__AField)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -858,7 +858,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
-class SimpleUnionType(Enum):
+class SimpleUnionType(__enum.Enum):
     EMPTY = <int>cSimpleUnion__type___EMPTY__
     intValue = <int>cSimpleUnion__type_intValue
     stringValue = <int>cSimpleUnion__type_stringValue
@@ -1010,7 +1010,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         return (deserialize, (SimpleUnion, serialize(self)))
 
 
-class ComplexUnionType(Enum):
+class ComplexUnionType(__enum.Enum):
     EMPTY = <int>cComplexUnion__type___EMPTY__
     intValue = <int>cComplexUnion__type_intValue
     req_intValue = <int>cComplexUnion__type_req_intValue
@@ -5211,7 +5211,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         return (deserialize, (FloatStruct, serialize(self)))
 
 
-class FloatUnionType(Enum):
+class FloatUnionType(__enum.Enum):
     EMPTY = <int>cFloatUnion__type___EMPTY__
     floatSide = <int>cFloatUnion__type_floatSide
     doubleSide = <int>cFloatUnion__type_doubleSide

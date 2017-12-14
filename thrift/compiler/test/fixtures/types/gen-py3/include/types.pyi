@@ -13,7 +13,7 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
 class std_unordered_map__Map__i32_string(_typing.Mapping[int, str]):

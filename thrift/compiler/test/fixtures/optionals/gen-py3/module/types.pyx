@@ -27,17 +27,17 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
 
-class Animal(Enum):
+class Animal(__enum.Enum):
     DOG = <int> (Animal__DOG)
     CAT = <int> (Animal__CAT)
     TARANTULA = <int> (Animal__TARANTULA)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

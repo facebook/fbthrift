@@ -13,10 +13,10 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
-class MyEnum(Enum):
+class MyEnum(__enum.Enum):
     MyValue1 = ...
     MyValue2 = ...
     value: int

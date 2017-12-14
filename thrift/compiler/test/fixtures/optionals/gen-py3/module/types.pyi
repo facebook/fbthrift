@@ -13,10 +13,10 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
-class Animal(Enum):
+class Animal(__enum.Enum):
     DOG = ...
     CAT = ...
     TARANTULA = ...

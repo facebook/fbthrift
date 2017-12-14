@@ -27,14 +27,14 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
 
-class EmptyEnum(Enum):
+class EmptyEnum(__enum.Enum):
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -45,13 +45,13 @@ class EmptyEnum(Enum):
 
 cdef cEmptyEnum EmptyEnum_to_cpp(value):
     pass
-class City(Enum):
+class City(__enum.Enum):
     NYC = <int> (City__NYC)
     MPK = <int> (City__MPK)
     SEA = <int> (City__SEA)
     LON = <int> (City__LON)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -69,13 +69,13 @@ cdef cCity City_to_cpp(value):
         return City__SEA
     elif value == City.LON:
         return City__LON
-class Company(Enum):
+class Company(__enum.Enum):
     FACEBOOK = <int> (Company__FACEBOOK)
     WHATSAPP = <int> (Company__WHATSAPP)
     OCULUS = <int> (Company__OCULUS)
     INSTAGRAM = <int> (Company__INSTAGRAM)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -1189,7 +1189,7 @@ cdef class struct3(thrift.py3.types.Struct):
         return (deserialize, (struct3, serialize(self)))
 
 
-class union1Type(Enum):
+class union1Type(__enum.Enum):
     EMPTY = <int>cunion1__type___EMPTY__
     i = <int>cunion1__type_i
     d = <int>cunion1__type_d
@@ -1355,7 +1355,7 @@ cdef class union1(thrift.py3.types.Union):
         return (deserialize, (union1, serialize(self)))
 
 
-class union2Type(Enum):
+class union2Type(__enum.Enum):
     EMPTY = <int>cunion2__type___EMPTY__
     i = <int>cunion2__type_i
     d = <int>cunion2__type_d

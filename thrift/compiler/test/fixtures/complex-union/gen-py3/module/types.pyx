@@ -27,14 +27,14 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
 
 
 
-class ComplexUnionType(Enum):
+class ComplexUnionType(__enum.Enum):
     EMPTY = <int>cComplexUnion__type___EMPTY__
     intValue = <int>cComplexUnion__type_intValue
     stringValue = <int>cComplexUnion__type_stringValue
@@ -265,7 +265,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return (deserialize, (ComplexUnion, serialize(self)))
 
 
-class VirtualComplexUnionType(Enum):
+class VirtualComplexUnionType(__enum.Enum):
     EMPTY = <int>cVirtualComplexUnion__type___EMPTY__
     thingOne = <int>cVirtualComplexUnion__type_thingOne
     thingTwo = <int>cVirtualComplexUnion__type_thingTwo

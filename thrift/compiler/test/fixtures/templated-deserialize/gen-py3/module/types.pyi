@@ -13,10 +13,10 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
-class MyEnumA(Enum):
+class MyEnumA(__enum.Enum):
     fieldA = ...
     fieldB = ...
     fieldC = ...

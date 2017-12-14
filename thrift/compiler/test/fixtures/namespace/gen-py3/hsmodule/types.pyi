@@ -13,7 +13,7 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
 class HsFoo(thrift.py3.types.Struct):

@@ -27,16 +27,16 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
 
-class MyEnum(Enum):
+class MyEnum(__enum.Enum):
     MyValue1 = <int> (MyEnum__MyValue1)
     MyValue2 = <int> (MyEnum__MyValue2)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

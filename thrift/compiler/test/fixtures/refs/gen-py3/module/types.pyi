@@ -13,16 +13,16 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 
 
-class TypedEnum(Enum):
+class TypedEnum(__enum.Enum):
     VAL1 = ...
     VAL2 = ...
     value: int
 
 
-class MyUnionType(Enum):
+class MyUnionType(__enum.Enum):
     EMPTY = ...
     anInteger = ...
     aString = ...

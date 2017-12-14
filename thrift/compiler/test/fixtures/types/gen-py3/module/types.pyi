@@ -13,11 +13,11 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 import include.types as _include_types
 
 
-class has_bitwise_ops(Enum):
+class has_bitwise_ops(__enum.Enum):
     none = ...
     zero = ...
     one = ...
@@ -26,7 +26,7 @@ class has_bitwise_ops(Enum):
     value: int
 
 
-class is_unscoped(Enum):
+class is_unscoped(__enum.Enum):
     hello = ...
     world = ...
     value: int

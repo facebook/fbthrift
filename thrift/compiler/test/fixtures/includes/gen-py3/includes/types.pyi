@@ -13,7 +13,7 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 import transitive.types as _transitive_types
 
 

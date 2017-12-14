@@ -29,7 +29,7 @@ import typing as _typing
 
 import sys
 import itertools
-from enum import Enum
+import enum as __enum
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
@@ -38,7 +38,7 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 
 {{#program:enums}}
-class {{enum:name}}(Enum):
+class {{enum:name}}(__enum.Enum):
     {{#enum:values}}
     {{enumValue:name}} = ...
     {{/enum:values}}
@@ -47,7 +47,7 @@ class {{enum:name}}(Enum):
 
 {{/program:enums}}
 {{#program:structs}}{{#struct:union?}}
-class {{struct:name}}Type(Enum):
+class {{struct:name}}Type(__enum.Enum):
     EMPTY = ...
 {{#struct:fields}}
     {{field:name}} = ...

@@ -27,7 +27,7 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 
@@ -141,7 +141,7 @@ cdef class Empty(thrift.py3.types.Struct):
         return (deserialize, (Empty, serialize(self)))
 
 
-class NadaType(Enum):
+class NadaType(__enum.Enum):
     EMPTY = <int>cNada__type___EMPTY__
 
 cdef class Nada(thrift.py3.types.Union):

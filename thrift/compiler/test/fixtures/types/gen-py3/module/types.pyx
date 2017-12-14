@@ -27,21 +27,21 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-from enum import Enum
+import enum as __enum
 import warnings
 import builtins as _builtins
 cimport include.types as _include_types
 import include.types as _include_types
 
 
-class has_bitwise_ops(Enum):
+class has_bitwise_ops(__enum.Enum):
     none = <int> (has_bitwise_ops__none)
     zero = <int> (has_bitwise_ops__zero)
     one = <int> (has_bitwise_ops__one)
     two = <int> (has_bitwise_ops__two)
     three = <int> (has_bitwise_ops__three)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -61,11 +61,11 @@ cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value):
         return has_bitwise_ops__two
     elif value == has_bitwise_ops.three:
         return has_bitwise_ops__three
-class is_unscoped(Enum):
+class is_unscoped(__enum.Enum):
     hello = <int> (is_unscoped__hello)
     world = <int> (is_unscoped__world)
 
-    __hash__ = Enum.__hash__
+    __hash__ = __enum.Enum.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
