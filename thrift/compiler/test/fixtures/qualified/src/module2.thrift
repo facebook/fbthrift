@@ -21,3 +21,5 @@ const Struct c2 = {
   "first": module0.c0,
   "second": module1.c1,
 };
+
+const Struct c3 = c2;

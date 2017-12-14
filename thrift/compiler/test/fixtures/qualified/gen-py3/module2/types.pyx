@@ -373,3 +373,4 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
 
 c2 = Struct.create(make_shared[cStruct](cc2()))
+c3 = Struct.create(make_shared[cStruct](cc3()))

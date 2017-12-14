@@ -111,3 +111,4 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
 cdef extern from "src/gen-cpp2/module2_constants.h" namespace "module2":
     cdef cStruct cc2 "module2::module2_constants::c2"()
+    cdef cStruct cc3 "module2::module2_constants::c3"()

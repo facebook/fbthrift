@@ -23,6 +23,18 @@ Struct const &module2_constants::c2() {
   };
   return *instance;
 }
+Struct const &module2_constants::c3() {
+  static folly::Indestructible<Struct> const instance{
+    Struct(
+      ::apache::thrift::detail::wrap_argument<1>( ::MODULE0::Struct(
+          ::apache::thrift::detail::wrap_argument<1>(101),
+          ::apache::thrift::detail::wrap_argument<2>("module0_str"))),
+      ::apache::thrift::detail::wrap_argument<2>( ::MODULE1::Struct(
+          ::apache::thrift::detail::wrap_argument<1>(201),
+          ::apache::thrift::detail::wrap_argument<2>("module1_str"))))
+  };
+  return *instance;
+}
 
 
 } // namespace
