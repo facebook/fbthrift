@@ -42,6 +42,9 @@ class EmptyEnum(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cEmptyEnum EmptyEnum_to_cpp(value):
     pass
@@ -58,6 +61,9 @@ class City(__enum.Enum):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cCity City_to_cpp(value):
@@ -82,6 +88,9 @@ class Company(__enum.Enum):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cCompany Company_to_cpp(value):

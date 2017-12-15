@@ -45,6 +45,9 @@ class Animal(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cAnimal Animal_to_cpp(value):
     if value == Animal.DOG:

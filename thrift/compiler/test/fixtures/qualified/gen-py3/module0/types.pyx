@@ -45,6 +45,9 @@ class Enum(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cEnum Enum_to_cpp(value):
     if value == Enum.ONE:

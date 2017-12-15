@@ -16,11 +16,12 @@ import itertools
 import enum as __enum
 
 
-class Enum(__enum.Enum):
+class Enum(__enum.Enum, _typing.SupportsInt):
     ONE = ...
     TWO = ...
     THREE = ...
     value: int
+    def __int__(self) -> int: ...
 
 
 class Struct(thrift.py3.types.Struct):

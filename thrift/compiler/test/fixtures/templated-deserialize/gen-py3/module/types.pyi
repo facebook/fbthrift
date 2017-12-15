@@ -16,11 +16,12 @@ import itertools
 import enum as __enum
 
 
-class MyEnumA(__enum.Enum):
+class MyEnumA(__enum.Enum, _typing.SupportsInt):
     fieldA = ...
     fieldB = ...
     fieldC = ...
     value: int
+    def __int__(self) -> int: ...
 
 
 class SmallStruct(thrift.py3.types.Struct):

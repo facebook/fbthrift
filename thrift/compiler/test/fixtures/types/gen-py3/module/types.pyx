@@ -49,6 +49,9 @@ class has_bitwise_ops(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value):
     if value == has_bitwise_ops.none:
@@ -72,6 +75,9 @@ class is_unscoped(__enum.Enum):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cis_unscoped is_unscoped_to_cpp(value):

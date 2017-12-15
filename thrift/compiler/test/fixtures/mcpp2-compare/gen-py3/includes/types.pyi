@@ -16,10 +16,11 @@ import itertools
 import enum as __enum
 
 
-class AnEnum(__enum.Enum):
+class AnEnum(__enum.Enum, _typing.SupportsInt):
     FIELDA = ...
     FIELDB = ...
     value: int
+    def __int__(self) -> int: ...
 
 
 class AStruct(thrift.py3.types.Struct):

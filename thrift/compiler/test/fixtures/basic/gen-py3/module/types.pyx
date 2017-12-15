@@ -44,6 +44,9 @@ class MyEnum(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cMyEnum MyEnum_to_cpp(value):
     if value == MyEnum.MyValue1:

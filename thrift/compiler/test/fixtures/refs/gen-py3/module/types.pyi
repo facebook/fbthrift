@@ -16,10 +16,11 @@ import itertools
 import enum as __enum
 
 
-class TypedEnum(__enum.Enum):
+class TypedEnum(__enum.Enum, _typing.SupportsInt):
     VAL1 = ...
     VAL2 = ...
     value: int
+    def __int__(self) -> int: ...
 
 
 class MyUnionType(__enum.Enum):

@@ -16,11 +16,12 @@ import itertools
 import enum as __enum
 
 
-class Animal(__enum.Enum):
+class Animal(__enum.Enum, _typing.SupportsInt):
     DOG = ...
     CAT = ...
     TARANTULA = ...
     value: int
+    def __int__(self) -> int: ...
 
 
 class Color(thrift.py3.types.Struct):

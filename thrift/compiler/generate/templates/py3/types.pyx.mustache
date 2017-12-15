@@ -81,6 +81,9 @@ class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}F
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
     {{^enum:flags?}}

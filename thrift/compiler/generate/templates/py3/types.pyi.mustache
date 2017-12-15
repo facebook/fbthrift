@@ -38,11 +38,12 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 
 {{#program:enums}}
-class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
+class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}, _typing.SupportsInt):
     {{#enum:values}}
     {{enumValue:name}} = ...
     {{/enum:values}}
     value: int
+    def __int__(self) -> int: ...
 
 
 {{/program:enums}}

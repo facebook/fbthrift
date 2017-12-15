@@ -17,6 +17,7 @@ class EnumTests(unittest.TestCase):
         self.assertNotEqual(x.type, 4, "Enums are not Ints")
         self.assertNotIsInstance(4, Kind, "Enums are not Ints")
         self.assertIn(x.type, Kind)
+        self.assertEqual(int(x.type), 4)
 
     def test_flag_enum(self) -> None:
         with self.assertRaises(TypeError):
@@ -26,6 +27,7 @@ class EnumTests(unittest.TestCase):
         self.assertIsInstance(x.permissions, Perm)
         self.assertEqual(x.permissions, Perm.read | Perm.execute)
         self.assertNotIsInstance(2, Perm, "Flags are not ints")
+        self.assertEqual(int(x.permissions), 5)
         x = File(name='')
         self.assertFalse(x.permissions)
         self.assertIsInstance(x.permissions, Perm)

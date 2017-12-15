@@ -44,6 +44,9 @@ class TypedEnum(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cTypedEnum TypedEnum_to_cpp(value):
     if value == TypedEnum.VAL1:

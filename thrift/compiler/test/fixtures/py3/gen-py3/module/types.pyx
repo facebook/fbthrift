@@ -46,6 +46,9 @@ class AnEnum(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cAnEnum AnEnum_to_cpp(value):
     if value == AnEnum.ONE:
@@ -69,6 +72,9 @@ class Flags(__enum.Flag):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cFlags Flags_to_cpp(value):

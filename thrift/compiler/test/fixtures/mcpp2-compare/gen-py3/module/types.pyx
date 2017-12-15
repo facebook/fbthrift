@@ -47,6 +47,9 @@ class MyEnumA(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cMyEnumA MyEnumA_to_cpp(value):
     if value == MyEnumA.fieldA:
@@ -67,6 +70,9 @@ class AnnotatedEnum(__enum.Enum):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cAnnotatedEnum AnnotatedEnum_to_cpp(value):
@@ -89,6 +95,9 @@ class AnnotatedEnum2(__enum.Enum):
             return False
         return self.value == other.value
 
+    def __int__(self):
+        return self.value
+
 
 cdef cAnnotatedEnum2 AnnotatedEnum2_to_cpp(value):
     if value == AnnotatedEnum2.FIELDA:
@@ -107,6 +116,9 @@ class MyEnumB(__enum.Enum):
             warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self.value == other.value
+
+    def __int__(self):
+        return self.value
 
 
 cdef cMyEnumB MyEnumB_to_cpp(value):
