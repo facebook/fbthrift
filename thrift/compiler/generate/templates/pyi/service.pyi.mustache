@@ -25,17 +25,22 @@ import typing as t
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
-{{#service:includeNamespaces}}
+{{#program:includeNamespaces}}
 {{#hasTypes?}}
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}ttypes
 {{/hasTypes?}}
-{{/service:includeNamespaces}}
-from {{#service:pyNamespaces}}{{value}}.{{/service:pyNamespaces}}ttypes import *
+{{/program:includeNamespaces}}
+from {{#program:pyNamespaces}}{{value}}.{{/program:pyNamespaces}}ttypes import *
+{{#service}}
+{{#service:extends}}
+import {{#service:pyNamespaces}}{{value}}.{{/service:pyNamespaces}}{{service:name}}
+{{/service:extends}}
+
 
 class Iface{{!
     }}{{#service:extends}}({{!
-      }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-      }}{{service:programName}}.services.{{service:name}}Interface{{!
+        }}{{#service:pyNamespaces}}{{value}}.{{/service:pyNamespaces}}{{!
+            }}{{service:name}}.Iface{{!
     }}){{/service:extends}}:{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
     {{#service:functions}}
     def {{function:name}}(self{{#function:args}}, {{!
@@ -119,3 +124,4 @@ class {{function:name}}_result:
     def __eq__(self, other: t.Any) -> bool: ...
     def __ne__(self, other: t.Any) -> bool: ...
 {{/service:functions}}
+{{/service}}

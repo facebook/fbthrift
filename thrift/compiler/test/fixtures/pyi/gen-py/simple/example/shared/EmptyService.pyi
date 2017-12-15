@@ -9,7 +9,9 @@ import typing as t
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
+import simple.dependent.ttypes
 from simple.example.shared.ttypes import *
+
 
 class Iface: ...  # EmptyService
 
