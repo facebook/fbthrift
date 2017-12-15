@@ -591,7 +591,7 @@ class FuzzerClient(object):
         # Obtain a normal client connection using SR2
         client = serviceRouter.getClient2(self.client_class,
                                           service_name, sr_options,
-                                          overrides, False)
+                                          overrides)
 
         if client is None:
             raise NameError('Failed to lookup host for tier %s' % service_name)
