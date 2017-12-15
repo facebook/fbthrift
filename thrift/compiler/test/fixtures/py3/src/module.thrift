@@ -7,6 +7,13 @@ enum AnEnum {
   FOUR = 4
 }
 
+enum Flags {
+  flag_A = 1,
+  flag_B = 2,
+  flag_C = 4,
+  flag_D = 8,
+} (py3.flags)
+
 exception SimpleException {
   1: i16 err_code
 }

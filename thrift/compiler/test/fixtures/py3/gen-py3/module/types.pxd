@@ -26,8 +26,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cAnEnum AnEnum__TWO "py3::simple::AnEnum::TWO"
     cAnEnum AnEnum__THREE "py3::simple::AnEnum::THREE"
     cAnEnum AnEnum__FOUR "py3::simple::AnEnum::FOUR"
+    cdef cppclass cFlags "py3::simple::Flags":
+        bint operator==(cFlags&)
+    cFlags Flags__flag_A "py3::simple::Flags::flag_A"
+    cFlags Flags__flag_B "py3::simple::Flags::flag_B"
+    cFlags Flags__flag_C "py3::simple::Flags::flag_C"
+    cFlags Flags__flag_D "py3::simple::Flags::flag_D"
 
 cdef cAnEnum AnEnum_to_cpp(value)
+cdef cFlags Flags_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::simple":
     # Forward Declaration

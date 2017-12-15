@@ -68,12 +68,12 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 
 {{#program:enums}}
-class {{enum:name}}(__enum.Enum):
+class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
     {{enumValue:name}} = <int> ({{enum:name}}__{{enumValue:name}})
     {{/enum:values}}
 
-    __hash__ = __enum.Enum.__hash__
+    __hash__ = __enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}.__hash__
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -83,6 +83,7 @@ class {{enum:name}}(__enum.Enum):
 
 
 cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
+    {{^enum:flags?}}
     {{#enum:values}}
     {{^first?}}el{{/first?}}if value == {{enum:name}}.{{enumValue:name}}:
         return {{enum:name}}__{{enumValue:name}}
@@ -90,6 +91,10 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
     {{^enum:values}}
     pass
     {{/enum:values}}
+    {{/enum:flags?}}
+    {{#enum:flags?}}
+    return <c{{enum:name}}>(<int>value.value)
+    {{/enum:flags?}}
 {{/program:enums}}
 
 

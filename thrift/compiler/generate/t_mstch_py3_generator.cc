@@ -49,6 +49,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   mstch::map extend_field(const t_field&) override;
   mstch::map extend_type(const t_type&) override;
   mstch::map extend_service(const t_service&) override;
+  mstch::map extend_enum(const t_enum&) override;
 
  protected:
   bool should_resolve_typedefs() const override {
@@ -245,6 +246,14 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"integer?", is_integer},
       {"cythonTypeNoneable?", cythonTypeNoneable},
       {"hasCythonType?", hasCythonType},
+  };
+  return result;
+}
+
+mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {
+  const auto is_flags = enm.annotations_.count("py3.flags") != 0;
+  mstch::map result{
+      {"flags?", is_flags},
   };
   return result;
 }

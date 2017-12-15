@@ -38,7 +38,7 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 
 {{#program:enums}}
-class {{enum:name}}(__enum.Enum):
+class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
     {{enumValue:name}} = ...
     {{/enum:values}}

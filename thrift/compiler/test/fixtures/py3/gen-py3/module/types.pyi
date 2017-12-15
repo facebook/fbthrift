@@ -24,6 +24,14 @@ class AnEnum(__enum.Enum):
     value: int
 
 
+class Flags(__enum.Flag):
+    flag_A = ...
+    flag_B = ...
+    flag_C = ...
+    flag_D = ...
+    value: int
+
+
 class SimpleException(thrift.py3.exceptions.Error):
     def __init__(
         self, *,

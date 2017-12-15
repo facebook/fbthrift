@@ -56,6 +56,23 @@ cdef cAnEnum AnEnum_to_cpp(value):
         return AnEnum__THREE
     elif value == AnEnum.FOUR:
         return AnEnum__FOUR
+class Flags(__enum.Flag):
+    flag_A = <int> (Flags__flag_A)
+    flag_B = <int> (Flags__flag_B)
+    flag_C = <int> (Flags__flag_C)
+    flag_D = <int> (Flags__flag_D)
+
+    __hash__ = __enum.Flag.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
+
+cdef cFlags Flags_to_cpp(value):
+    return <cFlags>(<int>value.value)
 
 
 cdef class SimpleException(thrift.py3.exceptions.Error):

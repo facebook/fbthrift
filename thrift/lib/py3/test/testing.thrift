@@ -30,6 +30,28 @@ enum Color {
   green = 2,
 }
 
+enum Perm {
+  read = 4,
+  write = 2,
+  execute = 1,
+} (py3.flags)
+
+enum Kind {
+    REGULAR = 8,
+    LINK = 10,
+    DIR = 4,
+    FIFO = 1,
+    CHAR = 2,
+    BLOCK = 6,
+    SOCK = 12,
+}
+
+struct File {
+    1: required string name,
+    2: Perm permissions,
+    3: Kind type=Kind.REGULAR,
+}
+
 union Integers {
     1: byte tiny,
     2: i16 small,
