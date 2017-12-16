@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import unittest
 
-from thrift.py3 import serialize, deserialize
+from thrift.py3 import serialize, deserialize, Protocol, BadEnum
 from testing.types import Kind, Perm, File
+from typing import cast
 
 
 class EnumTests(unittest.TestCase):
@@ -43,3 +44,10 @@ class EnumTests(unittest.TestCase):
         self.assertEqual(x, y)
         self.assertEqual(x.permissions, Perm.read | Perm.write)
         self.assertIsInstance(x.permissions, Perm)
+
+    def test_bad_enum_in_struct(self) -> None:
+        x = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
+        self.assertIsInstance(x.type, BadEnum)
+        self.assertEqual(x.type.value, 64)
+        self.assertEqual(cast(BadEnum, x.type).enum, Kind)
+        self.assertEqual(int(x.type), 64)

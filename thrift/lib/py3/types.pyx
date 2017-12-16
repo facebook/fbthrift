@@ -34,12 +34,19 @@ cdef class BadEnum:
     """
 
     def __init__(self, the_enum, value):
-        self.the_enum = the_enum
+        self._enum = the_enum
         self.value = value
         self.name = '#INVALID#'
 
     def __repr__(self):
-        return f'<{self.the_enum.__name__}.{self.name}: {self.value}>'
+        return f'<{self.enum.__name__}.{self.name}: {self.value}>'
+
+    def __int__(self):
+        return self.value
+
+    @property
+    def enum(self):
+        return self._enum
 
 
 cdef translate_cpp_enum_to_python(object EnumClass, int value):
