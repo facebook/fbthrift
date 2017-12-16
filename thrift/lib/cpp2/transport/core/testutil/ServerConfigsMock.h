@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 
 namespace apache {
 namespace thrift {
@@ -33,20 +34,27 @@ class ServerConfigsMock : public ServerConfigs {
   /**
    * @see BaseThriftServer::getTaskExpireTimeForRequest function.
    */
-  virtual bool getTaskExpireTimeForRequest(
+  bool getTaskExpireTimeForRequest(
       std::chrono::milliseconds,
       std::chrono::milliseconds,
       std::chrono::milliseconds& queueTimeout,
-      std::chrono::milliseconds& taskTimeout) const {
+      std::chrono::milliseconds& taskTimeout) const override {
     queueTimeout = queueTimeout_;
     taskTimeout = taskTimeout_;
     return queueTimeout == taskTimeout;
+  }
+
+  const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
+      const override {
+    return observer_;
   }
 
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_;
   std::chrono::milliseconds taskTimeout_;
+  std::shared_ptr<apache::thrift::server::TServerObserver> observer_{
+      std::make_shared<FakeServerObserver>()};
 };
 
 } // namespace server

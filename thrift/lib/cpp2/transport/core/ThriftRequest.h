@@ -54,7 +54,9 @@ class ThriftRequest : public ResponseChannel::Request {
         kind_(metadata->kind),
         seqId_(metadata->seqId),
         active_(true),
-        reqContext_(&connContext_, &header_) {
+        reqContext_(&connContext_, &header_),
+        queueTimeout_(serverConfigs_),
+        taskTimeout_(serverConfigs_) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -237,10 +239,17 @@ class ThriftRequest : public ResponseChannel::Request {
   class QueueTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequest* request_;
     bool canceled_{false};
+    const apache::thrift::server::ServerConfigs& serverConfigs_;
+    QueueTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
+        : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
       if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
           request_->active_ && !request_->isOneway()) {
         request_->active_ = false;
+        const auto& observer = serverConfigs_.getObserver();
+        if (observer) {
+          observer->queueTimeout();
+        }
         request_->sendErrorWrappedInternal(
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
@@ -254,9 +263,16 @@ class ThriftRequest : public ResponseChannel::Request {
   class TaskTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequest* request_;
     bool canceled_{false};
+    const apache::thrift::server::ServerConfigs& serverConfigs_;
+    TaskTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
+        : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
       if (!canceled_ && request_->active_ && !request_->isOneway()) {
         request_->active_ = false;
+        const auto& observer = serverConfigs_.getObserver();
+        if (observer) {
+          observer->taskTimeout();
+        }
         request_->sendErrorWrappedInternal(
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,

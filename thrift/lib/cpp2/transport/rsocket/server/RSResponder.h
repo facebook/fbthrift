@@ -35,7 +35,10 @@ class RSResponder : public rsocket::RSocketResponder {
       yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
   using SingleRef = yarpl::Reference<yarpl::single::Single<rsocket::Payload>>;
 
-  RSResponder(ThriftProcessor* processor, folly::EventBase* evb);
+  RSResponder(
+      ThriftProcessor* processor,
+      folly::EventBase* evb,
+      std::shared_ptr<apache::thrift::server::TServerObserver> observer);
 
   virtual ~RSResponder() = default;
 
@@ -58,6 +61,7 @@ class RSResponder : public rsocket::RSocketResponder {
  protected:
   ThriftProcessor* processor_;
   folly::EventBase* evb_;
+  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
 };
 } // namespace thrift
 } // namespace apache

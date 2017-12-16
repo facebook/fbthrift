@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 
 namespace apache {
@@ -66,6 +67,11 @@ class TransportCompatibilityTest {
   void TestEvbSwitch_Failure();
   void TestCloseCallback();
 
+  void TestConnectionStats();
+
+ public:
+  std::shared_ptr<FakeServerObserver> observer_;
+
  protected:
   void setupServer();
   void stopServer();
@@ -88,6 +94,9 @@ class TransportCompatibilityTest {
   std::unique_ptr<ThriftServer> server_;
   uint16_t port_;
   folly::ScopedEventBaseThread workerThread_;
+
+  int numIOThreads_{10};
+  int numWorkerThreads_{10};
 };
 
 } // namespace thrift

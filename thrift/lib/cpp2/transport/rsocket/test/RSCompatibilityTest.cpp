@@ -36,7 +36,8 @@ class RSCompatibilityTest : public testing::Test {
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
         std::make_unique<apache::thrift::RSRoutingHandler>(
-            compatibilityTest_->getServer()->getThriftProcessor()));
+            compatibilityTest_->getServer()->getThriftProcessor(),
+            *compatibilityTest_->getServer()));
     compatibilityTest_->startServer();
   }
 
@@ -139,6 +140,10 @@ TEST_F(RSCompatibilityTest, EvbSwitch_Failure) {
 
 TEST_F(RSCompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
+}
+
+TEST_F(RSCompatibilityTest, TestConnectionStats) {
+  compatibilityTest_->TestConnectionStats();
 }
 
 } // namespace thrift

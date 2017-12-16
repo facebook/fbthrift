@@ -29,8 +29,7 @@ class RSRoutingHandler : public TransportRoutingHandler {
  public:
   RSRoutingHandler(
       apache::thrift::ThriftProcessor* thriftProcessor,
-      std::shared_ptr<rsocket::RSocketStats> stats =
-          rsocket::RSocketStats::noop());
+      const apache::thrift::server::ServerConfigs& serverConfigs);
   virtual ~RSRoutingHandler();
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;

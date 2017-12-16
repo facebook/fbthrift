@@ -43,7 +43,7 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
   h2_options->idleTimeout = server->getIdleTimeout();
   h2_options->shutdownOn = {SIGINT, SIGTERM};
   return std::make_unique<HTTP2RoutingHandler>(
-      std::move(h2_options), server->getThriftProcessor());
+      std::move(h2_options), server->getThriftProcessor(), *server);
 }
 
 template <typename ServiceHandler>
@@ -56,7 +56,7 @@ std::shared_ptr<ThriftServer> newServer(int32_t port) {
   server->setPort(port);
   server->setProcessorFactory(proc_factory);
   server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
-      server->getThriftProcessor()));
+      server->getThriftProcessor(), *server));
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
   return server;
 }

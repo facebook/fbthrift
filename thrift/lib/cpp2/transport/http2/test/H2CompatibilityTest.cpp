@@ -35,7 +35,7 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
   h2_options->shutdownOn = {SIGINT, SIGTERM};
 
   return std::make_unique<HTTP2RoutingHandler>(
-      std::move(h2_options), server->getThriftProcessor());
+      std::move(h2_options), server->getThriftProcessor(), *server);
 }
 
 enum ChannelType {
@@ -190,6 +190,10 @@ TEST_P(H2CompatibilityTest, EvbSwitch_Failure) {
 
 TEST_P(H2CompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
+}
+
+TEST_P(H2CompatibilityTest, TestConnectionStats) {
+  compatibilityTest_->TestConnectionStats();
 }
 
 INSTANTIATE_TEST_CASE_P(

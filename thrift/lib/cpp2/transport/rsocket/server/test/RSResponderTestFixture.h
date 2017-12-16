@@ -36,7 +36,8 @@ class RSResponderTestFixture : public testing::Test {
         std::move(cpp2Processor), serverConfigs_);
     processor_->setThreadManager(threadManager_.get());
 
-    responder_ = std::make_unique<RSResponder>(processor_.get(), &eventBase_);
+    responder_ =
+        std::make_unique<RSResponder>(processor_.get(), &eventBase_, nullptr);
   }
 
   // Tears down after the test.

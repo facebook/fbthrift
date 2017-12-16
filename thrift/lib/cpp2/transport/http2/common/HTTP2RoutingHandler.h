@@ -31,8 +31,11 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
  public:
   explicit HTTP2RoutingHandler(
       std::unique_ptr<proxygen::HTTPServerOptions> options,
-      ThriftProcessor* processor)
-      : options_(std::move(options)), processor_(processor) {}
+      ThriftProcessor* processor,
+      const apache::thrift::server::ServerConfigs& serverConfigs)
+      : options_(std::move(options)),
+        processor_(processor),
+        serverConfigs_(serverConfigs) {}
   virtual ~HTTP2RoutingHandler() = default;
   HTTP2RoutingHandler(const HTTP2RoutingHandler&) = delete;
 
@@ -52,7 +55,9 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   std::unique_ptr<proxygen::HTTPServerOptions> options_;
 
   ThriftProcessor* processor_;
+
+  const apache::thrift::server::ServerConfigs& serverConfigs_;
 };
 
-} // namspace thrift
+} // namespace thrift
 } // namespace apache

@@ -28,15 +28,18 @@ namespace thrift {
 
 RSRoutingHandler::RSRoutingHandler(
     apache::thrift::ThriftProcessor* thriftProcessor,
-    std::shared_ptr<RSocketStats> stats)
+    const apache::thrift::server::ServerConfigs& serverConfigs)
     : thriftProcessor_(thriftProcessor) {
   serviceHandler_ = RSocketServiceHandler::create([&](auto&) {
+    // RSResponder will be created per client connection. It will use the
+    // current Observer of the server.
     return std::make_shared<RSResponder>(
         thriftProcessor_,
-        folly::EventBaseManager::get()->getExistingEventBase());
+        folly::EventBaseManager::get()->getExistingEventBase(),
+        serverConfigs.getObserver());
   });
 
-  rsocketServer_ = RSocket::createServer(nullptr, std::move(stats));
+  rsocketServer_ = RSocket::createServer(nullptr);
   rsocketServer_->setSingleThreadedResponder();
 }
 

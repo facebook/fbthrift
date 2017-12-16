@@ -26,8 +26,11 @@
 namespace apache {
 namespace thrift {
 
-RSResponder::RSResponder(ThriftProcessor* processor, folly::EventBase* evb)
-    : processor_(processor), evb_(evb) {}
+RSResponder::RSResponder(
+    ThriftProcessor* processor,
+    folly::EventBase* evb,
+    std::shared_ptr<apache::thrift::server::TServerObserver> observer)
+    : processor_(processor), evb_(evb), observer_(std::move(observer)) {}
 
 yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
 RSResponder::handleRequestResponse(

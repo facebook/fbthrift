@@ -99,7 +99,11 @@ void TransportCompatibilityTest::setupServer() {
           handler_);
 
   server_ = std::make_unique<ThriftServer>();
+  observer_ = std::make_shared<FakeServerObserver>();
+  server_->setObserver(observer_);
   server_->setPort(0);
+  server_->setNumIOWorkerThreads(numIOThreads_);
+  server_->setNumCPUWorkerThreads(numWorkerThreads_);
   server_->setProcessorFactory(cpp2PFac);
 }
 
@@ -209,6 +213,23 @@ void TransportCompatibilityTest::callSleep(
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));
   client->sleep(opts, std::move(cb), sleepMs);
+}
+
+void TransportCompatibilityTest::TestConnectionStats() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_EQ(0, observer_->connAccepted_);
+    EXPECT_EQ(0, observer_->activeConns_);
+
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+
+    EXPECT_EQ(1, observer_->connAccepted_);
+    if (FLAGS_transport != "rsocket") {
+      // TODO: RSocket implementation should also be able to provide the number
+      // of active connections to the server.
+      EXPECT_EQ(numIOThreads_, observer_->activeConns_);
+    }
+  });
 }
 
 void TransportCompatibilityTest::TestRequestResponse_Simple() {
@@ -326,6 +347,9 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     /* Sleep to give time for all callbacks to be completed */
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+    CHECK_EQ(3, observer_->taskTimeout_);
+    CHECK_EQ(0, observer_->queueTimeout_);
   });
 }
 

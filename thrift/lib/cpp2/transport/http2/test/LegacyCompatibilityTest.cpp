@@ -35,7 +35,7 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
   h2_options->shutdownOn = {SIGINT, SIGTERM};
 
   return std::make_unique<HTTP2RoutingHandler>(
-      std::move(h2_options), server->getThriftProcessor());
+      std::move(h2_options), server->getThriftProcessor(), *server);
 }
 
 // Only these two channel types are compatible with legacy.

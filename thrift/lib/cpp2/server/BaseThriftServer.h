@@ -362,7 +362,7 @@ class BaseThriftServer : public apache::thrift::server::TServer,
   }
 
   const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
-      const {
+      const override {
     return observer_;
   }
 

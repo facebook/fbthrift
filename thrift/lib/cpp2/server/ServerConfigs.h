@@ -17,6 +17,7 @@
 #ifndef SERVER_CONFIGS_H_
 #define SERVER_CONFIGS_H_ 1
 
+#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <chrono>
 
 namespace apache {
@@ -46,6 +47,9 @@ class ServerConfigs {
       std::chrono::milliseconds clientTimeoutMs,
       std::chrono::milliseconds& queueTimeout,
       std::chrono::milliseconds& taskTimeout) const = 0;
+
+  virtual const std::shared_ptr<apache::thrift::server::TServerObserver>&
+  getObserver() const = 0;
 };
 } // namespace server
 } // namespace thrift

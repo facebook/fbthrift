@@ -18,11 +18,11 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
-#include <thrift/perf/cpp2/server/BenchmarkHandler.h>
-#include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/perf/cpp2/server/BenchmarkHandler.h>
+#include <thrift/perf/cpp2/util/QPSStats.h>
 #include <unistd.h>
 #include <thread>
 
@@ -48,7 +48,7 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
   h2_options->idleTimeout = server->getIdleTimeout();
   h2_options->shutdownOn = {SIGINT, SIGTERM};
   return std::make_unique<HTTP2RoutingHandler>(
-      std::move(h2_options), server->getThriftProcessor());
+      std::move(h2_options), server->getThriftProcessor(), *server);
 }
 
 int main(int argc, char** argv) {
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
   server->setProcessorFactory(cpp2PFac);
 
   server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
-      server->getThriftProcessor()));
+      server->getThriftProcessor(), *server));
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
 
   LOG(INFO) << "Benchmark server running on port: " << FLAGS_port;
