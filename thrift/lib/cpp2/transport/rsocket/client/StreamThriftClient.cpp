@@ -106,6 +106,33 @@ uint32_t StreamThriftClient::sendRequest(
       std::move(header));
 }
 
+uint32_t StreamThriftClient::sendOnewayRequest(
+    RpcOptions& rpcOptions,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<ContextStack> ctx,
+    std::unique_ptr<IOBuf> buf,
+    std::shared_ptr<THeader> header) {
+  auto& cbr = *cb;
+  if (typeid(StreamRequestCallback) == typeid(cbr)) {
+    std::unique_ptr<StreamRequestCallback> scb(
+        static_cast<StreamRequestCallback*>(cb.release()));
+
+    return sendStreamRequestHelper(
+        rpcOptions,
+        std::move(scb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header),
+        connection_->getEventBase());
+  }
+  return ThriftClient::sendOnewayRequest(
+      rpcOptions,
+      std::move(cb),
+      std::move(ctx),
+      std::move(buf),
+      std::move(header));
+}
+
 uint32_t StreamThriftClient::sendStreamRequestHelper(
     RpcOptions& rpcOptions,
     std::unique_ptr<StreamRequestCallback> cb,

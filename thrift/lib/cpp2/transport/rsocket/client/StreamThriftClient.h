@@ -50,6 +50,13 @@ class StreamThriftClient : public ThriftClient {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) override;
 
+  uint32_t sendOnewayRequest(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+
  protected:
   uint32_t sendStreamRequestHelper(
       RpcOptions& rpcOptions,

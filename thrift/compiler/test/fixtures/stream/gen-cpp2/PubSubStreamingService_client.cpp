@@ -88,7 +88,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useS
   args.get<1>().value = &i32_to;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "returnstream", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "returnstream", writer, sizer, true, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
