@@ -40,7 +40,9 @@
 <% > module_types_cpp/declare_members%>
 
 
+<%^struct:cpp_noncomparable%>
 <% > module_types_cpp/equality_overload%>
+<%/struct:cpp_noncomparable%>
 
 
 <% > module_types_cpp/getters_setters%>
@@ -51,7 +53,9 @@
 <%#struct:union?%>
 <% > module_types_cpp/union_declare_members%>
 
+<%^struct:cpp_noncomparable%>
 <% > module_types_cpp/union_equality_overload%>
+<%/struct:cpp_noncomparable%>
 
 <% > module_types_cpp/union_setters%>
 <% > module_types_cpp/translate_field_name%>

@@ -1,0 +1,42 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#field:cpp_ref?%>
+  if (!this-><%field:name%>.empty()) {
+<%/field:cpp_ref?%>
+<%#type:resolves_to_container?%>
+  if (!this-><%field:name%>.empty()) {
+<%/type:resolves_to_container?%>
+<%#type:string_or_binary?%>
+  if (!apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEmpty(this-><%field:name%>)) {
+<%/type:string_or_binary?%>
+<%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:string_or_binary?%>
+<%#field:value%>
+  if (this-><%field:name%> != <%!
+%><%^type:enum?%><%!
+  %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
+%><%/type:enum?%><%!
+  %><%#type:enum?%><%!
+  %><%#value:enum?%><% > common/cxx_value_prefix%><% > common/const_value%><% > common/cxx_value_suffix%><%/value:enum?%><%!
+  %><%^value:enum?%><%#field:enum_has_value%><% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%><%/field:enum_has_value%><%/value:enum?%><%!
+  %><%^value:enum?%><%^field:enum_has_value%>static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>)<%/field:enum_has_value%><%/value:enum?%><%!
+%><%/type:enum?%><%!
+%>) {
+<%/field:value%>
+<%^field:value%>
+  if (this-><%field:name%> != <% > module_types_cpp/unset_values%>) {
+<%/field:value%>
+<%/type:string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%>

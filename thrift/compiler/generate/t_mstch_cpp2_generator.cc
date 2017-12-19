@@ -331,6 +331,7 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::cpp_ref_shared_const},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
             {"field:optionals?", &mstch_cpp2_field::optionals},
+            {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
         });
   }
   mstch::node cpp_ref() {
@@ -369,6 +370,15 @@ class mstch_cpp2_field : public mstch_field {
     return field_->get_req() == t_field::e_req::T_OPTIONAL &&
         cache_->parsed_options_.count("optionals");
   }
+  mstch::node terse_writes() {
+    // Add terse writes for unqualified fields when comparison is cheap:
+    // (e.g. i32/i64, empty strings/list/map)
+    auto t = resolve_typedef(field_->get_type());
+    return cache_->parsed_options_.count("terse_writes") != 0 &&
+        field_->get_req() != t_field::e_req::T_OPTIONAL &&
+        field_->get_req() != t_field::e_req::T_REQUIRED &&
+        (is_cpp_ref(field_) || (!t->is_struct() && !t->is_xception()));
+  }
 };
 
 class mstch_cpp2_struct : public mstch_struct {
@@ -394,6 +404,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_declare_equal_to",
              &mstch_cpp2_struct::cpp_declare_equal_to},
             {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
+            {"struct:cpp_noncomparable", &mstch_cpp2_struct::cpp_noncomparable},
             {"struct:cpp_noexcept_move_ctor",
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
             {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
@@ -531,6 +542,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node cpp_noncopyable() {
     return bool(strct_->annotations_.count("cpp2.noncopyable"));
+  }
+  mstch::node cpp_noncomparable() {
+    return bool(strct_->annotations_.count("cpp2.noncomparable"));
   }
   mstch::node cpp_noexcept_move_ctor() {
     return strct_->annotations_.count("cpp.noexcept_move_ctor") ||

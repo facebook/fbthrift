@@ -71,8 +71,10 @@ class <%struct:name%> <%!
 <%/struct:virtual%>
 <% > module_types_h/union_storage%>
 
+<%^struct:cpp_noncomparable%>
 <% > module_types_h/eq_overload%>
 <% > module_types_h/union_lt_overload%>
+<%/struct:cpp_noncomparable%>
 <% > module_types_h/union_setters%>
 
 <% > module_types_h/union_getters%>
@@ -175,8 +177,10 @@ class <%struct:name%> <%!
 <%#struct:fields?%>
 <% > module_types_h/declare_members%>
 <%/struct:fields?%>
+<%^struct:cpp_noncomparable%>
 <% > module_types_h/eq_overload%>
 <% > module_types_h/lt_overload%>
+<%/struct:cpp_noncomparable%>
 <%#struct:fields?%><%^struct:optionals?%>
 <% > module_types_h/getters_setters%>
 <%/struct:optionals?%><%/struct:fields?%>
