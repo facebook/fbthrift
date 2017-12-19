@@ -266,13 +266,13 @@ cdef class Combo(thrift.py3.types.Struct):
             deref(c_inst).listOfOurMyStructLists = <vector[vector[cMyStruct]]>deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj)
             deref(c_inst).__isset.listOfOurMyStructLists = True
         if theirMyStructList is not None:
-            deref(c_inst).theirMyStructList = <vector[_module_types.cMyStruct]>deref(List__MyStruct(theirMyStructList)._cpp_obj)
+            deref(c_inst).theirMyStructList = <vector[_module_types.cMyStruct]>deref(List__module_MyStruct(theirMyStructList)._cpp_obj)
             deref(c_inst).__isset.theirMyStructList = True
         if ourMyStructList is not None:
             deref(c_inst).ourMyStructList = <vector[cMyStruct]>deref(List__MyStruct(ourMyStructList)._cpp_obj)
             deref(c_inst).__isset.ourMyStructList = True
         if listOfTheirMyStructList is not None:
-            deref(c_inst).listOfTheirMyStructList = <vector[vector[_module_types.cMyStruct]]>deref(List__List__MyStruct(listOfTheirMyStructList)._cpp_obj)
+            deref(c_inst).listOfTheirMyStructList = <vector[vector[_module_types.cMyStruct]]>deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj)
             deref(c_inst).__isset.listOfTheirMyStructList = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -304,7 +304,7 @@ cdef class Combo(thrift.py3.types.Struct):
     def theirMyStructList(self):
 
         if self.__theirMyStructList is None:
-            self.__theirMyStructList = List__MyStruct.create(make_shared[vector[_module_types.cMyStruct]](deref(self._cpp_obj).theirMyStructList))
+            self.__theirMyStructList = List__module_MyStruct.create(make_shared[vector[_module_types.cMyStruct]](deref(self._cpp_obj).theirMyStructList))
         return self.__theirMyStructList
 
     @property
@@ -318,7 +318,7 @@ cdef class Combo(thrift.py3.types.Struct):
     def listOfTheirMyStructList(self):
 
         if self.__listOfTheirMyStructList is None:
-            self.__listOfTheirMyStructList = List__List__MyStruct.create(make_shared[vector[vector[_module_types.cMyStruct]]](deref(self._cpp_obj).listOfTheirMyStructList))
+            self.__listOfTheirMyStructList = List__List__module_MyStruct.create(make_shared[vector[vector[_module_types.cMyStruct]]](deref(self._cpp_obj).listOfTheirMyStructList))
         return self.__listOfTheirMyStructList
 
 
@@ -682,4 +682,309 @@ cdef class List__List__MyStruct:
 
 
 Sequence.register(List__List__MyStruct)
+
+cdef class List__module_MyStruct:
+    def __init__(self, items=None):
+        if isinstance(items, List__module_MyStruct):
+            self._cpp_obj = (<List__module_MyStruct> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__module_MyStruct._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[_module_types.cMyStruct]] c_items):
+        inst = <List__module_MyStruct>List__module_MyStruct.__new__(List__module_MyStruct)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[_module_types.cMyStruct]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[_module_types.cMyStruct]] c_inst = make_unique[vector[_module_types.cMyStruct]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, _module_types.MyStruct):
+                    raise TypeError(f"{item!r} is not of type _module_types.MyStruct")
+                deref(c_inst).push_back(deref((<_module_types.MyStruct>item)._cpp_obj))
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[_module_types.cMyStruct]] c_inst
+        cdef _module_types.cMyStruct citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[_module_types.cMyStruct]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__module_MyStruct.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return _module_types.MyStruct.create(make_shared[_module_types.cMyStruct](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
+        cdef vector[_module_types.cMyStruct] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef _module_types.cMyStruct citem
+        for citem in deref(self._cpp_obj):
+            yield _module_types.MyStruct.create(make_shared[_module_types.cMyStruct](citem))
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef _module_types.cMyStruct citem
+        cdef vector[_module_types.cMyStruct] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[_module_types.cMyStruct].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield _module_types.MyStruct.create(make_shared[_module_types.cMyStruct](citem))
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
+        cdef vector[_module_types.cMyStruct] vec = deref(self._cpp_obj.get())
+        cdef vector[_module_types.cMyStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
+        cdef vector[_module_types.cMyStruct] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__module_MyStruct)
+
+cdef class List__List__module_MyStruct:
+    def __init__(self, items=None):
+        if isinstance(items, List__List__module_MyStruct):
+            self._cpp_obj = (<List__List__module_MyStruct> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__List__module_MyStruct._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]] c_items):
+        inst = <List__List__module_MyStruct>List__List__module_MyStruct.__new__(List__List__module_MyStruct)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] c_inst = make_unique[vector[vector[_module_types.cMyStruct]]]()
+        if items is not None:
+            for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Sequence[_module_types.MyStruct]")
+                if not isinstance(item, List__module_MyStruct):
+                    item = List__module_MyStruct(item)
+                deref(c_inst).push_back(vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get())))
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] c_inst
+        cdef vector[_module_types.cMyStruct] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[vector[_module_types.cMyStruct]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__List__module_MyStruct.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return List__module_MyStruct.create(
+    make_shared[vector[_module_types.cMyStruct]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
+        cdef vector[vector[_module_types.cMyStruct]] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef vector[_module_types.cMyStruct] citem
+        for citem in deref(self._cpp_obj):
+            yield List__module_MyStruct.create(
+    make_shared[vector[_module_types.cMyStruct]](citem))
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef vector[_module_types.cMyStruct] citem
+        cdef vector[vector[_module_types.cMyStruct]] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[vector[_module_types.cMyStruct]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield List__module_MyStruct.create(
+    make_shared[vector[_module_types.cMyStruct]](citem))
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
+        cdef vector[vector[_module_types.cMyStruct]] vec = deref(self._cpp_obj.get())
+        cdef vector[vector[_module_types.cMyStruct]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
+        cdef vector[vector[_module_types.cMyStruct]] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__List__module_MyStruct)
 

@@ -88,7 +88,20 @@ class t_mstch_py3_generator : public t_mstch_generator {
       const;
   string get_cpp_type(const t_type& type) const;
   string to_cython_type(const string& cpp_template) const;
+  bool is_external_program(const t_program& program) const;
+  inline const t_program& get_type_program(const t_type& type);
 };
+
+bool t_mstch_py3_generator::is_external_program(
+    const t_program& program) const {
+  return program.get_path() != get_program()->get_path();
+}
+
+inline const t_program& t_mstch_py3_generator::get_type_program(
+    const t_type& type) {
+  auto type_program = type.get_program();
+  return type_program ? *type_program : *get_program();
+}
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   const auto& cppNamespaces = get_cpp2_namespace(program);
@@ -205,17 +218,11 @@ string t_mstch_py3_generator::ref_type(const t_field& field) const {
 }
 
 mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
-  const auto type_program = type.get_program();
-  const auto program = type_program ? type_program : get_program();
+  const auto& program = get_type_program(type);
   const auto modulePath =
-      get_py3_namespace(*program, {program->get_name(), "types"});
-  const auto& cppNamespaces = get_cpp2_namespace(*program);
-
-  bool externalProgram = false;
-  const auto& prog_path = program->get_path();
-  if (prog_path != get_program()->get_path()) {
-    externalProgram = true;
-  }
+      get_py3_namespace(program, {program.get_name(), "types"});
+  const auto& cppNamespaces = get_cpp2_namespace(program);
+  const auto externalProgram = is_external_program(program);
 
   string cpp_template = this->get_cpp_template(type);
   string cython_template = this->to_cython_template(cpp_template);
@@ -356,21 +363,16 @@ string t_mstch_py3_generator::to_cython_type(const string& cpp_type) const {
 }
 
 mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
-  const auto program = service.get_program();
-  const auto& cppNamespaces = get_cpp2_namespace(*program);
-  const auto& py3Namespaces = get_py3_namespace(*program);
-  string include_prefix = program->get_include_prefix();
-  // Used to avoid circular import in ServicesWrapper.h.mustache
-  bool externalProgram = false;
-  const auto& prog_path = program->get_path();
-  if (prog_path != get_program()->get_path()) {
-    externalProgram = true;
-  }
+  const auto& program = *service.get_program();
+  const auto& cppNamespaces = get_cpp2_namespace(program);
+  const auto& py3Namespaces = get_py3_namespace(program);
+  string include_prefix = program.get_include_prefix();
+  const auto externalProgram = is_external_program(program);
   mstch::map result{
       {"externalProgram?", externalProgram},
       {"cppNamespaces", cppNamespaces},
       {"py3Namespaces", py3Namespaces},
-      {"programName", program->get_name()},
+      {"programName", program.get_name()},
       {"includePrefix", include_prefix},
   };
   return result;
@@ -578,6 +580,8 @@ void t_mstch_py3_generator::visit_single_type(
 
 std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
   auto& type = resolve_typedef(orig_type);
+  const auto& program = get_type_program(type);
+  const auto externalProgram = is_external_program(program);
 
   string cpp_template = this->get_cpp_template(type);
   string custom_prefix = "";
@@ -599,6 +603,8 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
         flatten_type_name(*dynamic_cast<const t_map&>(type).get_val_type()));
   } else if (type.is_binary()) {
     return custom_prefix + "binary";
+  } else if (externalProgram) {
+    return custom_prefix + program.get_name() + '_' + type.get_name();
   } else {
     return custom_prefix + type.get_name();
   }

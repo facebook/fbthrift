@@ -93,9 +93,9 @@ cdef class Combo(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cCombo] _cpp_obj
     cdef List__List__MyStruct __listOfOurMyStructLists
-    cdef List__MyStruct __theirMyStructList
+    cdef List__module_MyStruct __theirMyStructList
     cdef List__MyStruct __ourMyStructList
-    cdef List__List__MyStruct __listOfTheirMyStructList
+    cdef List__List__module_MyStruct __listOfTheirMyStructList
 
     @staticmethod
     cdef unique_ptr[cCombo] _make_instance(
@@ -128,13 +128,39 @@ cdef class List__List__MyStruct:
     @staticmethod
     cdef unique_ptr[vector[vector[cMyStruct]]] _make_instance(object items) except *
 
+cdef class List__module_MyStruct:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[_module_types.cMyStruct]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[_module_types.cMyStruct]])
+    @staticmethod
+    cdef unique_ptr[vector[_module_types.cMyStruct]] _make_instance(object items) except *
+
+cdef class List__List__module_MyStruct:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]])
+    @staticmethod
+    cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cMyStruct]] move(unique_ptr[vector[cMyStruct]])
     cdef unique_ptr[vector[cMyStruct]] move_unique "std::move"(unique_ptr[vector[cMyStruct]])
     cdef shared_ptr[vector[vector[cMyStruct]]] move(unique_ptr[vector[vector[cMyStruct]]])
     cdef unique_ptr[vector[vector[cMyStruct]]] move_unique "std::move"(unique_ptr[vector[vector[cMyStruct]]])
+    cdef shared_ptr[vector[_module_types.cMyStruct]] move(unique_ptr[vector[_module_types.cMyStruct]])
+    cdef unique_ptr[vector[_module_types.cMyStruct]] move_unique "std::move"(unique_ptr[vector[_module_types.cMyStruct]])
+    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] move(unique_ptr[vector[vector[_module_types.cMyStruct]]])
+    cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] move_unique "std::move"(unique_ptr[vector[vector[_module_types.cMyStruct]]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cMyStruct]])
 
     cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[cMyStruct]]])
+
+    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[_module_types.cMyStruct]])
+
+    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
 
