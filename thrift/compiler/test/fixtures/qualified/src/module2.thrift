@@ -23,3 +23,4 @@ const Struct c2 = {
 };
 
 const Struct c3 = c2;
+const Struct c4 = c3;

@@ -15,6 +15,7 @@ namespace MODULE2 {
 struct module2_constants {
   static Struct const& c2();
   static Struct const& c3();
+  static Struct const& c4();
 };
 
 

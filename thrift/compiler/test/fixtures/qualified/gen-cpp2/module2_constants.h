@@ -16,6 +16,8 @@ struct module2_constants {
 
   static  ::module2::Struct const& c3();
 
+  static  ::module2::Struct const& c4();
+
 };
 
 } // module2

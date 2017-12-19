@@ -43,9 +43,10 @@ class t_const : public t_doc {
       t_program* program,
       t_type* type,
       std::string name,
-      t_const_value* value) :
-        program_(program), type_(type), name_(name), value_(value) {
-    if (value) {
+      t_const_value* value)
+      : program_(program), type_(type), name_(name), value_(value) {
+    // value->get_owner() is set when rhs is referencing another constant.
+    if (value && value->get_owner() == nullptr) {
       value->set_owner(this);
     }
   }

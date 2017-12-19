@@ -81,6 +81,7 @@ class t_const_value {
         }
         break;
     }
+    set_owner(cv.get_owner());
   }
 
   void set_string(std::string val) {

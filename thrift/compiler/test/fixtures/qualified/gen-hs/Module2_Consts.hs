@@ -58,3 +58,6 @@ c2 = Module2_Types.default_Struct{Module2_Types.struct_first = Module0_Types.def
 c3 :: Module2_Types.Struct
 c3 = Module2_Types.default_Struct{Module2_Types.struct_first = Module0_Types.default_Struct{Module0_Types.struct_first = 101, Module0_Types.struct_second = "module0_str"}, Module2_Types.struct_second = Module1_Types.default_Struct{Module1_Types.struct_first = 201, Module1_Types.struct_second = "module1_str"}}
 
+c4 :: Module2_Types.Struct
+c4 = Module2_Types.default_Struct{Module2_Types.struct_first = Module0_Types.default_Struct{Module0_Types.struct_first = 101, Module0_Types.struct_second = "module0_str"}, Module2_Types.struct_second = Module1_Types.default_Struct{Module1_Types.struct_first = 201, Module1_Types.struct_second = "module1_str"}}
+

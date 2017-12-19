@@ -2385,13 +2385,15 @@ class CppGenerator(t_generator.Generator):
         t = self._get_true_type(member.type)
         rt = self._cpp_ref_type(member, self._type_name(t))
         if member.value:
-            return self._render_const_value(t, member.value)
+            return self._render_const_value(
+                t, member.value, defining=member, allow_references=False)
         if self._is_optional_wrapped(member):
             return ''
         if t.is_base_type and not t.is_string:
             return '0'
         if explicit or t.is_enum:
-            return self._render_const_value(t, member.value)
+            return self._render_const_value(
+                t, member.value, defining=member, allow_references=False)
         if t.is_container and rt:
             tn = self._type_name(t)
             rann = (
@@ -4508,9 +4510,41 @@ class CppGenerator(t_generator.Generator):
         except KeyError:
             print("Warning: Did not generate {}".format(what))
 
-    def _render_const_value(self, type_, value, explicit=False, literal=False):
+    def _render_const_value_reference(self, type_, value, defining):
+        '''Returns representation of rendered const value reference if
+        it can be used, None otherwise.'''
+        if not (value and value.owner):
+            return None
+
+        # Can't reference what we're currently defining.
+        if value.owner == defining:
+            return None
+
+        # Enum values look like constants of type i32, don't reference them.
+        ot = self._get_true_type(value.owner.type)
+        if ot.is_base_type and ot.as_base_type.base == t_base.i32:
+            return None
+
+        # Make explicit temporary value by copy.
+        return '{}({}{}_constants::{}())'.format(
+            self._type_name(self._get_true_type(type_)),
+            self._namespace_prefix(
+                self._get_namespace(value.owner.program)),
+            value.owner.program.name,
+            value.owner.name)
+
+    def _render_const_value(self, type_, value, literal=False, defining=None,
+                            allow_references=True):
         ''' Returns an initializer list rval representing this const
         '''
+        # When defining some constant value, try to replace reference to
+        # subtrees of the constant with code references to prior definitions.
+        if allow_references:
+            rendered_reference = self._render_const_value_reference(
+                type_, value, defining)
+            if rendered_reference is not None:
+                return rendered_reference
+
         t = self._get_true_type(type_)
         if t.is_base_type:
             int32 = lambda x: str(x.integer)
@@ -4559,30 +4593,31 @@ class CppGenerator(t_generator.Generator):
             for k, v in value.map.items():
                 value_map[k.string] = v
             if not value_map:
-                return '{0}()'.format(self._type_name(t)) if explicit else None
+                return ('{0}()'.format(self._type_name(t))
+                        if not defining else None)
             fields = filter(self._should_generate_field, t.as_struct.members)
             out_list = []
             for field in fields:
                 if field.name in value_map:
                     out_list.append(
                         '::apache::thrift::detail::wrap_argument<{0}>({1})'
-                        .format(field.key, self._render_const_value(field.type,
-                                                          value_map[field.name],
-                                                          explicit=True)))
+                        .format(field.key, self._render_const_value(
+                            field.type, value_map[field.name],
+                            allow_references=allow_references)))
             return '{0}({1})'.format(self._type_name(t), ', '.join(out_list))
         elif t.is_map:
             outlist = []
             for key, value in value.map.items():
-                key_render = self._render_const_value(t.key_type, key,
-                                                      explicit=True)
-                value_render = self._render_const_value(t.value_type, value,
-                                                        explicit=True)
+                key_render = self._render_const_value(
+                    t.key_type, key, allow_references=allow_references)
+                value_render = self._render_const_value(
+                    t.value_type, value, allow_references=allow_references)
                 outlist.append('{{{0}, {1}}}'.format(key_render, value_render))
             out_prefix = 'std::initializer_list<std::pair<const {0}, {1}>>'\
                 .format(self._type_name(self._get_true_type(t.key_type)),
                         self._type_name(self._get_true_type(t.value_type)))
             if not outlist:
-                return out_prefix + '{}' if explicit else None
+                return out_prefix + '{}' if not defining else None
             return out_prefix + '{' + ',\n'.join(outlist) + '}'
         elif t.is_list:
             out_prefix = 'std::initializer_list<' + \
@@ -4590,21 +4625,23 @@ class CppGenerator(t_generator.Generator):
             outlist = []
             for item in value.list:
                 field_render = self._render_const_value(
-                    t.as_list.elem_type, item, explicit=True)
+                    t.as_list.elem_type, item,
+                    allow_references=allow_references)
                 outlist.append(field_render)
             if not outlist:
-                return out_prefix + '{}' if explicit else None
+                return out_prefix + '{}' if not defining else None
             return out_prefix + '{' + ',\n'.join(outlist) + '}'
         elif t.is_set:
             out_prefix = 'std::initializer_list<' + \
                 self._type_name(t.as_set.elem_type) + '>'
             outlist = []
             for item in value.list:
-                field_render = self._render_const_value(t.as_set.elem_type,
-                                                        item, explicit=True)
+                field_render = self._render_const_value(
+                    t.as_set.elem_type, item,
+                    allow_references=allow_references)
                 outlist.append(field_render)
             if not outlist:
-                return out_prefix + '{}' if explicit else None
+                return out_prefix + '{}' if not defining else None
             return out_prefix + '{' + ',\n'.join(outlist) + '}'
         else:
             raise TypeError('INVALID TYPE IN print_const_definition: ' + t.name)
@@ -4666,6 +4703,14 @@ class CppGenerator(t_generator.Generator):
             sg('#include "{0}_constants.h"'
                 .format(self._with_compatibility_include_prefix(self._program,
                                                                 name)))
+        if constants:
+            # Include other constant includes that might be required by
+            # const values rendered with allow_references=True.
+            for inc in self._program.includes:
+                if not inc.consts:
+                    continue
+                print >>context.impl, ('#include "{0}_constants.h"'.format(
+                    self._with_include_prefix(inc, inc.name)))
         print >>context.impl, '#include <folly/Indestructible.h>\n'
 
         # Open namespace
@@ -4687,8 +4732,9 @@ class CppGenerator(t_generator.Generator):
             # Default constructor
             for c in constants:
                 inlined = c.type.is_base_type or c.type.is_enum
-                value = self._render_const_value(c.type, c.value,
-                    literal=inlined)
+                value = self._render_const_value(
+                    c.type, c.value, literal=inlined, defining=c,
+                    allow_references=not inlined)
                 if inlined:
                     if c.type.is_string:
                         s('// consider using folly::StringPiece instead of '

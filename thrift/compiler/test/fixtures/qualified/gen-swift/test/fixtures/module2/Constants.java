@@ -19,4 +19,6 @@ public final class Constants
     public static final test.fixtures.module2.Struct c2 = ;
 
     public static final test.fixtures.module2.Struct c3 = ;
+
+    public static final test.fixtures.module2.Struct c4 = ;
 }

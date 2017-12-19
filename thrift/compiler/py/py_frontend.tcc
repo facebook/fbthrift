@@ -239,6 +239,10 @@ BOOST_PYTHON_MODULE(frontend) {
             make_function(&t_const::get_type, policy_reo()))
       .add_property("name", &t_const::get_name)
       .add_property("value", make_function(&t_const::get_value, policy_reo()))
+      .add_property("program",
+            make_function(&t_const::get_program, policy_reo()))
+      .def("__eq__", &t_const_operatorEq)
+      .def("__ne__", &t_const_operatorNe)
       ;
   indexPtrVec<t_const>("t_const_vec");
 
@@ -261,6 +265,8 @@ BOOST_PYTHON_MODULE(frontend) {
             make_function(&t_const_value::get_map, policy_rir()))
       .add_property("list",
             make_function(&t_const_value::get_list, policy_rir()))
+      .add_property("owner",
+            make_function(&t_const_value::get_owner, policy_reo()))
       .add_property("type", &t_const_value::get_type)
       // get_type ... need to define the t_const_value::t_const_value_type enum
       ;

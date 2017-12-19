@@ -156,4 +156,12 @@ bool t_program_operatorNe(const t_program* self, const t_program* rhs) {
   return !t_program_operatorEq(self, rhs);
 }
 
+bool t_const_operatorEq(const t_const* self, const t_const* rhs) {
+  return self == rhs;
+}
+
+bool t_const_operatorNe(const t_const* self, const t_const* rhs) {
+  return !t_const_operatorEq(self, rhs);
+}
+
 }}} // thrift::compiler::py
