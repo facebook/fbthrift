@@ -29,11 +29,12 @@ from thrift.protocol.TProtocol import TProtocolBase
 {{#hasTypes?}}
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}ttypes
 {{/hasTypes?}}
-
 {{/program:includeNamespaces}}
-UTF8STRINGS: bool
 
+UTF8STRINGS: bool
 {{#program:enums}}
+
+
 class {{enum:name}}:
     {{#enum:values}}
     {{enumValue:name}}: int
@@ -42,10 +43,10 @@ class {{enum:name}}:
     _VALUES_TO_NAMES: t.Dict[int, str]
     _NAMES_TO_VALUES: t.Dict[str, int]
 {{/program:enums}}
-
 {{#program:structs}}
-class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exception?}}:
 
+
+class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exception?}}:
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
@@ -69,5 +70,4 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     def write(self, oprot: TProtocolBase) -> None: ...
     def __eq__(self, other: t.Any) -> bool: ...
     def __ne__(self, other: t.Any) -> bool: ...
-
 {{/program:structs}}

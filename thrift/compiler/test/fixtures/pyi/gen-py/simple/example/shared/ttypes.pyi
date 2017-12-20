@@ -13,6 +13,7 @@ import simple.dependent.ttypes
 
 UTF8STRINGS: bool
 
+
 class AnEnum:
     ONE: int
     TWO: int
@@ -22,8 +23,8 @@ class AnEnum:
     _VALUES_TO_NAMES: t.Dict[int, str]
     _NAMES_TO_VALUES: t.Dict[str, int]
 
-class SimpleException(Thrift.TException):
 
+class SimpleException(Thrift.TException):
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
@@ -41,8 +42,8 @@ class SimpleException(Thrift.TException):
     def __eq__(self, other: t.Any) -> bool: ...
     def __ne__(self, other: t.Any) -> bool: ...
 
-class SimpleStruct:
 
+class SimpleStruct:
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
@@ -76,8 +77,8 @@ class SimpleStruct:
     def __eq__(self, other: t.Any) -> bool: ...
     def __ne__(self, other: t.Any) -> bool: ...
 
-class ComplexStruct:
 
+class ComplexStruct:
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
@@ -112,4 +113,3 @@ class ComplexStruct:
     def write(self, oprot: TProtocolBase) -> None: ...
     def __eq__(self, other: t.Any) -> bool: ...
     def __ne__(self, other: t.Any) -> bool: ...
-
