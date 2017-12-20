@@ -221,7 +221,6 @@ class TSocket(TSocketBase):
         self._unix_socket = unix_socket
         self._timeout = None
         self.close_on_exec = True
-        assert unix_socket or isinstance(port, int)
 
     def __enter__(self):
         if not self.isOpen():
@@ -338,7 +337,6 @@ class TServerSocket(TSocketBase, TServerTransportBase):
         # In order to maintain compatibility with the existing .accept() API,
         # we need to keep track of the accept backlog.
         self._queue = []
-        assert unix_socket or isinstance(port, int)
 
     def __enter__(self):
         if not self.isListening():
