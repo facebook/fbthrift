@@ -64,7 +64,7 @@ class ConnectionEpoll:
     def unregister(self, fileno):
         try:
             self.epoll.unregister(fileno)
-        except:
+        except Exception:
             pass
 
     def process(self, timeout):
@@ -221,6 +221,7 @@ class TSocket(TSocketBase):
         self._unix_socket = unix_socket
         self._timeout = None
         self.close_on_exec = True
+        assert unix_socket or isinstance(port, int)
 
     def __enter__(self):
         if not self.isOpen():
@@ -275,15 +276,15 @@ class TSocket(TSocketBase):
                     if res is not res0[-1]:
                         continue
                     else:
-                        raise e
+                        raise
                 break
         except socket.error as e:
             if self._unix_socket:
-                message = 'Could not connect to socket %s: %s' % \
-                          (self._unix_socket, repr(e))
+                message = 'socket error connecting to path %s: %s' % (
+                    self._unix_socket, repr(e))
             else:
-                message = 'Could not connect to %s:%d: %s' % \
-                          (self.host, self.port, repr(e))
+                message = 'socket error connecting to host %s, port %s: %s' % (
+                    self.host, self.port, repr(e))
             raise TTransportException(TTransportException.NOT_OPEN, message)
 
     def read(self, sz):
@@ -337,6 +338,7 @@ class TServerSocket(TSocketBase, TServerTransportBase):
         # In order to maintain compatibility with the existing .accept() API,
         # we need to keep track of the accept backlog.
         self._queue = []
+        assert unix_socket or isinstance(port, int)
 
     def __enter__(self):
         if not self.isListening():
@@ -397,7 +399,7 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             # since this is handled below.
             try:
                 handle = socket.socket(res[0], res[1])
-            except:
+            except Exception:
                 continue
             handle.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self._setHandleCloseOnExec(handle)
