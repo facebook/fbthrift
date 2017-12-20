@@ -294,10 +294,14 @@ vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
     const t_program& program,
     const string& tail) {
   auto const asyncio = cache_->parsed_options_.count("asyncio") != 0;
-  const auto& py_namespace =
-      program.get_namespace(!asyncio ? "py" : "py.asyncio");
+  auto& py_namespace = program.get_namespace("py");
+  auto& py_asyncio_namespace = program.get_namespace("py.asyncio");
+  auto _namespace = asyncio && !py_asyncio_namespace.empty()
+      ? py_asyncio_namespace
+      : py_namespace;
+
   const auto name = program.get_name();
-  vector<string> ns = split_namespace(py_namespace);
+  vector<string> ns = split_namespace(_namespace);
   if (ns.empty() || ns.back() != name) {
     ns.push_back(name);
   }
