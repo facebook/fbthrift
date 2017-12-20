@@ -327,6 +327,11 @@ class t_hack_generator : public t_oop_generator {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
 
+  string get_attributes(t_enum* tenum) {
+    auto it = tenum->annotations_.find("hack.attributes");
+    return it != tenum->annotations_.end() ? it->second : "";
+  }
+
   std::string hack_namespace(const t_program* p) {
     std::string ns;
     ns = p->get_namespace("hack");
@@ -897,12 +902,20 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
              << endl;
   } else if (oldenum_) {
     typehint = hack_name(tenum, true) + "Type";
-    f_types_ << "newtype " << typehint << " = int;" << endl
-             << "final class " << hack_name(tenum, true) << " extends Enum<"
+    f_types_ << "newtype " << typehint << " = int;" << endl;
+    string attributes = get_attributes(tenum);
+    if (!attributes.empty()) {
+      f_types_ << "<<" << attributes << ">>" << endl;
+    }
+    f_types_ << "final class " << hack_name(tenum, true) << " extends Enum<"
              << typehint << "> {" << endl;
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
+    string attributes = get_attributes(tenum);
+    if (!attributes.empty()) {
+      f_types_ << "<<" << attributes << ">>" << endl;
+    }
     f_types_ << "enum " << hack_name(tenum, true) << " : int {" << endl;
   }
 
