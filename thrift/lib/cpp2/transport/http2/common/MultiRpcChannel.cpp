@@ -112,7 +112,7 @@ void MultiRpcChannel::sendThriftResponse(
         combine(size, metadataBuf->move(), std::move(payload)));
   }
   ++rpcsCompleted_;
-  if (isClosed_ && rpcsCompleted_ == rpcsInitiated_) {
+  if (isClosed_ && rpcsCompleted_ == rpcsInitiated_ && responseHandler_) {
     VLOG(2) << "closing outgoing stream";
     responseHandler_->sendEOM();
   }
@@ -287,6 +287,10 @@ void MultiRpcChannel::onH2StreamEnd() noexcept {
   if (processor_) {
     // Server side
     if (rpcsCompleted_ == rpcsInitiated_) {
+      // We expect Proxygen to don't call onH2StreamEnd method after calling
+      // onH2StreamClosed function. So this object should never be nullptr when
+      // this function is executed.
+      DCHECK(responseHandler_);
       // All rpc have been completed.
       responseHandler_->sendEOM();
     }
