@@ -63,14 +63,36 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
   auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
   apache::thrift::detail::si::async_tm_oneway(
       this, std::move(callback), [&, this] {
-        auto _result = returnstream(i32_from, i32_to);
-        CHECK(_result) << "User defined function should not return nullptr";
-        auto _mappedOutput = _result->map([](const int32_t& item) {
-          using codec = apache::thrift::CompactSerializer;
-          return codec::serialize<folly::IOBufQueue>(item).move();
-        });
-        auto _subscriber = _channel->getOutput(0);
-        _mappedOutput->subscribe(_subscriber);
+        folly::exception_wrapper _ew;
+        try {
+          auto _result = returnstream(i32_from, i32_to);
+          if (!_result) {
+            _ew = folly::make_exception_wrapper<
+                apache::thrift::TApplicationException>(
+                apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT,
+                "User defined stream returning function should not return nullptr");
+          } else {
+            auto _mappedOutput = _result->map([](const int32_t& item) {
+              using codec = apache::thrift::CompactSerializer;
+              return codec::serialize<folly::IOBufQueue>(item).move();
+            });
+            auto _subscriber = _channel->getOutput(0);
+            _mappedOutput->subscribe(_subscriber);
+          }
+        } catch (const apache::thrift::TApplicationException& ex) {
+          _ew = ex;
+        } catch (const std::exception& ex) {
+          _ew = folly::make_exception_wrapper<
+              apache::thrift::TApplicationException>(
+              apache::thrift::TApplicationException::TApplicationExceptionType::
+                  UNKNOWN,
+              folly::exceptionStr(ex).toStdString());
+        }
+        if (_ew) {
+          auto _subscriber = _channel->getOutput(0);
+          _subscriber->onSubscribe(yarpl::flowable::Subscription::empty());
+          _subscriber->onError(_ew);
+        }
       });
 }
 

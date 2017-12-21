@@ -64,11 +64,11 @@ class StreamThriftChannelBase : public ThriftChannelIf {
   }
 
   virtual void setInput(int32_t, SubscriberRef) noexcept {
-    LOG(FATAL) << "Use StreamingInput/StreamingInputOutput";
+    LOG(FATAL) << "Use StreamThriftClient for streaming rpc calls";
   }
 
   virtual SubscriberRef getOutput(int32_t) noexcept {
-    LOG(FATAL) << "Use StreamingOutput/StreamingInputOutput";
+    LOG(FATAL) << "Use StreamThriftClient for streaming rpc calls";
   }
 
  protected:
