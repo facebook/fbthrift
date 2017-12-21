@@ -49,17 +49,15 @@ class Runner {
 
   void run() {
     // TODO: Implement sync calls.
-    while (outstanding_ops_ < max_outstanding_ops_) {
+    while (ops_->outstandingOps() < max_outstanding_ops_) {
       auto op = static_cast<OP_TYPE>((*d_)(gen_));
       auto cb =
           std::make_unique<LoadCallback<AsyncClient>>(this, ops_.get(), op);
       ops_->async(op, std::move(cb));
-      ++outstanding_ops_;
     }
   }
 
   void finishCall() {
-    --outstanding_ops_;
     run(); // Attempt to perform more async calls
   }
 
@@ -69,7 +67,6 @@ class Runner {
   std::unique_ptr<std::discrete_distribution<int32_t>> d_;
   int32_t max_outstanding_ops_;
 
-  int32_t outstanding_ops_{0};
   std::mt19937 gen_{std::random_device()()};
 };
 

@@ -104,3 +104,10 @@ if the number of threads is equal to 40, it will cause some of the threads
 to sleep for `2` ms or even `3` ms.
 The result should be some of the tasks getting cancelled while some of them
 get executed successfully.
+
+## Stream testing
+
+Compare Single RPC download/upload perf against Streaming RPC download/upload of data.
+
+`./client --host="IP" --transport="rsocket" --num_clients=1 --max_outstanding_ops=1 --download_weight=1 --upload_weight=1`
+`./client --host="IP" --transport="rsocket" --num_clients=1 --max_outstanding_ops=1 --stream_weight=1`

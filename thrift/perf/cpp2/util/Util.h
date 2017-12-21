@@ -28,12 +28,14 @@
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/StreamThriftClient.h>
 
 using apache::thrift::ClientConnectionIf;
 using apache::thrift::H2ClientConnection;
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::InMemoryConnection;
 using apache::thrift::RSClientConnection;
+using apache::thrift::StreamThriftClient;
 using apache::thrift::ThriftClient;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
 using apache::thrift::async::TAsyncSSLSocket;
@@ -85,7 +87,7 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs"});
   std::shared_ptr<ClientConnectionIf> conn =
       std::make_shared<RSClientConnection>(std::move(sock), encrypted);
-  auto client = ThriftClient::Ptr(new ThriftClient(conn, evb));
+  auto client = StreamThriftClient::Ptr(new StreamThriftClient(conn, evb));
   client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(client));
 }

@@ -18,6 +18,7 @@
 
 #include <folly/ThreadCachedInt.h>
 #include <glog/logging.h>
+#include <thrift/perf/cpp2/util/Counter.h>
 #include <algorithm>
 #include <map>
 #include <string>
@@ -26,40 +27,6 @@
 namespace facebook {
 namespace thrift {
 namespace benchmarks {
-
-class Counter {
- public:
-  explicit Counter(std::string name)
-      : name_(name), value_(0, 10000), lastQueryCount_(0), maxPerSec_(0) {}
-
-  Counter& operator+=(uint32_t inc) {
-    value_ += inc;
-    return *this;
-  }
-
-  Counter& operator++() {
-    ++value_;
-    return *this;
-  }
-
-  double print(double secsSinceLastPrint) {
-    double queryCount_ = value_.readFull();
-    double lastSecAvg = (queryCount_ - lastQueryCount_) / secsSinceLastPrint;
-    lastQueryCount_ = queryCount_;
-    maxPerSec_ = std::max(maxPerSec_, lastSecAvg);
-    LOG(INFO) << std::scientific << " | QPS: " << lastSecAvg
-              << " | Max QPS: " << maxPerSec_
-              << " | Total Queries: " << queryCount_
-              << " | Operation: " << name_;
-    return lastSecAvg;
-  }
-
- private:
-  std::string name_;
-  folly::ThreadCachedInt<uint32_t> value_;
-  double lastQueryCount_;
-  double maxPerSec_;
-};
 
 class QPSStats {
  public:
@@ -83,6 +50,10 @@ class QPSStats {
 
   void add(std::string& name) {
     ++(*counters_[name]);
+  }
+
+  void add(std::string& name, uint32_t sz) {
+    (*counters_[name]) += sz;
   }
 
  private:

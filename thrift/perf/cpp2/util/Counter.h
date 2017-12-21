@@ -40,15 +40,17 @@ class Counter {
     return *this;
   }
 
-  void print(double secsSinceLastPrint) {
+  double print(double secsSinceLastPrint) {
     double queryCount_ = value_.readFull();
     double lastSecAvg = (queryCount_ - lastQueryCount_) / secsSinceLastPrint;
     lastQueryCount_ = queryCount_;
     maxPerSec_ = std::max(maxPerSec_, lastSecAvg);
-    LOG(INFO) << std::scientific << " | QPS: " << lastSecAvg
-              << " | Max QPS: " << maxPerSec_
-              << " | Total Queries: " << queryCount_
-              << " | Operation: " << name_;
+    if (queryCount_ > 0) { // Don't print unused counters
+      LOG(INFO) << std::scientific << " | QPS: " << lastSecAvg
+                << " | Max: " << maxPerSec_ << " | Total: " << queryCount_
+                << " | Operation: " << name_;
+    }
+    return lastSecAvg;
   }
 
  private:

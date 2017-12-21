@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#include <thrift/perf/cpp2/if/gen-cpp2/Benchmark.h>
+#include <thrift/perf/cpp2/if/gen-cpp2/StreamBenchmark.h>
 #include <thrift/perf/cpp2/util/Operation.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/perf/cpp2/util/Runner.h>
 #include <thrift/perf/cpp2/util/Util.h>
+#include <algorithm>
 
-using facebook::thrift::benchmarks::BenchmarkAsyncClient;
+using facebook::thrift::benchmarks::StreamBenchmarkAsyncClient;
 
 // Server Settings
 DEFINE_string(host, "::1", "Server host");
@@ -43,6 +44,12 @@ DEFINE_int32(noop_weight, 0, "Test with a no operation");
 DEFINE_int32(noop_oneway_weight, 0, "Test with a oneway no operation");
 DEFINE_int32(sum_weight, 0, "Test with a sum operation");
 DEFINE_int32(timeout_weight, 0, "Test for timeout functionality");
+DEFINE_int32(download_weight, 0, "Test for download functionality");
+DEFINE_int32(upload_weight, 0, "Test for upload functionality");
+DEFINE_int32(stream_weight, 0, "Test stream upload/download functionality");
+
+DEFINE_uint32(chunk_size, 1024, "Number of bytes per chunk");
+DEFINE_uint32(batch_size, 16, "Flow control batch size");
 
 /*
  * This starts num_clients threads with a unique client in each thread.
@@ -64,23 +71,30 @@ int main(int argc, char** argv) {
       // Create Thrift Async Client
       auto evb = std::make_shared<folly::EventBase>();
       auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-      auto client =
-          newClient<BenchmarkAsyncClient>(evb.get(), addr, FLAGS_transport);
+      auto client = newClient<StreamBenchmarkAsyncClient>(
+          evb.get(), addr, FLAGS_transport);
 
       // Create the Operations and their Discrete Distributions
       // Every time a new operation is added, the distribution needs to
       // be updated. Otherwise, it will never be chosen.
-      auto ops = std::make_unique<Operation<BenchmarkAsyncClient>>(
+      auto ops = std::make_unique<Operation<StreamBenchmarkAsyncClient>>(
           std::move(client), &stats);
       auto weights = std::vector<int32_t>{FLAGS_noop_weight,
                                           FLAGS_noop_oneway_weight,
                                           FLAGS_sum_weight,
-                                          FLAGS_timeout_weight};
+                                          FLAGS_timeout_weight,
+                                          FLAGS_download_weight,
+                                          FLAGS_upload_weight,
+                                          FLAGS_stream_weight};
+      int32_t sum = std::accumulate(weights.begin(), weights.end(), 0);
+      if (sum == 0) {
+        weights[0] = 1;
+      }
       auto distribution = std::make_unique<std::discrete_distribution<int32_t>>(
           weights.begin(), weights.end());
 
       // Create the runner and execute multiple operations
-      auto r = std::make_unique<Runner<BenchmarkAsyncClient>>(
+      auto r = std::make_unique<Runner<StreamBenchmarkAsyncClient>>(
           evb,
           std::move(ops),
           std::move(distribution),

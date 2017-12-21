@@ -19,6 +19,11 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/perf/cpp2/util/SimpleOps.h>
+#ifdef STREAM_PERF_TEST
+#include <thrift/perf/cpp2/util/StreamOps.h>
+#endif
+
+DECLARE_uint32(chunk_size);
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
@@ -32,6 +37,9 @@ enum OP_TYPE {
   NOOP_ONEWAY = 1,
   SUM = 2,
   TIMEOUT = 3,
+  DOWNLOAD = 4,
+  UPLOAD = 5,
+  STREAM = 6,
 };
 
 template <typename AsyncClient>
@@ -41,10 +49,25 @@ class Operation {
       : client_(std::move(client)),
         noop_(std::make_unique<Noop<AsyncClient>>(stats)),
         sum_(std::make_unique<Sum<AsyncClient>>(stats)),
-        timeout_(std::make_unique<Timeout<AsyncClient>>(stats)) {}
+        timeout_(std::make_unique<Timeout<AsyncClient>>(stats))
+#ifdef STREAM_PERF_TEST
+        ,
+        download_(std::make_unique<Download<AsyncClient>>(stats)),
+        upload_(std::make_unique<Upload<AsyncClient>>(stats, FLAGS_chunk_size)),
+        stream_(std::make_unique<StreamUploadDownload<AsyncClient>>(
+            stats,
+            FLAGS_chunk_size))
+#endif
+  {
+  }
   ~Operation() = default;
 
+  int32_t outstandingOps() {
+    return outstanding_ops_;
+  }
+
   void async(OP_TYPE op, std::unique_ptr<LoadCallback<AsyncClient>> cb) {
+    ++outstanding_ops_;
     switch (op) {
       case NOOP:
         noop_->async(client_.get(), std::move(cb));
@@ -59,6 +82,17 @@ class Operation {
       case TIMEOUT:
         timeout_->async(client_.get(), std::move(cb));
         break;
+#ifdef STREAM_PERF_TEST
+      case DOWNLOAD:
+        download_->async(client_.get(), std::move(cb));
+        break;
+      case UPLOAD:
+        upload_->async(client_.get(), std::move(cb));
+        break;
+      case STREAM:
+        stream_->async(client_.get(), std::move(cb), outstanding_ops_);
+        break;
+#endif
       default:
         break;
     }
@@ -68,6 +102,7 @@ class Operation {
     switch (op) {
       case NOOP_ONEWAY:
         noop_->onewaySent();
+        --outstanding_ops_;
         break;
       default:
         LOG(ERROR) << "Should send oneway calls";
@@ -78,14 +113,27 @@ class Operation {
   void asyncReceived(OP_TYPE op, ClientReceiveState&& rstate) {
     switch (op) {
       case NOOP:
+        --outstanding_ops_;
         noop_->asyncReceived(client_.get(), std::move(rstate));
         break;
       case SUM:
+        --outstanding_ops_;
         sum_->asyncReceived(client_.get(), std::move(rstate));
         break;
       case TIMEOUT:
+        --outstanding_ops_;
         timeout_->asyncReceived(client_.get(), std::move(rstate));
         break;
+#ifdef STREAM_PERF_TEST
+      case DOWNLOAD:
+        --outstanding_ops_;
+        download_->asyncReceived(client_.get(), std::move(rstate));
+        break;
+      case UPLOAD:
+        --outstanding_ops_;
+        upload_->asyncReceived(client_.get(), std::move(rstate));
+        break;
+#endif
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -93,6 +141,7 @@ class Operation {
   }
 
   void asyncErrorReceived(OP_TYPE op, ClientReceiveState&& rstate) {
+    --outstanding_ops_;
     switch (op) {
       case NOOP:
         noop_->error(client_.get(), std::move(rstate));
@@ -103,6 +152,14 @@ class Operation {
       case TIMEOUT:
         timeout_->error(client_.get(), std::move(rstate));
         break;
+#ifdef STREAM_PERF_TEST
+      case DOWNLOAD:
+        download_->error(client_.get(), std::move(rstate));
+        break;
+      case UPLOAD:
+        upload_->error(client_.get(), std::move(rstate));
+        break;
+#endif
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -114,4 +171,11 @@ class Operation {
   std::unique_ptr<Noop<AsyncClient>> noop_;
   std::unique_ptr<Sum<AsyncClient>> sum_;
   std::unique_ptr<Timeout<AsyncClient>> timeout_;
+#ifdef STREAM_PERF_TEST
+  std::unique_ptr<Download<AsyncClient>> download_;
+  std::unique_ptr<Upload<AsyncClient>> upload_;
+  std::unique_ptr<StreamUploadDownload<AsyncClient>> stream_;
+#endif
+
+  int32_t outstanding_ops_{0};
 };

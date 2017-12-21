@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
+include "thrift/perf/cpp2/if/Api.thrift"
+
 namespace cpp2 facebook.thrift.benchmarks
 
-struct TwoInts {
-  1: optional i32 x;
-  2: optional i32 y;
-}
+// Separated this service from Benchmark as we want to use Worker threads for
+// execution.
+service StreamBenchmark extends Api.Benchmark {
+  // Each call will provide one Chunk
+  ApiBase.Chunk2 download();
 
-typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+  void upload(1: ApiBase.Chunk2 chunk);
 
-struct Chunk {
-  1: binary header;
-  2: binary data;
-}
-
-struct Chunk2 {
-  1: binary header;
-  2: IOBuf data;
+  // Service will provide data as long as client asks for more
+  stream ApiBase.Chunk2 streamUploadDownload(
+      stream ApiBase.Chunk2 chunk);
 }
