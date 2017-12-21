@@ -324,6 +324,16 @@ class TServerSocket(TSocketBase, TServerTransportBase):
     """Socket implementation of TServerTransport base."""
 
     def __init__(self, port=9090, unix_socket=None, family=None, backlog=128):
+        """Initialize a TServerSocket
+
+        @param family(int): address family for connections. Ignored if
+                            unix_socket is specified.
+        @param host(str)  The host to connect to.
+        @param port(int)  The (TCP) port to connect to.
+        @param unix_socket(str)  The filename of a unix socket to connect to.
+                                 (host, port, and family will be ignored.)
+        @param backlog(int): maximum number of connections in listen queue.
+        """
         TSocketBase.__init__(self)
         self.host = None
         self.port = port
