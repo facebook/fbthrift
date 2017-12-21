@@ -26,12 +26,12 @@ from __future__ import unicode_literals
 from .TTransport import TTransportBase, TTransportException, \
         TServerTransportBase
 import os
-import sys
 import errno
 import select
 import socket
-import warnings
+import sys
 import time
+import warnings
 
 try:
     import fcntl
@@ -221,6 +221,8 @@ class TSocket(TSocketBase):
         self._unix_socket = unix_socket
         self._timeout = None
         self.close_on_exec = True
+        if not unix_socket:
+            self.port = int(self.port)
 
     def __enter__(self):
         if not self.isOpen():
@@ -341,6 +343,8 @@ class TServerSocket(TSocketBase, TServerTransportBase):
         self.family = family
         self.tcp_backlog = backlog
         self.close_on_exec = True
+        if not unix_socket:
+            self.port = int(self.port)
 
         # Since we now rely on select() by default to do accepts across
         # multiple socket fds, we can receive two connections concurrently.
