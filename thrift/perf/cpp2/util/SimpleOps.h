@@ -32,6 +32,7 @@ class Noop {
  public:
   Noop(QPSStats* stats) : stats_(stats) {
     stats_->registerCounter(op_name_);
+    stats_->registerCounter(timeout_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
   }
@@ -50,10 +51,16 @@ class Noop {
       client->recv_noop(rstate);
       stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
-      FB_LOG_EVERY_MS(ERROR, 1000)
-          << "Error should have caused error() function to be called: "
-          << ex.what();
-      stats_->add(error_);
+      if (ex.getType() ==
+          apache::thrift::TApplicationException::TApplicationExceptionType::
+              TIMEOUT) {
+        stats_->add(timeout_);
+      } else {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "Error should have caused error() function to be called: "
+            << ex.what();
+        stats_->add(error_);
+      }
     } catch (const std::exception& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
@@ -74,6 +81,7 @@ class Noop {
  private:
   QPSStats* stats_;
   std::string op_name_ = "noop";
+  std::string timeout_ = "timeout";
   std::string error_ = "error";
   std::string fatal_ = "fatal";
 };
@@ -84,6 +92,7 @@ class Sum {
   Sum(QPSStats* stats) : stats_(stats) {
     // TODO: Perform different additions per call and verify correctness
     stats_->registerCounter(op_name_);
+    stats_->registerCounter(timeout_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
   }
@@ -105,10 +114,16 @@ class Sum {
       CHECK_EQ(request_.x - request_.y, response_.y);
       stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
-      FB_LOG_EVERY_MS(ERROR, 1000)
-          << "Error should have caused error() function to be called: "
-          << ex.what();
-      stats_->add(error_);
+      if (ex.getType() ==
+          apache::thrift::TApplicationException::TApplicationExceptionType::
+              TIMEOUT) {
+        stats_->add(timeout_);
+      } else {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "Error should have caused error() function to be called: "
+            << ex.what();
+        stats_->add(error_);
+      }
     } catch (const std::exception& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
@@ -125,6 +140,7 @@ class Sum {
  private:
   QPSStats* stats_;
   std::string op_name_ = "sum";
+  std::string timeout_ = "timeout";
   std::string error_ = "error";
   std::string fatal_ = "fatal";
   TwoInts request_;
@@ -137,6 +153,7 @@ class Timeout {
  public:
   Timeout(QPSStats* stats) : stats_(stats) {
     stats_->registerCounter(op_name_);
+    stats_->registerCounter(timeout_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
   }
@@ -154,10 +171,16 @@ class Timeout {
       client->recv_timeout(rstate);
       stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
-      FB_LOG_EVERY_MS(ERROR, 1000)
-          << "Error should have caused error() function to be called: "
-          << ex.what();
-      stats_->add(error_);
+      if (ex.getType() ==
+          apache::thrift::TApplicationException::TApplicationExceptionType::
+              TIMEOUT) {
+        stats_->add(timeout_);
+      } else {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "Error should have caused error() function to be called: "
+            << ex.what();
+        stats_->add(error_);
+      }
     } catch (const std::exception& ex) {
       FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
       stats_->add(fatal_);
@@ -173,7 +196,8 @@ class Timeout {
 
  private:
   QPSStats* stats_;
-  std::string op_name_ = "timeout";
+  std::string op_name_ = "timeout_success";
+  std::string timeout_ = "timeout";
   std::string error_ = "error";
   std::string fatal_ = "fatal";
   TwoInts request_;

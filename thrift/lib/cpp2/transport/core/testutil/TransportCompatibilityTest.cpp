@@ -181,7 +181,10 @@ class MockCallback : public RequestCallback {
     EXPECT_TRUE(requestSentCalled_);
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(clientError_);
-    EXPECT_FALSE(serverError_);
+    auto reply = crs.buf()->cloneAsValue().moveToFbString();
+    bool expired = (reply.find("Task expired") != folly::fbstring::npos) ||
+        (reply.find("Queue Timeout") != folly::fbstring::npos);
+    EXPECT_EQ(serverError_, expired);
     callbackReceived_ = true;
   }
   void requestError(ClientReceiveState&& crs) override {
@@ -191,7 +194,6 @@ class MockCallback : public RequestCallback {
     EXPECT_TRUE(crs.exception().is_compatible_with<TTransportException>());
     EXPECT_FALSE(callbackReceived_);
     EXPECT_TRUE(clientError_ || serverError_);
-    EXPECT_NE(clientError_, requestSentCalled_);
     callbackReceived_ = true;
   }
   bool callbackReceived() {
@@ -212,6 +214,7 @@ void TransportCompatibilityTest::callSleep(
   auto cb = std::make_unique<MockCallback>(false, timeoutMs < sleepMs);
   RpcOptions opts;
   opts.setTimeout(std::chrono::milliseconds(timeoutMs));
+  opts.setQueueTimeout(std::chrono::milliseconds(5000));
   client->sleep(opts, std::move(cb), sleepMs);
 }
 
@@ -327,9 +330,6 @@ void TransportCompatibilityTest::TestRequestResponse_UnexpectedException() {
 }
 
 void TransportCompatibilityTest::TestRequestResponse_Timeout() {
-  // Note: This test requires sufficient number of CPU threads on the
-  // server so that the sleep calls are not backed up.
-  // Warning: This test may be flaky due to use of timeouts.
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     // These are all async calls.  The first batch of calls get
     // dispatched immediately, then there is a sleep, and then the
@@ -341,12 +341,12 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     callSleep(client.get(), 100, 0);
     callSleep(client.get(), 2000, 500);
     /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    callSleep(client.get(), 1, 100);
-    callSleep(client.get(), 100, 0);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    callSleep(client.get(), 100, 1000);
+    callSleep(client.get(), 200, 0);
     /* Sleep to give time for all callbacks to be completed */
     /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
     CHECK_EQ(3, observer_->taskTimeout_);
     CHECK_EQ(0, observer_->queueTimeout_);

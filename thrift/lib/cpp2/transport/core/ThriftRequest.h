@@ -87,12 +87,11 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
   bool isActive() override {
-    return active_;
+    return active_.load();
   }
 
   void cancel() override {
-    if (active_) {
-      active_ = false;
+    if (active_.exchange(false)) {
       cancelTimeout();
     }
   }
@@ -113,8 +112,7 @@ class ThriftRequest : public ResponseChannel::Request {
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
-    if (active_) {
-      active_ = false;
+    if (active_.exchange(false)) {
       cancelTimeout();
       sendReplyInternal(std::move(buf), cb);
     }
@@ -124,8 +122,7 @@ class ThriftRequest : public ResponseChannel::Request {
       folly::exception_wrapper ew,
       std::string exCode,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
-    if (active_) {
-      active_ = false;
+    if (active_.exchange(false)) {
       cancelTimeout();
       sendErrorWrappedInternal(std::move(ew), exCode, cb);
     }
@@ -186,8 +183,12 @@ class ThriftRequest : public ResponseChannel::Request {
   void cancelTimeout() {
     queueTimeout_.canceled_ = true;
     taskTimeout_.canceled_ = true;
-    queueTimeout_.cancelTimeout();
-    taskTimeout_.cancelTimeout();
+    if (queueTimeout_.isScheduled()) {
+      queueTimeout_.cancelTimeout();
+    }
+    if (taskTimeout_.isScheduled()) {
+      taskTimeout_.cancelTimeout();
+    }
   }
 
   void scheduleTimeouts(RequestRpcMetadata& metadata) {
@@ -244,8 +245,7 @@ class ThriftRequest : public ResponseChannel::Request {
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
       if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
-          request_->active_ && !request_->isOneway()) {
-        request_->active_ = false;
+          request_->active_.exchange(false) && !request_->isOneway()) {
         const auto& observer = serverConfigs_.getObserver();
         if (observer) {
           observer->queueTimeout();
@@ -267,8 +267,8 @@ class ThriftRequest : public ResponseChannel::Request {
     TaskTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!canceled_ && request_->active_ && !request_->isOneway()) {
-        request_->active_ = false;
+      if (!canceled_ && request_->active_.exchange(false) &&
+          !request_->isOneway()) {
         const auto& observer = serverConfigs_.getObserver();
         if (observer) {
           observer->taskTimeout();
