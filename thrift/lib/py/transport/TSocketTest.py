@@ -3,14 +3,15 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os.path
 import socket
-
-import thrift.transport.TSocket as TSocket
-import thrift.transport.TTransport as TTransport
-
+import tempfile
 import threading
 import time
 import unittest
+
+import thrift.transport.TSocket as TSocket
+import thrift.transport.TTransport as TTransport
 
 
 class TSocketTest(unittest.TestCase):
@@ -91,3 +92,41 @@ class TSocketTest(unittest.TestCase):
             thread.join()
             # Verify that r is non-empty
             self.assertTrue(r)
+
+    def test_deprecated_str_form_of_port(self):
+        # Make sure that the deprecated form of the `port` parameter is
+        # accepted in TServerSocket and TSocket.
+        port = "0"
+        text = "hi"  # sample text to send over the wire
+        # NB: unfortunately unittest.TestCase.assertWarns isn't available until
+        # py3.
+        with TSocket.TServerSocket(port=port, family=socket.AF_INET6) as server:
+            addr = server.getSocketNames()[0]
+            with TSocket.TSocket(host=addr[0], port=str(addr[1])) as conn:
+                conn.write(text)
+            with server.accept() as client:
+                read = client.read(len(text))
+            self.assertEquals(read, text)
+
+    def test_bad_port(self):
+        port = 'bogus'
+        with self.assertRaises(ValueError):
+            with TSocket.TServerSocket(port=port):
+                pass
+
+        with self.assertRaises(ValueError):
+            with TSocket.TSocket(port=port):
+                pass
+
+    def test_unix_socket(self):
+        text = "hi"  # sample text to send over the wire
+        with tempfile.NamedTemporaryFile(delete=True) as fh:
+            unix_socket = fh.name
+            with TSocket.TServerSocket(unix_socket=unix_socket) as server:
+                with TSocket.TSocket(unix_socket=unix_socket) as conn:
+                    conn.write(text)
+                with server.accept() as client:
+                    read = client.read(len(text))
+                self.assertEquals(read, text)
+            # The socket will not be cleaned up when the server has been shutdown.
+            self.assertTrue(os.path.exists(unix_socket))
