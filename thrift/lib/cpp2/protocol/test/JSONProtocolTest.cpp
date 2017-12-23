@@ -431,6 +431,18 @@ TEST_F(JSONProtocolTest, readDouble) {
   EXPECT_EQ(expected, reading_cpp2<double>(input, [](R2& p) {
         return returning([&](double& _) { p.readDouble(_); });
   }));
+
+  auto malformed = "\"nondouble\"";
+  EXPECT_THROW(
+      reading_cpp1<double>(
+          malformed,
+          [](P1& p) { return returning([&](double& _) { p.readDouble(_); }); }),
+      TProtocolException);
+  EXPECT_THROW(
+      reading_cpp2<double>(
+          malformed,
+          [](R2& p) { return returning([&](double& _) { p.readDouble(_); }); }),
+      TProtocolException);
 }
 
 TEST_F(JSONProtocolTest, readFloat) {

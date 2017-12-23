@@ -713,6 +713,8 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
     }
     else if (str == TJSONProtocol::kThriftNegativeInfinity) {
       val = -HUGE_VAL;
+    } else {
+      throwUnrecognizableAsFloatingPoint(str);
     }
     return ret;
   }
