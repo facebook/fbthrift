@@ -78,6 +78,11 @@ class ThriftRequest : public ResponseChannel::Request {
     reqContext_.setMethodName(metadata->name);
     reqContext_.setProtoSeqId(metadata->seqId);
 
+    auto observer = serverConfigs_.getObserver();
+    if (observer) {
+      observer->receivedRequest();
+    }
+
     scheduleTimeouts(*metadata);
   }
 
@@ -115,6 +120,11 @@ class ThriftRequest : public ResponseChannel::Request {
     if (active_.exchange(false)) {
       cancelTimeout();
       sendReplyInternal(std::move(buf), cb);
+
+      auto observer = serverConfigs_.getObserver();
+      if (observer) {
+        observer->sentReply();
+      }
     }
   }
 

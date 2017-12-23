@@ -43,13 +43,15 @@ class RSRoutingHandler : public TransportRoutingHandler {
       wangle::TransportInfo const& tinfo) override;
 
  private:
+  ThriftProcessor* thriftProcessor_;
+  const apache::thrift::server::ServerConfigs& serverConfigs_;
+
   // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
   // as input, but it does not use it at all. We should get rid of it.
   folly::EventBase dummyEventBase_;
 
   std::shared_ptr<rsocket::RSocketServiceHandler> serviceHandler_;
   std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
-  ThriftProcessor* thriftProcessor_;
 };
 } // namespace thrift
 } // namespace apache

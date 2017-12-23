@@ -270,7 +270,15 @@ void HTTP2RoutingHandler::handleConnection(
   // Route the connection.
   connectionManager->addConnection(session);
   session->startNow();
+
+  auto observer = serverConfigs_.getObserver();
+  if (observer) {
+    observer->connAccepted();
+    observer->activeConnections(
+        connectionManager->getNumConnections() *
+        serverConfigs_.getNumIOWorkerThreads());
+  }
 }
 
-} // namspace thrift
+} // namespace thrift
 } // namespace apache

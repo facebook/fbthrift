@@ -29,7 +29,7 @@ namespace thrift {
 RSRoutingHandler::RSRoutingHandler(
     apache::thrift::ThriftProcessor* thriftProcessor,
     const apache::thrift::server::ServerConfigs& serverConfigs)
-    : thriftProcessor_(thriftProcessor) {
+    : thriftProcessor_(thriftProcessor), serverConfigs_(serverConfigs) {
   serviceHandler_ = RSocketServiceHandler::create([&](auto&) {
     // RSResponder will be created per client connection. It will use the
     // current Observer of the server.
@@ -96,6 +96,18 @@ void RSRoutingHandler::handleConnection(
       std::
           unique_ptr<folly::AsyncSocket, folly::DelayedDestruction::Destructor>(
               dynamic_cast<folly::AsyncSocket*>(sock.release())));
+
+  auto observer = serverConfigs_.getObserver();
+  if (observer) {
+    observer->connAccepted();
+    // RSocket increases the number of connected clients when the server
+    // receives the SETUP frame from the client. So we assume that the number of
+    // connected clients to the RSocket server to be 1 more than the count that
+    // RSocket server informs for the moment.
+    auto numConnections = rsocketServer_->getNumConnections() + 1;
+    observer->activeConnections(
+        numConnections * serverConfigs_.getNumIOWorkerThreads());
+  }
 
   // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
   // as input, but it does not use it at all. We should get rid of it.

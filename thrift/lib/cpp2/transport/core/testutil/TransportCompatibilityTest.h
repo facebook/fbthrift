@@ -68,6 +68,7 @@ class TransportCompatibilityTest {
   void TestCloseCallback();
 
   void TestConnectionStats();
+  void TestObserverSendReceiveRequests();
 
  public:
   std::shared_ptr<FakeServerObserver> observer_;

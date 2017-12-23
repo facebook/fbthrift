@@ -48,8 +48,15 @@ class ServerConfigs {
       std::chrono::milliseconds& queueTimeout,
       std::chrono::milliseconds& taskTimeout) const = 0;
 
+  // @see BaseThriftServer::getObserver function.
   virtual const std::shared_ptr<apache::thrift::server::TServerObserver>&
   getObserver() const = 0;
+
+  // @see BaseThriftServer::setNumIOWorkerThreads function.
+  virtual void setNumIOWorkerThreads(size_t numIOWorkerThreads) = 0;
+
+  // @see BaseThriftServer::getNumIOWorkerThreads function.
+  virtual size_t getNumIOWorkerThreads() const = 0;
 };
 } // namespace server
 } // namespace thrift

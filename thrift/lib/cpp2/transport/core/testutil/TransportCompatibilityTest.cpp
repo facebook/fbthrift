@@ -227,11 +227,30 @@ void TransportCompatibilityTest::TestConnectionStats() {
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
 
     EXPECT_EQ(1, observer_->connAccepted_);
-    if (FLAGS_transport != "rsocket") {
-      // TODO: RSocket implementation should also be able to provide the number
-      // of active connections to the server.
-      EXPECT_EQ(numIOThreads_, observer_->activeConns_);
-    }
+    EXPECT_EQ(numIOThreads_, observer_->activeConns_);
+  });
+}
+
+void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2);
+    EXPECT_CALL(*handler_.get(), add_(1));
+    EXPECT_CALL(*handler_.get(), add_(2));
+    EXPECT_CALL(*handler_.get(), add_(5));
+
+    // Send a message
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(1, client->sync_add(1));
+
+    auto future = client->future_add(2);
+    EXPECT_EQ(3, future.get());
+
+    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(8, client->sync_add(5));
+
+    // Now check the stats
+    EXPECT_EQ(5, observer_->sentReply_);
+    EXPECT_EQ(5, observer_->receivedRequest_);
   });
 }
 

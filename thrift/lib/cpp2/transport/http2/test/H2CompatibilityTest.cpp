@@ -192,8 +192,12 @@ TEST_P(H2CompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
 }
 
-TEST_P(H2CompatibilityTest, TestConnectionStats) {
+TEST_P(H2CompatibilityTest, ConnectionStats) {
   compatibilityTest_->TestConnectionStats();
+}
+
+TEST_P(H2CompatibilityTest, ObserverSendReceiveRequests) {
+  compatibilityTest_->TestObserverSendReceiveRequests();
 }
 
 INSTANTIATE_TEST_CASE_P(

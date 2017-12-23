@@ -142,8 +142,12 @@ TEST_F(RSCompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
 }
 
-TEST_F(RSCompatibilityTest, TestConnectionStats) {
+TEST_F(RSCompatibilityTest, ConnectionStats) {
   compatibilityTest_->TestConnectionStats();
+}
+
+TEST_F(RSCompatibilityTest, ObserverSendReceiveRequests) {
+  compatibilityTest_->TestObserverSendReceiveRequests();
 }
 
 } // namespace thrift

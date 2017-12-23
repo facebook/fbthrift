@@ -49,12 +49,21 @@ class ServerConfigsMock : public ServerConfigs {
     return observer_;
   }
 
+  void setNumIOWorkerThreads(size_t numIOWorkerThreads) override {
+    numIOWorkerThreads_ = numIOWorkerThreads;
+  }
+
+  size_t getNumIOWorkerThreads() const override {
+    return numIOWorkerThreads_;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
-  std::chrono::milliseconds queueTimeout_;
-  std::chrono::milliseconds taskTimeout_;
+  std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};
+  std::chrono::milliseconds taskTimeout_{std::chrono::milliseconds(500)};
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_{
       std::make_shared<FakeServerObserver>()};
+  size_t numIOWorkerThreads_{10};
 };
 
 } // namespace server

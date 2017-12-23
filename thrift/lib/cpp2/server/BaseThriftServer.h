@@ -460,7 +460,7 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @param number of IO worker threads
    */
-  void setNumIOWorkerThreads(size_t numIOWorkerThreads) {
+  void setNumIOWorkerThreads(size_t numIOWorkerThreads) override {
     CHECK(configMutable());
     nWorkers_ = numIOWorkerThreads;
   }
@@ -480,7 +480,7 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @return number of IO worker threads
    */
-  size_t getNumIOWorkerThreads() {
+  size_t getNumIOWorkerThreads() const override {
     return nWorkers_;
   }
 

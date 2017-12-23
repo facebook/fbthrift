@@ -138,13 +138,6 @@ class PeekingManager : public wangle::ManagedConnection,
       acceptor_->handleHeader(std::move(socket_), &clientAddr_);
       return;
     }
-
-    if (observer_) {
-      observer_->connAccepted();
-      observer_->activeConnections(
-          acceptor_->getConnectionManager()->getNumConnections() *
-          server_->getNumIOWorkerThreads());
-    }
   }
 
   void sendPlaintextTLSAlert(const std::vector<uint8_t>& peekBytes) {
