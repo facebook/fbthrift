@@ -31,31 +31,8 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "intValue") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "stringValue") {
-        fid = 5;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "intListValue") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "stringListValue") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "typedefValue") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "stringRef") {
-        fid = 14;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -306,15 +283,8 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "thingOne") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "thingTwo") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

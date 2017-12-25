@@ -704,15 +704,8 @@ uint32_t union1::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "i") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "d") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -844,23 +837,8 @@ uint32_t union2::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "i") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "d") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
-      else if (_fname == "s") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "u") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

@@ -93,7 +93,9 @@ uint32_t Nada::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {}
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
+    }
     switch (fid) {
       default:
       {

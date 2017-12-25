@@ -40,15 +40,8 @@ uint32_t MyUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "anInteger") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "aString") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:

@@ -569,15 +569,8 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "intValue") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "stringValue") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 7:
@@ -728,135 +721,8 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "intValue") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "req_intValue") {
-        fid = 101;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "opt_intValue") {
-        fid = 201;
-        _ftype = apache::thrift::protocol::T_I64;
-      }
-      else if (_fname == "stringValue") {
-        fid = 3;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "req_stringValue") {
-        fid = 103;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "opt_stringValue") {
-        fid = 203;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "intValue2") {
-        fid = 4;
-        _ftype = apache::thrift::protocol::T_I16;
-      }
-      else if (_fname == "intValue3") {
-        fid = 6;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "doubelValue") {
-        fid = 7;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
-      else if (_fname == "boolValue") {
-        fid = 8;
-        _ftype = apache::thrift::protocol::T_BOOL;
-      }
-      else if (_fname == "union_list") {
-        fid = 9;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "union_set") {
-        fid = 10;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "union_map") {
-        fid = 11;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "req_union_map") {
-        fid = 111;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "opt_union_map") {
-        fid = 211;
-        _ftype = apache::thrift::protocol::T_MAP;
-      }
-      else if (_fname == "enum_field") {
-        fid = 12;
-        _ftype = apache::thrift::protocol::T_I32;
-      }
-      else if (_fname == "enum_container") {
-        fid = 13;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "a_struct") {
-        fid = 14;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "a_set_struct") {
-        fid = 15;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "a_union") {
-        fid = 16;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "req_a_union") {
-        fid = 116;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "opt_a_union") {
-        fid = 216;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "a_union_list") {
-        fid = 17;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "a_union_typedef") {
-        fid = 18;
-        _ftype = apache::thrift::protocol::T_SET;
-      }
-      else if (_fname == "a_union_typedef_list") {
-        fid = 19;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "MyBinaryField") {
-        fid = 20;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryField2") {
-        fid = 21;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryField3") {
-        fid = 22;
-        _ftype = apache::thrift::protocol::T_STRING;
-      }
-      else if (_fname == "MyBinaryListField4") {
-        fid = 23;
-        _ftype = apache::thrift::protocol::T_LIST;
-      }
-      else if (_fname == "ref_field") {
-        fid = 24;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "ref_field2") {
-        fid = 25;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
-      else if (_fname == "excp_field") {
-        fid = 26;
-        _ftype = apache::thrift::protocol::T_STRUCT;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
@@ -5157,15 +5023,8 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (_fname == "floatSide") {
-        fid = 1;
-        _ftype = apache::thrift::protocol::T_FLOAT;
-      }
-      else if (_fname == "doubleSide") {
-        fid = 2;
-        _ftype = apache::thrift::protocol::T_DOUBLE;
-      }
+    if (iprot->kUsesFieldNames()) {
+      this->translateFieldName(_fname, fid, _ftype);
     }
     switch (fid) {
       case 1:
