@@ -22,12 +22,12 @@
 #include <typeinfo>
 
 #include <folly/Conv.h>
+#include <folly/Range.h>
 #include <folly/dynamic.h>
-#include <folly/json.h>
+#include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/io/Cursor.h>
-#include <folly/Range.h>
+#include <folly/json.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -255,6 +255,12 @@ class JSONProtocolReaderCommon {
   void base64_decode(uint8_t *buf, uint32_t len) {
     protocol::base64_decode(buf, len);
   }
+
+  template <class Predicate>
+  uint32_t readWhile(const Predicate& pred, std::string& out);
+
+  // Returns next character, or \0 if at the end.
+  inline int8_t peekCharSafe();
 
   [[noreturn]] static void throwBadVersion();
   [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);

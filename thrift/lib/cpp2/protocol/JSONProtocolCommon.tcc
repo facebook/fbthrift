@@ -446,12 +446,12 @@ uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
   bool keyish;
   auto ret = ensureAndReadContext(keyish);
   ret += readWhitespace();
-  auto ch = *in_.peek().first;
+  auto ch = peekCharSafe();
   if (ch == TJSONProtocol::kJSONObjectStart) {
     ret += beginContext(ContextType::MAP);
     while (true) {
       skipWhitespace();
-      if (*in_.peek().first == TJSONProtocol::kJSONObjectEnd) {
+      if (peekCharSafe() == TJSONProtocol::kJSONObjectEnd) {
         break;
       }
       ret += skip(TType::T_VOID);
@@ -462,7 +462,7 @@ uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
     ret += beginContext(ContextType::ARRAY);
     while (true) {
       skipWhitespace();
-      if (*in_.peek().first == TJSONProtocol::kJSONArrayEnd) {
+      if (peekCharSafe() == TJSONProtocol::kJSONArrayEnd) {
         break;
       }
       ret += skip(TType::T_VOID);
@@ -509,17 +509,20 @@ uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
  */
 
 void JSONProtocolReaderCommon::skipWhitespace() {
-  while (true) {
-    auto peek = *in_.peek().first;
-    if (peek == TJSONProtocol::kJSONSpace ||
-        peek == TJSONProtocol::kJSONNewline ||
-        peek == TJSONProtocol::kJSONTab ||
-        peek == TJSONProtocol::kJSONCarriageReturn) {
-      in_.read<uint8_t>();
-      skippedWhitespace_++;
-    } else {
-      return;
+  for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
+    uint32_t size = 0;
+    for (char ch : peek) {
+      if (ch != TJSONProtocol::kJSONSpace &&
+          ch != TJSONProtocol::kJSONNewline &&
+          ch != TJSONProtocol::kJSONTab &&
+          ch != TJSONProtocol::kJSONCarriageReturn) {
+        in_.skip(size);
+        return;
+      }
+      ++skippedWhitespace_;
+      ++size;
     }
+    in_.skip(size);
   }
 }
 
@@ -667,19 +670,13 @@ uint32_t JSONProtocolReaderCommon::readJSONIntegral(T& val) {
 }
 
 uint32_t JSONProtocolReaderCommon::readNumericalChars(std::string& val) {
-  auto ret = readWhitespace();
-  while (true) {
-    auto peek = *in_.peek().first;
-    if ((peek >= '0' && peek <= '9') ||
-        peek == '+' || peek == '-' || peek == '.' || peek == 'E' ||
-        peek == 'e') {
-      val += in_.read<int8_t>();
-      ret++;
-    } else {
-      break;
-    }
-  }
-  return ret;
+  return readWhitespace() +
+      readWhile(
+             [](uint8_t ch) {
+               return (ch >= '0' && ch <= '9') || ch == '+' || ch == '-' ||
+                   ch == '.' || ch == 'E' || ch == 'e';
+             },
+             val);
 }
 
 uint32_t JSONProtocolReaderCommon::readJSONVal(int8_t& val) {
@@ -700,7 +697,7 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
 
 uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
   auto ret = readWhitespace();
-  if (*in_.peek().first == TJSONProtocol::kJSONStringDelimiter) {
+  if (peekCharSafe() == TJSONProtocol::kJSONStringDelimiter) {
     std::string str;
     ret += readJSONString(str);
     if (str == TJSONProtocol::kThriftNan) {
@@ -769,12 +766,8 @@ uint32_t JSONProtocolReaderCommon::readJSONNull() {
 }
 
 uint32_t JSONProtocolReaderCommon::readJSONKeyword(std::string& kw) {
-  auto ret = readWhitespace();
-  while (*in_.peek().first >= 'a' && *in_.peek().first <= 'z') {
-    kw += in_.read<int8_t>();
-    ++ret;
-  }
-  return ret;
+  return readWhitespace() +
+      readWhile([](int8_t ch) { return ch >= 'a' && ch <= 'z'; }, kw);
 }
 
 uint32_t JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
@@ -878,6 +871,33 @@ uint8_t JSONProtocolReaderCommon::hexVal(uint8_t ch) {
   else {
     throwInvalidHexChar(ch);
   }
+}
+
+template <class Predicate>
+uint32_t JSONProtocolReaderCommon::readWhile(
+    const Predicate& pred,
+    std::string& out) {
+  uint32_t ret = 0;
+  for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
+    uint32_t size = 0;
+    for (uint8_t ch : peek) {
+      if (!pred(ch)) {
+        out.append(peek.begin(), peek.begin() + size);
+        in_.skip(size);
+        return ret + size;
+      }
+      ++size;
+    }
+    out.append(peek.begin(), peek.end());
+    ret += size;
+    in_.skip(size);
+  }
+  return ret;
+}
+
+int8_t JSONProtocolReaderCommon::peekCharSafe() {
+  auto peek = in_.peekBytes();
+  return peek.empty() ? 0 : *peek.data();
 }
 
 }} // apache::thrift

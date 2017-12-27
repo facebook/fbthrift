@@ -90,6 +90,18 @@ T reading_cpp1(StringPiece input, function<T(P1&)>&& f) {
 }
 
 template <typename T>
+T reading_cpp2(const vector<StringPiece>& input, function<T(R2&)> f) {
+  IOBufQueue queue;
+  for (const auto& data : input) {
+    queue.wrapBuffer(data.data(), data.size());
+  }
+  auto buf = queue.move();
+  R2 reader;
+  reader.setInput(buf.get());
+  return f(reader);
+}
+
+template <typename T>
 T reading_cpp2(ByteRange input, function<T(R2&)> f) {
   IOBuf buf(IOBuf::WRAP_BUFFER, input);
   R2 reader;
@@ -431,18 +443,58 @@ TEST_F(JSONProtocolTest, readDouble) {
   EXPECT_EQ(expected, reading_cpp2<double>(input, [](R2& p) {
         return returning([&](double& _) { p.readDouble(_); });
   }));
+}
 
-  auto malformed = "\"nondouble\"";
-  EXPECT_THROW(
-      reading_cpp1<double>(
-          malformed,
-          [](P1& p) { return returning([&](double& _) { p.readDouble(_); }); }),
-      TProtocolException);
-  EXPECT_THROW(
-      reading_cpp2<double>(
-          malformed,
-          [](R2& p) { return returning([&](double& _) { p.readDouble(_); }); }),
-      TProtocolException);
+TEST_F(JSONProtocolTest, readDouble_malformed) {
+  auto input = "\"nondouble\"";
+  EXPECT_ANY_THROW(reading_cpp1<double>(input, [](P1& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+  EXPECT_ANY_THROW(reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readDouble_empty) {
+  auto input = StringPiece("5.25").subpiece(0, 0);
+  EXPECT_ANY_THROW(reading_cpp1<double>(input, [](P1& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+  EXPECT_ANY_THROW(reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readDouble_null) {
+  auto input = StringPiece();
+  EXPECT_ANY_THROW(reading_cpp1<double>(input, [](P1& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+  EXPECT_ANY_THROW(reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readDouble_split) {
+  vector<StringPiece> input = {" ", "\t \r \n ", "   5", ".2", "5 "};
+  auto expected = 5.25;
+  EXPECT_EQ(expected, reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readDouble_split_malformed) {
+  vector<StringPiece> input = {" ", "\t \r \n ", "  \"nondouble\" "};
+  EXPECT_ANY_THROW(reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readDouble_split_empty) {
+  vector<StringPiece> input = {" ", "\t \r \n ", "   "};
+  EXPECT_ANY_THROW(reading_cpp2<double>(input, [](R2& p) {
+    return returning([&](double& _) { p.readDouble(_); });
+  }));
 }
 
 TEST_F(JSONProtocolTest, readFloat) {
