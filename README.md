@@ -5,6 +5,19 @@ Thrift is a serialization and RPC framework for service communication. Thrift en
 
 At a high level, Thrift is three major things:
 
+Table of Contents (ToC):
+=========================
+
+* [A Code Generator](#a-code-generator)
+* [A Serialization Framework](#a-serialization-framework)
+* [An RPC Framework](#an-rpc-framework)
+* [Building](#building)
+* [Dependencies](#dependencies)
+* [Build](#build)
+* [Thrift Files](#thrift-files)
+* [C++ Static Reflection](#c-static-reflection)
+
+
 ### A Code Generator
 
 Thrift has a code generator which generates data structures that can be serialized using Thrift, and client and server stubs for RPC, in different languages.
@@ -29,6 +42,8 @@ There are several key goals for these components:
 
 * Backwards compatibility
   Thrift allows fields to be added to and removed from serializable types in a manner that preserves backward and forward compatibility.
+
+---
 
 ## Building
 
@@ -65,5 +80,11 @@ When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in 
 
 This generates a library called: `file_name-language`. That is, for `Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`. This should be added as a dependency to any `*.h` or `*.cpp` file that contains an include to generated code.
 
+---
+
 ## C++ Static Reflection
 Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/fatal/), in the corresponding [`README` file](thrift/lib/cpp2/fatal/README.md).
+
+---
+
+<img src="https://avatars2.githubusercontent.com/u/69631?s=200&v=4" width="50"></img>
