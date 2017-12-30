@@ -99,7 +99,8 @@ ThriftServer::ThriftServer(
       saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
       allowInsecureLoopback_(allowInsecureLoopback),
       wShutdownSocketSet_(folly::ShutdownSocketSet::getInstance()),
-      lastRequestTime_(monotonic_clock::now().time_since_epoch().count()) {
+      lastRequestTime_(
+          std::chrono::steady_clock::now().time_since_epoch().count()) {
   // SASL setup
   if (saslPolicy_ == "required") {
     setSaslEnabled(true);
@@ -203,9 +204,9 @@ ThriftServer::IdleServerAction::IdleServerAction(
 void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   try {
     auto const lastRequestTime = server_.lastRequestTime();
-    if (lastRequestTime.time_since_epoch()
-        != monotonic_clock::duration::zero()) {
-      auto const elapsed = monotonic_clock::now() - lastRequestTime;
+    if (lastRequestTime.time_since_epoch() !=
+        std::chrono::steady_clock::duration::zero()) {
+      auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
       if (elapsed >= timeout_) {
         LOG(INFO) << "shutting down server due to inactivity after "
           << std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -221,21 +222,18 @@ void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   }
 }
 
-ThriftServer::monotonic_clock::time_point
-ThriftServer::lastRequestTime() const noexcept {
-  return monotonic_clock::time_point(
-    monotonic_clock::duration(
-      lastRequestTime_.load(std::memory_order_acquire)
-    )
-  );
+std::chrono::steady_clock::time_point ThriftServer::lastRequestTime() const
+    noexcept {
+  return std::chrono::steady_clock::time_point(
+      std::chrono::steady_clock::duration(
+          lastRequestTime_.load(std::memory_order_acquire)));
 }
 
 void ThriftServer::touchRequestTimestamp() noexcept {
   if (idleServer_.hasValue()) {
     lastRequestTime_.store(
-      monotonic_clock::now().time_since_epoch().count(),
-      std::memory_order_release
-    );
+        std::chrono::steady_clock::now().time_since_epoch().count(),
+        std::memory_order_release);
   }
 }
 

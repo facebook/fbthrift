@@ -100,8 +100,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;
 
-  using monotonic_clock = std::chrono::steady_clock;
-
   struct IdleServerAction:
     public folly::HHWheelTimer::Callback
   {
@@ -124,9 +122,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   folly::Optional<IdleServerAction> idleServer_;
   std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
   folly::Optional<std::chrono::milliseconds> sslHandshakeTimeout_;
-  std::atomic<monotonic_clock::duration::rep> lastRequestTime_;
+  std::atomic<std::chrono::steady_clock::duration::rep> lastRequestTime_;
 
-  monotonic_clock::time_point lastRequestTime() const noexcept;
+  std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
   void touchRequestTimestamp() noexcept;
 
   //! Thread stack size in MB
