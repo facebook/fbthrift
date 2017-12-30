@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,10 +149,10 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   obj1.stringReq = "hello";
   obj2.stringReq = "hello";
   EXPECT_EQ(obj1, obj2);
-  obj1.stringOpt = "aloha";
+  obj1.stringOpt = "world";
   obj1.__isset.stringOpt = true;
   EXPECT_NE(obj1, obj2);
-  obj2.stringOpt = "aloha";
+  obj2.stringOpt = "world";
   obj2.__isset.stringOpt = true;
   EXPECT_EQ(obj1, obj2);
 

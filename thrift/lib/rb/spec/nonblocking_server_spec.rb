@@ -34,7 +34,7 @@ class ThriftNonblockingServerSpec < Spec::ExampleGroup
       if english
         SpecNamespace::Hello.new
       else
-        SpecNamespace::Hello.new(:greeting => "Aloha!")
+        SpecNamespace::Hello.new(:greeting => "Hello!")
       end
     end
 
@@ -179,7 +179,7 @@ class ThriftNonblockingServerSpec < Spec::ExampleGroup
     it "should handle basic message passing" do
       client = setup_client
       client.greeting(true).should == Hello.new
-      client.greeting(false).should == Hello.new(:greeting => 'Aloha!')
+      client.greeting(false).should == Hello.new(:greeting => 'Hello!')
       @server.shutdown
     end
 
@@ -220,7 +220,7 @@ class ThriftNonblockingServerSpec < Spec::ExampleGroup
       4.times { result.pop.should be_true }
       queues[2] << :hello
       result.pop.should == Hello.new
-      client.greeting(false).should == Hello.new(:greeting => 'Aloha!')
+      client.greeting(false).should == Hello.new(:greeting => 'Hello!')
       7.times { queues.shift << :exit }
       client.greeting(true).should == Hello.new
       @server.shutdown

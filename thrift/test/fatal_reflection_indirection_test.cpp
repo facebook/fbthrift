@@ -155,8 +155,8 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
   >();
 
   type obj;
-  member::getter::ref(obj) = "aloha";
-  EXPECT_EQ("aloha", member::getter::ref(obj));
+  member::getter::ref(obj) = "hello";
+  EXPECT_EQ("hello", member::getter::ref(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
