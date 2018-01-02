@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -86,7 +87,12 @@ cdef void MyLeaf_do_leaf_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _MyRoot_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyRoot(thrift.py3.client.Client):
+    annotations = _MyRoot_annotations
 
     def __cinit__(MyRoot self):
         loop = asyncio.get_event_loop()
@@ -178,7 +184,12 @@ cdef void closed_MyRoot_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyNode_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyNode(MyRoot):
+    annotations = _MyNode_annotations
 
     def __cinit__(MyNode self):
         loop = asyncio.get_event_loop()
@@ -272,7 +283,12 @@ cdef void closed_MyNode_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyLeaf(MyNode):
+    annotations = _MyLeaf_annotations
 
     def __cinit__(MyLeaf self):
         loop = asyncio.get_event_loop()

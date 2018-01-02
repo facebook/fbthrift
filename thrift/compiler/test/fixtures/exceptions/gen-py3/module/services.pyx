@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cRaiserInterface
 
@@ -64,9 +65,15 @@ cdef class Promise_string:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _Raiser_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class RaiserInterface(
     ServiceInterface
 ):
+    annotations = _Raiser_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cRaiserInterface(
             <PyObject *> self,

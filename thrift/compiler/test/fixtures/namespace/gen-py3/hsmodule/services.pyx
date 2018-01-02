@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from hsmodule.services_wrapper cimport cHsTestServiceInterface
 
@@ -55,9 +56,15 @@ cdef class Promise_i64:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _HsTestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class HsTestServiceInterface(
     ServiceInterface
 ):
+    annotations = _HsTestService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cHsTestServiceInterface(
             <PyObject *> self,

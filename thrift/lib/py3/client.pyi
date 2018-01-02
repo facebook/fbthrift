@@ -1,5 +1,5 @@
 from types import TracebackType
-from typing import TypeVar, Optional, Type, Dict, Callable, Any
+from typing import TypeVar, Optional, Type, Dict, Callable, Any, Mapping, ClassVar
 
 cT = TypeVar('cT', bound='Client')
 
@@ -13,7 +13,7 @@ class Client:
         exc_value: Optional[Exception],
         traceback: Optional[TracebackType],
     ) -> Optional[bool]: ...
-
+    annotations: ClassVar[Mapping[str, str]] = ...
 
 def get_client(
     clientKlass: Type[cT],

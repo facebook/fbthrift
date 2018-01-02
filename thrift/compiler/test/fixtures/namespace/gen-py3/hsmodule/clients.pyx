@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport hsmodule.types as _hsmodule_types
 import hsmodule.types as _hsmodule_types
@@ -52,7 +53,12 @@ cdef void HsTestService_init_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _HsTestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class HsTestService(thrift.py3.client.Client):
+    annotations = _HsTestService_annotations
 
     def __cinit__(HsTestService self):
         loop = asyncio.get_event_loop()

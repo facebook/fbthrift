@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import asyncio
 import unittest
+import types
 
 from testing.clients import TestingService
 from testing.types import I32List, Color, easy
@@ -13,6 +14,16 @@ async def bad_client_connect():
 
 
 class ClientTests(unittest.TestCase):
+    def test_annotations(self) -> None:
+        annotations = TestingService.annotations
+        self.assertIsInstance(annotations, types.MappingProxyType)
+        self.assertTrue(annotations.get('py3.pass_context'))
+        self.assertFalse(annotations.get('NotAnAnnotation'))
+        self.assertEqual(annotations['fun_times'], 'yes')
+        with self.assertRaises(TypeError):
+            # You can't set attributes on builtin/extension types
+            TestingService.annotations = {}
+
     def test_client_keyword_arguments(self) -> None:
         # Create a broken client
         client = TestingService()

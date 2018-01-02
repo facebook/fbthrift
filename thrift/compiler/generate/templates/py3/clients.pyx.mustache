@@ -47,6 +47,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
@@ -73,10 +74,21 @@ from {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:pro
 {{> clients/Callbacks}}
 
 {{#program:services}}
+cdef object _{{service:name}}_annotations = _py_types.MappingProxyType({
+{{#service:annotations}}
+    """{{annotation:key}}""": {{!
+        }}{{#annotation:value?}}"{{annotation:value}}"{{/annotation:value?}}{{!
+        An annotation without an explicitly provided value is implicitly assigned the default value "1".
+        }}{{^annotation:value?}}"1"{{/annotation:value?}},
+{{/service:annotations}}
+})
+
+
 cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!
     }}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}{{!
   }}{{/service:extends}}{{^service:extends?}}thrift.py3.client.Client{{/service:extends?}}):
+    annotations = _{{service:name}}_annotations
 
     def __cinit__({{service:name}} self):
         loop = asyncio.get_event_loop()

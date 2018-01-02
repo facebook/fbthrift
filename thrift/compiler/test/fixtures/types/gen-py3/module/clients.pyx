@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -54,7 +55,12 @@ cdef void SomeService_bounce_map_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _SomeService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class SomeService(thrift.py3.client.Client):
+    annotations = _SomeService_annotations
 
     def __cinit__(SomeService self):
         loop = asyncio.get_event_loop()

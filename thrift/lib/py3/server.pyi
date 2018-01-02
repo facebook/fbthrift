@@ -2,7 +2,7 @@
 
 import ipaddress
 from enum import Enum
-from typing import Callable, NamedTuple, Union, Optional, TypeVar
+from typing import Callable, NamedTuple, Union, Optional, TypeVar, Mapping, ClassVar
 
 mT = TypeVar('mT', bound=Callable)
 
@@ -23,7 +23,8 @@ class SSLPolicy(Enum):
     value: int
 
 
-class ServiceInterface: ...
+class ServiceInterface:
+    annotations: ClassVar[Mapping[str, str]] = ...
 
 
 hT = TypeVar('hT', bound=ServiceInterface)

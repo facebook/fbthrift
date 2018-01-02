@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from my.namespacing.test.module.module.services_wrapper cimport cTestServiceInterface
 
@@ -55,9 +56,15 @@ cdef class Promise_i64:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _TestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class TestServiceInterface(
     ServiceInterface
 ):
+    annotations = _TestService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cTestServiceInterface(
             <PyObject *> self,

@@ -41,6 +41,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from service.services_wrapper cimport cMyServiceInterface
 
@@ -59,9 +60,15 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _MyService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceInterface(
     ServiceInterface
 ):
+    annotations = _MyService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(
             <PyObject *> self,

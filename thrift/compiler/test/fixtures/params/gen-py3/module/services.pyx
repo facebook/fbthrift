@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cNestedContainersInterface
 
@@ -55,9 +56,15 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _NestedContainers_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class NestedContainersInterface(
     ServiceInterface
 ):
+    annotations = _NestedContainers_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cNestedContainersInterface(
             <PyObject *> self,

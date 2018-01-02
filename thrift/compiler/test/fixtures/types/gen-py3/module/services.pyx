@@ -39,6 +39,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cSomeServiceInterface
 
@@ -57,9 +58,15 @@ cdef class Promise_std_unordered_map__Map__i32_string:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _SomeService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class SomeServiceInterface(
     ServiceInterface
 ):
+    annotations = _SomeService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cSomeServiceInterface(
             <PyObject *> self,

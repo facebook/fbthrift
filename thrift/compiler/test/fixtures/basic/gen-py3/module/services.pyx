@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cMyServiceInterface
 from module.services_wrapper cimport cMyServiceFastInterface
@@ -79,9 +80,15 @@ cdef class Promise_bool:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _MyService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceInterface(
     ServiceInterface
 ):
+    annotations = _MyService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(
             <PyObject *> self,
@@ -141,9 +148,15 @@ cdef class MyServiceInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
+cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceFastInterface(
     ServiceInterface
 ):
+    annotations = _MyServiceFast_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServiceFastInterface(
             <PyObject *> self,
@@ -203,17 +216,30 @@ cdef class MyServiceFastInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
+cdef object _MyServiceEmpty_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceEmptyInterface(
     ServiceInterface
 ):
+    annotations = _MyServiceEmpty_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServiceEmptyInterface(
             <PyObject *> self,
             get_executor()
         )
+cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
+    """priority""": "HIGH",
+})
+
+
 cdef class MyServicePrioParentInterface(
     ServiceInterface
 ):
+    annotations = _MyServicePrioParent_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioParentInterface(
             <PyObject *> self,
@@ -235,9 +261,15 @@ cdef class MyServicePrioParentInterface(
     async def pong(
             self):
         raise NotImplementedError("async def pong is not implemented")
+cdef object _MyServicePrioChild_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServicePrioChildInterface(
 MyServicePrioParentInterface
 ):
+    annotations = _MyServicePrioChild_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioChildInterface(
             <PyObject *> self,

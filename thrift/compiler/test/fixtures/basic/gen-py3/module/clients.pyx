@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -280,7 +281,12 @@ cdef void MyServicePrioChild_pang_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _MyService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyService(thrift.py3.client.Client):
+    annotations = _MyService_annotations
 
     def __cinit__(MyService self):
         loop = asyncio.get_event_loop()
@@ -480,7 +486,12 @@ cdef void closed_MyService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceFast(thrift.py3.client.Client):
+    annotations = _MyServiceFast_annotations
 
     def __cinit__(MyServiceFast self):
         loop = asyncio.get_event_loop()
@@ -680,7 +691,12 @@ cdef void closed_MyServiceFast_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyServiceEmpty_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServiceEmpty(thrift.py3.client.Client):
+    annotations = _MyServiceEmpty_annotations
 
     def __cinit__(MyServiceEmpty self):
         loop = asyncio.get_event_loop()
@@ -756,7 +772,13 @@ cdef void closed_MyServiceEmpty_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
+    """priority""": "HIGH",
+})
+
+
 cdef class MyServicePrioParent(thrift.py3.client.Client):
+    annotations = _MyServicePrioParent_annotations
 
     def __cinit__(MyServicePrioParent self):
         loop = asyncio.get_event_loop()
@@ -864,7 +886,12 @@ cdef void closed_MyServicePrioParent_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _MyServicePrioChild_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyServicePrioChild(MyServicePrioParent):
+    annotations = _MyServicePrioChild_annotations
 
     def __cinit__(MyServicePrioChild self):
         loop = asyncio.get_event_loop()

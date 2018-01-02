@@ -41,6 +41,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from my.namespacing.extend.test.extend.services_wrapper cimport cExtendTestServiceInterface
 
@@ -59,9 +60,15 @@ cdef class Promise_bool:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ExtendTestServiceInterface(
     _hsmodule_services.HsTestServiceInterface
 ):
+    annotations = _ExtendTestService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cExtendTestServiceInterface(
             <PyObject *> self,

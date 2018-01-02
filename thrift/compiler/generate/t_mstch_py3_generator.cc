@@ -50,6 +50,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   mstch::map extend_type(const t_type&) override;
   mstch::map extend_service(const t_service&) override;
   mstch::map extend_enum(const t_enum&) override;
+  mstch::map extend_annotation(const annotation&) override;
 
  protected:
   bool should_resolve_typedefs() const override {
@@ -374,6 +375,13 @@ mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
       {"py3Namespaces", py3Namespaces},
       {"programName", program.get_name()},
       {"includePrefix", include_prefix},
+  };
+  return result;
+}
+
+mstch::map t_mstch_py3_generator::extend_annotation(const annotation& pair) {
+  mstch::map result{
+      {"value?", !pair.second.empty()},
   };
   return result;
 }

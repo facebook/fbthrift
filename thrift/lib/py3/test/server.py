@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
+import types
 import unittest
 
 from testing.services import TestingServiceInterface
@@ -32,6 +33,16 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
+    def test_annotations(self) -> None:
+        annotations = TestingServiceInterface.annotations
+        self.assertIsInstance(annotations, types.MappingProxyType)
+        self.assertTrue(annotations.get('py3.pass_context'))
+        self.assertFalse(annotations.get('NotAnAnnotation'))
+        self.assertEqual(annotations['fun_times'], 'yes')
+        with self.assertRaises(TypeError):
+            # You can't set attributes on builtin/extension types
+            TestingServiceInterface.annotations = {}
+
     def test_ctx_unittest_call(self) -> None:
         # Create a broken client
         h = Handler()

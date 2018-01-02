@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -116,7 +117,12 @@ cdef void NestedContainers_turtles_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _NestedContainers_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class NestedContainers(thrift.py3.client.Client):
+    annotations = _NestedContainers_annotations
 
     def __cinit__(NestedContainers self):
         loop = asyncio.get_event_loop()

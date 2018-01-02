@@ -39,6 +39,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cEmptyServiceInterface
 from module.services_wrapper cimport cReturnServiceInterface
@@ -275,17 +276,29 @@ cdef class Promise_List__i32:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _EmptyService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class EmptyServiceInterface(
     ServiceInterface
 ):
+    annotations = _EmptyService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cEmptyServiceInterface(
             <PyObject *> self,
             get_executor()
         )
+cdef object _ReturnService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ReturnServiceInterface(
     ServiceInterface
 ):
+    annotations = _ReturnService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cReturnServiceInterface(
             <PyObject *> self,
@@ -461,9 +474,15 @@ cdef class ReturnServiceInterface(
             self,
             size):
         raise NotImplementedError("async def readData is not implemented")
+cdef object _ParamService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ParamServiceInterface(
     ServiceInterface
 ):
+    annotations = _ParamService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cParamServiceInterface(
             <PyObject *> self,

@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -840,7 +841,12 @@ cdef void ParamService_listunion_string_param_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _EmptyService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class EmptyService(thrift.py3.client.Client):
+    annotations = _EmptyService_annotations
 
     def __cinit__(EmptyService self):
         loop = asyncio.get_event_loop()
@@ -916,7 +922,12 @@ cdef void closed_EmptyService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _ReturnService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ReturnService(thrift.py3.client.Client):
+    annotations = _ReturnService_annotations
 
     def __cinit__(ReturnService self):
         loop = asyncio.get_event_loop()
@@ -1340,7 +1351,12 @@ cdef void closed_ReturnService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _ParamService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ParamService(thrift.py3.client.Client):
+    annotations = _ParamService_annotations
 
     def __cinit__(ParamService self):
         loop = asyncio.get_event_loop()

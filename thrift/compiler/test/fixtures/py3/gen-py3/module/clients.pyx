@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -712,7 +713,12 @@ cdef void RederivedService_get_seven_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _SimpleService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class SimpleService(thrift.py3.client.Client):
+    annotations = _SimpleService_annotations
 
     def __cinit__(SimpleService self):
         loop = asyncio.get_event_loop()
@@ -1576,7 +1582,12 @@ cdef void closed_SimpleService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _DerivedService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class DerivedService(SimpleService):
+    annotations = _DerivedService_annotations
 
     def __cinit__(DerivedService self):
         loop = asyncio.get_event_loop()
@@ -1670,7 +1681,12 @@ cdef void closed_DerivedService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
+cdef object _RederivedService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class RederivedService(DerivedService):
+    annotations = _RederivedService_annotations
 
     def __cinit__(RederivedService self):
         loop = asyncio.get_event_loop()

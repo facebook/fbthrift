@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cSimpleServiceInterface
 from module.services_wrapper cimport cDerivedServiceInterface
@@ -262,9 +263,15 @@ cdef class Promise_List__AnEnum:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _SimpleService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class SimpleServiceInterface(
     ServiceInterface
 ):
+    annotations = _SimpleService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cSimpleServiceInterface(
             <PyObject *> self,
@@ -629,9 +636,15 @@ cdef class SimpleServiceInterface(
             self,
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
+cdef object _DerivedService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class DerivedServiceInterface(
 SimpleServiceInterface
 ):
+    annotations = _DerivedService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cDerivedServiceInterface(
             <PyObject *> self,
@@ -645,9 +658,15 @@ SimpleServiceInterface
     async def get_six(
             self):
         raise NotImplementedError("async def get_six is not implemented")
+cdef object _RederivedService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class RederivedServiceInterface(
 DerivedServiceInterface
 ):
+    annotations = _RederivedService_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cRederivedServiceInterface(
             <PyObject *> self,

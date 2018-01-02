@@ -37,6 +37,7 @@ import asyncio
 import functools
 import sys
 import traceback
+import types as _py_types
 
 from module.services_wrapper cimport cMyRootInterface
 from module.services_wrapper cimport cMyNodeInterface
@@ -57,9 +58,15 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef object _MyRoot_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyRootInterface(
     ServiceInterface
 ):
+    annotations = _MyRoot_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyRootInterface(
             <PyObject *> self,
@@ -73,9 +80,15 @@ cdef class MyRootInterface(
     async def do_root(
             self):
         raise NotImplementedError("async def do_root is not implemented")
+cdef object _MyNode_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyNodeInterface(
 MyRootInterface
 ):
+    annotations = _MyNode_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyNodeInterface(
             <PyObject *> self,
@@ -89,9 +102,15 @@ MyRootInterface
     async def do_mid(
             self):
         raise NotImplementedError("async def do_mid is not implemented")
+cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class MyLeafInterface(
 MyNodeInterface
 ):
+    annotations = _MyLeaf_annotations
+
     def __cinit__(self):
         self.interface_wrapper = cMyLeafInterface(
             <PyObject *> self,

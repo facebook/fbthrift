@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
@@ -52,7 +53,12 @@ cdef void TestService_init_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _TestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class TestService(thrift.py3.client.Client):
+    annotations = _TestService_annotations
 
     def __cinit__(TestService self):
         loop = asyncio.get_event_loop()

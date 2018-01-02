@@ -28,6 +28,7 @@ cimport cython
 
 import asyncio
 import sys
+import types as _py_types
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
@@ -57,7 +58,12 @@ cdef void ExtendTestService_check_callback(
             pyfuture.set_exception(ex)
 
 
+cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
+})
+
+
 cdef class ExtendTestService(_hsmodule_clients.HsTestService):
+    annotations = _ExtendTestService_annotations
 
     def __cinit__(ExtendTestService self):
         loop = asyncio.get_event_loop()
