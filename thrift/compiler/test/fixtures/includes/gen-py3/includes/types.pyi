@@ -17,11 +17,11 @@ import enum as __enum
 import transitive.types as _transitive_types
 
 
-class Included(thrift.py3.types.Struct):
+class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        MyIntField: int=None,
-        MyTransitiveField: _transitive_types.Foo=None
+        MyIntField: _typing.Optional[int]=None,
+        MyTransitiveField: _typing.Optional[_transitive_types.Foo]=None
     ) -> None: ...
 
     def __call__(
@@ -43,6 +43,6 @@ class Included(thrift.py3.types.Struct):
     def MyTransitiveField(self) -> _transitive_types.Foo: ...
 
 
-ExampleIncluded: 'Included' = ...
+ExampleIncluded: Included = ...
 IncludedConstant: int = ...
 IncludedInt64 = int

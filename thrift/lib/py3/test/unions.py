@@ -7,7 +7,11 @@ from testing.types import (
 from thrift.py3.types import Union
 from thrift.py3 import deserialize, Protocol
 
+
 class UnionTests(unittest.TestCase):
+    def test_hashability(self) -> None:
+        hash(Integers())
+
     def test_deserialize_empty(self) -> None:
         x = deserialize(Integers, b'{}', Protocol.JSON)
         self.assertEqual(x.type, IntegersType.EMPTY)

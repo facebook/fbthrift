@@ -16,7 +16,7 @@ import itertools
 import enum as __enum
 
 
-class Banal(thrift.py3.exceptions.Error):
+class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, 
     ) -> None: ...
@@ -29,7 +29,7 @@ class Banal(thrift.py3.exceptions.Error):
 
 
 
-class Fiery(thrift.py3.exceptions.Error):
+class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
         message: str

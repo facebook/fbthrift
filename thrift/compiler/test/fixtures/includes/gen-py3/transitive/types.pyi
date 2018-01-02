@@ -16,10 +16,10 @@ import itertools
 import enum as __enum
 
 
-class Foo(thrift.py3.types.Struct):
+class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        a: int=None
+        a: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
@@ -38,4 +38,4 @@ class Foo(thrift.py3.types.Struct):
     def a(self) -> int: ...
 
 
-ExampleFoo: 'Foo' = ...
+ExampleFoo: Foo = ...

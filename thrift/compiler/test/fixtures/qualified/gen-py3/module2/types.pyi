@@ -18,11 +18,11 @@ import module0.types as _module0_types
 import module1.types as _module1_types
 
 
-class Struct(thrift.py3.types.Struct):
+class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        first: _module0_types.Struct=None,
-        second: _module1_types.Struct=None
+        first: _typing.Optional[_module0_types.Struct]=None,
+        second: _typing.Optional[_module1_types.Struct]=None
     ) -> None: ...
 
     def __call__(
@@ -44,11 +44,11 @@ class Struct(thrift.py3.types.Struct):
     def second(self) -> _module1_types.Struct: ...
 
 
-class BigStruct(thrift.py3.types.Struct):
+class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        s: 'Struct'=None,
-        id: int=None
+        s: _typing.Optional['Struct']=None,
+        id: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
@@ -70,6 +70,6 @@ class BigStruct(thrift.py3.types.Struct):
     def id(self) -> int: ...
 
 
-c2: 'Struct' = ...
-c3: 'Struct' = ...
-c4: 'Struct' = ...
+c2: Struct = ...
+c3: Struct = ...
+c4: Struct = ...

@@ -23,12 +23,12 @@ class MyEnum(__enum.Enum, _typing.SupportsInt):
     def __int__(self) -> int: ...
 
 
-class MyStruct(thrift.py3.types.Struct):
+class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        MyIntField: int=None,
-        MyStringField: str=None,
-        MyDataField: 'MyDataItem'=None
+        MyIntField: _typing.Optional[int]=None,
+        MyStringField: _typing.Optional[str]=None,
+        MyDataField: _typing.Optional['MyDataItem']=None
     ) -> None: ...
 
     def __call__(
@@ -53,7 +53,7 @@ class MyStruct(thrift.py3.types.Struct):
     def MyDataField(self) -> 'MyDataItem': ...
 
 
-class MyDataItem(thrift.py3.types.Struct):
+class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, 
     ) -> None: ...

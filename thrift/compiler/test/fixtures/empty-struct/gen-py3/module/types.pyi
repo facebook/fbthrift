@@ -16,7 +16,7 @@ import itertools
 import enum as __enum
 
 
-class Empty(thrift.py3.types.Struct):
+class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, 
     ) -> None: ...
@@ -39,12 +39,11 @@ class NadaType(__enum.Enum):
     value: int
 
 
-class Nada(thrift.py3.types.Union):
+class Nada(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
         self, 
     ) -> None: ...
 
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
     def __bool__(self) -> bool: ...
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...

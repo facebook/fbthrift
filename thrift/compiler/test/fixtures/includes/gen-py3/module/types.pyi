@@ -17,12 +17,12 @@ import enum as __enum
 import includes.types as _includes_types
 
 
-class MyStruct(thrift.py3.types.Struct):
+class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        MyIncludedField: _includes_types.Included=None,
-        MyOtherIncludedField: _includes_types.Included=None,
-        MyIncludedInt: int=None
+        MyIncludedField: _typing.Optional[_includes_types.Included]=None,
+        MyOtherIncludedField: _typing.Optional[_includes_types.Included]=None,
+        MyIncludedInt: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(

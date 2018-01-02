@@ -6,6 +6,9 @@ from testing.types import easy, hard, Integers, mixed, Runtime, numerical
 
 
 class StructTests(unittest.TestCase):
+    def test_hashability(self) -> None:
+        hash(easy())
+
     def test_optional_struct_creation(self) -> None:
         with self.assertRaises(TypeError):
             easy(1, [1, 1], 'test', Integers(tiny=1))  # type: ignore

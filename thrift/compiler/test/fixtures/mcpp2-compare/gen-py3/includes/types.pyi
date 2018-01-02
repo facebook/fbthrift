@@ -23,10 +23,10 @@ class AnEnum(__enum.Enum, _typing.SupportsInt):
     def __int__(self) -> int: ...
 
 
-class AStruct(thrift.py3.types.Struct):
+class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        FieldA: int=None
+        FieldA: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
@@ -45,10 +45,10 @@ class AStruct(thrift.py3.types.Struct):
     def FieldA(self) -> int: ...
 
 
-class AStructB(thrift.py3.types.Struct):
+class AStructB(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        FieldA: 'AStruct'=None
+        FieldA: _typing.Optional['AStruct']=None
     ) -> None: ...
 
     def __call__(
