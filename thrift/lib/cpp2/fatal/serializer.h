@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
@@ -78,97 +79,32 @@ inline bool is_unknown_container_size(uint32_t const size) {
 template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
-#define REGISTER_OVERLOAD_RW_COMMON(Class, Type, Method, TTypeValue) \
-  constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
-  template <typename Protocol>              \
-  static std::size_t read(Protocol& protocol, Type& out) {       \
-    DVLOG(3) << "read primitive " << #Class << ": " << #Type; \
-    return protocol.read##Method(out); \
-  } \
-  template <typename Protocol>              \
-  static std::size_t write(Protocol& protocol, Type const& in) { \
-    DVLOG(3) << "write primitive " << #Class << ": "<< #Type; \
-    return protocol.write##Method(in); \
+#define THRIFT_PROTOCOL_METHODS_INHERIT(Class, Type)                         \
+  template <>                                                                \
+  struct protocol_methods<type_class::Class, Type>                           \
+      : detail::pm::protocol_methods<type_class::Class, Type> {              \
+    using base = detail::pm::protocol_methods<type_class::Class, Type>;      \
+    template <bool ZeroCopy, typename Protocol>                              \
+    static std::size_t serialized_size(Protocol& protocol, Type const& in) { \
+      return base::template serializedSize<ZeroCopy>(protocol, in);          \
+    }                                                                        \
   }
 
-#define REGISTER_OVERLOAD_SS_COMMON(Class, Type, Method, TTypeValue) \
-  template <bool, typename Protocol> \
-  static std::size_t serialized_size(Protocol& protocol, Type const& in) { \
-    return protocol.serializedSize##Method(in); \
-  }
+THRIFT_PROTOCOL_METHODS_INHERIT(integral, std::int8_t);
+THRIFT_PROTOCOL_METHODS_INHERIT(integral, std::int16_t);
+THRIFT_PROTOCOL_METHODS_INHERIT(integral, std::int32_t);
+THRIFT_PROTOCOL_METHODS_INHERIT(integral, std::int64_t);
+THRIFT_PROTOCOL_METHODS_INHERIT(integral, bool);
+THRIFT_PROTOCOL_METHODS_INHERIT(floating_point, double);
+THRIFT_PROTOCOL_METHODS_INHERIT(floating_point, float);
+THRIFT_PROTOCOL_METHODS_INHERIT(string, std::string);
+THRIFT_PROTOCOL_METHODS_INHERIT(string, folly::fbstring);
+THRIFT_PROTOCOL_METHODS_INHERIT(binary, std::string);
+THRIFT_PROTOCOL_METHODS_INHERIT(binary, folly::fbstring);
+THRIFT_PROTOCOL_METHODS_INHERIT(binary, folly::IOBuf);
+THRIFT_PROTOCOL_METHODS_INHERIT(binary, std::unique_ptr<folly::IOBuf>);
 
-// stamp out specializations for primitive types
-// TODO: Perhaps change ttype_value to a static constexpr member function, as
-// those might instantiate faster than a constexpr objects
-#define REGISTER_OVERLOAD(Class, Type, Method, TTypeValue) \
-  template <> struct protocol_methods<type_class::Class, Type> { \
-    REGISTER_OVERLOAD_RW_COMMON(Class, Type, Method, TTypeValue) \
-    REGISTER_OVERLOAD_SS_COMMON(Class, Type, Method, TTypeValue) \
-  }
-
-#define REGISTER_INTEGRAL(...) REGISTER_OVERLOAD(integral, __VA_ARGS__)
-REGISTER_INTEGRAL(std::int8_t,  Byte,   T_BYTE);
-REGISTER_INTEGRAL(std::int16_t, I16,    T_I16);
-REGISTER_INTEGRAL(std::int32_t, I32,    T_I32);
-REGISTER_INTEGRAL(std::int64_t, I64,    T_I64);
-#undef REGISTER_INTEGRAL
-
-// std::vector<bool> isn't actually a container, so
-// define a special overload which takes its specialized
-// proxy type
-template <>
-struct protocol_methods<type_class::integral, bool> {
-  REGISTER_OVERLOAD_RW_COMMON(integral, bool, Bool, T_BOOL)
-  REGISTER_OVERLOAD_SS_COMMON(integral, bool, Bool, T_BOOL)
-
-  template <typename Protocol>
-  static std::size_t read(
-    Protocol& protocol,
-    std::vector<bool>::reference out
-  ) {
-    bool tmp;
-    std::size_t xfer = read(protocol, tmp);
-    out = tmp;
-    return xfer;
-  }
-};
-
-#define REGISTER_FP(...) REGISTER_OVERLOAD(floating_point, __VA_ARGS__)
-REGISTER_FP(double,       Double, T_DOUBLE);
-REGISTER_FP(float,        Float,  T_FLOAT);
-#undef REGISTER_FP
-
-// TODO: might not need to specialize on std::string, but rather
-// just the string typeclass
-REGISTER_OVERLOAD(string, std::string,     String, T_STRING);
-REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
-
-#undef REGISTER_OVERLOAD
-
-#define REGISTER_OVERLOAD_ZC(Class, Type, Method, TTypeValue) \
-  template <> struct protocol_methods<type_class::Class, Type> { \
-    REGISTER_OVERLOAD_RW_COMMON(Class, Type, Method, TTypeValue) \
-    template <bool ZeroCopy, typename Protocol> \
-    static typename std::enable_if<ZeroCopy, std::size_t>::type \
-    serialized_size(Protocol& protocol, Type const& in) { \
-      return protocol.serializedSizeZC##Method(in); \
-    } \
-    template <bool ZeroCopy, typename Protocol> \
-    static typename std::enable_if<!ZeroCopy, std::size_t>::type \
-    serialized_size(Protocol& protocol, Type const& in) { \
-      return protocol.serializedSize##Method(in); \
-    } \
-  };
-
-#define REGISTER_BINARY(...) REGISTER_OVERLOAD_ZC(binary, __VA_ARGS__)
-REGISTER_BINARY(std::string,                   Binary, T_STRING);
-REGISTER_BINARY(folly::IOBuf,                  Binary, T_STRING);
-REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
-REGISTER_BINARY(folly::fbstring,               Binary, T_STRING);
-#undef REGISTER_BINARY
-#undef REGISTER_OVERLOAD_ZC // this naming sure isn't confusing, no sir
-#undef REGISTER_OVERLOAD_SS_COMMON
-#undef REGISTER_OVERLOAD_RW_COMMON
+#undef THRIFT_PROTOCOL_METHODS_INHERIT
 
 namespace detail {
 
@@ -258,38 +194,13 @@ struct protocol_methods <
 };
 
 // Enumerations
-template<typename Type>
-struct protocol_methods<type_class::enumeration, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_I32;
-
-  // enums are guarenteed to inherit from uint32_t, so we can be assured
-  // that the bytes coming off the wire are still uint32_t even though
-  // we read them with readI32
-  using enum_type = typename std::underlying_type<Type>::type;
-  using int_type = std::int32_t;
-  using int_methods = protocol_methods<type_class::integral, int_type>;
-
-  static_assert(sizeof(enum_type) == sizeof(int_type),
-    "underlying enum type doesn't have width of int32_t");
-
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Type& out) {
-    int_type tmp;
-    std::size_t xfer = int_methods::read(protocol, tmp);
-    out = static_cast<Type>(tmp);
-    return xfer;
-  }
-
-  template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
-    int_type tmp = static_cast<int_type>(in);
-    return int_methods::template write<Protocol>(protocol, tmp);
-  }
-
+template <typename Type>
+struct protocol_methods<type_class::enumeration, Type>
+    : detail::pm::protocol_methods<type_class::enumeration, Type> {
+  using base = detail::pm::protocol_methods<type_class::enumeration, Type>;
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(Protocol& protocol, Type const& in) {
-    int_type tmp = static_cast<int_type>(in);
-    return int_methods::template serialized_size<ZeroCopy>(protocol, tmp);
+    return base::template serializedSize<ZeroCopy>(protocol, in);
   }
 };
 
