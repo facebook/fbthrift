@@ -5665,38 +5665,10 @@ cdef class List__Map__Empty_MyStruct:
         cdef cmap[cEmpty,cMyStruct] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cmap[cEmpty,cMyStruct]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Map__Empty_MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -5767,15 +5739,47 @@ cdef class List__Map__Empty_MyStruct:
     make_shared[cmap[cEmpty,cMyStruct]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Map__Empty_MyStruct):
+                item = Map__Empty_MyStruct(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Map__Empty_MyStruct):
+            raise err
         cdef cmap[cEmpty,cMyStruct] citem = cmap[cEmpty,cMyStruct](deref(Map__Empty_MyStruct(item)._cpp_obj.get()))
         cdef vector[cmap[cEmpty,cMyStruct]] vec = deref(self._cpp_obj.get())
-        cdef vector[cmap[cEmpty,cMyStruct]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cmap[cEmpty,cMyStruct]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cmap[cEmpty,cMyStruct]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -5820,38 +5824,10 @@ cdef class List__List__Map__Empty_MyStruct:
         cdef vector[cmap[cEmpty,cMyStruct]] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[cmap[cEmpty,cMyStruct]]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__Map__Empty_MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -5922,15 +5898,47 @@ cdef class List__List__Map__Empty_MyStruct:
     make_shared[vector[cmap[cEmpty,cMyStruct]]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__Map__Empty_MyStruct):
+                item = List__Map__Empty_MyStruct(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__Map__Empty_MyStruct):
+            raise err
         cdef vector[cmap[cEmpty,cMyStruct]] citem = vector[cmap[cEmpty,cMyStruct]](deref(List__Map__Empty_MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[cmap[cEmpty,cMyStruct]]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[cmap[cEmpty,cMyStruct]]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[cmap[cEmpty,cMyStruct]]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[cmap[cEmpty,cMyStruct]]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -5975,38 +5983,10 @@ cdef class List__List__List__Map__Empty_MyStruct:
         cdef vector[vector[cmap[cEmpty,cMyStruct]]] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__List__Map__Empty_MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -6077,15 +6057,47 @@ cdef class List__List__List__Map__Empty_MyStruct:
     make_shared[vector[vector[cmap[cEmpty,cMyStruct]]]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__List__Map__Empty_MyStruct):
+                item = List__List__Map__Empty_MyStruct(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__List__Map__Empty_MyStruct):
+            raise err
         cdef vector[vector[cmap[cEmpty,cMyStruct]]] citem = vector[vector[cmap[cEmpty,cMyStruct]]](deref(List__List__Map__Empty_MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[vector[cmap[cEmpty,cMyStruct]]]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[vector[cmap[cEmpty,cMyStruct]]]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[vector[cmap[cEmpty,cMyStruct]]]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[vector[cmap[cEmpty,cMyStruct]]]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -6128,38 +6140,10 @@ cdef class List__MyEnumA:
         cdef cMyEnumA citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cMyEnumA]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__MyEnumA.create(c_inst)
         else:
             index = <int?>index_obj
@@ -6227,15 +6211,42 @@ cdef class List__MyEnumA:
             yield MyEnumA(<int> citem)
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, MyEnumA):
+            raise err
         cdef cMyEnumA citem = MyEnumA_to_cpp(item)
         cdef vector[cMyEnumA] vec = deref(self._cpp_obj.get())
-        cdef vector[cMyEnumA].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cMyEnumA].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cMyEnumA].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -6465,38 +6476,10 @@ cdef class List__ComplexUnion:
         cdef cComplexUnion citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cComplexUnion]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__ComplexUnion.create(c_inst)
         else:
             index = <int?>index_obj
@@ -6564,15 +6547,42 @@ cdef class List__ComplexUnion:
             yield ComplexUnion.create(make_shared[cComplexUnion](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, ComplexUnion):
+            raise err
         cdef cComplexUnion citem = deref((<ComplexUnion>item)._cpp_obj)
         cdef vector[cComplexUnion] vec = deref(self._cpp_obj.get())
-        cdef vector[cComplexUnion].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cComplexUnion].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cComplexUnion].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -6615,38 +6625,10 @@ cdef class List__string:
         cdef string citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[string]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__string.create(c_inst)
         else:
             index = <int?>index_obj
@@ -6714,15 +6696,42 @@ cdef class List__string:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, str):
+            raise err
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
-        cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[string].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[string].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -7270,38 +7279,10 @@ cdef class List__bool:
         cdef cbool citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cbool]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__bool.create(c_inst)
         else:
             index = <int?>index_obj
@@ -7369,15 +7350,42 @@ cdef class List__bool:
             yield citem
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, bool):
+            raise err
         cdef cbool citem = item
         cdef vector[cbool] vec = deref(self._cpp_obj.get())
-        cdef vector[cbool].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cbool].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cbool].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -7421,38 +7429,10 @@ cdef class List__i32:
         cdef int32_t citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[int32_t]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -7520,15 +7500,42 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, int):
+            raise err
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._cpp_obj.get())
-        cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[int32_t].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[int32_t].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -7573,38 +7580,10 @@ cdef class List__List__i32:
         cdef vector[int32_t] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[int32_t]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -7675,15 +7654,47 @@ cdef class List__List__i32:
     make_shared[vector[int32_t]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__i32):
+                item = List__i32(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__i32):
+            raise err
         cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[int32_t]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[int32_t]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -7728,38 +7739,10 @@ cdef class List__List__List__i32:
         cdef vector[vector[int32_t]] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[vector[int32_t]]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__List__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -7830,15 +7813,47 @@ cdef class List__List__List__i32:
     make_shared[vector[vector[int32_t]]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__List__i32):
+                item = List__List__i32(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__List__i32):
+            raise err
         cdef vector[vector[int32_t]] citem = vector[vector[int32_t]](deref(List__List__i32(item)._cpp_obj.get()))
         cdef vector[vector[vector[int32_t]]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[vector[int32_t]]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[vector[int32_t]]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[vector[int32_t]]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -7883,38 +7898,10 @@ cdef class List__List__List__List__i32:
         cdef vector[vector[vector[int32_t]]] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[vector[vector[int32_t]]]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__List__List__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -7985,15 +7972,47 @@ cdef class List__List__List__List__i32:
     make_shared[vector[vector[vector[int32_t]]]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__List__List__i32):
+                item = List__List__List__i32(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__List__List__i32):
+            raise err
         cdef vector[vector[vector[int32_t]]] citem = vector[vector[vector[int32_t]]](deref(List__List__List__i32(item)._cpp_obj.get()))
         cdef vector[vector[vector[vector[int32_t]]]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[vector[vector[int32_t]]]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[vector[vector[int32_t]]]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[vector[vector[int32_t]]]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -8415,38 +8434,10 @@ cdef class List__Set__string:
         cdef cset[string] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cset[string]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Set__string.create(c_inst)
         else:
             index = <int?>index_obj
@@ -8517,15 +8508,47 @@ cdef class List__Set__string:
     make_shared[cset[string]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Set__string):
+                item = Set__string(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Set__string):
+            raise err
         cdef cset[string] citem = cset[string](deref(Set__string(item)._cpp_obj.get()))
         cdef vector[cset[string]] vec = deref(self._cpp_obj.get())
-        cdef vector[cset[string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cset[string]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cset[string]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -8816,38 +8839,10 @@ cdef class List__binary:
         cdef string citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[string]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__binary.create(c_inst)
         else:
             index = <int?>index_obj
@@ -8915,15 +8910,42 @@ cdef class List__binary:
             yield bytes(citem)
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, bytes):
+            raise err
         cdef string citem = item
         cdef vector[string] vec = deref(self._cpp_obj.get())
-        cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[string].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[string].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -9391,38 +9413,10 @@ cdef class List__SimpleUnion:
         cdef cSimpleUnion citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cSimpleUnion]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__SimpleUnion.create(c_inst)
         else:
             index = <int?>index_obj
@@ -9490,15 +9484,42 @@ cdef class List__SimpleUnion:
             yield SimpleUnion.create(make_shared[cSimpleUnion](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, SimpleUnion):
+            raise err
         cdef cSimpleUnion citem = deref((<SimpleUnion>item)._cpp_obj)
         cdef vector[cSimpleUnion] vec = deref(self._cpp_obj.get())
-        cdef vector[cSimpleUnion].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cSimpleUnion].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cSimpleUnion].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -9730,38 +9751,10 @@ cdef class List__Set__SimpleUnion:
         cdef cset[cSimpleUnion] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cset[cSimpleUnion]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Set__SimpleUnion.create(c_inst)
         else:
             index = <int?>index_obj
@@ -9832,15 +9825,47 @@ cdef class List__Set__SimpleUnion:
     make_shared[cset[cSimpleUnion]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Set__SimpleUnion):
+                item = Set__SimpleUnion(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Set__SimpleUnion):
+            raise err
         cdef cset[cSimpleUnion] citem = cset[cSimpleUnion](deref(Set__SimpleUnion(item)._cpp_obj.get()))
         cdef vector[cset[cSimpleUnion]] vec = deref(self._cpp_obj.get())
-        cdef vector[cset[cSimpleUnion]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cset[cSimpleUnion]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cset[cSimpleUnion]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -10439,38 +10464,10 @@ cdef class List__Set__i32:
         cdef cset[int32_t] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cset[int32_t]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Set__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -10541,15 +10538,47 @@ cdef class List__Set__i32:
     make_shared[cset[int32_t]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Set__i32):
+                item = Set__i32(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Set__i32):
+            raise err
         cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))
         cdef vector[cset[int32_t]] vec = deref(self._cpp_obj.get())
-        cdef vector[cset[int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cset[int32_t]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cset[int32_t]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -11403,38 +11432,10 @@ cdef class List__i64:
         cdef int64_t citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[folly_small_vector_int64_t_8 ]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__i64.create(c_inst)
         else:
             index = <int?>index_obj
@@ -11502,15 +11503,42 @@ cdef class List__i64:
             yield citem
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, int):
+            raise err
         cdef int64_t citem = item
         cdef folly_small_vector_int64_t_8  vec = deref(self._cpp_obj.get())
-        cdef folly_small_vector_int64_t_8 .iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef folly_small_vector_int64_t_8 .iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef folly_small_vector_int64_t_8 .iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -11791,38 +11819,10 @@ cdef class std_list__List__i32:
         cdef int32_t citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[std_list[int32_t]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return std_list__List__i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -11890,15 +11890,42 @@ cdef class std_list__List__i32:
             yield citem
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, int):
+            raise err
         cdef int32_t citem = item
         cdef std_list[int32_t] vec = deref(self._cpp_obj.get())
-        cdef std_list[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef std_list[int32_t].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef std_list[int32_t].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -11941,38 +11968,10 @@ cdef class std_deque__List__string:
         cdef string citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[std_deque[string]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return std_deque__List__string.create(c_inst)
         else:
             index = <int?>index_obj
@@ -12040,15 +12039,42 @@ cdef class std_deque__List__string:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, str):
+            raise err
         cdef string citem = item.encode('UTF-8')
         cdef std_deque[string] vec = deref(self._cpp_obj.get())
-        cdef std_deque[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef std_deque[string].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef std_deque[string].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -12397,38 +12423,10 @@ cdef class List__double:
         cdef Bar citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[Bar]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__double.create(c_inst)
         else:
             index = <int?>index_obj
@@ -12496,15 +12494,42 @@ cdef class List__double:
             yield citem
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, float):
+            raise err
         cdef Bar citem = item
         cdef vector[Bar] vec = deref(self._cpp_obj.get())
-        cdef vector[Bar].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[Bar].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[Bar].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -12668,38 +12693,10 @@ cdef class List__Map__string_i32:
         cdef cmap[string,int32_t] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cmap[string,int32_t]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Map__string_i32.create(c_inst)
         else:
             index = <int?>index_obj
@@ -12770,15 +12767,47 @@ cdef class List__Map__string_i32:
     make_shared[cmap[string,int32_t]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Map__string_i32):
+                item = Map__string_i32(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Map__string_i32):
+            raise err
         cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))
         cdef vector[cmap[string,int32_t]] vec = deref(self._cpp_obj.get())
-        cdef vector[cmap[string,int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cmap[string,int32_t]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cmap[string,int32_t]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -12942,38 +12971,10 @@ cdef class List__Map__i16_string:
         cdef cmap[int16_t,string] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cmap[int16_t,string]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__Map__i16_string.create(c_inst)
         else:
             index = <int?>index_obj
@@ -13044,15 +13045,47 @@ cdef class List__Map__i16_string:
     make_shared[cmap[int16_t,string]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, Map__i16_string):
+                item = Map__i16_string(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, Map__i16_string):
+            raise err
         cdef cmap[int16_t,string] citem = cmap[int16_t,string](deref(Map__i16_string(item)._cpp_obj.get()))
         cdef vector[cmap[int16_t,string]] vec = deref(self._cpp_obj.get())
-        cdef vector[cmap[int16_t,string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cmap[int16_t,string]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cmap[int16_t,string]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -13095,38 +13128,10 @@ cdef class List__MyStruct:
         cdef cMyStruct citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cMyStruct]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -13194,15 +13199,42 @@ cdef class List__MyStruct:
             yield MyStruct.create(make_shared[cMyStruct](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, MyStruct):
+            raise err
         cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
         cdef vector[cMyStruct] vec = deref(self._cpp_obj.get())
-        cdef vector[cMyStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cMyStruct].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cMyStruct].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:

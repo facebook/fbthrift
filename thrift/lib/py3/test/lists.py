@@ -50,3 +50,23 @@ class ListTests(unittest.TestCase):
     def test_hashability(self) -> None:
         hash(easy().val_list)
         hash(I32List(range(10)))
+
+    def test_index(self) -> None:
+        x = I32List([1, 2, 3, 4, 1, 2, 3, 4])
+        y = list(x)
+        self.assertEqual(x.index(2), y.index(2))
+        self.assertEqual(x.index(2, 3), y.index(2, 3))
+        self.assertEqual(x.index(2, 0, 2), y.index(2, 0, 2))
+        with self.assertRaises(ValueError):
+            raise Exception(x.index(4, 0, 2))
+        with self.assertRaises(ValueError):
+            y.index(4, 0, 2)
+        self.assertEqual(x.index(4, -20, -2), y.index(4, -20, -2))
+
+    def test_splicing(self) -> None:
+        x = I32List([1, 2, 3, 4, 1, 2, 3, 4])
+        y = list(x)
+        self.assertEqual(x[2:], y[2:])
+        self.assertEqual(x[:5], y[:5])
+        self.assertEqual(x[:0], y[:0])
+        self.assertEqual(x[-5:-1], y[-5:-1])

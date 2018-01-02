@@ -409,38 +409,10 @@ cdef class List__MyStruct:
         cdef cMyStruct citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[cMyStruct]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -508,15 +480,42 @@ cdef class List__MyStruct:
             yield MyStruct.create(make_shared[cMyStruct](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, MyStruct):
+            raise err
         cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
         cdef vector[cMyStruct] vec = deref(self._cpp_obj.get())
-        cdef vector[cMyStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[cMyStruct].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[cMyStruct].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -561,38 +560,10 @@ cdef class List__List__MyStruct:
         cdef vector[cMyStruct] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[cMyStruct]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -663,15 +634,47 @@ cdef class List__List__MyStruct:
     make_shared[vector[cMyStruct]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__MyStruct):
+                item = List__MyStruct(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__MyStruct):
+            raise err
         cdef vector[cMyStruct] citem = vector[cMyStruct](deref(List__MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[cMyStruct]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[cMyStruct]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[cMyStruct]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[cMyStruct]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -714,38 +717,10 @@ cdef class List__module_MyStruct:
         cdef _module_types.cMyStruct citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[_module_types.cMyStruct]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__module_MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -813,15 +788,42 @@ cdef class List__module_MyStruct:
             yield _module_types.MyStruct.create(make_shared[_module_types.cMyStruct](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, _module_types.MyStruct):
+            raise err
         cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
         cdef vector[_module_types.cMyStruct] vec = deref(self._cpp_obj.get())
-        cdef vector[_module_types.cMyStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[_module_types.cMyStruct].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[_module_types.cMyStruct].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:
@@ -866,38 +868,10 @@ cdef class List__List__module_MyStruct:
         cdef vector[_module_types.cMyStruct] citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[vector[vector[_module_types.cMyStruct]]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
             sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
+            for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-                index += step_val
             return List__List__module_MyStruct.create(c_inst)
         else:
             index = <int?>index_obj
@@ -968,15 +942,47 @@ cdef class List__List__module_MyStruct:
     make_shared[vector[_module_types.cMyStruct]](citem))
             inc(loc)
 
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, List__module_MyStruct):
+                item = List__module_MyStruct(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, List__module_MyStruct):
+            raise err
         cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[_module_types.cMyStruct]] vec = deref(self._cpp_obj.get())
-        cdef vector[vector[_module_types.cMyStruct]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
+        cdef vector[vector[_module_types.cMyStruct]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[vector[_module_types.cMyStruct]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
+        raise err
 
     def count(self, item):
         if not self:

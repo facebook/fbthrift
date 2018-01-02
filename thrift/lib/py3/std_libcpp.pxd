@@ -10,6 +10,14 @@ cdef extern from "<iterator>" namespace "std" nogil:
         InputIter first,
         InputIter second)
 
+    cdef InputIter next[InputIter](
+        InputIter it,
+        int64_t n)
+
+    cdef InputIter prev[InputIter](
+        InputIter it,
+        int64_t n)
+
 cdef extern from "<algorithm>" namespace "std" nogil:
     cdef InputIter find[InputIter, T](
         InputIter first,
