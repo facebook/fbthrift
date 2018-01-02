@@ -977,9 +977,12 @@ cdef class Set__i64:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         return pbool(deref(self._cpp_obj).count(item))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1167,13 +1170,16 @@ cdef class Map__Animal_string:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, Animal):
+            raise err
         cdef cAnimal ckey = Animal_to_cpp(key)
         cdef cmap[cAnimal,string].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
@@ -1215,22 +1221,27 @@ cdef class Map__Animal_string:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, Animal):
+            return False
         cdef cAnimal ckey = Animal_to_cpp(key)
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef cAnimal ckey = Animal_to_cpp(key)
-        cdef cmap[cAnimal,string].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, Animal):
+                key = Animal(key)
+        except Exception:
             return default
-        cdef string citem = deref(iter).second
-        return bytes(citem).decode('UTF-8')
+        if not isinstance(key, Animal):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1329,7 +1340,9 @@ cdef class List__Vehicle:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, Vehicle):
             return False
         cdef cVehicle citem = deref((<Vehicle>item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(
@@ -1398,7 +1411,9 @@ cdef class List__Vehicle:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, Vehicle):
             return 0
         cdef cVehicle citem = deref((<Vehicle>item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(self._cpp_obj.get())

@@ -663,11 +663,20 @@ cdef class {{type:flat_name}}:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
             return False
-        cdef {{#type:listElemType}}{{!
-          }}{{> types/CythonCppType}} citem = {{!
-          }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
+        {{#type:listElemType}}
+        {{#type:container?}}
+        try:
+            if not isinstance(item, {{> types/PythonType}}):
+                item = {{> types/PythonType}}(item)
+        except Exception:
+            return False
+        {{/type:container?}}
+        if not isinstance(item, {{> types/PythonType}}):
+            return False
+        cdef {{> types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
+        {{/type:listElemType}}
         cdef {{> types/CythonCppType}} vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -753,11 +762,20 @@ cdef class {{type:flat_name}}:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
             return 0
-        cdef {{#type:listElemType}}{{!
-            }}{{> types/CythonCppType}} citem = {{!
-            }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
+        {{#type:listElemType}}
+        {{#type:container?}}
+        try:
+            if not isinstance(item, {{> types/PythonType}}):
+                item = {{> types/PythonType}}(item)
+        except Exception:
+            return 0
+        {{/type:container?}}
+        if not isinstance(item, {{> types/PythonType}}):
+            return 0
+        cdef {{> types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
+        {{/type:listElemType}}
         cdef {{> types/CythonCppType}} vec = {{!
             }}deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
@@ -791,9 +809,21 @@ Sequence.register({{type:flat_name}})
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
             return False
-        return pbool(deref(self._cpp_obj).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
+        {{#type:setElemType}}
+        {{#type:container?}}
+        try:
+            if not isinstance(item, {{> types/PythonType}}):
+                item = {{> types/PythonType}}(item)
+        except Exception:
+            return False
+        {{/type:container?}}
+        if not isinstance(item, {{> types/PythonType}}):
+            return False
+        return pbool(deref(self._cpp_obj).count({{>CythonPythonToCppItem}}))
+        {{/type:setElemType}}
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1004,14 +1034,25 @@ Set.register({{type:flat_name}})
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
-        cdef {{#type:keyType}}{{> types/CythonCppType}} ckey = {{!
-            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        {{#type:keyType}}
+        {{#type:container?}}
+        try:
+            if and not isinstance(key, {{> types/PythonType}}):
+                key = {{> types/PythonType}}(key)
+        except Exception:
+            raise err from None
+        {{/type:container?}}
+        if not isinstance(key, {{> types/PythonType}}):
+            raise err
+        cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
+        {{/type:keyType}}
         cdef {{> types/CythonCppType}}.iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef {{#type:valueType}}{{!
             }}{{> types/CythonCppType}} {{!
             }}citem = deref(iter).second{{/type:valueType}}
@@ -1060,30 +1101,39 @@ Set.register({{type:flat_name}})
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
     <%={{ }}=%>
 
-
-
     def __contains__(self, key):
-        cdef {{#type:keyType}}{{!
-            }}{{> types/CythonCppType}} ckey = {{!
-            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
+        if not self or key is None:
+            return False
+        {{#type:keyType}}
+        {{#type:container?}}
+        try:
+            if and not isinstance(key, {{> types/PythonType}}):
+                key = {{> types/PythonType}}(key)
+        except Exception:
+            return False
+        {{/type:container?}}
+        if not isinstance(key, {{> types/PythonType}}):
+            return False
+        cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
+        {{/type:keyType}}
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef {{#type:keyType}}{{!
-            }}{{> types/CythonCppType}} ckey = {{!
-            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef {{> types/CythonCppType}}.iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        {{! Convert the key once }}
+        {{#type:keyType}}
+        try:
+            if not isinstance(key, {{> types/PythonType}}):
+                key = {{> types/PythonType}}(key)
+        except Exception:
             return default
-        cdef {{#type:valueType}}{{!
-            }}{{> types/CythonCppType}} citem = {{!
-            }}deref(iter).second{{/type:valueType}}
-        return {{#type:valueType}}{{!
-          }}{{> ContainerCythonCppToPythonItem}}{{!
-          }}{{/type:valueType}}
+        if not isinstance(key, {{> types/PythonType}}):
+            return default
+        {{/type:keyType}}
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()

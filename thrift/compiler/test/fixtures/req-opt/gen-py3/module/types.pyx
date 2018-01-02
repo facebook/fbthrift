@@ -323,7 +323,9 @@ cdef class List__bool:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, bool):
             return False
         cdef cbool citem = item
         cdef vector[cbool] vec = deref(
@@ -392,7 +394,9 @@ cdef class List__bool:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, bool):
             return 0
         cdef cbool citem = item
         cdef vector[cbool] vec = deref(self._cpp_obj.get())
@@ -473,7 +477,9 @@ cdef class List__i32:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(
@@ -542,7 +548,9 @@ cdef class List__i32:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._cpp_obj.get())

@@ -479,7 +479,9 @@ cdef class List__i64:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int64_t citem = item
         cdef vector[int64_t] vec = deref(
@@ -548,7 +550,9 @@ cdef class List__i64:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int64_t citem = item
         cdef vector[int64_t] vec = deref(self._cpp_obj.get())
@@ -628,7 +632,9 @@ cdef class List__string:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
@@ -697,7 +703,9 @@ cdef class List__string:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -734,13 +742,16 @@ cdef class Map__i16_string:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,string].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
@@ -782,22 +793,27 @@ cdef class Map__i16_string:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,string].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef string citem = deref(iter).second
-        return bytes(citem).decode('UTF-8')
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()

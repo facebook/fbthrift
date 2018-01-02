@@ -296,7 +296,9 @@ cdef class List__Enum:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, Enum):
             return False
         cdef cEnum citem = Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(
@@ -365,7 +367,9 @@ cdef class List__Enum:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, Enum):
             return 0
         cdef cEnum citem = Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(self._cpp_obj.get())

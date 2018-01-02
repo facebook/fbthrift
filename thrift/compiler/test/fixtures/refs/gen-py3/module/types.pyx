@@ -2364,7 +2364,9 @@ cdef class List__RecursiveStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, RecursiveStruct):
             return False
         cdef cRecursiveStruct citem = deref((<RecursiveStruct>item)._cpp_obj)
         cdef vector[cRecursiveStruct] vec = deref(
@@ -2433,7 +2435,9 @@ cdef class List__RecursiveStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, RecursiveStruct):
             return 0
         cdef cRecursiveStruct citem = deref((<RecursiveStruct>item)._cpp_obj)
         cdef vector[cRecursiveStruct] vec = deref(self._cpp_obj.get())
@@ -2514,7 +2518,9 @@ cdef class List__i32:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(
@@ -2583,7 +2589,9 @@ cdef class List__i32:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._cpp_obj.get())
@@ -2617,9 +2625,12 @@ cdef class Set__i32:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         return pbool(deref(self._cpp_obj).count(item))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -2809,13 +2820,16 @@ cdef class Map__i32_i32:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int32_t ckey = key
         cdef cmap[int32_t,int32_t].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef int32_t citem = deref(iter).second
         return citem
 
@@ -2857,22 +2871,27 @@ cdef class Map__i32_i32:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int32_t ckey = key
-        cdef cmap[int32_t,int32_t].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef int32_t citem = deref(iter).second
-        return citem
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()

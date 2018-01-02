@@ -773,13 +773,16 @@ cdef class Map__i16_double:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,double].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef double citem = deref(iter).second
         return citem
 
@@ -821,22 +824,27 @@ cdef class Map__i16_double:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,double].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef double citem = deref(iter).second
-        return citem
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -892,13 +900,16 @@ cdef class Map__i16_float:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,float].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef float citem = deref(iter).second
         return citem
 
@@ -940,22 +951,27 @@ cdef class Map__i16_float:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,float].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef float citem = deref(iter).second
-        return citem
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1057,7 +1073,14 @@ cdef class List__Map__i16_float:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Map__i16_float):
+                item = Map__i16_float(item)
+        except Exception:
+            return False
+        if not isinstance(item, Map__i16_float):
             return False
         cdef cmap[int16_t,float] citem = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
         cdef vector[cmap[int16_t,float]] vec = deref(
@@ -1133,7 +1156,14 @@ cdef class List__Map__i16_float:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, Map__i16_float):
+                item = Map__i16_float(item)
+        except Exception:
+            return 0
+        if not isinstance(item, Map__i16_float):
             return 0
         cdef cmap[int16_t,float] citem = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
         cdef vector[cmap[int16_t,float]] vec = deref(self._cpp_obj.get())
@@ -1172,13 +1202,16 @@ cdef class Map__i16_Map__i16_float:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,cmap[int16_t,float]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef cmap[int16_t,float] citem = deref(iter).second
         return Map__i16_float.create(
     make_shared[cmap[int16_t,float]](citem))
@@ -1221,23 +1254,27 @@ cdef class Map__i16_Map__i16_float:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,cmap[int16_t,float]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef cmap[int16_t,float] citem = deref(iter).second
-        return Map__i16_float.create(
-    make_shared[cmap[int16_t,float]](citem))
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1293,9 +1330,17 @@ cdef class Set__Map__i16_float:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Map__i16_float):
+                item = Map__i16_float(item)
+        except Exception:
+            return False
+        if not isinstance(item, Map__i16_float):
             return False
         return pbool(deref(self._cpp_obj).count(cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1485,13 +1530,16 @@ cdef class Map__i64_double:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int64_t ckey = key
         cdef cmap[int64_t,double].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef double citem = deref(iter).second
         return citem
 
@@ -1533,22 +1581,27 @@ cdef class Map__i64_double:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int64_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int64_t ckey = key
-        cdef cmap[int64_t,double].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef double citem = deref(iter).second
-        return citem
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1606,13 +1659,16 @@ cdef class Map__i16_Map__i64_double:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,cmap[int64_t,double]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef cmap[int64_t,double] citem = deref(iter).second
         return Map__i64_double.create(
     make_shared[cmap[int64_t,double]](citem))
@@ -1655,23 +1711,27 @@ cdef class Map__i16_Map__i64_double:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,cmap[int64_t,double]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef cmap[int64_t,double] citem = deref(iter).second
-        return Map__i64_double.create(
-    make_shared[cmap[int64_t,double]](citem))
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1731,13 +1791,16 @@ cdef class Map__i32_Map__i64_double:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int32_t ckey = key
         cdef cmap[int32_t,cmap[int64_t,double]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef cmap[int64_t,double] citem = deref(iter).second
         return Map__i64_double.create(
     make_shared[cmap[int64_t,double]](citem))
@@ -1780,23 +1843,27 @@ cdef class Map__i32_Map__i64_double:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int32_t ckey = key
-        cdef cmap[int32_t,cmap[int64_t,double]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef cmap[int64_t,double] citem = deref(iter).second
-        return Map__i64_double.create(
-    make_shared[cmap[int64_t,double]](citem))
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -1897,7 +1964,9 @@ cdef class List__float:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, float):
             return False
         cdef float citem = item
         cdef vector[float] vec = deref(
@@ -1966,7 +2035,9 @@ cdef class List__float:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, float):
             return 0
         cdef float citem = item
         cdef vector[float] vec = deref(self._cpp_obj.get())
@@ -2005,13 +2076,16 @@ cdef class Map__i16_List__float:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int16_t ckey = key
         cdef cmap[int16_t,vector[float]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef vector[float] citem = deref(iter).second
         return List__float.create(
     make_shared[vector[float]](citem))
@@ -2054,23 +2128,27 @@ cdef class Map__i16_List__float:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int16_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int16_t ckey = key
-        cdef cmap[int16_t,vector[float]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef vector[float] citem = deref(iter).second
-        return List__float.create(
-    make_shared[vector[float]](citem))
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2130,13 +2208,16 @@ cdef class Map__i32_List__float:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int32_t ckey = key
         cdef cmap[int32_t,vector[float]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef vector[float] citem = deref(iter).second
         return List__float.create(
     make_shared[vector[float]](citem))
@@ -2179,23 +2260,27 @@ cdef class Map__i32_List__float:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int32_t ckey = key
-        cdef cmap[int32_t,vector[float]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef vector[float] citem = deref(iter).second
-        return List__float.create(
-    make_shared[vector[float]](citem))
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()

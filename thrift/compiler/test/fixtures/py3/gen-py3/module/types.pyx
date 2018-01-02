@@ -854,7 +854,9 @@ cdef class List__i16:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int16_t citem = item
         cdef vector[int16_t] vec = deref(
@@ -923,7 +925,9 @@ cdef class List__i16:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int16_t citem = item
         cdef vector[int16_t] vec = deref(self._cpp_obj.get())
@@ -1004,7 +1008,9 @@ cdef class List__i32:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(
@@ -1073,7 +1079,9 @@ cdef class List__i32:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._cpp_obj.get())
@@ -1154,7 +1162,9 @@ cdef class List__i64:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         cdef int64_t citem = item
         cdef vector[int64_t] vec = deref(
@@ -1223,7 +1233,9 @@ cdef class List__i64:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
             return 0
         cdef int64_t citem = item
         cdef vector[int64_t] vec = deref(self._cpp_obj.get())
@@ -1303,7 +1315,9 @@ cdef class List__string:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
@@ -1372,7 +1386,9 @@ cdef class List__string:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -1452,7 +1468,9 @@ cdef class List__SimpleStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, SimpleStruct):
             return False
         cdef cSimpleStruct citem = deref((<SimpleStruct>item)._cpp_obj)
         cdef vector[cSimpleStruct] vec = deref(
@@ -1521,7 +1539,9 @@ cdef class List__SimpleStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, SimpleStruct):
             return 0
         cdef cSimpleStruct citem = deref((<SimpleStruct>item)._cpp_obj)
         cdef vector[cSimpleStruct] vec = deref(self._cpp_obj.get())
@@ -1555,9 +1575,12 @@ cdef class Set__i32:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
             return False
         return pbool(deref(self._cpp_obj).count(item))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1742,9 +1765,12 @@ cdef class Set__string:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, str):
             return False
         return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1932,13 +1958,16 @@ cdef class Map__string_string:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,string].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
@@ -1980,22 +2009,27 @@ cdef class Map__string_string:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,string].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef string citem = deref(iter).second
-        return bytes(citem).decode('UTF-8')
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2050,13 +2084,16 @@ cdef class Map__string_SimpleStruct:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,cSimpleStruct].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef cSimpleStruct citem = deref(iter).second
         return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
@@ -2098,22 +2135,27 @@ cdef class Map__string_SimpleStruct:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,cSimpleStruct].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef cSimpleStruct citem = deref(iter).second
-        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2169,13 +2211,16 @@ cdef class Map__string_i16:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int16_t].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef int16_t citem = deref(iter).second
         return citem
 
@@ -2217,22 +2262,27 @@ cdef class Map__string_i16:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,int16_t].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef int16_t citem = deref(iter).second
-        return citem
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2334,7 +2384,14 @@ cdef class List__List__i32:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, List__i32):
+                item = List__i32(item)
+        except Exception:
+            return False
+        if not isinstance(item, List__i32):
             return False
         cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(
@@ -2410,7 +2467,14 @@ cdef class List__List__i32:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, List__i32):
+                item = List__i32(item)
+        except Exception:
+            return 0
+        if not isinstance(item, List__i32):
             return 0
         cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(self._cpp_obj.get())
@@ -2447,13 +2511,16 @@ cdef class Map__string_i32:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int32_t].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef int32_t citem = deref(iter).second
         return citem
 
@@ -2495,22 +2562,27 @@ cdef class Map__string_i32:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,int32_t].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef int32_t citem = deref(iter).second
-        return citem
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2567,13 +2639,16 @@ cdef class Map__string_Map__string_i32:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef cmap[string,int32_t] citem = deref(iter).second
         return Map__string_i32.create(
     make_shared[cmap[string,int32_t]](citem))
@@ -2616,23 +2691,27 @@ cdef class Map__string_Map__string_i32:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,cmap[string,int32_t]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef cmap[string,int32_t] citem = deref(iter).second
-        return Map__string_i32.create(
-    make_shared[cmap[string,int32_t]](citem))
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -2736,7 +2815,14 @@ cdef class List__Set__string:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Set__string):
+                item = Set__string(item)
+        except Exception:
+            return False
+        if not isinstance(item, Set__string):
             return False
         cdef cset[string] citem = cset[string](deref(Set__string(item)._cpp_obj.get()))
         cdef vector[cset[string]] vec = deref(
@@ -2812,7 +2898,14 @@ cdef class List__Set__string:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, Set__string):
+                item = Set__string(item)
+        except Exception:
+            return 0
+        if not isinstance(item, Set__string):
             return 0
         cdef cset[string] citem = cset[string](deref(Set__string(item)._cpp_obj.get()))
         cdef vector[cset[string]] vec = deref(self._cpp_obj.get())
@@ -2850,13 +2943,16 @@ cdef class Map__string_List__SimpleStruct:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,vector[cSimpleStruct]].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef vector[cSimpleStruct] citem = deref(iter).second
         return List__SimpleStruct.create(
     make_shared[vector[cSimpleStruct]](citem))
@@ -2899,23 +2995,27 @@ cdef class Map__string_List__SimpleStruct:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,vector[cSimpleStruct]].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
             return default
-        cdef vector[cSimpleStruct] citem = deref(iter).second
-        return List__SimpleStruct.create(
-    make_shared[vector[cSimpleStruct]](citem))
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -3019,7 +3119,14 @@ cdef class List__List__string:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, List__string):
+                item = List__string(item)
+        except Exception:
+            return False
+        if not isinstance(item, List__string):
             return False
         cdef vector[string] citem = vector[string](deref(List__string(item)._cpp_obj.get()))
         cdef vector[vector[string]] vec = deref(
@@ -3095,7 +3202,14 @@ cdef class List__List__string:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, List__string):
+                item = List__string(item)
+        except Exception:
+            return 0
+        if not isinstance(item, List__string):
             return 0
         cdef vector[string] citem = vector[string](deref(List__string(item)._cpp_obj.get()))
         cdef vector[vector[string]] vec = deref(self._cpp_obj.get())
@@ -3178,7 +3292,14 @@ cdef class List__Set__i32:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Set__i32):
+                item = Set__i32(item)
+        except Exception:
+            return False
+        if not isinstance(item, Set__i32):
             return False
         cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))
         cdef vector[cset[int32_t]] vec = deref(
@@ -3254,7 +3375,14 @@ cdef class List__Set__i32:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, Set__i32):
+                item = Set__i32(item)
+        except Exception:
+            return 0
+        if not isinstance(item, Set__i32):
             return 0
         cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))
         cdef vector[cset[int32_t]] vec = deref(self._cpp_obj.get())
@@ -3337,7 +3465,14 @@ cdef class List__Map__string_string:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Map__string_string):
+                item = Map__string_string(item)
+        except Exception:
+            return False
+        if not isinstance(item, Map__string_string):
             return False
         cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._cpp_obj.get()))
         cdef vector[cmap[string,string]] vec = deref(
@@ -3413,7 +3548,14 @@ cdef class List__Map__string_string:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, Map__string_string):
+                item = Map__string_string(item)
+        except Exception:
+            return 0
+        if not isinstance(item, Map__string_string):
             return 0
         cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._cpp_obj.get()))
         cdef vector[cmap[string,string]] vec = deref(self._cpp_obj.get())
@@ -3493,7 +3635,9 @@ cdef class List__binary:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, bytes):
             return False
         cdef string citem = item
         cdef vector[string] vec = deref(
@@ -3562,7 +3706,9 @@ cdef class List__binary:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, bytes):
             return 0
         cdef string citem = item
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -3595,9 +3741,12 @@ cdef class Set__binary:
         return move_unique(c_inst)
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, bytes):
             return False
         return pbool(deref(self._cpp_obj).count(item))
+
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -3829,7 +3978,9 @@ cdef class List__AnEnum:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, AnEnum):
             return False
         cdef cAnEnum citem = AnEnum_to_cpp(item)
         cdef vector[cAnEnum] vec = deref(
@@ -3898,7 +4049,9 @@ cdef class List__AnEnum:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, AnEnum):
             return 0
         cdef cAnEnum citem = AnEnum_to_cpp(item)
         cdef vector[cAnEnum] vec = deref(self._cpp_obj.get())
@@ -3935,13 +4088,16 @@ cdef class Map__i32_double:
         return move_unique(c_inst)
 
     def __getitem__(self, key):
-        if not self:
-            raise KeyError(f'{key}')
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, int):
+            raise err
         cdef int32_t ckey = key
         cdef cmap[int32_t,double].iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
-            raise KeyError(f'{key}')
+            raise err
         cdef double citem = deref(iter).second
         return citem
 
@@ -3983,22 +4139,27 @@ cdef class Map__i32_double:
             return 'i{}'
         return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
-
-
     def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, int):
+            return False
         cdef int32_t ckey = key
         return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
-        if not self:
+        if not self or key is None:
             return default
-        cdef int32_t ckey = key
-        cdef cmap[int32_t,double].iterator iter = \
-            deref(self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
+        try:
+            if not isinstance(key, int):
+                key = int(key)
+        except Exception:
             return default
-        cdef double citem = deref(iter).second
-        return citem
+        if not isinstance(key, int):
+            return default
+        if key not in self:
+            return default
+        return self[key]
 
     def keys(self):
         return self.__iter__()
@@ -4100,7 +4261,14 @@ cdef class List__Map__i32_double:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, Map__i32_double):
+                item = Map__i32_double(item)
+        except Exception:
+            return False
+        if not isinstance(item, Map__i32_double):
             return False
         cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get()))
         cdef vector[cmap[int32_t,double]] vec = deref(
@@ -4176,7 +4344,14 @@ cdef class List__Map__i32_double:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, Map__i32_double):
+                item = Map__i32_double(item)
+        except Exception:
+            return 0
+        if not isinstance(item, Map__i32_double):
             return 0
         cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get()))
         cdef vector[cmap[int32_t,double]] vec = deref(self._cpp_obj.get())

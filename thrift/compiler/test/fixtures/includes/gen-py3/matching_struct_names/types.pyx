@@ -449,7 +449,9 @@ cdef class List__MyStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, MyStruct):
             return False
         cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
         cdef vector[cMyStruct] vec = deref(
@@ -518,7 +520,9 @@ cdef class List__MyStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, MyStruct):
             return 0
         cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
         cdef vector[cMyStruct] vec = deref(self._cpp_obj.get())
@@ -601,7 +605,14 @@ cdef class List__List__MyStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, List__MyStruct):
+                item = List__MyStruct(item)
+        except Exception:
+            return False
+        if not isinstance(item, List__MyStruct):
             return False
         cdef vector[cMyStruct] citem = vector[cMyStruct](deref(List__MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[cMyStruct]] vec = deref(
@@ -677,7 +688,14 @@ cdef class List__List__MyStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, List__MyStruct):
+                item = List__MyStruct(item)
+        except Exception:
+            return 0
+        if not isinstance(item, List__MyStruct):
             return 0
         cdef vector[cMyStruct] citem = vector[cMyStruct](deref(List__MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[cMyStruct]] vec = deref(self._cpp_obj.get())
@@ -757,7 +775,9 @@ cdef class List__module_MyStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        if not isinstance(item, _module_types.MyStruct):
             return False
         cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
         cdef vector[_module_types.cMyStruct] vec = deref(
@@ -826,7 +846,9 @@ cdef class List__module_MyStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        if not isinstance(item, _module_types.MyStruct):
             return 0
         cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
         cdef vector[_module_types.cMyStruct] vec = deref(self._cpp_obj.get())
@@ -909,7 +931,14 @@ cdef class List__List__module_MyStruct:
         return self.__hash
 
     def __contains__(self, item):
-        if not self:
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, List__module_MyStruct):
+                item = List__module_MyStruct(item)
+        except Exception:
+            return False
+        if not isinstance(item, List__module_MyStruct):
             return False
         cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[_module_types.cMyStruct]] vec = deref(
@@ -985,7 +1014,14 @@ cdef class List__List__module_MyStruct:
         raise err
 
     def count(self, item):
-        if not self:
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, List__module_MyStruct):
+                item = List__module_MyStruct(item)
+        except Exception:
+            return 0
+        if not isinstance(item, List__module_MyStruct):
             return 0
         cdef vector[_module_types.cMyStruct] citem = vector[_module_types.cMyStruct](deref(List__module_MyStruct(item)._cpp_obj.get()))
         cdef vector[vector[_module_types.cMyStruct]] vec = deref(self._cpp_obj.get())
