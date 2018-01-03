@@ -981,37 +981,6 @@ future_returning_uptr(F&& f) {
   });
 }
 
-template <class F>
-void
-swallowing(F&& f) {
-  try { f(); }
-  catch(...) { }
-}
-
-template <class R>
-folly::Future<R>
-future_exn(std::exception_ptr ex) {
-  return folly::makeFuture<R>(folly::exception_wrapper(std::move(ex)));
-}
-
-template <class R, class E>
-folly::Future<R>
-future_exn(std::exception_ptr ex, E& e) {
-  return folly::makeFuture<R>(folly::exception_wrapper(std::move(ex), e));
-}
-
-template <class F>
-ret<F>
-future_catching(F&& f) {
-  try {
-    return f();
-  } catch (const std::exception& e) {
-    return future_exn<fut_ret<F>>(std::current_exception(), e);
-  } catch(...) {
-    return future_exn<fut_ret<F>>(std::current_exception());
-  }
-}
-
 using CallbackBase = HandlerCallbackBase;
 using CallbackBasePtr = std::unique_ptr<CallbackBase>;
 template <class R> using Callback = HandlerCallback<fut_ret_drop<R>>;
@@ -1029,17 +998,17 @@ template <class F>
 void
 async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   async_tm_prep(si, callback.get());
-  swallowing(std::forward<F>(f));
+  folly::makeFutureWith(std::forward<F>(f)).then([cb = std::move(callback)] {});
 }
 
 template <class F>
 void
 async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
-  future_catching(std::forward<F>(f))
-    .then([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _return) mutable {
-      Callback<F>::completeInThread(std::move(cb), std::move(_return));
-    });
+  folly::makeFutureWith(std::forward<F>(f))
+      .then([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) mutable {
+        Callback<F>::completeInThread(std::move(cb), std::move(_ret));
+      });
 }
 
 template <class F>

@@ -93,6 +93,31 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
   EXPECT_TRUE(done);
 }
 
+TEST(ThriftServer, OnewayDeferredHandlerTest) {
+  class OnewayTestInterface : public TestServiceSvIf {
+   public:
+    folly::Baton<> done;
+
+    folly::Future<folly::Unit> future_noResponse(int64_t size) override {
+      auto tm = getThreadManager();
+      auto ctx = getConnectionContext();
+      return folly::futures::sleep(std::chrono::milliseconds(size))
+          .via(tm)
+          .then([ctx] { EXPECT_EQ("noResponse", ctx->getMethodName()); })
+          .then([this] { done.post(); });
+    }
+  };
+
+  auto handler = std::make_shared<OnewayTestInterface>();
+  ScopedServerInterfaceThread runner(handler);
+
+  folly::EventBase eb;
+  handler->done.reset();
+  auto client = runner.newClient<TestServiceAsyncClient>(eb);
+  client->sync_noResponse(100);
+  ASSERT_TRUE(handler->done.try_wait_for(std::chrono::seconds(1)));
+}
+
 TEST(ThriftServer, CompressionClientTest) {
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
