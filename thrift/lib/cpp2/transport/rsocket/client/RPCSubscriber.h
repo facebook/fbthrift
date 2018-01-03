@@ -25,7 +25,8 @@ namespace thrift {
 
 class RPCSubscriber
     : public yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>,
-      public yarpl::flowable::Subscription {
+      public yarpl::flowable::Subscription,
+      public yarpl::enable_get_ref {
  public:
   using SubscriberRef =
       yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>;
@@ -36,16 +37,17 @@ class RPCSubscriber
       SubscriberRef subscriber)
       : inner_(subscriber),
         metaBuf_(std::move(metaBuf)),
-        rpcCall_(std::move(rpcCall)) {
-    auto ref = this->ref_from_this(this);
-    inner_->onSubscribe(ref_from_this(this));
+        rpcCall_(std::move(rpcCall)) {}
+
+  void init() {
+    inner_->onSubscribe(this->ref_from_this(this));
   }
 
   void onNext(std::unique_ptr<folly::IOBuf> buf) override {
     inner_->onNext(rsocket::Payload(std::move(buf)));
 
     if (toRequest_) {
-      if (auto sub = subscription_.load()) {
+      if (auto sub = yarpl::atomic_load(&subscription_)) {
         sub->request(toRequest_);
         toRequest_ = 0;
       }
@@ -55,7 +57,8 @@ class RPCSubscriber
   void onComplete() override {
     auto ref = this->ref_from_this(this);
     inner_->onComplete();
-    if (auto sub = subscription_.exchange(nullptr)) {
+    yarpl::Reference<Subscription> null;
+    if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       // nothing..
     }
   }
@@ -64,7 +67,8 @@ class RPCSubscriber
   void onError(folly::exception_wrapper ex) override {
     auto ref = this->ref_from_this(this);
     inner_->onError(ex);
-    if (auto sub = subscription_.exchange(nullptr)) {
+    yarpl::Reference<Subscription> null;
+    if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       // nothing..
     }
   }
@@ -72,13 +76,14 @@ class RPCSubscriber
   void onSubscribe(
       yarpl::Reference<yarpl::flowable::Subscription> subscription) override {
     auto ref = this->ref_from_this(this);
-    subscription_ = std::move(subscription);
+    yarpl::atomic_store(&subscription_, subscription);
     if (cancelled_) {
-      if (auto sub = subscription_.exchange(nullptr)) {
+      yarpl::Reference<Subscription> null;
+      if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
         sub->cancel();
       }
     } else if (toRequest_ > 0) {
-      subscription_->request(toRequest_);
+      subscription->request(toRequest_);
       toRequest_ = 0;
     }
   }
@@ -94,7 +99,7 @@ class RPCSubscriber
       --n;
     }
 
-    if (auto sub = subscription_.load()) {
+    if (auto sub = yarpl::atomic_load(&subscription_)) {
       toRequest_ += n;
       sub->request(toRequest_);
       toRequest_ = 0;
@@ -103,7 +108,8 @@ class RPCSubscriber
 
   void cancel() override {
     auto ref = this->ref_from_this(this);
-    if (auto sub = subscription_.exchange(nullptr)) {
+    yarpl::Reference<Subscription> null;
+    if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       sub->cancel();
       return;
     }

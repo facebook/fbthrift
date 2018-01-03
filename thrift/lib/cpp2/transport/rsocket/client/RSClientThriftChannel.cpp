@@ -257,10 +257,12 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
         StreamRequestCallback* scb =
             static_cast<StreamRequestCallback*>(callback.get());
-        scb->subscribeToInput(yarpl::make_ref<RPCSubscriber>(
+        auto rpc_subscriber = yarpl::make_ref<RPCSubscriber>(
             serializeMetadata(*metadata),
             std::move(initialBuf),
-            std::move(subscriber)));
+            std::move(subscriber));
+        rpc_subscriber->init();
+        scb->subscribeToInput(std::move(rpc_subscriber));
       });
 
   // Perform the rpc call
