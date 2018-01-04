@@ -494,13 +494,18 @@ void ThriftServer::cleanUp() {
   serveEventBase_ = nullptr;
   stopListening();
 
-  // Get rid of the handlers.
-  routingHandlers_.clear();
+  // Stop the routing handlers.
+  for (auto& handler : routingHandlers_) {
+    handler->stopListening();
+  }
 
   if (stopWorkersOnStopListening_) {
     // Wait on the i/o worker threads to actually stop
     stopWorkers();
   }
+
+  // Now clear all the handlers
+  routingHandlers_.clear();
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {

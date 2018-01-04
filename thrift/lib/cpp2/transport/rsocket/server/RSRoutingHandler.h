@@ -34,6 +34,7 @@ class RSRoutingHandler : public TransportRoutingHandler {
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
+  void stopListening() override;
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
@@ -52,6 +53,8 @@ class RSRoutingHandler : public TransportRoutingHandler {
 
   std::shared_ptr<rsocket::RSocketServiceHandler> serviceHandler_;
   std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
+
+  bool listening_{true};
 };
 } // namespace thrift
 } // namespace apache

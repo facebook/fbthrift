@@ -39,6 +39,7 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   virtual ~HTTP2RoutingHandler() = default;
   HTTP2RoutingHandler(const HTTP2RoutingHandler&) = delete;
 
+  void stopListening() override;
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
@@ -57,6 +58,8 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
   ThriftProcessor* processor_;
 
   const apache::thrift::server::ServerConfigs& serverConfigs_;
+
+  bool listening_{true};
 };
 
 } // namespace thrift

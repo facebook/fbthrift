@@ -189,36 +189,35 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
 
 } // anonymous namespace
 
+void HTTP2RoutingHandler::stopListening() {
+  listening_ = false;
+}
+
 bool HTTP2RoutingHandler::canAcceptConnection(
     const std::vector<uint8_t>& bytes) {
-  /*
-   * HTTP/2.0 requests start with the following sequence:
-   *   Octal: 0x505249202a20485454502f322e300d0a0d0a534d0d0a0d0a
-   *  String: "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"
-   *
-   * For more, see: https://tools.ietf.org/html/rfc7540#section-3.5
-   */
-  if (bytes[0] == 0x50 && bytes[1] == 0x52 && bytes[2] == 0x49) {
-    return true;
-  }
+  return listening_ &&
+      /*
+       * HTTP/2.0 requests start with the following sequence:
+       *   Octal: 0x505249202a20485454502f322e300d0a0d0a534d0d0a0d0a
+       *  String: "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"
+       *
+       * For more, see: https://tools.ietf.org/html/rfc7540#section-3.5
+       */
+      ((bytes[0] == 0x50 && bytes[1] == 0x52 && bytes[2] == 0x49) ||
 
-  /*
-   * HTTP requests start with the following sequence:
-   *   Octal: "0x485454502f..."
-   *  String: "HTTP/X.X"
-   *
-   * For more, see: https://tools.ietf.org/html/rfc2616#section-3
-   */
-  if (bytes[0] == 0x48 && bytes[1] == 0x54 && bytes[2] == 0x54) {
-    return true;
-  }
-
-  return false;
+       /*
+        * HTTP requests start with the following sequence:
+        *   Octal: "0x485454502f..."
+        *  String: "HTTP/X.X"
+        *
+        * For more, see: https://tools.ietf.org/html/rfc2616#section-3
+        */
+       (bytes[0] == 0x48 && bytes[1] == 0x54 && bytes[2] == 0x54));
 }
 
 bool HTTP2RoutingHandler::canAcceptEncryptedConnection(
     const std::string& protocolName) {
-  return protocolName == "h2" || protocolName == "http";
+  return listening_ && (protocolName == "h2" || protocolName == "http");
 }
 
 void HTTP2RoutingHandler::handleConnection(

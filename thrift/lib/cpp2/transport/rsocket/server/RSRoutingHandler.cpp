@@ -44,6 +44,11 @@ RSRoutingHandler::RSRoutingHandler(
 }
 
 RSRoutingHandler::~RSRoutingHandler() {
+  stopListening();
+}
+
+void RSRoutingHandler::stopListening() {
+  listening_ = false;
   if (rsocketServer_) {
     rsocketServer_->shutdownAndWait();
     rsocketServer_.reset();
@@ -51,7 +56,7 @@ RSRoutingHandler::~RSRoutingHandler() {
 }
 
 bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
-  return
+  return listening_ &&
       /*
        * Sample start of an Rsocket frame (version 1.0) in Octal:
        * 0x0000 2800 0000 0004 0000 0100 00....
@@ -64,27 +69,27 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
        */
 
       // This only supports Rsocket protocol version 1.0
-      (bytes[9] == 0x00 && bytes[10] == 0x01 && bytes[11] == 0x00 &&
-       bytes[12] == 0x00)
+      ((bytes[9] == 0x00 && bytes[10] == 0x01 && bytes[11] == 0x00 &&
+        bytes[12] == 0x00)
 
-      /*
-       * SETUP frames have a frame type value of 0x01.
-       * RESUME frames have a frame type value of 0x0D.
-       *
-       * Since the frame type is specified in only 6 bits, the value is
-       * bitshifted by << 2 before stored. Thus, SETUP becomes 0x04, and
-       * RESUME becomes 0x34.
-       *
-       * For more, see:
-       * https://github.com/rsocket/rsocket/blob/master/Protocol.md#frame-types
-       */
-      // setupOrResumeFrame
-      && (bytes[7] == 0x04 || bytes[7] == 0x34);
+       /*
+        * SETUP frames have a frame type value of 0x01.
+        * RESUME frames have a frame type value of 0x0D.
+        *
+        * Since the frame type is specified in only 6 bits, the value is
+        * bitshifted by << 2 before stored. Thus, SETUP becomes 0x04, and
+        * RESUME becomes 0x34.
+        *
+        * For more, see:
+        * https://github.com/rsocket/rsocket/blob/master/Protocol.md#frame-types
+        */
+       // setupOrResumeFrame
+       && (bytes[7] == 0x04 || bytes[7] == 0x34));
 }
 
 bool RSRoutingHandler::canAcceptEncryptedConnection(
     const std::string& protocolName) {
-  return protocolName == "rs";
+  return listening_ && protocolName == "rs";
 }
 
 void RSRoutingHandler::handleConnection(
@@ -92,6 +97,9 @@ void RSRoutingHandler::handleConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress const*,
     wangle::TransportInfo const&) {
+  if (!listening_) {
+    return;
+  }
   auto connection = std::make_unique<TcpDuplexConnection>(
       std::
           unique_ptr<folly::AsyncSocket, folly::DelayedDestruction::Destructor>(

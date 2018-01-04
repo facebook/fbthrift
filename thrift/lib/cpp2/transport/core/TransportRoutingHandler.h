@@ -36,6 +36,11 @@ class TransportRoutingHandler {
   virtual ~TransportRoutingHandler() = default;
   TransportRoutingHandler(const TransportRoutingHandler&) = delete;
 
+  /**
+   * Stop accepting new connections as the server shuts down.
+   */
+  virtual void stopListening() = 0;
+
   /*
    * Performs a check on the first bytes read from the wire
    * and determines if this protocol is supported by this routing handler
@@ -60,5 +65,5 @@ class TransportRoutingHandler {
       wangle::TransportInfo const& tinfo) = 0;
 };
 
-} // namspace thrift
+} // namespace thrift
 } // namespace apache
