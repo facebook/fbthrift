@@ -3,20 +3,24 @@ Facebook Thrift [![Build Status](https://travis-ci.org/facebook/fbthrift.svg?bra
 
 Thrift is a serialization and RPC framework for service communication. Thrift enables these features in all major languages, and there is strong support for C++, Python, Hack, and Java. Most services at Facebook are written using Thrift for RPC, and some storage systems use Thrift for serializing records on disk.
 
-At a high level, Thrift is three major things:
+Facebook Thrift is not a distribution of [Apache Thrift](https://thrift.apache.org/). This is an evolved internal branch of Thrift that Facebook re-released to open source community in February 2014.  
+Although not all Apache Thrift changes are reflected in fbthrift, we track the upstream closely and hope to work with the maintainers to incorporate this work. Read more about what lead to this duality in the Facebook Code [blog post](https://code.facebook.com/posts/1468950976659943/under-the-hood-building-and-open-sourcing-fbthrift/)
 
 Table of Contents (ToC):
 =========================
-
-* [A Code Generator](#a-code-generator)
-* [A Serialization Framework](#a-serialization-framework)
-* [An RPC Framework](#an-rpc-framework)
+* The Three Things About Thrift
+  * [A Code Generator](#a-code-generator)
+  * [A Serialization Framework](#a-serialization-framework)
+  * [An RPC Framework](#an-rpc-framework)
 * [Building](#building)
-* [Dependencies](#dependencies)
-* [Build](#build)
-* [Thrift Files](#thrift-files)
+  * [Dependencies](#dependencies)
+  * [Build](#build)
+  * [Thrift Files](#thrift-files)
 * [C++ Static Reflection](#c-static-reflection)
 
+
+## About Thrift
+At a high level, Thrift is three major things:
 
 ### A Code Generator
 
