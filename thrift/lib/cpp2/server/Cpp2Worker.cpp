@@ -126,9 +126,13 @@ std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
   CHECK(tsock);
   auto asyncSocket =
       std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
-  asyncSocket->setIsAccepted(true);
-  asyncSocket->setShutdownSocketSet(server_->wShutdownSocketSet_);
+  markSocketAccepted(asyncSocket.get());
   return asyncSocket;
+}
+
+void Cpp2Worker::markSocketAccepted(TAsyncSocket* sock) {
+  sock->setIsAccepted(true);
+  sock->setShutdownSocketSet(server_->wShutdownSocketSet_);
 }
 
 void Cpp2Worker::plaintextConnectionReady(
@@ -225,6 +229,15 @@ void Cpp2Worker::updateSSLStats(
   }
 }
 
+wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
+    const std::vector<uint8_t>& /* bytes */,
+    const folly::SocketAddress& clientAddr,
+    std::chrono::steady_clock::time_point acceptTime,
+    wangle::TransportInfo& tinfo) {
+  return wangle::AcceptorHandshakeHelper::UniquePtr(
+      new wangle::SSLAcceptorHandshakeHelper(clientAddr, acceptTime, tinfo));
+}
+
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     const std::vector<uint8_t>& bytes,
     const folly::SocketAddress& clientAddr,
@@ -239,8 +252,7 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
         new wangle::UnencryptedAcceptorHandshakeHelper());
   }
 
-  wangle::AcceptorHandshakeHelper::UniquePtr sslAcceptor(
-      new wangle::SSLAcceptorHandshakeHelper(clientAddr, acceptTime, ti));
+  auto sslAcceptor = createSSLHelper(bytes, clientAddr, acceptTime, ti);
 
   // If we have a nonzero dedicated ssl handshake pool, offload the SSL
   // handshakes with EvbHandshakeHelper.

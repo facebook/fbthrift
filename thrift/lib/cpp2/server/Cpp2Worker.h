@@ -155,8 +155,10 @@ class Cpp2Worker
                        wangle::SecureTransportType,
                        const wangle::TransportInfo&) override;
 
-  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(  
+  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(
       folly::AsyncTransportWrapper::UniquePtr);
+
+  void markSocketAccepted(async::TAsyncSocket* sock);
 
   SSLPolicy getSSLPolicy() {
     return server_->getSSLPolicy();
@@ -172,6 +174,12 @@ class Cpp2Worker
   void requestStop();
 
   void waitForStop(std::chrono::system_clock::time_point deadline);
+
+  virtual wangle::AcceptorHandshakeHelper::UniquePtr createSSLHelper(
+      const std::vector<uint8_t>& bytes,
+      const folly::SocketAddress& clientAddr,
+      std::chrono::steady_clock::time_point acceptTime,
+      wangle::TransportInfo& tinfo);
 
  private:
   /// The mother ship.

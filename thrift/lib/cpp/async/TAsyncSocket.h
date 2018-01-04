@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <folly/io/async/AsyncSocket.h>
@@ -45,6 +44,8 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
                  uint32_t connectTimeout = 0)
       : folly::AsyncSocket(evb, ip, port, connectTimeout) {}
 
+  TAsyncSocket(folly::AsyncSocket::UniquePtr sock)
+      : folly::AsyncSocket(std::move(sock)) {}
 
   static std::shared_ptr<TAsyncSocket> newSocket(folly::EventBase* evb) {
     return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb),
