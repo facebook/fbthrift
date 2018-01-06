@@ -180,9 +180,7 @@ void Cpp2Connection::timeoutExpired() noexcept {
 
 void Cpp2Connection::disconnect(const char* comment) noexcept {
   // This must be the last call, it may delete this.
-  folly::ScopeGuard guard = folly::makeGuard([&]{
-    stop();
-  });
+  auto guard = folly::makeGuard([&] { stop(); });
 
   VLOG(1) << "ERROR: Disconnect: " << comment << " on channel: " <<
     context_.getPeerAddress()->describe();
@@ -451,9 +449,7 @@ void Cpp2Connection::requestReceived(
 
 void Cpp2Connection::channelClosed(folly::exception_wrapper&& ex) {
   // This must be the last call, it may delete this.
-  folly::ScopeGuard guard = folly::makeGuard([&]{
-    stop();
-  });
+  auto guard = folly::makeGuard([&] { stop(); });
 
   VLOG(4) << "Channel " <<
     context_.getPeerAddress()->describe() << " closed: " << ex.what();
