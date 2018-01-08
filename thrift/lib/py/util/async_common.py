@@ -183,11 +183,16 @@ class WrappedTransport(TWriteOnlyBuffer):
                 if not producer.done() and not producer.cancelled():
                     producer.cancel()
             super(WrappedTransport, self).close()
+            self._consumer = None
+            del self._producers
         finally:
             self._trans.close()
 
     def __del__(self):
-        if not self._consumer.done() or not self._consumer.cancelled():
+        if (
+            self._consumer and not self._consumer.done()
+            or not self._consumer.cancelled()
+        ):
             logger.debug(
                 'WrappedTransport did not finish properly'
                 ' as the consumer asyncio.Task is still pending.'
