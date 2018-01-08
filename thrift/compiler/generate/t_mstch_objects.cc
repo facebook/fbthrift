@@ -420,6 +420,17 @@ mstch::node mstch_function::takes_stream() {
   return function_->any_stream_params();
 }
 
+mstch::node mstch_function::taken_stream_type() {
+  if (!function_->any_stream_params()) {
+    return false;
+  }
+  return generators_->type_generator_->generate(
+      function_->get_arglist()->get_members()[0]->get_type(),
+      generators_,
+      cache_,
+      pos_);
+}
+
 mstch::node mstch_function::returns_stream() {
   return function_->get_returntype()->is_pubsub_stream();
 }

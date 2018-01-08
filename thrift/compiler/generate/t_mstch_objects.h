@@ -753,6 +753,7 @@ class mstch_function : public mstch_base {
             {"function:name", &mstch_function::name},
             {"function:oneway?", &mstch_function::oneway},
             {"function:returnType", &mstch_function::return_type},
+            {"function:takenStreamType", &mstch_function::taken_stream_type},
             {"function:exceptions", &mstch_function::exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
@@ -767,6 +768,8 @@ class mstch_function : public mstch_base {
             {"function:takes_stream?", &mstch_function::takes_stream},
         });
   }
+  mstch::node taken_stream_type();
+
   mstch::node name() {
     return function_->get_name();
   }

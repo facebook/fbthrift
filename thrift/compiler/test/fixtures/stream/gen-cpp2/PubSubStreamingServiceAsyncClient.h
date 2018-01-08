@@ -152,6 +152,20 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   template <typename Protocol_>
   void clientthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, apache::thrift::Stream<int32_t> foostream);
  public:
+ protected:
+  virtual void different(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t firstparam);
+  virtual void different(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t firstparam);
+ private:
+  virtual void differentImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t firstparam);
+ public:
+  virtual apache::thrift::Stream<std::string> different(apache::thrift::Stream<int32_t> foo, int64_t firstparam);
+  virtual apache::thrift::Stream<std::string> different(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo, int64_t firstparam);
+  static folly::exception_wrapper recv_wrapped_different(::apache::thrift::ClientReceiveState& state);
+  static void recv_different(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void differentT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t firstparam);
+ public:
 };
 
 } // cpp2

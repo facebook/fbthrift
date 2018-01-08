@@ -29,7 +29,7 @@ apache::thrift::detail::si::async_tm_oneway(
       auto _mappedInput =
           _input->map([](std::unique_ptr<folly::IOBuf> buffer) {
             using codec = apache::thrift::CompactSerializer;
-            return codec::deserialize<<%#type:streamElemType%><% > types/type %><%/type:streamElemType%>>(buffer.get());
+            return codec::deserialize<<%#function:takenStreamType%><%#type:streamElemType%><% > types/type %><%/type:streamElemType%><%/function:takenStreamType%>>(buffer.get());
           });
       <%/function:takes_stream?%>
       <%^function:returns_stream?%>
@@ -50,7 +50,7 @@ apache::thrift::detail::si::async_tm_oneway(
               apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT,
               "User defined stream returning function should not return nullptr");
         } else {
-          auto _mappedOutput = _result->map([](const <%#type:streamElemType%><% > types/type %><%/type:streamElemType%>& item) {
+          auto _mappedOutput = _result->map([](const <%#function:returnType%><%#type:streamElemType%><% > types/type %><%/type:streamElemType%><%/function:returnType%>& item) {
             using codec = apache::thrift::CompactSerializer;
             return codec::serialize<folly::IOBufQueue>(item).move();
           });
