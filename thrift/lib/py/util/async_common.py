@@ -190,8 +190,8 @@ class WrappedTransport(TWriteOnlyBuffer):
 
     def __del__(self):
         if (
-            self._consumer and not self._consumer.done()
-            or not self._consumer.cancelled()
+            self._consumer
+            and (not self._consumer.done() or not self._consumer.cancelled())
         ):
             logger.debug(
                 'WrappedTransport did not finish properly'
