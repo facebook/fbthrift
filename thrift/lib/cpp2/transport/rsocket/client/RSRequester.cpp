@@ -89,16 +89,16 @@ bool RSRequester::isDetachable() {
   return isDetachable_;
 }
 
-yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>
+std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
 RSRequester::requestChannel(
-    yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>
+    std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
         requestStream) {
   isDetachable_ = false;
 
   return RSocketRequester::requestChannel(std::move(requestStream));
 }
 
-yarpl::Reference<yarpl::flowable::Flowable<Payload>> RSRequester::requestStream(
+std::shared_ptr<yarpl::flowable::Flowable<Payload>> RSRequester::requestStream(
     Payload request) {
   isDetachable_ = false;
 

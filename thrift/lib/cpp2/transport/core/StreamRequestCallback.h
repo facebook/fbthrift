@@ -31,9 +31,9 @@ namespace thrift {
  */
 class StreamRequestCallback : public ClientSyncCallback {
  public:
-  using SubscriberRef = yarpl::Reference<
+  using SubscriberRef = std::shared_ptr<
       yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
-  using FlowableRef = yarpl::Reference<
+  using FlowableRef = std::shared_ptr<
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
   StreamRequestCallback(RpcKind kind)

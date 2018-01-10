@@ -43,7 +43,7 @@ class ChannelCounters {
 
 class RSClientThriftChannel : public ThriftChannelIf {
  public:
-  using FlowableRef = yarpl::Reference<
+  using FlowableRef = std::shared_ptr<
       yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
   explicit RSClientThriftChannel(

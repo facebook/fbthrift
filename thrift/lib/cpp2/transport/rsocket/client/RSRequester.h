@@ -41,11 +41,11 @@ class RSRequester : public rsocket::RSocketRequester {
   // If we observe any Stream call, then disable eventbase switching
   // We need to do better implementation to support eventbase switching for
   // Stream RPC calls.
-  yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
+  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
       rsocket::Payload request) override;
 
-  yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>> requestChannel(
-      yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>> requests)
+  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestChannel(
+      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requests)
       override;
 
  private:

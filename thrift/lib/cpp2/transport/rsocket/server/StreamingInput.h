@@ -29,7 +29,7 @@ namespace thrift {
 
 class StreamingInput : public StreamThriftChannelBase {
  public:
-  using Input = yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
+  using Input = std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
 
   StreamingInput(
       folly::EventBase* evb,

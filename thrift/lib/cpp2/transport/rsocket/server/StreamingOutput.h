@@ -30,7 +30,7 @@ namespace thrift {
 
 class StreamingOutput : public StreamThriftChannelBase {
  public:
-  using Result = yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
+  using Result = std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
 
   StreamingOutput(folly::EventBase* evb, int streamId, SubscriberRef subscriber)
       : StreamThriftChannelBase(evb),

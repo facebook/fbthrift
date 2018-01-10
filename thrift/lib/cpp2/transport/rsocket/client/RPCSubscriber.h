@@ -29,7 +29,7 @@ class RPCSubscriber
       public yarpl::enable_get_ref {
  public:
   using SubscriberRef =
-      yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>;
+      std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>;
 
   RPCSubscriber(
       std::unique_ptr<folly::IOBuf> metaBuf,
@@ -57,7 +57,7 @@ class RPCSubscriber
   void onComplete() override {
     auto ref = this->ref_from_this(this);
     inner_->onComplete();
-    yarpl::Reference<Subscription> null;
+    std::shared_ptr<Subscription> null;
     if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       // nothing..
     }
@@ -67,18 +67,18 @@ class RPCSubscriber
   void onError(folly::exception_wrapper ex) override {
     auto ref = this->ref_from_this(this);
     inner_->onError(ex);
-    yarpl::Reference<Subscription> null;
+    std::shared_ptr<Subscription> null;
     if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       // nothing..
     }
   }
 
   void onSubscribe(
-      yarpl::Reference<yarpl::flowable::Subscription> subscription) override {
+      std::shared_ptr<yarpl::flowable::Subscription> subscription) override {
     auto ref = this->ref_from_this(this);
     yarpl::atomic_store(&subscription_, subscription);
     if (cancelled_) {
-      yarpl::Reference<Subscription> null;
+      std::shared_ptr<Subscription> null;
       if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
         sub->cancel();
       }
@@ -108,7 +108,7 @@ class RPCSubscriber
 
   void cancel() override {
     auto ref = this->ref_from_this(this);
-    yarpl::Reference<Subscription> null;
+    std::shared_ptr<Subscription> null;
     if (auto sub = yarpl::atomic_exchange(&subscription_, null)) {
       sub->cancel();
       return;

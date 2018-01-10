@@ -133,7 +133,7 @@ void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thri
       this, std::move(callback), [&, this] {
         auto _input = yarpl::flowable::Flowables::fromPublisher<
             std::unique_ptr<folly::IOBuf>>(
-            [_channel](yarpl::Reference<yarpl::flowable::Subscriber<
+            [_channel](std::shared_ptr<yarpl::flowable::Subscriber<
                           std::unique_ptr<folly::IOBuf>>> subscriber) {
               _channel->setInput(0, subscriber);
             });

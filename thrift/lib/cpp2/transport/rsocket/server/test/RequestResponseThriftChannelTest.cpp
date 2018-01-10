@@ -26,7 +26,7 @@ using namespace testing;
 
 TEST(RequestResponseThriftChannel, SuccessResponse) {
   folly::EventBase evb;
-  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
+  std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
       subscriberRef;
   folly::Baton<> subscriberBaton;
   auto single = yarpl::single::Single<rsocket::Payload>::create(

@@ -32,8 +32,8 @@ namespace thrift {
 class RSResponder : public rsocket::RSocketResponder {
  public:
   using FlowableRef =
-      yarpl::Reference<yarpl::flowable::Flowable<rsocket::Payload>>;
-  using SingleRef = yarpl::Reference<yarpl::single::Single<rsocket::Payload>>;
+      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
+  using SingleRef = std::shared_ptr<yarpl::single::Single<rsocket::Payload>>;
 
   RSResponder(
       ThriftProcessor* processor,

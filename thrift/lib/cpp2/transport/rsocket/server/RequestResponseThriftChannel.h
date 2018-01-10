@@ -29,7 +29,7 @@ class RequestResponseThriftChannel : public StreamThriftChannelBase {
  public:
   explicit RequestResponseThriftChannel(
       folly::EventBase* evb,
-      yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>>
+      std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
           subscriber)
       : StreamThriftChannelBase(evb), subscriber_(subscriber) {}
 
@@ -48,7 +48,7 @@ class RequestResponseThriftChannel : public StreamThriftChannelBase {
       const folly::IOBuf& buffer);
 
  private:
-  yarpl::Reference<yarpl::single::SingleObserver<rsocket::Payload>> subscriber_;
+  std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>> subscriber_;
 };
 } // namespace thrift
 } // namespace apache

@@ -32,7 +32,7 @@ RSResponder::RSResponder(
     std::shared_ptr<apache::thrift::server::TServerObserver> observer)
     : processor_(processor), evb_(evb), observer_(std::move(observer)) {}
 
-yarpl::Reference<yarpl::single::Single<rsocket::Payload>>
+std::shared_ptr<yarpl::single::Single<rsocket::Payload>>
 RSResponder::handleRequestResponse(
     rsocket::Payload request,
     rsocket::StreamId) {
@@ -117,7 +117,7 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
   auto requestStreamFlowable =
       yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
           [requestStream = std::move(requestStream), evb = evb_](
-              yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
+              std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
                   subscriber) {
             requestStream->subscribe(
                 yarpl::make_ref<

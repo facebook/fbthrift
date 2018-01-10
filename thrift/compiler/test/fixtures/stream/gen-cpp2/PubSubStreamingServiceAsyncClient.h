@@ -23,7 +23,7 @@ namespace apache { namespace thrift {
   class CompactProtocolReader;
 
   template <typename T>
-  using Stream = yarpl::Reference<yarpl::flowable::Flowable<T>>;
+  using Stream = std::shared_ptr<yarpl::flowable::Flowable<T>>;
 
   namespace transport { class THeader; }
 }}

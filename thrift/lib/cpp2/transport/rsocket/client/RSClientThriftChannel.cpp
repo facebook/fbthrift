@@ -61,7 +61,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
   }
 
  protected:
-  void onSubscribe(Reference<SingleSubscription>) override {
+  void onSubscribe(std::shared_ptr<SingleSubscription>) override {
     // Note that we don't need the Subscription object.
     auto ref = this->ref_from_this(this);
     auto evb = callback_->getEventBase();
@@ -251,7 +251,7 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
       [initialBuf = std::move(buf),
        metadata = std::move(metadata),
        callback = std::move(callback)](
-          yarpl::Reference<yarpl::flowable::Subscriber<rsocket::Payload>>
+          std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
               subscriber) mutable {
         VLOG(3) << "Input is started to be consumed: "
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
