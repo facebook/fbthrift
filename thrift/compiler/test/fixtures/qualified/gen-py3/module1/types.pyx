@@ -210,7 +210,7 @@ cdef class Struct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Struct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(Struct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStruct]()
         if proto is Protocol.COMPACT:

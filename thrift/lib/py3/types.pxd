@@ -4,7 +4,7 @@ from libc.stdint cimport uint32_t
 
 cdef class Struct:
     cdef bytes _serialize(self, proto)
-    cdef uint32_t _deserialize(self, const IOBuf* buf, proto)
+    cdef uint32_t _deserialize(self, const IOBuf* buf, proto) except? 0
 
 
 cdef class Union(Struct):

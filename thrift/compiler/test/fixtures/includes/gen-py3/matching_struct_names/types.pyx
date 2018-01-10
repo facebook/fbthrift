@@ -154,7 +154,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         if proto is Protocol.COMPACT:
@@ -363,7 +363,7 @@ cdef class Combo(thrift.py3.types.Struct):
             serializer.JSONSerialize[cCombo](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Combo self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(Combo self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cCombo]()
         if proto is Protocol.COMPACT:

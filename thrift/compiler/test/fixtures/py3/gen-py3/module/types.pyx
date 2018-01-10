@@ -480,7 +480,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(SimpleStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(SimpleStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cSimpleStruct]()
         if proto is Protocol.COMPACT:
@@ -767,7 +767,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ComplexStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(ComplexStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cComplexStruct]()
         if proto is Protocol.COMPACT:

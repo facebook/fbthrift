@@ -546,7 +546,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
             serializer.JSONSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         {{!
             This is a special case, we need to construct an empty _cpp_obj because

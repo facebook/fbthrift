@@ -6,6 +6,8 @@ from libc.stdint cimport uint32_t, uint64_t
 from folly.iobuf cimport IOBuf, move, wrapBuffer
 from libc.string cimport const_uchar
 
+from thrift.py3.exceptions import Error
+
 
 class Protocol(Enum):
     COMPACT = 0
@@ -27,5 +29,8 @@ def deserialize(structKlass, bytes buf, protocol=Protocol.COMPACT):
     cdef uint64_t capacity = len(buf)
     cdef Struct cy_struct = <Struct> structKlass.__new__(structKlass)
     c_buf = move(wrapBuffer(c_str, capacity))
-    cy_struct._deserialize(c_buf.get(), protocol)
-    return cy_struct
+    try:
+        cy_struct._deserialize(c_buf.get(), protocol)
+        return cy_struct
+    except Exception as e:
+        raise Error.__new__(Error, *e.args) from None

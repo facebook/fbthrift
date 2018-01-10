@@ -15,7 +15,7 @@ cdef class Struct:
     cdef bytes _serialize(self, proto):
         return b''
 
-    cdef uint32_t _deserialize(self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(self, const IOBuf* buf, proto) except? 0:
         return 0
 
 

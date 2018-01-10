@@ -190,7 +190,7 @@ cdef class MyUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cMyUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyUnion self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(MyUnion self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyUnion]()
         if proto is Protocol.COMPACT:
@@ -399,7 +399,7 @@ cdef class MyField(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyField](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyField self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(MyField self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyField]()
         if proto is Protocol.COMPACT:
@@ -596,7 +596,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         if proto is Protocol.COMPACT:
@@ -793,7 +793,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithUnion self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithUnion self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithUnion]()
         if proto is Protocol.COMPACT:
@@ -925,7 +925,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cRecursiveStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(RecursiveStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(RecursiveStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cRecursiveStruct]()
         if proto is Protocol.COMPACT:
@@ -1186,7 +1186,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithContainers](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithContainers self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithContainers self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithContainers]()
         if proto is Protocol.COMPACT:
@@ -1383,7 +1383,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithSharedConst](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithSharedConst self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithSharedConst self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithSharedConst]()
         if proto is Protocol.COMPACT:
@@ -1490,7 +1490,7 @@ cdef class Empty(thrift.py3.types.Struct):
             serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cEmpty]()
         if proto is Protocol.COMPACT:
@@ -1687,7 +1687,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithRef](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithRef self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithRef self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithRef]()
         if proto is Protocol.COMPACT:
@@ -1884,7 +1884,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithRefTypeUnique](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithRefTypeUnique self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithRefTypeUnique self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithRefTypeUnique]()
         if proto is Protocol.COMPACT:
@@ -2081,7 +2081,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithRefTypeShared](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithRefTypeShared self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithRefTypeShared self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithRefTypeShared]()
         if proto is Protocol.COMPACT:
@@ -2278,7 +2278,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStructWithRefTypeSharedConst](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(StructWithRefTypeSharedConst self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(StructWithRefTypeSharedConst self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStructWithRefTypeSharedConst]()
         if proto is Protocol.COMPACT:

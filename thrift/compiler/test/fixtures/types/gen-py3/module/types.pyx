@@ -205,7 +205,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cdecorated_struct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(decorated_struct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(decorated_struct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cdecorated_struct]()
         if proto is Protocol.COMPACT:
@@ -518,7 +518,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cContainerStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ContainerStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(ContainerStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cContainerStruct]()
         if proto is Protocol.COMPACT:
@@ -657,7 +657,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cVirtualStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(VirtualStruct self, const IOBuf* buf, proto):
+    cdef uint32_t _deserialize(VirtualStruct self, const IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cVirtualStruct]()
         if proto is Protocol.COMPACT:

@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 import unittest
 import pickle
-from thrift.py3 import serialize, deserialize, Protocol, Struct
+from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
 
 from testing.types import easy, hard, Integers
 
 
 class SerializerTests(unittest.TestCase):
+    def test_bad_deserialize(self) -> None:
+        with self.assertRaises(Error):
+            deserialize(easy, b'', protocol=Protocol.JSON)
+        with self.assertRaises(Error):
+            deserialize(easy, b'\x05AAAAAAAA')
+        with self.assertRaises(Error):
+            deserialize(easy, b'\x02\xDE\xAD\xBE\xEF', protocol=Protocol.BINARY)
+
     def thrift_serialization_round_robin(self, control: Struct) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])
 
