@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/test/gen-cpp/ConnCtxService.h>
 #include <thrift/lib/cpp/test/NetworkUtil.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
@@ -24,8 +25,6 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
-#include <thrift/lib/cpp/async/TEventServer.h>
-#include <thrift/lib/cpp/util/TEventServerCreator.h>
 
 #include <iostream>
 #include <gtest/gtest.h>
@@ -49,7 +48,6 @@ using apache::thrift::transport::TSocket;
 using folly::SocketAddress;
 using apache::thrift::util::ScopedServerThread;
 using apache::thrift::util::ServerCreator;
-using apache::thrift::util::TEventServerCreator;
 using apache::thrift::util::TSimpleServerCreator;
 using apache::thrift::util::TThreadedServerCreator;
 using apache::thrift::test::getLocalAddresses;
@@ -229,9 +227,4 @@ TEST(ConnCtxTest, TSimpleServerTest) {
 
 TEST(ConnCtxTest, TThreadedServerTest) {
   runTest<TThreadedServerCreator>();
-}
-
-TEST(ConnCtxTest, TEventServerTest) {
-  // "For testing TEventServerCreator"
-  runTest<TEventServerCreator>();
 }

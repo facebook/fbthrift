@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <iostream>
 
-#include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/async/TSyncToAsyncProcessor.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -36,7 +35,6 @@
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/ServerCreatorBase.h>
-#include <thrift/lib/cpp/util/TEventServerCreator.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
@@ -130,7 +128,6 @@ enum ClientType {
 enum ServerType {
   SERVER_TYPE_SIMPLE = 0,
   SERVER_TYPE_THREADED = 1,
-  SERVER_TYPE_EVENT = 5,
 };
 
 void runClient(ClientType clientType, ServerType, int port) {
@@ -291,10 +288,6 @@ void runTestCase(ServerType sType, ClientType clientType) {
       serverCreator = make_shared<TThreadedServerCreator>(
           testProcessor, port, false);
       break;
-    case SERVER_TYPE_EVENT:
-      serverCreator = make_shared<TEventServerCreator>(
-          testAsyncProcessor, port);
-      break;
   }
   serverCreator->setDuplexProtocolFactory(protocolFactory);
 
@@ -321,20 +314,12 @@ TEST(THeaderTest, threadedServerFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED);
 }
 
-TEST(THeaderTest, eventServerFramed) {
-  runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_FRAMED);
-}
-
 TEST(THeaderTest, simpleServerHeader) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_HEADER);
 }
 
 TEST(THeaderTest, threadedServerHeader) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HEADER);
-}
-
-TEST(THeaderTest, eventServerHeader) {
-  runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_HEADER);
 }
 
 TEST(THeaderTest, simpleServerHttp) {
@@ -351,10 +336,6 @@ TEST(THeaderTest, simpleServerCompactFramed) {
 
 TEST(THeaderTest, threadedServerCompactFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED_COMPACT);
-}
-
-TEST(THeaderTest, eventServerCompactFramed) {
-  runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
 TEST(THeaderTest, unframedBadRead) {

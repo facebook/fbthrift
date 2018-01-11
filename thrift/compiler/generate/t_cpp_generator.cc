@@ -6243,7 +6243,6 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
   // Cob style.
   else {
     // Processor entry point.
-    // TODO(edhall) update for callContext when TEventServer is ready
     if (gen_templates_) {
       out <<
         indent() << "template <class Protocol_>" << endl;

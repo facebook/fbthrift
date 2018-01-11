@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
@@ -371,7 +370,7 @@ int main(int argc, char **argv) {
     "[--protocol-type=<protocol-type>] [--workers=<worker-count>] " <<
     "[--processor-events]" << endl <<
     "\t\tserver-type\t\ttype of server, \"simple\", \"thread-pool\", " <<
-    "\"threaded\", or \"event\".  Default is " << serverType << endl <<
+    "or \"threaded\"  Default is " << serverType << endl <<
     "\t\tprotocol-type\t\ttype of protocol, \"binary\", \"header\", " <<
     "\"ascii\", or \"xml\".  Default is " << protocolType << endl <<
     "\t\tworkers\t\tNumber of thread pools workers.  Only valid for " <<
@@ -404,7 +403,6 @@ int main(int argc, char **argv) {
       if (serverType == "simple") {
       } else if (serverType == "thread-pool") {
       } else if (serverType == "threaded") {
-      } else if (serverType == "event") {
       } else {
         throw invalid_argument("Unknown server type "+serverType);
       }
@@ -512,11 +510,6 @@ int main(int argc, char **argv) {
 
     printf("Starting the server on port %d...\n", port);
 
-  } else if (serverType == "event") {
-    server = std::shared_ptr<TServer>(new TEventServer(testProcessor,
-                                                       protocolFactory, port));
-
-    printf("Starting the event server on port %d...\n", port);
   }
 
   if (header) {
