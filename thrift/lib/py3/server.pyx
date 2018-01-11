@@ -2,10 +2,9 @@ from libcpp.memory cimport unique_ptr, shared_ptr, make_shared
 from libc.string cimport const_uchar
 from cython.operator cimport dereference as deref
 from libc.stdint cimport uint64_t
-from thrift.py3.server cimport (
-    cSSLPolicy, SSLPolicy__DISABLED, SSLPolicy__PERMITTED, SSLPolicy__REQUIRED
-)
 from folly.iobuf cimport IOBuf, move
+from cpython.ref cimport PyObject
+from folly.executor cimport get_executor
 
 import asyncio
 import collections
@@ -41,6 +40,10 @@ cdef class ServiceInterface:
     pass
 
 
+cdef void handleAddressCallback(PyObject* future, cfollySocketAddress address):
+    (<object>future).set_result(_get_SocketAddress(&address))
+
+
 cdef class ThriftServer:
     def __cinit__(self):
         self.server = make_shared[cThriftServer]()
@@ -57,8 +60,18 @@ cdef class ThriftServer:
 
         self.server.get().setInterface(handler.interface_wrapper)
         self.server.get().setPort(port)
+        self.address_future = self.loop.create_future()
 
     async def serve(self):
+        if self.address_future.done():
+            self.address_future = self.loop.create_future()
+        self.server.get().setServerEventHandler(
+            make_shared[Py3ServerEventHandler](
+                get_executor(),
+                object_partial(handleAddressCallback, <PyObject*> self.address_future)
+            )
+        )
+
         def _serve():
             with nogil:
                 self.server.get().serve()
@@ -68,6 +81,9 @@ cdef class ThriftServer:
             print("Exception In Server")
             self.server.get().stop()
             raise
+
+    async def get_address(self):
+        return await self.address_future
 
     def set_ssl_policy(self, policy):
         cdef cSSLPolicy cPolicy

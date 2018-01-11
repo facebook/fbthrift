@@ -2,6 +2,23 @@ from libc.stdint cimport uint16_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport IOBuf
+from folly cimport cFollyExecutor
+from cpython.ref cimport PyObject
+
+cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
+    cdef cppclass cfollySocketAddress "folly::SocketAddress":
+        uint16_t getPort()
+        bint isFamilyInet()
+        string getAddressStr()
+        string getPath()
+
+    cdef cppclass AddressHandler:  # This isn't true but its easier for cython
+        pass
+
+    AddressHandler object_partial(void(*)(PyObject*, cfollySocketAddress), PyObject*)
+
+    cdef cppclass Py3ServerEventHandler:
+        Py3ServerEventHandler(cFollyExecutor*, AddressHandler) nogil
 
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
         namespace "apache::thrift":
@@ -30,6 +47,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void serve() nogil except +
         void stop() nogil except +
         void setSSLPolicy(cSSLPolicy policy) nogil
+        void setServerEventHandler(shared_ptr[Py3ServerEventHandler] handler) nogil
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
@@ -42,12 +60,6 @@ cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
 
 cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         namespace "apache::thrift":
-
-    cdef cppclass cfollySocketAddress "folly::SocketAddress":
-        uint16_t getPort()
-        bint isFamilyInet()
-        string getAddressStr()
-        string getPath()
 
     cdef cppclass Cpp2ConnContext:
         bint isTls()
@@ -67,6 +79,7 @@ cdef class ThriftServer:
     cdef shared_ptr[cThriftServer] server
     cdef ServiceInterface handler
     cdef object loop
+    cdef object address_future
 
 
 cdef class ConnectionContext:

@@ -5,7 +5,8 @@ import unittest
 
 from testing.services import TestingServiceInterface
 from testing.types import easy, Color
-from thrift.py3 import RequestContext
+from thrift.py3 import RequestContext, ThriftServer
+from thrift.py3.server import SocketAddress
 from typing import Sequence
 
 
@@ -33,6 +34,19 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
+    def test_get_address(self) -> None:
+        loop = asyncio.get_event_loop()
+        coro = self.get_address(loop)
+        self.assertIsInstance(loop.run_until_complete(coro), SocketAddress)
+
+    async def get_address(self, loop) -> SocketAddress:
+        server = ThriftServer(Handler(), port=0)
+        serve_task = loop.create_task(server.serve())
+        addy = await server.get_address()
+        server.stop()
+        await serve_task
+        return addy
+
     def test_annotations(self) -> None:
         annotations = TestingServiceInterface.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
