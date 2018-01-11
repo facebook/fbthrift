@@ -472,7 +472,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::vector<int> getListenSockets() const;
 
   /**
-   * Get the TEventServer's main event base.
+   * Get the ThriftServer's main event base.
    *
    * @return a pointer to the EventBase.
    */
