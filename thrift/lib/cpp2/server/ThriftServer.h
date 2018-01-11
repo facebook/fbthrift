@@ -250,7 +250,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   }
 
   /**
-   * Set the thread factory that will be used to create the server's IO threads.
+   * Doing any blocking work on this executor will cause the server to
+   * stall servicing requests. Be careful about using this executor for anything
+   * other than its main purpose.
+   */
+  std::shared_ptr<folly::IOThreadPoolExecutor> getIOThreadPool() {
+    return ioThreadPool_;
+  }
+
+  /**
+   * Set the thread factory that will be used to create the server's IO
+   * threads.
    *
    * @param the new thread factory
    */
@@ -328,14 +338,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     acceptPool_ = pool;
   }
 
+  /**
+   * Generally the acceptor should not do any work other than
+   * accepting connections, so use this with care.
+   */
+  std::shared_ptr<folly::IOThreadPoolExecutor> getAcceptExecutor() {
+    return acceptPool_;
+  }
+
   void setNumAcceptThreads(int numAcceptThreads) {
     CHECK(!acceptPool_);
     nAcceptors_ = numAcceptThreads;
-  }
-
-  std::shared_ptr<folly::IOThreadPoolExecutor> getIOThreadPoolExecutor_()
-      const {
-    return acceptPool_;
   }
 
   /**
