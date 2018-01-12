@@ -52,6 +52,16 @@ ESCAPE_CHAR_VALS = {
     '\r': '\\r',
     '\t': '\\t',
 }
+ESCAPE_CHARS = {
+    b'"': '"',
+    b'\\': '\\',
+    b'b': '\b',
+    b'f': '\f',
+    b'n': '\n',
+    b'r': '\r',
+    b't': '\t',
+    b'/': '/',
+}
 NUMERIC_CHAR = '+-.0123456789Ee'
 
 CTYPES = {TType.BOOL:       'tf',
