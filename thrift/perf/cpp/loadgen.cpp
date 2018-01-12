@@ -27,8 +27,6 @@
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 #include "common/services/cpp/ServiceFramework.h"
 
-#include "common/config/Flags.h"
-
 #include <signal.h>
 
 DEFINE_double(interval, 1.0, "number of seconds between statistics output");

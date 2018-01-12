@@ -18,8 +18,6 @@
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include "common/config/Flags.h"
-#include "common/network/NetworkUtil.h"
 
 using namespace boost;
 
@@ -30,10 +28,7 @@ DEFINE_bool(header, false, "use THeaderProtocol");
 DEFINE_bool(http1, false, "use Proxygen HTTP Protocol");
 DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(ssl, false, "Use SSL");
-DEFINE_bool(sr, false, "Use Service Router");
 DEFINE_bool(single_host, false, "Use Single Hosts option with Service Router");
-DEFINE_string(srtier, "thrift.loadgen",
-              "Tier to grab Service Router config from");
 DEFINE_string(sasl_policy_test, "disabled",
               "SASL policy required / permitted / disabled");
 DEFINE_string(sasl_service_tier, "",
@@ -145,10 +140,34 @@ ClientLoadConfig::ClientLoadConfig()
   // resolution for each connection attempt.
   address_.setFromHostPort(FLAGS_server.c_str(), FLAGS_port);
   if (FLAGS_server == "127.0.0.1") {
-    addressHostname_ = facebook::network::NetworkUtil::getLocalHost();
+    char hostname[HOST_NAME_MAX + 1];
+    PCHECK(gethostname(hostname, sizeof(hostname)));
+    addressHostname_ = hostname;
   } else {
-    addressHostname_ = facebook::network::NetworkUtil::getHostByAddrCached(
-      address_.getAddressStr());
+    struct addrinfo hints, *res, *res0;
+    char hostname[NI_MAXHOST] = {};
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = PF_UNSPEC;
+    hints.ai_flags = AI_NUMERICHOST;
+    PCHECK(
+        getaddrinfo(address_.getAddressStr().c_str(), nullptr, &hints, &res0));
+
+    for (res = res0; res; res = res->ai_next) {
+      if (0 ==
+          getnameinfo(
+              res->ai_addr,
+              res->ai_addrlen,
+              hostname,
+              NI_MAXHOST,
+              nullptr,
+              0,
+              NI_NAMEREQD)) {
+        break;
+      }
+    }
+    freeaddrinfo(res0);
+    addressHostname_ = hostname;
   }
 
   // TODO: verify that at least one weight is non-zero
@@ -225,20 +244,12 @@ bool ClientLoadConfig::useSSL() const {
   return FLAGS_ssl;
 }
 
-bool ClientLoadConfig::useSR() const {
-  return FLAGS_sr;
-}
-
 bool ClientLoadConfig::useSSLTFO() const {
   return FLAGS_use_ssl_tfo;
 }
 
 bool ClientLoadConfig::useSingleHost() const {
   return FLAGS_single_host;
-}
-
-std::string ClientLoadConfig::srTier() const {
-  return FLAGS_srtier;
 }
 
 bool ClientLoadConfig::zlib() const {

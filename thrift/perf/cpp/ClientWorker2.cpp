@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2012-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 
 #include <thrift/perf/cpp/ClientWorker2.h>
 
-#include <thrift/lib/cpp/ClientUtil.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
@@ -45,92 +44,65 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   std::unique_ptr<
     RequestChannel,
     folly::DelayedDestruction::Destructor> channel;
-  if (config->useSR()) {
-    facebook::servicerouter::ConnConfigs configs;
-    facebook::servicerouter::ServiceOptions options;
-    configs["sock_sendtimeout"] = folly::to<std::string>(kTimeout);
-    configs["sock_recvtimeout"] = folly::to<std::string>(kTimeout);
-    if (config->SASLPolicy() == "required" ||
-        config->SASLPolicy() == "permitted") {
-      configs["thrift_security"] = config->SASLPolicy();
-      if (!config->SASLServiceTier().empty()) {
-        configs["thrift_security_service_tier"] = config->SASLServiceTier();
-      }
+  if (config->useSSL()) {
+    std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
+    if (!config->trustedCAList().empty()) {
+      context->loadTrustedCertificates(config->trustedCAList().c_str());
+      context->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
     }
-    if (config->useSSLTFO()) {
-      configs["tls_tcp_fastopen"] = "true";
+
+    if (!config->ciphers().empty()) {
+      context->ciphers(config->ciphers());
     }
-    channel = facebook::servicerouter::cpp2::getClientFactory()
-      .getChannel(config->srTier(), ebm_.getEventBase(), options, configs);
+
+    if (!config->key().empty() && !config->cert().empty()) {
+      context->loadCertificate(config->cert().c_str());
+      context->loadPrivateKey(config->key().c_str());
+    }
+
+    socket = TAsyncSSLSocket::newSocket(context, ebm_.getEventBase());
+    socket->connect(nullptr, *config->getAddress());
+    // Loop once to connect
+    ebm_.getEventBase()->loop();
   } else {
-    if (config->useSSL()) {
-      std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
-      if (!config->trustedCAList().empty()) {
-        context->loadTrustedCertificates(config->trustedCAList().c_str());
-        context->setVerificationOption(
-                    SSLContext::SSLVerifyPeerEnum::VERIFY);
-      }
-
-      if (!config->ciphers().empty()) {
-        context->ciphers(config->ciphers());
-      }
-
-      if (!config->key().empty() && !config->cert().empty()) {
-        context->loadCertificate(config->cert().c_str());
-        context->loadPrivateKey(config->key().c_str());
-      }
-
-      socket = TAsyncSSLSocket::newSocket(context, ebm_.getEventBase());
-      socket->connect(nullptr, *config->getAddress());
-      // Loop once to connect
-      ebm_.getEventBase()->loop();
-    } else {
-      socket =
-        TAsyncSocket::newSocket(ebm_.getEventBase(),
-                                *config->getAddress());
-    }
-    std::unique_ptr<
-      HeaderClientChannel,
-      folly::DelayedDestruction::Destructor> headerChannel(
-          HeaderClientChannel::newChannel(socket));
-    // Always use binary in loadtesting to get apples to apples comparison
-    headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
-    if (config->zlib()) {
-      headerChannel->setTransform(THeader::ZLIB_TRANSFORM);
-    }
-    if (!config->useHeaderProtocol()) {
-      headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);
-    }
-    headerChannel->setTimeout(kTimeout);
-    if (config->SASLPolicy() == "permitted") {
-      headerChannel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-    } else if (config->SASLPolicy() == "required") {
-      headerChannel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-    }
-
-    if (config->SASLPolicy() == "required" ||
-        config->SASLPolicy() == "permitted") {
-      static auto krb5CredentialsCacheManagerLogger =
-          std::make_shared<krb5::Krb5CredentialsCacheManagerLogger>();
-      static auto saslThreadManager = std::make_shared<SaslThreadManager>(
-          krb5CredentialsCacheManagerLogger);
-      static auto credentialsCacheManager =
-          std::make_shared<krb5::Krb5CredentialsCacheManager>(
-              krb5CredentialsCacheManagerLogger);
-      headerChannel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
-        new apache::thrift::GssSaslClient(socket->getEventBase())
-      ));
-      headerChannel->getSaslClient()->setSaslThreadManager(saslThreadManager);
-      headerChannel->getSaslClient()->setCredentialsCacheManager(
-        credentialsCacheManager);
-      headerChannel->getSaslClient()->setServiceIdentity(
-        folly::format(
-          "{}@{}",
-          config->SASLServiceTier(),
-          config->getAddressHostname()).str());
-    }
-    channel = std::move(headerChannel);
+    socket =
+        TAsyncSocket::newSocket(ebm_.getEventBase(), *config->getAddress());
   }
+  std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
+      headerChannel(HeaderClientChannel::newChannel(socket));
+  // Always use binary in loadtesting to get apples to apples comparison
+  headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
+  if (config->zlib()) {
+    headerChannel->setTransform(THeader::ZLIB_TRANSFORM);
+  }
+  if (!config->useHeaderProtocol()) {
+    headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);
+  }
+  headerChannel->setTimeout(kTimeout);
+  if (config->SASLPolicy() == "permitted") {
+    headerChannel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+  } else if (config->SASLPolicy() == "required") {
+    headerChannel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+  }
+
+  if (config->SASLPolicy() == "required" ||
+      config->SASLPolicy() == "permitted") {
+    static auto krb5CredentialsCacheManagerLogger =
+        std::make_shared<krb5::Krb5CredentialsCacheManagerLogger>();
+    static auto saslThreadManager =
+        std::make_shared<SaslThreadManager>(krb5CredentialsCacheManagerLogger);
+    static auto credentialsCacheManager =
+        std::make_shared<krb5::Krb5CredentialsCacheManager>(
+            krb5CredentialsCacheManagerLogger);
+    headerChannel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
+        new apache::thrift::GssSaslClient(socket->getEventBase())));
+    headerChannel->getSaslClient()->setSaslThreadManager(saslThreadManager);
+    headerChannel->getSaslClient()->setCredentialsCacheManager(
+        credentialsCacheManager);
+    headerChannel->getSaslClient()->setServiceIdentity(folly::sformat(
+        "{}@{}", config->SASLServiceTier(), config->getAddressHostname()));
+  }
+  channel = std::move(headerChannel);
 
   return std::shared_ptr<ClientWorker2::Client>(
     new ClientWorker2::Client(std::move(channel)));

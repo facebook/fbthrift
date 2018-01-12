@@ -1,4 +1,6 @@
 /*
+ * Copyright 2012-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,14 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_TEST_PERF_CLIENTWORKER2_H_
 #define THRIFT_TEST_PERF_CLIENTWORKER2_H_ 1
 
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
 #include <folly/io/async/EventBaseManager.h>
-
-#include "servicerouter/client/cpp2/ClientFactory.h"
 
 namespace apache { namespace thrift {
 

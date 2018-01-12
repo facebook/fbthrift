@@ -129,13 +129,9 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useSSL() const;
 
-  bool useSR() const;
-
   bool useSSLTFO() const;
 
   bool useSingleHost() const;
-
-  std::string srTier() const;
 
   bool zlib() const;
 
