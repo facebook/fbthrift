@@ -1,4 +1,6 @@
 /*
+ * Copyright 2012-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,26 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_TEST_HANDLERS_ASYNCLOADHANDLER2_H_
 #define THRIFT_TEST_HANDLERS_ASYNCLOADHANDLER2_H_ 1
-
-#include "common/fb303/cpp/FacebookBase2.h"
 
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
 namespace apache { namespace thrift {
 
-class AsyncLoadHandler2 : public LoadTestSvIf
-                        , public facebook::fb303::FacebookBase2 {
-
+class AsyncLoadHandler2 : public LoadTestSvIf {
  public:
-  facebook::fb303::cpp2::fb_status getStatus() override {
-    return facebook::fb303::cpp2::fb_status::ALIVE;
-  }
-
-  explicit AsyncLoadHandler2()
-    : FacebookBase2("AsyncLoadHandler2") {}
-
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;
   void async_eb_onewayNoop(
       std::unique_ptr<HandlerCallbackBase> callback) override;

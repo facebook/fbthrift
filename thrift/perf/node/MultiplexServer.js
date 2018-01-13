@@ -6,7 +6,6 @@ var options = require('optimist')
 
 var LoadTest = require('load/LoadTest');
 
-var fb303_types = require('fb303/fb303_types');
 var thrift = require('thrift');
 var ttransport = require('thrift/lib/thrift/transport');
 var TException = thrift.Thrift.TException;
@@ -87,9 +86,6 @@ var methods = {
   },
   add : function(a, b, callback) {
     callback(null, a + b);
-  },
-  getStatus: function(callback) {
-    callback(null, fb303_types.fb_status.ALIVE);
   }
 };
 

@@ -1,5 +1,3 @@
-include "common/fb303/if/fb303.thrift"
-
 namespace cpp apache.thrift.test
 namespace cpp2 apache.thrift
 namespace py apache.thrift.test.load
@@ -18,7 +16,7 @@ struct BigStruct {
   2: list<string> stringList,
 }
 
-service LoadTest extends fb303.FacebookService {
+service LoadTest {
   // Methods for testing server performance
   // Fairly simple requests, to minimize serialization overhead
 

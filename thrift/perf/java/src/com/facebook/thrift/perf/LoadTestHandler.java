@@ -4,25 +4,9 @@ import java.lang.InterruptedException;
 import java.lang.Thread;
 import java.lang.System;
 import com.facebook.thrift.TException;
-import com.facebook.fbcode.fb303.fb_status;
-import com.facebook.fbcode.fb303.FacebookBase;
 import java.util.List;
 
-public class LoadTestHandler extends FacebookBase implements LoadTest.Iface  {
-  public LoadTestHandler() {
-    super("LoadTestHandler");
-  }
-
-  @Override
-  public int getStatus() {
-    return fb_status.ALIVE;
-  }
-
-  @Override
-  public String getVersion() {
-    return "";
-  }
-
+public class LoadTestHandler implements LoadTest.Iface  {
   public void noop() {
   }
 

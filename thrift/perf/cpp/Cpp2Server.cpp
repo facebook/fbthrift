@@ -23,14 +23,12 @@
 
 #include <folly/Random.h>
 #include <folly/String.h>
+#include <folly/init/Init.h>
 #include <folly/ssl/Init.h>
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
-
-#include "common/init/Init.h"
-#include "common/services/cpp/ServiceFramework.h"
 
 using std::cout;
 using namespace boost;
@@ -40,10 +38,6 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::concurrency;
 
-DEFINE_bool(
-    enable_service_framework,
-    false,
-    "Run ServiceFramework to track service stats");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_int64(num_threads, 4, "number of worker threads");
 DEFINE_int64(num_queue_threads, 4, "number of task queue threads");
@@ -96,7 +90,7 @@ ThriftServer *g_server = nullptr;
 }
 
 int main(int argc, char* argv[]) {
-  facebook::initFacebook(&argc, &argv);
+  folly::init(&argc, &argv);
 
   if (argc != 1) {
     fprintf(stderr, "error: unhandled arguments:");
@@ -165,21 +159,9 @@ int main(int argc, char* argv[]) {
   signal(SIGINT, sigHandler);
 
   cout << "Serving requests on port " << FLAGS_port << "...\n";
-  // Optionally run under ServiceFramework to enable testing stats handlers
-  // Once ServiceFramework is running, it will hook any new thrift services that
-  // get created, and attach a collect/report their fb303 stats.
-  std::unique_ptr<facebook::services::ServiceFramework> fwk;
-  if (FLAGS_enable_service_framework) {
-    fwk.reset(
-        new facebook::services::ServiceFramework("ThriftServer Load Tester"));
-    fwk->addThriftService(server, handler.get(), FLAGS_port);
-    fwk->go();
-  } else {
-    server->serve();
-  }
+  server->serve();
 
   cout << "Exiting normally" << std::endl;
-  fwk->stop();
 
   return 0;
 }

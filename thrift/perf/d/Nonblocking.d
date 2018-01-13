@@ -26,7 +26,7 @@ void main(string[] args)
   }
 
   auto protocolFactory = new TBinaryProtocolFactory!();
-  auto processor = new TServiceProcessor!LoadTest(new LoadHandler("loadtest"));
+  auto processor = new TServiceProcessor!LoadTest(new LoadHandler());
   auto transportFactory = new TBufferedTransportFactory;
   TaskPool taskPool;
   if (to!ushort(num_threads) > 0) {

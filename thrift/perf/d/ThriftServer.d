@@ -1,7 +1,6 @@
 import std.conv, std.getopt, std.stdio;
 import thrift.codegen.processor;
 import thrift.server.thriftserver;
-import common.fb303.d.FacebookBase;
 import LoadHandler;
 
 void main(string[] args)
@@ -24,7 +23,7 @@ void main(string[] args)
     return;
   }
 
-  auto processor = new TServiceProcessor!LoadTest(new LoadHandler("loadtest"));
+  auto processor = new TServiceProcessor!LoadTest(new LoadHandler());
   auto server = new CppServer(processor, to!ushort(port));
 
   server.serve();

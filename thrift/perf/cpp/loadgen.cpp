@@ -25,13 +25,10 @@
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 #include <thrift/perf/cpp/ClientWorker2.h>
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
-#include "common/services/cpp/ServiceFramework.h"
 
 #include <signal.h>
 
 DEFINE_double(interval, 1.0, "number of seconds between statistics output");
-DEFINE_bool(enable_service_framework, false,
-            "Run ServiceFramework to track client stats");
 
 using namespace boost;
 using namespace apache::thrift;
@@ -41,15 +38,6 @@ int main(int argc, char* argv[]) {
   folly::init(&argc, &argv, true);
 
   signal(SIGINT, exit);
-
-  // Optionally run under ServiceFramework to enable testing stats handlers
-  // Once ServiceFramework is running, it will hook any new thrift clients that
-  // get created, and attach a collect/report their fb303 stats.
-  std::unique_ptr<facebook::services::ServiceFramework> fwk;
-  if (FLAGS_enable_service_framework) {
-    fwk.reset(new facebook::services::ServiceFramework("loadgen"));
-    fwk->go(false /* waitUntilStop */);
-  }
 
   if (argc != 1) {
     fprintf(stderr, "error: unhandled arguments:");
@@ -71,8 +59,6 @@ int main(int argc, char* argv[]) {
   } else {
     loadgen::runLoadGen<ClientWorker2>(config, FLAGS_interval);
   }
-
-  fwk->stop();
 
   return 0;
 }
