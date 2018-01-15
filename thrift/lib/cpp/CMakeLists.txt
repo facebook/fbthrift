@@ -95,10 +95,6 @@ add_library(
   async/TAsyncSocketFactory.cpp
   async/TAsyncSSLSocketFactory.cpp
   async/TBinaryAsyncChannel.cpp
-  async/TEventConnection.cpp
-  async/TEventServer.cpp
-  async/TEventTask.cpp
-  async/TEventWorker.cpp
   async/TFramedAsyncChannel.cpp
   async/THeaderAsyncChannel.cpp
   async/THttpAsyncChannel.cpp

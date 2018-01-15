@@ -35,8 +35,6 @@ namespace apache { namespace thrift { namespace async {
  * @author David Reiss <dreiss@facebook.com>
  */
 
-class TEventServer; // forward declaration
-
 class TAsyncProcessor : public TProcessorBase {
  public:
   virtual ~TAsyncProcessor() {}
@@ -51,18 +49,8 @@ class TAsyncProcessor : public TProcessorBase {
     return process(_return, io, io);
   }
 
-  const TEventServer* getAsyncServer() {
-    return asyncServer_;
-  }
  protected:
   TAsyncProcessor() {}
-
-  const TEventServer* asyncServer_;
- private:
-  friend class TEventServer;
-  void setAsyncServer(const TEventServer* server) {
-    asyncServer_ = server;
-  }
 };
 
 class TAsyncProcessorFactory {
