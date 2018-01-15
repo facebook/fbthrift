@@ -469,7 +469,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * Use the provided socket rather than binding to address_.  The caller must
    * call ::bind on this socket, but should not call ::listen.
    *
-   * NOTE: TEventServe takes ownership of this 'socket' so if binding fails
+   * NOTE: ThriftServer takes ownership of this 'socket' so if binding fails
    *       we destroy this socket, while cleaning itself up. So, 'accept' better
    *       work the first time :)
    */
