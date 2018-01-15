@@ -5,7 +5,7 @@ thrift_generate(
   "reflection" #file_name
   "" #services
   "cpp" #language
-  "templates,cob_style" #options
+  "templates" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
   "thrift/lib/thrift" #include_prefix

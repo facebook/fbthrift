@@ -160,13 +160,6 @@ class ServerEventHandler : public TProcessorEventHandler {
   }
 };
 
-void echoVoidCallback(ServiceCobClient* client) {
-  client->recv_echoVoid();
-  /* Currently no way to pass client ctx here, these checks would fail */
-  // handler->checkContextCalls();
-  // handler2->checkContextCalls();
-}
-
 TEST(ClientEventHandlerTest, clientHandlerTest) {
   auto handler = make_shared<ClientEventHandler>();
   auto handler2 = make_shared<ClientEventHandler>();
@@ -209,21 +202,4 @@ TEST(ClientEventHandlerTest, clientHandlerTest) {
 
   testProcessor->setEventHandler(nullptr);
   testProcessor->clearEventHandlers();
-
-  // Test async
-
-  folly::EventBase evb;
-  auto aSocket = TAsyncSocket::newSocket(&evb, "127.0.0.1", port);
-  auto channel = TFramedAsyncChannel::newChannel(aSocket);
-  auto protocolFactory = make_shared<TBinaryProtocolFactory>();
-
-  ServiceCobClient testAsyncClient(channel, protocolFactory.get());
-  handler = make_shared<ClientEventHandler>();
-  testAsyncClient.addEventHandler(handler);
-  testAsyncClient.addEventHandler(handler2);
-  function<void(ServiceCobClient* client)> recvCob;
-  recvCob = bind(echoVoidCallback, &testAsyncClient);
-
-  testAsyncClient.echoVoid(recvCob);
-  evb.loop();
 }

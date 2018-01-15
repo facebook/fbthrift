@@ -313,11 +313,6 @@ class TEventServer : public apache::thrift::server::TServer {
 
  public:
   /** Construct an async Thrift server.
-      You need to compile your thrift configuration with thrift_cpp_options =
-      "cob_style" to get the required TAsyncProcessor class; this differs
-      from the usual TProcessor object by adding a completion callback.
-      TBinaryProtocol is assumed for both input and output with this
-      constructor.
       @param processor the TAsyncProcessor object for this service
       @param port the TCP port number for this service
       @param nWorkers the number of worker threads -- should be the same

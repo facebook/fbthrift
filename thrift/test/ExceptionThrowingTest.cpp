@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include <thrift/test/gen-cpp/ExceptionThrowingService.h>
 #include <thrift/test/gen-cpp2/ExceptionThrowingService.h>
 
 using namespace apache::thrift;
@@ -29,7 +28,6 @@ using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::util;
 using folly::EventBase;
-using thrift::test::ExceptionThrowingServiceCobClient;
 using thrift::test::SimpleException;
 using thrift::test::cpp2::ExceptionThrowingServiceAsyncClient;
 using thrift::test::cpp2::ExceptionThrowingServiceSvIf;
@@ -53,86 +51,6 @@ std::unique_ptr<ScopedServerThread> createThriftServer() {
   server->setInterface(std::unique_ptr<ExceptionThrowingHandler>(
     new ExceptionThrowingHandler));
   return std::make_unique<ScopedServerThread>(server);
-}
-
-TEST(ExceptionThrowingTest, Thrift1Client) {
-  EventBase eb;
-  auto serverThread = createThriftServer();
-  auto* serverAddr = serverThread->getAddress();
-  std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
-      &eb, *serverAddr));
-  std::shared_ptr<THeaderAsyncChannel> headerChannel(
-      THeaderAsyncChannel::newChannel(socket));
-  auto clientDuplexProtocolFactory =
-      std::make_shared<THeaderProtocolFactory>();
-  ExceptionThrowingServiceCobClient client(
-      headerChannel, clientDuplexProtocolFactory.get());
-
-  // Verify that recv_echo works
-  bool echoDone = false;
-  client.echo(
-    [&echoDone] (ExceptionThrowingServiceCobClient* client) {
-      try {
-        std::string result;
-        client->recv_echo(result);
-        EXPECT_EQ(result, "Hello World");
-        echoDone = true;
-      } catch (const std::exception& e) {
-      }
-    },
-    "Hello World"
-  );
-  eb.loop();
-  EXPECT_TRUE(echoDone);
-
-  // Verify that recv_wrapped_echo works
-  echoDone = false;
-  client.echo(
-    [&echoDone] (ExceptionThrowingServiceCobClient* client) {
-      std::string result;
-      auto ew = client->recv_wrapped_echo(result);
-      if (!ew) {
-        EXPECT_EQ(result, "Hello World");
-        echoDone = true;
-      }
-    },
-    "Hello World"
-  );
-  eb.loop();
-  EXPECT_TRUE(echoDone);
-
-  // recv_throwException
-  bool exceptionThrown = false;
-  client.throwException(
-    [&exceptionThrown] (ExceptionThrowingServiceCobClient* client) {
-      try {
-        client->recv_throwException();
-      } catch (const SimpleException& e) {
-        EXPECT_EQ(e.message, "Hello World");
-        exceptionThrown = true;
-      }
-    },
-    "Hello World"
-  );
-  eb.loop();
-  EXPECT_TRUE(exceptionThrown);
-
-  // recv_wrapped_throwException
-  exceptionThrown = false;
-  client.throwException(
-    [&exceptionThrown] (ExceptionThrowingServiceCobClient* client) {
-      auto ew = client->recv_wrapped_throwException();
-      if (ew && ew.with_exception(
-        [] (const SimpleException& e) {
-          EXPECT_EQ(e.message, "Hello World");
-      })) {
-        exceptionThrown = true;
-      }
-    },
-    "Hello World"
-  );
-  eb.loop();
-  EXPECT_TRUE(exceptionThrown);
 }
 
 TEST(ExceptionThrowingTest, Thrift2Client) {
