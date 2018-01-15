@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
-#include <thrift/lib/cpp/async/TEventConnection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
