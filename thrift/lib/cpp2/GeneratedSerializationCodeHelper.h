@@ -402,8 +402,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         TProtocolException::throwReportedTypeMismatch();
       }
       out.resize(list_size);
-      for (std::uint32_t i = 0; i < list_size; ++i) {
-        xfer += elem_methods::read(protocol, out[i]);
+      for (auto&& elem : out) {
+        xfer += elem_methods::read(protocol, elem);
       }
     }
     xfer += protocol.readListEnd();
