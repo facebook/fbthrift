@@ -432,7 +432,7 @@ class ClientSyncCallback : public RequestCallback {
     *rs_ = std::move(rs);
   }
   void requestError(ClientReceiveState&& rs) override {
-    assert(rs.exception());
+    assert(!!rs.exception());
     *rs_ = std::move(rs);
   }
   bool isOneway() const {

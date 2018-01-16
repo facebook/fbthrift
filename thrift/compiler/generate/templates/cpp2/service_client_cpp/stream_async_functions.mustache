@@ -36,7 +36,7 @@
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
 
