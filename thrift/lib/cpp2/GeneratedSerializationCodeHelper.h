@@ -22,6 +22,9 @@
 #include <type_traits>
 #include <vector>
 
+#include <folly/Utility.h>
+#include <folly/functional/Invoke.h>
+
 #include <thrift/lib/cpp2/TypeClass.h>
 
 /**
@@ -73,6 +76,160 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
 }
 
 inline void reserve_if_possible(...){};
+
+template <typename T>
+using unsafe_constructible_from_vector_value_type = std::
+    is_constructible<T, folly::unsafe_t, std::vector<typename T::value_type>&&>;
+
+FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
+
+template <typename T>
+using map_emplace_hint_is_invocable = emplace_hint_traits::is_invocable<
+    T,
+    typename T::iterator,
+    typename T::key_type,
+    typename T::mapped_type>;
+
+template <typename T>
+using set_emplace_hint_is_invocable = emplace_hint_traits::
+    is_invocable<T, typename T::iterator, typename T::value_type>;
+
+template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
+typename std::enable_if<
+    unsafe_constructible_from_vector_value_type<Map>::value>::type
+deserialize_known_length_map(
+    Map& map,
+    std::uint32_t map_size,
+    KeyDeserializer const& kr,
+    MappedDeserializer const& mr) {
+  if (map_size == 0) {
+    return;
+  }
+
+  bool sorted = true;
+  std::vector<typename Map::value_type> tmp(map_size);
+  kr(tmp[0].first);
+  mr(tmp[0].second);
+  for (size_t i = 1; i < map_size; ++i) {
+    kr(tmp[i].first);
+    mr(tmp[i].second);
+    sorted = sorted && map.key_comp()(tmp[i - 1].first, tmp[i].first);
+  }
+
+  if (LIKELY(map.empty())) {
+    if (!sorted) {
+      std::sort(tmp.begin(), tmp.end(), map.value_comp());
+    }
+    map = Map(folly::unsafe_t(), std::move(tmp));
+  } else {
+    map.insert(
+        std::make_move_iterator(tmp.begin()),
+        std::make_move_iterator(tmp.end()));
+  }
+}
+
+template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
+typename std::enable_if<
+    !unsafe_constructible_from_vector_value_type<Map>::value &&
+    map_emplace_hint_is_invocable<Map>::value>::type
+deserialize_known_length_map(
+    Map& map,
+    std::uint32_t map_size,
+    KeyDeserializer const& kr,
+    MappedDeserializer const& mr) {
+  reserve_if_possible(&map, map_size);
+
+  for (auto i = map_size; i--;) {
+    typename Map::key_type key;
+    kr(key);
+    auto iter = map.emplace_hint(
+        map.end(), std::move(key), typename Map::mapped_type{});
+    mr(iter->second);
+  }
+}
+
+template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
+typename std::enable_if<
+    !unsafe_constructible_from_vector_value_type<Map>::value &&
+    !map_emplace_hint_is_invocable<Map>::value>::type
+deserialize_known_length_map(
+    Map& map,
+    std::uint32_t map_size,
+    KeyDeserializer const& kr,
+    MappedDeserializer const& mr) {
+  reserve_if_possible(&map, map_size);
+
+  for (auto i = map_size; i--;) {
+    typename Map::key_type key;
+    kr(key);
+    mr(map[std::move(key)]);
+  }
+}
+
+template <typename Set, typename ValDeserializer>
+typename std::enable_if<
+    unsafe_constructible_from_vector_value_type<Set>::value>::type
+deserialize_known_length_set(
+    Set& set,
+    std::uint32_t set_size,
+    ValDeserializer const& vr) {
+  if (set_size == 0) {
+    return;
+  }
+
+  bool sorted = true;
+  std::vector<typename Set::value_type> tmp(set_size);
+  vr(tmp[0]);
+  for (size_t i = 1; i < set_size; ++i) {
+    vr(tmp[i]);
+    sorted = sorted && set.key_comp()(tmp[i - 1], tmp[i]);
+  }
+
+  if (LIKELY(set.empty())) {
+    if (!sorted) {
+      std::sort(tmp.begin(), tmp.end(), set.value_comp());
+    }
+    set = Set(folly::unsafe_t(), std::move(tmp));
+  } else {
+    set.insert(
+        std::make_move_iterator(tmp.begin()),
+        std::make_move_iterator(tmp.end()));
+  }
+}
+
+template <typename Set, typename ValDeserializer>
+typename std::enable_if<
+    !unsafe_constructible_from_vector_value_type<Set>::value &&
+    set_emplace_hint_is_invocable<Set>::value>::type
+deserialize_known_length_set(
+    Set& set,
+    std::uint32_t set_size,
+    ValDeserializer const& vr) {
+  reserve_if_possible(&set, set_size);
+
+  for (auto i = set_size; i--;) {
+    typename Set::value_type value;
+    vr(value);
+    set.emplace_hint(set.end(), std::move(value));
+  }
+}
+
+template <typename Set, typename ValDeserializer>
+typename std::enable_if<
+    !unsafe_constructible_from_vector_value_type<Set>::value &&
+    !set_emplace_hint_is_invocable<Set>::value>::type
+deserialize_known_length_set(
+    Set& set,
+    std::uint32_t set_size,
+    ValDeserializer const& vr) {
+  reserve_if_possible(&set, set_size);
+
+  for (auto i = set_size; i--;) {
+    typename Set::value_type value;
+    vr(value);
+    set.insert(std::move(value));
+  }
+}
 
 template <typename Indirection, typename TypeClass>
 struct IndirectionTag;
@@ -399,10 +556,10 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       if (reported_type != elem_methods::ttype_value) {
         TProtocolException::throwReportedTypeMismatch();
       }
-      reserve_if_possible(&out, set_size);
-      while (set_size--) {
-        xfer += consume_elem(protocol, out);
-      }
+      auto const vreader = [&xfer, &protocol](auto& value) {
+        xfer += elem_methods::read(protocol, value);
+      };
+      deserialize_known_length_set(out, set_size, vreader);
     }
     xfer += protocol.readSetEnd();
     return xfer;
@@ -488,7 +645,6 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       auto const vreader = [&xfer, &protocol](auto& value) {
         xfer += mapped_methods::read(protocol, value);
       };
-      reserve_if_possible(&out, map_size);
       deserialize_known_length_map(out, map_size, kreader, vreader);
     }
     xfer += protocol.readMapEnd();
@@ -731,7 +887,6 @@ struct protocol_methods<
             ReadForwardCompatible<Protocol, MappedClass, mapped_type>::read(
                 protocol, rpt_mapped_type, value);
       };
-      reserve_if_possible(&out, map_size);
       deserialize_known_length_map(out, map_size, kreader, vreader);
     }
     xfer += protocol.readMapEnd();

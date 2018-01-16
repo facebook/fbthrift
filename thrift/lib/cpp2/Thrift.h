@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
-#include <thrift/lib/cpp2/util/MapCopy.h>
 
 #include <initializer_list>
 #include <utility>
