@@ -601,7 +601,7 @@ uint32_t BinaryProtocolReader::readStringBody(StrType& str,
 
     str.append((const char*)data.data(), data_avail);
     size_left -= data_avail;
-    in_.skip(data_avail);
+    in_.skipNoAdvance(data_avail);
   }
 
   return (uint32_t) size;

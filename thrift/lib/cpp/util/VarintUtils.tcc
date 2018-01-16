@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <folly/io/Cursor.h>
 
 namespace apache { namespace thrift {
@@ -86,7 +87,7 @@ uint8_t readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len)
       throwInvalidVarint();
     } while (false);
     value = static_cast<T>(result);
-    c.skip(p - start);
+    c.skipNoAdvance(p - start);
     return p - start;
   } else {
     return readVarintSlow<T, CursorT>(c, value);
@@ -104,7 +105,7 @@ uint8_t readVarint(CursorT& c, T& value) {
   size_t len = c.length();
   if (len > 0 && !(*p & 0x80)) {
     value = static_cast<T>(*p);
-    c.skip(1);
+    c.skipNoAdvance(1);
     return 1;
   }
 
