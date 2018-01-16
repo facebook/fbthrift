@@ -179,8 +179,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::write
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::read(Protocol* proto,  ::cpp2::MyStruct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::MyStruct>::read(Protocol* proto,  ::cpp2::MyStruct* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::serializedSize(Protocol const* proto,  ::cpp2::MyStruct const* obj) {
@@ -254,8 +254,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyDataItem>::wri
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyDataItem>::read(Protocol* proto,  ::cpp2::MyDataItem* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::MyDataItem>::read(Protocol* proto,  ::cpp2::MyDataItem* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyDataItem>::serializedSize(Protocol const* proto,  ::cpp2::MyDataItem const* obj) {

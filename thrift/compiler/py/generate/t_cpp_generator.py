@@ -3321,12 +3321,12 @@ class CppGenerator(t_generator.Generator):
         if self.flag_compatibility:
             s('(void)obj;')
         # Declare stack tmp variables
-        s('uint32_t xfer = 0;')
+        s('auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();')
         s('std::string _fname;')
         s('apache::thrift::protocol::TType _ftype;')
         s('int16_t fid;')
         s()
-        s('xfer += iprot->readStructBegin(_fname);')
+        s('iprot->readStructBegin(_fname);')
         s()
         s('using apache::thrift::TProtocolException;')
         s()
@@ -3346,7 +3346,7 @@ class CppGenerator(t_generator.Generator):
         fields_scope = None
         if obj.is_union:
             # Unions only have one member set, so don't loop
-            s('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
+            s('iprot->readFieldBegin(_fname, _ftype, fid);')
             s1 = s('if (_ftype == apache::thrift::protocol::T_STOP)').scope
             s1(this + '->__clear();')
             s1.release()
@@ -3359,7 +3359,7 @@ class CppGenerator(t_generator.Generator):
                 s1('auto fbegin = iprot->getCurrentPosition();')
                 s1('bool fserialized = false;')
             # Read beginning field marker
-            s1('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
+            s1('iprot->readFieldBegin(_fname, _ftype, fid);')
             # Check for field STOP marker
             with s1('if (_ftype == apache::thrift::protocol::T_STOP)'):
                 out('break;')
@@ -3376,7 +3376,7 @@ class CppGenerator(t_generator.Generator):
             if ('format' in field.annotations and
                     field.annotations['format'] == 'serialized'):
                 s3('fserialized = true;')
-                s3('xfer += iprot->skip(_ftype);')
+                s3('iprot->skip(_ftype);')
                 s3.release()  # "break;"
                 continue
             s4 = s3('if (_ftype == {0})'.format(self._type_to_enum(
@@ -3405,7 +3405,7 @@ class CppGenerator(t_generator.Generator):
                 elif field.req == e_req.required:
                     s4('isset_{1} = true;'.format(this, field.name))
             with s3.sameLine('else'):
-                out('xfer += iprot->skip(_ftype);')
+                out('iprot->skip(_ftype);')
                 # TODO(dreiss): Make this an option when thrift structs have a
                 # common base class.
                 # s4('throw TProtocolException(TProtocolException::'
@@ -3413,15 +3413,15 @@ class CppGenerator(t_generator.Generator):
             s3.release()  # "break;"
         # Default case
         with s2.case('default'):
-            out('xfer += iprot->skip(_ftype);')
+            out('iprot->skip(_ftype);')
             if struct_options.keep_unknown_fields:
                 out('fserialized = true;')
         s2.release()  # switch
         # Read field end marker
-        s1('xfer += iprot->readFieldEnd();')
+        s1('iprot->readFieldEnd();')
         # Eat the stop byte that terminates union content
         if obj.is_union:
-            s1('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
+            s1('iprot->readFieldBegin(_fname, _ftype, fid);')
             with s1('if (UNLIKELY(_ftype != {proto_ns}::T_STOP))'
                     .format(proto_ns="apache::thrift::protocol")).scope:
                 s1('using apache::thrift::protocol::TProtocolException;')
@@ -3430,7 +3430,7 @@ class CppGenerator(t_generator.Generator):
             with s1('if (fserialized)').scope:
                 out('iprot->readFromPositionAndAppend(fbegin, serialized);')
         s1.release()  # while(true)
-        s('xfer += iprot->readStructEnd();')
+        s('iprot->readStructEnd();')
         # Finalize serialized fields buffer if necessary
         if struct_options.has_serialized_fields:
             s()
@@ -3455,7 +3455,7 @@ class CppGenerator(t_generator.Generator):
             with s('if (!isset_{0.name})'.format(field)):
                 out('TProtocolException::throwMissingRequiredField("{0}", "{1}");'
                     .format(field.name, obj.name))
-        s('return xfer;')
+        s('return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;')
         s.release()  # the function
 
     def _generate_deserialize_field(self, scope, field, prefix='', suffix=''):
@@ -3520,7 +3520,7 @@ class CppGenerator(t_generator.Generator):
                 dest = '(*{0})'.format(name)
             if optional_wrapped:
                 dest += ".value()"
-            txt = 'xfer += iprot->{0};'.format(txt.format(dest))
+            txt = 'iprot->{0};'.format(txt.format(dest))
             s(txt)
         else:
             raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
@@ -3532,17 +3532,17 @@ class CppGenerator(t_generator.Generator):
         if pointer:
             s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
                 self._type_name(otype)))
-            s('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+            s('::apache::thrift::Cpp2Ops< {0}>::read('
                 'iprot, ptr.get());'.format(self._type_name(otype)))
             s('{0} = std::move(ptr);'.format(prefix))
         elif optional_wrapped:
             scope("{0} = {1}();".format(
                 prefix, self._type_name(otype)))
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+            scope('::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1}.value());'.format(
                       self._type_name(otype), prefix))
         else:
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+            scope('::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1});'.format(
                       self._type_name(otype), prefix))
 
@@ -3647,14 +3647,14 @@ class CppGenerator(t_generator.Generator):
         if pointer:
             s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
                 self._type_name(otype)))
-            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+            s('::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, *ptr);'.format(
                         self._render_type_class_for_serialization(otype),
                         self._type_name(otype)))
             s('{0} = std::move(ptr);'.format(prefix))
         elif optional_wrapped:
             s("{0} = {1}();".format(prefix, self._type_name(otype)))
-            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+            s('::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2}.value());'.format(
                         self._render_type_class_for_serialization(otype),
                         self._type_name(otype),
@@ -3662,7 +3662,7 @@ class CppGenerator(t_generator.Generator):
         else:
             if not ttype.is_enum:
                 s("{0} = {1}();".format(prefix, self._type_name(otype)))
-            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+            s('::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2});'.format(
                         self._render_type_class_for_serialization(otype),
                         self._type_name(otype),
@@ -4127,11 +4127,11 @@ class CppGenerator(t_generator.Generator):
                  format(**locals())), in_header=True):
                 out('return obj->__clear();')
 
-        # (method name, const protocol, const object)
-        ops = (('write', False, True),
-               ('read', False, False),
-               ('serializedSize', True, True),
-               ('serializedSizeZC', True, True))
+        # (method name, is void, const protocol, const object)
+        ops = (('write', False, False, True),
+               ('read', True, False, False),
+               ('serializedSize', False, True, True),
+               ('serializedSizeZC', False, True, True))
 
         with scope.defn('template <> inline constexpr '
                 'apache::thrift::protocol::TType '
@@ -4139,19 +4139,22 @@ class CppGenerator(t_generator.Generator):
                 .format(**locals()), in_header=True):
             out('return apache::thrift::protocol::T_STRUCT;')
 
-        for method, prt_is_const, obj_is_const in ops:
+        for method, method_is_void, prt_is_const, obj_is_const in ops:
+            ret_type = 'void' if method_is_void else 'uint32_t'
             obj_const = ' const' if obj_is_const else ''
             prt_const = ' const' if prt_is_const else ''
+            return_statement = '' if method_is_void else 'return '
             with scope.defn(
                 ('template <> template <class Protocol> '
-                 'uint32_t Cpp2Ops<{compat_full_name}>::{method}('
+                 '{ret_type} Cpp2Ops<{compat_full_name}>::{method}('
                  'Protocol{prt_const}* proto, {full_name}{obj_const}* obj)'.
                  format(**locals())), name=method, in_header=True):
                 if self.flag_compatibility:
-                    out(('return {full_name}_{method}(proto, obj);'.
-                      format(**locals())))
+                    out(('{return_statement}{full_name}_{method}(proto, obj);'.
+                        format(**locals())))
                 else:
-                    out('return obj->{method}(proto);'.format(**locals()))
+                    out('{return_statement}obj->{method}(proto);'.
+                        format(**locals()))
 
     def _generate_frozen_layout(self, obj, s):
         fields = sorted(obj.as_struct.members, key=lambda field: field.key)

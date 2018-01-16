@@ -19,18 +19,18 @@ namespace module2 {
 
 template <class Protocol_>
 uint32_t Struct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -41,34 +41,34 @@ uint32_t Struct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::module0::Struct>::read(iprot, &this->first);
+          ::apache::thrift::Cpp2Ops<  ::module0::Struct>::read(iprot, &this->first);
           this->__isset.first = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::module1::Struct>::read(iprot, &this->second);
+          ::apache::thrift::Cpp2Ops<  ::module1::Struct>::read(iprot, &this->second);
           this->__isset.second = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -118,18 +118,18 @@ namespace module2 {
 
 template <class Protocol_>
 uint32_t BigStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -140,34 +140,34 @@ uint32_t BigStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::module2::Struct>::read(iprot, &this->s);
+          ::apache::thrift::Cpp2Ops<  ::module2::Struct>::read(iprot, &this->s);
           this->__isset.s = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->id);
+          iprot->readI32(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>

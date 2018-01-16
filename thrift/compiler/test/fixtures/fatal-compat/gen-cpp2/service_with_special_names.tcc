@@ -20,18 +20,18 @@ namespace test_cpp2 { namespace cpp_reflection {
 template <class Protocol_>
 uint32_t service_with_special_names_get_pargs_read(Protocol_* iprot, service_with_special_names_get_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -41,15 +41,15 @@ uint32_t service_with_special_names_get_pargs_read(Protocol_* iprot, service_wit
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -83,18 +83,18 @@ uint32_t service_with_special_names_get_pargs_write(Protocol_* prot_, const serv
 template <class Protocol_>
 uint32_t service_with_special_names_get_presult_read(Protocol_* iprot, service_with_special_names_get_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -105,24 +105,24 @@ uint32_t service_with_special_names_get_presult_read(Protocol_* iprot, service_w
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -169,18 +169,18 @@ uint32_t service_with_special_names_get_presult_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_getter_pargs_read(Protocol_* iprot, service_with_special_names_getter_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -190,15 +190,15 @@ uint32_t service_with_special_names_getter_pargs_read(Protocol_* iprot, service_
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -232,18 +232,18 @@ uint32_t service_with_special_names_getter_pargs_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_getter_presult_read(Protocol_* iprot, service_with_special_names_getter_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -254,24 +254,24 @@ uint32_t service_with_special_names_getter_presult_read(Protocol_* iprot, servic
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -318,18 +318,18 @@ uint32_t service_with_special_names_getter_presult_write(Protocol_* prot_, const
 template <class Protocol_>
 uint32_t service_with_special_names_lists_pargs_read(Protocol_* iprot, service_with_special_names_lists_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -339,15 +339,15 @@ uint32_t service_with_special_names_lists_pargs_read(Protocol_* iprot, service_w
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -381,18 +381,18 @@ uint32_t service_with_special_names_lists_pargs_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_lists_presult_read(Protocol_* iprot, service_with_special_names_lists_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -403,24 +403,24 @@ uint32_t service_with_special_names_lists_presult_read(Protocol_* iprot, service
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -467,18 +467,18 @@ uint32_t service_with_special_names_lists_presult_write(Protocol_* prot_, const 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_pargs_read(Protocol_* iprot, service_with_special_names_maps_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -488,15 +488,15 @@ uint32_t service_with_special_names_maps_pargs_read(Protocol_* iprot, service_wi
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -530,18 +530,18 @@ uint32_t service_with_special_names_maps_pargs_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_maps_presult_read(Protocol_* iprot, service_with_special_names_maps_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -552,24 +552,24 @@ uint32_t service_with_special_names_maps_presult_read(Protocol_* iprot, service_
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -616,18 +616,18 @@ uint32_t service_with_special_names_maps_presult_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_name_pargs_read(Protocol_* iprot, service_with_special_names_name_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -637,15 +637,15 @@ uint32_t service_with_special_names_name_pargs_read(Protocol_* iprot, service_wi
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -679,18 +679,18 @@ uint32_t service_with_special_names_name_pargs_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_name_presult_read(Protocol_* iprot, service_with_special_names_name_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -701,24 +701,24 @@ uint32_t service_with_special_names_name_presult_read(Protocol_* iprot, service_
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -765,18 +765,18 @@ uint32_t service_with_special_names_name_presult_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_pargs_read(Protocol_* iprot, service_with_special_names_name_to_value_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -786,15 +786,15 @@ uint32_t service_with_special_names_name_to_value_pargs_read(Protocol_* iprot, s
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -828,18 +828,18 @@ uint32_t service_with_special_names_name_to_value_pargs_write(Protocol_* prot_, 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_presult_read(Protocol_* iprot, service_with_special_names_name_to_value_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -850,24 +850,24 @@ uint32_t service_with_special_names_name_to_value_presult_read(Protocol_* iprot,
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -914,18 +914,18 @@ uint32_t service_with_special_names_name_to_value_presult_write(Protocol_* prot_
 template <class Protocol_>
 uint32_t service_with_special_names_names_pargs_read(Protocol_* iprot, service_with_special_names_names_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -935,15 +935,15 @@ uint32_t service_with_special_names_names_pargs_read(Protocol_* iprot, service_w
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -977,18 +977,18 @@ uint32_t service_with_special_names_names_pargs_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_names_presult_read(Protocol_* iprot, service_with_special_names_names_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -999,24 +999,24 @@ uint32_t service_with_special_names_names_presult_read(Protocol_* iprot, service
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1063,18 +1063,18 @@ uint32_t service_with_special_names_names_presult_write(Protocol_* prot_, const 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_pargs_read(Protocol_* iprot, service_with_special_names_prefix_tree_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1084,15 +1084,15 @@ uint32_t service_with_special_names_prefix_tree_pargs_read(Protocol_* iprot, ser
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1126,18 +1126,18 @@ uint32_t service_with_special_names_prefix_tree_pargs_write(Protocol_* prot_, co
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_presult_read(Protocol_* iprot, service_with_special_names_prefix_tree_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1148,24 +1148,24 @@ uint32_t service_with_special_names_prefix_tree_presult_read(Protocol_* iprot, s
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1212,18 +1212,18 @@ uint32_t service_with_special_names_prefix_tree_presult_write(Protocol_* prot_, 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_pargs_read(Protocol_* iprot, service_with_special_names_sets_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1233,15 +1233,15 @@ uint32_t service_with_special_names_sets_pargs_read(Protocol_* iprot, service_wi
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1275,18 +1275,18 @@ uint32_t service_with_special_names_sets_pargs_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_sets_presult_read(Protocol_* iprot, service_with_special_names_sets_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1297,24 +1297,24 @@ uint32_t service_with_special_names_sets_presult_read(Protocol_* iprot, service_
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1361,18 +1361,18 @@ uint32_t service_with_special_names_sets_presult_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_setter_pargs_read(Protocol_* iprot, service_with_special_names_setter_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1382,15 +1382,15 @@ uint32_t service_with_special_names_setter_pargs_read(Protocol_* iprot, service_
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1424,18 +1424,18 @@ uint32_t service_with_special_names_setter_pargs_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_setter_presult_read(Protocol_* iprot, service_with_special_names_setter_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1446,24 +1446,24 @@ uint32_t service_with_special_names_setter_presult_read(Protocol_* iprot, servic
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1510,18 +1510,18 @@ uint32_t service_with_special_names_setter_presult_write(Protocol_* prot_, const
 template <class Protocol_>
 uint32_t service_with_special_names_str_pargs_read(Protocol_* iprot, service_with_special_names_str_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1531,15 +1531,15 @@ uint32_t service_with_special_names_str_pargs_read(Protocol_* iprot, service_wit
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1573,18 +1573,18 @@ uint32_t service_with_special_names_str_pargs_write(Protocol_* prot_, const serv
 template <class Protocol_>
 uint32_t service_with_special_names_str_presult_read(Protocol_* iprot, service_with_special_names_str_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1595,24 +1595,24 @@ uint32_t service_with_special_names_str_presult_read(Protocol_* iprot, service_w
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1659,18 +1659,18 @@ uint32_t service_with_special_names_str_presult_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_strings_pargs_read(Protocol_* iprot, service_with_special_names_strings_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1680,15 +1680,15 @@ uint32_t service_with_special_names_strings_pargs_read(Protocol_* iprot, service
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1722,18 +1722,18 @@ uint32_t service_with_special_names_strings_pargs_write(Protocol_* prot_, const 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_presult_read(Protocol_* iprot, service_with_special_names_strings_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1744,24 +1744,24 @@ uint32_t service_with_special_names_strings_presult_read(Protocol_* iprot, servi
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1808,18 +1808,18 @@ uint32_t service_with_special_names_strings_presult_write(Protocol_* prot_, cons
 template <class Protocol_>
 uint32_t service_with_special_names_type_pargs_read(Protocol_* iprot, service_with_special_names_type_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1829,15 +1829,15 @@ uint32_t service_with_special_names_type_pargs_read(Protocol_* iprot, service_wi
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1871,18 +1871,18 @@ uint32_t service_with_special_names_type_pargs_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_type_presult_read(Protocol_* iprot, service_with_special_names_type_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1893,24 +1893,24 @@ uint32_t service_with_special_names_type_presult_read(Protocol_* iprot, service_
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -1957,18 +1957,18 @@ uint32_t service_with_special_names_type_presult_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_value_pargs_read(Protocol_* iprot, service_with_special_names_value_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1978,15 +1978,15 @@ uint32_t service_with_special_names_value_pargs_read(Protocol_* iprot, service_w
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2020,18 +2020,18 @@ uint32_t service_with_special_names_value_pargs_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_value_presult_read(Protocol_* iprot, service_with_special_names_value_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2042,24 +2042,24 @@ uint32_t service_with_special_names_value_presult_read(Protocol_* iprot, service
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2106,18 +2106,18 @@ uint32_t service_with_special_names_value_presult_write(Protocol_* prot_, const 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_pargs_read(Protocol_* iprot, service_with_special_names_value_to_name_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2127,15 +2127,15 @@ uint32_t service_with_special_names_value_to_name_pargs_read(Protocol_* iprot, s
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2169,18 +2169,18 @@ uint32_t service_with_special_names_value_to_name_pargs_write(Protocol_* prot_, 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_presult_read(Protocol_* iprot, service_with_special_names_value_to_name_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2191,24 +2191,24 @@ uint32_t service_with_special_names_value_to_name_presult_read(Protocol_* iprot,
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2255,18 +2255,18 @@ uint32_t service_with_special_names_value_to_name_presult_write(Protocol_* prot_
 template <class Protocol_>
 uint32_t service_with_special_names_values_pargs_read(Protocol_* iprot, service_with_special_names_values_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2276,15 +2276,15 @@ uint32_t service_with_special_names_values_pargs_read(Protocol_* iprot, service_
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2318,18 +2318,18 @@ uint32_t service_with_special_names_values_pargs_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_values_presult_read(Protocol_* iprot, service_with_special_names_values_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2340,24 +2340,24 @@ uint32_t service_with_special_names_values_presult_read(Protocol_* iprot, servic
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2404,18 +2404,18 @@ uint32_t service_with_special_names_values_presult_write(Protocol_* prot_, const
 template <class Protocol_>
 uint32_t service_with_special_names_id_pargs_read(Protocol_* iprot, service_with_special_names_id_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2425,15 +2425,15 @@ uint32_t service_with_special_names_id_pargs_read(Protocol_* iprot, service_with
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2467,18 +2467,18 @@ uint32_t service_with_special_names_id_pargs_write(Protocol_* prot_, const servi
 template <class Protocol_>
 uint32_t service_with_special_names_id_presult_read(Protocol_* iprot, service_with_special_names_id_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2489,24 +2489,24 @@ uint32_t service_with_special_names_id_presult_read(Protocol_* iprot, service_wi
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2553,18 +2553,18 @@ uint32_t service_with_special_names_id_presult_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_ids_pargs_read(Protocol_* iprot, service_with_special_names_ids_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2574,15 +2574,15 @@ uint32_t service_with_special_names_ids_pargs_read(Protocol_* iprot, service_wit
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2616,18 +2616,18 @@ uint32_t service_with_special_names_ids_pargs_write(Protocol_* prot_, const serv
 template <class Protocol_>
 uint32_t service_with_special_names_ids_presult_read(Protocol_* iprot, service_with_special_names_ids_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2638,24 +2638,24 @@ uint32_t service_with_special_names_ids_presult_read(Protocol_* iprot, service_w
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2702,18 +2702,18 @@ uint32_t service_with_special_names_ids_presult_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_pargs_read(Protocol_* iprot, service_with_special_names_descriptor_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2723,15 +2723,15 @@ uint32_t service_with_special_names_descriptor_pargs_read(Protocol_* iprot, serv
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2765,18 +2765,18 @@ uint32_t service_with_special_names_descriptor_pargs_write(Protocol_* prot_, con
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_presult_read(Protocol_* iprot, service_with_special_names_descriptor_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2787,24 +2787,24 @@ uint32_t service_with_special_names_descriptor_presult_read(Protocol_* iprot, se
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2851,18 +2851,18 @@ uint32_t service_with_special_names_descriptor_presult_write(Protocol_* prot_, c
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_pargs_read(Protocol_* iprot, service_with_special_names_descriptors_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2872,15 +2872,15 @@ uint32_t service_with_special_names_descriptors_pargs_read(Protocol_* iprot, ser
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -2914,18 +2914,18 @@ uint32_t service_with_special_names_descriptors_pargs_write(Protocol_* prot_, co
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_presult_read(Protocol_* iprot, service_with_special_names_descriptors_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2936,24 +2936,24 @@ uint32_t service_with_special_names_descriptors_presult_read(Protocol_* iprot, s
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3000,18 +3000,18 @@ uint32_t service_with_special_names_descriptors_presult_write(Protocol_* prot_, 
 template <class Protocol_>
 uint32_t service_with_special_names_key_pargs_read(Protocol_* iprot, service_with_special_names_key_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3021,15 +3021,15 @@ uint32_t service_with_special_names_key_pargs_read(Protocol_* iprot, service_wit
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3063,18 +3063,18 @@ uint32_t service_with_special_names_key_pargs_write(Protocol_* prot_, const serv
 template <class Protocol_>
 uint32_t service_with_special_names_key_presult_read(Protocol_* iprot, service_with_special_names_key_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3085,24 +3085,24 @@ uint32_t service_with_special_names_key_presult_read(Protocol_* iprot, service_w
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3149,18 +3149,18 @@ uint32_t service_with_special_names_key_presult_write(Protocol_* prot_, const se
 template <class Protocol_>
 uint32_t service_with_special_names_keys_pargs_read(Protocol_* iprot, service_with_special_names_keys_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3170,15 +3170,15 @@ uint32_t service_with_special_names_keys_pargs_read(Protocol_* iprot, service_wi
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3212,18 +3212,18 @@ uint32_t service_with_special_names_keys_pargs_write(Protocol_* prot_, const ser
 template <class Protocol_>
 uint32_t service_with_special_names_keys_presult_read(Protocol_* iprot, service_with_special_names_keys_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3234,24 +3234,24 @@ uint32_t service_with_special_names_keys_presult_read(Protocol_* iprot, service_
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3298,18 +3298,18 @@ uint32_t service_with_special_names_keys_presult_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_pargs_read(Protocol_* iprot, service_with_special_names_annotation_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3319,15 +3319,15 @@ uint32_t service_with_special_names_annotation_pargs_read(Protocol_* iprot, serv
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3361,18 +3361,18 @@ uint32_t service_with_special_names_annotation_pargs_write(Protocol_* prot_, con
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_presult_read(Protocol_* iprot, service_with_special_names_annotation_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3383,24 +3383,24 @@ uint32_t service_with_special_names_annotation_presult_read(Protocol_* iprot, se
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3447,18 +3447,18 @@ uint32_t service_with_special_names_annotation_presult_write(Protocol_* prot_, c
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_pargs_read(Protocol_* iprot, service_with_special_names_annotations_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3468,15 +3468,15 @@ uint32_t service_with_special_names_annotations_pargs_read(Protocol_* iprot, ser
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3510,18 +3510,18 @@ uint32_t service_with_special_names_annotations_pargs_write(Protocol_* prot_, co
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_presult_read(Protocol_* iprot, service_with_special_names_annotations_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3532,24 +3532,24 @@ uint32_t service_with_special_names_annotations_presult_read(Protocol_* iprot, s
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3596,18 +3596,18 @@ uint32_t service_with_special_names_annotations_presult_write(Protocol_* prot_, 
 template <class Protocol_>
 uint32_t service_with_special_names_member_pargs_read(Protocol_* iprot, service_with_special_names_member_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3617,15 +3617,15 @@ uint32_t service_with_special_names_member_pargs_read(Protocol_* iprot, service_
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3659,18 +3659,18 @@ uint32_t service_with_special_names_member_pargs_write(Protocol_* prot_, const s
 template <class Protocol_>
 uint32_t service_with_special_names_member_presult_read(Protocol_* iprot, service_with_special_names_member_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3681,24 +3681,24 @@ uint32_t service_with_special_names_member_presult_read(Protocol_* iprot, servic
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3745,18 +3745,18 @@ uint32_t service_with_special_names_member_presult_write(Protocol_* prot_, const
 template <class Protocol_>
 uint32_t service_with_special_names_members_pargs_read(Protocol_* iprot, service_with_special_names_members_pargs* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3766,15 +3766,15 @@ uint32_t service_with_special_names_members_pargs_read(Protocol_* iprot, service
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -3808,18 +3808,18 @@ uint32_t service_with_special_names_members_pargs_write(Protocol_* prot_, const 
 template <class Protocol_>
 uint32_t service_with_special_names_members_presult_read(Protocol_* iprot, service_with_special_names_members_presult* obj) {
   (void)obj;
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3830,24 +3830,24 @@ uint32_t service_with_special_names_members_presult_read(Protocol_* iprot, servi
       case 0:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32((*const_cast<int32_t*>(obj->success)));
+          iprot->readI32((*const_cast<int32_t*>(obj->success)));
           obj->__isset.success = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>

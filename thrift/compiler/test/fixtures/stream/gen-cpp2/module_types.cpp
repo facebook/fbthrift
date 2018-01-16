@@ -34,11 +34,11 @@ void swap(FooEx& a, FooEx& b) {
   (void)b;
 }
 
-template uint32_t FooEx::read<>(apache::thrift::BinaryProtocolReader*);
+template void FooEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t FooEx::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t FooEx::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t FooEx::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t FooEx::read<>(apache::thrift::CompactProtocolReader*);
+template void FooEx::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t FooEx::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t FooEx::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t FooEx::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

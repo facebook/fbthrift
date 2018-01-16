@@ -34,11 +34,11 @@ void swap(Empty& a, Empty& b) {
   (void)b;
 }
 
-template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);
+template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Empty::read<>(apache::thrift::CompactProtocolReader*);
+template void Empty::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -78,11 +78,11 @@ void swap(Nada& a, Nada& b) {
   b = std::move(temp);
 }
 
-template uint32_t Nada::read<>(apache::thrift::BinaryProtocolReader*);
+template void Nada::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Nada::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Nada::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Nada::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Nada::read<>(apache::thrift::CompactProtocolReader*);
+template void Nada::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Nada::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Nada::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

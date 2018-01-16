@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
       bufferLength_ = cursor.length();
     }
 
-  protected:
+   protected:
     void ensureBuffer(uint32_t size) {
       if (this->protocol_.in_.length() >= size) {
         return;
@@ -76,102 +76,102 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     explicit CompactProtocolReaderWithRefill(Refiller refiller)
       : VirtualCompactReader(refiller) {}
 
-    inline uint32_t readMessageBegin(std::string& /*name*/,
-                                     MessageType& /*messageType*/,
-                                     int32_t& /*seqid*/) override {
+    inline void readMessageBegin(
+        std::string& /*name*/,
+        MessageType& /*messageType*/,
+        int32_t& /*seqid*/) override {
       // Only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
 
-    inline uint32_t readFieldBegin(std::string& name,
-                                   TType& fieldType,
-                                   int16_t& fieldId) override {
+    inline void readFieldBegin(
+        std::string& name,
+        TType& fieldType,
+        int16_t& fieldId) override {
       ensureFieldBegin();
-      return protocol_.readFieldBegin(name, fieldType, fieldId);
+      protocol_.readFieldBegin(name, fieldType, fieldId);
     }
 
-    inline uint32_t readMapBegin(TType& keyType,
-                                 TType& valType,
-                                 uint32_t& size) override {
+    inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size)
+        override {
       ensureMapBegin();
-      return protocol_.readMapBegin(keyType, valType, size);
+      protocol_.readMapBegin(keyType, valType, size);
     }
 
-    inline uint32_t readListBegin(TType& elemType, uint32_t& size) override {
+    inline void readListBegin(TType& elemType, uint32_t& size) override {
       ensureListBegin();
-      return protocol_.readListBegin(elemType, size);
+      protocol_.readListBegin(elemType, size);
     }
 
-    inline uint32_t readBool(bool& value) override {
+    inline void readBool(bool& value) override {
       if (!protocol_.boolValue_.hasBoolValue) {
         ensureBuffer(1);
       }
-      return protocol_.readBool(value);
+      protocol_.readBool(value);
     }
 
-    inline uint32_t readBool(std::vector<bool>::reference value) override {
+    inline void readBool(std::vector<bool>::reference value) override {
       bool ret = false;
-      uint32_t sz = readBool(ret);
+      readBool(ret);
       value = ret;
-      return sz;
     }
 
-    inline uint32_t readByte(int8_t& byte) override {
+    inline void readByte(int8_t& byte) override {
       ensureBuffer(1);
-      return protocol_.readByte(byte);
+      protocol_.readByte(byte);
     }
 
-    inline uint32_t readI16(int16_t& i16) override {
+    inline void readI16(int16_t& i16) override {
       ensureInteger();
-      return protocol_.readI16(i16);
+      protocol_.readI16(i16);
     }
 
-    inline uint32_t readI32(int32_t& i32) override {
+    inline void readI32(int32_t& i32) override {
       ensureInteger();
-      return protocol_.readI32(i32);
+      protocol_.readI32(i32);
     }
 
-    inline uint32_t readI64(int64_t& i64) override {
+    inline void readI64(int64_t& i64) override {
       ensureInteger();
-      return protocol_.readI64(i64);
+      protocol_.readI64(i64);
     }
 
-    inline uint32_t readDouble(double& dub) override {
+    inline void readDouble(double& dub) override {
       ensureBuffer(8);
-      return protocol_.readDouble(dub);
+      protocol_.readDouble(dub);
     }
 
-    inline uint32_t readFloat(float& flt) override {
+    inline void readFloat(float& flt) override {
       ensureBuffer(4);
-      return protocol_.readFloat(flt);
+      protocol_.readFloat(flt);
     }
 
-    inline uint32_t readString(std::string& str) override {
-      return readStringImpl(str);
+    inline void readString(std::string& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readString(folly::fbstring& str) override {
-      return readStringImpl(str);
+    inline void readString(folly::fbstring& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::string& str) override {
-      return readStringImpl(str);
+    inline void readBinary(std::string& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(folly::fbstring& str) override {
-      return readStringImpl(str);
+    inline void readBinary(folly::fbstring& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) override {
-      return readBinaryIOBufImpl(str);
+    inline void readBinary(std::unique_ptr<folly::IOBuf>& str) override {
+      readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t readBinary(folly::IOBuf& str) override {
-      return readBinaryIOBufImpl(str);
+    inline void readBinary(folly::IOBuf& str) override {
+      readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t skip(TType type) override {
-      return apache::thrift::skip(*this, type);
+    inline void skip(TType type) override {
+      apache::thrift::skip(*this, type);
     }
 
   private:
@@ -270,25 +270,24 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
       }
     }
 
-    template<typename StrType>
-    uint32_t readStringImpl(StrType& str) {
+    template <typename StrType>
+    void readStringImpl(StrType& str) {
       ensureInteger();
       int32_t size = 0;
-      uint32_t rsize = protocol_.readStringSize(size);
+      protocol_.readStringSize(size);
 
       ensureBuffer(size);
-      return rsize + protocol_.readStringBody(str, size);
+      protocol_.readStringBody(str, size);
     }
 
-    template<typename StrType>
-    uint32_t readBinaryIOBufImpl(StrType& str) {
+    template <typename StrType>
+    void readBinaryIOBufImpl(StrType& str) {
       ensureInteger();
       int32_t size = 0;
-      uint32_t rsize = protocol_.readStringSize(size);
+      protocol_.readStringSize(size);
 
       ensureBuffer(size);
       protocol_.in_.clone(str, size);
-      return rsize + (uint32_t)size;
     }
 };
 
@@ -297,134 +296,130 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     explicit BinaryProtocolReaderWithRefill(Refiller refiller)
       : VirtualBinaryReader(refiller) {}
 
-    inline uint32_t readMessageBegin(std::string& /*name*/,
-                                     MessageType& /*messageType*/,
-                                     int32_t& /*seqid*/) override {
+    inline void readMessageBegin(
+        std::string& /*name*/,
+        MessageType& /*messageType*/,
+        int32_t& /*seqid*/) override {
       // This is only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
 
-    inline uint32_t readFieldBegin(std::string& /*name*/,
-                                   TType& fieldType,
-                                   int16_t& fieldId) override {
-      uint32_t result = 0;
+    inline void readFieldBegin(
+        std::string& /*name*/,
+        TType& fieldType,
+        int16_t& fieldId) override {
       int8_t type;
-      result += readByte(type);
+      readByte(type);
       fieldType = (TType)type;
       if (fieldType == TType::T_STOP) {
         fieldId = 0;
-        return result;
+        return;
       }
-      result += readI16(fieldId);
-      return result;
+      readI16(fieldId);
     }
 
-    inline uint32_t readMapBegin(TType& keyType,
-                                 TType& valType,
-                                 uint32_t& size) override {
+    inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size)
+        override {
       ensureBuffer(6);
-      return protocol_.readMapBegin(keyType, valType, size);
+      protocol_.readMapBegin(keyType, valType, size);
     }
 
-    inline uint32_t readListBegin(TType& elemType, uint32_t& size) override {
+    inline void readListBegin(TType& elemType, uint32_t& size) override {
       ensureBuffer(5);
-      return protocol_.readListBegin(elemType, size);
+      protocol_.readListBegin(elemType, size);
     }
 
-    inline uint32_t readSetBegin(TType& elemType, uint32_t& size) override {
-      return readListBegin(elemType, size);
+    inline void readSetBegin(TType& elemType, uint32_t& size) override {
+      readListBegin(elemType, size);
     }
 
-    inline uint32_t readBool(bool& value) override {
+    inline void readBool(bool& value) override {
       ensureBuffer(1);
-      return protocol_.readBool(value);
+      protocol_.readBool(value);
     }
 
-    inline uint32_t readBool(std::vector<bool>::reference value) override {
+    inline void readBool(std::vector<bool>::reference value) override {
       ensureBuffer(1);
-      return protocol_.readBool(value);
+      protocol_.readBool(value);
     }
 
-    inline uint32_t readByte(int8_t& byte) override {
+    inline void readByte(int8_t& byte) override {
       ensureBuffer(1);
-      return protocol_.readByte(byte);
+      protocol_.readByte(byte);
     }
 
-    inline uint32_t readI16(int16_t& i16) override {
+    inline void readI16(int16_t& i16) override {
       ensureBuffer(2);
-      return protocol_.readI16(i16);
+      protocol_.readI16(i16);
     }
 
-    inline uint32_t readI32(int32_t& i32) override {
+    inline void readI32(int32_t& i32) override {
       ensureBuffer(4);
-      return protocol_.readI32(i32);
+      protocol_.readI32(i32);
     }
 
-    inline uint32_t readI64(int64_t& i64) override {
+    inline void readI64(int64_t& i64) override {
       ensureBuffer(8);
-      return protocol_.readI64(i64);
+      protocol_.readI64(i64);
     }
 
-    inline uint32_t readDouble(double& dub) override {
+    inline void readDouble(double& dub) override {
       ensureBuffer(8);
-      return protocol_.readDouble(dub);
+      protocol_.readDouble(dub);
     }
 
-    inline uint32_t readFloat(float& flt) override {
+    inline void readFloat(float& flt) override {
       ensureBuffer(4);
-      return protocol_.readFloat(flt);
+      protocol_.readFloat(flt);
     }
 
-    inline uint32_t readString(std::string& str) override {
-      return readStringImpl(str);
+    inline void readString(std::string& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readString(folly::fbstring& str) override {
-      return readStringImpl(str);
+    inline void readString(folly::fbstring& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::string& str) override {
-      return readStringImpl(str);
+    inline void readBinary(std::string& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(folly::fbstring& str) override {
-      return readStringImpl(str);
+    inline void readBinary(folly::fbstring& str) override {
+      readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) override {
-      return readBinaryIOBufImpl(str);
+    inline void readBinary(std::unique_ptr<folly::IOBuf>& str) override {
+      readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t readBinary(folly::IOBuf& str) override {
-      return readBinaryIOBufImpl(str);
+    inline void readBinary(folly::IOBuf& str) override {
+      readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t skip(TType type) override {
-      return apache::thrift::skip(*this, type);
+    inline void skip(TType type) override {
+      apache::thrift::skip(*this, type);
     }
 
   private:
-    template<typename StrType>
-    uint32_t readStringImpl(StrType& str) {
-      uint32_t result;
-      int32_t size;
-      result = readI32(size);
-      protocol_.checkStringSize(size);
+   template <typename StrType>
+   void readStringImpl(StrType& str) {
+     int32_t size;
+     readI32(size);
+     protocol_.checkStringSize(size);
 
-      ensureBuffer(size);
-      return result + protocol_.readStringBody(str, size);
+     ensureBuffer(size);
+     protocol_.readStringBody(str, size);
     }
 
-    template<typename StrType>
-    uint32_t readBinaryIOBufImpl(StrType& str) {
-      uint32_t result;
+    template <typename StrType>
+    void readBinaryIOBufImpl(StrType& str) {
       int32_t size;
-      result = readI32(size);
+      readI32(size);
       protocol_.checkStringSize(size);
 
       ensureBuffer(size);
       protocol_.in_.clone(str, size);
-      return result + (uint32_t)size;
     }
 };
 

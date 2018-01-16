@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_UTIL_SERIALIZABLEDYNAMIC_H
 #define THRIFT_UTIL_SERIALIZABLEDYNAMIC_H
 
@@ -331,16 +330,15 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSizeZC(
 
 template <>
 template <class Protocol_>
-inline uint32_t Cpp2Ops< SerializableDynamic>::read(
+inline void Cpp2Ops<SerializableDynamic>::read(
     Protocol_* iprot,
     SerializableDynamic* obj) {
-  uint32_t xfer = 0;
   std::string fname;
   protocol::TType ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
-  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  iprot->readStructBegin(fname);
+  iprot->readFieldBegin(fname, ftype, fid);
   if (ftype == protocol::T_STOP) {
     obj->__clear();
   } else {
@@ -349,10 +347,10 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
       {
         if (ftype == protocol::T_BOOL) {
           bool value;
-          xfer += iprot->readBool(value);
+          iprot->readBool(value);
           obj->value_ = value;
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
@@ -360,10 +358,10 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
       {
         if (ftype == protocol::T_I64) {
           int64_t value;
-          xfer += iprot->readI64(value);
+          iprot->readI64(value);
           obj->value_ = value;
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
@@ -371,10 +369,10 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
      {
         if (ftype == protocol::T_DOUBLE) {
           double value;
-          xfer += iprot->readDouble(value);
+          iprot->readDouble(value);
           obj->value_ = value;
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
@@ -382,10 +380,10 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
       {
         if (ftype == protocol::T_STRING) {
           std::string value;
-          xfer += iprot->readString(value);
+          iprot->readString(value);
           obj->value_ = value;
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
@@ -395,15 +393,15 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
           obj->value_ = folly::dynamic::array;
           uint32_t size;
           protocol::TType etype;
-          xfer += iprot->readListBegin(etype, size);
+          iprot->readListBegin(etype, size);
           for (uint32_t i = 0; i < size; ++i) {
             SerializableDynamic item;
-            xfer += Cpp2Ops<SerializableDynamic>::read(iprot, &item);
+            Cpp2Ops<SerializableDynamic>::read(iprot, &item);
             obj->value_.push_back(std::move(item.value_));
           }
-          xfer += iprot->readListEnd();
+          iprot->readListEnd();
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
@@ -414,33 +412,31 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
           uint32_t size;
           protocol::TType ktype;
           protocol::TType vtype;
-          xfer += iprot->readMapBegin(ktype, vtype, size);
+          iprot->readMapBegin(ktype, vtype, size);
           for (uint32_t i = 0; i < size; ++i) {
             std::string key;
-            xfer += iprot->readString(key);
+            iprot->readString(key);
             SerializableDynamic val;
-            xfer += Cpp2Ops<SerializableDynamic>::read(iprot, &val);
+            Cpp2Ops<SerializableDynamic>::read(iprot, &val);
             obj->value_[std::move(key)] = std::move(val.value_);
           }
-          xfer += iprot->readMapEnd();
+          iprot->readMapEnd();
         } else {
-          xfer += iprot->skip(ftype);
+          iprot->skip(ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(ftype);
+        iprot->skip(ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
+    iprot->readFieldBegin(fname, ftype, fid);
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
-
-  return xfer;
+  iprot->readStructEnd();
 }
 
 #endif // THRIFT_CPP2_H_

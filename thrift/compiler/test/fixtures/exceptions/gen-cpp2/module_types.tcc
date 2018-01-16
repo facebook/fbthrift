@@ -16,19 +16,18 @@
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t Banal::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void Banal::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -38,15 +37,14 @@ uint32_t Banal::read(Protocol_* iprot) {
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -78,20 +76,19 @@ uint32_t Banal::write(Protocol_* prot_) const {
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t Fiery::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void Fiery::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
   bool isset_message = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -102,27 +99,26 @@ uint32_t Fiery::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->message);
+          iprot->readString(this->message);
           isset_message = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_message) {
     TProtocolException::throwMissingRequiredField("message", "Fiery");
   }
-  return xfer;
 }
 
 template <class Protocol_>

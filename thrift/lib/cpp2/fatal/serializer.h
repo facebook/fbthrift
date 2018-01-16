@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
@@ -140,8 +139,8 @@ using disable_if_smart_pointer =
     constexpr static protocol::TType ttype_value = TTypeValue;
 
     template <typename Protocol>
-    static std::size_t read(Protocol& protocol, Type& out) {
-      return Cpp2Ops<Type>::read(&protocol, &out);
+    static void read(Protocol& protocol, Type& out) {
+      Cpp2Ops<Type>::read(&protocol, &out);
     }
     template <typename Protocol>
     static std::size_t write(Protocol& protocol, Type const& in) {
@@ -176,8 +175,8 @@ struct protocol_methods <
   constexpr static protocol::TType ttype_value = type_methods::ttype_value;
 
   template <typename Protocol>
-  static std::size_t read(Protocol& protocol, PtrType& out) {
-    return type_methods::read(protocol, *out);
+  static void read(Protocol& protocol, PtrType& out) {
+    type_methods::read(protocol, *out);
   }
 
   template <typename Protocol>
@@ -217,14 +216,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
   template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Type& out) {
-    std::size_t xfer = 0;
+  static void read(Protocol& protocol, Type& out) {
     std::uint32_t list_size = -1;
     TType reported_type = protocol::T_STOP;
 
     out = Type();
 
-    xfer += protocol.readListBegin(reported_type, list_size);
+    protocol.readListBegin(reported_type, list_size);
 
     Type list;
     if(detail::is_unknown_container_size(list_size)) {
@@ -240,18 +238,17 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         // For now, we just bump the container size by 1 each time
         // because that's what the currently generated Thrift code does.
         out.resize(i+1);
-        xfer += elem_methods::read(protocol, out[i]);
+        elem_methods::read(protocol, out[i]);
       }
     } else {
       assert(reported_type == elem_methods::ttype_value);
       out.resize(list_size);
       for(decltype(list_size) i = 0; i < list_size; i++) {
-        xfer += elem_methods::read(protocol, out[i]);
+        elem_methods::read(protocol, out[i]);
       }
     }
 
-    xfer += protocol.readListEnd();
-    return xfer;
+    protocol.readListEnd();
   }
 
   template <typename Protocol>
@@ -301,39 +298,35 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
 private:
-  template <typename Protocol>
-  static std::size_t consume_elem(Protocol& protocol, Type& out) {
-    elem_type tmp;
-    std::size_t xfer =
-      elem_methods::read(protocol, tmp);
-    out.insert(std::move(tmp));
-    return xfer;
+ template <typename Protocol>
+ static void consume_elem(Protocol& protocol, Type& out) {
+   elem_type tmp;
+   elem_methods::read(protocol, tmp);
+   out.insert(std::move(tmp));
   }
 
 public:
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Type& out) {
-    std::size_t xfer = 0;
-    // TODO: readSetBegin takes (TType, std::uint32_t)
-    // instead of a (TType, std::size_t)
-    std::uint32_t set_size = -1;
-    TType reported_type = protocol::T_STOP;
+ template <typename Protocol>
+ static void read(Protocol& protocol, Type& out) {
+   // TODO: readSetBegin takes (TType, std::uint32_t)
+   // instead of a (TType, std::size_t)
+   std::uint32_t set_size = -1;
+   TType reported_type = protocol::T_STOP;
 
-    out = Type();
-    xfer += protocol.readSetBegin(reported_type, set_size);
-    if(detail::is_unknown_container_size(set_size)) {
-      while(protocol.peekSet()) {
-        xfer += consume_elem(protocol, out);
-      }
-    } else {
-      assert(reported_type == elem_methods::ttype_value);
-      for(decltype(set_size) i = 0; i < set_size; i++) {
-        xfer += consume_elem(protocol, out);
-      }
-    }
+   out = Type();
+   protocol.readSetBegin(reported_type, set_size);
+   if (detail::is_unknown_container_size(set_size)) {
+     while (protocol.peekSet()) {
+       consume_elem(protocol, out);
+     }
+   } else {
+     assert(reported_type == elem_methods::ttype_value);
+     for (decltype(set_size) i = 0; i < set_size; i++) {
+       consume_elem(protocol, out);
+     }
+   }
 
-    xfer += protocol.readSetEnd();
-    return xfer;
+   protocol.readSetEnd();
   }
 
   template <typename Protocol>
@@ -385,46 +378,42 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
 private:
-  template <typename Protocol>
-  static std::size_t consume_elem(Protocol& protocol, Type& out) {
-    std::size_t xfer = 0;
-    key_type key_tmp;
-    xfer += key_methods::read(protocol, key_tmp);
-    xfer += mapped_methods::read(protocol, out[std::move(key_tmp)]);
-    return xfer;
+ template <typename Protocol>
+ static void consume_elem(Protocol& protocol, Type& out) {
+   key_type key_tmp;
+   key_methods::read(protocol, key_tmp);
+   mapped_methods::read(protocol, out[std::move(key_tmp)]);
   }
 
 public:
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Type& out) {
-    std::size_t xfer = 0;
-    // TODO: see above re: readMapBegin taking a uint32_t size param
-    std::uint32_t map_size = -1;
-    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
-    out = Type();
+ template <typename Protocol>
+ static void read(Protocol& protocol, Type& out) {
+   // TODO: see above re: readMapBegin taking a uint32_t size param
+   std::uint32_t map_size = -1;
+   TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+   out = Type();
 
-    xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-    DVLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
-      << " (" << map_size << ")";
+   protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
+   DVLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
+            << " (" << map_size << ")";
 
-    if(detail::is_unknown_container_size(map_size)) {
-      while(protocol.peekMap()) {
-        xfer += consume_elem(protocol, out);
-      }
-    } else {
-      // CompactProtocol does not transmit key/mapped types if
-      // the map is empty
-      if(map_size > 0) {
-        assert(key_methods::ttype_value == rpt_key_type);
-        assert(mapped_methods::ttype_value == rpt_mapped_type);
-      }
-      for(decltype(map_size) i = 0; i < map_size; i++) {
-        xfer += consume_elem(protocol, out);
-      }
-    }
+   if (detail::is_unknown_container_size(map_size)) {
+     while (protocol.peekMap()) {
+       consume_elem(protocol, out);
+     }
+   } else {
+     // CompactProtocol does not transmit key/mapped types if
+     // the map is empty
+     if (map_size > 0) {
+       assert(key_methods::ttype_value == rpt_key_type);
+       assert(mapped_methods::ttype_value == rpt_mapped_type);
+     }
+     for (decltype(map_size) i = 0; i < map_size; i++) {
+       consume_elem(protocol, out);
+     }
+   }
 
-    xfer += protocol.readMapEnd();
-    return xfer;
+   protocol.readMapEnd();
   }
 
   template <typename Protocol>
@@ -646,7 +635,6 @@ struct protocol_methods <
     void operator ()(
       fatal::indexed<Fid, Index>,
       const TType ftype,
-      std::size_t& xfer,
       Protocol& protocol,
       Union& obj
     ) const {
@@ -660,63 +648,55 @@ struct protocol_methods <
       if(ftype == field_methods::ttype_value) {
         typename descriptor::type tmp;
         typename descriptor::setter field_setter;
-        xfer += field_methods::read(protocol, tmp);
+        field_methods::read(protocol, tmp);
         field_setter(obj, std::move(tmp));
       } else {
-        xfer += protocol.skip(ftype);
+        protocol.skip(ftype);
       }
     }
   };
 
 public:
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Union& out) {
-    field_id_t fid = -1;
-    std::size_t xfer = 0;
-    protocol::TType ftype = protocol::T_STOP;
-    std::string fname;
+ template <typename Protocol>
+ static void read(Protocol& protocol, Union& out) {
+   field_id_t fid = -1;
+   protocol::TType ftype = protocol::T_STOP;
+   std::string fname;
 
-    xfer += protocol.readStructBegin(fname);
+   protocol.readStructBegin(fname);
 
-    DVLOG(3) << "began reading union: " << fname;
-    xfer += protocol.readFieldBegin(fname, ftype, fid);
-    if(ftype == protocol::T_STOP) {
-      out.__clear();
-    } else {
-      // fid might not be known, such as in the case of the SimpleJSON protocol
-      if(fid == std::numeric_limits<int16_t>::min()) {
-        // if so, look up fid via fname
-        assert(fname != "");
-        bool const found = fatal::trie_find<
-          typename enum_traits::fields, fatal::get_type::name
-        >(
-          fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
-        );
-        assert(found);
-      }
+   DVLOG(3) << "began reading union: " << fname;
+   protocol.readFieldBegin(fname, ftype, fid);
+   if (ftype == protocol::T_STOP) {
+     out.__clear();
+   } else {
+     // fid might not be known, such as in the case of the SimpleJSON protocol
+     if (fid == std::numeric_limits<int16_t>::min()) {
+       // if so, look up fid via fname
+       assert(fname != "");
+       bool const found = fatal::
+           trie_find<typename enum_traits::fields, fatal::get_type::name>(
+               fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
+       assert(found);
+     }
 
-      using sorted_fids = fatal::sort<
-        fatal::transform<
-          typename traits::descriptors,
-          detail::extract_descriptor_fid
-        >
-      >;
-      if(!fatal::sorted_search<sorted_fids>(
-        fid, set_member_by_fid<Protocol>(), ftype, xfer, protocol, out))
-      {
-        DVLOG(3) << "didn't find field, fid: " << fid;
-        xfer += protocol.skip(ftype);
-      }
+     using sorted_fids = fatal::sort<fatal::transform<
+         typename traits::descriptors,
+         detail::extract_descriptor_fid>>;
+     if (!fatal::sorted_search<sorted_fids>(
+             fid, set_member_by_fid<Protocol>(), ftype, protocol, out)) {
+       DVLOG(3) << "didn't find field, fid: " << fid;
+       protocol.skip(ftype);
+     }
 
-      xfer += protocol.readFieldEnd();
-      xfer += protocol.readFieldBegin(fname, ftype, fid);
-      if(UNLIKELY(ftype != protocol::T_STOP)) {
-        using apache::thrift::protocol::TProtocolException;
-        TProtocolException::throwUnionMissingStop();
-      }
-      xfer += protocol.readStructEnd();
-    }
-    return xfer;
+     protocol.readFieldEnd();
+     protocol.readFieldBegin(fname, ftype, fid);
+     if (UNLIKELY(ftype != protocol::T_STOP)) {
+       using apache::thrift::protocol::TProtocolException;
+       TProtocolException::throwUnionMissingStop();
+     }
+     protocol.readStructEnd();
+   }
   }
 
 private:
@@ -894,7 +874,6 @@ private:
     void operator ()(
       fatal::indexed<Fid, Index>,
       const TType ftype,
-      std::size_t& xfer,
       Protocol& protocol,
       Struct& obj,
       isset_array& required_isset)
@@ -918,85 +897,70 @@ private:
             required_fields,
             member
           >(required_isset, obj);
-        xfer += protocol_method::read(
+        protocol_method::read(
             protocol,
-            detail::deref<member_type>::clear_and_get(getter::ref(obj))
-          );
+            detail::deref<member_type>::clear_and_get(getter::ref(obj)));
       } else {
-        xfer += protocol.skip(ftype);
+        protocol.skip(ftype);
       }
     }
   };
 
 public:
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Struct& out) {
-    using namespace fatal;
-    std::size_t xfer = 0;
-    std::string fname;
-    apache::thrift::protocol::TType ftype = protocol::T_STOP;
-    std::int16_t fid = -1;
-    isset_array required_isset = {};
+ template <typename Protocol>
+ static void read(Protocol& protocol, Struct& out) {
+   using namespace fatal;
+   std::string fname;
+   apache::thrift::protocol::TType ftype = protocol::T_STOP;
+   std::int16_t fid = -1;
+   isset_array required_isset = {};
 
-    xfer += protocol.readStructBegin(fname);
-    DVLOG(3) << "start reading struct: " << fname << " ("
-      << z_data<typename traits::name>() << ")";
+   protocol.readStructBegin(fname);
+   DVLOG(3) << "start reading struct: " << fname << " ("
+            << z_data<typename traits::name>() << ")";
 
-    while(true) {
-      xfer += protocol.readFieldBegin(fname, ftype, fid);
-      DVLOG(3) << "type: " << ftype
-                 << ", fname: " << fname
-                 << ", fid: " << fid;
+   while (true) {
+     protocol.readFieldBegin(fname, ftype, fid);
+     DVLOG(3) << "type: " << ftype << ", fname: " << fname << ", fid: " << fid;
 
-      if(ftype == apache::thrift::protocol::T_STOP) {
-        break;
-      }
+     if (ftype == apache::thrift::protocol::T_STOP) {
+       break;
+     }
 
-      // fid might not be known, such as in the case of SimpleJSON protocol
-      if(fid == std::numeric_limits<int16_t>::min()) {
-        // if so, look up fid via fname
-        assert(fname != "");
-        bool const found_ = trie_find<
-          typename traits::members, fatal::get_type::name
-        >(fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
-        if (!found_) {
-          xfer += protocol.skip(ftype);
-          xfer += protocol.readFieldEnd();
-          continue;
-        }
-      }
+     // fid might not be known, such as in the case of SimpleJSON protocol
+     if (fid == std::numeric_limits<int16_t>::min()) {
+       // if so, look up fid via fname
+       assert(fname != "");
+       bool const found_ =
+           trie_find<typename traits::members, fatal::get_type::name>(
+               fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
+       if (!found_) {
+         protocol.skip(ftype);
+         protocol.readFieldEnd();
+         continue;
+       }
+     }
 
-      using sorted_fids  = sort<
-        transform<typename traits::members, get_type::id>
-      >;
-      if(!sorted_search<sorted_fids>(
-          fid,
-          set_member_by_fid(),
-          ftype,
-          xfer,
-          protocol,
-          out,
-          required_isset
-        )
-      ) {
-        DVLOG(3) << "didn't find field, fid: " << fid
-                   << ", fname: " << fname;
-        xfer += protocol.skip(ftype);
-      }
+     using sorted_fids =
+         sort<transform<typename traits::members, get_type::id>>;
+     if (!sorted_search<sorted_fids>(
+             fid, set_member_by_fid(), ftype, protocol, out, required_isset)) {
+       DVLOG(3) << "didn't find field, fid: " << fid << ", fname: " << fname;
+       protocol.skip(ftype);
+     }
 
-      xfer += protocol.readFieldEnd();
-    }
+     protocol.readFieldEnd();
+   }
 
-    for(std::size_t idx = 0; idx < required_isset.size(); idx++) {
-      if(!required_isset[idx]) {
-        throw apache::thrift::TProtocolException(
-          TProtocolException::MISSING_REQUIRED_FIELD,
-          "Required field was not found in serialized data!");
-      }
-    }
+   for (std::size_t idx = 0; idx < required_isset.size(); idx++) {
+     if (!required_isset[idx]) {
+       throw apache::thrift::TProtocolException(
+           TProtocolException::MISSING_REQUIRED_FIELD,
+           "Required field was not found in serialized data!");
+     }
+   }
 
-    xfer += protocol.readStructEnd();
-    return xfer;
+   protocol.readStructEnd();
   }
 
 private:
@@ -1381,7 +1345,9 @@ public:
 
 template <typename Type, typename Protocol>
 std::size_t serializer_read(Type& out, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::read(protocol, out);
+  auto xferStart = protocol.getCurrentPosition().getCurrentPosition();
+  protocol_methods<reflect_type_class<Type>, Type>::read(protocol, out);
+  return protocol.getCurrentPosition().getCurrentPosition() - xferStart;
 }
 
 template <typename Type, typename Protocol>

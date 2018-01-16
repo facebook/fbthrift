@@ -107,6 +107,28 @@ uint32_t forEach(Tuple&& tuple, F&& f) {
       forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
 }
 
+template <int N, int Size, class F, class Tuple>
+struct ForEachVoidImpl {
+  static void forEach(Tuple&& tuple, F&& f) {
+    f(std::get<N>(tuple), N);
+    ForEachVoidImpl<N + 1, Size, F, Tuple>::forEach(
+        std::forward<Tuple>(tuple), std::forward<F>(f));
+  }
+};
+template <int Size, class F, class Tuple>
+struct ForEachVoidImpl<Size, Size, F, Tuple> {
+  static void forEach(Tuple&& /*tuple*/, F&& /*f*/) {}
+};
+
+template <int N = 0, class F, class Tuple>
+void forEachVoid(Tuple&& tuple, F&& f) {
+  ForEachVoidImpl<
+      N,
+      std::tuple_size<typename std::remove_reference<Tuple>::type>::value,
+      F,
+      Tuple>::forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
+}
+
 template <typename Protocol, typename IsSet>
 struct Writer {
   Writer(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
@@ -186,22 +208,22 @@ struct Reader {
     : prot_(prot), isset_(isset), fid_(fid), ftype_(ftype), success_(success)
   {}
   template <typename FieldData>
-  uint32_t operator()(FieldData& fieldData, int index) {
+  void operator()(FieldData& fieldData, int index) {
     using Ops = Cpp2Ops<typename FieldData::ref_type>;
 
     if (ftype_ != Ops::thriftType()) {
-      return 0;
+      return;
     }
 
     int16_t myfid = FieldData::fid;
     auto& ex = fieldData.ref();
     if (myfid != fid_) {
-      return 0;
+      return;
     }
 
     success_ = true;
     isset_.setIsSet(index);
-    return Ops::read(prot_, &ex);
+    Ops::read(prot_, &ex);
   }
  private:
   Protocol* prot_;
@@ -271,29 +293,31 @@ class ThriftPresult : private std::tuple<Field...>,
 
   template <class Protocol>
   uint32_t read(Protocol* prot) {
-    uint32_t xfer = 0;
+    auto xfer = prot->getCurrentPosition().getCurrentPosition();
     std::string fname;
     apache::thrift::protocol::TType ftype;
     int16_t fid;
 
-    xfer += prot->readStructBegin(fname);
+    prot->readStructBegin(fname);
 
     while (true) {
-      xfer += prot->readFieldBegin(fname, ftype, fid);
+      prot->readFieldBegin(fname, ftype, fid);
       if (ftype == apache::thrift::protocol::T_STOP) {
         break;
       }
       bool readSomething = false;
-      xfer += detail::forEach(fields(), detail::Reader<Protocol, CurIsSetHelper>(
-          prot, isSet(), fid, ftype, readSomething));
+      detail::forEachVoid(
+          fields(),
+          detail::Reader<Protocol, CurIsSetHelper>(
+              prot, isSet(), fid, ftype, readSomething));
       if (!readSomething) {
-        xfer += prot->skip(ftype);
+        prot->skip(ftype);
       }
-      xfer += prot->readFieldEnd();
+      prot->readFieldEnd();
     }
-    xfer += prot->readStructEnd();
+    prot->readStructEnd();
 
-    return xfer;
+    return prot->getCurrentPosition().getCurrentPosition() - xfer;
   }
 
   template <class Protocol>

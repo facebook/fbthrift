@@ -15,13 +15,12 @@
   limitations under the License.
 
 %>template <class Protocol_>
-uint32_t <%struct:name%>::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -30,7 +29,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%/field:required?%><%/struct:fields%>
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -45,27 +44,26 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           <% > module_types_tcc/deserialize_struct_field%>
 
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
 <%/field:type%><%/struct:fields%>
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
 <%#struct:fields%><%#field:required?%>
   if (!isset_<%field:name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
 <%/field:required?%><%/struct:fields%>
-  return xfer;
 }
 <%!
 %>

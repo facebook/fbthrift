@@ -25,12 +25,16 @@ namespace detail {
 
 template <typename Protocol, typename Args>
 uint32_t deserializeRequestBody(Protocol* prot, Args* args) {
-  return ::apache::thrift::Cpp2Ops<Args>::read(prot, args);
+  auto xferStart = prot->getCurrentPosition().getCurrentPosition();
+  ::apache::thrift::Cpp2Ops<Args>::read(prot, args);
+  return prot->getCurrentPosition().getCurrentPosition() - xferStart;
 }
 
 template <typename Args>
 uint32_t deserializeRequestBody(Frozen2ProtocolReader* prot, Args* args) {
-  return prot->readObject(*args);
+  auto xferStart = prot->getCurrentPosition().getCurrentPosition();
+  prot->readObject(*args);
+  return prot->getCurrentPosition().getCurrentPosition() - xferStart;
 }
 
 template <typename Protocol, typename Args>
@@ -62,7 +66,9 @@ uint32_t deserializeExceptionBody(Protocol* prot, Args* args) {
 
 template <typename Args>
 uint32_t deserializeExceptionBody(Frozen2ProtocolReader* prot, Args* args) {
-  return prot->readObject(*args);
+  auto xferStart = prot->getCurrentPosition().getCurrentPosition();
+  prot->readObject(*args);
+  return prot->getCurrentPosition().getCurrentPosition() - xferStart;
 }
 
 template <typename Protocol, typename Args>

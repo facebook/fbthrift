@@ -26,19 +26,18 @@ namespace apache { namespace thrift {
 namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
-uint32_t AStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void AStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -49,24 +48,23 @@ uint32_t AStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->FieldA);
+          iprot->readI32(this->FieldA);
           this->__isset.FieldA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -105,19 +103,18 @@ uint32_t AStruct::write(Protocol_* prot_) const {
 namespace a { namespace different { namespace ns {
 
 template <class Protocol_>
-uint32_t AStructB::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void AStructB::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -129,24 +126,23 @@ uint32_t AStructB::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::a::different::ns::AStruct> ptr = std::make_unique< ::a::different::ns::AStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::read(iprot, ptr.get());
           this->FieldA = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>

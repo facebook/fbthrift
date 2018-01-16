@@ -53,19 +53,18 @@ namespace apache { namespace thrift {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t Empty::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void Empty::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -75,15 +74,14 @@ uint32_t Empty::read(Protocol_* iprot) {
     switch (fid) {
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -115,19 +113,18 @@ uint32_t Empty::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t ASimpleStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void ASimpleStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -138,24 +135,23 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->boolField);
+          iprot->readI64(this->boolField);
           this->__isset.boolField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -200,19 +196,18 @@ uint32_t ASimpleStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void ASimpleStructNoexcept::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -223,24 +218,23 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->boolField);
+          iprot->readI64(this->boolField);
           this->__isset.boolField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -285,20 +279,19 @@ uint32_t ASimpleStructNoexcept::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t MyStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void MyStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
   bool isset_MyBinaryField3 = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -309,70 +302,70 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->MyBoolField);
+          iprot->readBool(this->MyBoolField);
           this->__isset.MyBoolField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->MyIntField);
+          iprot->readI64(this->MyIntField);
           this->__isset.MyIntField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 3:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->MyStringField);
+          iprot->readString(this->MyStringField);
           this->__isset.MyStringField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->MyStringField2);
+          iprot->readString(this->MyStringField2);
           this->__isset.MyStringField2 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 5:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->MyBinaryField);
+          iprot->readBinary(this->MyBinaryField);
           this->__isset.MyBinaryField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 6:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->MyBinaryField2);
+          iprot->readBinary(this->MyBinaryField2);
           this->__isset.MyBinaryField2 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 7:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->MyBinaryField3);
+          iprot->readBinary(this->MyBinaryField3);
           isset_MyBinaryField3 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -380,10 +373,10 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->MyBinaryListField4 = std::vector<std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->MyBinaryListField4);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->MyBinaryListField4);
           this->__isset.MyBinaryListField4 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -391,27 +384,26 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->MyMapEnumAndInt = std::map< ::some::valid::ns::MyEnumA, std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::read(*iprot, this->MyMapEnumAndInt);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::some::valid::ns::MyEnumA, std::string>>::read(*iprot, this->MyMapEnumAndInt);
           this->__isset.MyMapEnumAndInt = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_MyBinaryField3) {
     TProtocolException::throwMissingRequiredField("MyBinaryField3", "MyStruct");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -554,18 +546,17 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t SimpleUnion::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void SimpleUnion::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
-  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  iprot->readFieldBegin(_fname, _ftype, fid);
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
@@ -577,9 +568,9 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
           this->set_intValue();
-          xfer += iprot->readI64(this->mutable_intValue());
+          iprot->readI64(this->mutable_intValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -587,30 +578,28 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_stringValue();
-          xfer += iprot->readString(this->mutable_stringValue());
+          iprot->readString(this->mutable_stringValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldEnd();
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
-
 template <class Protocol_>
 uint32_t SimpleUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
@@ -701,13 +690,12 @@ template<typename... T, typename > std::shared_ptr<const  ::some::valid::ns::MyS
 }
 
 template <class Protocol_>
-uint32_t ComplexUnion::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void ComplexUnion::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -717,7 +705,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   bool isset_req_a_union = false;
   bool isset_MyBinaryField3 = false;
 
-  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  iprot->readFieldBegin(_fname, _ftype, fid);
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
@@ -729,9 +717,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
           this->set_intValue();
-          xfer += iprot->readI64(this->mutable_intValue());
+          iprot->readI64(this->mutable_intValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -739,10 +727,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
           this->set_req_intValue();
-          xfer += iprot->readI64(this->mutable_req_intValue());
+          iprot->readI64(this->mutable_req_intValue());
           isset_req_intValue = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -750,9 +738,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
           this->set_opt_intValue();
-          xfer += iprot->readI64(this->mutable_opt_intValue());
+          iprot->readI64(this->mutable_opt_intValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -760,9 +748,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_stringValue();
-          xfer += iprot->readString(this->mutable_stringValue());
+          iprot->readString(this->mutable_stringValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -770,10 +758,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_req_stringValue();
-          xfer += iprot->readString(this->mutable_req_stringValue());
+          iprot->readString(this->mutable_req_stringValue());
           isset_req_stringValue = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -781,9 +769,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_opt_stringValue();
-          xfer += iprot->readString(this->mutable_opt_stringValue());
+          iprot->readString(this->mutable_opt_stringValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -791,9 +779,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I16) {
           this->set_intValue2();
-          xfer += iprot->readI16(this->mutable_intValue2());
+          iprot->readI16(this->mutable_intValue2());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -801,9 +789,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
           this->set_intValue3();
-          xfer += iprot->readI32(this->mutable_intValue3());
+          iprot->readI32(this->mutable_intValue3());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -811,9 +799,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           this->set_doubelValue();
-          xfer += iprot->readDouble(this->mutable_doubelValue());
+          iprot->readDouble(this->mutable_doubelValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -821,9 +809,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
           this->set_boolValue();
-          xfer += iprot->readBool(this->mutable_boolValue());
+          iprot->readBool(this->mutable_boolValue());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -832,9 +820,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->set_union_list();
           this->mutable_union_list() = std::vector<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->mutable_union_list());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->mutable_union_list());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -843,9 +831,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->set_union_set();
           this->mutable_union_set() = std::set<int64_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int64_t>>::read(*iprot, this->mutable_union_set());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int64_t>>::read(*iprot, this->mutable_union_set());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -854,9 +842,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->set_union_map();
           this->mutable_union_map() = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_union_map());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_union_map());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -865,10 +853,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->set_req_union_map();
           this->mutable_req_union_map() = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_req_union_map());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_req_union_map());
           isset_req_union_map = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -877,9 +865,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->set_opt_union_map();
           this->mutable_opt_union_map() = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_opt_union_map());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_opt_union_map());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -887,9 +875,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
           this->set_enum_field();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->mutable_enum_field());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->mutable_enum_field());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -898,9 +886,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->set_enum_container();
           this->mutable_enum_container() = std::vector< ::some::valid::ns::MyEnumA>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->mutable_enum_container());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->mutable_enum_container());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -908,9 +896,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_a_struct();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->mutable_a_struct());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->mutable_a_struct());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -919,9 +907,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->set_a_set_struct();
           this->mutable_a_set_struct() = std::set< ::some::valid::ns::MyStruct>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->mutable_a_set_struct());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->mutable_a_set_struct());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -929,9 +917,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_a_union();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_a_union());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_a_union());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -939,10 +927,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_req_a_union();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_req_a_union());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_req_a_union());
           isset_req_a_union = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -950,9 +938,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_opt_a_union();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_opt_a_union());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_opt_a_union());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -961,9 +949,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->set_a_union_list();
           this->mutable_a_union_list() = std::vector< ::some::valid::ns::SimpleUnion>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::SimpleUnion>>::read(*iprot, this->mutable_a_union_list());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::SimpleUnion>>::read(*iprot, this->mutable_a_union_list());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -972,9 +960,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->set_a_union_typedef();
           this->mutable_a_union_typedef() =  ::some::valid::ns::unionTypeDef();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->mutable_a_union_typedef());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->mutable_a_union_typedef());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -983,9 +971,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->set_a_union_typedef_list();
           this->mutable_a_union_typedef_list() = std::vector< ::some::valid::ns::unionTypeDef>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->mutable_a_union_typedef_list());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->mutable_a_union_typedef_list());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -993,9 +981,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_MyBinaryField();
-          xfer += iprot->readBinary(this->mutable_MyBinaryField());
+          iprot->readBinary(this->mutable_MyBinaryField());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1003,9 +991,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_MyBinaryField2();
-          xfer += iprot->readBinary(this->mutable_MyBinaryField2());
+          iprot->readBinary(this->mutable_MyBinaryField2());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1013,10 +1001,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->set_MyBinaryField3();
-          xfer += iprot->readBinary(this->mutable_MyBinaryField3());
+          iprot->readBinary(this->mutable_MyBinaryField3());
           isset_MyBinaryField3 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1025,9 +1013,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->set_MyBinaryListField4();
           this->mutable_MyBinaryListField4() = std::vector<std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->mutable_MyBinaryListField4());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->mutable_MyBinaryListField4());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1036,10 +1024,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_ref_field();
           std::unique_ptr< ::some::valid::ns::MyStruct> ptr = std::make_unique< ::some::valid::ns::MyStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
           this->mutable_ref_field() = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1048,10 +1036,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_ref_field2();
           std::unique_ptr< ::some::valid::ns::MyStruct> ptr = std::make_unique< ::some::valid::ns::MyStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
           this->mutable_ref_field2() = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1059,26 +1047,26 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->set_excp_field();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::read(iprot, &this->mutable_excp_field());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::read(iprot, &this->mutable_excp_field());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldEnd();
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_intValue) {
     TProtocolException::throwMissingRequiredField("req_intValue", "ComplexUnion");
@@ -1095,9 +1083,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   if (!isset_MyBinaryField3) {
     TProtocolException::throwMissingRequiredField("MyBinaryField3", "ComplexUnion");
   }
-  return xfer;
 }
-
 template <class Protocol_>
 uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
@@ -1752,13 +1738,12 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t AnException::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void AnException::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -1767,7 +1752,7 @@ uint32_t AnException::read(Protocol_* iprot) {
   bool isset_req_exception_map = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -1778,40 +1763,40 @@ uint32_t AnException::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->code);
+          iprot->readI32(this->code);
           this->__isset.code = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 101:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->req_code);
+          iprot->readI32(this->req_code);
           isset_req_code = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->message2);
+          iprot->readString(this->message2);
           this->__isset.message2 = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 102:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->req_message);
+          iprot->readString(this->req_message);
           isset_req_message = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1819,10 +1804,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->exception_list = std::vector<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->exception_list);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->exception_list);
           this->__isset.exception_list = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1830,10 +1815,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->exception_set = std::set<int64_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int64_t>>::read(*iprot, this->exception_set);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int64_t>>::read(*iprot, this->exception_set);
           this->__isset.exception_set = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1841,10 +1826,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->exception_map = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->exception_map);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->exception_map);
           this->__isset.exception_map = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1852,20 +1837,20 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->req_exception_map = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->req_exception_map);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->req_exception_map);
           isset_req_exception_map = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 6:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->enum_field);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->enum_field);
           this->__isset.enum_field = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1873,20 +1858,20 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->enum_container = std::vector< ::some::valid::ns::MyEnumA>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->enum_container);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->enum_container);
           this->__isset.enum_container = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 8:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->a_struct);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->a_struct);
           this->__isset.a_struct = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1894,10 +1879,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->a_set_struct = std::set< ::some::valid::ns::MyStruct>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->a_set_struct);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->a_set_struct);
           this->__isset.a_set_struct = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1905,10 +1890,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->a_union_list = std::vector< ::some::valid::ns::SimpleUnion>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::SimpleUnion>>::read(*iprot, this->a_union_list);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::SimpleUnion>>::read(*iprot, this->a_union_list);
           this->__isset.a_union_list = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1916,10 +1901,10 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->union_typedef =  ::some::valid::ns::unionTypeDef();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->union_typedef);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->union_typedef);
           this->__isset.union_typedef = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -1927,22 +1912,22 @@ uint32_t AnException::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->a_union_typedef_list = std::vector< ::some::valid::ns::unionTypeDef>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->a_union_typedef_list);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->a_union_typedef_list);
           this->__isset.a_union_typedef_list = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_code) {
     TProtocolException::throwMissingRequiredField("req_code", "AnException");
@@ -1953,7 +1938,6 @@ uint32_t AnException::read(Protocol_* iprot) {
   if (!isset_req_exception_map) {
     TProtocolException::throwMissingRequiredField("req_exception_map", "AnException");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -2156,20 +2140,19 @@ uint32_t AnException::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t AnotherException::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void AnotherException::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
   bool isset_req_code = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2180,47 +2163,46 @@ uint32_t AnotherException::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->code);
+          iprot->readI32(this->code);
           this->__isset.code = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 101:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->req_code);
+          iprot->readI32(this->req_code);
           isset_req_code = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->message);
+          iprot->readString(this->message);
           this->__isset.message = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_code) {
     TProtocolException::throwMissingRequiredField("req_code", "AnotherException");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -2285,13 +2267,12 @@ uint32_t AnotherException::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t containerStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void containerStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -2304,7 +2285,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
   bool isset_req_fieldX = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -2315,30 +2296,30 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->fieldA);
+          iprot->readBool(this->fieldA);
           this->__isset.fieldA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 101:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->req_fieldA);
+          iprot->readBool(this->req_fieldA);
           isset_req_fieldA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 201:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->opt_fieldA);
+          iprot->readBool(this->opt_fieldA);
           this->__isset.opt_fieldA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2346,10 +2327,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
           this->__isset.fieldB = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2357,10 +2338,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->req_fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
           isset_req_fieldB = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2368,10 +2349,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->opt_fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB);
           this->__isset.opt_fieldB = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2379,10 +2360,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
           this->__isset.fieldC = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2390,10 +2371,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->req_fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
           isset_req_fieldC = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2401,50 +2382,50 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->opt_fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC);
           this->__isset.opt_fieldC = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->fieldD);
+          iprot->readString(this->fieldD);
           this->__isset.fieldD = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 5:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->fieldE);
+          iprot->readString(this->fieldE);
           this->__isset.fieldE = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 105:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->req_fieldE);
+          iprot->readString(this->req_fieldE);
           isset_req_fieldE = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 205:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->opt_fieldE);
+          iprot->readString(this->opt_fieldE);
           this->__isset.opt_fieldE = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2452,10 +2433,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldF = std::vector<std::vector<int32_t>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, std::vector<std::vector<int32_t>>>::read(*iprot, this->fieldF);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, std::vector<std::vector<int32_t>>>::read(*iprot, this->fieldF);
           this->__isset.fieldF = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2463,10 +2444,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldG = std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>>::read(*iprot, this->fieldG);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>>::read(*iprot, this->fieldG);
           this->__isset.fieldG = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2474,20 +2455,20 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldH = std::vector<std::set<int32_t>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, std::vector<std::set<int32_t>>>::read(*iprot, this->fieldH);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, std::vector<std::set<int32_t>>>::read(*iprot, this->fieldH);
           this->__isset.fieldH = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 9:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->fieldI);
+          iprot->readBool(this->fieldI);
           this->__isset.fieldI = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2495,10 +2476,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldJ = std::map<std::string, std::vector<int32_t>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, std::map<std::string, std::vector<int32_t>>>::read(*iprot, this->fieldJ);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, std::map<std::string, std::vector<int32_t>>>::read(*iprot, this->fieldJ);
           this->__isset.fieldJ = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2506,10 +2487,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldK = std::vector<std::vector<std::vector<std::vector<int32_t>>>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, std::vector<std::vector<std::vector<std::vector<int32_t>>>>>::read(*iprot, this->fieldK);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, std::vector<std::vector<std::vector<std::vector<int32_t>>>>>::read(*iprot, this->fieldK);
           this->__isset.fieldK = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2517,10 +2498,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->fieldL = std::set<std::set<std::set<bool>>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>, std::set<std::set<std::set<bool>>>>::read(*iprot, this->fieldL);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>, std::set<std::set<std::set<bool>>>>::read(*iprot, this->fieldL);
           this->__isset.fieldL = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2528,20 +2509,20 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldM = std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>::read(*iprot, this->fieldM);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>::read(*iprot, this->fieldM);
           this->__isset.fieldM = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 14:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->fieldN);
+          iprot->readI32(this->fieldN);
           this->__isset.fieldN = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2549,10 +2530,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldO =  ::some::valid::ns::complexStructTypeDef();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,  ::some::valid::ns::complexStructTypeDef>::read(*iprot, this->fieldO);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,  ::some::valid::ns::complexStructTypeDef>::read(*iprot, this->fieldO);
           this->__isset.fieldO = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2560,60 +2541,60 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldP = std::vector< ::some::valid::ns::mostComplexTypeDef>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, std::vector< ::some::valid::ns::mostComplexTypeDef>>::read(*iprot, this->fieldP);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, std::vector< ::some::valid::ns::mostComplexTypeDef>>::read(*iprot, this->fieldP);
           this->__isset.fieldP = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 17:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldQ);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldQ);
           this->__isset.fieldQ = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 18:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldR);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldR);
           this->__isset.fieldR = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 118:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->req_fieldR);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->req_fieldR);
           isset_req_fieldR = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 218:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->opt_fieldR);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->opt_fieldR);
           this->__isset.opt_fieldR = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 19:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldS);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldS);
           this->__isset.fieldS = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2621,10 +2602,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldT = std::vector< ::some::valid::ns::MyEnumA>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldT);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldT);
           this->__isset.fieldT = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2632,40 +2613,40 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldU = std::vector< ::some::valid::ns::MyEnumA>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldU);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldU);
           this->__isset.fieldU = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 23:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->fieldV);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->fieldV);
           this->__isset.fieldV = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 123:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->req_fieldV);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->req_fieldV);
           isset_req_fieldV = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 223:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->opt_fieldV);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->opt_fieldV);
           this->__isset.opt_fieldV = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2673,40 +2654,40 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->fieldW = std::set< ::some::valid::ns::MyStruct>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->fieldW);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, std::set< ::some::valid::ns::MyStruct>>::read(*iprot, this->fieldW);
           this->__isset.fieldW = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 25:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->fieldX);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->fieldX);
           this->__isset.fieldX = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 125:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->req_fieldX);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->req_fieldX);
           isset_req_fieldX = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 225:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->opt_fieldX);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->opt_fieldX);
           this->__isset.opt_fieldX = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2714,10 +2695,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldY = std::vector< ::some::valid::ns::ComplexUnion>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::ComplexUnion>>::read(*iprot, this->fieldY);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::some::valid::ns::ComplexUnion>>::read(*iprot, this->fieldY);
           this->__isset.fieldY = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2725,10 +2706,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->fieldZ =  ::some::valid::ns::unionTypeDef();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->fieldZ);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::read(*iprot, this->fieldZ);
           this->__isset.fieldZ = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2736,10 +2717,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->fieldAA = std::vector< ::some::valid::ns::unionTypeDef>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->fieldAA);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::read(*iprot, this->fieldAA);
           this->__isset.fieldAA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2747,30 +2728,30 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldAB = std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::read(*iprot, this->fieldAB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::read(*iprot, this->fieldAB);
           this->__isset.fieldAB = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 30:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumB>::read(*iprot, this->fieldAC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumB>::read(*iprot, this->fieldAC);
           this->__isset.fieldAC = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 31:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::a::different::ns::AnEnum>::read(*iprot, this->fieldAD);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::a::different::ns::AnEnum>::read(*iprot, this->fieldAD);
           this->__isset.fieldAD = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -2778,32 +2759,32 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldAE = std::map<std::string, int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->fieldAE);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->fieldAE);
           this->__isset.fieldAE = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 33:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->fieldSD.value);
+          iprot->readString(this->fieldSD.value);
           this->__isset.fieldSD = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_fieldA) {
     TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct");
@@ -2826,7 +2807,6 @@ uint32_t containerStruct::read(Protocol_* iprot) {
   if (!isset_req_fieldX) {
     TProtocolException::throwMissingRequiredField("req_fieldX", "containerStruct");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -3402,20 +3382,19 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t MyIncludedStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void MyIncludedStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
   bool isset_ARequiredField = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3426,20 +3405,20 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->MyIncludedInt);
+          iprot->readI64(this->MyIncludedInt);
           this->__isset.MyIncludedInt = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->MyIncludedStruct);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->MyIncludedStruct);
           this->__isset.MyIncludedStruct = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3447,37 +3426,36 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::AStruct> ptr = std::make_unique< ::some::valid::ns::AStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, ptr.get());
           this->ARefField = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->ARequiredField);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->ARequiredField);
           isset_ARequiredField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_ARequiredField) {
     TProtocolException::throwMissingRequiredField("ARequiredField", "MyIncludedStruct");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -3568,13 +3546,12 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t AnnotatedStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void AnnotatedStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -3586,7 +3563,7 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
   bool isset_req_ref_type_unique = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -3597,10 +3574,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, &this->no_annotation);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, &this->no_annotation);
           this->__isset.no_annotation = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3608,10 +3585,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->cpp_unique_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3619,10 +3596,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->cpp2_unique_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3630,10 +3607,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           std::unique_ptr<std::map<int32_t, std::vector<std::string>>> ptr = std::make_unique<std::map<int32_t, std::vector<std::string>>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, std::map<int32_t, std::vector<std::string>>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, std::map<int32_t, std::vector<std::string>>>::read(*iprot, *ptr);
           this->container_with_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3641,11 +3618,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->req_cpp_unique_ref = std::move(ptr);
           isset_req_cpp_unique_ref = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3653,11 +3630,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->req_cpp2_unique_ref = std::move(ptr);
           isset_req_cpp2_unique_ref = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3665,11 +3642,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           std::unique_ptr<std::vector<std::string>> ptr = std::make_unique<std::vector<std::string>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
           this->req_container_with_ref = std::move(ptr);
           isset_req_container_with_ref = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3677,10 +3654,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->opt_cpp_unique_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3688,10 +3665,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->opt_cpp2_unique_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3699,10 +3676,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           std::unique_ptr<std::set<int32_t>> ptr = std::make_unique<std::set<int32_t>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
           this->opt_container_with_ref = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3710,10 +3687,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->ref_type_unique = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3721,10 +3698,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->ref_type_shared = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3732,10 +3709,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           std::unique_ptr<std::map<int32_t, std::vector<std::string>>> ptr = std::make_unique<std::map<int32_t, std::vector<std::string>>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, std::map<int32_t, std::vector<std::string>>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, std::map<int32_t, std::vector<std::string>>>::read(*iprot, *ptr);
           this->ref_type_const = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3743,11 +3720,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->req_ref_type_shared = std::move(ptr);
           isset_req_ref_type_shared = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3755,11 +3732,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->req_ref_type_const = std::move(ptr);
           isset_req_ref_type_const = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3767,11 +3744,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           std::unique_ptr<std::vector<std::string>> ptr = std::make_unique<std::vector<std::string>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
           this->req_ref_type_unique = std::move(ptr);
           isset_req_ref_type_unique = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3779,10 +3756,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->opt_ref_type_const = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3790,10 +3767,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
           std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
           this->opt_ref_type_unique = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3801,20 +3778,20 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           std::unique_ptr<std::set<int32_t>> ptr = std::make_unique<std::set<int32_t>>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
           this->opt_ref_type_shared = std::move(ptr);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 20:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->base_type);
+          iprot->readI32(this->base_type);
           this->__isset.base_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3822,10 +3799,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->list_type =  ::some::valid::ns::FollySmallVectorI64();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::FollySmallVectorI64>::read(*iprot, this->list_type);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::FollySmallVectorI64>::read(*iprot, this->list_type);
           this->__isset.list_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3833,10 +3810,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->set_type =  ::some::valid::ns::SortedVectorSetString();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::SortedVectorSetString>::read(*iprot, this->set_type);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::SortedVectorSetString>::read(*iprot, this->set_type);
           this->__isset.set_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3844,10 +3821,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->map_type =  ::some::valid::ns::FakeMap();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::some::valid::ns::FakeMap>::read(*iprot, this->map_type);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::some::valid::ns::FakeMap>::read(*iprot, this->map_type);
           this->__isset.map_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3855,30 +3832,30 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->map_struct_type =  ::some::valid::ns::UnorderedMapStruct();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,  ::some::valid::ns::UnorderedMapStruct>::read(*iprot, this->map_struct_type);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,  ::some::valid::ns::UnorderedMapStruct>::read(*iprot, this->map_struct_type);
           this->__isset.map_struct_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 25:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->iobuf_type);
+          iprot->readBinary(this->iobuf_type);
           this->__isset.iobuf_type = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 26:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->iobuf_ptr);
+          iprot->readBinary(this->iobuf_ptr);
           this->__isset.iobuf_ptr = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3886,10 +3863,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->list_i32_template = std::list<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->list_i32_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->list_i32_template);
           this->__isset.list_i32_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3897,10 +3874,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->list_string_template = std::deque<std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::read(*iprot, this->list_string_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::read(*iprot, this->list_string_template);
           this->__isset.list_string_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3908,10 +3885,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->set_template = folly::sorted_vector_set<std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::read(*iprot, this->set_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::read(*iprot, this->set_template);
           this->__isset.set_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3919,10 +3896,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->map_template = folly::sorted_vector_map<int64_t, std::string>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::read(*iprot, this->map_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::read(*iprot, this->map_template);
           this->__isset.map_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3930,10 +3907,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->typedef_list_template =  ::some::valid::ns::std_list();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::read(*iprot, this->typedef_list_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::read(*iprot, this->typedef_list_template);
           this->__isset.typedef_list_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3941,10 +3918,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->typedef_deque_template =  ::some::valid::ns::std_deque();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::read(*iprot, this->typedef_deque_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::read(*iprot, this->typedef_deque_template);
           this->__isset.typedef_deque_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3952,10 +3929,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->typedef_set_template =  ::some::valid::ns::folly_set();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::read(*iprot, this->typedef_set_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::read(*iprot, this->typedef_set_template);
           this->__isset.typedef_set_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3963,20 +3940,20 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->typedef_map_template =  ::some::valid::ns::folly_map();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::read(*iprot, this->typedef_map_template);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::read(*iprot, this->typedef_map_template);
           this->__isset.typedef_map_template = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 35:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->indirection_a.value);
+          iprot->readI64(this->indirection_a.value);
           this->__isset.indirection_a = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3984,10 +3961,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_LIST) {
           this->indirection_b = std::vector< ::some::valid::ns::IndirectionB>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::read(*iprot, this->indirection_b);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::read(*iprot, this->indirection_b);
           this->__isset.indirection_b = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -3995,52 +3972,52 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->indirection_c = std::set< ::some::valid::ns::IndirectionC>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::read(*iprot, this->indirection_c);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag< ::some::valid::ns::apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::read(*iprot, this->indirection_c);
           this->__isset.indirection_c = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 38:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->iobuf_type_val);
+          iprot->readBinary(this->iobuf_type_val);
           this->__isset.iobuf_type_val = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 39:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->iobuf_ptr_val);
+          iprot->readBinary(this->iobuf_ptr_val);
           this->__isset.iobuf_ptr_val = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 40:
       {
         if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, &this->struct_struct);
+          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, &this->struct_struct);
           this->__isset.struct_struct = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_cpp_unique_ref) {
     TProtocolException::throwMissingRequiredField("req_cpp_unique_ref", "AnnotatedStruct");
@@ -4060,7 +4037,6 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
   if (!isset_req_ref_type_unique) {
     TProtocolException::throwMissingRequiredField("req_ref_type_unique", "AnnotatedStruct");
   }
-  return xfer;
 }
 
 template <class Protocol_>
@@ -4900,19 +4876,18 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t FloatStruct::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void FloatStruct::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -4923,34 +4898,33 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_FLOAT) {
-          xfer += iprot->readFloat(this->floatField);
+          iprot->readFloat(this->floatField);
           this->__isset.floatField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_DOUBLE) {
-          xfer += iprot->readDouble(this->doubleField);
+          iprot->readDouble(this->doubleField);
           this->__isset.doubleField = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
 
 template <class Protocol_>
@@ -5008,18 +4982,17 @@ uint32_t FloatStruct::write(Protocol_* prot_) const {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
-uint32_t FloatUnion::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void FloatUnion::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
-  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  iprot->readFieldBegin(_fname, _ftype, fid);
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
@@ -5031,9 +5004,9 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_FLOAT) {
           this->set_floatSide();
-          xfer += iprot->readFloat(this->mutable_floatSide());
+          iprot->readFloat(this->mutable_floatSide());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -5041,30 +5014,28 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           this->set_doubleSide();
-          xfer += iprot->readDouble(this->mutable_doubleSide());
+          iprot->readDouble(this->mutable_doubleSide());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldEnd();
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
 }
-
 template <class Protocol_>
 uint32_t FloatUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;

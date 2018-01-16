@@ -277,53 +277,52 @@ class CompactProtocolReader {
    * set to some other buffer.
    */
   void setInput(const Cursor& cursor) { in_ = cursor; }
-  void setInput(const IOBuf* buf) { setInput(Cursor(buf)); }
+  void setInput(const IOBuf* buf) {
+    in_.reset(buf);
+  }
 
   /**
    * Reading functions
    */
-  inline uint32_t readMessageBegin(std::string& name,
-                                   MessageType& messageType,
-                                   int32_t& seqid);
-  inline uint32_t readMessageEnd();
-  inline uint32_t readStructBegin(std::string& name);
-  inline uint32_t readStructEnd();
-  inline uint32_t readFieldBegin(std::string& name,
-                                 TType& fieldType,
-                                 int16_t& fieldId);
-  inline uint32_t readFieldEnd();
-  inline uint32_t readMapBegin(TType& keyType,
-                               TType& valType,
-                               uint32_t& size);
-  inline uint32_t readMapEnd();
-  inline uint32_t readListBegin(TType& elemType, uint32_t& size);
-  inline uint32_t readListEnd();
-  inline uint32_t readSetBegin(TType& elemType, uint32_t& size);
-  inline uint32_t readSetEnd();
-  inline uint32_t readBool(bool& value);
-  inline uint32_t readBool(std::vector<bool>::reference value);
-  inline uint32_t readByte(int8_t& byte);
-  inline uint32_t readI16(int16_t& i16);
-  inline uint32_t readI32(int32_t& i32);
-  inline uint32_t readI64(int64_t& i64);
-  inline uint32_t readDouble(double& dub);
-  inline uint32_t readFloat(float& flt);
-  template<typename StrType>
-  inline uint32_t readString(StrType& str);
+  inline void
+  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageEnd();
+  inline void readStructBegin(std::string& name);
+  inline void readStructEnd();
+  inline void
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  inline void readFieldEnd();
+  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
+  inline void readMapEnd();
+  inline void readListBegin(TType& elemType, uint32_t& size);
+  inline void readListEnd();
+  inline void readSetBegin(TType& elemType, uint32_t& size);
+  inline void readSetEnd();
+  inline void readBool(bool& value);
+  inline void readBool(std::vector<bool>::reference value);
+  inline void readByte(int8_t& byte);
+  inline void readI16(int16_t& i16);
+  inline void readI32(int32_t& i32);
+  inline void readI64(int64_t& i64);
+  inline void readDouble(double& dub);
+  inline void readFloat(float& flt);
   template <typename StrType>
-  inline uint32_t readBinary(StrType& str);
-  inline uint32_t readBinary(std::unique_ptr<IOBuf>& str);
-  inline uint32_t readBinary(IOBuf& str);
-  uint32_t skip(TType type) {
-    return apache::thrift::skip(*this, type);
+  inline void readString(StrType& str);
+  template <typename StrType>
+  inline void readBinary(StrType& str);
+  inline void readBinary(std::unique_ptr<IOBuf>& str);
+  inline void readBinary(IOBuf& str);
+  void skip(TType type) {
+    apache::thrift::skip(*this, type);
   }
   bool peekMap() { return false; }
   bool peekSet() { return false; }
   bool peekList() { return false; }
 
-  Cursor getCurrentPosition() const {
+  const Cursor& getCurrentPosition() const {
     return in_;
   }
+
   inline uint32_t readFromPositionAndAppend(
     Cursor& /*cursor*/,
     std::unique_ptr<folly::IOBuf>& /*ser*/) {
@@ -332,10 +331,10 @@ class CompactProtocolReader {
   }
 
  protected:
-  inline uint32_t readStringSize(int32_t& size);
+  inline void readStringSize(int32_t& size);
 
-  template<typename StrType>
-  inline uint32_t readStringBody(StrType& str, int32_t size);
+  template <typename StrType>
+  inline void readStringBody(StrType& str, int32_t size);
 
   inline TType getType(int8_t type);
 

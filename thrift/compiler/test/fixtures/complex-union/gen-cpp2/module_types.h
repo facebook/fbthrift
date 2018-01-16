@@ -500,17 +500,29 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
 };
 
 void swap(ComplexUnion& a, ComplexUnion& b);
-extern template uint32_t ComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void ComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t ComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template void ComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ComplexUnion::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -527,8 +539,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::w
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::read(Protocol* proto,  ::cpp2::ComplexUnion* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::ComplexUnion>::read(Protocol* proto,  ::cpp2::ComplexUnion* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
@@ -785,17 +797,29 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< VirtualComplexUnion >;
 };
 
 void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
-extern template uint32_t VirtualComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void VirtualComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template void VirtualComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -812,8 +836,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUn
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::read(Protocol* proto,  ::cpp2::VirtualComplexUnion* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::VirtualComplexUnion>::read(Protocol* proto,  ::cpp2::VirtualComplexUnion* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::VirtualComplexUnion const* obj) {

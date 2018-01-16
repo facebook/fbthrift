@@ -44,7 +44,7 @@ class Cpp2Ops {
   static uint32_t write(P*, const T*);
 
   template <class P>
-  static uint32_t read(P*, T*);
+  static void read(P*, T*);
 
   template <class P>
   static uint32_t serializedSize(P const*, T const*);

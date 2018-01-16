@@ -107,10 +107,8 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::setContainerSizeLimit;
   using CompactProtocolReader::setInput;
 
-  inline uint32_t readMessageBegin(
-      std::string& name,
-      MessageType& messageType,
-      int32_t& seqid);
+  inline void
+  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
   using CompactProtocolReader::readMessageEnd;
   using CompactProtocolReader::readStructBegin;
   using CompactProtocolReader::readStructEnd;
@@ -127,7 +125,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readI16;
   using CompactProtocolReader::readI32;
   using CompactProtocolReader::readI64;
-  inline uint32_t readDouble(double& dub);
+  inline void readDouble(double& dub);
   using CompactProtocolReader::readFloat;
   using CompactProtocolReader::readString;
   using CompactProtocolReader::readBinary;

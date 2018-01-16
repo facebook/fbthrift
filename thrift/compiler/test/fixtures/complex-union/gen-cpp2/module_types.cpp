@@ -124,11 +124,11 @@ void swap(ComplexUnion& a, ComplexUnion& b) {
   b = std::move(temp);
 }
 
-template uint32_t ComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template void ComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+template void ComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -194,11 +194,11 @@ void swap(VirtualComplexUnion& a, VirtualComplexUnion& b) {
   b = std::move(temp);
 }
 
-template uint32_t VirtualComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template void VirtualComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t VirtualComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t VirtualComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+template void VirtualComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

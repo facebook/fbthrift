@@ -17,13 +17,12 @@
 namespace extra { namespace svc {
 
 template <class Protocol_>
-uint32_t containerStruct2::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void containerStruct2::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -33,7 +32,7 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
   bool isset_req_fieldE = false;
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -44,19 +43,19 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->fieldA);
+          iprot->readBool(this->fieldA);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 101:
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
-          xfer += iprot->readBool(this->req_fieldA);
+          iprot->readBool(this->req_fieldA);
           isset_req_fieldA = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -64,9 +63,9 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_BOOL) {
           this->opt_fieldA = bool();
-          xfer += iprot->readBool(this->opt_fieldA.value());
+          iprot->readBool(this->opt_fieldA.value());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -74,9 +73,9 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -84,10 +83,10 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->req_fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
           isset_req_fieldB = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -95,9 +94,9 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_MAP) {
           this->opt_fieldB = std::map<std::string, bool>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB.value());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB.value());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -105,9 +104,9 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -115,10 +114,10 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->req_fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
           isset_req_fieldC = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -126,37 +125,37 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->opt_fieldC = std::set<int32_t>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC.value());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC.value());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->fieldD);
+          iprot->readString(this->fieldD);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 5:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->fieldE);
+          iprot->readString(this->fieldE);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 105:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->req_fieldE);
+          iprot->readString(this->req_fieldE);
           isset_req_fieldE = true;
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -164,21 +163,21 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
           this->opt_fieldE = std::string();
-          xfer += iprot->readString(this->opt_fieldE.value());
+          iprot->readString(this->opt_fieldE.value());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
   if (!isset_req_fieldA) {
     TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct2");
@@ -192,7 +191,6 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
   if (!isset_req_fieldE) {
     TProtocolException::throwMissingRequiredField("req_fieldE", "containerStruct2");
   }
-  return xfer;
 }
 
 template <class Protocol_>

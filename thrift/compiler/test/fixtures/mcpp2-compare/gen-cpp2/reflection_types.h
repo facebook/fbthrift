@@ -87,21 +87,33 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ReflectionStruct >;
 };
 
 void swap(ReflectionStruct& a, ReflectionStruct& b);
-extern template uint32_t ReflectionStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void ReflectionStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t ReflectionStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t ReflectionStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void ReflectionStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t ReflectionStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t ReflectionStruct::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void ReflectionStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t ReflectionStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ReflectionStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -118,8 +130,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ReflectionStruct
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ReflectionStruct>::read(Protocol* proto,  ::cpp2::ReflectionStruct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::ReflectionStruct>::read(Protocol* proto,  ::cpp2::ReflectionStruct* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ReflectionStruct>::serializedSize(Protocol const* proto,  ::cpp2::ReflectionStruct const* obj) {

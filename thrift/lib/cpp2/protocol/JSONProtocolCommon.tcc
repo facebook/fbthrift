@@ -487,8 +487,7 @@ uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
     folly::io::Cursor& snapshot,
     std::unique_ptr<folly::IOBuf>& ser) {
-
-  int32_t size = in_ - snapshot;
+  int32_t size = folly::io::Cursor(in_) - snapshot;
 
   if (ser) {
     std::unique_ptr<folly::IOBuf> newBuf;

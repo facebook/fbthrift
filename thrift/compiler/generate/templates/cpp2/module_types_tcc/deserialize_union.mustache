@@ -15,13 +15,12 @@
   limitations under the License.
 
 %>template <class Protocol_>
-uint32_t <%struct:name%>::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -29,7 +28,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
   bool isset_<%field:name%> = false;
 <%/field:required?%><%/struct:fields%>
 
-  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  iprot->readFieldBegin(_fname, _ftype, fid);
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
@@ -44,10 +43,10 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           this->set_<%field:name%>();
 <%#type:resolves_to_base?%>
 <%#field:cpp_ref?%>
-          xfer += iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:name%>()));
+          iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:name%>()));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-          xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:name%>());
+          iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:name%>());
 <%/field:cpp_ref?%>
 <%/type:resolves_to_base?%>
 <%^type:resolves_to_base?%>
@@ -58,10 +57,10 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%^type:enum?%>
           this->mutable_<%field:name%>() = <% > types/type%>();
 <%/type:enum?%>
-          xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-          xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
           this->mutable_<%field:name%>() = std::move(ptr);
@@ -71,31 +70,29 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           isset_<%field:name%> = true;
 <%/field:required?%>
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
   <%/field:type%><%/struct:fields%>
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldEnd();
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
 <%#struct:fields%><%#field:required?%>
   if (!isset_<%field:name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
 <%/field:required?%><%/struct:fields%>
-  return xfer;
 }
-

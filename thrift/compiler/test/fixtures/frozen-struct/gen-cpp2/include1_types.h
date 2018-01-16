@@ -114,17 +114,29 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< IncludedA >;
 };
 
 void swap(IncludedA& a, IncludedA& b);
-extern template uint32_t IncludedA::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void IncludedA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t IncludedA::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t IncludedA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t IncludedA::read<>(apache::thrift::CompactProtocolReader*);
+extern template void IncludedA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t IncludedA::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t IncludedA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t IncludedA::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 }} // some::ns
 namespace apache { namespace thrift {
@@ -141,8 +153,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::IncludedA>::
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::IncludedA>::read(Protocol* proto,  ::some::ns::IncludedA* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::some::ns::IncludedA>::read(Protocol* proto,  ::some::ns::IncludedA* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::ns::IncludedA>::serializedSize(Protocol const* proto,  ::some::ns::IncludedA const* obj) {

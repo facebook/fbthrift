@@ -26,11 +26,13 @@ namespace util {
 
 namespace detail {
 
-template <class T, class CursorT,
-          typename std::enable_if<
-            std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-            bool>::type = false>
-uint8_t readVarintSlow(CursorT& c, T& value) {
+template <
+    class T,
+    class CursorT,
+    typename std::enable_if<
+        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
+        bool>::type = false>
+void readVarintSlow(CursorT& c, T& value) {
   // ceil(sizeof(T) * 8) / 7
   static const size_t maxSize = (8 * sizeof(T) + 6) / 7;
   T retVal = 0;
@@ -43,7 +45,7 @@ uint8_t readVarintSlow(CursorT& c, T& value) {
     shift += 7;
     if (!(byte & 0x80)) {
       value = retVal;
-      return rsize;
+      return;
     }
     if (rsize >= maxSize) {
       // Too big for return type
@@ -57,11 +59,13 @@ uint8_t readVarintSlow(CursorT& c, T& value) {
 // which gives us 5% perf win (even when the exception is not actually thrown).
 [[noreturn]] void throwInvalidVarint();
 
-template <class T, class CursorT,
-          typename std::enable_if<
-            std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-            bool>::type = false>
-uint8_t readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
+template <
+    class T,
+    class CursorT,
+    typename std::enable_if<
+        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
+        bool>::type = false>
+void readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
 
   // check that the available data is more than the longest possible varint or
@@ -88,28 +92,28 @@ uint8_t readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len)
     } while (false);
     value = static_cast<T>(result);
     c.skipNoAdvance(p - start);
-    return p - start;
   } else {
-    return readVarintSlow<T, CursorT>(c, value);
+    readVarintSlow<T, CursorT>(c, value);
   }
 }
 
 } // namespace detail
 
-template <class T, class CursorT,
-          typename std::enable_if<
-            std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-            bool>::type = false>
-uint8_t readVarint(CursorT& c, T& value) {
+template <
+    class T,
+    class CursorT,
+    typename std::enable_if<
+        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
+        bool>::type = false>
+void readVarint(CursorT& c, T& value) {
   const uint8_t* p = c.data();
   size_t len = c.length();
   if (len > 0 && !(*p & 0x80)) {
     value = static_cast<T>(*p);
     c.skipNoAdvance(1);
-    return 1;
+  } else {
+    detail::readVarintMediumSlow<T, CursorT>(c, value, p, len);
   }
-
-  return detail::readVarintMediumSlow<T, CursorT>(c, value, p, len);
 }
 
 template <class T, class CursorT,

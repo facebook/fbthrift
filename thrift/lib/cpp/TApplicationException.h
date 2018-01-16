@@ -138,8 +138,7 @@ class TApplicationException : public TException {
     }
   }
 
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot) {
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot) {
     uint32_t xfer = 0;
     std::string fname;
     apache::thrift::protocol::TType ftype;
@@ -178,6 +177,48 @@ class TApplicationException : public TException {
 
     xfer += iprot->readStructEnd();
     return xfer;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot) {
+    uint32_t xfer = iprot->getCurrentPosition().getCurrentPosition();
+    std::string fname;
+    apache::thrift::protocol::TType ftype;
+    int16_t fid;
+
+    iprot->readStructBegin(fname);
+
+    while (true) {
+      iprot->readFieldBegin(fname, ftype, fid);
+      if (ftype == apache::thrift::protocol::T_STOP) {
+        break;
+      }
+      switch (fid) {
+        case 1:
+          if (ftype == apache::thrift::protocol::T_STRING) {
+            iprot->readString(message_);
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        case 2:
+          if (ftype == apache::thrift::protocol::T_I32) {
+            int32_t type;
+            iprot->readI32(type);
+            type_ = static_cast<TApplicationExceptionType>(type);
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        default:
+          iprot->skip(ftype);
+          break;
+      }
+      iprot->readFieldEnd();
+    }
+
+    iprot->readStructEnd();
+    return iprot->getCurrentPosition().getCurrentPosition() - xfer;
   }
 
   template <class Protocol_>

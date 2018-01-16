@@ -19,18 +19,18 @@ namespace cpp2 {
 
 template <class Protocol_>
 uint32_t House::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -41,18 +41,18 @@ uint32_t House::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->id);
+          iprot->readI64(this->id);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->houseName);
+          iprot->readString(this->houseName);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
@@ -60,23 +60,23 @@ uint32_t House::read(Protocol_* iprot) {
       {
         if (_ftype == apache::thrift::protocol::T_SET) {
           this->houseColors = std::set< ::cpp2::ColorID>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>
@@ -139,18 +139,18 @@ namespace cpp2 {
 
 template <class Protocol_>
 uint32_t Field::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   std::string _fname;
   apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(_fname);
+  iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    iprot->readFieldBegin(_fname, _ftype, fid);
     if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
@@ -161,32 +161,32 @@ uint32_t Field::read(Protocol_* iprot) {
       case 1:
       {
         if (_ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->id);
+          iprot->readI64(this->id);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
         if (_ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->fieldType);
+          iprot->readI32(this->fieldType);
         } else {
-          xfer += iprot->skip(_ftype);
+          iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(_ftype);
+        iprot->skip(_ftype);
         break;
       }
     }
-    xfer += iprot->readFieldEnd();
+    iprot->readFieldEnd();
   }
-  xfer += iprot->readStructEnd();
+  iprot->readStructEnd();
 
-  return xfer;
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
 }
 
 template <class Protocol_>

@@ -89,106 +89,110 @@ enum MessageType {
  * Templatized to avoid having to make virtual function calls.
  */
 template <class Protocol_>
-uint32_t skip(Protocol_& prot, TType arg_type) {
+void skip(Protocol_& prot, TType arg_type) {
   switch (arg_type) {
     case TType::T_BOOL:
     {
       bool boolv;
-      return prot.readBool(boolv);
+      prot.readBool(boolv);
+      return;
     }
     case TType::T_BYTE:
     {
       int8_t bytev;
-      return prot.readByte(bytev);
+      prot.readByte(bytev);
+      return;
     }
     case TType::T_I16:
     {
       int16_t i16;
-      return prot.readI16(i16);
+      prot.readI16(i16);
+      return;
     }
     case TType::T_I32:
     {
       int32_t i32;
-      return prot.readI32(i32);
+      prot.readI32(i32);
+      return;
     }
     case TType::T_I64:
     {
       int64_t i64;
-      return prot.readI64(i64);
+      prot.readI64(i64);
+      return;
     }
     case TType::T_DOUBLE:
     {
       double dub;
-      return prot.readDouble(dub);
+      prot.readDouble(dub);
+      return;
     }
     case TType::T_FLOAT:
     {
       float flt;
-      return prot.readFloat(flt);
+      prot.readFloat(flt);
+      return;
     }
     case TType::T_STRING:
     {
       std::string str;
-      return prot.readBinary(str);
+      prot.readBinary(str);
+      return;
     }
     case TType::T_STRUCT:
     {
-      uint32_t result = 0;
       std::string name;
       int16_t fid;
       TType ftype;
-      result += prot.readStructBegin(name);
+      prot.readStructBegin(name);
       while (true) {
-        result += prot.readFieldBegin(name, ftype, fid);
+        prot.readFieldBegin(name, ftype, fid);
         if (ftype == TType::T_STOP) {
           break;
         }
-        result += apache::thrift::skip(prot, ftype);
-        result += prot.readFieldEnd();
+        apache::thrift::skip(prot, ftype);
+        prot.readFieldEnd();
       }
-      result += prot.readStructEnd();
-      return result;
+      prot.readStructEnd();
+      return;
     }
     case TType::T_MAP:
     {
-      uint32_t result = 0;
       TType keyType;
       TType valType;
       uint32_t i, size;
-      result += prot.readMapBegin(keyType, valType, size);
+      prot.readMapBegin(keyType, valType, size);
       for (i = 0; i < size; i++) {
-        result += apache::thrift::skip(prot, keyType);
-        result += apache::thrift::skip(prot, valType);
+        apache::thrift::skip(prot, keyType);
+        apache::thrift::skip(prot, valType);
       }
-      result += prot.readMapEnd();
-      return result;
+      prot.readMapEnd();
+      return;
     }
     case TType::T_SET:
     {
-      uint32_t result = 0;
       TType elemType;
       uint32_t i, size;
-      result += prot.readSetBegin(elemType, size);
+      prot.readSetBegin(elemType, size);
       for (i = 0; i < size; i++) {
-        result += apache::thrift::skip(prot, elemType);
+        apache::thrift::skip(prot, elemType);
       }
-      result += prot.readSetEnd();
-      return result;
+      prot.readSetEnd();
+      return;
     }
     case TType::T_LIST:
     {
-      uint32_t result = 0;
       TType elemType;
       uint32_t i, size;
-      result += prot.readListBegin(elemType, size);
+      prot.readListBegin(elemType, size);
       for (i = 0; i < size; i++) {
-        result += apache::thrift::skip(prot, elemType);
+        apache::thrift::skip(prot, elemType);
       }
-      result += prot.readListEnd();
-      return result;
+      prot.readListEnd();
+      return;
     }
     default:
-      return 0;
+      return;
   }
 }
 

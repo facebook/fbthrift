@@ -145,11 +145,11 @@ void swap(Internship& a, Internship& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t Internship::read<>(apache::thrift::BinaryProtocolReader*);
+template void Internship::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Internship::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Internship::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Internship::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Internship::read<>(apache::thrift::CompactProtocolReader*);
+template void Internship::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -189,11 +189,11 @@ void swap(UnEnumStruct& a, UnEnumStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t UnEnumStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template void UnEnumStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t UnEnumStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t UnEnumStruct::read<>(apache::thrift::CompactProtocolReader*);
+template void UnEnumStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t UnEnumStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -239,11 +239,11 @@ void swap(Range& a, Range& b) {
   swap(a.max, b.max);
 }
 
-template uint32_t Range::read<>(apache::thrift::BinaryProtocolReader*);
+template void Range::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Range::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Range::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Range::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Range::read<>(apache::thrift::CompactProtocolReader*);
+template void Range::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Range::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Range::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -294,11 +294,11 @@ void swap(struct1& a, struct1& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct1::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct1::read<>(apache::thrift::CompactProtocolReader*);
+template void struct1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -387,11 +387,11 @@ void swap(struct2& a, struct2& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct2::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct2::read<>(apache::thrift::CompactProtocolReader*);
+template void struct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -461,11 +461,11 @@ void swap(struct3& a, struct3& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct3::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct3::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct3::read<>(apache::thrift::CompactProtocolReader*);
+template void struct3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -531,11 +531,11 @@ void swap(union1& a, union1& b) {
   b = std::move(temp);
 }
 
-template uint32_t union1::read<>(apache::thrift::BinaryProtocolReader*);
+template void union1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union1::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union1::read<>(apache::thrift::CompactProtocolReader*);
+template void union1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -627,11 +627,11 @@ void swap(union2& a, union2& b) {
   b = std::move(temp);
 }
 
-template uint32_t union2::read<>(apache::thrift::BinaryProtocolReader*);
+template void union2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union2::read<>(apache::thrift::CompactProtocolReader*);
+template void union2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

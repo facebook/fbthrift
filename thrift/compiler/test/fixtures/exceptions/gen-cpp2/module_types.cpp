@@ -34,11 +34,11 @@ void swap(Banal& a, Banal& b) {
   (void)b;
 }
 
-template uint32_t Banal::read<>(apache::thrift::BinaryProtocolReader*);
+template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Banal::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Banal::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Banal::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Banal::read<>(apache::thrift::CompactProtocolReader*);
+template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -74,11 +74,11 @@ void swap(Fiery& a, Fiery& b) {
   swap(a.message, b.message);
 }
 
-template uint32_t Fiery::read<>(apache::thrift::BinaryProtocolReader*);
+template void Fiery::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Fiery::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Fiery::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Fiery::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Fiery::read<>(apache::thrift::CompactProtocolReader*);
+template void Fiery::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

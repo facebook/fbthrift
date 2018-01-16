@@ -617,8 +617,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union1>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union1* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::union1>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union1* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union1>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::union1 const* obj) {
@@ -996,8 +996,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union2>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union2* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::union2>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union2* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union2>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::union2 const* obj) {
@@ -1375,8 +1375,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union3>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union3* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::union3>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union3* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union3>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::union3 const* obj) {
@@ -1504,8 +1504,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structA>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structA* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::structA>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structA* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structA>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::structA const* obj) {
@@ -1951,8 +1951,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::unionA* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::unionA* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::unionA const* obj) {
@@ -2076,8 +2076,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structB>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structB* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::structB>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structB* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structB>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::structB const* obj) {
@@ -2798,8 +2798,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structC* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::structC* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::structC const* obj) {
@@ -2988,8 +2988,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct1>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct1* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct1>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct1* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct1>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct1 const* obj) {
@@ -3200,8 +3200,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct2>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct2* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct2>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct2* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct2>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct2 const* obj) {
@@ -3610,8 +3610,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct3>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct3* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct3>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct3* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct3>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct3 const* obj) {
@@ -3752,8 +3752,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct4>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct4* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct4>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct4* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct4>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct4 const* obj) {
@@ -3925,8 +3925,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct5* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct5* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct5 const* obj) {
@@ -4031,8 +4031,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_binary>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_binary* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct_binary>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_binary* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_binary>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_binary const* obj) {
@@ -4175,8 +4175,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_A_struct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_A_struct* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_A_struct const* obj) {
@@ -4277,8 +4277,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::annotated* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::annotated* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::annotated const* obj) {
@@ -5938,8 +5938,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union_with_special_names>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union_with_special_names* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::union_with_special_names>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::union_with_special_names* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::union_with_special_names>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::union_with_special_names const* obj) {
@@ -6661,8 +6661,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_special_names>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_special_names* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_special_names>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_special_names* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_special_names>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_special_names const* obj) {
@@ -6838,8 +6838,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {

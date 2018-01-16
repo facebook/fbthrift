@@ -68,8 +68,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     reader.setInput(buf.get());
 
     TypeParam obj;
-    EXPECT_EQ(size,
-              apache::thrift::Cpp2Ops<TypeParam>::read(&reader, &obj));
+    apache::thrift::Cpp2Ops<TypeParam>::read(&reader, &obj);
+    EXPECT_EQ(size, reader.getCurrentPosition().getCurrentPosition());
 
     EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::num_test_value(), obj.num);
     EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::str_test_value(), obj.str);

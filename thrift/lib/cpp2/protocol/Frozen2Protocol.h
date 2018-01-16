@@ -98,7 +98,7 @@ class Frozen2ProtocolReader {
     in_ = cursor;
   }
   void setInput(const folly::IOBuf* buf) {
-    setInput(folly::io::Cursor(buf));
+    in_.reset(buf);
   }
 
   inline uint32_t
@@ -112,12 +112,15 @@ class Frozen2ProtocolReader {
   template <typename ViewType>
   inline uint32_t readObject(frozen::Bundled<ViewType>&);
 
-  uint32_t skip(TType type) {
+  void skip(TType type) {
     if (type == TType::T_STRUCT) {
       std::string str;
-      return readString(str);
+      readString(str);
     }
-    return 0;
+  }
+
+  const folly::io::Cursor& getCurrentPosition() const {
+    return in_;
   }
 
  protected:

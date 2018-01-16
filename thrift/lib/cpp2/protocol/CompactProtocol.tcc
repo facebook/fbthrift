@@ -483,19 +483,19 @@ uint32_t CompactProtocolWriter::serializedSizeZCBinary(
  * Reading functions
  */
 
-uint32_t CompactProtocolReader::readMessageBegin(std::string& name,
-                                                MessageType& messageType,
-                                                int32_t& seqid) {
-  uint32_t rsize = 0;
+void CompactProtocolReader::readMessageBegin(
+    std::string& name,
+    MessageType& messageType,
+    int32_t& seqid) {
   int8_t protocolId;
   int8_t versionAndType;
 
-  rsize += readByte(protocolId);
+  readByte(protocolId);
   if (protocolId != detail::compact::PROTOCOL_ID) {
     throwBadProtocolIdentifier();
   }
 
-  rsize += readByte(versionAndType);
+  readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
       detail::compact::COMPACT_PROTOCOL_VERSION) {
     throwBadProtocolVersion();
@@ -504,53 +504,47 @@ uint32_t CompactProtocolReader::readMessageBegin(std::string& name,
   messageType = (MessageType)
     ((uint8_t)(versionAndType & detail::compact::TYPE_MASK) >>
      detail::compact::TYPE_SHIFT_AMOUNT);
-  rsize += apache::thrift::util::readVarint(in_, seqid);
-  rsize += readString(name);
-
-  return rsize;
+  apache::thrift::util::readVarint(in_, seqid);
+  readString(name);
 }
 
-uint32_t CompactProtocolReader::readMessageEnd() {
-  return 0;
-}
+void CompactProtocolReader::readMessageEnd() {}
 
-uint32_t CompactProtocolReader::readStructBegin(std::string& name) {
+void CompactProtocolReader::readStructBegin(std::string& name) {
   if (!name.empty()) {
     name.clear();
   }
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
-  return 0;
 }
 
-uint32_t CompactProtocolReader::readStructEnd() {
+void CompactProtocolReader::readStructEnd() {
   lastFieldId_ = lastField_.top();
   lastField_.pop();
-  return 0;
 }
 
-uint32_t CompactProtocolReader::readFieldBegin(std::string& /*name*/,
-                                              TType& fieldType,
-                                              int16_t& fieldId) {
-  uint32_t rsize = 0;
+void CompactProtocolReader::readFieldBegin(
+    std::string& /*name*/,
+    TType& fieldType,
+    int16_t& fieldId) {
   int8_t byte;
   int8_t type;
 
-  rsize += readByte(byte);
+  readByte(byte);
   type = (byte & 0x0f);
 
   // if it's a stop, then we can return immediately, as the struct is over.
   if (type == TType::T_STOP) {
     fieldType = TType::T_STOP;
     fieldId = 0;
-    return rsize;
+    return;
   }
 
   // mask off the 4 MSB of the type header. it could contain a field id delta.
   int16_t modifier = (int16_t)(((uint8_t)byte & 0xf0) >> 4);
   if (modifier == 0) {
     // not a delta, look ahead for the zigzag varint field id.
-    rsize += readI16(fieldId);
+    readI16(fieldId);
   } else {
     fieldId = (int16_t)(lastFieldId_ + modifier);
   }
@@ -567,23 +561,21 @@ uint32_t CompactProtocolReader::readFieldBegin(std::string& /*name*/,
 
   // push the new field onto the field stack so we can keep the deltas going.
   lastFieldId_ = fieldId;
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readFieldEnd() {
-  return 0;
-}
+void CompactProtocolReader::readFieldEnd() {}
 
-uint32_t CompactProtocolReader::readMapBegin(TType& keyType,
-                                            TType& valType,
-                                            uint32_t& size) {
-  uint32_t rsize = 0;
+void CompactProtocolReader::readMapBegin(
+    TType& keyType,
+    TType& valType,
+    uint32_t& size) {
   int8_t kvType = 0;
   int32_t msize = 0;
 
-  rsize += apache::thrift::util::readVarint(in_, msize);
-  if (msize != 0)
-    rsize += readByte(kvType);
+  apache::thrift::util::readVarint(in_, msize);
+  if (msize != 0) {
+    readByte(kvType);
+  }
 
   if (msize < 0) {
     TProtocolException::throwNegativeSize();
@@ -594,25 +586,19 @@ uint32_t CompactProtocolReader::readMapBegin(TType& keyType,
   keyType = getType((int8_t)((uint8_t)kvType >> 4));
   valType = getType((int8_t)((uint8_t)kvType & 0xf));
   size = (uint32_t)msize;
-
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readMapEnd() {
-  return 0;
-}
+void CompactProtocolReader::readMapEnd() {}
 
-uint32_t CompactProtocolReader::readListBegin(TType& elemType,
-                                             uint32_t& size) {
+void CompactProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   int8_t size_and_type;
-  uint32_t rsize = 0;
   int32_t lsize;
 
-  rsize += readByte(size_and_type);
+  readByte(size_and_type);
 
   lsize = ((uint8_t)size_and_type >> 4) & 0x0f;
   if (lsize == 15) {
-    rsize += apache::thrift::util::readVarint(in_, lsize);
+    apache::thrift::util::readVarint(in_, lsize);
   }
 
   if (lsize < 0) {
@@ -623,89 +609,73 @@ uint32_t CompactProtocolReader::readListBegin(TType& elemType,
 
   elemType = getType((int8_t)(size_and_type & 0x0f));
   size = (uint32_t)lsize;
-
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readListEnd() {
-  return 0;
+void CompactProtocolReader::readListEnd() {}
+
+void CompactProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
+  readListBegin(elemType, size);
 }
 
-uint32_t CompactProtocolReader::readSetBegin(TType& elemType,
-                                            uint32_t& size) {
-  return readListBegin(elemType, size);
-}
+void CompactProtocolReader::readSetEnd() {}
 
-uint32_t CompactProtocolReader::readSetEnd() {
-  return 0;
-}
-
-uint32_t CompactProtocolReader::readBool(bool& value) {
+void CompactProtocolReader::readBool(bool& value) {
   if (boolValue_.hasBoolValue == true) {
     value = boolValue_.boolValue;
     boolValue_.hasBoolValue = false;
-    return 0;
   } else {
     int8_t val;
     readByte(val);
     value = (val == detail::compact::CT_BOOLEAN_TRUE);
-    return 1;
   }
 }
 
-uint32_t CompactProtocolReader::readBool(std::vector<bool>::reference value) {
+void CompactProtocolReader::readBool(std::vector<bool>::reference value) {
   bool ret = false;
-  uint32_t sz = readBool(ret);
+  readBool(ret);
   value = ret;
-  return sz;
 }
 
-uint32_t CompactProtocolReader::readByte(int8_t& byte) {
+void CompactProtocolReader::readByte(int8_t& byte) {
   byte = in_.read<int8_t>();
-  return 1;
 }
 
-uint32_t CompactProtocolReader::readI16(int16_t& i16) {
+void CompactProtocolReader::readI16(int16_t& i16) {
   int32_t value;
-  uint32_t rsize = apache::thrift::util::readVarint(in_, value);
+  apache::thrift::util::readVarint(in_, value);
   i16 = (int16_t)apache::thrift::util::zigzagToI32(value);
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readI32(int32_t& i32) {
+void CompactProtocolReader::readI32(int32_t& i32) {
   int32_t value;
-  uint32_t rsize = apache::thrift::util::readVarint(in_, value);
+  apache::thrift::util::readVarint(in_, value);
   i32 = apache::thrift::util::zigzagToI32(value);
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readI64(int64_t& i64) {
+void CompactProtocolReader::readI64(int64_t& i64) {
   uint64_t value;
-  uint32_t rsize = apache::thrift::util::readVarint(in_, value);
+  apache::thrift::util::readVarint(in_, value);
   i64 = apache::thrift::util::zigzagToI64(value);
-  return rsize;
 }
 
-uint32_t CompactProtocolReader::readDouble(double& dub) {
+void CompactProtocolReader::readDouble(double& dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = in_.readBE<int64_t>();
   dub = bitwise_cast<double>(bits);
-  return 8;
 }
 
-uint32_t CompactProtocolReader::readFloat(float& flt) {
+void CompactProtocolReader::readFloat(float& flt) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
   uint32_t bits = in_.readBE<int32_t>();
   flt = bitwise_cast<float>(bits);
-  return 4;
 }
 
-uint32_t CompactProtocolReader::readStringSize(int32_t& size) {
-  uint32_t rsize = apache::thrift::util::readVarint(in_, size);
+void CompactProtocolReader::readStringSize(int32_t& size) {
+  apache::thrift::util::readVarint(in_, size);
 
   // Catch error cases
   if (size < 0) {
@@ -714,12 +684,10 @@ uint32_t CompactProtocolReader::readStringSize(int32_t& size) {
   if (string_limit_ > 0 && size > string_limit_) {
     TProtocolException::throwExceededSizeLimit();
   }
-
-  return rsize;
 }
 
-template<typename StrType>
-uint32_t CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
+template <typename StrType>
+void CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
   str.reserve(size);
   str.clear();
   size_t size_left = size;
@@ -734,38 +702,35 @@ uint32_t CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
     size_left -= data_avail;
     in_.skipNoAdvance(data_avail);
   }
-  return (uint32_t)size;
 }
 
-template<typename StrType>
-uint32_t CompactProtocolReader::readString(StrType& str) {
+template <typename StrType>
+void CompactProtocolReader::readString(StrType& str) {
   int32_t size = 0;
-  uint32_t rsize = readStringSize(size);
-
-  return rsize + readStringBody(str, size);
+  readStringSize(size);
+  readStringBody(str, size);
 }
 
 template <class StrType>
-uint32_t CompactProtocolReader::readBinary(StrType& str) {
-  return readString(str);
+void CompactProtocolReader::readBinary(StrType& str) {
+  readString(str);
 }
 
-uint32_t CompactProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
+void CompactProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
   if (!str) {
     str = std::make_unique<folly::IOBuf>();
   }
-  return readBinary(*str);
+  readBinary(*str);
 }
 
-uint32_t CompactProtocolReader::readBinary(folly::IOBuf& str) {
+void CompactProtocolReader::readBinary(folly::IOBuf& str) {
   int32_t size = 0;
-  uint32_t rsize = readStringSize(size);
+  readStringSize(size);
 
   in_.clone(str, size);
   if (sharing_ != SHARE_EXTERNAL_BUFFER) {
     str.makeManaged();
   }
-  return rsize + (uint32_t) size;
 }
 
 TType CompactProtocolReader::getType(int8_t type) {

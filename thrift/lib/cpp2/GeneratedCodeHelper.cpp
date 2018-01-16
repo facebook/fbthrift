@@ -106,8 +106,8 @@ bool deserializeMessageBegin(
   ProtocolReader iprot;
   iprot.setInput(buf);
   try {
-    auto bytes = iprot.readMessageBegin(fname, mtype, protoSeqId);
-    ctx->setMessageBeginSize(bytes);
+    iprot.readMessageBegin(fname, mtype, protoSeqId);
+    ctx->setMessageBeginSize(iprot.getCurrentPosition().getCurrentPosition());
   } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
     auto type =
@@ -171,10 +171,9 @@ Optional<string> get_cache_key(
       return none;
     }
     auto cacheKeyParamId = pfn->second;
-    uint32_t xfer = 0;
-    xfer += iprot.readStructBegin(pname);
+    iprot.readStructBegin(pname);
     while (true) {
-      xfer += iprot.readFieldBegin(pname, ftype, fid);
+      iprot.readFieldBegin(pname, ftype, fid);
       if (ftype == T_STOP) {
         break;
       }
@@ -183,8 +182,8 @@ Optional<string> get_cache_key(
         iprot.readString(cacheKey);
         return Optional<string>(move(cacheKey));
       }
-      xfer += iprot.skip(ftype);
-      xfer += iprot.readFieldEnd();
+      iprot.skip(ftype);
+      iprot.readFieldEnd();
     }
     return none;
   } catch( const exception& e) {

@@ -166,8 +166,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::write(Pr
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::read(Protocol* proto,  ::cpp2::Color* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::Color>::read(Protocol* proto,  ::cpp2::Color* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::serializedSize(Protocol const* proto,  ::cpp2::Color const* obj) {
@@ -274,8 +274,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::write(
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::read(Protocol* proto,  ::cpp2::Vehicle* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::Vehicle>::read(Protocol* proto,  ::cpp2::Vehicle* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::serializedSize(Protocol const* proto,  ::cpp2::Vehicle const* obj) {
@@ -417,8 +417,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::write(P
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::read(Protocol* proto,  ::cpp2::Person* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::Person>::read(Protocol* proto,  ::cpp2::Person* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::serializedSize(Protocol const* proto,  ::cpp2::Person const* obj) {

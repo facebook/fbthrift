@@ -164,11 +164,11 @@ void swap(ModuleA& a, ModuleA& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t ModuleA::read<>(apache::thrift::BinaryProtocolReader*);
+template void ModuleA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t ModuleA::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t ModuleA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ModuleA::read<>(apache::thrift::CompactProtocolReader*);
+template void ModuleA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ModuleA::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -219,11 +219,11 @@ void swap(ModuleB& a, ModuleB& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t ModuleB::read<>(apache::thrift::BinaryProtocolReader*);
+template void ModuleB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t ModuleB::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t ModuleB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ModuleB::read<>(apache::thrift::CompactProtocolReader*);
+template void ModuleB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

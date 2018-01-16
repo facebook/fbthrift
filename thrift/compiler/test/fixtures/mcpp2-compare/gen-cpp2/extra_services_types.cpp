@@ -179,15 +179,15 @@ void swap(containerStruct2& a, containerStruct2& b) {
   swap(a.opt_fieldE, b.opt_fieldE);
 }
 
-template uint32_t containerStruct2::read<>(apache::thrift::BinaryProtocolReader*);
+template void containerStruct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t containerStruct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t containerStruct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t containerStruct2::read<>(apache::thrift::CompactProtocolReader*);
+template void containerStruct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t containerStruct2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t containerStruct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t containerStruct2::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void containerStruct2::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t containerStruct2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;

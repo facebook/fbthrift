@@ -65,11 +65,11 @@ void swap(Included& a, Included& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t Included::read<>(apache::thrift::BinaryProtocolReader*);
+template void Included::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Included::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Included::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Included::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Included::read<>(apache::thrift::CompactProtocolReader*);
+template void Included::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Included::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Included::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Included::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

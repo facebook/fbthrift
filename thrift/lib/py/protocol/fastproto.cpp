@@ -654,18 +654,8 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
     }
 
     if (itemspec == Py_None) {
-      if (!reader->skip(ftype)) {
-        if (ftype == TType::T_BOOL &&
-            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
-          // readBool may return 0 in compact.
-          continue;
-        }
-        PyErr_SetString(PyExc_TypeError,
-            "Can't skip nonexistent struct field");
-        return false;
-      } else {
-        continue;
-      }
+      reader->skip(ftype);
+      continue;
     }
 
     if (fid == 0) {
@@ -675,18 +665,8 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
     }
 
     if (parsedspec.type != ftype) {
-      if (!reader->skip(ftype)) {
-        if (ftype == TType::T_BOOL &&
-            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
-          // readBool may return 0 in compact.
-          continue;
-        }
-        PyErr_SetString(PyExc_TypeError,
-            "struct field had wrong type while reading and can't be skipped");
-        return false;
-      } else {
-        continue;
-      }
+      reader->skip(ftype);
+      continue;
     }
 
     fieldval = decode_val(

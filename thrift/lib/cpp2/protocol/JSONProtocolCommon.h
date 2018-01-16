@@ -159,7 +159,9 @@ class JSONProtocolReaderCommon {
    * set to some other buffer.
    */
   void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
-  void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
+  void setInput(const folly::IOBuf* buf) {
+    in_.reset(buf);
+  }
 
   inline uint32_t readMessageBegin(std::string& name,
                                    MessageType& messageType,
@@ -180,7 +182,7 @@ class JSONProtocolReaderCommon {
 
   inline uint32_t skip(TType type);
 
-  folly::io::Cursor getCurrentPosition() const {
+  const folly::io::Cursor& getCurrentPosition() const {
     return in_;
   }
 

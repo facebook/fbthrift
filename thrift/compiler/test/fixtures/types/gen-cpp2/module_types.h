@@ -236,17 +236,29 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< decorated_struct >;
 };
 
 void swap(decorated_struct& a, decorated_struct& b);
-extern template uint32_t decorated_struct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void decorated_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t decorated_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t decorated_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t decorated_struct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void decorated_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t decorated_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t decorated_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t decorated_struct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
@@ -263,8 +275,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::decorated_struct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::decorated_struct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::decorated_struct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::decorated_struct* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::decorated_struct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::decorated_struct const* obj) {
@@ -457,17 +469,29 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ContainerStruct >;
 };
 
 void swap(ContainerStruct& a, ContainerStruct& b);
-extern template uint32_t ContainerStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void ContainerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t ContainerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t ContainerStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void ContainerStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t ContainerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ContainerStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
@@ -484,8 +508,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::ContainerStruct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::ContainerStruct* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::ContainerStruct const* obj) {
@@ -560,17 +584,29 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< VirtualStruct >;
 };
 
 void swap(VirtualStruct& a, VirtualStruct& b);
-extern template uint32_t VirtualStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void VirtualStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t VirtualStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t VirtualStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void VirtualStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t VirtualStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
@@ -587,8 +623,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::VirtualStruct* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::VirtualStruct* obj) {
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::VirtualStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::VirtualStruct const* obj) {

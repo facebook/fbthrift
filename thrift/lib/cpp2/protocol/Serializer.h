@@ -44,7 +44,9 @@ struct Serializer {
 
     // This can be obj.read(&reader);
     // if you don't need to support thrift1-compatibility types
-    return apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
+    apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
+
+    return reader.getCurrentPosition().getCurrentPosition();
   }
 
   template <class T>

@@ -82,11 +82,11 @@ void swap(SmallStruct& a, SmallStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t SmallStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template void SmallStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t SmallStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t SmallStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SmallStruct::read<>(apache::thrift::CompactProtocolReader*);
+template void SmallStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t SmallStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SmallStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
@@ -518,11 +518,11 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t containerStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template void containerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t containerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t containerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t containerStruct::read<>(apache::thrift::CompactProtocolReader*);
+template void containerStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t containerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t containerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;

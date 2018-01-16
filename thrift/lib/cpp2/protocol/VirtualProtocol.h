@@ -43,40 +43,38 @@ class VirtualReaderBase {
   virtual void setInput(const folly::io::Cursor& cursor) = 0;
   void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
 
-  virtual uint32_t readMessageBegin(std::string& name,
-                                   MessageType& messageType,
-                                   int32_t& seqid) = 0;
-  virtual uint32_t readMessageEnd() = 0;
-  virtual uint32_t readStructBegin(std::string& name) = 0;
-  virtual uint32_t readStructEnd() = 0;
-  virtual uint32_t readFieldBegin(std::string& name,
-                                 TType& fieldType,
-                                 int16_t& fieldId) = 0;
-  virtual uint32_t readFieldEnd() = 0;
-  virtual uint32_t readMapBegin(TType& keyType,
-                               TType& valType,
-                               uint32_t& size) = 0;
-  virtual uint32_t readMapEnd() = 0;
-  virtual uint32_t readListBegin(TType& elemType, uint32_t& size) = 0;
-  virtual uint32_t readListEnd() = 0;
-  virtual uint32_t readSetBegin(TType& elemType, uint32_t& size) = 0;
-  virtual uint32_t readSetEnd() = 0;
-  virtual uint32_t readBool(bool& value) = 0;
-  virtual uint32_t readBool(std::vector<bool>::reference value) = 0;
-  virtual uint32_t readByte(int8_t& byte) = 0;
-  virtual uint32_t readI16(int16_t& i16) = 0;
-  virtual uint32_t readI32(int32_t& i32) = 0;
-  virtual uint32_t readI64(int64_t& i64) = 0;
-  virtual uint32_t readDouble(double& dub) = 0;
-  virtual uint32_t readFloat(float& flt) = 0;
-  virtual uint32_t readString(std::string& str) = 0;
-  virtual uint32_t readString(folly::fbstring& str) = 0;
-  virtual uint32_t readBinary(std::string& str) = 0;
-  virtual uint32_t readBinary(folly::fbstring& str) = 0;
-  virtual uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
-  virtual uint32_t readBinary(folly::IOBuf& str) = 0;
-  virtual uint32_t skip(TType type) = 0;
-  virtual folly::io::Cursor getCurrentPosition() const = 0;
+  virtual void readMessageBegin(
+      std::string& name,
+      MessageType& messageType,
+      int32_t& seqid) = 0;
+  virtual void readMessageEnd() = 0;
+  virtual void readStructBegin(std::string& name) = 0;
+  virtual void readStructEnd() = 0;
+  virtual void
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) = 0;
+  virtual void readFieldEnd() = 0;
+  virtual void readMapBegin(TType& keyType, TType& valType, uint32_t& size) = 0;
+  virtual void readMapEnd() = 0;
+  virtual void readListBegin(TType& elemType, uint32_t& size) = 0;
+  virtual void readListEnd() = 0;
+  virtual void readSetBegin(TType& elemType, uint32_t& size) = 0;
+  virtual void readSetEnd() = 0;
+  virtual void readBool(bool& value) = 0;
+  virtual void readBool(std::vector<bool>::reference value) = 0;
+  virtual void readByte(int8_t& byte) = 0;
+  virtual void readI16(int16_t& i16) = 0;
+  virtual void readI32(int32_t& i32) = 0;
+  virtual void readI64(int64_t& i64) = 0;
+  virtual void readDouble(double& dub) = 0;
+  virtual void readFloat(float& flt) = 0;
+  virtual void readString(std::string& str) = 0;
+  virtual void readString(folly::fbstring& str) = 0;
+  virtual void readBinary(std::string& str) = 0;
+  virtual void readBinary(folly::fbstring& str) = 0;
+  virtual void readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
+  virtual void readBinary(folly::IOBuf& str) = 0;
+  virtual void skip(TType type) = 0;
+  virtual const folly::io::Cursor& getCurrentPosition() const = 0;
   virtual uint32_t readFromPositionAndAppend(
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf>& ser) = 0;
@@ -200,68 +198,92 @@ class VirtualReader : public VirtualReaderBase {
     protocol_.setInput(cursor);
   }
 
-  uint32_t readMessageBegin(std::string& name,
-                            MessageType& messageType,
-                            int32_t& seqid) override {
-    return protocol_.readMessageBegin(name, messageType, seqid);
+  void readMessageBegin(
+      std::string& name,
+      MessageType& messageType,
+      int32_t& seqid) override {
+    protocol_.readMessageBegin(name, messageType, seqid);
   }
-  uint32_t readMessageEnd() override { return protocol_.readMessageEnd(); }
-  uint32_t readStructBegin(std::string& name) override {
-    return protocol_.readStructBegin(name);
+  void readMessageEnd() override {
+    protocol_.readMessageEnd();
   }
-  uint32_t readStructEnd() override { return protocol_.readStructEnd(); }
-  uint32_t readFieldBegin(std::string& name,
-                          TType& fieldType,
-                          int16_t& fieldId) override {
-    return protocol_.readFieldBegin(name, fieldType, fieldId);
+  void readStructBegin(std::string& name) override {
+    protocol_.readStructBegin(name);
   }
-  uint32_t readFieldEnd() override { return protocol_.readFieldEnd(); }
-  uint32_t readMapBegin(TType& keyType,
-                        TType& valType,
-                        uint32_t& size) override {
-    return protocol_.readMapBegin(keyType, valType, size);
+  void readStructEnd() override {
+    protocol_.readStructEnd();
   }
-  uint32_t readMapEnd() override { return protocol_.readMapEnd(); }
-  uint32_t readListBegin(TType& elemType, uint32_t& size) override {
-    return protocol_.readListBegin(elemType, size);
+  void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId)
+      override {
+    protocol_.readFieldBegin(name, fieldType, fieldId);
   }
-  uint32_t readListEnd() override { return protocol_.readListEnd(); }
-  uint32_t readSetBegin(TType& elemType, uint32_t& size) override {
-    return protocol_.readSetBegin(elemType, size);
+  void readFieldEnd() override {
+    protocol_.readFieldEnd();
   }
-  uint32_t readSetEnd() override { return protocol_.readSetEnd(); }
-  uint32_t readBool(bool& value) override { return protocol_.readBool(value); }
-  uint32_t readBool(std::vector<bool>::reference value) override {
-    return protocol_.readBool(value);
+  void readMapBegin(TType& keyType, TType& valType, uint32_t& size) override {
+    protocol_.readMapBegin(keyType, valType, size);
   }
-  uint32_t readByte(int8_t& byte) override { return protocol_.readByte(byte); }
-  uint32_t readI16(int16_t& i16) override { return protocol_.readI16(i16); }
-  uint32_t readI32(int32_t& i32) override { return protocol_.readI32(i32); }
-  uint32_t readI64(int64_t& i64) override { return protocol_.readI64(i64); }
-  uint32_t readDouble(double& dub) override {
-    return protocol_.readDouble(dub);
+  void readMapEnd() override {
+    protocol_.readMapEnd();
   }
-  uint32_t readFloat(float& flt) override { return protocol_.readFloat(flt); }
-  uint32_t readString(std::string& str) override {
-    return protocol_.readString(str);
+  void readListBegin(TType& elemType, uint32_t& size) override {
+    protocol_.readListBegin(elemType, size);
   }
-  uint32_t readString(folly::fbstring& str) override {
-    return protocol_.readString(str);
+  void readListEnd() override {
+    protocol_.readListEnd();
   }
-  uint32_t readBinary(std::string& str) override {
-    return protocol_.readBinary(str);
+  void readSetBegin(TType& elemType, uint32_t& size) override {
+    protocol_.readSetBegin(elemType, size);
   }
-  uint32_t readBinary(folly::fbstring& str) override {
-    return protocol_.readBinary(str);
+  void readSetEnd() override {
+    protocol_.readSetEnd();
   }
-  uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) override {
-    return protocol_.readBinary(str);
+  void readBool(bool& value) override {
+    protocol_.readBool(value);
   }
-  uint32_t readBinary(folly::IOBuf& str) override {
-    return protocol_.readBinary(str);
+  void readBool(std::vector<bool>::reference value) override {
+    protocol_.readBool(value);
   }
-  uint32_t skip(TType type) override { return protocol_.skip(type); }
-  folly::io::Cursor getCurrentPosition() const override {
+  void readByte(int8_t& byte) override {
+    protocol_.readByte(byte);
+  }
+  void readI16(int16_t& i16) override {
+    protocol_.readI16(i16);
+  }
+  void readI32(int32_t& i32) override {
+    protocol_.readI32(i32);
+  }
+  void readI64(int64_t& i64) override {
+    protocol_.readI64(i64);
+  }
+  void readDouble(double& dub) override {
+    protocol_.readDouble(dub);
+  }
+  void readFloat(float& flt) override {
+    protocol_.readFloat(flt);
+  }
+  void readString(std::string& str) override {
+    protocol_.readString(str);
+  }
+  void readString(folly::fbstring& str) override {
+    protocol_.readString(str);
+  }
+  void readBinary(std::string& str) override {
+    protocol_.readBinary(str);
+  }
+  void readBinary(folly::fbstring& str) override {
+    protocol_.readBinary(str);
+  }
+  void readBinary(std::unique_ptr<folly::IOBuf>& str) override {
+    protocol_.readBinary(str);
+  }
+  void readBinary(folly::IOBuf& str) override {
+    protocol_.readBinary(str);
+  }
+  void skip(TType type) override {
+    protocol_.skip(type);
+  }
+  const folly::io::Cursor& getCurrentPosition() const override {
     return protocol_.getCurrentPosition();
   }
   uint32_t readFromPositionAndAppend(

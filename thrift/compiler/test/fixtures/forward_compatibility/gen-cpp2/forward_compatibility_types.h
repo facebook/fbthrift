@@ -124,8 +124,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::w
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::read(Protocol* proto,  ::cpp2::OldStructure* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::OldStructure>::read(Protocol* proto,  ::cpp2::OldStructure* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::serializedSize(Protocol const* proto,  ::cpp2::OldStructure const* obj) {
@@ -228,8 +228,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::w
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::read(Protocol* proto,  ::cpp2::NewStructure* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructure>::read(Protocol* proto,  ::cpp2::NewStructure* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::serializedSize(Protocol const* proto,  ::cpp2::NewStructure const* obj) {
@@ -325,8 +325,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::read(Protocol* proto,  ::cpp2::NewStructure2* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructure2>::read(Protocol* proto,  ::cpp2::NewStructure2* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::serializedSize(Protocol const* proto,  ::cpp2::NewStructure2 const* obj) {
@@ -458,8 +458,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNested>::read(Protocol* proto,  ::cpp2::NewStructureNested* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructureNested>::read(Protocol* proto,  ::cpp2::NewStructureNested* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNested>::serializedSize(Protocol const* proto,  ::cpp2::NewStructureNested const* obj) {
@@ -555,8 +555,8 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNestedField>::read(Protocol* proto,  ::cpp2::NewStructureNestedField* obj) {
-  return obj->read(proto);
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructureNestedField>::read(Protocol* proto,  ::cpp2::NewStructureNestedField* obj) {
+  obj->read(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNestedField>::serializedSize(Protocol const* proto,  ::cpp2::NewStructureNestedField const* obj) {

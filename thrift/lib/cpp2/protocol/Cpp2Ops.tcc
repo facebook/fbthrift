@@ -67,8 +67,8 @@ class Cpp2Ops<folly::fbstring> {
     return prot->writeString(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readString(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readString(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -92,8 +92,8 @@ class Cpp2Ops<std::string> {
     return prot->writeString(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readString(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readString(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -117,8 +117,8 @@ class Cpp2Ops<int8_t> {
     return prot->writeByte(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readByte(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readByte(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -142,8 +142,8 @@ class Cpp2Ops<int16_t> {
     return prot->writeI16(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readI16(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readI16(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -167,8 +167,8 @@ class Cpp2Ops<int32_t> {
     return prot->writeI32(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readI32(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readI32(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -192,8 +192,8 @@ class Cpp2Ops<int64_t> {
     return prot->writeI64(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readI64(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readI64(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -217,8 +217,8 @@ class Cpp2Ops<bool> {
     return prot->writeBool(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readBool(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readBool(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -242,8 +242,8 @@ class Cpp2Ops<double> {
     return prot->writeDouble(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readDouble(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readDouble(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -267,8 +267,8 @@ class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type> {
     return prot->writeI32(static_cast<int32_t>(*value));
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readI32(reinterpret_cast<int32_t&>(*value));
+  static void read(Protocol* prot, Type* value) {
+    prot->readI32(reinterpret_cast<int32_t&>(*value));
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -292,8 +292,8 @@ class Cpp2Ops<float> {
     return prot->writeFloat(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readFloat(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readFloat(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -308,18 +308,15 @@ class Cpp2Ops<float> {
 namespace detail {
 
 template <class Protocol, class V>
-uint32_t readIntoVector(Protocol* prot, V& vec) {
+void readIntoVector(Protocol* prot, V& vec) {
   typedef typename V::value_type ElemType;
-  uint32_t xfer = 0;
   for (auto& e : vec) {
-    xfer += Cpp2Ops<ElemType>::read(prot, &e);
+    Cpp2Ops<ElemType>::read(prot, &e);
   }
-  return xfer;
 }
 
 template <class Protocol>
-uint32_t readIntoVector(Protocol* prot, std::vector<bool>& vec) {
-  uint32_t xfer = 0;
+void readIntoVector(Protocol* prot, std::vector<bool>& vec) {
   for (auto e : vec) {
     // e is a proxy object because the elements don't have distinct addresses
     // (packed into a bitvector). We actually copy the proxy during iteration
@@ -327,10 +324,9 @@ uint32_t readIntoVector(Protocol* prot, std::vector<bool>& vec) {
     // use const reference because we modify it), but it still points to the
     // actual element.
     bool b;
-    xfer += Cpp2Ops<bool>::read(prot, &b);
+    Cpp2Ops<bool>::read(prot, &b);
     e = b;
   }
-  return xfer;
 }
 
 } // namespace detail
@@ -355,16 +351,14 @@ class Cpp2Ops<L, folly::void_t<detail::push_back_result<L>>> {
     return xfer;
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
+  static void read(Protocol* prot, Type* value) {
     value->clear();
-    uint32_t xfer = 0;
     uint32_t size;
     protocol::TType etype;
-    xfer += prot->readListBegin(etype, size);
+    prot->readListBegin(etype, size);
     value->resize(size);
-    xfer += detail::readIntoVector(prot, *value);
-    xfer += prot->readListEnd();
-    return xfer;
+    detail::readIntoVector(prot, *value);
+    prot->readListEnd();
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -411,21 +405,19 @@ class Cpp2Ops<S, folly::void_t<detail::insert_key_result<S>>> {
     return xfer;
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
+  static void read(Protocol* prot, Type* value) {
     typedef typename Type::key_type ElemType;
     value->clear();
-    uint32_t xfer = 0;
     uint32_t size;
     protocol::TType etype;
-    xfer += prot->readSetBegin(etype, size);
+    prot->readSetBegin(etype, size);
     detail::Reserver<Type>::reserve(*value, size);
     for (uint32_t i = 0; i < size; i++) {
       ElemType elem;
-      xfer += Cpp2Ops<ElemType>::read(prot, &elem);
+      Cpp2Ops<ElemType>::read(prot, &elem);
       value->insert(std::move(elem));
     }
-    xfer += prot->readSetEnd();
-    return xfer;
+    prot->readSetEnd();
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -479,7 +471,7 @@ class Cpp2Ops<M, folly::void_t<detail::subscript_key_result<M>>> {
     return xfer;
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
+  static void read(Protocol* prot, Type* value) {
     typedef typename Type::key_type KeyType;
     // We do this dance with decltype rather than just using Type::mapped_type
     // because different map implementations (such as Google's dense_hash_map)
@@ -488,19 +480,17 @@ class Cpp2Ops<M, folly::void_t<detail::subscript_key_result<M>>> {
         *value->begin())>::type>::type PairType;
     typedef typename PairType::second_type ValueType;
     value->clear();
-    uint32_t xfer = 0;
     uint32_t size;
     protocol::TType keytype, valuetype;
-    xfer += prot->readMapBegin(keytype, valuetype, size);
+    prot->readMapBegin(keytype, valuetype, size);
     detail::Reserver<Type>::reserve(*value, size);
     for (uint32_t i = 0; i < size; i++) {
       KeyType key;
-      xfer += Cpp2Ops<KeyType>::read(prot, &key);
+      Cpp2Ops<KeyType>::read(prot, &key);
       auto& val = (*value)[std::move(key)];
-      xfer += Cpp2Ops<ValueType>::read(prot, &val);
+      Cpp2Ops<ValueType>::read(prot, &val);
     }
-    xfer += prot->readMapEnd();
-    return xfer;
+    prot->readMapEnd();
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -552,8 +542,8 @@ class Cpp2Ops<folly::IOBuf> {
     return prot->writeBinary(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readBinary(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readBinary(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
@@ -577,8 +567,8 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
     return prot->writeBinary(*value);
   }
   template <class Protocol>
-  static uint32_t read(Protocol* prot, Type* value) {
-    return prot->readBinary(*value);
+  static void read(Protocol* prot, Type* value) {
+    prot->readBinary(*value);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {

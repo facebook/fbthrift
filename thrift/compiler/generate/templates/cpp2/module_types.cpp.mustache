@@ -62,16 +62,16 @@
 <% > module_types_cpp/union_swap%>
 <%/struct:union?%>
 
-template uint32_t <%struct:name%>::read<>(apache::thrift::BinaryProtocolReader*);
+template void <%struct:name%>::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t <%struct:name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t <%struct:name%>::read<>(apache::thrift::CompactProtocolReader*);
+template void <%struct:name%>::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 <%#program:json?%>
-template uint32_t <%struct:name%>::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void <%struct:name%>::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t <%struct:name%>::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 namespace apache { namespace thrift {
@@ -47,21 +46,20 @@ inline uint32_t CompactV1ProtocolWriter::writeDouble(double dub) {
   return sizeof(bits);
 }
 
-inline uint32_t CompactV1ProtocolReader::readMessageBegin(
+inline void CompactV1ProtocolReader::readMessageBegin(
     std::string& name,
     MessageType& messageType,
     int32_t& seqid) {
-  uint32_t rsize = 0;
   int8_t protocolId;
   int8_t versionAndType;
 
-  rsize += readByte(protocolId);
+  readByte(protocolId);
   if (protocolId != detail::compact::PROTOCOL_ID) {
     throw TProtocolException(TProtocolException::BAD_VERSION,
                              "Bad protocol identifier");
   }
 
-  rsize += readByte(versionAndType);
+  readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
       detail::compact_v1::kCompactV1ProtocolVersion) {
     throw TProtocolException(TProtocolException::BAD_VERSION,
@@ -71,19 +69,16 @@ inline uint32_t CompactV1ProtocolReader::readMessageBegin(
   messageType = (MessageType)
     ((versionAndType & detail::compact::TYPE_MASK) >>
      detail::compact::TYPE_SHIFT_AMOUNT);
-  rsize += apache::thrift::util::readVarint(in_, seqid);
-  rsize += readString(name);
-
-  return rsize;
+  apache::thrift::util::readVarint(in_, seqid);
+  readString(name);
 }
 
-inline uint32_t CompactV1ProtocolReader::readDouble(double& dub) {
+inline void CompactV1ProtocolReader::readDouble(double& dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = in_.readLE<int64_t>();
   dub = bitwise_cast<double>(bits);
-  return 8;
 }
 
 }}

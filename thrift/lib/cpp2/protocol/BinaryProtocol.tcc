@@ -353,12 +353,12 @@ uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
  * Reading functions
  */
 
-uint32_t BinaryProtocolReader::readMessageBegin(std::string& name,
-                                                MessageType& messageType,
-                                                int32_t& seqid) {
-  uint32_t result = 0;
+void BinaryProtocolReader::readMessageBegin(
+    std::string& name,
+    MessageType& messageType,
+    int32_t& seqid) {
   int32_t sz;
-  result += readI32(sz);
+  readI32(sz);
 
   if (sz < 0) {
     // Check for correct version number
@@ -367,162 +367,131 @@ uint32_t BinaryProtocolReader::readMessageBegin(std::string& name,
       throwBadVersionIdentifier(sz);
     }
     messageType = (MessageType)(sz & 0x000000ff);
-    result += readString(name);
-    result += readI32(seqid);
+    readString(name);
+    readI32(seqid);
   } else {
     if (this->strict_read_) {
       throwMissingVersionIdentifier(sz);
     } else {
       // Handle pre-versioned input
       int8_t type;
-      result += readStringBody(name, sz);
-      result += readByte(type);
+      readStringBody(name, sz);
+      readByte(type);
       messageType = (MessageType)type;
-      result += readI32(seqid);
+      readI32(seqid);
     }
   }
-
-  return result;
 }
 
-uint32_t BinaryProtocolReader::readMessageEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readMessageEnd() {}
 
-uint32_t BinaryProtocolReader::readStructBegin(std::string& name) {
+void BinaryProtocolReader::readStructBegin(std::string& name) {
   name = "";
-  return 0;
 }
 
-uint32_t BinaryProtocolReader::readStructEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readStructEnd() {}
 
-uint32_t BinaryProtocolReader::readFieldBegin(std::string& /*name*/,
-                                              TType& fieldType,
-                                              int16_t& fieldId) {
-  uint32_t result = 0;
+void BinaryProtocolReader::readFieldBegin(
+    std::string& /*name*/,
+    TType& fieldType,
+    int16_t& fieldId) {
   int8_t type;
-  result += readByte(type);
+  readByte(type);
   fieldType = (TType)type;
   if (fieldType == TType::T_STOP) {
     fieldId = 0;
-    return result;
+    return;
   }
-  result += readI16(fieldId);
-  return result;
+  readI16(fieldId);
 }
 
-uint32_t BinaryProtocolReader::readFieldEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readFieldEnd() {}
 
-uint32_t BinaryProtocolReader::readMapBegin(TType& keyType,
-                                            TType& valType,
-                                            uint32_t& size) {
+void BinaryProtocolReader::readMapBegin(
+    TType& keyType,
+    TType& valType,
+    uint32_t& size) {
   int8_t k, v;
-  uint32_t result = 0;
   int32_t sizei;
-  result += readByte(k);
+  readByte(k);
   keyType = (TType)k;
-  result += readByte(v);
+  readByte(v);
   valType = (TType)v;
-  result += readI32(sizei);
+  readI32(sizei);
   checkContainerSize(sizei);
   size = (uint32_t)sizei;
-  return result;
 }
 
-uint32_t BinaryProtocolReader::readMapEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readMapEnd() {}
 
-uint32_t BinaryProtocolReader::readListBegin(TType& elemType,
-                                             uint32_t& size) {
+void BinaryProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   int8_t e;
-  uint32_t result = 0;
   int32_t sizei;
-  result += readByte(e);
+  readByte(e);
   elemType = (TType)e;
-  result += readI32(sizei);
+  readI32(sizei);
   checkContainerSize(sizei);
   size = (uint32_t)sizei;
-  return result;
 }
 
-uint32_t BinaryProtocolReader::readListEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readListEnd() {}
 
-uint32_t BinaryProtocolReader::readSetBegin(TType& elemType,
-                                            uint32_t& size) {
+void BinaryProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
   int8_t e;
-  uint32_t result = 0;
   int32_t sizei;
-  result += readByte(e);
+  readByte(e);
   elemType = (TType)e;
-  result += readI32(sizei);
+  readI32(sizei);
   checkContainerSize(sizei);
   size = (uint32_t)sizei;
-  return result;
 }
 
-uint32_t BinaryProtocolReader::readSetEnd() {
-  return 0;
-}
+void BinaryProtocolReader::readSetEnd() {}
 
-uint32_t BinaryProtocolReader::readBool(bool& value) {
+void BinaryProtocolReader::readBool(bool& value) {
   auto byte = in_.read<uint8_t>();
   if (byte >= 2) {
     TProtocolException::throwBoolValueOutOfRange(byte);
   }
   value = static_cast<bool>(byte);
-  return 1;
 }
 
-uint32_t BinaryProtocolReader::readBool(std::vector<bool>::reference value) {
+void BinaryProtocolReader::readBool(std::vector<bool>::reference value) {
   bool ret = false;
   readBool(ret);
   value = ret;
-  return 1;
 }
 
-uint32_t BinaryProtocolReader::readByte(int8_t& byte) {
+void BinaryProtocolReader::readByte(int8_t& byte) {
   byte = in_.read<int8_t>();
-  return 1;
 }
 
-uint32_t BinaryProtocolReader::readI16(int16_t& i16) {
+void BinaryProtocolReader::readI16(int16_t& i16) {
   i16 = in_.readBE<int16_t>();
-  return 2;
 }
 
-uint32_t BinaryProtocolReader::readI32(int32_t& i32) {
+void BinaryProtocolReader::readI32(int32_t& i32) {
   i32 = in_.readBE<int32_t>();
-  return 4;
 }
 
-uint32_t BinaryProtocolReader::readI64(int64_t& i64) {
+void BinaryProtocolReader::readI64(int64_t& i64) {
   i64 = in_.readBE<int64_t>();
-  return 8;
 }
 
-uint32_t BinaryProtocolReader::readDouble(double& dub) {
+void BinaryProtocolReader::readDouble(double& dub) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = in_.readBE<int64_t>();
   dub = bitwise_cast<double>(bits);
-  return 8;
 }
 
-uint32_t BinaryProtocolReader::readFloat(float& flt) {
+void BinaryProtocolReader::readFloat(float& flt) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint32_t bits = in_.readBE<int32_t>();
   flt = bitwise_cast<float>(bits);
-  return 4;
 }
 
 void BinaryProtocolReader::checkStringSize(int32_t size) {
@@ -543,50 +512,44 @@ void BinaryProtocolReader::checkContainerSize(int32_t size) {
   }
 }
 
-template<typename StrType>
-uint32_t BinaryProtocolReader::readString(StrType& str) {
-  uint32_t result;
+template <typename StrType>
+void BinaryProtocolReader::readString(StrType& str) {
   int32_t size;
-  result = readI32(size);
-  return result + readStringBody(str, size);
+  readI32(size);
+  readStringBody(str, size);
 }
 
 template <typename StrType>
-uint32_t BinaryProtocolReader::readBinary(StrType& str) {
-  return readString(str);
+void BinaryProtocolReader::readBinary(StrType& str) {
+  readString(str);
 }
 
-uint32_t BinaryProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
+void BinaryProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
   if (!str) {
     str = std::make_unique<folly::IOBuf>();
   }
-  return readBinary(*str);
+  readBinary(*str);
 }
 
-uint32_t BinaryProtocolReader::readBinary(folly::IOBuf& str) {
-  uint32_t result;
+void BinaryProtocolReader::readBinary(folly::IOBuf& str) {
   int32_t size;
-  result = readI32(size);
+  readI32(size);
   checkStringSize(size);
 
   in_.clone(str, size);
   if (sharing_ != SHARE_EXTERNAL_BUFFER) {
     str.makeManaged();
   }
-  return result + (uint32_t)size;
 }
 
-template<typename StrType>
-uint32_t BinaryProtocolReader::readStringBody(StrType& str,
-                                              int32_t size) {
+template <typename StrType>
+void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
   checkStringSize(size);
-
-  uint32_t result = 0;
 
   // Catch empty string case
   if (size == 0) {
     str.clear();
-    return result;
+    return;
   }
 
   str.reserve(size);
@@ -603,15 +566,12 @@ uint32_t BinaryProtocolReader::readStringBody(StrType& str,
     size_left -= data_avail;
     in_.skipNoAdvance(data_avail);
   }
-
-  return (uint32_t) size;
 }
 
 uint32_t BinaryProtocolReader::readFromPositionAndAppend(
     Cursor& snapshot,
     std::unique_ptr<IOBuf>& ser) {
-
-  int32_t size = in_ - snapshot;
+  int32_t size = folly::io::Cursor(in_) - snapshot;
 
   if (ser) {
     std::unique_ptr<IOBuf> newBuf;
