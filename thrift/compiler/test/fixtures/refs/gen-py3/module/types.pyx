@@ -55,14 +55,18 @@ cdef cTypedEnum TypedEnum_to_cpp(value):
         return TypedEnum__VAL2
 
 
-class MyUnionType(__enum.Enum):
+class __MyUnionType(__enum.Enum):
     EMPTY = <int>cMyUnion__type___EMPTY__
     anInteger = <int>cMyUnion__type_anInteger
     aString = <int>cMyUnion__type_aString
 
+MyUnionType = __MyUnionType
+
 cdef class MyUnion(thrift.py3.types.Union):
+    Type = __MyUnionType
+
     def __init__(
-        MyUnion self, *,
+        self, *,
         anInteger=None,
         str aString=None
     ):
@@ -116,7 +120,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != MyUnionType.EMPTY
+        return self.type != MyUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
@@ -127,13 +131,13 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     @property
     def anInteger(self):
-        if self.type != MyUnionType.anInteger:
+        if self.type != MyUnion.Type.anInteger:
             raise TypeError(f'Union contains a value of type {self.type.name}, not anInteger')
         return self.value
 
     @property
     def aString(self):
-        if self.type != MyUnionType.aString:
+        if self.type != MyUnion.Type.aString:
             raise TypeError(f'Union contains a value of type {self.type.name}, not aString')
         return self.value
 
@@ -150,12 +154,12 @@ cdef class MyUnion(thrift.py3.types.Union):
         return f'MyUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(MyUnion self):
-        self.type = MyUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == MyUnionType.EMPTY:
+        self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == MyUnion.Type.EMPTY:
             self.value = None
-        elif self.type == MyUnionType.anInteger:
+        elif self.type == MyUnion.Type.anInteger:
             self.value = deref(self._cpp_obj).get_anInteger()
-        elif self.type == MyUnionType.aString:
+        elif self.type == MyUnion.Type.aString:
             self.value = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
 
     def get_type(MyUnion self):

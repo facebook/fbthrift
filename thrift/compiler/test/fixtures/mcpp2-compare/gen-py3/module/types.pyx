@@ -870,14 +870,18 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
-class SimpleUnionType(__enum.Enum):
+class __SimpleUnionType(__enum.Enum):
     EMPTY = <int>cSimpleUnion__type___EMPTY__
     intValue = <int>cSimpleUnion__type_intValue
     stringValue = <int>cSimpleUnion__type_stringValue
 
+SimpleUnionType = __SimpleUnionType
+
 cdef class SimpleUnion(thrift.py3.types.Union):
+    Type = __SimpleUnionType
+
     def __init__(
-        SimpleUnion self, *,
+        self, *,
         intValue=None,
         str stringValue=None
     ):
@@ -931,7 +935,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != SimpleUnionType.EMPTY
+        return self.type != SimpleUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cSimpleUnion] cpp_obj):
@@ -942,13 +946,13 @@ cdef class SimpleUnion(thrift.py3.types.Union):
 
     @property
     def intValue(self):
-        if self.type != SimpleUnionType.intValue:
+        if self.type != SimpleUnion.Type.intValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def stringValue(self):
-        if self.type != SimpleUnionType.stringValue:
+        if self.type != SimpleUnion.Type.stringValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
@@ -965,12 +969,12 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         return f'SimpleUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(SimpleUnion self):
-        self.type = SimpleUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == SimpleUnionType.EMPTY:
+        self.type = SimpleUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == SimpleUnion.Type.EMPTY:
             self.value = None
-        elif self.type == SimpleUnionType.intValue:
+        elif self.type == SimpleUnion.Type.intValue:
             self.value = deref(self._cpp_obj).get_intValue()
-        elif self.type == SimpleUnionType.stringValue:
+        elif self.type == SimpleUnion.Type.stringValue:
             self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
 
     def get_type(SimpleUnion self):
@@ -1022,7 +1026,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         return (deserialize, (SimpleUnion, serialize(self)))
 
 
-class ComplexUnionType(__enum.Enum):
+class __ComplexUnionType(__enum.Enum):
     EMPTY = <int>cComplexUnion__type___EMPTY__
     intValue = <int>cComplexUnion__type_intValue
     req_intValue = <int>cComplexUnion__type_req_intValue
@@ -1057,9 +1061,13 @@ class ComplexUnionType(__enum.Enum):
     ref_field2 = <int>cComplexUnion__type_ref_field2
     excp_field = <int>cComplexUnion__type_excp_field
 
+ComplexUnionType = __ComplexUnionType
+
 cdef class ComplexUnion(thrift.py3.types.Union):
+    Type = __ComplexUnionType
+
     def __init__(
-        ComplexUnion self, *,
+        self, *,
         intValue=None,
         req_intValue=None,
         opt_intValue=None,
@@ -1473,7 +1481,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != ComplexUnionType.EMPTY
+        return self.type != ComplexUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cComplexUnion] cpp_obj):
@@ -1484,193 +1492,193 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @property
     def intValue(self):
-        if self.type != ComplexUnionType.intValue:
+        if self.type != ComplexUnion.Type.intValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def req_intValue(self):
-        if self.type != ComplexUnionType.req_intValue:
+        if self.type != ComplexUnion.Type.req_intValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not req_intValue')
         return self.value
 
     @property
     def opt_intValue(self):
-        if self.type != ComplexUnionType.opt_intValue:
+        if self.type != ComplexUnion.Type.opt_intValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_intValue')
         return self.value
 
     @property
     def stringValue(self):
-        if self.type != ComplexUnionType.stringValue:
+        if self.type != ComplexUnion.Type.stringValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
     @property
     def req_stringValue(self):
-        if self.type != ComplexUnionType.req_stringValue:
+        if self.type != ComplexUnion.Type.req_stringValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not req_stringValue')
         return self.value
 
     @property
     def opt_stringValue(self):
-        if self.type != ComplexUnionType.opt_stringValue:
+        if self.type != ComplexUnion.Type.opt_stringValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_stringValue')
         return self.value
 
     @property
     def intValue2(self):
-        if self.type != ComplexUnionType.intValue2:
+        if self.type != ComplexUnion.Type.intValue2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue2')
         return self.value
 
     @property
     def intValue3(self):
-        if self.type != ComplexUnionType.intValue3:
+        if self.type != ComplexUnion.Type.intValue3:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue3')
         return self.value
 
     @property
     def doubelValue(self):
-        if self.type != ComplexUnionType.doubelValue:
+        if self.type != ComplexUnion.Type.doubelValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not doubelValue')
         return self.value
 
     @property
     def boolValue(self):
-        if self.type != ComplexUnionType.boolValue:
+        if self.type != ComplexUnion.Type.boolValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not boolValue')
         return self.value
 
     @property
     def union_list(self):
-        if self.type != ComplexUnionType.union_list:
+        if self.type != ComplexUnion.Type.union_list:
             raise TypeError(f'Union contains a value of type {self.type.name}, not union_list')
         return self.value
 
     @property
     def union_set(self):
-        if self.type != ComplexUnionType.union_set:
+        if self.type != ComplexUnion.Type.union_set:
             raise TypeError(f'Union contains a value of type {self.type.name}, not union_set')
         return self.value
 
     @property
     def union_map(self):
-        if self.type != ComplexUnionType.union_map:
+        if self.type != ComplexUnion.Type.union_map:
             raise TypeError(f'Union contains a value of type {self.type.name}, not union_map')
         return self.value
 
     @property
     def req_union_map(self):
-        if self.type != ComplexUnionType.req_union_map:
+        if self.type != ComplexUnion.Type.req_union_map:
             raise TypeError(f'Union contains a value of type {self.type.name}, not req_union_map')
         return self.value
 
     @property
     def opt_union_map(self):
-        if self.type != ComplexUnionType.opt_union_map:
+        if self.type != ComplexUnion.Type.opt_union_map:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_union_map')
         return self.value
 
     @property
     def enum_field(self):
-        if self.type != ComplexUnionType.enum_field:
+        if self.type != ComplexUnion.Type.enum_field:
             raise TypeError(f'Union contains a value of type {self.type.name}, not enum_field')
         return self.value
 
     @property
     def enum_container(self):
-        if self.type != ComplexUnionType.enum_container:
+        if self.type != ComplexUnion.Type.enum_container:
             raise TypeError(f'Union contains a value of type {self.type.name}, not enum_container')
         return self.value
 
     @property
     def a_struct(self):
-        if self.type != ComplexUnionType.a_struct:
+        if self.type != ComplexUnion.Type.a_struct:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_struct')
         return self.value
 
     @property
     def a_set_struct(self):
-        if self.type != ComplexUnionType.a_set_struct:
+        if self.type != ComplexUnion.Type.a_set_struct:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_set_struct')
         return self.value
 
     @property
     def a_union(self):
-        if self.type != ComplexUnionType.a_union:
+        if self.type != ComplexUnion.Type.a_union:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_union')
         return self.value
 
     @property
     def req_a_union(self):
-        if self.type != ComplexUnionType.req_a_union:
+        if self.type != ComplexUnion.Type.req_a_union:
             raise TypeError(f'Union contains a value of type {self.type.name}, not req_a_union')
         return self.value
 
     @property
     def opt_a_union(self):
-        if self.type != ComplexUnionType.opt_a_union:
+        if self.type != ComplexUnion.Type.opt_a_union:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_a_union')
         return self.value
 
     @property
     def a_union_list(self):
-        if self.type != ComplexUnionType.a_union_list:
+        if self.type != ComplexUnion.Type.a_union_list:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_list')
         return self.value
 
     @property
     def a_union_typedef(self):
-        if self.type != ComplexUnionType.a_union_typedef:
+        if self.type != ComplexUnion.Type.a_union_typedef:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_typedef')
         return self.value
 
     @property
     def a_union_typedef_list(self):
-        if self.type != ComplexUnionType.a_union_typedef_list:
+        if self.type != ComplexUnion.Type.a_union_typedef_list:
             raise TypeError(f'Union contains a value of type {self.type.name}, not a_union_typedef_list')
         return self.value
 
     @property
     def MyBinaryField(self):
-        if self.type != ComplexUnionType.MyBinaryField:
+        if self.type != ComplexUnion.Type.MyBinaryField:
             raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField')
         return self.value
 
     @property
     def MyBinaryField2(self):
-        if self.type != ComplexUnionType.MyBinaryField2:
+        if self.type != ComplexUnion.Type.MyBinaryField2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField2')
         return self.value
 
     @property
     def MyBinaryField3(self):
-        if self.type != ComplexUnionType.MyBinaryField3:
+        if self.type != ComplexUnion.Type.MyBinaryField3:
             raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField3')
         return self.value
 
     @property
     def MyBinaryListField4(self):
-        if self.type != ComplexUnionType.MyBinaryListField4:
+        if self.type != ComplexUnion.Type.MyBinaryListField4:
             raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryListField4')
         return self.value
 
     @property
     def ref_field(self):
-        if self.type != ComplexUnionType.ref_field:
+        if self.type != ComplexUnion.Type.ref_field:
             raise TypeError(f'Union contains a value of type {self.type.name}, not ref_field')
         return self.value
 
     @property
     def ref_field2(self):
-        if self.type != ComplexUnionType.ref_field2:
+        if self.type != ComplexUnion.Type.ref_field2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not ref_field2')
         return self.value
 
     @property
     def excp_field(self):
-        if self.type != ComplexUnionType.excp_field:
+        if self.type != ComplexUnion.Type.excp_field:
             raise TypeError(f'Union contains a value of type {self.type.name}, not excp_field')
         return self.value
 
@@ -1687,78 +1695,78 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return f'ComplexUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(ComplexUnion self):
-        self.type = ComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == ComplexUnionType.EMPTY:
+        self.type = ComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == ComplexUnion.Type.EMPTY:
             self.value = None
-        elif self.type == ComplexUnionType.intValue:
+        elif self.type == ComplexUnion.Type.intValue:
             self.value = deref(self._cpp_obj).get_intValue()
-        elif self.type == ComplexUnionType.req_intValue:
+        elif self.type == ComplexUnion.Type.req_intValue:
             self.value = deref(self._cpp_obj).get_req_intValue()
-        elif self.type == ComplexUnionType.opt_intValue:
+        elif self.type == ComplexUnion.Type.opt_intValue:
             self.value = deref(self._cpp_obj).get_opt_intValue()
-        elif self.type == ComplexUnionType.stringValue:
+        elif self.type == ComplexUnion.Type.stringValue:
             self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
-        elif self.type == ComplexUnionType.req_stringValue:
+        elif self.type == ComplexUnion.Type.req_stringValue:
             self.value = bytes(deref(self._cpp_obj).get_req_stringValue()).decode('UTF-8')
-        elif self.type == ComplexUnionType.opt_stringValue:
+        elif self.type == ComplexUnion.Type.opt_stringValue:
             self.value = bytes(deref(self._cpp_obj).get_opt_stringValue()).decode('UTF-8')
-        elif self.type == ComplexUnionType.intValue2:
+        elif self.type == ComplexUnion.Type.intValue2:
             self.value = deref(self._cpp_obj).get_intValue2()
-        elif self.type == ComplexUnionType.intValue3:
+        elif self.type == ComplexUnion.Type.intValue3:
             self.value = deref(self._cpp_obj).get_intValue3()
-        elif self.type == ComplexUnionType.doubelValue:
+        elif self.type == ComplexUnion.Type.doubelValue:
             self.value = deref(self._cpp_obj).get_doubelValue()
-        elif self.type == ComplexUnionType.boolValue:
+        elif self.type == ComplexUnion.Type.boolValue:
             self.value = <bint>(deref(self._cpp_obj).get_boolValue())
-        elif self.type == ComplexUnionType.union_list:
+        elif self.type == ComplexUnion.Type.union_list:
             self.value = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).get_union_list()))
-        elif self.type == ComplexUnionType.union_set:
+        elif self.type == ComplexUnion.Type.union_set:
             self.value = Set__i64.create(make_shared[cset[int64_t]](deref(self._cpp_obj).get_union_set()))
-        elif self.type == ComplexUnionType.union_map:
+        elif self.type == ComplexUnion.Type.union_map:
             self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_union_map()))
-        elif self.type == ComplexUnionType.req_union_map:
+        elif self.type == ComplexUnion.Type.req_union_map:
             self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_req_union_map()))
-        elif self.type == ComplexUnionType.opt_union_map:
+        elif self.type == ComplexUnion.Type.opt_union_map:
             self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_opt_union_map()))
-        elif self.type == ComplexUnionType.enum_field:
+        elif self.type == ComplexUnion.Type.enum_field:
             self.value = translate_cpp_enum_to_python(MyEnumA, <int>deref(self._cpp_obj).get_enum_field())
-        elif self.type == ComplexUnionType.enum_container:
+        elif self.type == ComplexUnion.Type.enum_container:
             self.value = List__MyEnumA.create(make_shared[vector[cMyEnumA]](deref(self._cpp_obj).get_enum_container()))
-        elif self.type == ComplexUnionType.a_struct:
+        elif self.type == ComplexUnion.Type.a_struct:
             self.value = MyStruct.create(make_shared[cMyStruct](deref(self._cpp_obj).get_a_struct()))
-        elif self.type == ComplexUnionType.a_set_struct:
+        elif self.type == ComplexUnion.Type.a_set_struct:
             self.value = Set__MyStruct.create(make_shared[cset[cMyStruct]](deref(self._cpp_obj).get_a_set_struct()))
-        elif self.type == ComplexUnionType.a_union:
+        elif self.type == ComplexUnion.Type.a_union:
             self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_a_union()))
-        elif self.type == ComplexUnionType.req_a_union:
+        elif self.type == ComplexUnion.Type.req_a_union:
             self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_req_a_union()))
-        elif self.type == ComplexUnionType.opt_a_union:
+        elif self.type == ComplexUnion.Type.opt_a_union:
             self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_opt_a_union()))
-        elif self.type == ComplexUnionType.a_union_list:
+        elif self.type == ComplexUnion.Type.a_union_list:
             self.value = List__SimpleUnion.create(make_shared[vector[cSimpleUnion]](deref(self._cpp_obj).get_a_union_list()))
-        elif self.type == ComplexUnionType.a_union_typedef:
+        elif self.type == ComplexUnion.Type.a_union_typedef:
             self.value = Set__SimpleUnion.create(make_shared[cset[cSimpleUnion]](deref(self._cpp_obj).get_a_union_typedef()))
-        elif self.type == ComplexUnionType.a_union_typedef_list:
+        elif self.type == ComplexUnion.Type.a_union_typedef_list:
             self.value = List__Set__SimpleUnion.create(make_shared[vector[cset[cSimpleUnion]]](deref(self._cpp_obj).get_a_union_typedef_list()))
-        elif self.type == ComplexUnionType.MyBinaryField:
+        elif self.type == ComplexUnion.Type.MyBinaryField:
             self.value = deref(self._cpp_obj).get_MyBinaryField()
-        elif self.type == ComplexUnionType.MyBinaryField2:
+        elif self.type == ComplexUnion.Type.MyBinaryField2:
             self.value = deref(self._cpp_obj).get_MyBinaryField2()
-        elif self.type == ComplexUnionType.MyBinaryField3:
+        elif self.type == ComplexUnion.Type.MyBinaryField3:
             self.value = deref(self._cpp_obj).get_MyBinaryField3()
-        elif self.type == ComplexUnionType.MyBinaryListField4:
+        elif self.type == ComplexUnion.Type.MyBinaryListField4:
             self.value = List__binary.create(make_shared[vector[string]](deref(self._cpp_obj).get_MyBinaryListField4()))
-        elif self.type == ComplexUnionType.ref_field:
+        elif self.type == ComplexUnion.Type.ref_field:
             if not deref(self._cpp_obj).get_ref_field():
                 self.value = None
             else:
                 self.value = MyStruct.create(aliasing_constructor_ref_field(self._cpp_obj, (deref(self._cpp_obj).get_ref_field()).get()))
-        elif self.type == ComplexUnionType.ref_field2:
+        elif self.type == ComplexUnion.Type.ref_field2:
             if not deref(self._cpp_obj).get_ref_field2():
                 self.value = None
             else:
                 self.value = MyStruct.create(aliasing_constructor_ref_field2(self._cpp_obj, <cMyStruct*>(deref(self._cpp_obj).get_ref_field2()).get()))
-        elif self.type == ComplexUnionType.excp_field:
+        elif self.type == ComplexUnion.Type.excp_field:
             self.value = AnException.create(make_shared[cAnException](deref(self._cpp_obj).get_excp_field()))
 
     def get_type(ComplexUnion self):
@@ -5223,14 +5231,18 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         return (deserialize, (FloatStruct, serialize(self)))
 
 
-class FloatUnionType(__enum.Enum):
+class __FloatUnionType(__enum.Enum):
     EMPTY = <int>cFloatUnion__type___EMPTY__
     floatSide = <int>cFloatUnion__type_floatSide
     doubleSide = <int>cFloatUnion__type_doubleSide
 
+FloatUnionType = __FloatUnionType
+
 cdef class FloatUnion(thrift.py3.types.Union):
+    Type = __FloatUnionType
+
     def __init__(
-        FloatUnion self, *,
+        self, *,
         floatSide=None,
         doubleSide=None
     ):
@@ -5304,7 +5316,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != FloatUnionType.EMPTY
+        return self.type != FloatUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cFloatUnion] cpp_obj):
@@ -5315,13 +5327,13 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
     @property
     def floatSide(self):
-        if self.type != FloatUnionType.floatSide:
+        if self.type != FloatUnion.Type.floatSide:
             raise TypeError(f'Union contains a value of type {self.type.name}, not floatSide')
         return self.value
 
     @property
     def doubleSide(self):
-        if self.type != FloatUnionType.doubleSide:
+        if self.type != FloatUnion.Type.doubleSide:
             raise TypeError(f'Union contains a value of type {self.type.name}, not doubleSide')
         return self.value
 
@@ -5338,12 +5350,12 @@ cdef class FloatUnion(thrift.py3.types.Union):
         return f'FloatUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(FloatUnion self):
-        self.type = FloatUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == FloatUnionType.EMPTY:
+        self.type = FloatUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == FloatUnion.Type.EMPTY:
             self.value = None
-        elif self.type == FloatUnionType.floatSide:
+        elif self.type == FloatUnion.Type.floatSide:
             self.value = deref(self._cpp_obj).get_floatSide()
-        elif self.type == FloatUnionType.doubleSide:
+        elif self.type == FloatUnion.Type.doubleSide:
             self.value = deref(self._cpp_obj).get_doubleSide()
 
     def get_type(FloatUnion self):

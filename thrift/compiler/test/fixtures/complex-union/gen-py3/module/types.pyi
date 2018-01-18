@@ -16,7 +16,7 @@ import itertools
 import enum as __enum
 
 
-class ComplexUnionType(__enum.Enum):
+class __ComplexUnionType(__enum.Enum):
     EMPTY = ...
     intValue = ...
     stringValue = ...
@@ -26,6 +26,7 @@ class ComplexUnionType(__enum.Enum):
     stringRef = ...
     value: int
 
+ComplexUnionType = __ComplexUnionType
 
 class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -55,6 +56,7 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def typedefValue(self) -> _typing.Mapping[int, str]: ...
     @property
     def stringRef(self) -> _typing.Optional[str]: ...
+    Type: _typing.ClassVar[_typing.Type[__ComplexUnionType]]
     @staticmethod
     def fromValue(value: _typing.Union[int, str, _typing.Sequence[int], _typing.Sequence[str], _typing.Mapping[int, str], str]) -> ComplexUnion: ...
     @property
@@ -64,12 +66,13 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def get_type(self) -> ComplexUnionType: ...
 
 
-class VirtualComplexUnionType(__enum.Enum):
+class __VirtualComplexUnionType(__enum.Enum):
     EMPTY = ...
     thingOne = ...
     thingTwo = ...
     value: int
 
+VirtualComplexUnionType = __VirtualComplexUnionType
 
 class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -87,6 +90,7 @@ class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def thingOne(self) -> str: ...
     @property
     def thingTwo(self) -> str: ...
+    Type: _typing.ClassVar[_typing.Type[__VirtualComplexUnionType]]
     @staticmethod
     def fromValue(value: _typing.Union[str, str]) -> VirtualComplexUnion: ...
     @property

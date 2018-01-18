@@ -34,10 +34,11 @@ class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
 
 
 
-class NadaType(__enum.Enum):
+class __NadaType(__enum.Enum):
     EMPTY = ...
     value: int
 
+NadaType = __NadaType
 
 class Nada(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -49,6 +50,7 @@ class Nada(thrift.py3.types.Union, _typing.Hashable):
     def __repr__(self) -> str: ...
     def __lt__(self, other: 'Nada') -> bool: ...
 
+    Type: _typing.ClassVar[_typing.Type[__NadaType]]
     @staticmethod
     def fromValue(value: _typing.Union[]) -> Nada: ...
     @property

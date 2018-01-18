@@ -34,7 +34,7 @@ import builtins as _builtins
 
 
 
-class ComplexUnionType(__enum.Enum):
+class __ComplexUnionType(__enum.Enum):
     EMPTY = <int>cComplexUnion__type___EMPTY__
     intValue = <int>cComplexUnion__type_intValue
     stringValue = <int>cComplexUnion__type_stringValue
@@ -43,9 +43,13 @@ class ComplexUnionType(__enum.Enum):
     typedefValue = <int>cComplexUnion__type_typedefValue
     stringRef = <int>cComplexUnion__type_stringRef
 
+ComplexUnionType = __ComplexUnionType
+
 cdef class ComplexUnion(thrift.py3.types.Union):
+    Type = __ComplexUnionType
+
     def __init__(
-        ComplexUnion self, *,
+        self, *,
         intValue=None,
         str stringValue=None,
         intListValue=None,
@@ -139,7 +143,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != ComplexUnionType.EMPTY
+        return self.type != ComplexUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cComplexUnion] cpp_obj):
@@ -150,37 +154,37 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @property
     def intValue(self):
-        if self.type != ComplexUnionType.intValue:
+        if self.type != ComplexUnion.Type.intValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def stringValue(self):
-        if self.type != ComplexUnionType.stringValue:
+        if self.type != ComplexUnion.Type.stringValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
     @property
     def intListValue(self):
-        if self.type != ComplexUnionType.intListValue:
+        if self.type != ComplexUnion.Type.intListValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intListValue')
         return self.value
 
     @property
     def stringListValue(self):
-        if self.type != ComplexUnionType.stringListValue:
+        if self.type != ComplexUnion.Type.stringListValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringListValue')
         return self.value
 
     @property
     def typedefValue(self):
-        if self.type != ComplexUnionType.typedefValue:
+        if self.type != ComplexUnion.Type.typedefValue:
             raise TypeError(f'Union contains a value of type {self.type.name}, not typedefValue')
         return self.value
 
     @property
     def stringRef(self):
-        if self.type != ComplexUnionType.stringRef:
+        if self.type != ComplexUnion.Type.stringRef:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringRef')
         return self.value
 
@@ -197,20 +201,20 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return f'ComplexUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(ComplexUnion self):
-        self.type = ComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == ComplexUnionType.EMPTY:
+        self.type = ComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == ComplexUnion.Type.EMPTY:
             self.value = None
-        elif self.type == ComplexUnionType.intValue:
+        elif self.type == ComplexUnion.Type.intValue:
             self.value = deref(self._cpp_obj).get_intValue()
-        elif self.type == ComplexUnionType.stringValue:
+        elif self.type == ComplexUnion.Type.stringValue:
             self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
-        elif self.type == ComplexUnionType.intListValue:
+        elif self.type == ComplexUnion.Type.intListValue:
             self.value = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).get_intListValue()))
-        elif self.type == ComplexUnionType.stringListValue:
+        elif self.type == ComplexUnion.Type.stringListValue:
             self.value = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
-        elif self.type == ComplexUnionType.typedefValue:
+        elif self.type == ComplexUnion.Type.typedefValue:
             self.value = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).get_typedefValue()))
-        elif self.type == ComplexUnionType.stringRef:
+        elif self.type == ComplexUnion.Type.stringRef:
             if not deref(self._cpp_obj).get_stringRef():
                 self.value = None
             else:
@@ -265,14 +269,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return (deserialize, (ComplexUnion, serialize(self)))
 
 
-class VirtualComplexUnionType(__enum.Enum):
+class __VirtualComplexUnionType(__enum.Enum):
     EMPTY = <int>cVirtualComplexUnion__type___EMPTY__
     thingOne = <int>cVirtualComplexUnion__type_thingOne
     thingTwo = <int>cVirtualComplexUnion__type_thingTwo
 
+VirtualComplexUnionType = __VirtualComplexUnionType
+
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
+    Type = __VirtualComplexUnionType
+
     def __init__(
-        VirtualComplexUnion self, *,
+        self, *,
         str thingOne=None,
         str thingTwo=None
     ):
@@ -316,7 +324,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != VirtualComplexUnionType.EMPTY
+        return self.type != VirtualComplexUnion.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion] cpp_obj):
@@ -327,13 +335,13 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     @property
     def thingOne(self):
-        if self.type != VirtualComplexUnionType.thingOne:
+        if self.type != VirtualComplexUnion.Type.thingOne:
             raise TypeError(f'Union contains a value of type {self.type.name}, not thingOne')
         return self.value
 
     @property
     def thingTwo(self):
-        if self.type != VirtualComplexUnionType.thingTwo:
+        if self.type != VirtualComplexUnion.Type.thingTwo:
             raise TypeError(f'Union contains a value of type {self.type.name}, not thingTwo')
         return self.value
 
@@ -350,12 +358,12 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return f'VirtualComplexUnion(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(VirtualComplexUnion self):
-        self.type = VirtualComplexUnionType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == VirtualComplexUnionType.EMPTY:
+        self.type = VirtualComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == VirtualComplexUnion.Type.EMPTY:
             self.value = None
-        elif self.type == VirtualComplexUnionType.thingOne:
+        elif self.type == VirtualComplexUnion.Type.thingOne:
             self.value = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
-        elif self.type == VirtualComplexUnionType.thingTwo:
+        elif self.type == VirtualComplexUnion.Type.thingTwo:
             self.value = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
 
     def get_type(VirtualComplexUnion self):

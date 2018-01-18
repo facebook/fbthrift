@@ -1198,14 +1198,18 @@ cdef class struct3(thrift.py3.types.Struct):
         return (deserialize, (struct3, serialize(self)))
 
 
-class union1Type(__enum.Enum):
+class __union1Type(__enum.Enum):
     EMPTY = <int>cunion1__type___EMPTY__
     i = <int>cunion1__type_i
     d = <int>cunion1__type_d
 
+union1Type = __union1Type
+
 cdef class union1(thrift.py3.types.Union):
+    Type = __union1Type
+
     def __init__(
-        union1 self, *,
+        self, *,
         i=None,
         d=None
     ):
@@ -1273,7 +1277,7 @@ cdef class union1(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != union1Type.EMPTY
+        return self.type != union1.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cunion1] cpp_obj):
@@ -1284,13 +1288,13 @@ cdef class union1(thrift.py3.types.Union):
 
     @property
     def i(self):
-        if self.type != union1Type.i:
+        if self.type != union1.Type.i:
             raise TypeError(f'Union contains a value of type {self.type.name}, not i')
         return self.value
 
     @property
     def d(self):
-        if self.type != union1Type.d:
+        if self.type != union1.Type.d:
             raise TypeError(f'Union contains a value of type {self.type.name}, not d')
         return self.value
 
@@ -1307,12 +1311,12 @@ cdef class union1(thrift.py3.types.Union):
         return f'union1(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(union1 self):
-        self.type = union1Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == union1Type.EMPTY:
+        self.type = union1.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == union1.Type.EMPTY:
             self.value = None
-        elif self.type == union1Type.i:
+        elif self.type == union1.Type.i:
             self.value = deref(self._cpp_obj).get_i()
-        elif self.type == union1Type.d:
+        elif self.type == union1.Type.d:
             self.value = deref(self._cpp_obj).get_d()
 
     def get_type(union1 self):
@@ -1364,16 +1368,20 @@ cdef class union1(thrift.py3.types.Union):
         return (deserialize, (union1, serialize(self)))
 
 
-class union2Type(__enum.Enum):
+class __union2Type(__enum.Enum):
     EMPTY = <int>cunion2__type___EMPTY__
     i = <int>cunion2__type_i
     d = <int>cunion2__type_d
     s = <int>cunion2__type_s
     u = <int>cunion2__type_u
 
+union2Type = __union2Type
+
 cdef class union2(thrift.py3.types.Union):
+    Type = __union2Type
+
     def __init__(
-        union2 self, *,
+        self, *,
         i=None,
         d=None,
         struct1 s=None,
@@ -1461,7 +1469,7 @@ cdef class union2(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != union2Type.EMPTY
+        return self.type != union2.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cunion2] cpp_obj):
@@ -1472,25 +1480,25 @@ cdef class union2(thrift.py3.types.Union):
 
     @property
     def i(self):
-        if self.type != union2Type.i:
+        if self.type != union2.Type.i:
             raise TypeError(f'Union contains a value of type {self.type.name}, not i')
         return self.value
 
     @property
     def d(self):
-        if self.type != union2Type.d:
+        if self.type != union2.Type.d:
             raise TypeError(f'Union contains a value of type {self.type.name}, not d')
         return self.value
 
     @property
     def s(self):
-        if self.type != union2Type.s:
+        if self.type != union2.Type.s:
             raise TypeError(f'Union contains a value of type {self.type.name}, not s')
         return self.value
 
     @property
     def u(self):
-        if self.type != union2Type.u:
+        if self.type != union2.Type.u:
             raise TypeError(f'Union contains a value of type {self.type.name}, not u')
         return self.value
 
@@ -1507,16 +1515,16 @@ cdef class union2(thrift.py3.types.Union):
         return f'union2(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(union2 self):
-        self.type = union2Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == union2Type.EMPTY:
+        self.type = union2.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == union2.Type.EMPTY:
             self.value = None
-        elif self.type == union2Type.i:
+        elif self.type == union2.Type.i:
             self.value = deref(self._cpp_obj).get_i()
-        elif self.type == union2Type.d:
+        elif self.type == union2.Type.d:
             self.value = deref(self._cpp_obj).get_d()
-        elif self.type == union2Type.s:
+        elif self.type == union2.Type.s:
             self.value = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
-        elif self.type == union2Type.u:
+        elif self.type == union2.Type.u:
             self.value = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
 
     def get_type(union2 self):

@@ -361,15 +361,20 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
 {{/struct:union?}}{{!
 }}{{#struct:union?}}
-class {{struct:name}}Type(__enum.Enum):
+class __{{struct:name}}Type(__enum.Enum):
     EMPTY = <int>c{{struct:name}}__type___EMPTY__
 {{#struct:fields}}
     {{field:name}} = <int>c{{struct:name}}__type_{{field:name}}
 {{/struct:fields}}
 
+{{! Removed after closing T25252259 }}
+{{struct:name}}Type = __{{struct:name}}Type
+
 cdef class {{struct:name}}(thrift.py3.types.Union):
+    Type = __{{struct:name}}Type
+
     def __init__(
-        {{struct:name}} self, *{{#struct:fields}},
+        self, *{{#struct:fields}},
         {{#field:type}}{{!
             }}{{#type:cythonTypeNoneable?}}{{!
                 }}{{> types/CythonPythonType}} {{!
@@ -472,7 +477,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != {{struct:name}}Type.EMPTY
+        return self.type != {{struct:name}}.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
@@ -484,7 +489,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     {{#struct:fields}}
     @property
     def {{field:name}}(self):
-        if self.type != {{struct:name}}Type.{{field:name}}:
+        if self.type != {{struct:name}}.Type.{{field:name}}:
             raise TypeError(f'Union contains a value of type {self.type.name}, not {{field:name}}')
         return self.value
 
@@ -502,11 +507,11 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         return f'{{struct:name}}(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache({{struct:name}} self):
-        self.type = {{struct:name}}Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == {{struct:name}}Type.EMPTY:
+        self.type = {{struct:name}}.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == {{struct:name}}.Type.EMPTY:
             self.value = None
         {{#struct:fields}}{{#field:type}}
-        elif self.type == {{struct:name}}Type.{{field:name}}:
+        elif self.type == {{struct:name}}.Type.{{field:name}}:
             {{> CythonUnionGetter}}
 
         {{/field:type}}{{/struct:fields}}

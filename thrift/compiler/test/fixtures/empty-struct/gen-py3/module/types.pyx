@@ -141,12 +141,16 @@ cdef class Empty(thrift.py3.types.Struct):
         return (deserialize, (Empty, serialize(self)))
 
 
-class NadaType(__enum.Enum):
+class __NadaType(__enum.Enum):
     EMPTY = <int>cNada__type___EMPTY__
 
+NadaType = __NadaType
+
 cdef class Nada(thrift.py3.types.Union):
+    Type = __NadaType
+
     def __init__(
-        Nada self, *
+        self, *
     ):
         self._cpp_obj = move(Nada._make_instance(
           NULL,
@@ -170,7 +174,7 @@ cdef class Nada(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != NadaType.EMPTY
+        return self.type != Nada.Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
@@ -192,8 +196,8 @@ cdef class Nada(thrift.py3.types.Union):
         return f'Nada(type={self.type.name}, value={self.value!r})'
 
     cdef _load_cache(Nada self):
-        self.type = NadaType(<int>(deref(self._cpp_obj).getType()))
-        if self.type == NadaType.EMPTY:
+        self.type = Nada.Type(<int>(deref(self._cpp_obj).getType()))
+        if self.type == Nada.Type.EMPTY:
             self.value = None
 
     def get_type(Nada self):
