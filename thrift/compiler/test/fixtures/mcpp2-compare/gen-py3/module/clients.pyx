@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -875,9 +875,7 @@ cdef class EmptyService(thrift.py3.client.Client):
         if self._cRequestChannel:
             EmptyService._module_EmptyService_set_client(
                 self,
-                makeClientWrapper[cEmptyServiceAsyncClient, cEmptyServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cEmptyServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -956,9 +954,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         if self._cRequestChannel:
             ReturnService._module_ReturnService_set_client(
                 self,
-                makeClientWrapper[cReturnServiceAsyncClient, cReturnServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cReturnServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -1385,9 +1381,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if self._cRequestChannel:
             ParamService._module_ParamService_set_client(
                 self,
-                makeClientWrapper[cParamServiceAsyncClient, cParamServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cParamServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:

@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -747,9 +747,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if self._cRequestChannel:
             SimpleService._module_SimpleService_set_client(
                 self,
-                makeClientWrapper[cSimpleServiceAsyncClient, cSimpleServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cSimpleServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -1618,9 +1616,7 @@ cdef class DerivedService(SimpleService):
         if self._cRequestChannel:
             DerivedService._module_DerivedService_set_client(
                 self,
-                makeClientWrapper[cDerivedServiceAsyncClient, cDerivedServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cDerivedServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -1717,9 +1713,7 @@ cdef class RederivedService(DerivedService):
         if self._cRequestChannel:
             RederivedService._module_RederivedService_set_client(
                 self,
-                makeClientWrapper[cRederivedServiceAsyncClient, cRederivedServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cRederivedServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:

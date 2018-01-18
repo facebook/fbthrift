@@ -15,21 +15,24 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
+
 
 
 cdef extern from "src/gen-cpp2/TestService.h" namespace "cpp2":
   cdef cppclass cTestServiceAsyncClient "cpp2::TestServiceAsyncClient":
       pass
 
-cdef extern from "<utility>" namespace "std":
-  cdef unique_ptr[cTestServiceClientWrapper] move(unique_ptr[cTestServiceClientWrapper])
-
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
+  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
+      pass
+  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cTestServiceClientWrapper "cpp2::TestServiceClientWrapper":
     cTestServiceClientWrapper(
       shared_ptr[cTestServiceAsyncClient] async_client)
+    cTestServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

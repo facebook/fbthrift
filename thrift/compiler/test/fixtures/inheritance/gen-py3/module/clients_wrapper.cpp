@@ -8,20 +8,12 @@
 #include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
-MyRootClientWrapper::MyRootClientWrapper(
-    std::shared_ptr<cpp2::MyRootAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 MyRootClientWrapper::~MyRootClientWrapper() {}
 
 folly::Future<folly::Unit> MyRootClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyRootClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void MyRootClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -39,23 +31,6 @@ MyRootClientWrapper::do_root() {
 }
 
 
-MyNodeClientWrapper::MyNodeClientWrapper(
-    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client) : 
-    MyRootClientWrapper(async_client),
-    async_client(async_client) {}
-
-
-folly::Future<folly::Unit> MyNodeClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyNodeClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    cpp2::MyRootClientWrapper::disconnectInLoop();
-}
-
 
 
 folly::Future<folly::Unit>
@@ -64,23 +39,6 @@ MyNodeClientWrapper::do_mid() {
  );
 }
 
-
-MyLeafClientWrapper::MyLeafClientWrapper(
-    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client) : 
-    MyNodeClientWrapper(async_client),
-    async_client(async_client) {}
-
-
-folly::Future<folly::Unit> MyLeafClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyLeafClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    cpp2::MyNodeClientWrapper::disconnectInLoop();
-}
 
 
 

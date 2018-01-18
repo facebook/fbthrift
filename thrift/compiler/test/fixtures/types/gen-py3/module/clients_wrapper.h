@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/SomeService.h>
 
 #include <folly/futures/Future.h>
@@ -24,16 +25,21 @@ namespace thrift {
 namespace fixtures {
 namespace types {
 
+typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+
 class SomeServiceClientWrapper {
   protected:
-    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
+    std::unique_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
+
   public:
     explicit SomeServiceClientWrapper(
-      std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client);
-    virtual ~SomeServiceClientWrapper();
+        std::unique_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> client)
+        : async_client(std::move(client)) { }
+    explicit SomeServiceClientWrapper(RequestChannel_ptr channel)
+        : SomeServiceClientWrapper(std::make_unique<apache::thrift::fixtures::types::SomeServiceAsyncClient>(channel))  { }
 
+    virtual ~SomeServiceClientWrapper();
     folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(

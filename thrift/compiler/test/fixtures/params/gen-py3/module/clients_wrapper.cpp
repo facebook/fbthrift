@@ -8,20 +8,12 @@
 #include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
-NestedContainersClientWrapper::NestedContainersClientWrapper(
-    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 NestedContainersClientWrapper::~NestedContainersClientWrapper() {}
 
 folly::Future<folly::Unit> NestedContainersClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void NestedContainersClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void NestedContainersClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

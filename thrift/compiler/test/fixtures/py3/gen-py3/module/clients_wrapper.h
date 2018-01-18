@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/SimpleService.h>
 #include <src/gen-cpp2/DerivedService.h>
 #include <src/gen-cpp2/RederivedService.h>
@@ -24,16 +25,21 @@
 namespace py3 {
 namespace simple {
 
+typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+
 class SimpleServiceClientWrapper {
   protected:
-    std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client;
+    std::unique_ptr<py3::simple::SimpleServiceAsyncClient> async_client;
+
   public:
     explicit SimpleServiceClientWrapper(
-      std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client);
-    virtual ~SimpleServiceClientWrapper();
+        std::unique_ptr<py3::simple::SimpleServiceAsyncClient> client)
+        : async_client(std::move(client)) { }
+    explicit SimpleServiceClientWrapper(RequestChannel_ptr channel)
+        : SimpleServiceClientWrapper(std::make_unique<py3::simple::SimpleServiceAsyncClient>(channel))  { }
 
+    virtual ~SimpleServiceClientWrapper();
     folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<int32_t> get_five();
@@ -120,13 +126,15 @@ class SimpleServiceClientWrapper {
 
 class DerivedServiceClientWrapper : public py3::simple::SimpleServiceClientWrapper {
   protected:
-    std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client;
+    std::unique_ptr<py3::simple::DerivedServiceAsyncClient> async_client;
+
   public:
     explicit DerivedServiceClientWrapper(
-      std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client);
+        std::unique_ptr<py3::simple::DerivedServiceAsyncClient> client)
+        : SimpleServiceClientWrapper(std::move(client)) { }
+    explicit DerivedServiceClientWrapper(RequestChannel_ptr channel)
+        : DerivedServiceClientWrapper(std::make_unique<py3::simple::DerivedServiceAsyncClient>(channel))  { }
 
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<int32_t> get_six();
 };
@@ -134,13 +142,15 @@ class DerivedServiceClientWrapper : public py3::simple::SimpleServiceClientWrapp
 
 class RederivedServiceClientWrapper : public py3::simple::DerivedServiceClientWrapper {
   protected:
-    std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client;
+    std::unique_ptr<py3::simple::RederivedServiceAsyncClient> async_client;
+
   public:
     explicit RederivedServiceClientWrapper(
-      std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client);
+        std::unique_ptr<py3::simple::RederivedServiceAsyncClient> client)
+        : DerivedServiceClientWrapper(std::move(client)) { }
+    explicit RederivedServiceClientWrapper(RequestChannel_ptr channel)
+        : RederivedServiceClientWrapper(std::make_unique<py3::simple::RederivedServiceAsyncClient>(channel))  { }
 
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<int32_t> get_seven();
 };

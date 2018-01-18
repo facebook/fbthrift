@@ -10,20 +10,12 @@
 namespace some {
 namespace valid {
 namespace ns {
-EmptyServiceClientWrapper::EmptyServiceClientWrapper(
-    std::shared_ptr<some::valid::ns::EmptyServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 EmptyServiceClientWrapper::~EmptyServiceClientWrapper() {}
 
 folly::Future<folly::Unit> EmptyServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void EmptyServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void EmptyServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -35,20 +27,12 @@ void EmptyServiceClientWrapper::setPersistentHeader(const std::string& key, cons
 
 
 
-ReturnServiceClientWrapper::ReturnServiceClientWrapper(
-    std::shared_ptr<some::valid::ns::ReturnServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 ReturnServiceClientWrapper::~ReturnServiceClientWrapper() {}
 
 folly::Future<folly::Unit> ReturnServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void ReturnServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void ReturnServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -190,20 +174,12 @@ ReturnServiceClientWrapper::readData(
 }
 
 
-ParamServiceClientWrapper::ParamServiceClientWrapper(
-    std::shared_ptr<some::valid::ns::ParamServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 ParamServiceClientWrapper::~ParamServiceClientWrapper() {}
 
 folly::Future<folly::Unit> ParamServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void ParamServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void ParamServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

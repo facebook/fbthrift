@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/Raiser.h>
 
 #include <folly/futures/Future.h>
@@ -21,16 +22,21 @@
 
 namespace cpp2 {
 
+typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+
 class RaiserClientWrapper {
   protected:
-    std::shared_ptr<cpp2::RaiserAsyncClient> async_client;
+    std::unique_ptr<cpp2::RaiserAsyncClient> async_client;
+
   public:
     explicit RaiserClientWrapper(
-      std::shared_ptr<cpp2::RaiserAsyncClient> async_client);
-    virtual ~RaiserClientWrapper();
+        std::unique_ptr<cpp2::RaiserAsyncClient> client)
+        : async_client(std::move(client)) { }
+    explicit RaiserClientWrapper(RequestChannel_ptr channel)
+        : RaiserClientWrapper(std::make_unique<cpp2::RaiserAsyncClient>(channel))  { }
 
+    virtual ~RaiserClientWrapper();
     folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> doBland();

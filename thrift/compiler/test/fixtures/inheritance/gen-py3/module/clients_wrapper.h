@@ -6,6 +6,7 @@
  */
 
 #pragma once
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/MyRoot.h>
 #include <src/gen-cpp2/MyNode.h>
 #include <src/gen-cpp2/MyLeaf.h>
@@ -23,16 +24,21 @@
 
 namespace cpp2 {
 
+typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+
 class MyRootClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyRootAsyncClient> async_client;
+    std::unique_ptr<cpp2::MyRootAsyncClient> async_client;
+
   public:
     explicit MyRootClientWrapper(
-      std::shared_ptr<cpp2::MyRootAsyncClient> async_client);
-    virtual ~MyRootClientWrapper();
+        std::unique_ptr<cpp2::MyRootAsyncClient> client)
+        : async_client(std::move(client)) { }
+    explicit MyRootClientWrapper(RequestChannel_ptr channel)
+        : MyRootClientWrapper(std::make_unique<cpp2::MyRootAsyncClient>(channel))  { }
 
+    virtual ~MyRootClientWrapper();
     folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> do_root();
@@ -41,13 +47,15 @@ class MyRootClientWrapper {
 
 class MyNodeClientWrapper : public cpp2::MyRootClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client;
+    std::unique_ptr<cpp2::MyNodeAsyncClient> async_client;
+
   public:
     explicit MyNodeClientWrapper(
-      std::shared_ptr<cpp2::MyNodeAsyncClient> async_client);
+        std::unique_ptr<cpp2::MyNodeAsyncClient> client)
+        : MyRootClientWrapper(std::move(client)) { }
+    explicit MyNodeClientWrapper(RequestChannel_ptr channel)
+        : MyNodeClientWrapper(std::make_unique<cpp2::MyNodeAsyncClient>(channel))  { }
 
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<folly::Unit> do_mid();
 };
@@ -55,13 +63,15 @@ class MyNodeClientWrapper : public cpp2::MyRootClientWrapper {
 
 class MyLeafClientWrapper : public cpp2::MyNodeClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client;
+    std::unique_ptr<cpp2::MyLeafAsyncClient> async_client;
+
   public:
     explicit MyLeafClientWrapper(
-      std::shared_ptr<cpp2::MyLeafAsyncClient> async_client);
+        std::unique_ptr<cpp2::MyLeafAsyncClient> client)
+        : MyNodeClientWrapper(std::move(client)) { }
+    explicit MyLeafClientWrapper(RequestChannel_ptr channel)
+        : MyLeafClientWrapper(std::make_unique<cpp2::MyLeafAsyncClient>(channel))  { }
 
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<folly::Unit> do_leaf();
 };

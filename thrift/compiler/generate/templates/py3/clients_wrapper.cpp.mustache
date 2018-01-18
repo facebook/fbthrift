@@ -28,32 +28,16 @@ thread that will pass data to the cython callback.
 {{#program:cppNamespaces}}namespace {{value}} {
 {{/program:cppNamespaces}}
 {{#program:services}}
-{{service:name}}ClientWrapper::{{service:name}}ClientWrapper(
-    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client) : {{!
-    }}
-    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(async_client),
-    {{/service:extends}}{{/service:extends?}}{{!
-    }}async_client(async_client) {}
-
 {{^service:extends?}}
 {{service:name}}ClientWrapper::~{{service:name}}ClientWrapper() {}
-{{/service:extends?}}
 
 {{! We need the destructor to run in the correct thread or assert happens }}
 folly::Future<folly::Unit> {{service:name}}ClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
+    [this] { async_client.reset(); });
 }
 
-void {{service:name}}ClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    {{#service:extends}}
-    {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
-    {{/service:extends}}
-}
-
-{{^service:extends?}}
 void {{service:name}}ClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
     auto headerChannel = async_client->getHeaderChannel();
     if (headerChannel != nullptr) {

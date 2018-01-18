@@ -8,23 +8,6 @@
 #include <src/gen-py3/extend/clients_wrapper.h>
 
 namespace cpp2 {
-ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
-    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client) : 
-    HsTestServiceClientWrapper(async_client),
-    async_client(async_client) {}
-
-
-folly::Future<folly::Unit> ExtendTestServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void ExtendTestServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    cpp2::HsTestServiceClientWrapper::disconnectInLoop();
-}
-
 
 
 folly::Future<bool>

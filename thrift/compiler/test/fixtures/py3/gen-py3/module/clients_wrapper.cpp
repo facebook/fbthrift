@@ -9,20 +9,12 @@
 
 namespace py3 {
 namespace simple {
-SimpleServiceClientWrapper::SimpleServiceClientWrapper(
-    std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
-
 SimpleServiceClientWrapper::~SimpleServiceClientWrapper() {}
 
 folly::Future<folly::Unit> SimpleServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void SimpleServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
+    [this] { async_client.reset(); });
 }
 
 void SimpleServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -352,23 +344,6 @@ SimpleServiceClientWrapper::contain_enum(
 }
 
 
-DerivedServiceClientWrapper::DerivedServiceClientWrapper(
-    std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client) : 
-    SimpleServiceClientWrapper(async_client),
-    async_client(async_client) {}
-
-
-folly::Future<folly::Unit> DerivedServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void DerivedServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    py3::simple::SimpleServiceClientWrapper::disconnectInLoop();
-}
-
 
 
 folly::Future<int32_t>
@@ -377,23 +352,6 @@ DerivedServiceClientWrapper::get_six() {
  );
 }
 
-
-RederivedServiceClientWrapper::RederivedServiceClientWrapper(
-    std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client) : 
-    DerivedServiceClientWrapper(async_client),
-    async_client(async_client) {}
-
-
-folly::Future<folly::Unit> RederivedServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void RederivedServiceClientWrapper::disconnectInLoop() {
-    async_client.reset();
-    py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
-}
 
 
 

@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -315,9 +315,7 @@ cdef class MyService(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyService._module_MyService_set_client(
                 self,
-                makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyServiceClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -520,9 +518,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyServiceFast._module_MyServiceFast_set_client(
                 self,
-                makeClientWrapper[cMyServiceFastAsyncClient, cMyServiceFastClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyServiceFastClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -725,9 +721,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyServiceEmpty._module_MyServiceEmpty_set_client(
                 self,
-                makeClientWrapper[cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyServiceEmptyClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -807,9 +801,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyServicePrioParent._module_MyServicePrioParent_set_client(
                 self,
-                makeClientWrapper[cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyServicePrioParentClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -922,9 +914,7 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         if self._cRequestChannel:
             MyServicePrioChild._module_MyServicePrioChild_set_client(
                 self,
-                makeClientWrapper[cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyServicePrioChildClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:

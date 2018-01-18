@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -143,9 +143,7 @@ cdef class Raiser(thrift.py3.client.Client):
         if self._cRequestChannel:
             Raiser._module_Raiser_set_client(
                 self,
-                makeClientWrapper[cRaiserAsyncClient, cRaiserClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cRaiserClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:

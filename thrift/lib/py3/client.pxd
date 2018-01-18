@@ -5,7 +5,7 @@ from folly cimport (
     cFollyTry
 )
 from libc.stdint cimport uint16_t, uint32_t
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.string cimport string
 from libcpp.typeinfo cimport type_info
 from cpython.ref cimport PyObject
@@ -21,8 +21,6 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
         const string& host,
         const uint16_t port,
         const uint32_t connect_timeout)
-
-    cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
 cdef class Client:
     cdef object __weakref__

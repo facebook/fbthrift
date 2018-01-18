@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -121,9 +121,7 @@ cdef class MyRoot(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyRoot._module_MyRoot_set_client(
                 self,
-                makeClientWrapper[cMyRootAsyncClient, cMyRootClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyRootClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -220,9 +218,7 @@ cdef class MyNode(MyRoot):
         if self._cRequestChannel:
             MyNode._module_MyNode_set_client(
                 self,
-                makeClientWrapper[cMyNodeAsyncClient, cMyNodeClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyNodeClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
@@ -319,9 +315,7 @@ cdef class MyLeaf(MyNode):
         if self._cRequestChannel:
             MyLeaf._module_MyLeaf_set_client(
                 self,
-                makeClientWrapper[cMyLeafAsyncClient, cMyLeafClientWrapper](
-                    self._cRequestChannel
-                ),
+                make_shared[cMyLeafClientWrapper](self._cRequestChannel),
             )
             self._cRequestChannel.reset()
         else:
