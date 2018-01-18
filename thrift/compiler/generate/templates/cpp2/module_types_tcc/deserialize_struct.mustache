@@ -16,11 +16,9 @@
 
 %>template <class Protocol_>
 void <%struct:name%>::readNoXfer(Protocol_* iprot) {
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
@@ -28,42 +26,97 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   bool isset_<%field:name%> = false;
 <%/field:required?%><%/struct:fields%>
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-<%#struct:fields%><%#field:type%>
-      case <%field:key%>:
-      {
-        if (_ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
-          <% > module_types_tcc/deserialize_struct_field%>
-
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-<%/field:type%><%/struct:fields%>
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+<%#struct:fields?%>
+<%#struct:fields%>
+<%#field:type%>
+<%#first?%>
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          <%field:key%>,
+          apache::thrift::protocol::<% > module_types_tcc/struct_type%>))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+<%/first?%>
+_readField_<%field:name%>:
+  {
+    <% > module_types_tcc/deserialize_struct_field%>
 
-<%#struct:fields%><%#field:required?%>
+  }
+
+<%^last?%>
+<%#field:next_field_type%>
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          <%field:key%>,
+          <%field:next_field_key%>,
+          apache::thrift::protocol::<% > module_types_tcc/struct_type%>))) {
+    goto _loop;
+  }
+<%/field:next_field_type%>
+<%/last?%>
+<%#last?%>
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          <%field:key%>,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+<%/last?%>
+<%/field:type%>
+<%/struct:fields%>
+<%/struct:fields?%>
+<%^struct:fields?%>
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+<%/struct:fields?%>
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  <%#struct:fields%><%#field:required?%>
   if (!isset_<%field:name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
-<%/field:required?%><%/struct:fields%>
+  <%/field:required?%><%/struct:fields%>
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+<%#struct:fields%><%#field:type%>
+    case <%field:key%>:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
+        goto _readField_<%field:name%>;
+      } else {
+        goto _skip;
+      }
+    }
+<%/field:type%><%/struct:fields%>
+    default:
+    {
+<%#struct:fields?%>
+_skip:
+<%/struct:fields?%>
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 <%!
 %>

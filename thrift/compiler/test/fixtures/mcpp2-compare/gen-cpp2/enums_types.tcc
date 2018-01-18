@@ -12,6 +12,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 namespace facebook { namespace ns { namespace qwerty {
@@ -63,44 +64,65 @@ namespace facebook { namespace ns { namespace qwerty {
 
 template <class Protocol_>
 void SomeStruct::readNoXfer(Protocol_* iprot) {
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_I32) {
-          iprot->readI32(this->fieldA);
-          this->__isset.fieldA = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_fieldA:
+  {
+    iprot->readI32(this->fieldA);
+    this->__isset.fieldA = true;
+  }
 
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+        goto _readField_fieldA;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>

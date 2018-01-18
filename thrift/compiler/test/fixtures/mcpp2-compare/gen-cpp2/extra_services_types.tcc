@@ -12,17 +12,16 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 namespace extra { namespace svc {
 
 template <class Protocol_>
 void containerStruct2::readNoXfer(Protocol_* iprot) {
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
@@ -31,153 +30,184 @@ void containerStruct2::readNoXfer(Protocol_* iprot) {
   bool isset_req_fieldC = false;
   bool isset_req_fieldE = false;
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_BOOL) {
-          iprot->readBool(this->fieldA);
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 101:
-      {
-        if (_ftype == apache::thrift::protocol::T_BOOL) {
-          iprot->readBool(this->req_fieldA);
-          isset_req_fieldA = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 201:
-      {
-        if (_ftype == apache::thrift::protocol::T_BOOL) {
-          this->opt_fieldA = bool();
-          iprot->readBool(this->opt_fieldA.value());
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 2:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->fieldB = std::map<std::string, bool>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 102:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->req_fieldB = std::map<std::string, bool>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
-          isset_req_fieldB = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 202:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->opt_fieldB = std::map<std::string, bool>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB.value());
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 3:
-      {
-        if (_ftype == apache::thrift::protocol::T_SET) {
-          this->fieldC = std::set<int32_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 103:
-      {
-        if (_ftype == apache::thrift::protocol::T_SET) {
-          this->req_fieldC = std::set<int32_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
-          isset_req_fieldC = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 203:
-      {
-        if (_ftype == apache::thrift::protocol::T_SET) {
-          this->opt_fieldC = std::set<int32_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC.value());
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 4:
-      {
-        if (_ftype == apache::thrift::protocol::T_STRING) {
-          iprot->readString(this->fieldD);
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 5:
-      {
-        if (_ftype == apache::thrift::protocol::T_STRING) {
-          iprot->readString(this->fieldE);
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 105:
-      {
-        if (_ftype == apache::thrift::protocol::T_STRING) {
-          iprot->readString(this->req_fieldE);
-          isset_req_fieldE = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 205:
-      {
-        if (_ftype == apache::thrift::protocol::T_STRING) {
-          this->opt_fieldE = std::string();
-          iprot->readString(this->opt_fieldE.value());
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_fieldA:
+  {
+    iprot->readBool(this->fieldA);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          101,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_req_fieldA:
+  {
+    iprot->readBool(this->req_fieldA);
+    isset_req_fieldA = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          101,
+          201,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_opt_fieldA:
+  {
+    this->opt_fieldA = bool();
+    iprot->readBool(this->opt_fieldA.value());
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          201,
+          2,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_fieldB:
+  {
+    this->fieldB = std::map<std::string, bool>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          102,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_req_fieldB:
+  {
+    this->req_fieldB = std::map<std::string, bool>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
+    isset_req_fieldB = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          102,
+          202,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_opt_fieldB:
+  {
+    this->opt_fieldB = std::map<std::string, bool>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->opt_fieldB.value());
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          202,
+          3,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_fieldC:
+  {
+    this->fieldC = std::set<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          103,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_req_fieldC:
+  {
+    this->req_fieldC = std::set<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
+    isset_req_fieldC = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          103,
+          203,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_opt_fieldC:
+  {
+    this->opt_fieldC = std::set<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->opt_fieldC.value());
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          203,
+          4,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_fieldD:
+  {
+    iprot->readString(this->fieldD);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
+          5,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_fieldE:
+  {
+    iprot->readString(this->fieldE);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          105,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_req_fieldE:
+  {
+    iprot->readString(this->req_fieldE);
+    isset_req_fieldE = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          105,
+          205,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_opt_fieldE:
+  {
+    this->opt_fieldE = std::string();
+    iprot->readString(this->opt_fieldE.value());
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          205,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
 
   if (!isset_req_fieldA) {
     TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct2");
@@ -190,6 +220,130 @@ void containerStruct2::readNoXfer(Protocol_* iprot) {
   }
   if (!isset_req_fieldE) {
     TProtocolException::throwMissingRequiredField("req_fieldE", "containerStruct2");
+  }
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BOOL)) {
+        goto _readField_fieldA;
+      } else {
+        goto _skip;
+      }
+    }
+    case 101:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BOOL)) {
+        goto _readField_req_fieldA;
+      } else {
+        goto _skip;
+      }
+    }
+    case 201:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BOOL)) {
+        goto _readField_opt_fieldA;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_fieldB;
+      } else {
+        goto _skip;
+      }
+    }
+    case 102:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_req_fieldB;
+      } else {
+        goto _skip;
+      }
+    }
+    case 202:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_opt_fieldB;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_SET)) {
+        goto _readField_fieldC;
+      } else {
+        goto _skip;
+      }
+    }
+    case 103:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_SET)) {
+        goto _readField_req_fieldC;
+      } else {
+        goto _skip;
+      }
+    }
+    case 203:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_SET)) {
+        goto _readField_opt_fieldC;
+      } else {
+        goto _skip;
+      }
+    }
+    case 4:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_fieldD;
+      } else {
+        goto _skip;
+      }
+    }
+    case 5:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_fieldE;
+      } else {
+        goto _skip;
+      }
+    }
+    case 105:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_req_fieldE;
+      } else {
+        goto _skip;
+      }
+    }
+    case 205:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_opt_fieldE;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
   }
 }
 

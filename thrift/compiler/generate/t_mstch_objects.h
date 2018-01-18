@@ -654,6 +654,8 @@ class mstch_field : public mstch_base {
             {"field:key", &mstch_field::key},
             {"field:value", &mstch_field::value},
             {"field:type", &mstch_field::type},
+            {"field:next_field_key", &mstch_field::next_field_key},
+            {"field:next_field_type", &mstch_field::next_field_type},
             {"field:index", &mstch_field::index},
             {"field:index_plus_one", &mstch_field::index_plus_one},
             {"field:required?", &mstch_field::is_required},
@@ -678,6 +680,10 @@ class mstch_field : public mstch_base {
   }
   mstch::node value();
   mstch::node type();
+  mstch::node next_field_key() {
+    return std::to_string(field_->get_next()->get_key());
+  }
+  mstch::node next_field_type();
   mstch::node index() {
     return std::to_string(index_);
   }

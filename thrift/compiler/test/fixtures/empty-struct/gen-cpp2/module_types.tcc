@@ -12,39 +12,49 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 
 namespace cpp2 {
 
 template <class Protocol_>
 void Empty::readNoXfer(Protocol_* iprot) {
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
 
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    default:
+    {
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -77,37 +87,36 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Nada::readNoXfer(Protocol_* iprot) {
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  iprot->readFieldBegin(_fname, _ftype, fid);
-  if (_ftype == apache::thrift::protocol::T_STOP) {
+  _readState.readFieldBegin(iprot);
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
+      this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
     }
-    switch (fid) {
+    switch (_readState.fieldId) {
       default:
       {
-        iprot->skip(_ftype);
+        iprot->skip(_readState.fieldType);
         break;
       }
     }
-    iprot->readFieldEnd();
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
   }
-  iprot->readStructEnd();
+  _readState.readStructEnd(iprot);
 
 }
 template <class Protocol_>

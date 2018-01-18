@@ -78,6 +78,10 @@ class t_field : public t_doc {
 
   void set_req(e_req req) { req_ = req; }
 
+  void set_next(t_field* field) {
+    next_ = field;
+  }
+
   /**
    * t_field getters
    */
@@ -91,6 +95,10 @@ class t_field : public t_doc {
 
   t_const_value* get_value() { return value_; }
 
+  t_field* get_next() const {
+    return next_;
+  }
+
   e_req get_req() const { return req_; }
 
   std::map<std::string, std::string> annotations_;
@@ -100,6 +108,7 @@ class t_field : public t_doc {
   std::string name_;
   int32_t key_{0};
   t_const_value* value_{nullptr};
+  t_field* next_{nullptr};
 
   e_req req_{T_OPT_IN_REQ_OUT};
 };

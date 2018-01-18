@@ -264,9 +264,47 @@ class BinaryProtocolReader {
   inline uint32_t readFromPositionAndAppend(Cursor& cursor,
                                             std::unique_ptr<folly::IOBuf>& ser);
 
+  struct StructReadState {
+    int16_t fieldId;
+    apache::thrift::protocol::TType fieldType;
+
+    void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
+
+    void readStructEnd(BinaryProtocolReader* /*iprot*/) {}
+
+    void readFieldBegin(BinaryProtocolReader* iprot) {
+      iprot->readFieldBeginWithState(*this);
+    }
+
+    FOLLY_NOINLINE void readFieldBeginNoInline(BinaryProtocolReader* iprot) {
+      iprot->readFieldBeginWithState(*this);
+    }
+
+    void readFieldEnd(BinaryProtocolReader* /*iprot*/) {}
+
+    FOLLY_ALWAYS_INLINE bool advanceToNextField(
+        BinaryProtocolReader* iprot,
+        int32_t /*currFieldId*/,
+        int32_t nextFieldId,
+        TType nextFieldType) {
+      return iprot->advanceToNextField(nextFieldId, nextFieldType, *this);
+    }
+
+    std::string& fieldName() {
+      throw std::logic_error("BinaryProtocol doesn't support field names");
+    }
+  };
+
  protected:
   template <typename StrType>
   inline void readStringBody(StrType& str, int32_t sz);
+
+  FOLLY_ALWAYS_INLINE bool advanceToNextField(
+      int16_t nextFieldId,
+      TType nextFieldType,
+      StructReadState& state);
+
+  inline void readFieldBeginWithState(StructReadState& state);
 
   inline void checkStringSize(int32_t size);
   inline void checkContainerSize(int32_t size);
@@ -294,6 +332,16 @@ class BinaryProtocolReader {
   inline bool readBoolSafe();
 };
 
+namespace detail {
+
+template <class Protocol>
+struct ProtocolReaderStructReadState;
+
+template <>
+struct ProtocolReaderStructReadState<BinaryProtocolReader>
+    : BinaryProtocolReader::StructReadState {};
+
+} // namespace detail
 }} // apache::thrift
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.tcc>

@@ -372,6 +372,13 @@ mstch::node mstch_field::type() {
       field_->get_type(), generators_, cache_, pos_);
 }
 
+mstch::node mstch_field::next_field_type() {
+  return field_->get_next()
+      ? generators_->type_generator_->generate(
+            field_->get_next()->get_type(), generators_, cache_, pos_)
+      : mstch::node("");
+}
+
 mstch::node mstch_struct::fields() {
   return generate_elements(
       strct_->get_members(),

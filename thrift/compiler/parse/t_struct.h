@@ -81,6 +81,9 @@ class t_struct : public t_type {
   }
 
   bool append(t_field* elem) {
+    if (!members_.empty()) {
+      members_.back()->set_next(elem);
+    }
     members_.push_back(elem);
 
     typedef members_type::iterator iter_type;

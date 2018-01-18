@@ -330,6 +330,41 @@ class CompactProtocolReader {
     return 0;
   }
 
+  struct StructReadState {
+    int16_t fieldId;
+    apache::thrift::protocol::TType fieldType;
+    // bool boolValue;
+
+    void readStructBegin(CompactProtocolReader* iprot) {
+      iprot->readStructBeginWithState(*this);
+    }
+
+    void readStructEnd(CompactProtocolReader* /*iprot*/) {}
+
+    void readFieldBegin(CompactProtocolReader* iprot) {
+      iprot->readFieldBeginWithState(*this);
+    }
+
+    FOLLY_NOINLINE void readFieldBeginNoInline(CompactProtocolReader* iprot) {
+      iprot->readFieldBeginWithState(*this);
+    }
+
+    void readFieldEnd(CompactProtocolReader* /*iprot*/) {}
+
+    FOLLY_ALWAYS_INLINE bool advanceToNextField(
+        CompactProtocolReader* iprot,
+        int32_t currFieldId,
+        int32_t nextFieldId,
+        TType nextFieldType) {
+      return iprot->advanceToNextField(
+          currFieldId, nextFieldId, nextFieldType, *this);
+    }
+
+    std::string& fieldName() {
+      throw std::logic_error("CompactProtocol doesn't support field names");
+    }
+  };
+
  protected:
   inline void readStringSize(int32_t& size);
 
@@ -337,6 +372,25 @@ class CompactProtocolReader {
   inline void readStringBody(StrType& str, int32_t size);
 
   inline TType getType(int8_t type);
+
+  inline void readStructBeginWithState(StructReadState& state);
+  inline void readFieldBeginWithState(StructReadState& state);
+  FOLLY_NOINLINE void readFieldBeginWithStateMediumSlow(
+      StructReadState& state,
+      int16_t prevFieldId);
+  FOLLY_ALWAYS_INLINE void readFieldBeginWithStateImpl(
+      StructReadState& state,
+      int16_t prevFieldId,
+      uint8_t firstByte);
+
+  FOLLY_ALWAYS_INLINE bool
+  matchTypeHeader(uint8_t byte, TType type, uint8_t diff);
+
+  FOLLY_ALWAYS_INLINE bool advanceToNextField(
+      int32_t currFieldId,
+      int32_t nextFieldId,
+      TType type,
+      StructReadState& state);
 
   [[noreturn]] static void throwBadProtocolIdentifier();
   [[noreturn]] static void throwBadProtocolVersion();
@@ -364,6 +418,16 @@ class CompactProtocolReader {
   friend class CompactProtocolReaderWithRefill;
 };
 
+namespace detail {
+
+template <class Protocol>
+struct ProtocolReaderStructReadState;
+
+template <>
+struct ProtocolReaderStructReadState<CompactProtocolReader>
+    : CompactProtocolReader::StructReadState {};
+
+} // namespace detail
 }} // apache::thrift
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.tcc>

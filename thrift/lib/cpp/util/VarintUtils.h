@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -61,9 +63,9 @@ uint32_t writeVarint16(uint16_t n, uint8_t* pkt);
  * Convert n into a zigzag int. This allows negative numbers to be
  * represented compactly as a varint.
  */
-uint32_t i32ToZigzag(const int32_t n);
+constexpr uint32_t i32ToZigzag(const int32_t n);
 
-uint64_t i64ToZigzag(const int64_t l);
+constexpr uint64_t i64ToZigzag(const int64_t l);
 
 /**
  * Convert from zigzag long to long.

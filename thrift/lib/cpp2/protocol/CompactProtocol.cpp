@@ -37,5 +37,14 @@ namespace thrift {
 [[noreturn]] void CompactProtocolReader::throwBadType(uint8_t const type) {
   throw TProtocolException("don't know what type: " + std::to_string(type));
 }
+
+void CompactProtocolReader::readFieldBeginWithStateMediumSlow(
+    StructReadState& state,
+    int16_t prevFieldId) {
+  auto byte = *in_.data();
+  in_.skipNoAdvance(1);
+
+  readFieldBeginWithStateImpl(state, prevFieldId, byte);
 }
 }
+} // namespace apache

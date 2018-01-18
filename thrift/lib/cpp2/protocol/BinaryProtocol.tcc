@@ -593,6 +593,54 @@ uint32_t BinaryProtocolReader::readFromPositionAndAppend(
   return (uint32_t) size;
 }
 
+bool BinaryProtocolReader::advanceToNextField(
+    int16_t nextFieldId,
+    TType nextFieldType,
+    StructReadState& state) {
+  if (nextFieldType == TType::T_STOP) {
+    if (in_.length() && *in_.data() == TType::T_STOP) {
+      in_.skipNoAdvance(1);
+      return true;
+    }
+  } else {
+    if (in_.length() >= 3) {
+      uint8_t type = *in_.data();
+      if (nextFieldType == type) {
+        int16_t fieldId =
+            folly::Endian::big(folly::loadUnaligned<int16_t>(in_.data() + 1));
+        in_.skipNoAdvance(3);
+        if (nextFieldId == fieldId) {
+          return true;
+        }
+        state.fieldType = (TType)type;
+        state.fieldId = fieldId;
+        return false;
+      }
+
+      state.fieldType = (TType)type;
+      if (type != TType::T_STOP) {
+        state.fieldId =
+            folly::Endian::big(folly::loadUnaligned<int16_t>(in_.data() + 1));
+        in_.skipNoAdvance(3);
+      } else {
+        in_.skipNoAdvance(1);
+      }
+      return false;
+    }
+  }
+  state.readFieldBeginNoInline(this);
+  return false;
+}
+
+void BinaryProtocolReader::readFieldBeginWithState(StructReadState& state) {
+  int8_t type;
+  readByte(type);
+  state.fieldType = (TType)type;
+  if (state.fieldType == TType::T_STOP) {
+    return;
+  }
+  readI16(state.fieldId);
+}
 }} // apache2::thrift
 
 #endif // #ifndef THRIFT2_PROTOCOL_TBINARYPROTOCOL_TCC_

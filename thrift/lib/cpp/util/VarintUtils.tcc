@@ -207,11 +207,11 @@ inline int64_t zigzagToI64(uint64_t n) {
   return (n >> 1) ^ -(n & 1);
 }
 
-inline uint32_t i32ToZigzag(const int32_t n) {
+constexpr inline uint32_t i32ToZigzag(const int32_t n) {
   return (static_cast<uint32_t>(n) << 1) ^ static_cast<uint32_t>(n >> 31);
 }
 
-inline uint64_t i64ToZigzag(const int64_t l) {
+constexpr inline uint64_t i64ToZigzag(const int64_t l) {
   return (static_cast<uint64_t>(l) << 1) ^ static_cast<uint64_t>(l >> 63);
 }
 

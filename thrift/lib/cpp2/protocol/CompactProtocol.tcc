@@ -742,6 +742,121 @@ TType CompactProtocolReader::getType(int8_t type) {
   throwBadType(type);
 }
 
-}} // apache2::thrift
+FOLLY_ALWAYS_INLINE bool
+CompactProtocolReader::matchTypeHeader(uint8_t byte, TType type, uint8_t diff) {
+  if (type == TType::T_BOOL) {
+    if ((byte == (detail::compact::CT_BOOLEAN_TRUE | (diff << 4))) ||
+        (byte == (detail::compact::CT_BOOLEAN_FALSE | (diff << 4)))) {
+      boolValue_.hasBoolValue = true;
+      boolValue_.boolValue = byte & 1;
+      return true;
+    }
+    return false;
+  } else {
+    return byte == (detail::compact::TTypeToCType[type] | (diff << 4));
+  }
+}
+
+bool CompactProtocolReader::advanceToNextField(
+    int32_t currFieldId,
+    int32_t nextFieldId,
+    TType nextFieldType,
+    StructReadState& state) {
+  if (in_.length()) {
+    if (nextFieldType == TType::T_STOP) {
+      if (*in_.data() == TType::T_STOP) {
+        in_.skipNoAdvance(1);
+        return true;
+      }
+    } else if (nextFieldId > currFieldId && (nextFieldId - currFieldId <= 15)) {
+      if (matchTypeHeader(
+              *in_.data(), nextFieldType, nextFieldId - currFieldId)) {
+        in_.skipNoAdvance(1);
+        return true;
+      }
+    } else if (matchTypeHeader(*in_.data(), nextFieldType, 0)) {
+      // In one byte, we can fit values up to 127 (7-bit, due to varint),
+      // which corresponds to a range [-64; 63] with zigzag encoding.
+      // In two bytes, we can fit values up to 16383 (14-bit), which corresponds
+      // to a range [-8192; 8191] with zigzag encoding.
+      if (nextFieldId >= -64 && nextFieldId <= 63) {
+        if (in_.length() > 1 &&
+            *(in_.data() + 1) ==
+                static_cast<uint8_t>(util::i32ToZigzag(nextFieldId))) {
+          in_.skipNoAdvance(2);
+          return true;
+        }
+      } else if (nextFieldId >= -8192 && nextFieldId <= 8191) {
+        if (in_.length() > 2 &&
+            *(in_.data() + 1) ==
+                ((util::i32ToZigzag(nextFieldId) & 0x7F) | 0x80) &&
+            *(in_.data() + 2) ==
+                ((util::i32ToZigzag(nextFieldId) & 0x3F80) >> 7)) {
+          in_.skipNoAdvance(3);
+          return true;
+        }
+      } else {
+        if (in_.length() > 3 &&
+            *(in_.data() + 1) ==
+                ((util::i32ToZigzag(nextFieldId) & 0x7F) | 0x80) &&
+            *(in_.data() + 2) ==
+                ((util::i32ToZigzag(nextFieldId) & 0x3F80) >> 7 | 0x80) &&
+            *(in_.data() + 3) ==
+                ((util::i32ToZigzag(nextFieldId) & 0x1FC000) >> 14)) {
+          in_.skipNoAdvance(4);
+          return true;
+        }
+      }
+    }
+
+    readFieldBeginWithStateMediumSlow(state, currFieldId);
+  } else {
+    // We're out of luck, fallback to slow path.
+    state.fieldId = currFieldId;
+    state.readFieldBeginNoInline(this);
+  }
+  return false;
+}
+
+void CompactProtocolReader::readStructBeginWithState(
+    StructReadState& /* state */) {}
+
+void CompactProtocolReader::readFieldBeginWithState(StructReadState& state) {
+  int8_t byte;
+  readByte(byte);
+  readFieldBeginWithStateImpl(state, state.fieldId, byte);
+}
+
+FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
+    StructReadState& state,
+    int16_t prevFieldId,
+    uint8_t firstByte) {
+  if (firstByte == detail::compact::CT_STOP) {
+    state.fieldType = TType::T_STOP;
+    return;
+  }
+
+  int16_t modifier = (firstByte & 0xf0) >> 4;
+  if (modifier != 0) {
+    state.fieldId = prevFieldId + modifier;
+  } else {
+    // not a delta, look ahead for the zigzag varint field id.
+    readI16(state.fieldId);
+  }
+
+  uint8_t type = firstByte & 0xf;
+  state.fieldType = getType(type);
+
+  // if this happens to be a boolean field, the value is encoded in the type
+  if (type == detail::compact::CT_BOOLEAN_TRUE ||
+      type == detail::compact::CT_BOOLEAN_FALSE) {
+    // save the boolean value in a special instance variable.
+    boolValue_.hasBoolValue = true;
+    boolValue_.boolValue = type == detail::compact::CT_BOOLEAN_TRUE;
+  }
+}
+
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT2_PROTOCOL_COMPACTPROTOCOL_TCC_
