@@ -262,7 +262,7 @@ void ServiceAAsyncClient::sync_moduleAMethod(apache::thrift::RpcOptions& rpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_moduleAMethod(_returnState);
@@ -395,7 +395,7 @@ void ServiceAAsyncClient::sync_moduleBMethod(apache::thrift::RpcOptions& rpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_moduleBMethod(_returnState);
@@ -528,7 +528,7 @@ void ServiceAAsyncClient::sync_i32StrDoubleMethod(apache::thrift::RpcOptions& rp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_i32StrDoubleMethod(_returnState);
@@ -661,7 +661,7 @@ void ServiceAAsyncClient::sync_versioningMethod(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_versioningMethod(_returnState);
@@ -794,7 +794,7 @@ int32_t ServiceAAsyncClient::sync_retI32Method(apache::thrift::RpcOptions& rpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   return recv_retI32Method(_returnState);
@@ -929,7 +929,7 @@ void ServiceAAsyncClient::sync_retModAMethod(apache::thrift::RpcOptions& rpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_retModAMethod(_return, _returnState);
@@ -1062,7 +1062,7 @@ void ServiceAAsyncClient::sync_throwMethod(apache::thrift::RpcOptions& rpcOption
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_throwMethod(_returnState);
@@ -1195,7 +1195,7 @@ void ServiceAAsyncClient::sync_multiThrowMethod(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_multiThrowMethod(_returnState);
@@ -1328,7 +1328,7 @@ void ServiceAAsyncClient::sync_i32ThrowMethod(apache::thrift::RpcOptions& rpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_i32ThrowMethod(_returnState);
@@ -1461,7 +1461,7 @@ void ServiceAAsyncClient::sync_moduleAThrowMethod(apache::thrift::RpcOptions& rp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_moduleAThrowMethod(_returnState);
@@ -1594,7 +1594,7 @@ void ServiceAAsyncClient::sync_mixedMethod(apache::thrift::RpcOptions& rpcOption
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_mixedMethod(_return, _returnState);

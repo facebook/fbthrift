@@ -185,7 +185,7 @@ void PubSubStreamingServiceAsyncClient::sync_client(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_client(_returnState);
@@ -306,7 +306,7 @@ void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_server(_returnState);
@@ -427,7 +427,7 @@ void PubSubStreamingServiceAsyncClient::sync_both(apache::thrift::RpcOptions& rp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_both(_returnState);
@@ -641,7 +641,7 @@ void PubSubStreamingServiceAsyncClient::sync_takesstream(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_takesstream(_returnState);
@@ -762,7 +762,7 @@ void PubSubStreamingServiceAsyncClient::sync_clientthrows(apache::thrift::RpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
+    assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
   recv_clientthrows(_returnState);
