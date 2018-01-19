@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServiceFast.h>
 #include <src/gen-cpp2/MyServiceEmpty.h>
@@ -26,21 +25,16 @@
 
 namespace cpp2 {
 
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
-
 class MyServiceClientWrapper {
   protected:
-    std::unique_ptr<cpp2::MyServiceAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
   public:
     explicit MyServiceClientWrapper(
-        std::unique_ptr<cpp2::MyServiceAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit MyServiceClientWrapper(RequestChannel_ptr channel)
-        : MyServiceClientWrapper(std::make_unique<cpp2::MyServiceAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client);
     virtual ~MyServiceClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
@@ -60,17 +54,14 @@ class MyServiceClientWrapper {
 
 class MyServiceFastClientWrapper {
   protected:
-    std::unique_ptr<cpp2::MyServiceFastAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client;
   public:
     explicit MyServiceFastClientWrapper(
-        std::unique_ptr<cpp2::MyServiceFastAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit MyServiceFastClientWrapper(RequestChannel_ptr channel)
-        : MyServiceFastClientWrapper(std::make_unique<cpp2::MyServiceFastAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client);
     virtual ~MyServiceFastClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
@@ -90,17 +81,14 @@ class MyServiceFastClientWrapper {
 
 class MyServiceEmptyClientWrapper {
   protected:
-    std::unique_ptr<cpp2::MyServiceEmptyAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client;
   public:
     explicit MyServiceEmptyClientWrapper(
-        std::unique_ptr<cpp2::MyServiceEmptyAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit MyServiceEmptyClientWrapper(RequestChannel_ptr channel)
-        : MyServiceEmptyClientWrapper(std::make_unique<cpp2::MyServiceEmptyAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client);
     virtual ~MyServiceEmptyClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
 };
@@ -108,17 +96,14 @@ class MyServiceEmptyClientWrapper {
 
 class MyServicePrioParentClientWrapper {
   protected:
-    std::unique_ptr<cpp2::MyServicePrioParentAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client;
   public:
     explicit MyServicePrioParentClientWrapper(
-        std::unique_ptr<cpp2::MyServicePrioParentAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit MyServicePrioParentClientWrapper(RequestChannel_ptr channel)
-        : MyServicePrioParentClientWrapper(std::make_unique<cpp2::MyServicePrioParentAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client);
     virtual ~MyServicePrioParentClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
@@ -128,15 +113,13 @@ class MyServicePrioParentClientWrapper {
 
 class MyServicePrioChildClientWrapper : public cpp2::MyServicePrioParentClientWrapper {
   protected:
-    std::unique_ptr<cpp2::MyServicePrioChildAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client;
   public:
     explicit MyServicePrioChildClientWrapper(
-        std::unique_ptr<cpp2::MyServicePrioChildAsyncClient> client)
-        : MyServicePrioParentClientWrapper(std::move(client)) { }
-    explicit MyServicePrioChildClientWrapper(RequestChannel_ptr channel)
-        : MyServicePrioChildClientWrapper(std::make_unique<cpp2::MyServicePrioChildAsyncClient>(channel))  { }
+      std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client);
 
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
 
     folly::Future<folly::Unit> pang();
 };

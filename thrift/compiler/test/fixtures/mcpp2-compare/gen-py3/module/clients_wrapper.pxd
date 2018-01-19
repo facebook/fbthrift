@@ -15,41 +15,44 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
 
 cimport includes.types as _includes_types
 
-
 cdef extern from "src/gen-cpp2/EmptyService.h" namespace "some::valid::ns":
   cdef cppclass cEmptyServiceAsyncClient "some::valid::ns::EmptyServiceAsyncClient":
       pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cEmptyServiceClientWrapper] move(unique_ptr[cEmptyServiceClientWrapper])
 
 cdef extern from "src/gen-cpp2/ReturnService.h" namespace "some::valid::ns":
   cdef cppclass cReturnServiceAsyncClient "some::valid::ns::ReturnServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cReturnServiceClientWrapper] move(unique_ptr[cReturnServiceClientWrapper])
+
 cdef extern from "src/gen-cpp2/ParamService.h" namespace "some::valid::ns":
   cdef cppclass cParamServiceAsyncClient "some::valid::ns::ParamServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cParamServiceClientWrapper] move(unique_ptr[cParamServiceClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::ns":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cEmptyServiceClientWrapper "some::valid::ns::EmptyServiceClientWrapper":
     cEmptyServiceClientWrapper(
       shared_ptr[cEmptyServiceAsyncClient] async_client)
-    cEmptyServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+
 
 
   cdef cppclass cReturnServiceClientWrapper "some::valid::ns::ReturnServiceClientWrapper":
     cReturnServiceClientWrapper(
       shared_ptr[cReturnServiceAsyncClient] async_client)
-    cReturnServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -77,10 +80,10 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[_module_types.std_unique_ptr_folly_IOBuf] readData(
       int64_t arg_size,)
 
+
   cdef cppclass cParamServiceClientWrapper "some::valid::ns::ParamServiceClientWrapper":
     cParamServiceClientWrapper(
       shared_ptr[cParamServiceAsyncClient] async_client)
-    cParamServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

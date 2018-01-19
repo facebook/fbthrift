@@ -15,25 +15,22 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
 
 cimport include.types as _include_types
 
-
 cdef extern from "src/gen-cpp2/SomeService.h" namespace "apache::thrift::fixtures::types":
   cdef cppclass cSomeServiceAsyncClient "apache::thrift::fixtures::types::SomeServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cSomeServiceClientWrapper] move(unique_ptr[cSomeServiceClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrift::fixtures::types":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cSomeServiceClientWrapper "apache::thrift::fixtures::types::SomeServiceClientWrapper":
     cSomeServiceClientWrapper(
       shared_ptr[cSomeServiceAsyncClient] async_client)
-    cSomeServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/ExtendTestService.h>
 #include <gen-py3/hsmodule/clients_wrapper.h>
 
@@ -23,19 +22,15 @@
 
 namespace cpp2 {
 
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
-
 class ExtendTestServiceClientWrapper : public cpp2::HsTestServiceClientWrapper {
   protected:
-    std::unique_ptr<cpp2::ExtendTestServiceAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client;
   public:
     explicit ExtendTestServiceClientWrapper(
-        std::unique_ptr<cpp2::ExtendTestServiceAsyncClient> client)
-        : HsTestServiceClientWrapper(std::move(client)) { }
-    explicit ExtendTestServiceClientWrapper(RequestChannel_ptr channel)
-        : ExtendTestServiceClientWrapper(std::make_unique<cpp2::ExtendTestServiceAsyncClient>(channel))  { }
+      std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client);
 
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
 
     folly::Future<bool> check(
       cpp2::HsFoo arg_struct1);

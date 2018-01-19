@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright 2017 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <cstdint>
@@ -26,9 +27,20 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
+
 namespace thrift {
 namespace py3 {
 typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+
+/*
+ * T is the cpp2 async client class
+ * U is the py3 clientwraper class
+ */
+template <class T, class U>
+std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr channel) {
+  auto client = std::make_shared<T>(channel);
+  return std::make_shared<U>(client);
+}
 
 folly::Future<RequestChannel_ptr> createThriftChannel(
     const std::string& host,

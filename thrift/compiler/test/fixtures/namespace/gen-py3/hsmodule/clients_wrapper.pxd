@@ -15,24 +15,21 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport hsmodule.types as _hsmodule_types
-
 
 
 cdef extern from "gen-cpp2/HsTestService.h" namespace "cpp2":
   cdef cppclass cHsTestServiceAsyncClient "cpp2::HsTestServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cHsTestServiceClientWrapper] move(unique_ptr[cHsTestServiceClientWrapper])
+
 cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cHsTestServiceClientWrapper "cpp2::HsTestServiceClientWrapper":
     cHsTestServiceClientWrapper(
       shared_ptr[cHsTestServiceAsyncClient] async_client)
-    cHsTestServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

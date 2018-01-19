@@ -8,12 +8,20 @@
 #include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
+TestServiceClientWrapper::TestServiceClientWrapper(
+    std::shared_ptr<cpp2::TestServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
+
 TestServiceClientWrapper::~TestServiceClientWrapper() {}
 
 folly::Future<folly::Unit> TestServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { async_client.reset(); });
+    [this] { disconnectInLoop(); });
+}
+
+void TestServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
 void TestServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

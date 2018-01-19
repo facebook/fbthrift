@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/EmptyService.h>
 #include <src/gen-cpp2/ReturnService.h>
 #include <src/gen-cpp2/ParamService.h>
@@ -26,21 +25,16 @@ namespace some {
 namespace valid {
 namespace ns {
 
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
-
 class EmptyServiceClientWrapper {
   protected:
-    std::unique_ptr<some::valid::ns::EmptyServiceAsyncClient> async_client;
-
+    std::shared_ptr<some::valid::ns::EmptyServiceAsyncClient> async_client;
   public:
     explicit EmptyServiceClientWrapper(
-        std::unique_ptr<some::valid::ns::EmptyServiceAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit EmptyServiceClientWrapper(RequestChannel_ptr channel)
-        : EmptyServiceClientWrapper(std::make_unique<some::valid::ns::EmptyServiceAsyncClient>(channel))  { }
-
+      std::shared_ptr<some::valid::ns::EmptyServiceAsyncClient> async_client);
     virtual ~EmptyServiceClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
 };
@@ -48,17 +42,14 @@ class EmptyServiceClientWrapper {
 
 class ReturnServiceClientWrapper {
   protected:
-    std::unique_ptr<some::valid::ns::ReturnServiceAsyncClient> async_client;
-
+    std::shared_ptr<some::valid::ns::ReturnServiceAsyncClient> async_client;
   public:
     explicit ReturnServiceClientWrapper(
-        std::unique_ptr<some::valid::ns::ReturnServiceAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit ReturnServiceClientWrapper(RequestChannel_ptr channel)
-        : ReturnServiceClientWrapper(std::make_unique<some::valid::ns::ReturnServiceAsyncClient>(channel))  { }
-
+      std::shared_ptr<some::valid::ns::ReturnServiceAsyncClient> async_client);
     virtual ~ReturnServiceClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> noReturn();
@@ -89,17 +80,14 @@ class ReturnServiceClientWrapper {
 
 class ParamServiceClientWrapper {
   protected:
-    std::unique_ptr<some::valid::ns::ParamServiceAsyncClient> async_client;
-
+    std::shared_ptr<some::valid::ns::ParamServiceAsyncClient> async_client;
   public:
     explicit ParamServiceClientWrapper(
-        std::unique_ptr<some::valid::ns::ParamServiceAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit ParamServiceClientWrapper(RequestChannel_ptr channel)
-        : ParamServiceClientWrapper(std::make_unique<some::valid::ns::ParamServiceAsyncClient>(channel))  { }
-
+      std::shared_ptr<some::valid::ns::ParamServiceAsyncClient> async_client);
     virtual ~ParamServiceClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> void_ret_i16_param(

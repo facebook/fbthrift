@@ -31,7 +31,6 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 
@@ -44,7 +43,6 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients_wrapper as _
 {{/hasServices?}}
 {{/program:includeNamespaces}}
 
-
 {{#program:services}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
     }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
@@ -53,15 +51,14 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
     }}{{service:name}}AsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[c{{service:name}}ClientWrapper] move(unique_ptr[c{{service:name}}ClientWrapper])
+
 {{/program:services}}
 cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrapper.h"{{!
     }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{!
     }}{{^program:services}}
-  pass{{/program:services}}
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
-  {{#program:services}}
+  pass{{/program:services}}{{#program:services}}
   cdef cppclass c{{service:name}}ClientWrapper "{{!
   }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}ClientWrapper"{{!
   }}{{#service:extends}}({{!
@@ -72,7 +69,6 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
   }}){{/service:extends}}:
     c{{service:name}}ClientWrapper(
       shared_ptr[c{{service:name}}AsyncClient] async_client)
-    c{{service:name}}ClientWrapper(cRequestChannel_ptr channel)
     {{^service:extends?}}
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)

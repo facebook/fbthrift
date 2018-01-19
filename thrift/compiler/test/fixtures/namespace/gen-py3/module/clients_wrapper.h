@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/TestService.h>
 
 #include <folly/futures/Future.h>
@@ -22,21 +21,16 @@
 
 namespace cpp2 {
 
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
-
 class TestServiceClientWrapper {
   protected:
-    std::unique_ptr<cpp2::TestServiceAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::TestServiceAsyncClient> async_client;
   public:
     explicit TestServiceClientWrapper(
-        std::unique_ptr<cpp2::TestServiceAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit TestServiceClientWrapper(RequestChannel_ptr channel)
-        : TestServiceClientWrapper(std::make_unique<cpp2::TestServiceAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::TestServiceAsyncClient> async_client);
     virtual ~TestServiceClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<int64_t> init(

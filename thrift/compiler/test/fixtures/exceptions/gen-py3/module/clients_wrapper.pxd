@@ -15,24 +15,21 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
-
 
 
 cdef extern from "src/gen-cpp2/Raiser.h" namespace "cpp2":
   cdef cppclass cRaiserAsyncClient "cpp2::RaiserAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cRaiserClientWrapper] move(unique_ptr[cRaiserClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cRaiserClientWrapper "cpp2::RaiserClientWrapper":
     cRaiserClientWrapper(
       shared_ptr[cRaiserAsyncClient] async_client)
-    cRaiserClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

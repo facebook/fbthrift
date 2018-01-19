@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -107,7 +107,9 @@ cdef class MyService(thrift.py3.client.Client):
         if self._cRequestChannel:
             MyService._service_MyService_set_client(
                 self,
-                make_shared[cMyServiceClientWrapper](self._cRequestChannel),
+                makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
+                    self._cRequestChannel
+                ),
             )
             self._cRequestChannel.reset()
         else:

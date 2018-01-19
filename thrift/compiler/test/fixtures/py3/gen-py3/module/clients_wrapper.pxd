@@ -15,32 +15,35 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
-
 
 
 cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
   cdef cppclass cSimpleServiceAsyncClient "py3::simple::SimpleServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cSimpleServiceClientWrapper] move(unique_ptr[cSimpleServiceClientWrapper])
+
 cdef extern from "src/gen-cpp2/DerivedService.h" namespace "py3::simple":
   cdef cppclass cDerivedServiceAsyncClient "py3::simple::DerivedServiceAsyncClient":
       pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cDerivedServiceClientWrapper] move(unique_ptr[cDerivedServiceClientWrapper])
 
 cdef extern from "src/gen-cpp2/RederivedService.h" namespace "py3::simple":
   cdef cppclass cRederivedServiceAsyncClient "py3::simple::RederivedServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cRederivedServiceClientWrapper] move(unique_ptr[cRederivedServiceClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cSimpleServiceClientWrapper "py3::simple::SimpleServiceClientWrapper":
     cSimpleServiceClientWrapper(
       shared_ptr[cSimpleServiceAsyncClient] async_client)
-    cSimpleServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -124,17 +127,17 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
     cFollyFuture[vector[_module_types.cAnEnum]] contain_enum(
       vector[_module_types.cAnEnum] arg_the_enum,)
 
+
   cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(cSimpleServiceClientWrapper):
     cDerivedServiceClientWrapper(
       shared_ptr[cDerivedServiceAsyncClient] async_client)
-    cDerivedServiceClientWrapper(cRequestChannel_ptr channel)
 
     cFollyFuture[int32_t] get_six()
+
 
   cdef cppclass cRederivedServiceClientWrapper "py3::simple::RederivedServiceClientWrapper"(cDerivedServiceClientWrapper):
     cRederivedServiceClientWrapper(
       shared_ptr[cRederivedServiceAsyncClient] async_client)
-    cRederivedServiceClientWrapper(cRequestChannel_ptr channel)
 
     cFollyFuture[int32_t] get_seven()
 

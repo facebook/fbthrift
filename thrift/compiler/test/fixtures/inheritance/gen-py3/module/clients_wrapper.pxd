@@ -15,48 +15,51 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
-
 
 
 cdef extern from "src/gen-cpp2/MyRoot.h" namespace "cpp2":
   cdef cppclass cMyRootAsyncClient "cpp2::MyRootAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyRootClientWrapper] move(unique_ptr[cMyRootClientWrapper])
+
 cdef extern from "src/gen-cpp2/MyNode.h" namespace "cpp2":
   cdef cppclass cMyNodeAsyncClient "cpp2::MyNodeAsyncClient":
       pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyNodeClientWrapper] move(unique_ptr[cMyNodeClientWrapper])
 
 cdef extern from "src/gen-cpp2/MyLeaf.h" namespace "cpp2":
   cdef cppclass cMyLeafAsyncClient "cpp2::MyLeafAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyLeafClientWrapper] move(unique_ptr[cMyLeafClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cMyRootClientWrapper "cpp2::MyRootClientWrapper":
     cMyRootClientWrapper(
       shared_ptr[cMyRootAsyncClient] async_client)
-    cMyRootClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
     cFollyFuture[cFollyUnit] do_root()
 
+
   cdef cppclass cMyNodeClientWrapper "cpp2::MyNodeClientWrapper"(cMyRootClientWrapper):
     cMyNodeClientWrapper(
       shared_ptr[cMyNodeAsyncClient] async_client)
-    cMyNodeClientWrapper(cRequestChannel_ptr channel)
 
     cFollyFuture[cFollyUnit] do_mid()
+
 
   cdef cppclass cMyLeafClientWrapper "cpp2::MyLeafClientWrapper"(cMyNodeClientWrapper):
     cMyLeafClientWrapper(
       shared_ptr[cMyLeafAsyncClient] async_client)
-    cMyLeafClientWrapper(cRequestChannel_ptr channel)
 
     cFollyFuture[cFollyUnit] do_leaf()
 

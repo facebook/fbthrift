@@ -15,40 +15,49 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-from thrift.py3.client cimport cRequestChannel_ptr
 
 cimport module.types as _module_types
-
 
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
   cdef cppclass cMyServiceAsyncClient "cpp2::MyServiceAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
+
 cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "cpp2":
   cdef cppclass cMyServiceFastAsyncClient "cpp2::MyServiceFastAsyncClient":
       pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyServiceFastClientWrapper] move(unique_ptr[cMyServiceFastClientWrapper])
 
 cdef extern from "src/gen-cpp2/MyServiceEmpty.h" namespace "cpp2":
   cdef cppclass cMyServiceEmptyAsyncClient "cpp2::MyServiceEmptyAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyServiceEmptyClientWrapper] move(unique_ptr[cMyServiceEmptyClientWrapper])
+
 cdef extern from "src/gen-cpp2/MyServicePrioParent.h" namespace "cpp2":
   cdef cppclass cMyServicePrioParentAsyncClient "cpp2::MyServicePrioParentAsyncClient":
       pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyServicePrioParentClientWrapper] move(unique_ptr[cMyServicePrioParentClientWrapper])
 
 cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "cpp2":
   cdef cppclass cMyServicePrioChildAsyncClient "cpp2::MyServicePrioChildAsyncClient":
       pass
 
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cMyServicePrioChildClientWrapper] move(unique_ptr[cMyServicePrioChildClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
-      pass
-  ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
     cMyServiceClientWrapper(
       shared_ptr[cMyServiceAsyncClient] async_client)
-    cMyServiceClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -64,11 +73,11 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cFollyFuture[cFollyUnit] lobDataById(
       int64_t arg_id,
       string arg_data,)
+
 
   cdef cppclass cMyServiceFastClientWrapper "cpp2::MyServiceFastClientWrapper":
     cMyServiceFastClientWrapper(
       shared_ptr[cMyServiceFastAsyncClient] async_client)
-    cMyServiceFastClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -85,28 +94,28 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
       int64_t arg_id,
       string arg_data,)
 
+
   cdef cppclass cMyServiceEmptyClientWrapper "cpp2::MyServiceEmptyClientWrapper":
     cMyServiceEmptyClientWrapper(
       shared_ptr[cMyServiceEmptyAsyncClient] async_client)
-    cMyServiceEmptyClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "cpp2::MyServicePrioParentClientWrapper":
     cMyServicePrioParentClientWrapper(
       shared_ptr[cMyServicePrioParentAsyncClient] async_client)
-    cMyServicePrioParentClientWrapper(cRequestChannel_ptr channel)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
     cFollyFuture[cFollyUnit] ping()
     cFollyFuture[cFollyUnit] pong()
 
+
   cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(cMyServicePrioParentClientWrapper):
     cMyServicePrioChildClientWrapper(
       shared_ptr[cMyServicePrioChildAsyncClient] async_client)
-    cMyServicePrioChildClientWrapper(cRequestChannel_ptr channel)
 
     cFollyFuture[cFollyUnit] pang()
 

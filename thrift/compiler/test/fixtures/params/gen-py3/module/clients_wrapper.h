@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <src/gen-cpp2/NestedContainers.h>
 
 #include <folly/futures/Future.h>
@@ -22,21 +21,16 @@
 
 namespace cpp2 {
 
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
-
 class NestedContainersClientWrapper {
   protected:
-    std::unique_ptr<cpp2::NestedContainersAsyncClient> async_client;
-
+    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client;
   public:
     explicit NestedContainersClientWrapper(
-        std::unique_ptr<cpp2::NestedContainersAsyncClient> client)
-        : async_client(std::move(client)) { }
-    explicit NestedContainersClientWrapper(RequestChannel_ptr channel)
-        : NestedContainersClientWrapper(std::make_unique<cpp2::NestedContainersAsyncClient>(channel))  { }
-
+      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client);
     virtual ~NestedContainersClientWrapper();
+
     folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> mapList(

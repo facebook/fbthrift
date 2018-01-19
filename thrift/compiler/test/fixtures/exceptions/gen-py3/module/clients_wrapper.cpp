@@ -8,12 +8,20 @@
 #include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
+RaiserClientWrapper::RaiserClientWrapper(
+    std::shared_ptr<cpp2::RaiserAsyncClient> async_client) : 
+    async_client(async_client) {}
+
 RaiserClientWrapper::~RaiserClientWrapper() {}
 
 folly::Future<folly::Unit> RaiserClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { async_client.reset(); });
+    [this] { disconnectInLoop(); });
+}
+
+void RaiserClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
 void RaiserClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
