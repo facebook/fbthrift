@@ -1,0 +1,77 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#program:frozen?%>
+namespace apache { namespace thrift {
+template<>
+size_t Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::extraSizeImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& src) {
+  (void)src;
+  return 0<%!
+%><%#struct:fields%><%!
+%><%#field:type%><%!
+%><%^type:bool?%>
+    + extraSize(src.<%field:name%>)<%!
+%><%/type:bool?%><%!
+%><%/field:type%><%!
+%><%/struct:fields%>;
+}
+
+template<>
+void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& src,
+    Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& dst,
+    byte*& buffer) {
+  (void)buffer;
+<%#struct:fields%>
+<%#field:type%>
+<%#type:bool?%>
+  dst.<%field:name%> = src.<%field:name%>;
+<%/type:bool?%>
+<%^type:bool?%>
+  freeze(src.<%field:name%>, dst.<%field:name%>, buffer);
+<%/type:bool?%>
+<%^field:required?%>
+<%^field:cpp_ref?%>
+  dst.__isset.<%field:name%> = src.__isset.<%field:name%>;
+<%/field:cpp_ref?%>
+<%/field:required?%>
+<%/field:type%>
+<%/struct:fields%>
+}
+
+template<>
+void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
+    const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& src,
+    Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& dst) {
+<%#struct:fields%>
+<%#field:type%>
+<%#type:bool?%>
+  dst.<%field:name%> = src.<%field:name%>;
+<%/type:bool?%>
+<%^type:bool?%>
+  thaw(src.<%field:name%>, dst.<%field:name%>);
+<%/type:bool?%>
+<%^field:required?%>
+<%^field:cpp_ref?%>
+  dst.__isset.<%field:name%> = src.__isset.<%field:name%>;
+<%/field:cpp_ref?%>
+<%/field:required?%>
+<%/field:type%>
+<%/struct:fields%>
+}
+}} // apache::thrift
+<%/program:frozen?%>

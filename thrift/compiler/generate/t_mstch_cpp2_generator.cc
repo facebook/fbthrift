@@ -764,6 +764,8 @@ class mstch_cpp2_program : public mstch_program {
             {"program:cpp_declare_hash?",
              &mstch_cpp2_program::cpp_declare_hash},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
+            {"program:frozen?", &mstch_cpp2_program::frozen},
+            {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
@@ -820,6 +822,13 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(cache_->programs_[program_id]);
     }
     return a;
+  }
+  mstch::node frozen() {
+    return cache_->parsed_options_.count("frozen") != 0;
+  }
+  mstch::node frozen_packed() {
+    auto iter = cache_->parsed_options_.find("frozen");
+    return iter != cache_->parsed_options_.end() && iter->second == "packed";
   }
   mstch::node frozen2() {
     return cache_->parsed_options_.count("frozen2") != 0;

@@ -23,6 +23,9 @@
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+<%#program:frozen?%>
+#include <thrift/lib/cpp/Frozen.h>
+<%/program:frozen?%>
 
 <%#program:thrift_includes%>
 #include "<%program:include_prefix%><%program:name%>_types.h"
@@ -270,5 +273,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp
   return obj->serializedSizeZC(proto);
 }
 
+<% > module_types_h/frozen%>
 }} // apache::thrift
 <%/program:structs%>
