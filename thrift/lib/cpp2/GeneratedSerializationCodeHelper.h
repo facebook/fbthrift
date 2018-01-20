@@ -78,8 +78,10 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
 inline void reserve_if_possible(...){};
 
 template <typename T>
-using unsafe_constructible_from_vector_value_type = std::
-    is_constructible<T, folly::unsafe_t, std::vector<typename T::value_type>&&>;
+using presorted_constructible_from_vector_value_type = std::is_constructible<
+    T,
+    folly::presorted_t,
+    std::vector<typename T::value_type>&&>;
 
 FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
 
@@ -96,7 +98,7 @@ using set_emplace_hint_is_invocable = emplace_hint_traits::
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    unsafe_constructible_from_vector_value_type<Map>::value>::type
+    presorted_constructible_from_vector_value_type<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
@@ -120,7 +122,7 @@ deserialize_known_length_map(
     if (!sorted) {
       std::sort(tmp.begin(), tmp.end(), map.value_comp());
     }
-    map = Map(folly::unsafe_t(), std::move(tmp));
+    map = Map(folly::presorted, std::move(tmp));
   } else {
     map.insert(
         std::make_move_iterator(tmp.begin()),
@@ -130,7 +132,7 @@ deserialize_known_length_map(
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !unsafe_constructible_from_vector_value_type<Map>::value &&
+    !presorted_constructible_from_vector_value_type<Map>::value &&
     map_emplace_hint_is_invocable<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
@@ -150,7 +152,7 @@ deserialize_known_length_map(
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !unsafe_constructible_from_vector_value_type<Map>::value &&
+    !presorted_constructible_from_vector_value_type<Map>::value &&
     !map_emplace_hint_is_invocable<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
@@ -168,7 +170,7 @@ deserialize_known_length_map(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    unsafe_constructible_from_vector_value_type<Set>::value>::type
+    presorted_constructible_from_vector_value_type<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
     std::uint32_t set_size,
@@ -189,7 +191,7 @@ deserialize_known_length_set(
     if (!sorted) {
       std::sort(tmp.begin(), tmp.end(), set.value_comp());
     }
-    set = Set(folly::unsafe_t(), std::move(tmp));
+    set = Set(folly::presorted, std::move(tmp));
   } else {
     set.insert(
         std::make_move_iterator(tmp.begin()),
@@ -199,7 +201,7 @@ deserialize_known_length_set(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !unsafe_constructible_from_vector_value_type<Set>::value &&
+    !presorted_constructible_from_vector_value_type<Set>::value &&
     set_emplace_hint_is_invocable<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
@@ -216,7 +218,7 @@ deserialize_known_length_set(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !unsafe_constructible_from_vector_value_type<Set>::value &&
+    !presorted_constructible_from_vector_value_type<Set>::value &&
     !set_emplace_hint_is_invocable<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
