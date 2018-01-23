@@ -41,6 +41,10 @@ type NestedContainersClient struct {
   SeqId int32
 }
 
+func (client *NestedContainersClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewNestedContainersClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *NestedContainersClient {
   return &NestedContainersClient{Transport: t,
     ProtocolFactory: f,

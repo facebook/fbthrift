@@ -27,6 +27,10 @@ type MyRootClient struct {
   SeqId int32
 }
 
+func (client *MyRootClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyRootClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyRootClient {
   return &MyRootClient{Transport: t,
     ProtocolFactory: f,

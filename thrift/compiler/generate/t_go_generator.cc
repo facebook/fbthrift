@@ -1799,6 +1799,16 @@ void t_go_generator::generate_service_client(t_service* tservice) {
 
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
+
+  // Close() function
+  f_service_ << indent() << "func (client *" << serviceName
+             << "Client) Close() error {" << endl;
+  indent_up();
+  f_service_ << indent() << "return client.Transport.Close()" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << endl;
+
   // Constructor function
   f_service_ << indent() << "func New" << serviceName
              << "ClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *" << serviceName
@@ -2113,6 +2123,8 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote << indent() << "  os.Exit(0)" << endl;
   f_remote << indent() << "}" << endl;
   f_remote << indent() << endl;
+
+  // Implement the main() function
   f_remote << indent() << "func main() {" << endl;
   indent_up();
   f_remote << indent() << "flag.Usage = Usage" << endl;

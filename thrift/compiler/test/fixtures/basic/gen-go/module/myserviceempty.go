@@ -25,6 +25,10 @@ type MyServiceEmptyClient struct {
   SeqId int32
 }
 
+func (client *MyServiceEmptyClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyServiceEmptyClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceEmptyClient {
   return &MyServiceEmptyClient{Transport: t,
     ProtocolFactory: f,

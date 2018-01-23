@@ -43,6 +43,10 @@ type MyServiceClient struct {
   SeqId int32
 }
 
+func (client *MyServiceClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceClient {
   return &MyServiceClient{Transport: t,
     ProtocolFactory: f,

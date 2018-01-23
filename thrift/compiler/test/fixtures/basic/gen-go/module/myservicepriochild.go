@@ -25,6 +25,10 @@ type MyServicePrioChildClient struct {
   *MyServicePrioParentClient
 }
 
+func (client *MyServicePrioChildClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyServicePrioChildClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioChildClient {
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClientFactory(t, f)}}
 

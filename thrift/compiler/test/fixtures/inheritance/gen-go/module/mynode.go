@@ -25,6 +25,10 @@ type MyNodeClient struct {
   *MyRootClient
 }
 
+func (client *MyNodeClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyNodeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyNodeClient {
   return &MyNodeClient{MyRootClient: NewMyRootClientFactory(t, f)}}
 

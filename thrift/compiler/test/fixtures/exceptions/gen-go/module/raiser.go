@@ -30,6 +30,10 @@ type RaiserClient struct {
   SeqId int32
 }
 
+func (client *RaiserClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewRaiserClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *RaiserClient {
   return &RaiserClient{Transport: t,
     ProtocolFactory: f,

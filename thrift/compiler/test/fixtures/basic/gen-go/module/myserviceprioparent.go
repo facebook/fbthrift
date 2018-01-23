@@ -28,6 +28,10 @@ type MyServicePrioParentClient struct {
   SeqId int32
 }
 
+func (client *MyServicePrioParentClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyServicePrioParentClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioParentClient {
   return &MyServicePrioParentClient{Transport: t,
     ProtocolFactory: f,

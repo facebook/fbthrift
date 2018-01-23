@@ -42,6 +42,10 @@ type MyServiceFastClient struct {
   SeqId int32
 }
 
+func (client *MyServiceFastClient) Close() error {
+  return client.Transport.Close()
+}
+
 func NewMyServiceFastClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceFastClient {
   return &MyServiceFastClient{Transport: t,
     ProtocolFactory: f,
