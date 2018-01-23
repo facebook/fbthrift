@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 type MyNode interface {
@@ -82,16 +84,104 @@ func (p *MyNodeClient) recvDoMid() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error4 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error5 error
-    error5, err = error4.Read(iprot)
+    error6 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error7 error
+    error7, err = error6.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error5
+    err = error7
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
+    return
+  }
+  result := MyNodeDoMidResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+
+type MyNodeThreadsafeClient struct {
+  *MyRootThreadsafeClient
+}
+
+func NewMyNodeThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyNodeThreadsafeClient {
+  return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}}
+
+func NewMyNodeThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyNodeThreadsafeClient {
+  return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientProtocol(t, iprot, oprot)}
+}
+
+func (p *MyNodeThreadsafeClient) Threadsafe() {}
+
+func (p *MyNodeThreadsafeClient) DoMid() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendDoMid(); err != nil { return }
+  return p.recvDoMid()
+}
+
+func (p *MyNodeThreadsafeClient) sendDoMid()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("do_mid", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyNodeDoMidArgs{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "do_mid" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error8 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error9 error
+    error9, err = error8.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error9
     return
   }
   if mTypeId != thrift.REPLY {
@@ -114,9 +204,9 @@ type MyNodeProcessor struct {
 }
 
 func NewMyNodeProcessor(handler MyNode) *MyNodeProcessor {
-  self6 := &MyNodeProcessor{NewMyRootProcessor(handler)}
-  self6.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
-  return self6
+  self10 := &MyNodeProcessor{NewMyRootProcessor(handler)}
+  self10.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
+  return self10
 }
 
 type myNodeProcessorDoMid struct {

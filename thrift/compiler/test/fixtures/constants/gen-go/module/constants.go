@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 const MyInt = 1337

@@ -122,36 +122,36 @@ func main() {
       fmt.Fprintln(os.Stderr, "Query requires 2 args")
       flag.Usage()
     }
-    arg8 := flag.Arg(1)
-    mbTrans9 := thrift.NewTMemoryBufferLen(len(arg8))
-    defer mbTrans9.Close()
-    _, err10 := mbTrans9.WriteString(arg8)
-    if err10 != nil {
+    arg12 := flag.Arg(1)
+    mbTrans13 := thrift.NewTMemoryBufferLen(len(arg12))
+    defer mbTrans13.Close()
+    _, err14 := mbTrans13.WriteString(arg12)
+    if err14 != nil {
       Usage()
       return
     }
-    factory11 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt12 := factory11.GetProtocol(mbTrans9)
+    factory15 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt16 := factory15.GetProtocol(mbTrans13)
     argvalue0 := service.NewMyStruct()
-    err13 := argvalue0.Read(jsProt12)
-    if err13 != nil {
+    err17 := argvalue0.Read(jsProt16)
+    if err17 != nil {
       Usage()
       return
     }
     value0 := argvalue0
-    arg14 := flag.Arg(2)
-    mbTrans15 := thrift.NewTMemoryBufferLen(len(arg14))
-    defer mbTrans15.Close()
-    _, err16 := mbTrans15.WriteString(arg14)
-    if err16 != nil {
+    arg18 := flag.Arg(2)
+    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
+    defer mbTrans19.Close()
+    _, err20 := mbTrans19.WriteString(arg18)
+    if err20 != nil {
       Usage()
       return
     }
-    factory17 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt18 := factory17.GetProtocol(mbTrans15)
+    factory21 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt22 := factory21.GetProtocol(mbTrans19)
     argvalue1 := service.NewIncluded()
-    err19 := argvalue1.Read(jsProt18)
-    if err19 != nil {
+    err23 := argvalue1.Read(jsProt22)
+    if err23 != nil {
       Usage()
       return
     }
@@ -164,36 +164,36 @@ func main() {
       fmt.Fprintln(os.Stderr, "HasArgDocs requires 2 args")
       flag.Usage()
     }
-    arg20 := flag.Arg(1)
-    mbTrans21 := thrift.NewTMemoryBufferLen(len(arg20))
-    defer mbTrans21.Close()
-    _, err22 := mbTrans21.WriteString(arg20)
-    if err22 != nil {
+    arg24 := flag.Arg(1)
+    mbTrans25 := thrift.NewTMemoryBufferLen(len(arg24))
+    defer mbTrans25.Close()
+    _, err26 := mbTrans25.WriteString(arg24)
+    if err26 != nil {
       Usage()
       return
     }
-    factory23 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt24 := factory23.GetProtocol(mbTrans21)
+    factory27 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt28 := factory27.GetProtocol(mbTrans25)
     argvalue0 := service.NewMyStruct()
-    err25 := argvalue0.Read(jsProt24)
-    if err25 != nil {
+    err29 := argvalue0.Read(jsProt28)
+    if err29 != nil {
       Usage()
       return
     }
     value0 := argvalue0
-    arg26 := flag.Arg(2)
-    mbTrans27 := thrift.NewTMemoryBufferLen(len(arg26))
-    defer mbTrans27.Close()
-    _, err28 := mbTrans27.WriteString(arg26)
-    if err28 != nil {
+    arg30 := flag.Arg(2)
+    mbTrans31 := thrift.NewTMemoryBufferLen(len(arg30))
+    defer mbTrans31.Close()
+    _, err32 := mbTrans31.WriteString(arg30)
+    if err32 != nil {
       Usage()
       return
     }
-    factory29 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt30 := factory29.GetProtocol(mbTrans27)
+    factory33 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt34 := factory33.GetProtocol(mbTrans31)
     argvalue1 := service.NewIncluded()
-    err31 := argvalue1.Read(jsProt30)
-    if err31 != nil {
+    err35 := argvalue1.Read(jsProt34)
+    if err35 != nil {
       Usage()
       return
     }

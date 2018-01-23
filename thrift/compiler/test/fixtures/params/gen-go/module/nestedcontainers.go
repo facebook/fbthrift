@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 type NestedContainers interface {
@@ -439,6 +441,421 @@ func (p *NestedContainersClient) recvTurtles() (err error) {
 }
 
 
+type NestedContainersThreadsafeClient struct {
+  Transport thrift.TTransport
+  ProtocolFactory thrift.TProtocolFactory
+  InputProtocol thrift.TProtocol
+  OutputProtocol thrift.TProtocol
+  SeqId int32
+  Mu sync.Mutex
+}
+
+func NewNestedContainersThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *NestedContainersThreadsafeClient {
+  return &NestedContainersThreadsafeClient{Transport: t,
+    ProtocolFactory: f,
+    InputProtocol: f.GetProtocol(t),
+    OutputProtocol: f.GetProtocol(t),
+    SeqId: 0,
+  }
+}
+
+func NewNestedContainersThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *NestedContainersThreadsafeClient {
+  return &NestedContainersThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func (p *NestedContainersThreadsafeClient) Threadsafe() {}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersThreadsafeClient) MapList(foo map[int32][]int32) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendMapList(foo); err != nil { return }
+  return p.recvMapList()
+}
+
+func (p *NestedContainersThreadsafeClient) sendMapList(foo map[int32][]int32)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("mapList", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := NestedContainersMapListArgs{
+  Foo : foo,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *NestedContainersThreadsafeClient) recvMapList() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "mapList" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "mapList failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "mapList failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error10 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error11 error
+    error11, err = error10.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error11
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "mapList failed: invalid message type")
+    return
+  }
+  result := NestedContainersMapListResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersThreadsafeClient) MapSet(foo map[int32][]int32) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendMapSet(foo); err != nil { return }
+  return p.recvMapSet()
+}
+
+func (p *NestedContainersThreadsafeClient) sendMapSet(foo map[int32][]int32)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("mapSet", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := NestedContainersMapSetArgs{
+  Foo : foo,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *NestedContainersThreadsafeClient) recvMapSet() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "mapSet" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "mapSet failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "mapSet failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error12 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error13 error
+    error13, err = error12.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error13
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "mapSet failed: invalid message type")
+    return
+  }
+  result := NestedContainersMapSetResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersThreadsafeClient) ListMap(foo []map[int32]int32) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendListMap(foo); err != nil { return }
+  return p.recvListMap()
+}
+
+func (p *NestedContainersThreadsafeClient) sendListMap(foo []map[int32]int32)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("listMap", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := NestedContainersListMapArgs{
+  Foo : foo,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *NestedContainersThreadsafeClient) recvListMap() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "listMap" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "listMap failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "listMap failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error14 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error15 error
+    error15, err = error14.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error15
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "listMap failed: invalid message type")
+    return
+  }
+  result := NestedContainersListMapResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersThreadsafeClient) ListSet(foo [][]int32) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendListSet(foo); err != nil { return }
+  return p.recvListSet()
+}
+
+func (p *NestedContainersThreadsafeClient) sendListSet(foo [][]int32)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("listSet", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := NestedContainersListSetArgs{
+  Foo : foo,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *NestedContainersThreadsafeClient) recvListSet() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "listSet" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "listSet failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "listSet failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error16 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error17 error
+    error17, err = error16.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error17
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "listSet failed: invalid message type")
+    return
+  }
+  result := NestedContainersListSetResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersThreadsafeClient) Turtles(foo [][]map[int32]map[int32][]int32) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendTurtles(foo); err != nil { return }
+  return p.recvTurtles()
+}
+
+func (p *NestedContainersThreadsafeClient) sendTurtles(foo [][]map[int32]map[int32][]int32)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("turtles", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := NestedContainersTurtlesArgs{
+  Foo : foo,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *NestedContainersThreadsafeClient) recvTurtles() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "turtles" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "turtles failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "turtles failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error18 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error19 error
+    error19, err = error18.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error19
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "turtles failed: invalid message type")
+    return
+  }
+  result := NestedContainersTurtlesResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+
 type NestedContainersProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler NestedContainers
@@ -459,13 +876,13 @@ func (p *NestedContainersProcessor) ProcessorMap() map[string]thrift.TProcessorF
 
 func NewNestedContainersProcessor(handler NestedContainers) *NestedContainersProcessor {
 
-  self10 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self10.processorMap["mapList"] = &nestedContainersProcessorMapList{handler:handler}
-  self10.processorMap["mapSet"] = &nestedContainersProcessorMapSet{handler:handler}
-  self10.processorMap["listMap"] = &nestedContainersProcessorListMap{handler:handler}
-  self10.processorMap["listSet"] = &nestedContainersProcessorListSet{handler:handler}
-  self10.processorMap["turtles"] = &nestedContainersProcessorTurtles{handler:handler}
-return self10
+  self20 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self20.processorMap["mapList"] = &nestedContainersProcessorMapList{handler:handler}
+  self20.processorMap["mapSet"] = &nestedContainersProcessorMapSet{handler:handler}
+  self20.processorMap["listMap"] = &nestedContainersProcessorListMap{handler:handler}
+  self20.processorMap["listSet"] = &nestedContainersProcessorListSet{handler:handler}
+  self20.processorMap["turtles"] = &nestedContainersProcessorTurtles{handler:handler}
+return self20
 }
 
 func (p *NestedContainersProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -476,12 +893,12 @@ func (p *NestedContainersProcessor) Process(iprot, oprot thrift.TProtocol) (succ
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x11 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x21 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x11.Write(oprot)
+  x21.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x11
+  return false, x21
 
 }
 
@@ -767,31 +1184,31 @@ func (p *NestedContainersMapListArgs)  ReadField1(iprot thrift.TProtocol) error 
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key12 int32
+var _key22 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key12 = v
+    _key22 = v
 }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
     }
     tSlice := make([]int32, 0, size)
-    _val13 :=  tSlice
+    _val23 :=  tSlice
     for i := 0; i < size; i ++ {
-var _elem14 int32
+var _elem24 int32
       if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
 } else {
-      _elem14 = v
+      _elem24 = v
 }
-      _val13 = append(_val13, _elem14)
+      _val23 = append(_val23, _elem24)
     }
     if err := iprot.ReadListEnd(); err != nil {
       return thrift.PrependError("error reading list end: ", err)
     }
-    p.Foo[_key12] = _val13
+    p.Foo[_key22] = _val23
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -948,31 +1365,31 @@ func (p *NestedContainersMapSetArgs)  ReadField1(iprot thrift.TProtocol) error {
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key15 int32
+var _key25 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key15 = v
+    _key25 = v
 }
     _, size, err := iprot.ReadSetBegin()
     if err != nil {
       return thrift.PrependError("error reading set begin: ", err)
     }
     tSet := make([]int32, 0, size)
-    _val16 :=  tSet
+    _val26 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem17 int32
+var _elem27 int32
       if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
 } else {
-      _elem17 = v
+      _elem27 = v
 }
-      _val16 = append(_val16, _elem17)
+      _val26 = append(_val26, _elem27)
     }
     if err := iprot.ReadSetEnd(); err != nil {
       return thrift.PrependError("error reading set end: ", err)
     }
-    p.Foo[_key15] = _val16
+    p.Foo[_key25] = _val26
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -1141,26 +1558,26 @@ func (p *NestedContainersListMapArgs)  ReadField1(iprot thrift.TProtocol) error 
       return thrift.PrependError("error reading map begin: ", err)
     }
     tMap := make(map[int32]int32, size)
-    _elem18 :=  tMap
+    _elem28 :=  tMap
     for i := 0; i < size; i ++ {
-var _key19 int32
+var _key29 int32
       if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
 } else {
-      _key19 = v
+      _key29 = v
 }
-var _val20 int32
+var _val30 int32
       if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
 } else {
-      _val20 = v
+      _val30 = v
 }
-      _elem18[_key19] = _val20
+      _elem28[_key29] = _val30
     }
     if err := iprot.ReadMapEnd(); err != nil {
       return thrift.PrependError("error reading map end: ", err)
     }
-    p.Foo = append(p.Foo, _elem18)
+    p.Foo = append(p.Foo, _elem28)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1322,20 +1739,20 @@ func (p *NestedContainersListSetArgs)  ReadField1(iprot thrift.TProtocol) error 
       return thrift.PrependError("error reading set begin: ", err)
     }
     tSet := make([]int32, 0, size)
-    _elem21 :=  tSet
+    _elem31 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem22 int32
+var _elem32 int32
       if v, err := iprot.ReadI32(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
 } else {
-      _elem22 = v
+      _elem32 = v
 }
-      _elem21 = append(_elem21, _elem22)
+      _elem31 = append(_elem31, _elem32)
     }
     if err := iprot.ReadSetEnd(); err != nil {
       return thrift.PrependError("error reading set end: ", err)
     }
-    p.Foo = append(p.Foo, _elem21)
+    p.Foo = append(p.Foo, _elem31)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1502,68 +1919,68 @@ func (p *NestedContainersTurtlesArgs)  ReadField1(iprot thrift.TProtocol) error 
       return thrift.PrependError("error reading list begin: ", err)
     }
     tSlice := make([]map[int32]map[int32][]int32, 0, size)
-    _elem23 :=  tSlice
+    _elem33 :=  tSlice
     for i := 0; i < size; i ++ {
       _, _, size, err := iprot.ReadMapBegin()
       if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
       }
       tMap := make(map[int32]map[int32][]int32, size)
-      _elem24 :=  tMap
+      _elem34 :=  tMap
       for i := 0; i < size; i ++ {
-var _key25 int32
+var _key35 int32
         if v, err := iprot.ReadI32(); err != nil {
         return thrift.PrependError("error reading field 0: ", err)
 } else {
-        _key25 = v
+        _key35 = v
 }
         _, _, size, err := iprot.ReadMapBegin()
         if err != nil {
           return thrift.PrependError("error reading map begin: ", err)
         }
         tMap := make(map[int32][]int32, size)
-        _val26 :=  tMap
+        _val36 :=  tMap
         for i := 0; i < size; i ++ {
-var _key27 int32
+var _key37 int32
           if v, err := iprot.ReadI32(); err != nil {
           return thrift.PrependError("error reading field 0: ", err)
 } else {
-          _key27 = v
+          _key37 = v
 }
           _, size, err := iprot.ReadSetBegin()
           if err != nil {
             return thrift.PrependError("error reading set begin: ", err)
           }
           tSet := make([]int32, 0, size)
-          _val28 :=  tSet
+          _val38 :=  tSet
           for i := 0; i < size; i ++ {
-var _elem29 int32
+var _elem39 int32
             if v, err := iprot.ReadI32(); err != nil {
             return thrift.PrependError("error reading field 0: ", err)
 } else {
-            _elem29 = v
+            _elem39 = v
 }
-            _val28 = append(_val28, _elem29)
+            _val38 = append(_val38, _elem39)
           }
           if err := iprot.ReadSetEnd(); err != nil {
             return thrift.PrependError("error reading set end: ", err)
           }
-          _val26[_key27] = _val28
+          _val36[_key37] = _val38
         }
         if err := iprot.ReadMapEnd(); err != nil {
           return thrift.PrependError("error reading map end: ", err)
         }
-        _elem24[_key25] = _val26
+        _elem34[_key35] = _val36
       }
       if err := iprot.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
       }
-      _elem23 = append(_elem23, _elem24)
+      _elem33 = append(_elem33, _elem34)
     }
     if err := iprot.ReadListEnd(); err != nil {
       return thrift.PrependError("error reading list end: ", err)
     }
-    p.Foo = append(p.Foo, _elem23)
+    p.Foo = append(p.Foo, _elem33)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)

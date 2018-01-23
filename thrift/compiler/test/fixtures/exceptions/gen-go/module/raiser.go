@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 type Raiser interface {
@@ -357,6 +359,348 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
 }
 
 
+type RaiserThreadsafeClient struct {
+  Transport thrift.TTransport
+  ProtocolFactory thrift.TProtocolFactory
+  InputProtocol thrift.TProtocol
+  OutputProtocol thrift.TProtocol
+  SeqId int32
+  Mu sync.Mutex
+}
+
+func NewRaiserThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *RaiserThreadsafeClient {
+  return &RaiserThreadsafeClient{Transport: t,
+    ProtocolFactory: f,
+    InputProtocol: f.GetProtocol(t),
+    OutputProtocol: f.GetProtocol(t),
+    SeqId: 0,
+  }
+}
+
+func NewRaiserThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *RaiserThreadsafeClient {
+  return &RaiserThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func (p *RaiserThreadsafeClient) Threadsafe() {}
+
+func (p *RaiserThreadsafeClient) DoBland() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendDoBland(); err != nil { return }
+  return p.recvDoBland()
+}
+
+func (p *RaiserThreadsafeClient) sendDoBland()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("doBland", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := RaiserDoBlandArgs{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *RaiserThreadsafeClient) recvDoBland() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "doBland" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doBland failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doBland failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error8 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error9 error
+    error9, err = error8.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error9
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doBland failed: invalid message type")
+    return
+  }
+  result := RaiserDoBlandResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+func (p *RaiserThreadsafeClient) DoRaise() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendDoRaise(); err != nil { return }
+  return p.recvDoRaise()
+}
+
+func (p *RaiserThreadsafeClient) sendDoRaise()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("doRaise", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := RaiserDoRaiseArgs{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "doRaise" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doRaise failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doRaise failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error10 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error11 error
+    error11, err = error10.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error11
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doRaise failed: invalid message type")
+    return
+  }
+  result := RaiserDoRaiseResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  if result.B != nil {
+    err = result.B
+    return 
+  } else   if result.F != nil {
+    err = result.F
+    return 
+  }
+  return
+}
+
+func (p *RaiserThreadsafeClient) Get200() (r string, err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendGet200(); err != nil { return }
+  return p.recvGet200()
+}
+
+func (p *RaiserThreadsafeClient) sendGet200()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("get200", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := RaiserGet200Args{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *RaiserThreadsafeClient) recvGet200() (value string, err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "get200" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get200 failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get200 failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error12 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error13 error
+    error13, err = error12.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error13
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get200 failed: invalid message type")
+    return
+  }
+  result := RaiserGet200Result{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  value = result.GetSuccess()
+  return
+}
+
+func (p *RaiserThreadsafeClient) Get500() (r string, err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendGet500(); err != nil { return }
+  return p.recvGet500()
+}
+
+func (p *RaiserThreadsafeClient) sendGet500()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("get500", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := RaiserGet500Args{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "get500" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get500 failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get500 failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error14 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error15 error
+    error15, err = error14.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error15
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get500 failed: invalid message type")
+    return
+  }
+  result := RaiserGet500Result{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  if result.F != nil {
+    err = result.F
+    return 
+  } else   if result.B != nil {
+    err = result.B
+    return 
+  }
+  value = result.GetSuccess()
+  return
+}
+
+
 type RaiserProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler Raiser
@@ -377,12 +721,12 @@ func (p *RaiserProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
 
 func NewRaiserProcessor(handler Raiser) *RaiserProcessor {
 
-  self8 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self8.processorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
-  self8.processorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
-  self8.processorMap["get200"] = &raiserProcessorGet200{handler:handler}
-  self8.processorMap["get500"] = &raiserProcessorGet500{handler:handler}
-return self8
+  self16 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self16.processorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
+  self16.processorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
+  self16.processorMap["get200"] = &raiserProcessorGet200{handler:handler}
+  self16.processorMap["get500"] = &raiserProcessorGet500{handler:handler}
+return self16
 }
 
 func (p *RaiserProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -393,12 +737,12 @@ func (p *RaiserProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, 
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x9 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x17 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x9.Write(oprot)
+  x17.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x9
+  return false, x17
 
 }
 

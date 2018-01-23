@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 type MyServiceEmpty interface {}
@@ -48,6 +50,36 @@ func NewMyServiceEmptyClientProtocol(t thrift.TTransport, iprot thrift.TProtocol
 }
 
 
+type MyServiceEmptyThreadsafeClient struct {
+  Transport thrift.TTransport
+  ProtocolFactory thrift.TProtocolFactory
+  InputProtocol thrift.TProtocol
+  OutputProtocol thrift.TProtocol
+  SeqId int32
+  Mu sync.Mutex
+}
+
+func NewMyServiceEmptyThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceEmptyThreadsafeClient {
+  return &MyServiceEmptyThreadsafeClient{Transport: t,
+    ProtocolFactory: f,
+    InputProtocol: f.GetProtocol(t),
+    OutputProtocol: f.GetProtocol(t),
+    SeqId: 0,
+  }
+}
+
+func NewMyServiceEmptyThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceEmptyThreadsafeClient {
+  return &MyServiceEmptyThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func (p *MyServiceEmptyThreadsafeClient) Threadsafe() {}
+
+
 type MyServiceEmptyProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler MyServiceEmpty
@@ -68,8 +100,8 @@ func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.TProcessorFun
 
 func NewMyServiceEmptyProcessor(handler MyServiceEmpty) *MyServiceEmptyProcessor {
 
-  self36 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-return self36
+  self56 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+return self56
 }
 
 func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -80,12 +112,12 @@ func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.TProtocol) (succes
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x37 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x57 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x37.Write(oprot)
+  x57.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x37
+  return false, x57
 
 }
 

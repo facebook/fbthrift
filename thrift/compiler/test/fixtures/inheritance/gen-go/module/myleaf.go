@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
@@ -13,6 +14,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 type MyLeaf interface {
@@ -82,16 +84,104 @@ func (p *MyLeafClient) recvDoLeaf() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error7 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error8 error
-    error8, err = error7.Read(iprot)
+    error11 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error12 error
+    error12, err = error11.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error8
+    err = error12
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_leaf failed: invalid message type")
+    return
+  }
+  result := MyLeafDoLeafResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+
+type MyLeafThreadsafeClient struct {
+  *MyNodeThreadsafeClient
+}
+
+func NewMyLeafThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyLeafThreadsafeClient {
+  return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientFactory(t, f)}}
+
+func NewMyLeafThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyLeafThreadsafeClient {
+  return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientProtocol(t, iprot, oprot)}
+}
+
+func (p *MyLeafThreadsafeClient) Threadsafe() {}
+
+func (p *MyLeafThreadsafeClient) DoLeaf() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendDoLeaf(); err != nil { return }
+  return p.recvDoLeaf()
+}
+
+func (p *MyLeafThreadsafeClient) sendDoLeaf()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("do_leaf", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyLeafDoLeafArgs{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "do_leaf" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_leaf failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_leaf failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error13 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error14 error
+    error14, err = error13.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error14
     return
   }
   if mTypeId != thrift.REPLY {
@@ -114,9 +204,9 @@ type MyLeafProcessor struct {
 }
 
 func NewMyLeafProcessor(handler MyLeaf) *MyLeafProcessor {
-  self9 := &MyLeafProcessor{NewMyNodeProcessor(handler)}
-  self9.AddToProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
-  return self9
+  self15 := &MyLeafProcessor{NewMyNodeProcessor(handler)}
+  self15.AddToProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
+  return self15
 }
 
 type myLeafProcessorDoLeaf struct {

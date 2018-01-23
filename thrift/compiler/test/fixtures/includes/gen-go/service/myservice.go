@@ -6,6 +6,7 @@ package service
 
 import (
 	"bytes"
+	"sync"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 	module0 "module"
@@ -16,6 +17,7 @@ import (
 // (needed to ensure safety because of naive import list construction.)
 var _ = thrift.ZERO
 var _ = fmt.Printf
+var _ = sync.Mutex{}
 var _ = bytes.Equal
 
 var _ = module0.GoUnusedProtection__
@@ -222,6 +224,197 @@ func (p *MyServiceClient) recvHasArgDocs() (err error) {
 }
 
 
+//This is a service-level docblock
+type MyServiceThreadsafeClient struct {
+  Transport thrift.TTransport
+  ProtocolFactory thrift.TProtocolFactory
+  InputProtocol thrift.TProtocol
+  OutputProtocol thrift.TProtocol
+  SeqId int32
+  Mu sync.Mutex
+}
+
+func NewMyServiceThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceThreadsafeClient {
+  return &MyServiceThreadsafeClient{Transport: t,
+    ProtocolFactory: f,
+    InputProtocol: f.GetProtocol(t),
+    OutputProtocol: f.GetProtocol(t),
+    SeqId: 0,
+  }
+}
+
+func NewMyServiceThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceThreadsafeClient {
+  return &MyServiceThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func (p *MyServiceThreadsafeClient) Threadsafe() {}
+
+// This is a function-level docblock
+// 
+// Parameters:
+//  - S
+//  - I
+func (p *MyServiceThreadsafeClient) Query(s *module0.MyStruct, i *includes1.Included) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendQuery(s, i); err != nil { return }
+  return p.recvQuery()
+}
+
+func (p *MyServiceThreadsafeClient) sendQuery(s *module0.MyStruct, i *includes1.Included)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("query", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyServiceQueryArgs{
+  S : s,
+  I : i,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyServiceThreadsafeClient) recvQuery() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "query" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "query failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "query failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error6 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error7 error
+    error7, err = error6.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error7
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "query failed: invalid message type")
+    return
+  }
+  result := MyServiceQueryResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+// Parameters:
+//  - S
+//  - I: arg doc
+func (p *MyServiceThreadsafeClient) HasArgDocs(s *module0.MyStruct, i *includes1.Included) (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendHasArgDocs(s, i); err != nil { return }
+  return p.recvHasArgDocs()
+}
+
+func (p *MyServiceThreadsafeClient) sendHasArgDocs(s *module0.MyStruct, i *includes1.Included)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("has_arg_docs", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyServiceHasArgDocsArgs{
+  S : s,
+  I : i,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyServiceThreadsafeClient) recvHasArgDocs() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "has_arg_docs" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "has_arg_docs failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "has_arg_docs failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error8 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error9 error
+    error9, err = error8.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error9
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "has_arg_docs failed: invalid message type")
+    return
+  }
+  result := MyServiceHasArgDocsResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
+
 type MyServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler MyService
@@ -242,10 +435,10 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
 
-  self6 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self6.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
-  self6.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
-return self6
+  self10 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self10.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
+  self10.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
+return self10
 }
 
 func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -256,12 +449,12 @@ func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success boo
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x7 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x11 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x7.Write(oprot)
+  x11.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x7
+  return false, x11
 
 }
 
