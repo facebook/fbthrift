@@ -47,18 +47,7 @@ class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}F
 
 
 {{/program:enums}}
-{{#program:structs}}{{#struct:union?}}
-class __{{struct:name}}Type(__enum.Enum):
-    EMPTY = ...
-{{#struct:fields}}
-    {{field:name}} = ...
-{{/struct:fields}}
-    value: int
-
-{{! Removed after closing T25252259 }}
-{{struct:name}}Type = __{{struct:name}}Type
-
-{{/struct:union?}}
+{{#program:structs}}
 class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
     def __init__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
@@ -88,16 +77,26 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
         }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
     {{/struct:fields}}
     {{#struct:union?}}
-    Type: _typing.ClassVar[_typing.Type[__{{struct:name}}Type]]
+    class Type(__enum.Enum):
+        EMPTY = ...
+    {{#struct:fields}}
+        {{field:name}} = ...
+    {{/struct:fields}}
+        value: int
+
     @staticmethod
     def fromValue(value: _typing.Union[{{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]) -> {{struct:name}}: ...
     @property
     def value(self) -> _typing.Union[{{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]: ...
     @property
-    def type(self) -> {{struct:name}}Type: ...
-    def get_type(self) -> {{struct:name}}Type: ...
+    def type(self) -> "{{struct:name}}.Type": ...
+    def get_type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}
 
+{{#struct:union?}}
+{{! Removed after closing T25252259 }}
+{{struct:name}}Type = {{struct:name}}.Type
+{{/struct:union?}}
 
 {{/program:structs}}
 {{#program:containerTypes}}
