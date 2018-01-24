@@ -16,15 +16,16 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <folly/Conv.h>
-#include <folly/Memory.h>
 #include <folly/Logging.h>
+#include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/GssSaslServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 #include <wangle/ssl/SSLContextManager.h>
 
@@ -98,7 +99,7 @@ ThriftServer::ThriftServer(
     : BaseThriftServer(),
       saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
       allowInsecureLoopback_(allowInsecureLoopback),
-      wShutdownSocketSet_(folly::ShutdownSocketSet::getInstance()),
+      wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
   // SASL setup

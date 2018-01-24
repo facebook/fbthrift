@@ -25,6 +25,7 @@
 #include <folly/Memory.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
+#include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -749,7 +750,7 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
   socket2->setReadCallback(&cb);
 
   base.tryRunAfterDelay(
-      [&]() { folly::ShutdownSocketSet::getInstance()->shutdownAll(); }, 10);
+      [&]() { folly::tryGetShutdownSocketSet()->shutdownAll(); }, 10);
   base.tryRunAfterDelay([&]() { base.terminateLoopSoon(); }, 30);
   base.loopForever();
   EXPECT_EQ(cb.eof, true);
