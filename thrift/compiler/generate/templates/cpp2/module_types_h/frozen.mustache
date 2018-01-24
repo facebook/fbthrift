@@ -37,5 +37,5 @@ struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
   } __isset = {};
 <%/struct:non_req_fields?%>
 };
-<%#program:frozen_packed?%>#pragma pack(push, 1)<%/program:frozen_packed?%>
+<%#program:frozen_packed?%>#pragma pack(pop)<%/program:frozen_packed?%>
 <%/program:frozen?%>
