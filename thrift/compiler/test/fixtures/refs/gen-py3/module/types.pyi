@@ -53,7 +53,6 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "MyUnion.Type": ...
     def get_type(self) -> "MyUnion.Type": ...
 
-MyUnionType = MyUnion.Type
 
 class MyField(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(

@@ -193,7 +193,6 @@ class SimpleUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "SimpleUnion.Type": ...
     def get_type(self) -> "SimpleUnion.Type": ...
 
-SimpleUnionType = SimpleUnion.Type
 
 class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -345,7 +344,6 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "ComplexUnion.Type": ...
     def get_type(self) -> "ComplexUnion.Type": ...
 
-ComplexUnionType = ComplexUnion.Type
 
 class AnException(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
@@ -897,7 +895,6 @@ class FloatUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "FloatUnion.Type": ...
     def get_type(self) -> "FloatUnion.Type": ...
 
-FloatUnionType = FloatUnion.Type
 
 class Map__string_i64(_typing.Mapping[str, int], _typing.Hashable):
     def __init__(self, items: _typing.Mapping[str, int]=None) -> None: ...

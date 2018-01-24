@@ -60,7 +60,6 @@ class __MyUnionType(__enum.Enum):
     anInteger = <int>cMyUnion__type_anInteger
     aString = <int>cMyUnion__type_aString
 
-MyUnionType = __MyUnionType
 
 cdef class MyUnion(thrift.py3.types.Union):
     Type = __MyUnionType

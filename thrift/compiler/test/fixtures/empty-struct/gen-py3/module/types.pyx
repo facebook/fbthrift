@@ -144,7 +144,6 @@ cdef class Empty(thrift.py3.types.Struct):
 class __NadaType(__enum.Enum):
     EMPTY = <int>cNada__type___EMPTY__
 
-NadaType = __NadaType
 
 cdef class Nada(thrift.py3.types.Union):
     Type = __NadaType

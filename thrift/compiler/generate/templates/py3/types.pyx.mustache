@@ -367,8 +367,6 @@ class __{{struct:name}}Type(__enum.Enum):
     {{field:name}} = <int>c{{struct:name}}__type_{{field:name}}
 {{/struct:fields}}
 
-{{! Removed after closing T25252259 }}
-{{struct:name}}Type = __{{struct:name}}Type
 
 cdef class {{struct:name}}(thrift.py3.types.Union):
     Type = __{{struct:name}}Type

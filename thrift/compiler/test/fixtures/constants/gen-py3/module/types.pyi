@@ -237,7 +237,6 @@ class union1(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "union1.Type": ...
     def get_type(self) -> "union1.Type": ...
 
-union1Type = union1.Type
 
 class union2(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -277,7 +276,6 @@ class union2(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "union2.Type": ...
     def get_type(self) -> "union2.Type": ...
 
-union2Type = union2.Type
 
 _List__i32T = _typing.TypeVar('_List__i32T', bound=_typing.Sequence[int])
 

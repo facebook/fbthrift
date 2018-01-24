@@ -43,7 +43,6 @@ class __ComplexUnionType(__enum.Enum):
     typedefValue = <int>cComplexUnion__type_typedefValue
     stringRef = <int>cComplexUnion__type_stringRef
 
-ComplexUnionType = __ComplexUnionType
 
 cdef class ComplexUnion(thrift.py3.types.Union):
     Type = __ComplexUnionType
@@ -274,7 +273,6 @@ class __VirtualComplexUnionType(__enum.Enum):
     thingOne = <int>cVirtualComplexUnion__type_thingOne
     thingTwo = <int>cVirtualComplexUnion__type_thingTwo
 
-VirtualComplexUnionType = __VirtualComplexUnionType
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
     Type = __VirtualComplexUnionType

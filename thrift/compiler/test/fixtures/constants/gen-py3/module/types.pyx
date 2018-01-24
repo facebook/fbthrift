@@ -1203,7 +1203,6 @@ class __union1Type(__enum.Enum):
     i = <int>cunion1__type_i
     d = <int>cunion1__type_d
 
-union1Type = __union1Type
 
 cdef class union1(thrift.py3.types.Union):
     Type = __union1Type
@@ -1375,7 +1374,6 @@ class __union2Type(__enum.Enum):
     s = <int>cunion2__type_s
     u = <int>cunion2__type_u
 
-union2Type = __union2Type
 
 cdef class union2(thrift.py3.types.Union):
     Type = __union2Type

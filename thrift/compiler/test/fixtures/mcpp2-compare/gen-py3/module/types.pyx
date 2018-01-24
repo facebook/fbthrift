@@ -875,7 +875,6 @@ class __SimpleUnionType(__enum.Enum):
     intValue = <int>cSimpleUnion__type_intValue
     stringValue = <int>cSimpleUnion__type_stringValue
 
-SimpleUnionType = __SimpleUnionType
 
 cdef class SimpleUnion(thrift.py3.types.Union):
     Type = __SimpleUnionType
@@ -1061,7 +1060,6 @@ class __ComplexUnionType(__enum.Enum):
     ref_field2 = <int>cComplexUnion__type_ref_field2
     excp_field = <int>cComplexUnion__type_excp_field
 
-ComplexUnionType = __ComplexUnionType
 
 cdef class ComplexUnion(thrift.py3.types.Union):
     Type = __ComplexUnionType
@@ -5236,7 +5234,6 @@ class __FloatUnionType(__enum.Enum):
     floatSide = <int>cFloatUnion__type_floatSide
     doubleSide = <int>cFloatUnion__type_doubleSide
 
-FloatUnionType = __FloatUnionType
 
 cdef class FloatUnion(thrift.py3.types.Union):
     Type = __FloatUnionType

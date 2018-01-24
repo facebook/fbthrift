@@ -93,10 +93,6 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
     def get_type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}
 
-{{#struct:union?}}
-{{! Removed after closing T25252259 }}
-{{struct:name}}Type = {{struct:name}}.Type
-{{/struct:union?}}
 
 {{/program:structs}}
 {{#program:containerTypes}}

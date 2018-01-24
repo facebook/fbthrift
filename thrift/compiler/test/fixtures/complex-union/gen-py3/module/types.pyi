@@ -62,7 +62,6 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "ComplexUnion.Type": ...
     def get_type(self) -> "ComplexUnion.Type": ...
 
-ComplexUnionType = ComplexUnion.Type
 
 class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def __init__(
@@ -94,7 +93,6 @@ class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     def type(self) -> "VirtualComplexUnion.Type": ...
     def get_type(self) -> "VirtualComplexUnion.Type": ...
 
-VirtualComplexUnionType = VirtualComplexUnion.Type
 
 _List__i64T = _typing.TypeVar('_List__i64T', bound=_typing.Sequence[int])
 
