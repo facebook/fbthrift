@@ -4,7 +4,7 @@ import sys
 import shutil
 try:
     from setuptools import setup, Extension
-except:
+except ImportError:
     from distutils.core import setup, Extension, Command
 
 def run_setup():
