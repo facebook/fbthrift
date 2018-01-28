@@ -87,6 +87,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   bool nonSaslEnabled_ = true;
   const std::string saslPolicy_;
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
+  bool strictSSL_ = false;
   const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
     folly::EventBase*)> saslServerFactory_;
@@ -459,9 +460,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer
       // make sure a handshake that takes too long doesn't kill the connection
       config.sslHandshakeTimeout = std::chrono::milliseconds::zero();
     }
-    // We want the server to start even if cert/key is missing as it may become
-    // available later
-    config.strictSSL = false;
+    // By default, we set strictSSL to false. This means the server will start
+    // even if cert/key is missing as it may become available later
+    config.strictSSL = getStrictSSL();
     return config;
   }
 
@@ -517,6 +518,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   void setSSLPolicy(SSLPolicy policy) {
     sslPolicy_ = policy;
+  }
+
+  void setStrictSSL(bool strictSSL) {
+    strictSSL_ = strictSSL;
+  }
+  bool getStrictSSL() {
+    return strictSSL_;
   }
 
   /**
