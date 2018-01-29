@@ -339,7 +339,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                                       "Trying to recv JSON encoding over binary")
 
         # Read the headers.  Data for each header varies.
-        for h in range(0, num_headers):
+        for _ in range(0, num_headers):
             trans_id = readVarint(data)
             if trans_id == TRANSFORM.ZLIB:
                 self.__read_transforms.insert(0, trans_id)
@@ -467,7 +467,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         buf.write(info_data.getvalue())
 
         # Pad out the header with 0x00
-        for x in range(0, padding_size, 1):
+        for _ in range(0, padding_size, 1):
             buf.write(pack("!c", b'\0'))
 
         # Send data section

@@ -14,7 +14,13 @@ class TSocketOverHttpTunnel(TSocket):
         try:
             # Use IP address since sometimes proxy_host cannot resolve
             # external hostnames using unbound
-            self.remote_host = socket.gethostbyname(host)
+            info = socket.getaddrinfo(
+                host,
+                None,
+                socket.AF_INET | socket.AF_INET6,
+                socket.SOCK_STREAM,
+                socket.IPPROTO_TCP)
+            self.remote_host = info[0][4][0]
         except socket.error as e:
             raise TTransportException(TTransportException.NOT_OPEN, str(e))
         self.remote_port = port

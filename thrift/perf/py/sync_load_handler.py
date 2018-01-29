@@ -46,7 +46,7 @@ class LoadHandler(object):
         self.sleep(us)
 
     def burn(self, us):
-        start = now = time.time()
+        now = time.time()
         end = now + us
         while True:
             now = time.time()
@@ -107,7 +107,7 @@ class GeventLoadHandler(LoadHandler):
         self.gevent_sleep(us)
 
     def gevent_burn(self, us):
-        start = now = time.time()
+        now = time.time()
         end = now + us_to_sec(us)
         while True:
             now = time.time()
@@ -120,7 +120,7 @@ class GeventLoadHandler(LoadHandler):
         gevent.spawn(self.gevent_burn, us)
 
     def badBurn(self, us):
-        start = now = time.time()
+        now = time.time()
         end = now + us_to_sec(us)
         while True:
             now = time.time()

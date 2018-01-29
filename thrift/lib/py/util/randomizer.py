@@ -18,6 +18,9 @@ from thrift import Thrift
 
 INFINITY = float('inf')
 
+if sys.version_info[0] >= 3:
+    unicode = None
+
 def deep_dict_update(base, update):
     """Similar to dict.update(base, update), but if any values in base are
     dictionaries, they are updated too instead of replaced.
@@ -286,7 +289,7 @@ class EnumRandomizer(ScalarTypeRandomizer):
         self.ttype = self.spec_args
 
         self._whiteset = set()
-        for name, val in six.iteritems(self.ttype._NAMES_TO_VALUES):
+        for _, val in six.iteritems(self.ttype._NAMES_TO_VALUES):
             self._whiteset.add(val)
 
         self._whitelist = list(self._whiteset)

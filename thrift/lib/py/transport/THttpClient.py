@@ -148,7 +148,7 @@ class THttpClient(TTransportBase):
             if sys.version_info[0] >= 3:
                 custom_headers_iter = self.__custom_headers.items()
             else:
-                custom_headers_iter = self.__custom_headers.iteritems()
+                custom_headers_iter = self.__custom_headers.items()
             for key, val in custom_headers_iter:
                 self.__http.putheader(key, val)
 

@@ -94,8 +94,8 @@ class ThriftClientProtocol(basic.Int32StringReceiver):
         if sys.version_info[0] >= 3:
             client_req_iter = self.client._reqs.items()
         else:
-            client_req_iter = self.client._reqs.iteritems()
-        for k, v in client_req_iter:
+            client_req_iter = self.client._reqs.items()
+        for _, v in client_req_iter:
             tex = TTransport.TTransportException(
                 type=TTransport.TTransportException.END_OF_FILE,
                 message=self._errormsg or 'Connection closed')

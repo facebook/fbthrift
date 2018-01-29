@@ -320,7 +320,7 @@ class TSSLServerSocket(TServerSocket):
                                      ssl_version=self.SSL_VERSION,
                                      cert_reqs=self.cert_reqs,
                                      ca_certs=self.ca_certs)
-        except ssl.SSLError as ssl_exc:
+        except ssl.SSLError:
             # failed handshake/ssl wrap, close socket to client
             plain_client.close()
             # raise ssl_exc

@@ -44,7 +44,7 @@ def positive_int(s):
             raise argparse.ArgumentTypeError(
                 "%s is not positive." % s)
         return n
-    except:
+    except ValueError:
         raise argparse.ArgumentTypeError(
             "Cannot convert %s to an integer." % s)
 
@@ -56,7 +56,7 @@ def prob_float(s):
             raise argparse.ArgumentTypeError(
                 "%s is not a valid probability." % x)
         return x
-    except:
+    except ValueError:
         raise argparse.ArgumentTypeError(
             "Cannot convert %s to a float." % s)
 
@@ -256,7 +256,7 @@ class FuzzerConfiguration(object):
     def _try_parse_type(cls, name, type_, val):
         try:
             val = type_(val)
-        except:
+        except ValueError:
             raise TypeError(("Expected type %s for setting %s, "
                              "but got type %s (%s)") % (
                                  type_, name, type(val), val))
@@ -396,7 +396,7 @@ class FuzzerConfiguration(object):
             if connection_method == 'url':
                 try:
                     url = urlparse(self.url)
-                except:
+                except Exception:
                     return False, "Unable to parse url %s" % self.url
                 else:
                     connection_str = url[1]

@@ -48,7 +48,7 @@ class LoadHandler(object):
         self.sleep(us)
 
     def burn(self, us):
-        start = now = time.time()
+        now = time.time()
         end = now + us_to_sec(us)
         while True:
             now = time.time()
@@ -96,7 +96,7 @@ class LoadHandler(object):
 
     def iterAllFields(self, data):
         for item in data:
-            x = item.stringField
-            for x in item.stringList:
+            _ = item.stringField
+            for _ in item.stringList:
                 pass
         return data

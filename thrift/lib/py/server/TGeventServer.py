@@ -76,7 +76,7 @@ class TGeventServer(TServer):
         try:
             while True:
                 self.processor.process(iprot, oprot)
-        except TTransportException as tx:
+        except TTransportException:
             pass
         except Exception as x:
             logging.exception(x)
@@ -110,7 +110,7 @@ class TGeventServer(TServer):
             self.server.init_socket()
 
         print('Starting %s workers' % self.numWorkers)
-        for i in range(self.numWorkers - 1):  # Current process also serves
+        for _ in range(self.numWorkers - 1):  # Current process also serves
             p = Process(target=self.serve_forever)
             self.workers.append(p)
             p.start()

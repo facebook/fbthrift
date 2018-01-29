@@ -106,7 +106,7 @@ class LoadTestHandler(LoadTestInterface):
 
     async def iterAllFields(self, data):
         for item in data:
-            x = item.stringField
-            for x in item.stringList:
+            _ = item.stringField
+            for _ in item.stringList:
                 pass
         return data

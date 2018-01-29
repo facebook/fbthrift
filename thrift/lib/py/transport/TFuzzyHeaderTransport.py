@@ -179,8 +179,6 @@ class TFuzzyHeaderTransport(THeaderTransport):
         THeaderTransport._flushHeaderMessage
         but mutates fields included in self._fuzz_fields
         """
-        cls = self.__class__
-
         transform_data = StringIO()
         num_transforms = len(self._THeaderTransport__write_transforms)
         for trans_id in self._THeaderTransport__write_transforms:

@@ -223,7 +223,7 @@ def process_file(in_file, out_file, options):
         if bt_match:
             if current_entry is None:
                 raise Exception('found backtrace frame before entry header')
-            frame_num = int(bt_match.group(1))
+            # frame_num = int(bt_match.group(1))
             filename = bt_match.group(2)
             address = bt_match.group(3)
             current_entry.addFrame(filename, address)

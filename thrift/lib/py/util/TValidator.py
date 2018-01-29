@@ -31,6 +31,7 @@ import sys
 if sys.version_info[0] >= 3:
     basestring = str
     unicode = str
+    long = int
 
 class TValidator:
     tinfo = {
@@ -40,8 +41,7 @@ class TValidator:
             TType.DOUBLE: ('DOUBLE', float, None, None),
             TType.I16: ('I16', int, -32768, 32767),
             TType.I32: ('I32', int, -2147483648, 2147483647),
-            TType.I64: ('I64',
-                (int, long) if sys.version_info[0] < 3 else int, None, None),
+            TType.I64: ('I64', (int, long), None, None),
             TType.STRING: ('STRING', basestring, None, None),
             TType.UTF8: ('UTF8', unicode, None, None),
             }

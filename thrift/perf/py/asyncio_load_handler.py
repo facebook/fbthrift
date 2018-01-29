@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from apache.thrift.test.asyncio.load import LoadTest
 from apache.thrift.test.asyncio.load.ttypes import LoadError
 import asyncio
@@ -94,7 +95,7 @@ class LoadHandler(LoadTest.Iface):
 
     async def iterAllFields(self, data):
         for item in data:
-            x = item.stringField
-            for x in item.stringList:
+            _ = item.stringField
+            for _ in item.stringList:
                 pass
         return data
