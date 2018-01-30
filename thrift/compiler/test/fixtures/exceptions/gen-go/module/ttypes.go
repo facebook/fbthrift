@@ -26,7 +26,7 @@ func NewBanal() *Banal {
   return &Banal{}
 }
 
-func (p *Banal) Read(iprot thrift.TProtocol) error {
+func (p *Banal) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -51,7 +51,7 @@ func (p *Banal) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Banal) Write(oprot thrift.TProtocol) error {
+func (p *Banal) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Banal"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -86,7 +86,7 @@ func NewFiery() *Fiery {
 func (p *Fiery) GetMessage() string {
   return p.Message
 }
-func (p *Fiery) Read(iprot thrift.TProtocol) error {
+func (p *Fiery) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -118,12 +118,12 @@ func (p *Fiery) Read(iprot thrift.TProtocol) error {
     return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
   }
   if !issetMessage{
-    return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Message is not set"));
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Message is not set"));
   }
   return nil
 }
 
-func (p *Fiery)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Fiery)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -132,7 +132,7 @@ func (p *Fiery)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Fiery) Write(oprot thrift.TProtocol) error {
+func (p *Fiery) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Fiery"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -143,7 +143,7 @@ func (p *Fiery) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Fiery) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Fiery) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("message", thrift.STRING, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:message: ", p), err) }
   if err := oprot.WriteString(string(p.Message)); err != nil {

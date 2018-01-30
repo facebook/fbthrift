@@ -24,23 +24,23 @@ import (
 	"time"
 )
 
-type TSocket struct {
+type Socket struct {
 	conn    net.Conn
 	addr    net.Addr
 	timeout time.Duration
 }
 
-// NewTSocket creates a net.Conn-backed TTransport, given a host and port
+// NewSocket creates a net.Conn-backed Transport, given a host and port
 //
 // Example:
-// 	trans, err := thrift.NewTSocket("localhost:9090")
-func NewTSocket(hostPort string) (*TSocket, error) {
-	return NewTSocketTimeout(hostPort, 0)
+// 	trans, err := thrift.NewSocket("localhost:9090")
+func NewSocket(hostPort string) (*Socket, error) {
+	return NewSocketTimeout(hostPort, 0)
 }
 
-// NewTSocketTimeout creates a net.Conn-backed TTransport, given a host and port
+// NewSocketTimeout creates a net.Conn-backed Transport, given a host and port
 // it also accepts a timeout as a time.Duration
-func NewTSocketTimeout(hostPort string, timeout time.Duration) (*TSocket, error) {
+func NewSocketTimeout(hostPort string, timeout time.Duration) (*Socket, error) {
 	//conn, err := net.DialTimeout(network, address, timeout)
 	addr, err := net.ResolveTCPAddr("tcp6", hostPort)
 	if err != nil {
@@ -49,26 +49,26 @@ func NewTSocketTimeout(hostPort string, timeout time.Duration) (*TSocket, error)
 			return nil, err
 		}
 	}
-	return NewTSocketFromAddrTimeout(addr, timeout), nil
+	return NewSocketFromAddrTimeout(addr, timeout), nil
 }
 
-// Creates a TSocket from a net.Addr
-func NewTSocketFromAddrTimeout(addr net.Addr, timeout time.Duration) *TSocket {
-	return &TSocket{addr: addr, timeout: timeout}
+// Creates a Socket from a net.Addr
+func NewSocketFromAddrTimeout(addr net.Addr, timeout time.Duration) *Socket {
+	return &Socket{addr: addr, timeout: timeout}
 }
 
-// Creates a TSocket from an existing net.Conn
-func NewTSocketFromConnTimeout(conn net.Conn, timeout time.Duration) *TSocket {
-	return &TSocket{conn: conn, addr: conn.RemoteAddr(), timeout: timeout}
+// Creates a Socket from an existing net.Conn
+func NewSocketFromConnTimeout(conn net.Conn, timeout time.Duration) *Socket {
+	return &Socket{conn: conn, addr: conn.RemoteAddr(), timeout: timeout}
 }
 
 // Sets the socket timeout
-func (p *TSocket) SetTimeout(timeout time.Duration) error {
+func (p *Socket) SetTimeout(timeout time.Duration) error {
 	p.timeout = timeout
 	return nil
 }
 
-func (p *TSocket) pushDeadline(read, write bool) {
+func (p *Socket) pushDeadline(read, write bool) {
 	var t time.Time
 	if p.timeout > 0 {
 		t = time.Now().Add(time.Duration(p.timeout))
@@ -83,33 +83,33 @@ func (p *TSocket) pushDeadline(read, write bool) {
 }
 
 // Connects the socket, creating a new socket object if necessary.
-func (p *TSocket) Open() error {
+func (p *Socket) Open() error {
 	if p.IsOpen() {
-		return NewTTransportException(ALREADY_OPEN, "Socket already connected.")
+		return NewTransportException(ALREADY_OPEN, "Socket already connected.")
 	}
 	if p.addr == nil {
-		return NewTTransportException(NOT_OPEN, "Cannot open nil address.")
+		return NewTransportException(NOT_OPEN, "Cannot open nil address.")
 	}
 	if len(p.addr.Network()) == 0 {
-		return NewTTransportException(NOT_OPEN, "Cannot open bad network name.")
+		return NewTransportException(NOT_OPEN, "Cannot open bad network name.")
 	}
 	if len(p.addr.String()) == 0 {
-		return NewTTransportException(NOT_OPEN, "Cannot open bad address.")
+		return NewTransportException(NOT_OPEN, "Cannot open bad address.")
 	}
 	var err error
 	if p.conn, err = net.DialTimeout(p.addr.Network(), p.addr.String(), p.timeout); err != nil {
-		return NewTTransportException(NOT_OPEN, err.Error())
+		return NewTransportException(NOT_OPEN, err.Error())
 	}
 	return nil
 }
 
 // Retrieve the underlying net.Conn
-func (p *TSocket) Conn() net.Conn {
+func (p *Socket) Conn() net.Conn {
 	return p.conn
 }
 
 // Returns true if the connection is open
-func (p *TSocket) IsOpen() bool {
+func (p *Socket) IsOpen() bool {
 	if p.conn == nil {
 		return false
 	}
@@ -117,7 +117,7 @@ func (p *TSocket) IsOpen() bool {
 }
 
 // Closes the socket.
-func (p *TSocket) Close() error {
+func (p *Socket) Close() error {
 	// Close the socket
 	if p.conn != nil {
 		err := p.conn.Close()
@@ -130,39 +130,39 @@ func (p *TSocket) Close() error {
 }
 
 //Returns the remote address of the socket.
-func (p *TSocket) Addr() net.Addr {
+func (p *Socket) Addr() net.Addr {
 	return p.addr
 }
 
-func (p *TSocket) Read(buf []byte) (int, error) {
+func (p *Socket) Read(buf []byte) (int, error) {
 	if !p.IsOpen() {
-		return 0, NewTTransportException(NOT_OPEN, "Connection not open")
+		return 0, NewTransportException(NOT_OPEN, "Connection not open")
 	}
 	p.pushDeadline(true, false)
 	n, err := p.conn.Read(buf)
-	return n, NewTTransportExceptionFromError(err)
+	return n, NewTransportExceptionFromError(err)
 }
 
-func (p *TSocket) Write(buf []byte) (int, error) {
+func (p *Socket) Write(buf []byte) (int, error) {
 	if !p.IsOpen() {
-		return 0, NewTTransportException(NOT_OPEN, "Connection not open")
+		return 0, NewTransportException(NOT_OPEN, "Connection not open")
 	}
 	p.pushDeadline(false, true)
 	return p.conn.Write(buf)
 }
 
-func (p *TSocket) Flush() error {
+func (p *Socket) Flush() error {
 	return nil
 }
 
-func (p *TSocket) Interrupt() error {
+func (p *Socket) Interrupt() error {
 	if !p.IsOpen() {
 		return nil
 	}
 	return p.conn.Close()
 }
 
-func (p *TSocket) RemainingBytes() (num_bytes uint64) {
+func (p *Socket) RemainingBytes() (num_bytes uint64) {
 	const maxSize = ^uint64(0)
 	return maxSize // the thruth is, we just don't know unless framed is used
 }

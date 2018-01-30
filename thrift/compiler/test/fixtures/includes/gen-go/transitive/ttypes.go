@@ -35,7 +35,7 @@ A: 2,
 func (p *Foo) GetA() int64 {
   return p.A
 }
-func (p *Foo) Read(iprot thrift.TProtocol) error {
+func (p *Foo) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -67,7 +67,7 @@ func (p *Foo) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Foo)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Foo)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -76,7 +76,7 @@ func (p *Foo)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Foo) Write(oprot thrift.TProtocol) error {
+func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Foo"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -87,7 +87,7 @@ func (p *Foo) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Foo) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Foo) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("a", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:a: ", p), err) }
   if err := oprot.WriteI64(int64(p.A)); err != nil {

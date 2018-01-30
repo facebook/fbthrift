@@ -31,10 +31,10 @@ func (client *MyLeafClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyLeafClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyLeafClient {
+func NewMyLeafClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyLeafClient {
   return &MyLeafClient{MyNodeClient: NewMyNodeClientFactory(t, f)}}
 
-func NewMyLeafClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyLeafClient {
+func NewMyLeafClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafClient {
   return &MyLeafClient{MyNodeClient: NewMyNodeClientProtocol(t, iprot, oprot)}
 }
 
@@ -76,15 +76,15 @@ func (p *MyLeafClient) recvDoLeaf() (err error) {
     return
   }
   if method != "do_leaf" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_leaf failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_leaf failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_leaf failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_leaf failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error11 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error11 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error12 error
     error12, err = error11.Read(iprot)
     if err != nil {
@@ -97,7 +97,7 @@ func (p *MyLeafClient) recvDoLeaf() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_leaf failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_leaf failed: invalid message type")
     return
   }
   result := MyLeafDoLeafResult{}
@@ -115,10 +115,10 @@ type MyLeafThreadsafeClient struct {
   *MyNodeThreadsafeClient
 }
 
-func NewMyLeafThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyLeafThreadsafeClient {
+func NewMyLeafThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyLeafThreadsafeClient {
   return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientFactory(t, f)}}
 
-func NewMyLeafThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyLeafThreadsafeClient {
+func NewMyLeafThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafThreadsafeClient {
   return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientProtocol(t, iprot, oprot)}
 }
 
@@ -164,15 +164,15 @@ func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
     return
   }
   if method != "do_leaf" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_leaf failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_leaf failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_leaf failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_leaf failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error13 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error13 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error14 error
     error14, err = error13.Read(iprot)
     if err != nil {
@@ -185,7 +185,7 @@ func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_leaf failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_leaf failed: invalid message type")
     return
   }
   result := MyLeafDoLeafResult{}
@@ -213,11 +213,11 @@ type myLeafProcessorDoLeaf struct {
   handler MyLeaf
 }
 
-func (p *myLeafProcessorDoLeaf) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myLeafProcessorDoLeaf) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyLeafDoLeafArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("do_leaf", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -229,7 +229,7 @@ func (p *myLeafProcessorDoLeaf) Process(seqId int32, iprot, oprot thrift.TProtoc
   result := MyLeafDoLeafResult{}
   var err2 error
   if err2 = p.handler.DoLeaf(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_leaf: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_leaf: " + err2.Error())
     oprot.WriteMessageBegin("do_leaf", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -264,7 +264,7 @@ func NewMyLeafDoLeafArgs() *MyLeafDoLeafArgs {
   return &MyLeafDoLeafArgs{}
 }
 
-func (p *MyLeafDoLeafArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyLeafDoLeafArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -289,7 +289,7 @@ func (p *MyLeafDoLeafArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyLeafDoLeafArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyLeafDoLeafArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_leaf_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -313,7 +313,7 @@ func NewMyLeafDoLeafResult() *MyLeafDoLeafResult {
   return &MyLeafDoLeafResult{}
 }
 
-func (p *MyLeafDoLeafResult) Read(iprot thrift.TProtocol) error {
+func (p *MyLeafDoLeafResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -338,7 +338,7 @@ func (p *MyLeafDoLeafResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyLeafDoLeafResult) Write(oprot thrift.TProtocol) error {
+func (p *MyLeafDoLeafResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_leaf_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

@@ -36,9 +36,9 @@ func (t *timeout) Error() string {
 	return fmt.Sprintf("Timeout: %v", t.timedout)
 }
 
-func TestTExceptionTimeout(t *testing.T) {
+func TestExceptionTimeout(t *testing.T) {
 	timeout := &timeout{true}
-	exception := NewTTransportExceptionFromError(timeout)
+	exception := NewTransportExceptionFromError(timeout)
 	if timeout.Error() != exception.Error() {
 		t.Fatalf("Error did not match: expected %q, got %q", timeout.Error(), exception.Error())
 	}
@@ -48,8 +48,8 @@ func TestTExceptionTimeout(t *testing.T) {
 	}
 }
 
-func TestTExceptionEOF(t *testing.T) {
-	exception := NewTTransportExceptionFromError(io.EOF)
+func TestExceptionEOF(t *testing.T) {
+	exception := NewTransportExceptionFromError(io.EOF)
 	if io.EOF.Error() != exception.Error() {
 		t.Fatalf("Error did not match: expected %q, got %q", io.EOF.Error(), exception.Error())
 	}

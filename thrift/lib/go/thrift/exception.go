@@ -24,20 +24,20 @@ import (
 )
 
 // Generic Thrift exception
-type TException interface {
+type Exception interface {
 	error
 }
 
 // Prepends additional information to an error without losing the Thrift exception interface
 func PrependError(prepend string, err error) error {
-	if t, ok := err.(TTransportException); ok {
-		return NewTTransportException(t.TypeId(), prepend+t.Error())
+	if t, ok := err.(TransportException); ok {
+		return NewTransportException(t.TypeId(), prepend+t.Error())
 	}
-	if t, ok := err.(TProtocolException); ok {
-		return NewTProtocolExceptionWithType(t.TypeId(), errors.New(prepend+err.Error()))
+	if t, ok := err.(ProtocolException); ok {
+		return NewProtocolExceptionWithType(t.TypeId(), errors.New(prepend+err.Error()))
 	}
-	if t, ok := err.(TApplicationException); ok {
-		return NewTApplicationException(t.TypeId(), prepend+t.Error())
+	if t, ok := err.(ApplicationException); ok {
+		return NewApplicationException(t.TypeId(), prepend+t.Error())
 	}
 
 	return errors.New(prepend + err.Error())

@@ -55,7 +55,7 @@ func (p *Included) IsSetMyTransitiveField() bool {
   return p.MyTransitiveField != nil
 }
 
-func (p *Included) Read(iprot thrift.TProtocol) error {
+func (p *Included) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -91,7 +91,7 @@ func (p *Included) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Included)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Included)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -100,7 +100,7 @@ func (p *Included)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Included)  ReadField2(iprot thrift.TProtocol) error {
+func (p *Included)  ReadField2(iprot thrift.Protocol) error {
   p.MyTransitiveField = transitive0.NewFoo()
   if err := p.MyTransitiveField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyTransitiveField), err)
@@ -108,7 +108,7 @@ func (p *Included)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Included) Write(oprot thrift.TProtocol) error {
+func (p *Included) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Included"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -120,7 +120,7 @@ func (p *Included) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Included) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Included) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyIntField", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:MyIntField: ", p), err) }
   if err := oprot.WriteI64(int64(p.MyIntField)); err != nil {
@@ -130,7 +130,7 @@ func (p *Included) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Included) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *Included) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyTransitiveField", thrift.STRUCT, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:MyTransitiveField: ", p), err) }
   if err := p.MyTransitiveField.Write(oprot); err != nil {

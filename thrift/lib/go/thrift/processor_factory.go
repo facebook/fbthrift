@@ -21,19 +21,19 @@ package thrift
 
 // The default processor factory just returns a singleton
 // instance.
-type TProcessorFactory interface {
-	GetProcessor(trans TTransport) TProcessor
+type ProcessorFactory interface {
+	Geprocessor(trans Transport) Processor
 }
 
-type tProcessorFactory struct {
-	processor TProcessor
+type processorFactory struct {
+	processor Processor
 }
 
-func NewTProcessorFactory(p TProcessor) TProcessorFactory {
-	return &tProcessorFactory{processor: p}
+func NewProcessorFactory(p Processor) ProcessorFactory {
+	return &processorFactory{processor: p}
 }
 
-func (p *tProcessorFactory) GetProcessor(trans TTransport) TProcessor {
+func (p *processorFactory) Geprocessor(trans Transport) Processor {
 	return p.processor
 }
 
@@ -41,18 +41,18 @@ func (p *tProcessorFactory) GetProcessor(trans TTransport) TProcessor {
  * The default processor factory just returns a singleton
  * instance.
  */
-type TProcessorFunctionFactory interface {
-	GetProcessorFunction(trans TTransport) TProcessorFunction
+type ProcessorFunctionFactory interface {
+	GetProcessorFunction(trans Transport) ProcessorFunction
 }
 
-type tProcessorFunctionFactory struct {
-	processor TProcessorFunction
+type processorFunctionFactory struct {
+	processor ProcessorFunction
 }
 
-func NewTProcessorFunctionFactory(p TProcessorFunction) TProcessorFunctionFactory {
-	return &tProcessorFunctionFactory{processor: p}
+func NewProcessorFunctionFactory(p ProcessorFunction) ProcessorFunctionFactory {
+	return &processorFunctionFactory{processor: p}
 }
 
-func (p *tProcessorFunctionFactory) GetProcessorFunction(trans TTransport) TProcessorFunction {
+func (p *processorFunctionFactory) GetProcessorFunction(trans Transport) ProcessorFunction {
 	return p.processor
 }

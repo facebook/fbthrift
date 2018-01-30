@@ -39,7 +39,7 @@ func main() {
   var framed bool
   var useHttp bool
   var parsedUrl url.URL
-  var trans thrift.TTransport
+  var trans thrift.Transport
   _ = strconv.Atoi
   _ = math.Abs
   flag.Usage = Usage
@@ -70,7 +70,7 @@ func main() {
   cmd := flag.Arg(0)
   var err error
   if useHttp {
-    trans, err = thrift.NewTHttpClient(parsedUrl.String())
+    trans, err = thrift.NewHttpClient(parsedUrl.String())
   } else {
     portStr := fmt.Sprint(port)
     if strings.Contains(host, ":") {
@@ -80,13 +80,13 @@ func main() {
                    os.Exit(1)
            }
     }
-    trans, err = thrift.NewTSocket(net.JoinHostPort(host, portStr))
+    trans, err = thrift.NewSocket(net.JoinHostPort(host, portStr))
     if err != nil {
       fmt.Fprintln(os.Stderr, "error resolving address:", err)
       os.Exit(1)
     }
     if framed {
-      trans = thrift.NewTFramedTransport(trans)
+      trans = thrift.NewFramedTransport(trans)
     }
   }
   if err != nil {
@@ -94,19 +94,19 @@ func main() {
     os.Exit(1)
   }
   defer trans.Close()
-  var protocolFactory thrift.TProtocolFactory
+  var protocolFactory thrift.ProtocolFactory
   switch protocol {
   case "compact":
-    protocolFactory = thrift.NewTCompactProtocolFactory()
+    protocolFactory = thrift.NewCompactProtocolFactory()
     break
   case "simplejson":
-    protocolFactory = thrift.NewTSimpleJSONProtocolFactory()
+    protocolFactory = thrift.NewSimpleJSONProtocolFactory()
     break
   case "json":
-    protocolFactory = thrift.NewTJSONProtocolFactory()
+    protocolFactory = thrift.NewJSONProtocolFactory()
     break
   case "binary", "":
-    protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()
+    protocolFactory = thrift.NewBinaryProtocolFactoryDefault()
     break
   default:
     fmt.Fprintln(os.Stderr, "Invalid protocol specified: ", protocol)
@@ -126,14 +126,14 @@ func main() {
       flag.Usage()
     }
     arg40 := flag.Arg(1)
-    mbTrans41 := thrift.NewTMemoryBufferLen(len(arg40))
+    mbTrans41 := thrift.NewMemoryBufferLen(len(arg40))
     defer mbTrans41.Close()
     _, err42 := mbTrans41.WriteString(arg40)
     if err42 != nil { 
       Usage()
       return
     }
-    factory43 := thrift.NewTSimpleJSONProtocolFactory()
+    factory43 := thrift.NewSimpleJSONProtocolFactory()
     jsProt44 := factory43.GetProtocol(mbTrans41)
     containerStruct0 := module.NewNestedContainersMapListArgs()
     err45 := containerStruct0.ReadField1(jsProt44)
@@ -152,14 +152,14 @@ func main() {
       flag.Usage()
     }
     arg46 := flag.Arg(1)
-    mbTrans47 := thrift.NewTMemoryBufferLen(len(arg46))
+    mbTrans47 := thrift.NewMemoryBufferLen(len(arg46))
     defer mbTrans47.Close()
     _, err48 := mbTrans47.WriteString(arg46)
     if err48 != nil { 
       Usage()
       return
     }
-    factory49 := thrift.NewTSimpleJSONProtocolFactory()
+    factory49 := thrift.NewSimpleJSONProtocolFactory()
     jsProt50 := factory49.GetProtocol(mbTrans47)
     containerStruct0 := module.NewNestedContainersMapSetArgs()
     err51 := containerStruct0.ReadField1(jsProt50)
@@ -178,14 +178,14 @@ func main() {
       flag.Usage()
     }
     arg52 := flag.Arg(1)
-    mbTrans53 := thrift.NewTMemoryBufferLen(len(arg52))
+    mbTrans53 := thrift.NewMemoryBufferLen(len(arg52))
     defer mbTrans53.Close()
     _, err54 := mbTrans53.WriteString(arg52)
     if err54 != nil { 
       Usage()
       return
     }
-    factory55 := thrift.NewTSimpleJSONProtocolFactory()
+    factory55 := thrift.NewSimpleJSONProtocolFactory()
     jsProt56 := factory55.GetProtocol(mbTrans53)
     containerStruct0 := module.NewNestedContainersListMapArgs()
     err57 := containerStruct0.ReadField1(jsProt56)
@@ -204,14 +204,14 @@ func main() {
       flag.Usage()
     }
     arg58 := flag.Arg(1)
-    mbTrans59 := thrift.NewTMemoryBufferLen(len(arg58))
+    mbTrans59 := thrift.NewMemoryBufferLen(len(arg58))
     defer mbTrans59.Close()
     _, err60 := mbTrans59.WriteString(arg58)
     if err60 != nil { 
       Usage()
       return
     }
-    factory61 := thrift.NewTSimpleJSONProtocolFactory()
+    factory61 := thrift.NewSimpleJSONProtocolFactory()
     jsProt62 := factory61.GetProtocol(mbTrans59)
     containerStruct0 := module.NewNestedContainersListSetArgs()
     err63 := containerStruct0.ReadField1(jsProt62)
@@ -230,14 +230,14 @@ func main() {
       flag.Usage()
     }
     arg64 := flag.Arg(1)
-    mbTrans65 := thrift.NewTMemoryBufferLen(len(arg64))
+    mbTrans65 := thrift.NewMemoryBufferLen(len(arg64))
     defer mbTrans65.Close()
     _, err66 := mbTrans65.WriteString(arg64)
     if err66 != nil { 
       Usage()
       return
     }
-    factory67 := thrift.NewTSimpleJSONProtocolFactory()
+    factory67 := thrift.NewSimpleJSONProtocolFactory()
     jsProt68 := factory67.GetProtocol(mbTrans65)
     containerStruct0 := module.NewNestedContainersTurtlesArgs()
     err69 := containerStruct0.ReadField1(jsProt68)

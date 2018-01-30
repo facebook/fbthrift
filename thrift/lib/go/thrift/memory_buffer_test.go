@@ -24,6 +24,6 @@ import (
 )
 
 func TestMemoryBuffer(t *testing.T) {
-	trans := NewTMemoryBufferLen(1024)
+	trans := NewMemoryBufferLen(1024)
 	TransportTest(t, trans, trans)
 }

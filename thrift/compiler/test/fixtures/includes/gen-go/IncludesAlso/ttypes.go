@@ -26,7 +26,7 @@ func NewAlso() *Also {
   return &Also{}
 }
 
-func (p *Also) Read(iprot thrift.TProtocol) error {
+func (p *Also) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -51,7 +51,7 @@ func (p *Also) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Also) Write(oprot thrift.TProtocol) error {
+func (p *Also) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Also"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

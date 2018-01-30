@@ -69,7 +69,7 @@ func (p *MyStruct) IsSetMyOtherIncludedField() bool {
   return p.MyOtherIncludedField != nil
 }
 
-func (p *MyStruct) Read(iprot thrift.TProtocol) error {
+func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -109,7 +109,7 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   p.MyIncludedField = includes0.NewIncluded()
   if err := p.MyIncludedField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyIncludedField), err)
@@ -117,7 +117,7 @@ func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   p.MyOtherIncludedField = includes0.NewIncluded()
   if err := p.MyOtherIncludedField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyOtherIncludedField), err)
@@ -125,7 +125,7 @@ func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
@@ -135,7 +135,7 @@ func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct) Write(oprot thrift.TProtocol) error {
+func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -148,7 +148,7 @@ func (p *MyStruct) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyIncludedField", thrift.STRUCT, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:MyIncludedField: ", p), err) }
   if err := p.MyIncludedField.Write(oprot); err != nil {
@@ -159,7 +159,7 @@ func (p *MyStruct) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyOtherIncludedField", thrift.STRUCT, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:MyOtherIncludedField: ", p), err) }
   if err := p.MyOtherIncludedField.Write(oprot); err != nil {
@@ -170,7 +170,7 @@ func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *MyStruct) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField3(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyIncludedInt", thrift.I64, 3); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:MyIncludedInt: ", p), err) }
   if err := oprot.WriteI64(int64(p.MyIncludedInt)); err != nil {

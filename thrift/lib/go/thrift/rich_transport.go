@@ -21,29 +21,29 @@ package thrift
 
 import "io"
 
-type RichTransport struct {
-	TTransport
+type richTransport struct {
+	Transport
 }
 
-// Wraps Transport to provide TRichTransport interface
-func NewTRichTransport(trans TTransport) *RichTransport {
-	return &RichTransport{trans}
+// Wraps Transport to provide RichTransport interface
+func NewRichTransport(trans Transport) RichTransport {
+	return &richTransport{trans}
 }
 
-func (r *RichTransport) ReadByte() (c byte, err error) {
-	return readByte(r.TTransport)
+func (r *richTransport) ReadByte() (c byte, err error) {
+	return readByte(r.Transport)
 }
 
-func (r *RichTransport) WriteByte(c byte) error {
-	return writeByte(r.TTransport, c)
+func (r *richTransport) WriteByte(c byte) error {
+	return writeByte(r.Transport, c)
 }
 
-func (r *RichTransport) WriteString(s string) (n int, err error) {
+func (r *richTransport) WriteString(s string) (n int, err error) {
 	return r.Write([]byte(s))
 }
 
-func (r *RichTransport) RemainingBytes() (num_bytes uint64) {
-	return r.TTransport.RemainingBytes()
+func (r *richTransport) RemainingBytes() (num_bytes uint64) {
+	return r.Transport.RemainingBytes()
 }
 
 func readByte(r io.Reader) (c byte, err error) {
@@ -66,4 +66,3 @@ func writeByte(w io.Writer, c byte) error {
 	_, err := w.Write(v[0:1])
 	return err
 }
-

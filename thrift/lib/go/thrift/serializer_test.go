@@ -26,7 +26,7 @@ import (
 )
 
 type ProtocolFactory interface {
-	GetProtocol(t TTransport) TProtocol
+	GetProtocol(t Transport) Protocol
 }
 
 func compareStructs(m, m1 MyTestStruct) (bool, error) {
@@ -74,7 +74,7 @@ func compareStructs(m, m1 MyTestStruct) (bool, error) {
 }
 
 func ProtocolTest1(test *testing.T, pf ProtocolFactory) (bool, error) {
-	t := NewTSerializer()
+	t := NewSerializer()
 	t.Protocol = pf.GetProtocol(t.Transport)
 	var m = MyTestStruct{}
 	m.On = true
@@ -95,7 +95,7 @@ func ProtocolTest1(test *testing.T, pf ProtocolFactory) (bool, error) {
 		return false, errors.New(fmt.Sprintf("Unable to Serialize struct\n\t %s", err))
 	}
 
-	t1 := NewTDeserializer()
+	t1 := NewDeserializer()
 	t1.Protocol = pf.GetProtocol(t1.Transport)
 	var m1 = MyTestStruct{}
 	if err = t1.ReadString(&m1, s); err != nil {
@@ -108,7 +108,7 @@ func ProtocolTest1(test *testing.T, pf ProtocolFactory) (bool, error) {
 }
 
 func ProtocolTest2(test *testing.T, pf ProtocolFactory) (bool, error) {
-	t := NewTSerializer()
+	t := NewSerializer()
 	t.Protocol = pf.GetProtocol(t.Transport)
 	var m = MyTestStruct{}
 	m.On = false
@@ -130,7 +130,7 @@ func ProtocolTest2(test *testing.T, pf ProtocolFactory) (bool, error) {
 
 	}
 
-	t1 := NewTDeserializer()
+	t1 := NewDeserializer()
 	t1.Protocol = pf.GetProtocol(t1.Transport)
 	var m1 = MyTestStruct{}
 	if err = t1.ReadString(&m1, s); err != nil {
@@ -146,10 +146,10 @@ func TestSerializer(t *testing.T) {
 
 	var protocol_factories map[string]ProtocolFactory
 	protocol_factories = make(map[string]ProtocolFactory)
-	protocol_factories["Binary"] = NewTBinaryProtocolFactoryDefault()
-	protocol_factories["Compact"] = NewTCompactProtocolFactory()
-	//protocol_factories["SimpleJSON"] = NewTSimpleJSONProtocolFactory() - write only, can't be read back by design
-	protocol_factories["JSON"] = NewTJSONProtocolFactory()
+	protocol_factories["Binary"] = NewBinaryProtocolFactoryDefault()
+	protocol_factories["Compact"] = NewCompactProtocolFactory()
+	//protocol_factories["SimpleJSON"] = NewSimpleJSONProtocolFactory() - write only, can't be read back by design
+	protocol_factories["JSON"] = NewJSONProtocolFactory()
 
 	var tests map[string]func(*testing.T, ProtocolFactory) (bool, error)
 	tests = make(map[string]func(*testing.T, ProtocolFactory) (bool, error))

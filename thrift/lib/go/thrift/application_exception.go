@@ -31,31 +31,31 @@ const (
 )
 
 // Application level Thrift exception
-type TApplicationException interface {
-	TException
+type ApplicationException interface {
+	Exception
 	TypeId() int32
-	Read(iprot TProtocol) (TApplicationException, error)
-	Write(oprot TProtocol) error
+	Read(iprot Protocol) (ApplicationException, error)
+	Write(oprot Protocol) error
 }
 
-type tApplicationException struct {
+type applicationException struct {
 	message string
 	type_   int32
 }
 
-func (e tApplicationException) Error() string {
+func (e applicationException) Error() string {
 	return e.message
 }
 
-func NewTApplicationException(type_ int32, message string) TApplicationException {
-	return &tApplicationException{message, type_}
+func NewApplicationException(type_ int32, message string) ApplicationException {
+	return &applicationException{message, type_}
 }
 
-func (p *tApplicationException) TypeId() int32 {
+func (p *applicationException) TypeId() int32 {
 	return p.type_
 }
 
-func (p *tApplicationException) Read(iprot TProtocol) (TApplicationException, error) {
+func (p *applicationException) Read(iprot Protocol) (ApplicationException, error) {
 	_, err := iprot.ReadStructBegin()
 	if err != nil {
 		return nil, err
@@ -102,10 +102,10 @@ func (p *tApplicationException) Read(iprot TProtocol) (TApplicationException, er
 			return nil, err
 		}
 	}
-	return NewTApplicationException(type_, message), iprot.ReadStructEnd()
+	return NewApplicationException(type_, message), iprot.ReadStructEnd()
 }
 
-func (p *tApplicationException) Write(oprot TProtocol) (err error) {
+func (p *applicationException) Write(oprot Protocol) (err error) {
 	err = oprot.WriteStructBegin("TApplicationException")
 	if len(p.Error()) > 0 {
 		err = oprot.WriteFieldBegin("message", STRING, 1)

@@ -22,10 +22,10 @@ type MyRoot interface {
 }
 
 type MyRootClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
 }
 
@@ -33,7 +33,7 @@ func (client *MyRootClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyRootClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyRootClient {
+func NewMyRootClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyRootClient {
   return &MyRootClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -42,7 +42,7 @@ func NewMyRootClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyR
   }
 }
 
-func NewMyRootClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyRootClient {
+func NewMyRootClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootClient {
   return &MyRootClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -89,15 +89,15 @@ func (p *MyRootClient) recvDoRoot() (err error) {
     return
   }
   if method != "do_root" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_root failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_root failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_root failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_root failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error1 error
     error1, err = error0.Read(iprot)
     if err != nil {
@@ -110,7 +110,7 @@ func (p *MyRootClient) recvDoRoot() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_root failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_root failed: invalid message type")
     return
   }
   result := MyRootDoRootResult{}
@@ -125,15 +125,15 @@ func (p *MyRootClient) recvDoRoot() (err error) {
 
 
 type MyRootThreadsafeClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
   Mu sync.Mutex
 }
 
-func NewMyRootThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyRootThreadsafeClient {
+func NewMyRootThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyRootThreadsafeClient {
   return &MyRootThreadsafeClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -142,7 +142,7 @@ func NewMyRootThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFac
   }
 }
 
-func NewMyRootThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyRootThreadsafeClient {
+func NewMyRootThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
   return &MyRootThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -193,15 +193,15 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
     return
   }
   if method != "do_root" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_root failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_root failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_root failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_root failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error2 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error2 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error3 error
     error3, err = error2.Read(iprot)
     if err != nil {
@@ -214,7 +214,7 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_root failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_root failed: invalid message type")
     return
   }
   result := MyRootDoRootResult{}
@@ -229,31 +229,31 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
 
 
 type MyRootProcessor struct {
-  processorMap map[string]thrift.TProcessorFunction
+  processorMap map[string]thrift.ProcessorFunction
   handler MyRoot
 }
 
-func (p *MyRootProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *MyRootProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
 }
 
-func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
   return processor, ok
 }
 
-func (p *MyRootProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
 func NewMyRootProcessor(handler MyRoot) *MyRootProcessor {
 
-  self4 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self4 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self4.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
 return self4
 }
 
-func (p *MyRootProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *MyRootProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   name, _, seqId, err := iprot.ReadMessageBegin()
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
@@ -261,7 +261,7 @@ func (p *MyRootProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, 
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x5 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x5 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
   x5.Write(oprot)
   oprot.WriteMessageEnd()
@@ -274,11 +274,11 @@ type myRootProcessorDoRoot struct {
   handler MyRoot
 }
 
-func (p *myRootProcessorDoRoot) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myRootProcessorDoRoot) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyRootDoRootArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -290,7 +290,7 @@ func (p *myRootProcessorDoRoot) Process(seqId int32, iprot, oprot thrift.TProtoc
   result := MyRootDoRootResult{}
   var err2 error
   if err2 = p.handler.DoRoot(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err2.Error())
     oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -325,7 +325,7 @@ func NewMyRootDoRootArgs() *MyRootDoRootArgs {
   return &MyRootDoRootArgs{}
 }
 
-func (p *MyRootDoRootArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyRootDoRootArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -350,7 +350,7 @@ func (p *MyRootDoRootArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyRootDoRootArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyRootDoRootArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_root_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -374,7 +374,7 @@ func NewMyRootDoRootResult() *MyRootDoRootResult {
   return &MyRootDoRootResult{}
 }
 
-func (p *MyRootDoRootResult) Read(iprot thrift.TProtocol) error {
+func (p *MyRootDoRootResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -399,7 +399,7 @@ func (p *MyRootDoRootResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyRootDoRootResult) Write(oprot thrift.TProtocol) error {
+func (p *MyRootDoRootResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_root_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

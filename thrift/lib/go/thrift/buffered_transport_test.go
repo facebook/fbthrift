@@ -24,6 +24,6 @@ import (
 )
 
 func TestBufferedTransport(t *testing.T) {
-	trans := NewTBufferedTransport(NewTMemoryBuffer(), 10240)
+	trans := NewBufferedTransport(NewMemoryBuffer(), 10240)
 	TransportTest(t, trans, trans)
 }

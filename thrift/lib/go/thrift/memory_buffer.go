@@ -23,57 +23,57 @@ import (
 	"bytes"
 )
 
-// Memory buffer-based implementation of the TTransport interface.
-type TMemoryBuffer struct {
+// Memory buffer-based implementation of the Transport interface.
+type MemoryBuffer struct {
 	*bytes.Buffer
 	size int
 }
 
-type TMemoryBufferTransportFactory struct {
+type MemoryBufferTransportFactory struct {
 	size int
 }
 
-func (p *TMemoryBufferTransportFactory) GetTransport(trans TTransport) TTransport {
+func (p *MemoryBufferTransportFactory) GetTransport(trans Transport) Transport {
 	if trans != nil {
-		t, ok := trans.(*TMemoryBuffer)
+		t, ok := trans.(*MemoryBuffer)
 		if ok && t.size > 0 {
-			return NewTMemoryBufferLen(t.size)
+			return NewMemoryBufferLen(t.size)
 		}
 	}
-	return NewTMemoryBufferLen(p.size)
+	return NewMemoryBufferLen(p.size)
 }
 
-func NewTMemoryBufferTransportFactory(size int) *TMemoryBufferTransportFactory {
-	return &TMemoryBufferTransportFactory{size: size}
+func NewMemoryBufferTransportFactory(size int) *MemoryBufferTransportFactory {
+	return &MemoryBufferTransportFactory{size: size}
 }
 
-func NewTMemoryBuffer() *TMemoryBuffer {
-	return &TMemoryBuffer{Buffer: &bytes.Buffer{}, size: 0}
+func NewMemoryBuffer() *MemoryBuffer {
+	return &MemoryBuffer{Buffer: &bytes.Buffer{}, size: 0}
 }
 
-func NewTMemoryBufferLen(size int) *TMemoryBuffer {
+func NewMemoryBufferLen(size int) *MemoryBuffer {
 	buf := make([]byte, 0, size)
-	return &TMemoryBuffer{Buffer: bytes.NewBuffer(buf), size: size}
+	return &MemoryBuffer{Buffer: bytes.NewBuffer(buf), size: size}
 }
 
-func (p *TMemoryBuffer) IsOpen() bool {
+func (p *MemoryBuffer) IsOpen() bool {
 	return true
 }
 
-func (p *TMemoryBuffer) Open() error {
+func (p *MemoryBuffer) Open() error {
 	return nil
 }
 
-func (p *TMemoryBuffer) Close() error {
+func (p *MemoryBuffer) Close() error {
 	p.Buffer.Reset()
 	return nil
 }
 
 // Flushing a memory buffer is a no-op
-func (p *TMemoryBuffer) Flush() error {
+func (p *MemoryBuffer) Flush() error {
 	return nil
 }
 
-func (p *TMemoryBuffer) RemainingBytes() (num_bytes uint64) {
+func (p *MemoryBuffer) RemainingBytes() (num_bytes uint64) {
 	return uint64(p.Buffer.Len())
 }

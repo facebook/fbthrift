@@ -33,12 +33,12 @@ const localConnTimeout = time.Second * 1
 const testCallString = "this is a fairly lengthy test string \\ that ' has \x20 some 东西奇怪的"
 
 // createTestHeaderServer Create and bind a test server to localhost
-func createTestHeaderServer(handler thrifttest.ThriftTest) (*thrift.TSimpleServer, net.Addr, error) {
+func createTestHeaderServer(handler thrifttest.ThriftTest) (*thrift.SimpleServer, net.Addr, error) {
 	processor := thrifttest.NewThriftTestProcessor(handler)
-	transportFactory := thrift.NewTHeaderTransportFactory(thrift.NewTTransportFactory())
-	protocolFactory := thrift.NewTHeaderProtocolFactory()
+	transportFactory := thrift.NewHeaderTransportFactory(thrift.NewTransportFactory())
+	protocolFactory := thrift.NewHeaderProtocolFactory()
 
-	transport, err := thrift.NewTServerSocket("[::]:0")
+	transport, err := thrift.NewServerSocket("[::]:0")
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to open test socket: %s", err)
 	}
@@ -49,8 +49,8 @@ func createTestHeaderServer(handler thrifttest.ThriftTest) (*thrift.TSimpleServe
 	}
 	taddr := transport.Addr()
 
-	server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
-	go func(server *thrift.TSimpleServer) {
+	server := thrift.NewSimpleServer4(processor, transport, transportFactory, protocolFactory)
+	go func(server *thrift.SimpleServer) {
 		err = server.Serve()
 		if err != nil {
 			panic(fmt.Errorf("failed to begin serving test socket: %s", err))
@@ -71,10 +71,10 @@ func createTestHeaderServer(handler thrifttest.ThriftTest) (*thrift.TSimpleServe
 // connectTestHeaderServer Create a client and connect to a test server
 func connectTestHeaderServer(
 	addr net.Addr,
-	transportFactory thrift.TTransportFactory,
-	protocolFactory thrift.TProtocolFactory,
+	transportFactory thrift.TransportFactory,
+	protocolFactory thrift.ProtocolFactory,
 ) (*thrifttest.ThriftTestClient, error) {
-	var trans thrift.TTransport = thrift.NewTSocketFromAddrTimeout(addr, localConnTimeout)
+	var trans thrift.Transport = thrift.NewSocketFromAddrTimeout(addr, localConnTimeout)
 	err := trans.Open()
 
 	if err != nil {
@@ -89,7 +89,7 @@ func connectTestHeaderServer(
 	return thrifttest.NewThriftTestClientProtocol(trans, prot, prot), nil
 }
 
-func doClientTest(t *testing.T, transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory) {
+func doClientTest(t *testing.T, transportFactory thrift.TransportFactory, protocolFactory thrift.ProtocolFactory) {
 	handler := &testHandler{}
 	serv, addr, err := createTestHeaderServer(handler)
 	if err != nil {
@@ -177,39 +177,39 @@ func doClientTest(t *testing.T, transportFactory thrift.TTransportFactory, proto
 func TestHeaderHeader(t *testing.T) {
 	doClientTest(
 		t,
-		thrift.NewTHeaderTransportFactory(thrift.NewTTransportFactory()),
-		thrift.NewTHeaderProtocolFactory(),
+		thrift.NewHeaderTransportFactory(thrift.NewTransportFactory()),
+		thrift.NewHeaderProtocolFactory(),
 	)
 }
 
 func TestHeaderFramedBinary(t *testing.T) {
 	doClientTest(
 		t,
-		thrift.NewTFramedTransportFactory(thrift.NewTTransportFactory()),
-		thrift.NewTBinaryProtocolFactory(false, true),
+		thrift.NewFramedTransportFactory(thrift.NewTransportFactory()),
+		thrift.NewBinaryProtocolFactory(false, true),
 	)
 }
 
 func TestHeaderFramedCompact(t *testing.T) {
 	doClientTest(
 		t,
-		thrift.NewTFramedTransportFactory(thrift.NewTTransportFactory()),
-		thrift.NewTCompactProtocolFactory(),
+		thrift.NewFramedTransportFactory(thrift.NewTransportFactory()),
+		thrift.NewCompactProtocolFactory(),
 	)
 }
 
 func TestHeaderUnframedBinary(t *testing.T) {
 	doClientTest(
 		t,
-		thrift.NewTBufferedTransportFactory(8192),
-		thrift.NewTBinaryProtocolFactory(false, true),
+		thrift.NewBufferedTransportFactory(8192),
+		thrift.NewBinaryProtocolFactory(false, true),
 	)
 }
 
 func TestHeaderUnframedCompact(t *testing.T) {
 	doClientTest(
 		t,
-		thrift.NewTBufferedTransportFactory(8192),
-		thrift.NewTCompactProtocolFactory(),
+		thrift.NewBufferedTransportFactory(8192),
+		thrift.NewCompactProtocolFactory(),
 	)
 }

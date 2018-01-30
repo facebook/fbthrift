@@ -40,7 +40,7 @@ func init() {
 		"value": "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36"}
 }
 
-func TransportTest(t *testing.T, writeTrans TTransport, readTrans TTransport) {
+func TransportTest(t *testing.T, writeTrans Transport, readTrans Transport) {
 	buf := make([]byte, TRANSPORT_BINARY_DATA_SIZE)
 	if !writeTrans.IsOpen() {
 		t.Fatalf("Transport %T not open: %s", writeTrans, writeTrans)
@@ -50,8 +50,8 @@ func TransportTest(t *testing.T, writeTrans TTransport, readTrans TTransport) {
 	}
 
 	// Special case for header transport -- need to reset protocol on read
-	var headerTrans *THeaderTransport
-	if hdr, ok := readTrans.(*THeaderTransport); ok {
+	var headerTrans *HeaderTransport
+	if hdr, ok := readTrans.(*HeaderTransport); ok {
 		headerTrans = hdr
 	}
 
@@ -116,7 +116,7 @@ func TransportTest(t *testing.T, writeTrans TTransport, readTrans TTransport) {
 	}
 }
 
-func TransportHeaderTest(t *testing.T, writeTrans TTransport, readTrans TTransport) {
+func TransportHeaderTest(t *testing.T, writeTrans Transport, readTrans Transport) {
 	buf := make([]byte, TRANSPORT_BINARY_DATA_SIZE)
 	if !writeTrans.IsOpen() {
 		t.Fatalf("Transport %T not open: %s", writeTrans, writeTrans)
@@ -124,8 +124,8 @@ func TransportHeaderTest(t *testing.T, writeTrans TTransport, readTrans TTranspo
 	if !readTrans.IsOpen() {
 		t.Fatalf("Transport %T not open: %s", readTrans, readTrans)
 	}
-	// Need to assert type of TTransport to THttpClient to expose the Setter
-	httpWPostTrans := writeTrans.(*THttpClient)
+	// Need to assert type of Transport to HTTPClient to expose the Setter
+	httpWPostTrans := writeTrans.(*HTTPClient)
 	httpWPostTrans.SetHeader(transport_header["key"], transport_header["value"])
 
 	_, err := writeTrans.Write(transport_bdata)
@@ -136,8 +136,8 @@ func TransportHeaderTest(t *testing.T, writeTrans TTransport, readTrans TTranspo
 	if err != nil {
 		t.Fatalf("Transport %T cannot flush write of binary data: %s", writeTrans, err)
 	}
-	// Need to assert type of TTransport to THttpClient to expose the Getter
-	httpRPostTrans := readTrans.(*THttpClient)
+	// Need to assert type of Transport to HTTPClient to expose the Getter
+	httpRPostTrans := readTrans.(*HTTPClient)
 	readHeader := httpRPostTrans.GetHeader(transport_header["key"])
 	if err != nil {
 		t.Errorf("Transport %T cannot read HTTP Header Value", httpRPostTrans)
@@ -160,7 +160,7 @@ func TransportHeaderTest(t *testing.T, writeTrans TTransport, readTrans TTranspo
 	}
 }
 
-func CloseTransports(t *testing.T, readTrans TTransport, writeTrans TTransport) {
+func CloseTransports(t *testing.T, readTrans Transport, writeTrans Transport) {
 	err := readTrans.Close()
 	if err != nil {
 		t.Errorf("Transport %T cannot close read transport: %s", readTrans, err)

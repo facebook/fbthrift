@@ -24,12 +24,12 @@ import (
 	"testing"
 )
 
-func TestHttpClient(t *testing.T) {
-	l := HttpClientSetupForTest(t)
+func TestHTTPClient(t *testing.T) {
+	l := HTTPClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
-	trans, err := NewTHttpPostClient("http://" + l.Addr().String())
+	trans, err := NewHTTPPostClient("http://" + l.Addr().String())
 	if err != nil {
 		l.Close()
 		t.Fatalf("Unable to connect to %s: %s", l.Addr().String(), err)
@@ -37,12 +37,12 @@ func TestHttpClient(t *testing.T) {
 	TransportTest(t, trans, trans)
 }
 
-func TestHttpClientHeaders(t *testing.T) {
-	l := HttpClientSetupForTest(t)
+func TestHTTPClientHeaders(t *testing.T) {
+	l := HTTPClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
-	trans, err := NewTHttpPostClient("http://" + l.Addr().String())
+	trans, err := NewHTTPPostClient("http://" + l.Addr().String())
 	if err != nil {
 		l.Close()
 		t.Fatalf("Unable to connect to %s: %s", l.Addr().String(), err)
@@ -50,15 +50,15 @@ func TestHttpClientHeaders(t *testing.T) {
 	TransportHeaderTest(t, trans, trans)
 }
 
-func TestHttpCustomClient(t *testing.T) {
-	l := HttpClientSetupForTest(t)
+func TestHTTPCustomClient(t *testing.T) {
+	l := HTTPClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
 
-	httpTransport := &customHttpTransport{}
+	httpTransport := &customHTTPTransport{}
 
-	trans, err := NewTHttpPostClientWithOptions("http://"+l.Addr().String(), THttpClientOptions{
+	trans, err := NewHTTPPostClientWithOptions("http://"+l.Addr().String(), HTTPClientOptions{
 		Client: &http.Client{
 			Transport: httpTransport,
 		},
@@ -74,17 +74,17 @@ func TestHttpCustomClient(t *testing.T) {
 	}
 }
 
-func TestHttpCustomClientPackageScope(t *testing.T) {
-	l := HttpClientSetupForTest(t)
+func TestHTTPCustomClientPackageScope(t *testing.T) {
+	l := HTTPClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
-	httpTransport := &customHttpTransport{}
-	DefaultHttpClient = &http.Client{
+	httpTransport := &customHTTPTransport{}
+	DefaultHTTPClient = &http.Client{
 		Transport: httpTransport,
 	}
 
-	trans, err := NewTHttpPostClient("http://" + l.Addr().String())
+	trans, err := NewHTTPPostClient("http://" + l.Addr().String())
 	if err != nil {
 		l.Close()
 		t.Fatalf("Unable to connect to %s: %s", l.Addr().String(), err)
@@ -96,11 +96,11 @@ func TestHttpCustomClientPackageScope(t *testing.T) {
 	}
 }
 
-type customHttpTransport struct {
+type customHTTPTransport struct {
 	hit bool
 }
 
-func (c *customHttpTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+func (c *customHTTPTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	c.hit = true
 	return http.DefaultTransport.RoundTrip(req)
 }

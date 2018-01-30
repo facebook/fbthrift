@@ -84,7 +84,7 @@ func (p *MyStruct) IsSetMyDataField() bool {
   return p.MyDataField != nil
 }
 
-func (p *MyStruct) Read(iprot thrift.TProtocol) error {
+func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -124,7 +124,7 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -133,7 +133,7 @@ func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -142,7 +142,7 @@ func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
+func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   p.MyDataField = NewMyDataItem()
   if err := p.MyDataField.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyDataField), err)
@@ -150,7 +150,7 @@ func (p *MyStruct)  ReadField3(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct) Write(oprot thrift.TProtocol) error {
+func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -163,7 +163,7 @@ func (p *MyStruct) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyStruct) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyIntField", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:MyIntField: ", p), err) }
   if err := oprot.WriteI64(int64(p.MyIntField)); err != nil {
@@ -173,7 +173,7 @@ func (p *MyStruct) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyStringField", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:MyStringField: ", p), err) }
   if err := oprot.WriteString(string(p.MyStringField)); err != nil {
@@ -183,7 +183,7 @@ func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *MyStruct) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *MyStruct) writeField3(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("MyDataField", thrift.STRUCT, 3); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:MyDataField: ", p), err) }
   if err := p.MyDataField.Write(oprot); err != nil {
@@ -208,7 +208,7 @@ func NewMyDataItem() *MyDataItem {
   return &MyDataItem{}
 }
 
-func (p *MyDataItem) Read(iprot thrift.TProtocol) error {
+func (p *MyDataItem) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -233,7 +233,7 @@ func (p *MyDataItem) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyDataItem) Write(oprot thrift.TProtocol) error {
+func (p *MyDataItem) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyDataItem"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

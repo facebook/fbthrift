@@ -90,7 +90,7 @@ func (p *Color) GetBlue() float64 {
 func (p *Color) GetAlpha() float64 {
   return p.Alpha
 }
-func (p *Color) Read(iprot thrift.TProtocol) error {
+func (p *Color) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -134,7 +134,7 @@ func (p *Color) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Color)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -143,7 +143,7 @@ func (p *Color)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color)  ReadField2(iprot thrift.TProtocol) error {
+func (p *Color)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -152,7 +152,7 @@ func (p *Color)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color)  ReadField3(iprot thrift.TProtocol) error {
+func (p *Color)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
@@ -161,7 +161,7 @@ func (p *Color)  ReadField3(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color)  ReadField4(iprot thrift.TProtocol) error {
+func (p *Color)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
   return thrift.PrependError("error reading field 4: ", err)
 } else {
@@ -170,7 +170,7 @@ func (p *Color)  ReadField4(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color) Write(oprot thrift.TProtocol) error {
+func (p *Color) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Color"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -184,7 +184,7 @@ func (p *Color) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Color) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Color) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("red", thrift.DOUBLE, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:red: ", p), err) }
   if err := oprot.WriteDouble(float64(p.Red)); err != nil {
@@ -194,7 +194,7 @@ func (p *Color) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Color) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *Color) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("green", thrift.DOUBLE, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:green: ", p), err) }
   if err := oprot.WriteDouble(float64(p.Green)); err != nil {
@@ -204,7 +204,7 @@ func (p *Color) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Color) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *Color) writeField3(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("blue", thrift.DOUBLE, 3); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:blue: ", p), err) }
   if err := oprot.WriteDouble(float64(p.Blue)); err != nil {
@@ -214,7 +214,7 @@ func (p *Color) writeField3(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Color) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *Color) writeField4(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("alpha", thrift.DOUBLE, 4); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:alpha: ", p), err) }
   if err := oprot.WriteDouble(float64(p.Alpha)); err != nil {
@@ -302,7 +302,7 @@ func (p *Vehicle) IsSetHasAC() bool {
   return p.HasAC != Vehicle_HasAC_DEFAULT
 }
 
-func (p *Vehicle) Read(iprot thrift.TProtocol) error {
+func (p *Vehicle) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -350,7 +350,7 @@ func (p *Vehicle) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Vehicle)  ReadField1(iprot thrift.Protocol) error {
   p.Color = NewColor()
   if err := p.Color.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Color), err)
@@ -358,7 +358,7 @@ func (p *Vehicle)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle)  ReadField2(iprot thrift.TProtocol) error {
+func (p *Vehicle)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -367,7 +367,7 @@ func (p *Vehicle)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle)  ReadField3(iprot thrift.TProtocol) error {
+func (p *Vehicle)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
@@ -376,7 +376,7 @@ func (p *Vehicle)  ReadField3(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle)  ReadField4(iprot thrift.TProtocol) error {
+func (p *Vehicle)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 4: ", err)
 } else {
@@ -385,7 +385,7 @@ func (p *Vehicle)  ReadField4(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle)  ReadField5(iprot thrift.TProtocol) error {
+func (p *Vehicle)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
   return thrift.PrependError("error reading field 5: ", err)
 } else {
@@ -394,7 +394,7 @@ func (p *Vehicle)  ReadField5(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle) Write(oprot thrift.TProtocol) error {
+func (p *Vehicle) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Vehicle"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -409,7 +409,7 @@ func (p *Vehicle) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Vehicle) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Vehicle) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("color", thrift.STRUCT, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:color: ", p), err) }
   if err := p.Color.Write(oprot); err != nil {
@@ -420,7 +420,7 @@ func (p *Vehicle) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Vehicle) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *Vehicle) writeField2(oprot thrift.Protocol) (err error) {
   if p.IsSetLicensePlate() {
     if err := oprot.WriteFieldBegin("licensePlate", thrift.STRING, 2); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:licensePlate: ", p), err) }
@@ -432,7 +432,7 @@ func (p *Vehicle) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Vehicle) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *Vehicle) writeField3(oprot thrift.Protocol) (err error) {
   if p.IsSetDescription() {
     if err := oprot.WriteFieldBegin("description", thrift.STRING, 3); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:description: ", p), err) }
@@ -444,7 +444,7 @@ func (p *Vehicle) writeField3(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Vehicle) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *Vehicle) writeField4(oprot thrift.Protocol) (err error) {
   if p.IsSetName() {
     if err := oprot.WriteFieldBegin("name", thrift.STRING, 4); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:name: ", p), err) }
@@ -456,7 +456,7 @@ func (p *Vehicle) writeField4(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Vehicle) writeField5(oprot thrift.TProtocol) (err error) {
+func (p *Vehicle) writeField5(oprot thrift.Protocol) (err error) {
   if p.IsSetHasAC() {
     if err := oprot.WriteFieldBegin("hasAC", thrift.BOOL, 5); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:hasAC: ", p), err) }
@@ -593,7 +593,7 @@ func (p *Person) IsSetVehicles() bool {
   return p.Vehicles != nil
 }
 
-func (p *Person) Read(iprot thrift.TProtocol) error {
+func (p *Person) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -661,7 +661,7 @@ func (p *Person) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField1(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -671,7 +671,7 @@ func (p *Person)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField2(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -680,7 +680,7 @@ func (p *Person)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField3(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI16(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
@@ -689,7 +689,7 @@ func (p *Person)  ReadField3(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField4(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 4: ", err)
 } else {
@@ -698,7 +698,7 @@ func (p *Person)  ReadField4(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField5(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField5(iprot thrift.Protocol) error {
   p.FavoriteColor = NewColor()
   if err := p.FavoriteColor.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.FavoriteColor), err)
@@ -706,7 +706,7 @@ func (p *Person)  ReadField5(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField6(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField6(iprot thrift.Protocol) error {
   _, size, err := iprot.ReadSetBegin()
   if err != nil {
     return thrift.PrependError("error reading set begin: ", err)
@@ -729,7 +729,7 @@ var _elem0 PersonID
   return nil
 }
 
-func (p *Person)  ReadField7(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField7(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 7: ", err)
 } else {
@@ -739,7 +739,7 @@ func (p *Person)  ReadField7(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField8(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField8(iprot thrift.Protocol) error {
   _, _, size, err := iprot.ReadMapBegin()
   if err != nil {
     return thrift.PrependError("error reading map begin: ", err)
@@ -768,7 +768,7 @@ var _val2 string
   return nil
 }
 
-func (p *Person)  ReadField9(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField9(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
   return thrift.PrependError("error reading field 9: ", err)
 } else {
@@ -778,7 +778,7 @@ func (p *Person)  ReadField9(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person)  ReadField10(iprot thrift.TProtocol) error {
+func (p *Person)  ReadField10(iprot thrift.Protocol) error {
   _, size, err := iprot.ReadListBegin()
   if err != nil {
     return thrift.PrependError("error reading list begin: ", err)
@@ -798,7 +798,7 @@ func (p *Person)  ReadField10(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person) Write(oprot thrift.TProtocol) error {
+func (p *Person) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Person"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -818,7 +818,7 @@ func (p *Person) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Person) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
   if err := oprot.WriteI64(int64(p.Id)); err != nil {
@@ -828,7 +828,7 @@ func (p *Person) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("name", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:name: ", p), err) }
   if err := oprot.WriteString(string(p.Name)); err != nil {
@@ -838,7 +838,7 @@ func (p *Person) writeField2(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField3(oprot thrift.Protocol) (err error) {
   if p.IsSetAge() {
     if err := oprot.WriteFieldBegin("age", thrift.I16, 3); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:age: ", p), err) }
@@ -850,7 +850,7 @@ func (p *Person) writeField3(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField4(oprot thrift.Protocol) (err error) {
   if p.IsSetAddress() {
     if err := oprot.WriteFieldBegin("address", thrift.STRING, 4); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:address: ", p), err) }
@@ -862,7 +862,7 @@ func (p *Person) writeField4(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField5(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField5(oprot thrift.Protocol) (err error) {
   if p.IsSetFavoriteColor() {
     if err := oprot.WriteFieldBegin("favoriteColor", thrift.STRUCT, 5); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:favoriteColor: ", p), err) }
@@ -875,7 +875,7 @@ func (p *Person) writeField5(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField6(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField6(oprot thrift.Protocol) (err error) {
   if p.IsSetFriends() {
     if err := oprot.WriteFieldBegin("friends", thrift.SET, 6); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:friends: ", p), err) }
@@ -902,7 +902,7 @@ func (p *Person) writeField6(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField7(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField7(oprot thrift.Protocol) (err error) {
   if p.IsSetBestFriend() {
     if err := oprot.WriteFieldBegin("bestFriend", thrift.I64, 7); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:bestFriend: ", p), err) }
@@ -914,7 +914,7 @@ func (p *Person) writeField7(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField8(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField8(oprot thrift.Protocol) (err error) {
   if p.IsSetPetNames() {
     if err := oprot.WriteFieldBegin("petNames", thrift.MAP, 8); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:petNames: ", p), err) }
@@ -936,7 +936,7 @@ func (p *Person) writeField8(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField9(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField9(oprot thrift.Protocol) (err error) {
   if p.IsSetAfraidOfAnimal() {
     if err := oprot.WriteFieldBegin("afraidOfAnimal", thrift.I32, 9); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:afraidOfAnimal: ", p), err) }
@@ -948,7 +948,7 @@ func (p *Person) writeField9(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *Person) writeField10(oprot thrift.TProtocol) (err error) {
+func (p *Person) writeField10(oprot thrift.Protocol) (err error) {
   if p.IsSetVehicles() {
     if err := oprot.WriteFieldBegin("vehicles", thrift.LIST, 10); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:vehicles: ", p), err) }

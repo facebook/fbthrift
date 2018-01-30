@@ -26,7 +26,7 @@ func NewEmpty() *Empty {
   return &Empty{}
 }
 
-func (p *Empty) Read(iprot thrift.TProtocol) error {
+func (p *Empty) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -51,7 +51,7 @@ func (p *Empty) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Empty) Write(oprot thrift.TProtocol) error {
+func (p *Empty) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Empty"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -75,7 +75,7 @@ func NewNada() *Nada {
   return &Nada{}
 }
 
-func (p *Nada) Read(iprot thrift.TProtocol) error {
+func (p *Nada) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -100,7 +100,7 @@ func (p *Nada) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *Nada) Write(oprot thrift.TProtocol) error {
+func (p *Nada) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Nada"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

@@ -19,26 +19,26 @@
 
 package thrift
 
-type TSerializer struct {
-	Transport *TMemoryBuffer
-	Protocol  TProtocol
+type Serializer struct {
+	Transport *MemoryBuffer
+	Protocol  Protocol
 }
 
-type TStruct interface {
-	Write(p TProtocol) error
-	Read(p TProtocol) error
+type Struct interface {
+	Write(p Protocol) error
+	Read(p Protocol) error
 }
 
-func NewTSerializer() *TSerializer {
-	transport := NewTMemoryBufferLen(1024)
-	protocol := NewTBinaryProtocolFactoryDefault().GetProtocol(transport)
+func NewSerializer() *Serializer {
+	transport := NewMemoryBufferLen(1024)
+	protocol := NewBinaryProtocolFactoryDefault().GetProtocol(transport)
 
-	return &TSerializer{
+	return &Serializer{
 		transport,
 		protocol}
 }
 
-func (t *TSerializer) WriteString(msg TStruct) (s string, err error) {
+func (t *Serializer) WriteString(msg Struct) (s string, err error) {
 	t.Transport.Reset()
 
 	if err = msg.Write(t.Protocol); err != nil {
@@ -55,7 +55,7 @@ func (t *TSerializer) WriteString(msg TStruct) (s string, err error) {
 	return t.Transport.String(), nil
 }
 
-func (t *TSerializer) Write(msg TStruct) (b []byte, err error) {
+func (t *Serializer) Write(msg Struct) (b []byte, err error) {
 	t.Transport.Reset()
 
 	if err = msg.Write(t.Protocol); err != nil {

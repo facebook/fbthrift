@@ -25,38 +25,38 @@ import (
 	"log"
 )
 
-// TZlibTransportFactory is a factory for TZlibTransport instances
-type TZlibTransportFactory struct {
+// ZlibTransportFactory is a factory for ZlibTransport instances
+type ZlibTransportFactory struct {
 	level int
 }
 
-// TZlibTransport is a TTransport implementation that makes use of zlib compression.
-type TZlibTransport struct {
+// ZlibTransport is a Transport implementation that makes use of zlib compression.
+type ZlibTransport struct {
 	reader    io.ReadCloser
-	transport TTransport
+	transport Transport
 	writer    *zlib.Writer
 }
 
-// GetTransport constructs a new instance of NewTZlibTransport
-func (p *TZlibTransportFactory) GetTransport(trans TTransport) TTransport {
-	t, _ := NewTZlibTransport(trans, p.level)
+// GetTransport constructs a new instance of NewZlibTransport
+func (p *ZlibTransportFactory) GetTransport(trans Transport) Transport {
+	t, _ := NewZlibTransport(trans, p.level)
 	return t
 }
 
-// NewTZlibTransportFactory constructs a new instance of NewTZlibTransportFactory
-func NewTZlibTransportFactory(level int) *TZlibTransportFactory {
-	return &TZlibTransportFactory{level: level}
+// NewZlibTransportFactory constructs a new instance of NewZlibTransportFactory
+func NewZlibTransportFactory(level int) *ZlibTransportFactory {
+	return &ZlibTransportFactory{level: level}
 }
 
-// NewTZlibTransport constructs a new instance of TZlibTransport
-func NewTZlibTransport(trans TTransport, level int) (*TZlibTransport, error) {
+// NewZlibTransport constructs a new instance of ZlibTransport
+func NewZlibTransport(trans Transport, level int) (*ZlibTransport, error) {
 	w, err := zlib.NewWriterLevel(trans, level)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	return &TZlibTransport{
+	return &ZlibTransport{
 		writer:    w,
 		transport: trans,
 	}, nil
@@ -64,7 +64,7 @@ func NewTZlibTransport(trans TTransport, level int) (*TZlibTransport, error) {
 
 // Close closes the reader and writer (flushing any unwritten data) and closes
 // the underlying transport.
-func (z *TZlibTransport) Close() error {
+func (z *ZlibTransport) Close() error {
 	if z.reader != nil {
 		if err := z.reader.Close(); err != nil {
 			return err
@@ -77,7 +77,7 @@ func (z *TZlibTransport) Close() error {
 }
 
 // Flush flushes the writer and its underlying transport.
-func (z *TZlibTransport) Flush() error {
+func (z *ZlibTransport) Flush() error {
 	if err := z.writer.Flush(); err != nil {
 		return err
 	}
@@ -85,20 +85,20 @@ func (z *TZlibTransport) Flush() error {
 }
 
 // IsOpen returns true if the transport is open
-func (z *TZlibTransport) IsOpen() bool {
+func (z *ZlibTransport) IsOpen() bool {
 	return z.transport.IsOpen()
 }
 
 // Open opens the transport for communication
-func (z *TZlibTransport) Open() error {
+func (z *ZlibTransport) Open() error {
 	return z.transport.Open()
 }
 
-func (z *TZlibTransport) Read(p []byte) (int, error) {
+func (z *ZlibTransport) Read(p []byte) (int, error) {
 	if z.reader == nil {
 		r, err := zlib.NewReader(z.transport)
 		if err != nil {
-			return 0, NewTTransportExceptionFromError(err)
+			return 0, NewTransportExceptionFromError(err)
 		}
 		z.reader = r
 	}
@@ -108,10 +108,10 @@ func (z *TZlibTransport) Read(p []byte) (int, error) {
 
 // RemainingBytes returns the size in bytes of the data that is still to be
 // read.
-func (z *TZlibTransport) RemainingBytes() uint64 {
+func (z *ZlibTransport) RemainingBytes() uint64 {
 	return z.transport.RemainingBytes()
 }
 
-func (z *TZlibTransport) Write(p []byte) (int, error) {
+func (z *ZlibTransport) Write(p []byte) (int, error) {
 	return z.writer.Write(p)
 }

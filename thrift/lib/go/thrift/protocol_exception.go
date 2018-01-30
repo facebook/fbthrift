@@ -24,8 +24,8 @@ import (
 )
 
 // Thrift Protocol exception
-type TProtocolException interface {
-	TException
+type ProtocolException interface {
+	Exception
 	TypeId() int
 }
 
@@ -39,40 +39,39 @@ const (
 	DEPTH_LIMIT                = 6
 )
 
-type tProtocolException struct {
+type protocolException struct {
 	typeId  int
 	message string
 }
 
-func (p *tProtocolException) TypeId() int {
+func (p *protocolException) TypeId() int {
 	return p.typeId
 }
 
-func (p *tProtocolException) String() string {
+func (p *protocolException) String() string {
 	return p.message
 }
 
-func (p *tProtocolException) Error() string {
+func (p *protocolException) Error() string {
 	return p.message
 }
 
-func NewTProtocolException(err error) TProtocolException {
+func NewProtocolException(err error) ProtocolException {
 	if err == nil {
 		return nil
 	}
-	if e,ok := err.(TProtocolException); ok {
+	if e, ok := err.(ProtocolException); ok {
 		return e
 	}
 	if _, ok := err.(base64.CorruptInputError); ok {
-		return &tProtocolException{INVALID_DATA, err.Error()}
+		return &protocolException{INVALID_DATA, err.Error()}
 	}
-	return &tProtocolException{UNKNOWN_PROTOCOL_EXCEPTION, err.Error()}
+	return &protocolException{UNKNOWN_PROTOCOL_EXCEPTION, err.Error()}
 }
 
-func NewTProtocolExceptionWithType(errType int, err error) TProtocolException {
+func NewProtocolExceptionWithType(errType int, err error) ProtocolException {
 	if err == nil {
 		return nil
 	}
-	return &tProtocolException{errType, err.Error()}
+	return &protocolException{errType, err.Error()}
 }
-

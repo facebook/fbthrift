@@ -25,10 +25,10 @@ import (
 )
 
 func TestPrependError(t *testing.T) {
-	err := NewTApplicationException(INTERNAL_ERROR, "original error")
-	err2, ok := PrependError("Prepend: ", err).(TApplicationException)
+	err := NewApplicationException(INTERNAL_ERROR, "original error")
+	err2, ok := PrependError("Prepend: ", err).(ApplicationException)
 	if !ok {
-		t.Fatal("Couldn't cast error TApplicationException")
+		t.Fatal("Couldn't cast error ApplicationException")
 	}
 	if err2.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")
@@ -37,10 +37,10 @@ func TestPrependError(t *testing.T) {
 		t.Fatal("Unexpected type error")
 	}
 
-	err3 := NewTProtocolExceptionWithType(INVALID_DATA, errors.New("original error"))
-	err4, ok := PrependError("Prepend: ", err3).(TProtocolException)
+	err3 := NewProtocolExceptionWithType(INVALID_DATA, errors.New("original error"))
+	err4, ok := PrependError("Prepend: ", err3).(ProtocolException)
 	if !ok {
-		t.Fatal("Couldn't cast error TProtocolException")
+		t.Fatal("Couldn't cast error ProtocolException")
 	}
 	if err4.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")
@@ -49,10 +49,10 @@ func TestPrependError(t *testing.T) {
 		t.Fatal("Unexpected type error")
 	}
 
-	err5 := NewTTransportException(TIMED_OUT, "original error")
-	err6, ok := PrependError("Prepend: ", err5).(TTransportException)
+	err5 := NewTransportException(TIMED_OUT, "original error")
+	err6, ok := PrependError("Prepend: ", err5).(TransportException)
 	if !ok {
-		t.Fatal("Couldn't cast error TTransportException")
+		t.Fatal("Couldn't cast error TransportException")
 	}
 	if err6.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")

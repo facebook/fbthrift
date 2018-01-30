@@ -24,6 +24,6 @@ import (
 )
 
 func TestFramedTransport(t *testing.T) {
-	trans := NewTFramedTransport(NewTMemoryBuffer())
+	trans := NewFramedTransport(NewMemoryBuffer())
 	TransportTest(t, trans, trans)
 }

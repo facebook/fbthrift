@@ -1392,7 +1392,7 @@ void t_go_generator::generate_go_struct_reader(ofstream& out,
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   string escaped_tstruct_name(escape_string(tstruct->get_name()));
-  out << indent() << "func (p *" << tstruct_name << ") Read(iprot thrift.TProtocol) error {"
+  out << indent() << "func (p *" << tstruct_name << ") Read(iprot thrift.Protocol) error {"
       << endl;
   indent_up();
   out << indent() << "if _, err := iprot.ReadStructBegin(); err != nil {" << endl;
@@ -1507,7 +1507,7 @@ void t_go_generator::generate_go_struct_reader(ofstream& out,
       const string field_name(
           publicize(escape_string((*f_iter)->get_name())));
       out << indent() << "if !isset" << field_name << "{" << endl;
-      out << indent() << "  return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, "
+      out << indent() << "  return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, "
                          "fmt.Errorf(\"Required field " << field_name << " is not set\"));" << endl;
       out << indent() << "}" << endl;
     }
@@ -1529,7 +1529,7 @@ void t_go_generator::generate_go_struct_reader(ofstream& out,
     }
 
     out << indent() << "func (p *" << tstruct_name << ")  " << field_method_prefix << field_id
-        << "(iprot thrift.TProtocol) error {" << endl;
+        << "(iprot thrift.Protocol) error {" << endl;
     indent_up();
     generate_deserialize_field(out, *f_iter, false, "p.");
     indent_down();
@@ -1547,7 +1547,7 @@ void t_go_generator::generate_go_struct_writer(ofstream& out,
   string name(tstruct->get_name());
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
-  indent(out) << "func (p *" << tstruct_name << ") Write(oprot thrift.TProtocol) error {" << endl;
+  indent(out) << "func (p *" << tstruct_name << ") Write(oprot thrift.Protocol) error {" << endl;
   indent_up();
   if (tstruct->is_union() && uses_countsetfields) {
     std::string pub_tstruct_name(publicize(tstruct->get_name()));
@@ -1603,7 +1603,7 @@ void t_go_generator::generate_go_struct_writer(ofstream& out,
     }
 
     out << indent() << "func (p *" << tstruct_name << ") " << field_method_prefix << field_id
-        << "(oprot thrift.TProtocol) (err error) {" << endl;
+        << "(oprot thrift.Protocol) (err error) {" << endl;
     indent_up();
 
     if (field_required == t_field::T_OPTIONAL) {
@@ -1793,10 +1793,10 @@ void t_go_generator::generate_service_client(t_service* tservice) {
   if (!extends_client.empty()) {
     f_service_ << indent() << "*" << extends_client << endl;
   } else {
-    f_service_ << indent() << "Transport thrift.TTransport" << endl;
-    f_service_ << indent() << "ProtocolFactory thrift.TProtocolFactory" << endl;
-    f_service_ << indent() << "InputProtocol thrift.TProtocol" << endl;
-    f_service_ << indent() << "OutputProtocol thrift.TProtocol" << endl;
+    f_service_ << indent() << "Transport thrift.Transport" << endl;
+    f_service_ << indent() << "ProtocolFactory thrift.ProtocolFactory" << endl;
+    f_service_ << indent() << "InputProtocol thrift.Protocol" << endl;
+    f_service_ << indent() << "OutputProtocol thrift.Protocol" << endl;
     f_service_ << indent() << "SeqId int32" << endl;
     /*f_service_ << indent() << "reqs map[int32]Deferred" << endl*/;
   }
@@ -1815,7 +1815,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
 
   // Constructor function
   f_service_ << indent() << "func New" << serviceName
-             << "ClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *" << serviceName
+             << "ClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *" << serviceName
              << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";
@@ -1839,7 +1839,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
   // Constructor function
   f_service_
       << indent() << "func New" << serviceName
-      << "ClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *"
+      << "ClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
       << serviceName << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";
@@ -1973,20 +1973,20 @@ void t_go_generator::generate_service_client(t_service* tservice) {
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if method != \"" << (*f_iter)->get_name() << "\" {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.WRONG_METHOD_NAME, \"" << (*f_iter)->get_name()
                  << " failed: wrong method name\")" << endl;
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if p.SeqId != seqId {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.BAD_SEQUENCE_ID, \"" << (*f_iter)->get_name()
                  << " failed: out of sequence response\")" << endl;
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if mTypeId == thrift.EXCEPTION {" << endl;
       f_service_ << indent() << "  " << error
-                 << " := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
+                 << " := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
                     "\"Unknown Exception\")" << endl;
       f_service_ << indent() << "  var " << error2 << " error" << endl;
       f_service_ << indent() << "  " << error2 << ", err = " << error << ".Read(iprot)" << endl;
@@ -2000,7 +2000,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if mTypeId != thrift.REPLY {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.INVALID_MESSAGE_TYPE_EXCEPTION, \"" << (*f_iter)->get_name()
                  << " failed: invalid message type\")" << endl;
       f_service_ << indent() << "  return" << endl;
@@ -2084,10 +2084,10 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
   if (!extends_client.empty()) {
     f_service_ << indent() << "*" << extends_client << endl;
   } else {
-    f_service_ << indent() << "Transport thrift.TTransport" << endl;
-    f_service_ << indent() << "ProtocolFactory thrift.TProtocolFactory" << endl;
-    f_service_ << indent() << "InputProtocol thrift.TProtocol" << endl;
-    f_service_ << indent() << "OutputProtocol thrift.TProtocol" << endl;
+    f_service_ << indent() << "Transport thrift.Transport" << endl;
+    f_service_ << indent() << "ProtocolFactory thrift.ProtocolFactory" << endl;
+    f_service_ << indent() << "InputProtocol thrift.Protocol" << endl;
+    f_service_ << indent() << "OutputProtocol thrift.Protocol" << endl;
     f_service_ << indent() << "SeqId int32" << endl;
     f_service_ << indent() << "Mu sync.Mutex" << endl;
     /*f_service_ << indent() << "reqs map[int32]Deferred" << endl*/;
@@ -2098,7 +2098,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
   // Constructor function
   f_service_
       << indent() << "func New" << serviceName
-      << "ClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *"
+      << "ClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *"
       << serviceName << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";
@@ -2123,7 +2123,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
   // Constructor function
   f_service_
       << indent() << "func New" << serviceName
-      << "ClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *"
+      << "ClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
       << serviceName << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";
@@ -2279,13 +2279,13 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if method != \"" << (*f_iter)->get_name()
                  << "\" {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.WRONG_METHOD_NAME, \"" << (*f_iter)->get_name()
                  << " failed: wrong method name\")" << endl;
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if p.SeqId != seqId {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.BAD_SEQUENCE_ID, \"" << (*f_iter)->get_name()
                  << " failed: out of sequence response\")" << endl;
       f_service_ << indent() << "  return" << endl;
@@ -2293,7 +2293,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
       f_service_ << indent() << "if mTypeId == thrift.EXCEPTION {" << endl;
       f_service_
           << indent() << "  " << error
-          << " := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
+          << " := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
              "\"Unknown Exception\")"
           << endl;
       f_service_ << indent() << "  var " << error2 << " error" << endl;
@@ -2310,7 +2310,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
       f_service_ << indent() << "  return" << endl;
       f_service_ << indent() << "}" << endl;
       f_service_ << indent() << "if mTypeId != thrift.REPLY {" << endl;
-      f_service_ << indent() << "  err = thrift.NewTApplicationException("
+      f_service_ << indent() << "  err = thrift.NewApplicationException("
                  << "thrift.INVALID_MESSAGE_TYPE_EXCEPTION, \""
                  << (*f_iter)->get_name() << " failed: invalid message type\")"
                  << endl;
@@ -2455,7 +2455,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote << indent() << "var framed bool" << endl;
   f_remote << indent() << "var useHttp bool" << endl;
   f_remote << indent() << "var parsedUrl url.URL" << endl;
-  f_remote << indent() << "var trans thrift.TTransport" << endl;
+  f_remote << indent() << "var trans thrift.Transport" << endl;
   f_remote << indent() << "_ = strconv.Atoi" << endl;
   f_remote << indent() << "_ = math.Abs" << endl;
   f_remote << indent() << "flag.Usage = Usage" << endl;
@@ -2491,7 +2491,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote << indent() << "cmd := flag.Arg(0)" << endl;
   f_remote << indent() << "var err error" << endl;
   f_remote << indent() << "if useHttp {" << endl;
-  f_remote << indent() << "  trans, err = thrift.NewTHttpClient(parsedUrl.String())" << endl;
+  f_remote << indent() << "  trans, err = thrift.NewHttpClient(parsedUrl.String())" << endl;
   f_remote << indent() << "} else {" << endl;
   f_remote << indent() << "  portStr := fmt.Sprint(port)" << endl;
   f_remote << indent() << "  if strings.Contains(host, \":\") {" << endl;
@@ -2502,14 +2502,14 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote << indent() << "                 os.Exit(1)" << endl;
   f_remote << indent() << "         }" << endl;
   f_remote << indent() << "  }" << endl;
-  f_remote << indent() << "  trans, err = thrift.NewTSocket(net.JoinHostPort(host, portStr))"
+  f_remote << indent() << "  trans, err = thrift.NewSocket(net.JoinHostPort(host, portStr))"
            << endl;
   f_remote << indent() << "  if err != nil {" << endl;
   f_remote << indent() << "    fmt.Fprintln(os.Stderr, \"error resolving address:\", err)" << endl;
   f_remote << indent() << "    os.Exit(1)" << endl;
   f_remote << indent() << "  }" << endl;
   f_remote << indent() << "  if framed {" << endl;
-  f_remote << indent() << "    trans = thrift.NewTFramedTransport(trans)" << endl;
+  f_remote << indent() << "    trans = thrift.NewFramedTransport(trans)" << endl;
   f_remote << indent() << "  }" << endl;
   f_remote << indent() << "}" << endl;
   f_remote << indent() << "if err != nil {" << endl;
@@ -2517,19 +2517,19 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote << indent() << "  os.Exit(1)" << endl;
   f_remote << indent() << "}" << endl;
   f_remote << indent() << "defer trans.Close()" << endl;
-  f_remote << indent() << "var protocolFactory thrift.TProtocolFactory" << endl;
+  f_remote << indent() << "var protocolFactory thrift.ProtocolFactory" << endl;
   f_remote << indent() << "switch protocol {" << endl;
   f_remote << indent() << "case \"compact\":" << endl;
-  f_remote << indent() << "  protocolFactory = thrift.NewTCompactProtocolFactory()" << endl;
+  f_remote << indent() << "  protocolFactory = thrift.NewCompactProtocolFactory()" << endl;
   f_remote << indent() << "  break" << endl;
   f_remote << indent() << "case \"simplejson\":" << endl;
-  f_remote << indent() << "  protocolFactory = thrift.NewTSimpleJSONProtocolFactory()" << endl;
+  f_remote << indent() << "  protocolFactory = thrift.NewSimpleJSONProtocolFactory()" << endl;
   f_remote << indent() << "  break" << endl;
   f_remote << indent() << "case \"json\":" << endl;
-  f_remote << indent() << "  protocolFactory = thrift.NewTJSONProtocolFactory()" << endl;
+  f_remote << indent() << "  protocolFactory = thrift.NewJSONProtocolFactory()" << endl;
   f_remote << indent() << "  break" << endl;
   f_remote << indent() << "case \"binary\", \"\":" << endl;
-  f_remote << indent() << "  protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()" << endl;
+  f_remote << indent() << "  protocolFactory = thrift.NewBinaryProtocolFactoryDefault()" << endl;
   f_remote << indent() << "  break" << endl;
   f_remote << indent() << "default:" << endl;
   f_remote << indent() << "  fmt.Fprintln(os.Stderr, \"Invalid protocol specified: \", protocol)"
@@ -2671,7 +2671,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
         string err2(tmp("err"));
         std::string tstruct_name(publicize(the_type->get_name()));
         f_remote << indent() << arg << " := flag.Arg(" << flagArg << ")" << endl;
-        f_remote << indent() << mbTrans << " := thrift.NewTMemoryBufferLen(len(" << arg << "))"
+        f_remote << indent() << mbTrans << " := thrift.NewMemoryBufferLen(len(" << arg << "))"
                  << endl;
         f_remote << indent() << "defer " << mbTrans << ".Close()" << endl;
         f_remote << indent() << "_, " << err1 << " := " << mbTrans << ".WriteString(" << arg << ")"
@@ -2680,7 +2680,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
         f_remote << indent() << "  Usage()" << endl;
         f_remote << indent() << "  return" << endl;
         f_remote << indent() << "}" << endl;
-        f_remote << indent() << factory << " := thrift.NewTSimpleJSONProtocolFactory()" << endl;
+        f_remote << indent() << factory << " := thrift.NewSimpleJSONProtocolFactory()" << endl;
         f_remote << indent() << jsProt << " := " << factory << ".GetProtocol(" << mbTrans << ")"
                  << endl;
         f_remote << indent() << "argvalue" << i << " := " << package_name_ << ".New" << tstruct_name
@@ -2699,7 +2699,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
         string err2(tmp("err"));
         std::string argName(publicize(args[i]->get_name()));
         f_remote << indent() << arg << " := flag.Arg(" << flagArg << ")" << endl;
-        f_remote << indent() << mbTrans << " := thrift.NewTMemoryBufferLen(len(" << arg << "))"
+        f_remote << indent() << mbTrans << " := thrift.NewMemoryBufferLen(len(" << arg << "))"
                  << endl;
         f_remote << indent() << "defer " << mbTrans << ".Close()" << endl;
         f_remote << indent() << "_, " << err1 << " := " << mbTrans << ".WriteString(" << arg << ")"
@@ -2708,7 +2708,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
         f_remote << indent() << "  Usage()" << endl;
         f_remote << indent() << "  return" << endl;
         f_remote << indent() << "}" << endl;
-        f_remote << indent() << factory << " := thrift.NewTSimpleJSONProtocolFactory()" << endl;
+        f_remote << indent() << factory << " := thrift.NewSimpleJSONProtocolFactory()" << endl;
         f_remote << indent() << jsProt << " := " << factory << ".GetProtocol(" << mbTrans << ")"
                  << endl;
         f_remote << indent() << "containerStruct" << i << " := " << package_name_ << ".New"
@@ -2831,29 +2831,29 @@ void t_go_generator::generate_service_server(t_service* tservice) {
 
   if (extends_processor.empty()) {
     f_service_ << indent() << "type " << serviceName << "Processor struct {" << endl;
-    f_service_ << indent() << "  processorMap map[string]thrift.TProcessorFunction" << endl;
+    f_service_ << indent() << "  processorMap map[string]thrift.ProcessorFunction" << endl;
     f_service_ << indent() << "  handler " << serviceName << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func (p *" << serviceName
-               << "Processor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {"
+               << "Processor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {"
                << endl;
     f_service_ << indent() << "  p.processorMap[key] = processor" << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func (p *" << serviceName
                << "Processor) GetProcessorFunction(key string) "
-                  "(processor thrift.TProcessorFunction, ok bool) {" << endl;
+                  "(processor thrift.ProcessorFunction, ok bool) {" << endl;
     f_service_ << indent() << "  processor, ok = p.processorMap[key]" << endl;
     f_service_ << indent() << "  return processor, ok" << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func (p *" << serviceName
-               << "Processor) ProcessorMap() map[string]thrift.TProcessorFunction {" << endl;
+               << "Processor) ProcessorMap() map[string]thrift.ProcessorFunction {" << endl;
     f_service_ << indent() << "  return p.processorMap" << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func New" << serviceName << "Processor(handler " << serviceName
                << ") *" << serviceName << "Processor {" << endl << endl;
     f_service_
         << indent() << "  " << self << " := &" << serviceName
-        << "Processor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}"
+        << "Processor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}"
         << endl;
 
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
@@ -2867,8 +2867,8 @@ void t_go_generator::generate_service_server(t_service* tservice) {
     f_service_ << indent() << "return " << self << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func (p *" << serviceName
-               << "Processor) Process(iprot, oprot thrift.TProtocol) (success bool, err "
-                  "thrift.TException) {" << endl;
+               << "Processor) Process(iprot, oprot thrift.Protocol) (success bool, err "
+                  "thrift.Exception) {" << endl;
     f_service_ << indent() << "  name, _, seqId, err := iprot.ReadMessageBegin()" << endl;
     f_service_ << indent() << "  if err != nil { return false, err }" << endl;
     f_service_ << indent() << "  if processor, ok := p.GetProcessorFunction(name); ok {" << endl;
@@ -2877,7 +2877,7 @@ void t_go_generator::generate_service_server(t_service* tservice) {
     f_service_ << indent() << "  iprot.Skip(thrift.STRUCT)" << endl;
     f_service_ << indent() << "  iprot.ReadMessageEnd()" << endl;
     f_service_ << indent() << "  " << x
-               << " := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, \"Unknown function "
+               << " := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, \"Unknown function "
                   "\" + name)" << endl;
     f_service_ << indent() << "  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)" << endl;
     f_service_ << indent() << "  " << x << ".Write(oprot)" << endl;
@@ -2932,15 +2932,15 @@ void t_go_generator::generate_process_function(t_service* tservice, t_function* 
   f_service_ << indent() << "  handler " << publicize(tservice->get_name()) << endl;
   f_service_ << indent() << "}" << endl << endl;
   f_service_ << indent() << "func (p *" << processorName
-             << ") Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err "
-                "thrift.TException) {" << endl;
+             << ") Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err "
+                "thrift.Exception) {" << endl;
   indent_up();
   f_service_ << indent() << "args := " << argsname << "{}" << endl;
   f_service_ << indent() << "if err = args.Read(iprot); err != nil {" << endl;
   f_service_ << indent() << "  iprot.ReadMessageEnd()" << endl;
   if (!tfunction->is_oneway()) {
     f_service_ << indent()
-               << "  x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())"
+               << "  x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())"
                << endl;
     f_service_ << indent() << "  oprot.WriteMessageBegin(\"" << escape_string(tfunction->get_name())
                << "\", thrift.EXCEPTION, seqId)" << endl;
@@ -3006,7 +3006,7 @@ void t_go_generator::generate_process_function(t_service* tservice, t_function* 
   }
 
   if (!tfunction->is_oneway()) {
-    f_service_ << indent() << "  x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "
+    f_service_ << indent() << "  x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "
                               "\"Internal error processing " << escape_string(tfunction->get_name())
                << ": \" + err2.Error())" << endl;
     f_service_ << indent() << "  oprot.WriteMessageBegin(\"" << escape_string(tfunction->get_name())

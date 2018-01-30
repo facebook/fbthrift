@@ -25,7 +25,7 @@ import (
 )
 
 func TestZlibTransport(t *testing.T) {
-	trans, err := NewTZlibTransport(NewTMemoryBuffer(), zlib.BestCompression)
+	trans, err := NewZlibTransport(NewMemoryBuffer(), zlib.BestCompression)
 	if err != nil {
 		t.Fatal(err)
 	}

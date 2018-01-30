@@ -23,25 +23,25 @@ import (
 	"bufio"
 )
 
-type TBufferedTransportFactory struct {
+type BufferedTransportFactory struct {
 	size int
 }
 
-type TBufferedTransport struct {
+type BufferedTransport struct {
 	bufio.ReadWriter
-	tp TTransport
+	tp Transport
 }
 
-func (p *TBufferedTransportFactory) GetTransport(trans TTransport) TTransport {
-	return NewTBufferedTransport(trans, p.size)
+func (p *BufferedTransportFactory) GetTransport(trans Transport) Transport {
+	return NewBufferedTransport(trans, p.size)
 }
 
-func NewTBufferedTransportFactory(bufferSize int) *TBufferedTransportFactory {
-	return &TBufferedTransportFactory{size: bufferSize}
+func NewBufferedTransportFactory(bufferSize int) *BufferedTransportFactory {
+	return &BufferedTransportFactory{size: bufferSize}
 }
 
-func NewTBufferedTransport(trans TTransport, bufferSize int) *TBufferedTransport {
-	return &TBufferedTransport{
+func NewBufferedTransport(trans Transport, bufferSize int) *BufferedTransport {
+	return &BufferedTransport{
 		ReadWriter: bufio.ReadWriter{
 			Reader: bufio.NewReaderSize(trans, bufferSize),
 			Writer: bufio.NewWriterSize(trans, bufferSize),
@@ -50,19 +50,19 @@ func NewTBufferedTransport(trans TTransport, bufferSize int) *TBufferedTransport
 	}
 }
 
-func (p *TBufferedTransport) IsOpen() bool {
+func (p *BufferedTransport) IsOpen() bool {
 	return p.tp.IsOpen()
 }
 
-func (p *TBufferedTransport) Open() (err error) {
+func (p *BufferedTransport) Open() (err error) {
 	return p.tp.Open()
 }
 
-func (p *TBufferedTransport) Close() (err error) {
+func (p *BufferedTransport) Close() (err error) {
 	return p.tp.Close()
 }
 
-func (p *TBufferedTransport) Read(b []byte) (int, error) {
+func (p *BufferedTransport) Read(b []byte) (int, error) {
 	n, err := p.ReadWriter.Read(b)
 	if err != nil {
 		p.ReadWriter.Reader.Reset(p.tp)
@@ -70,7 +70,7 @@ func (p *TBufferedTransport) Read(b []byte) (int, error) {
 	return n, err
 }
 
-func (p *TBufferedTransport) Write(b []byte) (int, error) {
+func (p *BufferedTransport) Write(b []byte) (int, error) {
 	n, err := p.ReadWriter.Write(b)
 	if err != nil {
 		p.ReadWriter.Writer.Reset(p.tp)
@@ -78,7 +78,7 @@ func (p *TBufferedTransport) Write(b []byte) (int, error) {
 	return n, err
 }
 
-func (p *TBufferedTransport) Flush() error {
+func (p *BufferedTransport) Flush() error {
 	if err := p.ReadWriter.Flush(); err != nil {
 		p.ReadWriter.Writer.Reset(p.tp)
 		return err
@@ -86,6 +86,6 @@ func (p *TBufferedTransport) Flush() error {
 	return p.tp.Flush()
 }
 
-func (p *TBufferedTransport) RemainingBytes() (num_bytes uint64) {
+func (p *BufferedTransport) RemainingBytes() (num_bytes uint64) {
 	return p.tp.RemainingBytes()
 }

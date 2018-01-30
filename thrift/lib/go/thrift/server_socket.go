@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-type TServerSocket struct {
+type ServerSocket struct {
 	listener      net.Listener
 	addr          net.Addr
 	clientTimeout time.Duration
@@ -35,19 +35,19 @@ type TServerSocket struct {
 	interrupted bool
 }
 
-func NewTServerSocket(listenAddr string) (*TServerSocket, error) {
-	return NewTServerSocketTimeout(listenAddr, 0)
+func NewServerSocket(listenAddr string) (*ServerSocket, error) {
+	return NewServerSocketTimeout(listenAddr, 0)
 }
 
-func NewTServerSocketTimeout(listenAddr string, clientTimeout time.Duration) (*TServerSocket, error) {
+func NewServerSocketTimeout(listenAddr string, clientTimeout time.Duration) (*ServerSocket, error) {
 	addr, err := net.ResolveTCPAddr("tcp", listenAddr)
 	if err != nil {
 		return nil, err
 	}
-	return &TServerSocket{addr: addr, clientTimeout: clientTimeout}, nil
+	return &ServerSocket{addr: addr, clientTimeout: clientTimeout}, nil
 }
 
-func (p *TServerSocket) Listen() error {
+func (p *ServerSocket) Listen() error {
 	if p.IsListening() {
 		return nil
 	}
@@ -59,7 +59,7 @@ func (p *TServerSocket) Listen() error {
 	return nil
 }
 
-func (p *TServerSocket) Accept() (TTransport, error) {
+func (p *ServerSocket) Accept() (Transport, error) {
 	p.mu.RLock()
 	interrupted := p.interrupted
 	p.mu.RUnlock()
@@ -68,24 +68,24 @@ func (p *TServerSocket) Accept() (TTransport, error) {
 		return nil, errTransportInterrupted
 	}
 	if p.listener == nil {
-		return nil, NewTTransportException(NOT_OPEN, "No underlying server socket")
+		return nil, NewTransportException(NOT_OPEN, "No underlying server socket")
 	}
 	conn, err := p.listener.Accept()
 	if err != nil {
-		return nil, NewTTransportExceptionFromError(err)
+		return nil, NewTransportExceptionFromError(err)
 	}
-	return NewTSocketFromConnTimeout(conn, p.clientTimeout), nil
+	return NewSocketFromConnTimeout(conn, p.clientTimeout), nil
 }
 
 // Checks whether the socket is listening.
-func (p *TServerSocket) IsListening() bool {
+func (p *ServerSocket) IsListening() bool {
 	return p.listener != nil
 }
 
 // Connects the socket, creating a new socket object if necessary.
-func (p *TServerSocket) Open() error {
+func (p *ServerSocket) Open() error {
 	if p.IsListening() {
-		return NewTTransportException(ALREADY_OPEN, "Server socket already open")
+		return NewTransportException(ALREADY_OPEN, "Server socket already open")
 	}
 	if l, err := net.Listen(p.addr.Network(), p.addr.String()); err != nil {
 		return err
@@ -95,14 +95,14 @@ func (p *TServerSocket) Open() error {
 	return nil
 }
 
-func (p *TServerSocket) Addr() net.Addr {
+func (p *ServerSocket) Addr() net.Addr {
 	if p.listener != nil {
 		return p.listener.Addr()
 	}
 	return p.addr
 }
 
-func (p *TServerSocket) Close() error {
+func (p *ServerSocket) Close() error {
 	defer func() {
 		p.listener = nil
 	}()
@@ -112,7 +112,7 @@ func (p *TServerSocket) Close() error {
 	return nil
 }
 
-func (p *TServerSocket) Interrupt() error {
+func (p *ServerSocket) Interrupt() error {
 	p.mu.Lock()
 	p.interrupted = true
 	p.Close()

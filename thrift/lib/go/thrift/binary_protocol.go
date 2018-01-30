@@ -30,9 +30,9 @@ import (
 const BinaryVersionMask uint32 = 0xffff0000
 const BinaryVersion1 uint32 = 0x80010000
 
-type TBinaryProtocol struct {
-	trans         TRichTransport
-	origTransport TTransport
+type BinaryProtocol struct {
+	trans         RichTransport
+	origTransport Transport
 	reader        io.Reader
 	writer        io.Writer
 	strictRead    bool
@@ -40,44 +40,44 @@ type TBinaryProtocol struct {
 	buffer        [64]byte
 }
 
-type TBinaryProtocolFactory struct {
+type BinaryProtocolFactory struct {
 	strictRead  bool
 	strictWrite bool
 }
 
-func NewTBinaryProtocolTransport(t TTransport) *TBinaryProtocol {
-	return NewTBinaryProtocol(t, false, true)
+func NewBinaryProtocolTransport(t Transport) *BinaryProtocol {
+	return NewBinaryProtocol(t, false, true)
 }
 
-func NewTBinaryProtocol(t TTransport, strictRead, strictWrite bool) *TBinaryProtocol {
-	p := &TBinaryProtocol{origTransport: t, strictRead: strictRead, strictWrite: strictWrite}
-	if et, ok := t.(TRichTransport); ok {
+func NewBinaryProtocol(t Transport, strictRead, strictWrite bool) *BinaryProtocol {
+	p := &BinaryProtocol{origTransport: t, strictRead: strictRead, strictWrite: strictWrite}
+	if et, ok := t.(RichTransport); ok {
 		p.trans = et
 	} else {
-		p.trans = NewTRichTransport(t)
+		p.trans = NewRichTransport(t)
 	}
 	p.reader = p.trans
 	p.writer = p.trans
 	return p
 }
 
-func NewTBinaryProtocolFactoryDefault() *TBinaryProtocolFactory {
-	return NewTBinaryProtocolFactory(false, true)
+func NewBinaryProtocolFactoryDefault() *BinaryProtocolFactory {
+	return NewBinaryProtocolFactory(false, true)
 }
 
-func NewTBinaryProtocolFactory(strictRead, strictWrite bool) *TBinaryProtocolFactory {
-	return &TBinaryProtocolFactory{strictRead: strictRead, strictWrite: strictWrite}
+func NewBinaryProtocolFactory(strictRead, strictWrite bool) *BinaryProtocolFactory {
+	return &BinaryProtocolFactory{strictRead: strictRead, strictWrite: strictWrite}
 }
 
-func (p *TBinaryProtocolFactory) GetProtocol(t TTransport) TProtocol {
-	return NewTBinaryProtocol(t, p.strictRead, p.strictWrite)
+func (p *BinaryProtocolFactory) GetProtocol(t Transport) Protocol {
+	return NewBinaryProtocol(t, p.strictRead, p.strictWrite)
 }
 
 /**
  * Writing Methods
  */
 
-func (p *TBinaryProtocol) WriteMessageBegin(name string, typeId TMessageType, seqId int32) error {
+func (p *BinaryProtocol) WriteMessageBegin(name string, typeId MessageType, seqId int32) error {
 	if p.strictWrite {
 		version := uint32(VERSION_1) | uint32(typeId)
 		e := p.WriteI32(int32(version))
@@ -104,19 +104,19 @@ func (p *TBinaryProtocol) WriteMessageBegin(name string, typeId TMessageType, se
 	}
 }
 
-func (p *TBinaryProtocol) WriteMessageEnd() error {
+func (p *BinaryProtocol) WriteMessageEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteStructBegin(name string) error {
+func (p *BinaryProtocol) WriteStructBegin(name string) error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteStructEnd() error {
+func (p *BinaryProtocol) WriteStructEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteFieldBegin(name string, typeId TType, id int16) error {
+func (p *BinaryProtocol) WriteFieldBegin(name string, typeId Type, id int16) error {
 	e := p.WriteByte(byte(typeId))
 	if e != nil {
 		return e
@@ -125,16 +125,16 @@ func (p *TBinaryProtocol) WriteFieldBegin(name string, typeId TType, id int16) e
 	return e
 }
 
-func (p *TBinaryProtocol) WriteFieldEnd() error {
+func (p *BinaryProtocol) WriteFieldEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteFieldStop() error {
+func (p *BinaryProtocol) WriteFieldStop() error {
 	e := p.WriteByte(STOP)
 	return e
 }
 
-func (p *TBinaryProtocol) WriteMapBegin(keyType TType, valueType TType, size int) error {
+func (p *BinaryProtocol) WriteMapBegin(keyType Type, valueType Type, size int) error {
 	e := p.WriteByte(byte(keyType))
 	if e != nil {
 		return e
@@ -147,11 +147,11 @@ func (p *TBinaryProtocol) WriteMapBegin(keyType TType, valueType TType, size int
 	return e
 }
 
-func (p *TBinaryProtocol) WriteMapEnd() error {
+func (p *BinaryProtocol) WriteMapEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteListBegin(elemType TType, size int) error {
+func (p *BinaryProtocol) WriteListBegin(elemType Type, size int) error {
 	e := p.WriteByte(byte(elemType))
 	if e != nil {
 		return e
@@ -160,11 +160,11 @@ func (p *TBinaryProtocol) WriteListBegin(elemType TType, size int) error {
 	return e
 }
 
-func (p *TBinaryProtocol) WriteListEnd() error {
+func (p *BinaryProtocol) WriteListEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteSetBegin(elemType TType, size int) error {
+func (p *BinaryProtocol) WriteSetBegin(elemType Type, size int) error {
 	e := p.WriteByte(byte(elemType))
 	if e != nil {
 		return e
@@ -173,96 +173,96 @@ func (p *TBinaryProtocol) WriteSetBegin(elemType TType, size int) error {
 	return e
 }
 
-func (p *TBinaryProtocol) WriteSetEnd() error {
+func (p *BinaryProtocol) WriteSetEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) WriteBool(value bool) error {
+func (p *BinaryProtocol) WriteBool(value bool) error {
 	if value {
 		return p.WriteByte(1)
 	}
 	return p.WriteByte(0)
 }
 
-func (p *TBinaryProtocol) WriteByte(value byte) error {
+func (p *BinaryProtocol) WriteByte(value byte) error {
 	e := p.trans.WriteByte(value)
-	return NewTProtocolException(e)
+	return NewProtocolException(e)
 }
 
-func (p *TBinaryProtocol) WriteI16(value int16) error {
+func (p *BinaryProtocol) WriteI16(value int16) error {
 	v := p.buffer[0:2]
 	binary.BigEndian.PutUint16(v, uint16(value))
 	_, e := p.writer.Write(v)
-	return NewTProtocolException(e)
+	return NewProtocolException(e)
 }
 
-func (p *TBinaryProtocol) WriteI32(value int32) error {
+func (p *BinaryProtocol) WriteI32(value int32) error {
 	v := p.buffer[0:4]
 	binary.BigEndian.PutUint32(v, uint32(value))
 	_, e := p.writer.Write(v)
-	return NewTProtocolException(e)
+	return NewProtocolException(e)
 }
 
-func (p *TBinaryProtocol) WriteI64(value int64) error {
+func (p *BinaryProtocol) WriteI64(value int64) error {
 	v := p.buffer[0:8]
 	binary.BigEndian.PutUint64(v, uint64(value))
 	_, err := p.writer.Write(v)
-	return NewTProtocolException(err)
+	return NewProtocolException(err)
 }
 
-func (p *TBinaryProtocol) WriteDouble(value float64) error {
+func (p *BinaryProtocol) WriteDouble(value float64) error {
 	return p.WriteI64(int64(math.Float64bits(value)))
 }
 
-func (p *TBinaryProtocol) WriteFloat(value float32) error {
+func (p *BinaryProtocol) WriteFloat(value float32) error {
 	return p.WriteI32(int32(math.Float32bits(value)))
 }
 
-func (p *TBinaryProtocol) WriteString(value string) error {
+func (p *BinaryProtocol) WriteString(value string) error {
 	e := p.WriteI32(int32(len(value)))
 	if e != nil {
 		return e
 	}
 	_, err := p.trans.WriteString(value)
-	return NewTProtocolException(err)
+	return NewProtocolException(err)
 }
 
-func (p *TBinaryProtocol) WriteBinary(value []byte) error {
+func (p *BinaryProtocol) WriteBinary(value []byte) error {
 	e := p.WriteI32(int32(len(value)))
 	if e != nil {
 		return e
 	}
 	_, err := p.writer.Write(value)
-	return NewTProtocolException(err)
+	return NewProtocolException(err)
 }
 
 /**
  * Reading methods
  */
 
-func (p *TBinaryProtocol) ReadMessageBegin() (name string, typeId TMessageType, seqId int32, err error) {
+func (p *BinaryProtocol) ReadMessageBegin() (name string, typeId MessageType, seqId int32, err error) {
 	size, e := p.ReadI32()
 	if e != nil {
-		return "", typeId, 0, NewTProtocolException(e)
+		return "", typeId, 0, NewProtocolException(e)
 	}
 	if size < 0 {
-		typeId = TMessageType(size & 0x0ff)
+		typeId = MessageType(size & 0x0ff)
 		version := int64(int64(size) & VERSION_MASK)
 		if version != VERSION_1 {
-			return name, typeId, seqId, NewTProtocolExceptionWithType(BAD_VERSION, fmt.Errorf("Bad version in ReadMessageBegin"))
+			return name, typeId, seqId, NewProtocolExceptionWithType(BAD_VERSION, fmt.Errorf("Bad version in ReadMessageBegin"))
 		}
 		name, e = p.ReadString()
 		if e != nil {
-			return name, typeId, seqId, NewTProtocolException(e)
+			return name, typeId, seqId, NewProtocolException(e)
 		}
 		seqId, e = p.ReadI32()
 		if e != nil {
-			return name, typeId, seqId, NewTProtocolException(e)
+			return name, typeId, seqId, NewProtocolException(e)
 		}
 		return name, typeId, seqId, nil
 	}
 	if p.strictRead {
-		return name, typeId, seqId, NewTProtocolExceptionWithType(BAD_VERSION, fmt.Errorf("Missing version in ReadMessageBegin"))
+		return name, typeId, seqId, NewProtocolExceptionWithType(BAD_VERSION, fmt.Errorf("Missing version in ReadMessageBegin"))
 	}
 	name, e2 := p.readStringBody(size)
 	if e2 != nil {
@@ -272,7 +272,7 @@ func (p *TBinaryProtocol) ReadMessageBegin() (name string, typeId TMessageType, 
 	if e3 != nil {
 		return name, typeId, seqId, e3
 	}
-	typeId = TMessageType(b)
+	typeId = MessageType(b)
 	seqId, e4 := p.ReadI32()
 	if e4 != nil {
 		return name, typeId, seqId, e4
@@ -280,21 +280,21 @@ func (p *TBinaryProtocol) ReadMessageBegin() (name string, typeId TMessageType, 
 	return name, typeId, seqId, nil
 }
 
-func (p *TBinaryProtocol) ReadMessageEnd() error {
+func (p *BinaryProtocol) ReadMessageEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) ReadStructBegin() (name string, err error) {
+func (p *BinaryProtocol) ReadStructBegin() (name string, err error) {
 	return
 }
 
-func (p *TBinaryProtocol) ReadStructEnd() error {
+func (p *BinaryProtocol) ReadStructEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) ReadFieldBegin() (name string, typeId TType, seqId int16, err error) {
+func (p *BinaryProtocol) ReadFieldBegin() (name string, typeId Type, seqId int16, err error) {
 	t, err := p.ReadByte()
-	typeId = TType(t)
+	typeId = Type(t)
 	if err != nil {
 		return name, typeId, seqId, err
 	}
@@ -304,28 +304,28 @@ func (p *TBinaryProtocol) ReadFieldBegin() (name string, typeId TType, seqId int
 	return name, typeId, seqId, err
 }
 
-func (p *TBinaryProtocol) ReadFieldEnd() error {
+func (p *BinaryProtocol) ReadFieldEnd() error {
 	return nil
 }
 
-var invalidDataLength = NewTProtocolExceptionWithType(INVALID_DATA, errors.New("Invalid data length"))
+var invalidDataLength = NewProtocolExceptionWithType(INVALID_DATA, errors.New("Invalid data length"))
 
-func (p *TBinaryProtocol) ReadMapBegin() (kType, vType TType, size int, err error) {
+func (p *BinaryProtocol) ReadMapBegin() (kType, vType Type, size int, err error) {
 	k, e := p.ReadByte()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
-	kType = TType(k)
+	kType = Type(k)
 	v, e := p.ReadByte()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
-	vType = TType(v)
+	vType = Type(v)
 	size32, e := p.ReadI32()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
 	if size32 < 0 {
@@ -336,20 +336,20 @@ func (p *TBinaryProtocol) ReadMapBegin() (kType, vType TType, size int, err erro
 	return kType, vType, size, nil
 }
 
-func (p *TBinaryProtocol) ReadMapEnd() error {
+func (p *BinaryProtocol) ReadMapEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) ReadListBegin() (elemType TType, size int, err error) {
+func (p *BinaryProtocol) ReadListBegin() (elemType Type, size int, err error) {
 	b, e := p.ReadByte()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
-	elemType = TType(b)
+	elemType = Type(b)
 	size32, e := p.ReadI32()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
 	if size32 < 0 {
@@ -361,20 +361,20 @@ func (p *TBinaryProtocol) ReadListBegin() (elemType TType, size int, err error) 
 	return
 }
 
-func (p *TBinaryProtocol) ReadListEnd() error {
+func (p *BinaryProtocol) ReadListEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) ReadSetBegin() (elemType TType, size int, err error) {
+func (p *BinaryProtocol) ReadSetBegin() (elemType Type, size int, err error) {
 	b, e := p.ReadByte()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
-	elemType = TType(b)
+	elemType = Type(b)
 	size32, e := p.ReadI32()
 	if e != nil {
-		err = NewTProtocolException(e)
+		err = NewProtocolException(e)
 		return
 	}
 	if size32 < 0 {
@@ -385,11 +385,11 @@ func (p *TBinaryProtocol) ReadSetBegin() (elemType TType, size int, err error) {
 	return elemType, size, nil
 }
 
-func (p *TBinaryProtocol) ReadSetEnd() error {
+func (p *BinaryProtocol) ReadSetEnd() error {
 	return nil
 }
 
-func (p *TBinaryProtocol) ReadBool() (bool, error) {
+func (p *BinaryProtocol) ReadBool() (bool, error) {
 	b, e := p.ReadByte()
 	v := true
 	if b != 1 {
@@ -398,47 +398,47 @@ func (p *TBinaryProtocol) ReadBool() (bool, error) {
 	return v, e
 }
 
-func (p *TBinaryProtocol) ReadByte() (byte, error) {
+func (p *BinaryProtocol) ReadByte() (byte, error) {
 	v, err := p.trans.ReadByte()
 	return byte(v), err
 }
 
-func (p *TBinaryProtocol) ReadI16() (value int16, err error) {
+func (p *BinaryProtocol) ReadI16() (value int16, err error) {
 	buf := p.buffer[0:2]
 	err = p.readAll(buf)
 	value = int16(binary.BigEndian.Uint16(buf))
 	return value, err
 }
 
-func (p *TBinaryProtocol) ReadI32() (value int32, err error) {
+func (p *BinaryProtocol) ReadI32() (value int32, err error) {
 	buf := p.buffer[0:4]
 	err = p.readAll(buf)
 	value = int32(binary.BigEndian.Uint32(buf))
 	return value, err
 }
 
-func (p *TBinaryProtocol) ReadI64() (value int64, err error) {
+func (p *BinaryProtocol) ReadI64() (value int64, err error) {
 	buf := p.buffer[0:8]
 	err = p.readAll(buf)
 	value = int64(binary.BigEndian.Uint64(buf))
 	return value, err
 }
 
-func (p *TBinaryProtocol) ReadDouble() (value float64, err error) {
+func (p *BinaryProtocol) ReadDouble() (value float64, err error) {
 	buf := p.buffer[0:8]
 	err = p.readAll(buf)
 	value = math.Float64frombits(binary.BigEndian.Uint64(buf))
 	return value, err
 }
 
-func (p *TBinaryProtocol) ReadFloat() (value float32, err error) {
+func (p *BinaryProtocol) ReadFloat() (value float32, err error) {
 	buf := p.buffer[0:4]
 	err = p.readAll(buf)
 	value = math.Float32frombits(binary.BigEndian.Uint32(buf))
 	return value, err
 }
 
-func (p *TBinaryProtocol) ReadString() (value string, err error) {
+func (p *BinaryProtocol) ReadString() (value string, err error) {
 	size, e := p.ReadI32()
 	if e != nil {
 		return "", e
@@ -451,7 +451,7 @@ func (p *TBinaryProtocol) ReadString() (value string, err error) {
 	return p.readStringBody(size)
 }
 
-func (p *TBinaryProtocol) ReadBinary() ([]byte, error) {
+func (p *BinaryProtocol) ReadBinary() ([]byte, error) {
 	size, e := p.ReadI32()
 	if e != nil {
 		return nil, e
@@ -466,27 +466,27 @@ func (p *TBinaryProtocol) ReadBinary() ([]byte, error) {
 	isize := int(size)
 	buf := make([]byte, isize)
 	_, err := io.ReadFull(p.trans, buf)
-	return buf, NewTProtocolException(err)
+	return buf, NewProtocolException(err)
 }
 
-func (p *TBinaryProtocol) Flush() (err error) {
-	return NewTProtocolException(p.trans.Flush())
+func (p *BinaryProtocol) Flush() (err error) {
+	return NewProtocolException(p.trans.Flush())
 }
 
-func (p *TBinaryProtocol) Skip(fieldType TType) (err error) {
+func (p *BinaryProtocol) Skip(fieldType Type) (err error) {
 	return SkipDefaultDepth(p, fieldType)
 }
 
-func (p *TBinaryProtocol) Transport() TTransport {
+func (p *BinaryProtocol) Transport() Transport {
 	return p.origTransport
 }
 
-func (p *TBinaryProtocol) readAll(buf []byte) error {
+func (p *BinaryProtocol) readAll(buf []byte) error {
 	_, err := io.ReadFull(p.reader, buf)
-	return NewTProtocolException(err)
+	return NewProtocolException(err)
 }
 
-func (p *TBinaryProtocol) readStringBody(size int32) (value string, err error) {
+func (p *BinaryProtocol) readStringBody(size int32) (value string, err error) {
 	if size < 0 {
 		return "", nil
 	}
@@ -500,5 +500,5 @@ func (p *TBinaryProtocol) readStringBody(size int32) (value string, err error) {
 		buf = make([]byte, size)
 	}
 	_, e := io.ReadFull(p.trans, buf)
-	return string(buf), NewTProtocolException(e)
+	return string(buf), NewProtocolException(e)
 }

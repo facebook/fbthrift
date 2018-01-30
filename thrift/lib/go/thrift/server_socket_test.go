@@ -41,8 +41,8 @@ func TestSocketIsntListeningAfterInterrupt(t *testing.T) {
 	}
 }
 
-func CreateServerSocket(t *testing.T, addr string) *TServerSocket {
-	socket, err := NewTServerSocket(addr)
+func CreateServerSocket(t *testing.T, addr string) *ServerSocket {
+	socket, err := NewServerSocket(addr)
 	if err != nil {
 		t.Fatalf("Failed to create server socket: %s", err)
 	}

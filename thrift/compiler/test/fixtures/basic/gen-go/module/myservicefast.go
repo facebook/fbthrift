@@ -37,10 +37,10 @@ type MyServiceFast interface {
 }
 
 type MyServiceFastClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
 }
 
@@ -48,7 +48,7 @@ func (client *MyServiceFastClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyServiceFastClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceFastClient {
+func NewMyServiceFastClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceFastClient {
   return &MyServiceFastClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -57,7 +57,7 @@ func NewMyServiceFastClientFactory(t thrift.TTransport, f thrift.TProtocolFactor
   }
 }
 
-func NewMyServiceFastClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceFastClient {
+func NewMyServiceFastClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceFastClient {
   return &MyServiceFastClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -104,15 +104,15 @@ func (p *MyServiceFastClient) recvPing() (err error) {
     return
   }
   if method != "ping" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error28 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error28 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error29 error
     error29, err = error28.Read(iprot)
     if err != nil {
@@ -125,7 +125,7 @@ func (p *MyServiceFastClient) recvPing() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
     return
   }
   result := MyServiceFastPingResult{}
@@ -176,15 +176,15 @@ func (p *MyServiceFastClient) recvGetRandomData() (value string, err error) {
     return
   }
   if method != "getRandomData" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "getRandomData failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getRandomData failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "getRandomData failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getRandomData failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error30 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error30 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error31 error
     error31, err = error30.Read(iprot)
     if err != nil {
@@ -197,7 +197,7 @@ func (p *MyServiceFastClient) recvGetRandomData() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getRandomData failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getRandomData failed: invalid message type")
     return
   }
   result := MyServiceFastGetRandomDataResult{}
@@ -252,15 +252,15 @@ func (p *MyServiceFastClient) recvHasDataById() (value bool, err error) {
     return
   }
   if method != "hasDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "hasDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "hasDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "hasDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "hasDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error32 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error32 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error33 error
     error33, err = error32.Read(iprot)
     if err != nil {
@@ -273,7 +273,7 @@ func (p *MyServiceFastClient) recvHasDataById() (value bool, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "hasDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "hasDataById failed: invalid message type")
     return
   }
   result := MyServiceFastHasDataByIdResult{}
@@ -328,15 +328,15 @@ func (p *MyServiceFastClient) recvGetDataById() (value string, err error) {
     return
   }
   if method != "getDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "getDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "getDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error34 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error34 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error35 error
     error35, err = error34.Read(iprot)
     if err != nil {
@@ -349,7 +349,7 @@ func (p *MyServiceFastClient) recvGetDataById() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDataById failed: invalid message type")
     return
   }
   result := MyServiceFastGetDataByIdResult{}
@@ -406,15 +406,15 @@ func (p *MyServiceFastClient) recvPutDataById() (err error) {
     return
   }
   if method != "putDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "putDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "putDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "putDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "putDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error36 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error36 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error37 error
     error37, err = error36.Read(iprot)
     if err != nil {
@@ -427,7 +427,7 @@ func (p *MyServiceFastClient) recvPutDataById() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "putDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "putDataById failed: invalid message type")
     return
   }
   result := MyServiceFastPutDataByIdResult{}
@@ -473,15 +473,15 @@ func (p *MyServiceFastClient) sendLobDataById(id int64, data string)(err error) 
 
 
 type MyServiceFastThreadsafeClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
   Mu sync.Mutex
 }
 
-func NewMyServiceFastThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceFastThreadsafeClient {
+func NewMyServiceFastThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceFastThreadsafeClient {
   return &MyServiceFastThreadsafeClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -490,7 +490,7 @@ func NewMyServiceFastThreadsafeClientFactory(t thrift.TTransport, f thrift.TProt
   }
 }
 
-func NewMyServiceFastThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceFastThreadsafeClient {
+func NewMyServiceFastThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceFastThreadsafeClient {
   return &MyServiceFastThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -541,15 +541,15 @@ func (p *MyServiceFastThreadsafeClient) recvPing() (err error) {
     return
   }
   if method != "ping" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error38 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error38 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error39 error
     error39, err = error38.Read(iprot)
     if err != nil {
@@ -562,7 +562,7 @@ func (p *MyServiceFastThreadsafeClient) recvPing() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
     return
   }
   result := MyServiceFastPingResult{}
@@ -615,15 +615,15 @@ func (p *MyServiceFastThreadsafeClient) recvGetRandomData() (value string, err e
     return
   }
   if method != "getRandomData" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "getRandomData failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getRandomData failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "getRandomData failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getRandomData failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error40 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error40 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error41 error
     error41, err = error40.Read(iprot)
     if err != nil {
@@ -636,7 +636,7 @@ func (p *MyServiceFastThreadsafeClient) recvGetRandomData() (value string, err e
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getRandomData failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getRandomData failed: invalid message type")
     return
   }
   result := MyServiceFastGetRandomDataResult{}
@@ -693,15 +693,15 @@ func (p *MyServiceFastThreadsafeClient) recvHasDataById() (value bool, err error
     return
   }
   if method != "hasDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "hasDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "hasDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "hasDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "hasDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error42 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error42 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error43 error
     error43, err = error42.Read(iprot)
     if err != nil {
@@ -714,7 +714,7 @@ func (p *MyServiceFastThreadsafeClient) recvHasDataById() (value bool, err error
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "hasDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "hasDataById failed: invalid message type")
     return
   }
   result := MyServiceFastHasDataByIdResult{}
@@ -771,15 +771,15 @@ func (p *MyServiceFastThreadsafeClient) recvGetDataById() (value string, err err
     return
   }
   if method != "getDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "getDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "getDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error44 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error44 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error45 error
     error45, err = error44.Read(iprot)
     if err != nil {
@@ -792,7 +792,7 @@ func (p *MyServiceFastThreadsafeClient) recvGetDataById() (value string, err err
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDataById failed: invalid message type")
     return
   }
   result := MyServiceFastGetDataByIdResult{}
@@ -851,15 +851,15 @@ func (p *MyServiceFastThreadsafeClient) recvPutDataById() (err error) {
     return
   }
   if method != "putDataById" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "putDataById failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "putDataById failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "putDataById failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "putDataById failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error46 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error46 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error47 error
     error47, err = error46.Read(iprot)
     if err != nil {
@@ -872,7 +872,7 @@ func (p *MyServiceFastThreadsafeClient) recvPutDataById() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "putDataById failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "putDataById failed: invalid message type")
     return
   }
   result := MyServiceFastPutDataByIdResult{}
@@ -920,26 +920,26 @@ func (p *MyServiceFastThreadsafeClient) sendLobDataById(id int64, data string)(e
 
 
 type MyServiceFastProcessor struct {
-  processorMap map[string]thrift.TProcessorFunction
+  processorMap map[string]thrift.ProcessorFunction
   handler MyServiceFast
 }
 
-func (p *MyServiceFastProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *MyServiceFastProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
 }
 
-func (p *MyServiceFastProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *MyServiceFastProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
   return processor, ok
 }
 
-func (p *MyServiceFastProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *MyServiceFastProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
 func NewMyServiceFastProcessor(handler MyServiceFast) *MyServiceFastProcessor {
 
-  self48 := &MyServiceFastProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self48 := &MyServiceFastProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self48.processorMap["ping"] = &myServiceFastProcessorPing{handler:handler}
   self48.processorMap["getRandomData"] = &myServiceFastProcessorGetRandomData{handler:handler}
   self48.processorMap["hasDataById"] = &myServiceFastProcessorHasDataById{handler:handler}
@@ -949,7 +949,7 @@ func NewMyServiceFastProcessor(handler MyServiceFast) *MyServiceFastProcessor {
 return self48
 }
 
-func (p *MyServiceFastProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *MyServiceFastProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   name, _, seqId, err := iprot.ReadMessageBegin()
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
@@ -957,7 +957,7 @@ func (p *MyServiceFastProcessor) Process(iprot, oprot thrift.TProtocol) (success
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x49 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x49 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
   x49.Write(oprot)
   oprot.WriteMessageEnd()
@@ -970,11 +970,11 @@ type myServiceFastProcessorPing struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorPing) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorPing) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastPingArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -986,7 +986,7 @@ func (p *myServiceFastProcessorPing) Process(seqId int32, iprot, oprot thrift.TP
   result := MyServiceFastPingResult{}
   var err2 error
   if err2 = p.handler.Ping(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
     oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1015,11 +1015,11 @@ type myServiceFastProcessorGetRandomData struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorGetRandomData) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorGetRandomData) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastGetRandomDataArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("getRandomData", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1032,7 +1032,7 @@ func (p *myServiceFastProcessorGetRandomData) Process(seqId int32, iprot, oprot 
 var retval string
   var err2 error
   if retval, err2 = p.handler.GetRandomData(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err2.Error())
     oprot.WriteMessageBegin("getRandomData", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1063,11 +1063,11 @@ type myServiceFastProcessorHasDataById struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorHasDataById) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorHasDataById) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastHasDataByIdArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("hasDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1080,7 +1080,7 @@ func (p *myServiceFastProcessorHasDataById) Process(seqId int32, iprot, oprot th
 var retval bool
   var err2 error
   if retval, err2 = p.handler.HasDataById(args.Id); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err2.Error())
     oprot.WriteMessageBegin("hasDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1111,11 +1111,11 @@ type myServiceFastProcessorGetDataById struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorGetDataById) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorGetDataById) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastGetDataByIdArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("getDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1128,7 +1128,7 @@ func (p *myServiceFastProcessorGetDataById) Process(seqId int32, iprot, oprot th
 var retval string
   var err2 error
   if retval, err2 = p.handler.GetDataById(args.Id); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err2.Error())
     oprot.WriteMessageBegin("getDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1159,11 +1159,11 @@ type myServiceFastProcessorPutDataById struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorPutDataById) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorPutDataById) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastPutDataByIdArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("putDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1175,7 +1175,7 @@ func (p *myServiceFastProcessorPutDataById) Process(seqId int32, iprot, oprot th
   result := MyServiceFastPutDataByIdResult{}
   var err2 error
   if err2 = p.handler.PutDataById(args.Id, args.Data); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing putDataById: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing putDataById: " + err2.Error())
     oprot.WriteMessageBegin("putDataById", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -1204,7 +1204,7 @@ type myServiceFastProcessorLobDataById struct {
   handler MyServiceFast
 }
 
-func (p *myServiceFastProcessorLobDataById) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServiceFastProcessorLobDataById) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServiceFastLobDataByIdArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
@@ -1229,7 +1229,7 @@ func NewMyServiceFastPingArgs() *MyServiceFastPingArgs {
   return &MyServiceFastPingArgs{}
 }
 
-func (p *MyServiceFastPingArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPingArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1254,7 +1254,7 @@ func (p *MyServiceFastPingArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastPingArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastPingArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ping_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1278,7 +1278,7 @@ func NewMyServiceFastPingResult() *MyServiceFastPingResult {
   return &MyServiceFastPingResult{}
 }
 
-func (p *MyServiceFastPingResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPingResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1303,7 +1303,7 @@ func (p *MyServiceFastPingResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastPingResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastPingResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ping_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1327,7 +1327,7 @@ func NewMyServiceFastGetRandomDataArgs() *MyServiceFastGetRandomDataArgs {
   return &MyServiceFastGetRandomDataArgs{}
 }
 
-func (p *MyServiceFastGetRandomDataArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetRandomDataArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1352,7 +1352,7 @@ func (p *MyServiceFastGetRandomDataArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetRandomDataArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastGetRandomDataArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("getRandomData_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1390,7 +1390,7 @@ func (p *MyServiceFastGetRandomDataResult) IsSetSuccess() bool {
   return p.Success != nil
 }
 
-func (p *MyServiceFastGetRandomDataResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetRandomDataResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1422,7 +1422,7 @@ func (p *MyServiceFastGetRandomDataResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetRandomDataResult)  ReadField0(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetRandomDataResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1431,7 +1431,7 @@ func (p *MyServiceFastGetRandomDataResult)  ReadField0(iprot thrift.TProtocol) e
   return nil
 }
 
-func (p *MyServiceFastGetRandomDataResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastGetRandomDataResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("getRandomData_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
@@ -1442,7 +1442,7 @@ func (p *MyServiceFastGetRandomDataResult) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetRandomDataResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastGetRandomDataResult) writeField0(oprot thrift.Protocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.STRING, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1475,7 +1475,7 @@ func NewMyServiceFastHasDataByIdArgs() *MyServiceFastHasDataByIdArgs {
 func (p *MyServiceFastHasDataByIdArgs) GetId() int64 {
   return p.Id
 }
-func (p *MyServiceFastHasDataByIdArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1507,7 +1507,7 @@ func (p *MyServiceFastHasDataByIdArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -1516,7 +1516,7 @@ func (p *MyServiceFastHasDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("hasDataById_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -1527,7 +1527,7 @@ func (p *MyServiceFastHasDataByIdArgs) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastHasDataByIdArgs) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
   if err := oprot.WriteI64(int64(p.Id)); err != nil {
@@ -1565,7 +1565,7 @@ func (p *MyServiceFastHasDataByIdResult) IsSetSuccess() bool {
   return p.Success != nil
 }
 
-func (p *MyServiceFastHasDataByIdResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1597,7 +1597,7 @@ func (p *MyServiceFastHasDataByIdResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdResult)  ReadField0(iprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1606,7 +1606,7 @@ func (p *MyServiceFastHasDataByIdResult)  ReadField0(iprot thrift.TProtocol) err
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastHasDataByIdResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("hasDataById_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
@@ -1617,7 +1617,7 @@ func (p *MyServiceFastHasDataByIdResult) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastHasDataByIdResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastHasDataByIdResult) writeField0(oprot thrift.Protocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.BOOL, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1650,7 +1650,7 @@ func NewMyServiceFastGetDataByIdArgs() *MyServiceFastGetDataByIdArgs {
 func (p *MyServiceFastGetDataByIdArgs) GetId() int64 {
   return p.Id
 }
-func (p *MyServiceFastGetDataByIdArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1682,7 +1682,7 @@ func (p *MyServiceFastGetDataByIdArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -1691,7 +1691,7 @@ func (p *MyServiceFastGetDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("getDataById_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -1702,7 +1702,7 @@ func (p *MyServiceFastGetDataByIdArgs) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastGetDataByIdArgs) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
   if err := oprot.WriteI64(int64(p.Id)); err != nil {
@@ -1740,7 +1740,7 @@ func (p *MyServiceFastGetDataByIdResult) IsSetSuccess() bool {
   return p.Success != nil
 }
 
-func (p *MyServiceFastGetDataByIdResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1772,7 +1772,7 @@ func (p *MyServiceFastGetDataByIdResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdResult)  ReadField0(iprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1781,7 +1781,7 @@ func (p *MyServiceFastGetDataByIdResult)  ReadField0(iprot thrift.TProtocol) err
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastGetDataByIdResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("getDataById_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
@@ -1792,7 +1792,7 @@ func (p *MyServiceFastGetDataByIdResult) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastGetDataByIdResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastGetDataByIdResult) writeField0(oprot thrift.Protocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.STRING, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1831,7 +1831,7 @@ func (p *MyServiceFastPutDataByIdArgs) GetId() int64 {
 func (p *MyServiceFastPutDataByIdArgs) GetData() string {
   return p.Data
 }
-func (p *MyServiceFastPutDataByIdArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1867,7 +1867,7 @@ func (p *MyServiceFastPutDataByIdArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastPutDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -1876,7 +1876,7 @@ func (p *MyServiceFastPutDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastPutDataByIdArgs)  ReadField2(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdArgs)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -1885,7 +1885,7 @@ func (p *MyServiceFastPutDataByIdArgs)  ReadField2(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastPutDataByIdArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("putDataById_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -1897,7 +1897,7 @@ func (p *MyServiceFastPutDataByIdArgs) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastPutDataByIdArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastPutDataByIdArgs) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
   if err := oprot.WriteI64(int64(p.Id)); err != nil {
@@ -1907,7 +1907,7 @@ func (p *MyServiceFastPutDataByIdArgs) writeField1(oprot thrift.TProtocol) (err 
   return err
 }
 
-func (p *MyServiceFastPutDataByIdArgs) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastPutDataByIdArgs) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("data", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:data: ", p), err) }
   if err := oprot.WriteString(string(p.Data)); err != nil {
@@ -1931,7 +1931,7 @@ func NewMyServiceFastPutDataByIdResult() *MyServiceFastPutDataByIdResult {
   return &MyServiceFastPutDataByIdResult{}
 }
 
-func (p *MyServiceFastPutDataByIdResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1956,7 +1956,7 @@ func (p *MyServiceFastPutDataByIdResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastPutDataByIdResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastPutDataByIdResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("putDataById_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1993,7 +1993,7 @@ func (p *MyServiceFastLobDataByIdArgs) GetId() int64 {
 func (p *MyServiceFastLobDataByIdArgs) GetData() string {
   return p.Data
 }
-func (p *MyServiceFastLobDataByIdArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServiceFastLobDataByIdArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -2029,7 +2029,7 @@ func (p *MyServiceFastLobDataByIdArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastLobDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MyServiceFastLobDataByIdArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -2038,7 +2038,7 @@ func (p *MyServiceFastLobDataByIdArgs)  ReadField1(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastLobDataByIdArgs)  ReadField2(iprot thrift.TProtocol) error {
+func (p *MyServiceFastLobDataByIdArgs)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -2047,7 +2047,7 @@ func (p *MyServiceFastLobDataByIdArgs)  ReadField2(iprot thrift.TProtocol) error
   return nil
 }
 
-func (p *MyServiceFastLobDataByIdArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServiceFastLobDataByIdArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("lobDataById_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -2059,7 +2059,7 @@ func (p *MyServiceFastLobDataByIdArgs) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServiceFastLobDataByIdArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastLobDataByIdArgs) writeField1(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
   if err := oprot.WriteI64(int64(p.Id)); err != nil {
@@ -2069,7 +2069,7 @@ func (p *MyServiceFastLobDataByIdArgs) writeField1(oprot thrift.TProtocol) (err 
   return err
 }
 
-func (p *MyServiceFastLobDataByIdArgs) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *MyServiceFastLobDataByIdArgs) writeField2(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("data", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:data: ", p), err) }
   if err := oprot.WriteString(string(p.Data)); err != nil {

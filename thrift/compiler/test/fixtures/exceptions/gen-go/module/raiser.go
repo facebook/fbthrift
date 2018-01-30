@@ -25,10 +25,10 @@ type Raiser interface {
 }
 
 type RaiserClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
 }
 
@@ -36,7 +36,7 @@ func (client *RaiserClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewRaiserClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *RaiserClient {
+func NewRaiserClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *RaiserClient {
   return &RaiserClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -45,7 +45,7 @@ func NewRaiserClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *Rai
   }
 }
 
-func NewRaiserClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *RaiserClient {
+func NewRaiserClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserClient {
   return &RaiserClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -92,15 +92,15 @@ func (p *RaiserClient) recvDoBland() (err error) {
     return
   }
   if method != "doBland" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doBland failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doBland failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doBland failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doBland failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error1 error
     error1, err = error0.Read(iprot)
     if err != nil {
@@ -113,7 +113,7 @@ func (p *RaiserClient) recvDoBland() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doBland failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doBland failed: invalid message type")
     return
   }
   result := RaiserDoBlandResult{}
@@ -164,15 +164,15 @@ func (p *RaiserClient) recvDoRaise() (err error) {
     return
   }
   if method != "doRaise" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doRaise failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doRaise failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doRaise failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doRaise failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error2 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error2 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error3 error
     error3, err = error2.Read(iprot)
     if err != nil {
@@ -185,7 +185,7 @@ func (p *RaiserClient) recvDoRaise() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doRaise failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doRaise failed: invalid message type")
     return
   }
   result := RaiserDoRaiseResult{}
@@ -243,15 +243,15 @@ func (p *RaiserClient) recvGet200() (value string, err error) {
     return
   }
   if method != "get200" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get200 failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "get200 failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get200 failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "get200 failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error4 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error4 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error5 error
     error5, err = error4.Read(iprot)
     if err != nil {
@@ -264,7 +264,7 @@ func (p *RaiserClient) recvGet200() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get200 failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get200 failed: invalid message type")
     return
   }
   result := RaiserGet200Result{}
@@ -316,15 +316,15 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
     return
   }
   if method != "get500" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get500 failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "get500 failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get500 failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "get500 failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error6 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error6 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error7 error
     error7, err = error6.Read(iprot)
     if err != nil {
@@ -337,7 +337,7 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get500 failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get500 failed: invalid message type")
     return
   }
   result := RaiserGet500Result{}
@@ -360,15 +360,15 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
 
 
 type RaiserThreadsafeClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
   Mu sync.Mutex
 }
 
-func NewRaiserThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *RaiserThreadsafeClient {
+func NewRaiserThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *RaiserThreadsafeClient {
   return &RaiserThreadsafeClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -377,7 +377,7 @@ func NewRaiserThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFac
   }
 }
 
-func NewRaiserThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *RaiserThreadsafeClient {
+func NewRaiserThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserThreadsafeClient {
   return &RaiserThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -428,15 +428,15 @@ func (p *RaiserThreadsafeClient) recvDoBland() (err error) {
     return
   }
   if method != "doBland" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doBland failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doBland failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doBland failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doBland failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error8 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error8 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error9 error
     error9, err = error8.Read(iprot)
     if err != nil {
@@ -449,7 +449,7 @@ func (p *RaiserThreadsafeClient) recvDoBland() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doBland failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doBland failed: invalid message type")
     return
   }
   result := RaiserDoBlandResult{}
@@ -502,15 +502,15 @@ func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
     return
   }
   if method != "doRaise" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "doRaise failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doRaise failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "doRaise failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doRaise failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error10 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error10 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error11 error
     error11, err = error10.Read(iprot)
     if err != nil {
@@ -523,7 +523,7 @@ func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doRaise failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doRaise failed: invalid message type")
     return
   }
   result := RaiserDoRaiseResult{}
@@ -583,15 +583,15 @@ func (p *RaiserThreadsafeClient) recvGet200() (value string, err error) {
     return
   }
   if method != "get200" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get200 failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "get200 failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get200 failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "get200 failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error12 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error12 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error13 error
     error13, err = error12.Read(iprot)
     if err != nil {
@@ -604,7 +604,7 @@ func (p *RaiserThreadsafeClient) recvGet200() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get200 failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get200 failed: invalid message type")
     return
   }
   result := RaiserGet200Result{}
@@ -658,15 +658,15 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
     return
   }
   if method != "get500" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "get500 failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "get500 failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "get500 failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "get500 failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error14 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error14 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error15 error
     error15, err = error14.Read(iprot)
     if err != nil {
@@ -679,7 +679,7 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get500 failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "get500 failed: invalid message type")
     return
   }
   result := RaiserGet500Result{}
@@ -702,26 +702,26 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
 
 
 type RaiserProcessor struct {
-  processorMap map[string]thrift.TProcessorFunction
+  processorMap map[string]thrift.ProcessorFunction
   handler Raiser
 }
 
-func (p *RaiserProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *RaiserProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
 }
 
-func (p *RaiserProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *RaiserProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
   return processor, ok
 }
 
-func (p *RaiserProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *RaiserProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
 func NewRaiserProcessor(handler Raiser) *RaiserProcessor {
 
-  self16 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self16 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self16.processorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
   self16.processorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
   self16.processorMap["get200"] = &raiserProcessorGet200{handler:handler}
@@ -729,7 +729,7 @@ func NewRaiserProcessor(handler Raiser) *RaiserProcessor {
 return self16
 }
 
-func (p *RaiserProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *RaiserProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   name, _, seqId, err := iprot.ReadMessageBegin()
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
@@ -737,7 +737,7 @@ func (p *RaiserProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, 
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x17 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x17 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
   x17.Write(oprot)
   oprot.WriteMessageEnd()
@@ -750,11 +750,11 @@ type raiserProcessorDoBland struct {
   handler Raiser
 }
 
-func (p *raiserProcessorDoBland) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *raiserProcessorDoBland) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := RaiserDoBlandArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("doBland", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -766,7 +766,7 @@ func (p *raiserProcessorDoBland) Process(seqId int32, iprot, oprot thrift.TProto
   result := RaiserDoBlandResult{}
   var err2 error
   if err2 = p.handler.DoBland(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doBland: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doBland: " + err2.Error())
     oprot.WriteMessageBegin("doBland", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -795,11 +795,11 @@ type raiserProcessorDoRaise struct {
   handler Raiser
 }
 
-func (p *raiserProcessorDoRaise) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *raiserProcessorDoRaise) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := RaiserDoRaiseArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("doRaise", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -817,7 +817,7 @@ func (p *raiserProcessorDoRaise) Process(seqId int32, iprot, oprot thrift.TProto
     case *Fiery:
   result.F = v
     default:
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err2.Error())
     oprot.WriteMessageBegin("doRaise", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -847,11 +847,11 @@ type raiserProcessorGet200 struct {
   handler Raiser
 }
 
-func (p *raiserProcessorGet200) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *raiserProcessorGet200) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := RaiserGet200Args{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("get200", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -864,7 +864,7 @@ func (p *raiserProcessorGet200) Process(seqId int32, iprot, oprot thrift.TProtoc
 var retval string
   var err2 error
   if retval, err2 = p.handler.Get200(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err2.Error())
     oprot.WriteMessageBegin("get200", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -895,11 +895,11 @@ type raiserProcessorGet500 struct {
   handler Raiser
 }
 
-func (p *raiserProcessorGet500) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *raiserProcessorGet500) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := RaiserGet500Args{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("get500", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -918,7 +918,7 @@ var retval string
     case *Banal:
   result.B = v
     default:
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err2.Error())
     oprot.WriteMessageBegin("get500", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -956,7 +956,7 @@ func NewRaiserDoBlandArgs() *RaiserDoBlandArgs {
   return &RaiserDoBlandArgs{}
 }
 
-func (p *RaiserDoBlandArgs) Read(iprot thrift.TProtocol) error {
+func (p *RaiserDoBlandArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -981,7 +981,7 @@ func (p *RaiserDoBlandArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoBlandArgs) Write(oprot thrift.TProtocol) error {
+func (p *RaiserDoBlandArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("doBland_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1005,7 +1005,7 @@ func NewRaiserDoBlandResult() *RaiserDoBlandResult {
   return &RaiserDoBlandResult{}
 }
 
-func (p *RaiserDoBlandResult) Read(iprot thrift.TProtocol) error {
+func (p *RaiserDoBlandResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1030,7 +1030,7 @@ func (p *RaiserDoBlandResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoBlandResult) Write(oprot thrift.TProtocol) error {
+func (p *RaiserDoBlandResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("doBland_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1054,7 +1054,7 @@ func NewRaiserDoRaiseArgs() *RaiserDoRaiseArgs {
   return &RaiserDoRaiseArgs{}
 }
 
-func (p *RaiserDoRaiseArgs) Read(iprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1079,7 +1079,7 @@ func (p *RaiserDoRaiseArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoRaiseArgs) Write(oprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("doRaise_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1130,7 +1130,7 @@ func (p *RaiserDoRaiseResult) IsSetF() bool {
   return p.F != nil
 }
 
-func (p *RaiserDoRaiseResult) Read(iprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1166,7 +1166,7 @@ func (p *RaiserDoRaiseResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoRaiseResult)  ReadField1(iprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseResult)  ReadField1(iprot thrift.Protocol) error {
   p.B = NewBanal()
   if err := p.B.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.B), err)
@@ -1174,7 +1174,7 @@ func (p *RaiserDoRaiseResult)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoRaiseResult)  ReadField2(iprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseResult)  ReadField2(iprot thrift.Protocol) error {
   p.F = NewFiery()
   if err := p.F.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.F), err)
@@ -1182,7 +1182,7 @@ func (p *RaiserDoRaiseResult)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoRaiseResult) Write(oprot thrift.TProtocol) error {
+func (p *RaiserDoRaiseResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("doRaise_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
@@ -1194,7 +1194,7 @@ func (p *RaiserDoRaiseResult) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserDoRaiseResult) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *RaiserDoRaiseResult) writeField1(oprot thrift.Protocol) (err error) {
   if p.IsSetB() {
     if err := oprot.WriteFieldBegin("b", thrift.STRUCT, 1); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:b: ", p), err) }
@@ -1207,7 +1207,7 @@ func (p *RaiserDoRaiseResult) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *RaiserDoRaiseResult) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *RaiserDoRaiseResult) writeField2(oprot thrift.Protocol) (err error) {
   if p.IsSetF() {
     if err := oprot.WriteFieldBegin("f", thrift.STRUCT, 2); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:f: ", p), err) }
@@ -1234,7 +1234,7 @@ func NewRaiserGet200Args() *RaiserGet200Args {
   return &RaiserGet200Args{}
 }
 
-func (p *RaiserGet200Args) Read(iprot thrift.TProtocol) error {
+func (p *RaiserGet200Args) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1259,7 +1259,7 @@ func (p *RaiserGet200Args) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet200Args) Write(oprot thrift.TProtocol) error {
+func (p *RaiserGet200Args) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("get200_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1297,7 +1297,7 @@ func (p *RaiserGet200Result) IsSetSuccess() bool {
   return p.Success != nil
 }
 
-func (p *RaiserGet200Result) Read(iprot thrift.TProtocol) error {
+func (p *RaiserGet200Result) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1329,7 +1329,7 @@ func (p *RaiserGet200Result) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet200Result)  ReadField0(iprot thrift.TProtocol) error {
+func (p *RaiserGet200Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1338,7 +1338,7 @@ func (p *RaiserGet200Result)  ReadField0(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet200Result) Write(oprot thrift.TProtocol) error {
+func (p *RaiserGet200Result) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("get200_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
@@ -1349,7 +1349,7 @@ func (p *RaiserGet200Result) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet200Result) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *RaiserGet200Result) writeField0(oprot thrift.Protocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.STRING, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1375,7 +1375,7 @@ func NewRaiserGet500Args() *RaiserGet500Args {
   return &RaiserGet500Args{}
 }
 
-func (p *RaiserGet500Args) Read(iprot thrift.TProtocol) error {
+func (p *RaiserGet500Args) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1400,7 +1400,7 @@ func (p *RaiserGet500Args) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Args) Write(oprot thrift.TProtocol) error {
+func (p *RaiserGet500Args) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("get500_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1464,7 +1464,7 @@ func (p *RaiserGet500Result) IsSetB() bool {
   return p.B != nil
 }
 
-func (p *RaiserGet500Result) Read(iprot thrift.TProtocol) error {
+func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1504,7 +1504,7 @@ func (p *RaiserGet500Result) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Result)  ReadField0(iprot thrift.TProtocol) error {
+func (p *RaiserGet500Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1513,7 +1513,7 @@ func (p *RaiserGet500Result)  ReadField0(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Result)  ReadField1(iprot thrift.TProtocol) error {
+func (p *RaiserGet500Result)  ReadField1(iprot thrift.Protocol) error {
   p.F = NewFiery()
   if err := p.F.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.F), err)
@@ -1521,7 +1521,7 @@ func (p *RaiserGet500Result)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Result)  ReadField2(iprot thrift.TProtocol) error {
+func (p *RaiserGet500Result)  ReadField2(iprot thrift.Protocol) error {
   p.B = NewBanal()
   if err := p.B.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.B), err)
@@ -1529,7 +1529,7 @@ func (p *RaiserGet500Result)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Result) Write(oprot thrift.TProtocol) error {
+func (p *RaiserGet500Result) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("get500_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
@@ -1542,7 +1542,7 @@ func (p *RaiserGet500Result) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *RaiserGet500Result) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *RaiserGet500Result) writeField0(oprot thrift.Protocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.STRING, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1554,7 +1554,7 @@ func (p *RaiserGet500Result) writeField0(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *RaiserGet500Result) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *RaiserGet500Result) writeField1(oprot thrift.Protocol) (err error) {
   if p.IsSetF() {
     if err := oprot.WriteFieldBegin("f", thrift.STRUCT, 1); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:f: ", p), err) }
@@ -1567,7 +1567,7 @@ func (p *RaiserGet500Result) writeField1(oprot thrift.TProtocol) (err error) {
   return err
 }
 
-func (p *RaiserGet500Result) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *RaiserGet500Result) writeField2(oprot thrift.Protocol) (err error) {
   if p.IsSetB() {
     if err := oprot.WriteFieldBegin("b", thrift.STRUCT, 2); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:b: ", p), err) }

@@ -29,51 +29,51 @@ import (
 var ErrServerClosed = errors.New("thrift: Server closed")
 
 // Simple, non-concurrent server for testing.
-type TSimpleServer struct {
+type SimpleServer struct {
 	quit chan struct{}
 
-	processorFactory       TProcessorFactory
-	serverTransport        TServerTransport
-	inputTransportFactory  TTransportFactory
-	outputTransportFactory TTransportFactory
-	inputProtocolFactory   TProtocolFactory
-	outputProtocolFactory  TProtocolFactory
+	processorFactory       ProcessorFactory
+	serverTransport        ServerTransport
+	inputTransportFactory  TransportFactory
+	outputTransportFactory TransportFactory
+	inpuprotocolFactory   ProtocolFactory
+	outpuprotocolFactory  ProtocolFactory
 }
 
-func NewTSimpleServer2(processor TProcessor, serverTransport TServerTransport) *TSimpleServer {
-	return NewTSimpleServerFactory2(NewTProcessorFactory(processor), serverTransport)
+func NewSimpleServer2(processor Processor, serverTransport ServerTransport) *SimpleServer {
+	return NewSimpleServerFactory2(NewProcessorFactory(processor), serverTransport)
 }
 
-func NewTSimpleServer4(processor TProcessor, serverTransport TServerTransport, transportFactory TTransportFactory, protocolFactory TProtocolFactory) *TSimpleServer {
-	return NewTSimpleServerFactory4(NewTProcessorFactory(processor),
+func NewSimpleServer4(processor Processor, serverTransport ServerTransport, transportFactory TransportFactory, protocolFactory ProtocolFactory) *SimpleServer {
+	return NewSimpleServerFactory4(NewProcessorFactory(processor),
 		serverTransport,
 		transportFactory,
 		protocolFactory,
 	)
 }
 
-func NewTSimpleServer6(processor TProcessor, serverTransport TServerTransport, inputTransportFactory TTransportFactory, outputTransportFactory TTransportFactory, inputProtocolFactory TProtocolFactory, outputProtocolFactory TProtocolFactory) *TSimpleServer {
-	return NewTSimpleServerFactory6(NewTProcessorFactory(processor),
+func NewSimpleServer6(processor Processor, serverTransport ServerTransport, inputTransportFactory TransportFactory, outputTransportFactory TransportFactory, inpuprotocolFactory ProtocolFactory, outpuprotocolFactory ProtocolFactory) *SimpleServer {
+	return NewSimpleServerFactory6(NewProcessorFactory(processor),
 		serverTransport,
 		inputTransportFactory,
 		outputTransportFactory,
-		inputProtocolFactory,
-		outputProtocolFactory,
+		inpuprotocolFactory,
+		outpuprotocolFactory,
 	)
 }
 
-func NewTSimpleServerFactory2(processorFactory TProcessorFactory, serverTransport TServerTransport) *TSimpleServer {
-	return NewTSimpleServerFactory6(processorFactory,
+func NewSimpleServerFactory2(processorFactory ProcessorFactory, serverTransport ServerTransport) *SimpleServer {
+	return NewSimpleServerFactory6(processorFactory,
 		serverTransport,
-		NewTTransportFactory(),
-		NewTTransportFactory(),
-		NewTBinaryProtocolFactoryDefault(),
-		NewTBinaryProtocolFactoryDefault(),
+		NewTransportFactory(),
+		NewTransportFactory(),
+		NewBinaryProtocolFactoryDefault(),
+		NewBinaryProtocolFactoryDefault(),
 	)
 }
 
-func NewTSimpleServerFactory4(processorFactory TProcessorFactory, serverTransport TServerTransport, transportFactory TTransportFactory, protocolFactory TProtocolFactory) *TSimpleServer {
-	return NewTSimpleServerFactory6(processorFactory,
+func NewSimpleServerFactory4(processorFactory ProcessorFactory, serverTransport ServerTransport, transportFactory TransportFactory, protocolFactory ProtocolFactory) *SimpleServer {
+	return NewSimpleServerFactory6(processorFactory,
 		serverTransport,
 		transportFactory,
 		transportFactory,
@@ -82,47 +82,47 @@ func NewTSimpleServerFactory4(processorFactory TProcessorFactory, serverTranspor
 	)
 }
 
-func NewTSimpleServerFactory6(processorFactory TProcessorFactory, serverTransport TServerTransport, inputTransportFactory TTransportFactory, outputTransportFactory TTransportFactory, inputProtocolFactory TProtocolFactory, outputProtocolFactory TProtocolFactory) *TSimpleServer {
-	return &TSimpleServer{
+func NewSimpleServerFactory6(processorFactory ProcessorFactory, serverTransport ServerTransport, inputTransportFactory TransportFactory, outputTransportFactory TransportFactory, inpuprotocolFactory ProtocolFactory, outpuprotocolFactory ProtocolFactory) *SimpleServer {
+	return &SimpleServer{
 		processorFactory:       processorFactory,
 		serverTransport:        serverTransport,
 		inputTransportFactory:  inputTransportFactory,
 		outputTransportFactory: outputTransportFactory,
-		inputProtocolFactory:   inputProtocolFactory,
-		outputProtocolFactory:  outputProtocolFactory,
+		inpuprotocolFactory:   inpuprotocolFactory,
+		outpuprotocolFactory:  outpuprotocolFactory,
 		quit: make(chan struct{}, 1),
 	}
 }
 
-func (p *TSimpleServer) ProcessorFactory() TProcessorFactory {
+func (p *SimpleServer) ProcessorFactory() ProcessorFactory {
 	return p.processorFactory
 }
 
-func (p *TSimpleServer) ServerTransport() TServerTransport {
+func (p *SimpleServer) ServerTransport() ServerTransport {
 	return p.serverTransport
 }
 
-func (p *TSimpleServer) InputTransportFactory() TTransportFactory {
+func (p *SimpleServer) InputTransportFactory() TransportFactory {
 	return p.inputTransportFactory
 }
 
-func (p *TSimpleServer) OutputTransportFactory() TTransportFactory {
+func (p *SimpleServer) OutputTransportFactory() TransportFactory {
 	return p.outputTransportFactory
 }
 
-func (p *TSimpleServer) InputProtocolFactory() TProtocolFactory {
-	return p.inputProtocolFactory
+func (p *SimpleServer) InpuprotocolFactory() ProtocolFactory {
+	return p.inpuprotocolFactory
 }
 
-func (p *TSimpleServer) OutputProtocolFactory() TProtocolFactory {
-	return p.outputProtocolFactory
+func (p *SimpleServer) OutpuprotocolFactory() ProtocolFactory {
+	return p.outpuprotocolFactory
 }
 
-func (p *TSimpleServer) Listen() error {
+func (p *SimpleServer) Listen() error {
 	return p.serverTransport.Listen()
 }
 
-func (p *TSimpleServer) AcceptLoop() error {
+func (p *SimpleServer) AcceptLoop() error {
 	for {
 		client, err := p.serverTransport.Accept()
 		if err != nil {
@@ -143,7 +143,7 @@ func (p *TSimpleServer) AcceptLoop() error {
 	}
 }
 
-func (p *TSimpleServer) Serve() error {
+func (p *SimpleServer) Serve() error {
 	err := p.Listen()
 	if err != nil {
 		return err
@@ -151,31 +151,31 @@ func (p *TSimpleServer) Serve() error {
 	return p.AcceptLoop()
 }
 
-func (p *TSimpleServer) Stop() error {
+func (p *SimpleServer) Stop() error {
 	p.quit <- struct{}{}
 	p.serverTransport.Interrupt()
 	return nil
 }
 
-func (p *TSimpleServer) processRequests(client TTransport) error {
-	processor := p.processorFactory.GetProcessor(client)
+func (p *SimpleServer) processRequests(client Transport) error {
+	processor := p.processorFactory.Geprocessor(client)
 	var (
-		inputTransport, outputTransport TTransport
-		inputProtocol, outputProtocol   TProtocol
+		inputTransport, outputTransport Transport
+		inpuprotocol, outpuprotocol   Protocol
 	)
 
 	inputTransport = p.inputTransportFactory.GetTransport(client)
 
-	// Special case for THeader, it requires that the transport/protocol for
+	// Special case for Header, it requires that the transport/protocol for
 	// input/output is the same object (to track session state).
-	if _, ok := inputTransport.(*THeaderTransport); ok {
+	if _, ok := inputTransport.(*HeaderTransport); ok {
 		outputTransport = nil
-		inputProtocol = p.inputProtocolFactory.GetProtocol(inputTransport)
-		outputProtocol = inputProtocol
+		inpuprotocol = p.inpuprotocolFactory.GetProtocol(inputTransport)
+		outpuprotocol = inpuprotocol
 	} else {
 		outputTransport = p.outputTransportFactory.GetTransport(client)
-		inputProtocol = p.inputProtocolFactory.GetProtocol(inputTransport)
-		outputProtocol = p.outputProtocolFactory.GetProtocol(outputTransport)
+		inpuprotocol = p.inpuprotocolFactory.GetProtocol(inputTransport)
+		outpuprotocol = p.outpuprotocolFactory.GetProtocol(outputTransport)
 	}
 
 	defer func() {
@@ -190,8 +190,8 @@ func (p *TSimpleServer) processRequests(client TTransport) error {
 		defer outputTransport.Close()
 	}
 	for {
-		ok, err := processor.Process(inputProtocol, outputProtocol)
-		if err, ok := err.(TTransportException); ok && err.TypeId() == END_OF_FILE {
+		ok, err := processor.Process(inpuprotocol, outpuprotocol)
+		if err, ok := err.(TransportException); ok && err.TypeId() == END_OF_FILE {
 			return nil
 		} else if err != nil {
 			log.Printf("error processing request: %s", err)

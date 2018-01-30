@@ -23,15 +23,15 @@ import (
 	"testing"
 )
 
-func TestTApplicationException(t *testing.T) {
-	exc := NewTApplicationException(UNKNOWN_APPLICATION_EXCEPTION, "")
+func TestApplicationException(t *testing.T) {
+	exc := NewApplicationException(UNKNOWN_APPLICATION_EXCEPTION, "")
 	if exc.Error() != "" {
 		t.Fatalf("Expected empty string for exception but found '%s'", exc.Error())
 	}
 	if exc.TypeId() != UNKNOWN_APPLICATION_EXCEPTION {
 		t.Fatalf("Expected type UNKNOWN for exception but found '%d'", exc.TypeId())
 	}
-	exc = NewTApplicationException(WRONG_METHOD_NAME, "junk_method")
+	exc = NewApplicationException(WRONG_METHOD_NAME, "junk_method")
 	if exc.Error() != "junk_method" {
 		t.Fatalf("Expected 'junk_method' for exception but found '%s'", exc.Error())
 	}

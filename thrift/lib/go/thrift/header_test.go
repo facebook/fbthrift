@@ -57,11 +57,7 @@ func TestHeaderDeserSer(t *testing.T) {
 		t.Fatalf("failed to parse correct header: %s", err.Error())
 	}
 
-	if hdr.protoID != CompactProtocol {
-		t.Errorf("expected compact proto, got: %#x", int64(hdr.protoID))
-	}
-
-	if hdr.protoID != CompactProtocol {
+	if hdr.protoID != ProtocolIDCompact {
 		t.Errorf("expected compact proto, got: %#x", int64(hdr.protoID))
 	}
 

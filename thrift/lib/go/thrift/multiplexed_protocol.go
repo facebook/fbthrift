@@ -25,23 +25,23 @@ import (
 )
 
 /*
-TMultiplexedProtocol is a protocol-independent concrete decorator
+MultiplexedProtocol is a protocol-independent concrete decorator
 that allows a Thrift client to communicate with a multiplexing Thrift server,
 by prepending the service name to the function name during function calls.
 
-NOTE: THIS IS NOT USED BY SERVERS.  On the server, use TMultiplexedProcessor to handle request
+NOTE: THIS IS NOT USED BY SERVERS.  On the server, use MultiplexedProcessor to handle request
 from a multiplexing client.
 
 This example uses a single socket transport to invoke two services:
 
-socket := thrift.NewTSocketFromAddrTimeout(addr, TIMEOUT)
-transport := thrift.NewTFramedTransport(socket)
-protocol := thrift.NewTBinaryProtocolTransport(transport)
+socket := thrift.NewSocketFromAddrTimeout(addr, TIMEOUT)
+transport := thrift.NewFramedTransport(socket)
+protocol := thrift.NewBinaryProtocolTransport(transport)
 
-mp := thrift.NewTMultiplexedProtocol(protocol, "Calculator")
+mp := thrift.NewMultiplexedProtocol(protocol, "Calculator")
 service := Calculator.NewCalculatorClient(mp)
 
-mp2 := thrift.NewTMultiplexedProtocol(protocol, "WeatherReport")
+mp2 := thrift.NewMultiplexedProtocol(protocol, "WeatherReport")
 service2 := WeatherReport.NewWeatherReportClient(mp2)
 
 err := transport.Open()
@@ -53,39 +53,39 @@ fmt.Println(service.Add(2,2))
 fmt.Println(service2.GetTemperature())
 */
 
-type TMultiplexedProtocol struct {
-	TProtocol
+type MultiplexedProtocol struct {
+	Protocol
 	serviceName string
 }
 
 const MULTIPLEXED_SEPARATOR = ":"
 
-func NewTMultiplexedProtocol(protocol TProtocol, serviceName string) *TMultiplexedProtocol {
-	return &TMultiplexedProtocol{
-		TProtocol:   protocol,
+func NewMultiplexedProtocol(protocol Protocol, serviceName string) *MultiplexedProtocol {
+	return &MultiplexedProtocol{
+		Protocol:   protocol,
 		serviceName: serviceName,
 	}
 }
 
-func (t *TMultiplexedProtocol) WriteMessageBegin(name string, typeId TMessageType, seqid int32) error {
+func (t *MultiplexedProtocol) WriteMessageBegin(name string, typeId MessageType, seqid int32) error {
 	if typeId == CALL || typeId == ONEWAY {
-		return t.TProtocol.WriteMessageBegin(t.serviceName+MULTIPLEXED_SEPARATOR+name, typeId, seqid)
+		return t.Protocol.WriteMessageBegin(t.serviceName+MULTIPLEXED_SEPARATOR+name, typeId, seqid)
 	} else {
-		return t.TProtocol.WriteMessageBegin(name, typeId, seqid)
+		return t.Protocol.WriteMessageBegin(name, typeId, seqid)
 	}
 }
 
 /*
-TMultiplexedProcessor is a TProcessor allowing
-a single TServer to provide multiple services.
+MultiplexedProcessor is a Processor allowing
+a single Server to provide multiple services.
 
 To do so, you instantiate the processor and then register additional
 processors with it, as shown in the following example:
 
-var processor = thrift.NewTMultiplexedProcessor()
+var processor = thrift.NewMultiplexedProcessor()
 
-firstProcessor :=
-processor.RegisterProcessor("FirstService", firstProcessor)
+firsprocessor :=
+processor.RegisterProcessor("FirstService", firsprocessor)
 
 processor.registerProcessor(
   "Calculator",
@@ -94,40 +94,40 @@ processor.registerProcessor(
 
 processor.registerProcessor(
   "WeatherReport",
-  WeatherReport.NewWeatherReportProcessor(&WeatherReportHandler{}),
+  WeatherReport.NewWeatherReporprocessor(&WeatherReportHandler{}),
 )
 
-serverTransport, err := thrift.NewTServerSocketTimeout(addr, TIMEOUT)
+serverTransport, err := thrift.NewServerSocketTimeout(addr, TIMEOUT)
 if err != nil {
   t.Fatal("Unable to create server socket", err)
 }
-server := thrift.NewTSimpleServer2(processor, serverTransport)
+server := thrift.NewSimpleServer2(processor, serverTransport)
 server.Serve();
 */
 
-type TMultiplexedProcessor struct {
-	serviceProcessorMap map[string]TProcessor
-	DefaultProcessor    TProcessor
+type MultiplexedProcessor struct {
+	serviceProcessorMap map[string]Processor
+	Defaulprocessor    Processor
 }
 
-func NewTMultiplexedProcessor() *TMultiplexedProcessor {
-	return &TMultiplexedProcessor{
-		serviceProcessorMap: make(map[string]TProcessor),
+func NewMultiplexedProcessor() *MultiplexedProcessor {
+	return &MultiplexedProcessor{
+		serviceProcessorMap: make(map[string]Processor),
 	}
 }
 
-func (t *TMultiplexedProcessor) RegisterDefault(processor TProcessor) {
-	t.DefaultProcessor = processor
+func (t *MultiplexedProcessor) RegisterDefault(processor Processor) {
+	t.Defaulprocessor = processor
 }
 
-func (t *TMultiplexedProcessor) RegisterProcessor(name string, processor TProcessor) {
+func (t *MultiplexedProcessor) RegisterProcessor(name string, processor Processor) {
 	if t.serviceProcessorMap == nil {
-		t.serviceProcessorMap = make(map[string]TProcessor)
+		t.serviceProcessorMap = make(map[string]Processor)
 	}
 	t.serviceProcessorMap[name] = processor
 }
 
-func (t *TMultiplexedProcessor) Process(in, out TProtocol) (bool, TException) {
+func (t *MultiplexedProcessor) Process(in, out Protocol) (bool, Exception) {
 	name, typeId, seqid, err := in.ReadMessageBegin()
 	if err != nil {
 		return false, err
@@ -138,11 +138,11 @@ func (t *TMultiplexedProcessor) Process(in, out TProtocol) (bool, TException) {
 	//extract the service name
 	v := strings.SplitN(name, MULTIPLEXED_SEPARATOR, 2)
 	if len(v) != 2 {
-		if t.DefaultProcessor != nil {
+		if t.Defaulprocessor != nil {
 			smb := NewStoredMessageProtocol(in, name, typeId, seqid)
-			return t.DefaultProcessor.Process(smb, out)
+			return t.Defaulprocessor.Process(smb, out)
 		}
-		return false, fmt.Errorf("Service name not found in message name: %s.  Did you forget to use a TMultiplexProtocol in your client?", name)
+		return false, fmt.Errorf("Service name not found in message name: %s.  Did you forget to use a MultiplexProtocol in your client?", name)
 	}
 	actualProcessor, ok := t.serviceProcessorMap[v[0]]
 	if !ok {
@@ -154,16 +154,16 @@ func (t *TMultiplexedProcessor) Process(in, out TProtocol) (bool, TException) {
 
 //Protocol that use stored message for ReadMessageBegin
 type storedMessageProtocol struct {
-	TProtocol
+	Protocol
 	name   string
-	typeId TMessageType
+	typeId MessageType
 	seqid  int32
 }
 
-func NewStoredMessageProtocol(protocol TProtocol, name string, typeId TMessageType, seqid int32) *storedMessageProtocol {
+func NewStoredMessageProtocol(protocol Protocol, name string, typeId MessageType, seqid int32) *storedMessageProtocol {
 	return &storedMessageProtocol{protocol, name, typeId, seqid}
 }
 
-func (s *storedMessageProtocol) ReadMessageBegin() (name string, typeId TMessageType, seqid int32, err error) {
+func (s *storedMessageProtocol) ReadMessageBegin() (name string, typeId MessageType, seqid int32, err error) {
 	return s.name, s.typeId, s.seqid, nil
 }

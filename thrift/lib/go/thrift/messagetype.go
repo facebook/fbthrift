@@ -20,12 +20,12 @@
 package thrift
 
 // Message type constants in the Thrift protocol.
-type TMessageType int32
+type MessageType int32
 
 const (
-	INVALID_TMESSAGE_TYPE TMessageType = 0
-	CALL                  TMessageType = 1
-	REPLY                 TMessageType = 2
-	EXCEPTION             TMessageType = 3
-	ONEWAY                TMessageType = 4
+	INVALID_MESSAGE_TYPE MessageType = 0
+	CALL                  MessageType = 1
+	REPLY                 MessageType = 2
+	EXCEPTION             MessageType = 3
+	ONEWAY                MessageType = 4
 )

@@ -20,7 +20,7 @@
 package thrift
 
 // Type constants in the Thrift protocol
-type TType byte
+type Type byte
 
 const (
 	STOP   = 0
@@ -61,7 +61,7 @@ var typeNames = map[int]string{
 	UTF16:  "UTF16",
 }
 
-func (p TType) String() string {
+func (p Type) String() string {
 	if s, ok := typeNames[int(p)]; ok {
 		return s
 	}

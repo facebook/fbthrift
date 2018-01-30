@@ -23,10 +23,10 @@ type MyServicePrioParent interface {
 }
 
 type MyServicePrioParentClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
 }
 
@@ -34,7 +34,7 @@ func (client *MyServicePrioParentClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyServicePrioParentClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioParentClient {
+func NewMyServicePrioParentClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioParentClient {
   return &MyServicePrioParentClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -43,7 +43,7 @@ func NewMyServicePrioParentClientFactory(t thrift.TTransport, f thrift.TProtocol
   }
 }
 
-func NewMyServicePrioParentClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServicePrioParentClient {
+func NewMyServicePrioParentClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentClient {
   return &MyServicePrioParentClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -90,15 +90,15 @@ func (p *MyServicePrioParentClient) recvPing() (err error) {
     return
   }
   if method != "ping" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error58 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error58 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error59 error
     error59, err = error58.Read(iprot)
     if err != nil {
@@ -111,7 +111,7 @@ func (p *MyServicePrioParentClient) recvPing() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
     return
   }
   result := MyServicePrioParentPingResult{}
@@ -162,15 +162,15 @@ func (p *MyServicePrioParentClient) recvPong() (err error) {
     return
   }
   if method != "pong" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "pong failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "pong failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "pong failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "pong failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error60 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error60 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error61 error
     error61, err = error60.Read(iprot)
     if err != nil {
@@ -183,7 +183,7 @@ func (p *MyServicePrioParentClient) recvPong() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pong failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pong failed: invalid message type")
     return
   }
   result := MyServicePrioParentPongResult{}
@@ -198,15 +198,15 @@ func (p *MyServicePrioParentClient) recvPong() (err error) {
 
 
 type MyServicePrioParentThreadsafeClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
   Mu sync.Mutex
 }
 
-func NewMyServicePrioParentThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioParentThreadsafeClient {
+func NewMyServicePrioParentThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioParentThreadsafeClient {
   return &MyServicePrioParentThreadsafeClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -215,7 +215,7 @@ func NewMyServicePrioParentThreadsafeClientFactory(t thrift.TTransport, f thrift
   }
 }
 
-func NewMyServicePrioParentThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServicePrioParentThreadsafeClient {
+func NewMyServicePrioParentThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentThreadsafeClient {
   return &MyServicePrioParentThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -266,15 +266,15 @@ func (p *MyServicePrioParentThreadsafeClient) recvPing() (err error) {
     return
   }
   if method != "ping" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error62 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error62 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error63 error
     error63, err = error62.Read(iprot)
     if err != nil {
@@ -287,7 +287,7 @@ func (p *MyServicePrioParentThreadsafeClient) recvPing() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
     return
   }
   result := MyServicePrioParentPingResult{}
@@ -340,15 +340,15 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
     return
   }
   if method != "pong" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "pong failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "pong failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "pong failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "pong failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error64 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error64 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error65 error
     error65, err = error64.Read(iprot)
     if err != nil {
@@ -361,7 +361,7 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pong failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pong failed: invalid message type")
     return
   }
   result := MyServicePrioParentPongResult{}
@@ -376,32 +376,32 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
 
 
 type MyServicePrioParentProcessor struct {
-  processorMap map[string]thrift.TProcessorFunction
+  processorMap map[string]thrift.ProcessorFunction
   handler MyServicePrioParent
 }
 
-func (p *MyServicePrioParentProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *MyServicePrioParentProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
 }
 
-func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
   return processor, ok
 }
 
-func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
 
-  self66 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self66 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self66.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
   self66.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
 return self66
 }
 
-func (p *MyServicePrioParentProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *MyServicePrioParentProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   name, _, seqId, err := iprot.ReadMessageBegin()
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
@@ -409,7 +409,7 @@ func (p *MyServicePrioParentProcessor) Process(iprot, oprot thrift.TProtocol) (s
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x67 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x67 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
   x67.Write(oprot)
   oprot.WriteMessageEnd()
@@ -422,11 +422,11 @@ type myServicePrioParentProcessorPing struct {
   handler MyServicePrioParent
 }
 
-func (p *myServicePrioParentProcessorPing) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServicePrioParentProcessorPing) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServicePrioParentPingArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -438,7 +438,7 @@ func (p *myServicePrioParentProcessorPing) Process(seqId int32, iprot, oprot thr
   result := MyServicePrioParentPingResult{}
   var err2 error
   if err2 = p.handler.Ping(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
     oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -467,11 +467,11 @@ type myServicePrioParentProcessorPong struct {
   handler MyServicePrioParent
 }
 
-func (p *myServicePrioParentProcessorPong) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServicePrioParentProcessorPong) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServicePrioParentPongArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -483,7 +483,7 @@ func (p *myServicePrioParentProcessorPong) Process(seqId int32, iprot, oprot thr
   result := MyServicePrioParentPongResult{}
   var err2 error
   if err2 = p.handler.Pong(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err2.Error())
     oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -518,7 +518,7 @@ func NewMyServicePrioParentPingArgs() *MyServicePrioParentPingArgs {
   return &MyServicePrioParentPingArgs{}
 }
 
-func (p *MyServicePrioParentPingArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPingArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -543,7 +543,7 @@ func (p *MyServicePrioParentPingArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioParentPingArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPingArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ping_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -567,7 +567,7 @@ func NewMyServicePrioParentPingResult() *MyServicePrioParentPingResult {
   return &MyServicePrioParentPingResult{}
 }
 
-func (p *MyServicePrioParentPingResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPingResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -592,7 +592,7 @@ func (p *MyServicePrioParentPingResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioParentPingResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPingResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ping_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -616,7 +616,7 @@ func NewMyServicePrioParentPongArgs() *MyServicePrioParentPongArgs {
   return &MyServicePrioParentPongArgs{}
 }
 
-func (p *MyServicePrioParentPongArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPongArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -641,7 +641,7 @@ func (p *MyServicePrioParentPongArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioParentPongArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPongArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("pong_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -665,7 +665,7 @@ func NewMyServicePrioParentPongResult() *MyServicePrioParentPongResult {
   return &MyServicePrioParentPongResult{}
 }
 
-func (p *MyServicePrioParentPongResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPongResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -690,7 +690,7 @@ func (p *MyServicePrioParentPongResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioParentPongResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioParentPongResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("pong_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

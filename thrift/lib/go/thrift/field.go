@@ -22,11 +22,11 @@ package thrift
 // Helper class that encapsulates field metadata.
 type field struct {
 	name   string
-	typeId TType
+	typeId Type
 	id     int
 }
 
-func newField(n string, t TType, i int) *field {
+func newField(n string, t Type, i int) *field {
 	return &field{name: n, typeId: t, id: i}
 }
 
@@ -37,9 +37,9 @@ func (p *field) Name() string {
 	return p.name
 }
 
-func (p *field) TypeId() TType {
+func (p *field) TypeId() Type {
 	if p == nil {
-		return TType(VOID)
+		return Type(VOID)
 	}
 	return p.typeId
 }

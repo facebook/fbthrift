@@ -31,10 +31,10 @@ func (client *MyNodeClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyNodeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyNodeClient {
+func NewMyNodeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyNodeClient {
   return &MyNodeClient{MyRootClient: NewMyRootClientFactory(t, f)}}
 
-func NewMyNodeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyNodeClient {
+func NewMyNodeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeClient {
   return &MyNodeClient{MyRootClient: NewMyRootClientProtocol(t, iprot, oprot)}
 }
 
@@ -76,15 +76,15 @@ func (p *MyNodeClient) recvDoMid() (err error) {
     return
   }
   if method != "do_mid" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error6 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error6 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error7 error
     error7, err = error6.Read(iprot)
     if err != nil {
@@ -97,7 +97,7 @@ func (p *MyNodeClient) recvDoMid() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
     return
   }
   result := MyNodeDoMidResult{}
@@ -115,10 +115,10 @@ type MyNodeThreadsafeClient struct {
   *MyRootThreadsafeClient
 }
 
-func NewMyNodeThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyNodeThreadsafeClient {
+func NewMyNodeThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}}
 
-func NewMyNodeThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyNodeThreadsafeClient {
+func NewMyNodeThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientProtocol(t, iprot, oprot)}
 }
 
@@ -164,15 +164,15 @@ func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
     return
   }
   if method != "do_mid" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error8 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error8 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error9 error
     error9, err = error8.Read(iprot)
     if err != nil {
@@ -185,7 +185,7 @@ func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
     return
   }
   result := MyNodeDoMidResult{}
@@ -213,11 +213,11 @@ type myNodeProcessorDoMid struct {
   handler MyNode
 }
 
-func (p *myNodeProcessorDoMid) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myNodeProcessorDoMid) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyNodeDoMidArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -229,7 +229,7 @@ func (p *myNodeProcessorDoMid) Process(seqId int32, iprot, oprot thrift.TProtoco
   result := MyNodeDoMidResult{}
   var err2 error
   if err2 = p.handler.DoMid(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err2.Error())
     oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -264,7 +264,7 @@ func NewMyNodeDoMidArgs() *MyNodeDoMidArgs {
   return &MyNodeDoMidArgs{}
 }
 
-func (p *MyNodeDoMidArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyNodeDoMidArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -289,7 +289,7 @@ func (p *MyNodeDoMidArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyNodeDoMidArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyNodeDoMidArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_mid_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -313,7 +313,7 @@ func NewMyNodeDoMidResult() *MyNodeDoMidResult {
   return &MyNodeDoMidResult{}
 }
 
-func (p *MyNodeDoMidResult) Read(iprot thrift.TProtocol) error {
+func (p *MyNodeDoMidResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -338,7 +338,7 @@ func (p *MyNodeDoMidResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyNodeDoMidResult) Write(oprot thrift.TProtocol) error {
+func (p *MyNodeDoMidResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("do_mid_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

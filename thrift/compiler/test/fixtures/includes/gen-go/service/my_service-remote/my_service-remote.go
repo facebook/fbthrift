@@ -36,7 +36,7 @@ func main() {
   var framed bool
   var useHttp bool
   var parsedUrl url.URL
-  var trans thrift.TTransport
+  var trans thrift.Transport
   _ = strconv.Atoi
   _ = math.Abs
   flag.Usage = Usage
@@ -67,7 +67,7 @@ func main() {
   cmd := flag.Arg(0)
   var err error
   if useHttp {
-    trans, err = thrift.NewTHttpClient(parsedUrl.String())
+    trans, err = thrift.NewHttpClient(parsedUrl.String())
   } else {
     portStr := fmt.Sprint(port)
     if strings.Contains(host, ":") {
@@ -77,13 +77,13 @@ func main() {
                    os.Exit(1)
            }
     }
-    trans, err = thrift.NewTSocket(net.JoinHostPort(host, portStr))
+    trans, err = thrift.NewSocket(net.JoinHostPort(host, portStr))
     if err != nil {
       fmt.Fprintln(os.Stderr, "error resolving address:", err)
       os.Exit(1)
     }
     if framed {
-      trans = thrift.NewTFramedTransport(trans)
+      trans = thrift.NewFramedTransport(trans)
     }
   }
   if err != nil {
@@ -91,19 +91,19 @@ func main() {
     os.Exit(1)
   }
   defer trans.Close()
-  var protocolFactory thrift.TProtocolFactory
+  var protocolFactory thrift.ProtocolFactory
   switch protocol {
   case "compact":
-    protocolFactory = thrift.NewTCompactProtocolFactory()
+    protocolFactory = thrift.NewCompactProtocolFactory()
     break
   case "simplejson":
-    protocolFactory = thrift.NewTSimpleJSONProtocolFactory()
+    protocolFactory = thrift.NewSimpleJSONProtocolFactory()
     break
   case "json":
-    protocolFactory = thrift.NewTJSONProtocolFactory()
+    protocolFactory = thrift.NewJSONProtocolFactory()
     break
   case "binary", "":
-    protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()
+    protocolFactory = thrift.NewBinaryProtocolFactoryDefault()
     break
   default:
     fmt.Fprintln(os.Stderr, "Invalid protocol specified: ", protocol)
@@ -123,14 +123,14 @@ func main() {
       flag.Usage()
     }
     arg12 := flag.Arg(1)
-    mbTrans13 := thrift.NewTMemoryBufferLen(len(arg12))
+    mbTrans13 := thrift.NewMemoryBufferLen(len(arg12))
     defer mbTrans13.Close()
     _, err14 := mbTrans13.WriteString(arg12)
     if err14 != nil {
       Usage()
       return
     }
-    factory15 := thrift.NewTSimpleJSONProtocolFactory()
+    factory15 := thrift.NewSimpleJSONProtocolFactory()
     jsProt16 := factory15.GetProtocol(mbTrans13)
     argvalue0 := service.NewMyStruct()
     err17 := argvalue0.Read(jsProt16)
@@ -140,14 +140,14 @@ func main() {
     }
     value0 := argvalue0
     arg18 := flag.Arg(2)
-    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
+    mbTrans19 := thrift.NewMemoryBufferLen(len(arg18))
     defer mbTrans19.Close()
     _, err20 := mbTrans19.WriteString(arg18)
     if err20 != nil {
       Usage()
       return
     }
-    factory21 := thrift.NewTSimpleJSONProtocolFactory()
+    factory21 := thrift.NewSimpleJSONProtocolFactory()
     jsProt22 := factory21.GetProtocol(mbTrans19)
     argvalue1 := service.NewIncluded()
     err23 := argvalue1.Read(jsProt22)
@@ -165,14 +165,14 @@ func main() {
       flag.Usage()
     }
     arg24 := flag.Arg(1)
-    mbTrans25 := thrift.NewTMemoryBufferLen(len(arg24))
+    mbTrans25 := thrift.NewMemoryBufferLen(len(arg24))
     defer mbTrans25.Close()
     _, err26 := mbTrans25.WriteString(arg24)
     if err26 != nil {
       Usage()
       return
     }
-    factory27 := thrift.NewTSimpleJSONProtocolFactory()
+    factory27 := thrift.NewSimpleJSONProtocolFactory()
     jsProt28 := factory27.GetProtocol(mbTrans25)
     argvalue0 := service.NewMyStruct()
     err29 := argvalue0.Read(jsProt28)
@@ -182,14 +182,14 @@ func main() {
     }
     value0 := argvalue0
     arg30 := flag.Arg(2)
-    mbTrans31 := thrift.NewTMemoryBufferLen(len(arg30))
+    mbTrans31 := thrift.NewMemoryBufferLen(len(arg30))
     defer mbTrans31.Close()
     _, err32 := mbTrans31.WriteString(arg30)
     if err32 != nil {
       Usage()
       return
     }
-    factory33 := thrift.NewTSimpleJSONProtocolFactory()
+    factory33 := thrift.NewSimpleJSONProtocolFactory()
     jsProt34 := factory33.GetProtocol(mbTrans31)
     argvalue1 := service.NewIncluded()
     err35 := argvalue1.Read(jsProt34)

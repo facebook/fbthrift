@@ -26,27 +26,27 @@ import (
 type ProtocolID int16
 
 const (
-	BinaryProtocol     ProtocolID = 0
-	JSONProtocol       ProtocolID = 1
-	CompactProtocol    ProtocolID = 2
-	DebugProtocol      ProtocolID = 3
-	VirtualProtocol    ProtocolID = 4
-	SimpleJSONProtocol ProtocolID = 5
+	ProtocolIDBinary     ProtocolID = 0
+	ProtocolIDJSON       ProtocolID = 1
+	ProtocolIDCompact    ProtocolID = 2
+	ProtocolIDDebug      ProtocolID = 3
+	ProtocolIDVirtual    ProtocolID = 4
+	ProtocolIDSimpleJSON ProtocolID = 5
 )
 
 func (p ProtocolID) String() string {
 	switch p {
-	case BinaryProtocol:
+	case ProtocolIDBinary:
 		return "binary"
-	case JSONProtocol:
+	case ProtocolIDJSON:
 		return "json"
-	case CompactProtocol:
+	case ProtocolIDCompact:
 		return "compact"
-	case DebugProtocol:
+	case ProtocolIDDebug:
 		return "debug"
-	case VirtualProtocol:
+	case ProtocolIDVirtual:
 		return "virtual"
-	case SimpleJSONProtocol:
+	case ProtocolIDSimpleJSON:
 		return "simplejson"
 	default:
 		return "unknown"
@@ -58,19 +58,19 @@ const (
 	VERSION_1    = 0x80010000
 )
 
-type TProtocol interface {
-	WriteMessageBegin(name string, typeId TMessageType, seqid int32) error
+type Protocol interface {
+	WriteMessageBegin(name string, typeId MessageType, seqid int32) error
 	WriteMessageEnd() error
 	WriteStructBegin(name string) error
 	WriteStructEnd() error
-	WriteFieldBegin(name string, typeId TType, id int16) error
+	WriteFieldBegin(name string, typeId Type, id int16) error
 	WriteFieldEnd() error
 	WriteFieldStop() error
-	WriteMapBegin(keyType TType, valueType TType, size int) error
+	WriteMapBegin(keyType Type, valueType Type, size int) error
 	WriteMapEnd() error
-	WriteListBegin(elemType TType, size int) error
+	WriteListBegin(elemType Type, size int) error
 	WriteListEnd() error
-	WriteSetBegin(elemType TType, size int) error
+	WriteSetBegin(elemType Type, size int) error
 	WriteSetEnd() error
 	WriteBool(value bool) error
 	WriteByte(value byte) error
@@ -82,17 +82,17 @@ type TProtocol interface {
 	WriteString(value string) error
 	WriteBinary(value []byte) error
 
-	ReadMessageBegin() (name string, typeId TMessageType, seqid int32, err error)
+	ReadMessageBegin() (name string, typeId MessageType, seqid int32, err error)
 	ReadMessageEnd() error
 	ReadStructBegin() (name string, err error)
 	ReadStructEnd() error
-	ReadFieldBegin() (name string, typeId TType, id int16, err error)
+	ReadFieldBegin() (name string, typeId Type, id int16, err error)
 	ReadFieldEnd() error
-	ReadMapBegin() (keyType TType, valueType TType, size int, err error)
+	ReadMapBegin() (keyType Type, valueType Type, size int, err error)
 	ReadMapEnd() error
-	ReadListBegin() (elemType TType, size int, err error)
+	ReadListBegin() (elemType Type, size int, err error)
 	ReadListEnd() error
-	ReadSetBegin() (elemType TType, size int, err error)
+	ReadSetBegin() (elemType Type, size int, err error)
 	ReadSetEnd() error
 	ReadBool() (value bool, err error)
 	ReadByte() (value byte, err error)
@@ -104,25 +104,25 @@ type TProtocol interface {
 	ReadString() (value string, err error)
 	ReadBinary() (value []byte, err error)
 
-	Skip(fieldType TType) (err error)
+	Skip(fieldType Type) (err error)
 	Flush() (err error)
 
-	Transport() TTransport
+	Transport() Transport
 }
 
 // The maximum recursive depth the skip() function will traverse
 const DEFAULT_RECURSION_DEPTH = 64
 
-// Skips over the next data element from the provided input TProtocol object.
-func SkipDefaultDepth(prot TProtocol, typeId TType) (err error) {
+// Skips over the next data element from the provided input Protocol object.
+func SkipDefaultDepth(prot Protocol, typeId Type) (err error) {
 	return Skip(prot, typeId, DEFAULT_RECURSION_DEPTH)
 }
 
-// Skips over the next data element from the provided input TProtocol object.
-func Skip(self TProtocol, fieldType TType, maxDepth int) (err error) {
+// Skips over the next data element from the provided input Protocol object.
+func Skip(self Protocol, fieldType Type, maxDepth int) (err error) {
 
 	if maxDepth <= 0 {
-		return NewTProtocolExceptionWithType(DEPTH_LIMIT, errors.New("Depth limit exceeded"))
+		return NewProtocolExceptionWithType(DEPTH_LIMIT, errors.New("Depth limit exceeded"))
 	}
 
 	switch fieldType {

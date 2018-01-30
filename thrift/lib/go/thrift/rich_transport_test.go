@@ -30,17 +30,17 @@ import (
 func TestEnsureTransportsAreRich(t *testing.T) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1024))
 
-	transports := []TTransportFactory{
-		NewTMemoryBufferTransportFactory(1024),
+	transports := []TransportFactory{
+		NewMemoryBufferTransportFactory(1024),
 		NewStreamTransportFactory(buf, buf, true),
-		NewTFramedTransportFactory(NewTMemoryBufferTransportFactory(1024)),
-		NewTHttpPostClientTransportFactory("http://127.0.0.1"),
+		NewFramedTransportFactory(NewMemoryBufferTransportFactory(1024)),
+		NewHTTPPostClientTransportFactory("http://127.0.0.1"),
 	}
 	for _, tf := range transports {
 		trans := tf.GetTransport(nil)
-		_, ok := trans.(TRichTransport)
+		_, ok := trans.(RichTransport)
 		if !ok {
-			t.Errorf("Transport %s does not implement TRichTransport interface", reflect.ValueOf(trans))
+			t.Errorf("Transport %s does not implement RichTransport interface", reflect.ValueOf(trans))
 		}
 	}
 }

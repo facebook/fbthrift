@@ -22,9 +22,9 @@ package thrift
 import "testing"
 
 func TestHeaderProtocolHeaders(t *testing.T) {
-	tmb := NewTMemoryBuffer()
-	proto1 := NewTHeaderProtocol(tmb)
-	proto2 := NewTHeaderProtocol(tmb)
+	tmb := NewMemoryBuffer()
+	proto1 := NewHeaderProtocol(tmb)
+	proto2 := NewHeaderProtocol(tmb)
 
 	proto1.SetHeader("preferred_cheese", "cheddar")
 	if v, _ := proto1.Header("preferred_cheese"); v != "cheddar" {

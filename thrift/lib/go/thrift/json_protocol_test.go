@@ -30,8 +30,8 @@ import (
 
 func TestWriteJSONProtocolBool(t *testing.T) {
 	thetype := "boolean"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range BOOL_VALUES {
 		if e := p.WriteBool(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -61,8 +61,8 @@ func TestWriteJSONProtocolBool(t *testing.T) {
 func TestReadJSONProtocolBool(t *testing.T) {
 	thetype := "boolean"
 	for _, value := range BOOL_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		if value {
 			trans.Write([]byte{'1'}) // not JSON_TRUE
 		} else {
@@ -88,8 +88,8 @@ func TestReadJSONProtocolBool(t *testing.T) {
 
 func TestWriteJSONProtocolByte(t *testing.T) {
 	thetype := "byte"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range BYTE_VALUES {
 		if e := p.WriteByte(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -113,8 +113,8 @@ func TestWriteJSONProtocolByte(t *testing.T) {
 func TestReadJSONProtocolByte(t *testing.T) {
 	thetype := "byte"
 	for _, value := range BYTE_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		trans.WriteString(strconv.Itoa(int(value)))
 		trans.Flush()
 		s := trans.String()
@@ -135,8 +135,8 @@ func TestReadJSONProtocolByte(t *testing.T) {
 
 func TestWriteJSONProtocolI16(t *testing.T) {
 	thetype := "int16"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range INT16_VALUES {
 		if e := p.WriteI16(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -160,8 +160,8 @@ func TestWriteJSONProtocolI16(t *testing.T) {
 func TestReadJSONProtocolI16(t *testing.T) {
 	thetype := "int16"
 	for _, value := range INT16_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		trans.WriteString(strconv.Itoa(int(value)))
 		trans.Flush()
 		s := trans.String()
@@ -182,8 +182,8 @@ func TestReadJSONProtocolI16(t *testing.T) {
 
 func TestWriteJSONProtocolI32(t *testing.T) {
 	thetype := "int32"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range INT32_VALUES {
 		if e := p.WriteI32(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -207,8 +207,8 @@ func TestWriteJSONProtocolI32(t *testing.T) {
 func TestReadJSONProtocolI32(t *testing.T) {
 	thetype := "int32"
 	for _, value := range INT32_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		trans.WriteString(strconv.Itoa(int(value)))
 		trans.Flush()
 		s := trans.String()
@@ -229,8 +229,8 @@ func TestReadJSONProtocolI32(t *testing.T) {
 
 func TestWriteJSONProtocolI64(t *testing.T) {
 	thetype := "int64"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range INT64_VALUES {
 		if e := p.WriteI64(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -254,8 +254,8 @@ func TestWriteJSONProtocolI64(t *testing.T) {
 func TestReadJSONProtocolI64(t *testing.T) {
 	thetype := "int64"
 	for _, value := range INT64_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		trans.WriteString(strconv.FormatInt(value, 10))
 		trans.Flush()
 		s := trans.String()
@@ -276,8 +276,8 @@ func TestReadJSONProtocolI64(t *testing.T) {
 
 func TestWriteJSONProtocolDouble(t *testing.T) {
 	thetype := "double"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range DOUBLE_VALUES {
 		if e := p.WriteDouble(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -315,8 +315,8 @@ func TestWriteJSONProtocolDouble(t *testing.T) {
 func TestReadJSONProtocolDouble(t *testing.T) {
 	thetype := "double"
 	for _, value := range DOUBLE_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		n := NewNumericFromDouble(value)
 		trans.WriteString(n.String())
 		trans.Flush()
@@ -352,8 +352,8 @@ func TestReadJSONProtocolDouble(t *testing.T) {
 
 func TestWriteJSONProtocolFloat(t *testing.T) {
 	thetype := "float"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range FLOAT_VALUES {
 		if e := p.WriteFloat(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -391,8 +391,8 @@ func TestWriteJSONProtocolFloat(t *testing.T) {
 func TestReadJSONProtocolFloat(t *testing.T) {
 	thetype := "float"
 	for _, value := range FLOAT_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		n := NewNumericFromFloat(value)
 		trans.WriteString(n.String())
 		trans.Flush()
@@ -428,8 +428,8 @@ func TestReadJSONProtocolFloat(t *testing.T) {
 
 func TestWriteJSONProtocolString(t *testing.T) {
 	thetype := "string"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	for _, value := range STRING_VALUES {
 		if e := p.WriteString(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -453,8 +453,8 @@ func TestWriteJSONProtocolString(t *testing.T) {
 func TestReadJSONProtocolString(t *testing.T) {
 	thetype := "string"
 	for _, value := range STRING_VALUES {
-		trans := NewTMemoryBuffer()
-		p := NewTJSONProtocol(trans)
+		trans := NewMemoryBuffer()
+		p := NewJSONProtocol(trans)
 		trans.WriteString(jsonQuote(value))
 		trans.Flush()
 		s := trans.String()
@@ -480,8 +480,8 @@ func TestWriteJSONProtocolBinary(t *testing.T) {
 	b64value := make([]byte, base64.StdEncoding.EncodedLen(len(protocol_bdata)))
 	base64.StdEncoding.Encode(b64value, value)
 	b64String := string(b64value)
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	if e := p.WriteBinary(value); e != nil {
 		t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
 	}
@@ -514,8 +514,8 @@ func TestReadJSONProtocolBinary(t *testing.T) {
 	b64value := make([]byte, base64.StdEncoding.EncodedLen(len(protocol_bdata)))
 	base64.StdEncoding.Encode(b64value, value)
 	b64String := string(b64value)
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
 	trans.WriteString(jsonQuote(b64String))
 	trans.Flush()
 	s := trans.String()
@@ -541,9 +541,9 @@ func TestReadJSONProtocolBinary(t *testing.T) {
 
 func TestWriteJSONProtocolList(t *testing.T) {
 	thetype := "list"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
-	p.WriteListBegin(TType(DOUBLE), len(DOUBLE_VALUES))
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
+	p.WriteListBegin(Type(DOUBLE), len(DOUBLE_VALUES))
 	for _, value := range DOUBLE_VALUES {
 		if e := p.WriteDouble(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -595,9 +595,9 @@ func TestWriteJSONProtocolList(t *testing.T) {
 
 func TestWriteJSONProtocolSet(t *testing.T) {
 	thetype := "set"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
-	p.WriteSetBegin(TType(DOUBLE), len(DOUBLE_VALUES))
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
+	p.WriteSetBegin(Type(DOUBLE), len(DOUBLE_VALUES))
 	for _, value := range DOUBLE_VALUES {
 		if e := p.WriteDouble(value); e != nil {
 			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
@@ -649,9 +649,9 @@ func TestWriteJSONProtocolSet(t *testing.T) {
 
 func TestWriteJSONProtocolMap(t *testing.T) {
 	thetype := "map"
-	trans := NewTMemoryBuffer()
-	p := NewTJSONProtocol(trans)
-	p.WriteMapBegin(TType(I32), TType(DOUBLE), len(DOUBLE_VALUES))
+	trans := NewMemoryBuffer()
+	p := NewJSONProtocol(trans)
+	p.WriteMapBegin(Type(I32), Type(DOUBLE), len(DOUBLE_VALUES))
 	for k, value := range DOUBLE_VALUES {
 		if e := p.WriteI32(int32(k)); e != nil {
 			t.Fatalf("Unable to write %s key int32 value %v due to error: %s", thetype, k, e.Error())

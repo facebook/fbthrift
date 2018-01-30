@@ -19,13 +19,13 @@
 
 package thrift
 
-type TServer interface {
-	ProcessorFactory() TProcessorFactory
-	ServerTransport() TServerTransport
-	InputTransportFactory() TTransportFactory
-	OutputTransportFactory() TTransportFactory
-	InputProtocolFactory() TProtocolFactory
-	OutputProtocolFactory() TProtocolFactory
+type Server interface {
+	ProcessorFactory() ProcessorFactory
+	ServerTransport() ServerTransport
+	InputTransportFactory() TransportFactory
+	OutputTransportFactory() TransportFactory
+	InpuprotocolFactory() ProtocolFactory
+	OutpuprotocolFactory() ProtocolFactory
 
 	// Starts the server
 	Serve() error

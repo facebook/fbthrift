@@ -20,6 +20,6 @@
 package thrift
 
 // Factory interface for constructing protocol instances.
-type TProtocolFactory interface {
-	GetProtocol(trans TTransport) TProtocol
+type ProtocolFactory interface {
+	GetProtocol(trans Transport) Protocol
 }

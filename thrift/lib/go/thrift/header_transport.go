@@ -30,24 +30,24 @@ import (
 )
 
 const (
-	DefaultProtoID    = CompactProtocol
+	DefaulprotoID     = ProtocolIDCompact
 	DefaultClientType = HeaderClientType
 )
 
 type tHeaderTransportFactory struct {
-	factory TTransportFactory
+	factory TransportFactory
 }
 
-func NewTHeaderTransportFactory(factory TTransportFactory) TTransportFactory {
+func NewHeaderTransportFactory(factory TransportFactory) TransportFactory {
 	return &tHeaderTransportFactory{factory: factory}
 }
 
-func (p *tHeaderTransportFactory) GetTransport(base TTransport) TTransport {
-	return NewTHeaderTransport(base)
+func (p *tHeaderTransportFactory) GetTransport(base Transport) Transport {
+	return NewHeaderTransport(base)
 }
 
-type THeaderTransport struct {
-	transport TTransport
+type HeaderTransport struct {
+	transport Transport
 
 	// Used on read
 	rbuf       *bufio.Reader
@@ -70,9 +70,9 @@ type THeaderTransport struct {
 	writeTransforms []TransformID
 }
 
-// NewTHeaderTransport Create a new transport with defaults.
-func NewTHeaderTransport(transport TTransport) *THeaderTransport {
-	return &THeaderTransport{
+// NewHeaderTransport Create a new transport with defaults.
+func NewHeaderTransport(transport Transport) *HeaderTransport {
+	return &HeaderTransport{
 		transport: transport,
 		rbuf:      bufio.NewReader(transport),
 		framebuf:  newLimitedByteReader(bytes.NewReader(nil), 0),
@@ -82,30 +82,30 @@ func NewTHeaderTransport(transport TTransport) *THeaderTransport {
 		writeInfoHeaders:           map[string]string{},
 		persistentWriteInfoHeaders: map[string]string{},
 
-		protoID:         DefaultProtoID,
+		protoID:         DefaulprotoID,
 		flags:           0,
 		clientType:      DefaultClientType,
 		writeTransforms: []TransformID{},
 	}
 }
 
-func (t *THeaderTransport) SetSeqID(seq uint32) {
+func (t *HeaderTransport) SetSeqID(seq uint32) {
 	t.seqID = seq
 }
 
-func (t *THeaderTransport) SeqID() uint32 {
+func (t *HeaderTransport) SeqID() uint32 {
 	return t.seqID
 }
 
-func (t *THeaderTransport) Identity() string {
+func (t *HeaderTransport) Identity() string {
 	return t.identity
 }
 
-func (t *THeaderTransport) SetIdentity(identity string) {
+func (t *HeaderTransport) SetIdentity(identity string) {
 	t.identity = identity
 }
 
-func (t *THeaderTransport) PeerIdentity() string {
+func (t *HeaderTransport) PeerIdentity() string {
 	v, ok := t.ReadHeader(IdentityHeader)
 	vers, versok := t.ReadHeader(IDVersionHeader)
 	if ok && versok && vers == IDVersion {
@@ -114,16 +114,16 @@ func (t *THeaderTransport) PeerIdentity() string {
 	return ""
 }
 
-func (t *THeaderTransport) SetPersistentHeader(key, value string) {
+func (t *HeaderTransport) SetPersistentHeader(key, value string) {
 	t.persistentWriteInfoHeaders[key] = value
 }
 
-func (t *THeaderTransport) PersistentHeader(key string) (string, bool) {
+func (t *HeaderTransport) PersistentHeader(key string) (string, bool) {
 	v, ok := t.persistentWriteInfoHeaders[key]
 	return v, ok
 }
 
-func (t *THeaderTransport) PersistentHeaders() map[string]string {
+func (t *HeaderTransport) PersistentHeaders() map[string]string {
 	res := map[string]string{}
 	for k, v := range t.persistentWriteInfoHeaders {
 		res[k] = v
@@ -131,20 +131,20 @@ func (t *THeaderTransport) PersistentHeaders() map[string]string {
 	return res
 }
 
-func (t *THeaderTransport) ClearPersistentHeaders() {
+func (t *HeaderTransport) ClearPersistentHeaders() {
 	t.persistentWriteInfoHeaders = map[string]string{}
 }
 
-func (t *THeaderTransport) SetHeader(key, value string) {
+func (t *HeaderTransport) SetHeader(key, value string) {
 	t.writeInfoHeaders[key] = value
 }
 
-func (t *THeaderTransport) Header(key string) (string, bool) {
+func (t *HeaderTransport) Header(key string) (string, bool) {
 	v, ok := t.writeInfoHeaders[key]
 	return v, ok
 }
 
-func (t *THeaderTransport) Headers() map[string]string {
+func (t *HeaderTransport) Headers() map[string]string {
 	res := map[string]string{}
 	for k, v := range t.writeInfoHeaders {
 		res[k] = v
@@ -152,11 +152,11 @@ func (t *THeaderTransport) Headers() map[string]string {
 	return res
 }
 
-func (t *THeaderTransport) ClearHeaders() {
+func (t *HeaderTransport) ClearHeaders() {
 	t.writeInfoHeaders = map[string]string{}
 }
 
-func (t *THeaderTransport) ReadHeader(key string) (string, bool) {
+func (t *HeaderTransport) ReadHeader(key string) (string, bool) {
 	if t.readHeader == nil {
 		return "", false
 	}
@@ -168,7 +168,7 @@ func (t *THeaderTransport) ReadHeader(key string) (string, bool) {
 	return v, ok
 }
 
-func (t *THeaderTransport) ReadHeaders() map[string]string {
+func (t *HeaderTransport) ReadHeaders() map[string]string {
 	res := map[string]string{}
 	if t.readHeader == nil {
 		return res
@@ -182,13 +182,13 @@ func (t *THeaderTransport) ReadHeaders() map[string]string {
 	return res
 }
 
-func (t *THeaderTransport) ProtocolID() ProtocolID {
+func (t *HeaderTransport) ProtocolID() ProtocolID {
 	return t.protoID
 }
 
-func (t *THeaderTransport) SetProtocolID(protoID ProtocolID) error {
-	if !(protoID == BinaryProtocol || protoID == CompactProtocol) {
-		return NewTTransportException(
+func (t *HeaderTransport) SetProtocolID(protoID ProtocolID) error {
+	if !(protoID == ProtocolIDBinary || protoID == ProtocolIDCompact) {
+		return NewTransportException(
 			NOT_IMPLEMENTED, fmt.Sprintf("unimplemented proto ID: %s (%#x)", protoID.String(), int64(protoID)),
 		)
 	}
@@ -196,9 +196,9 @@ func (t *THeaderTransport) SetProtocolID(protoID ProtocolID) error {
 	return nil
 }
 
-func (t *THeaderTransport) AddTransform(trans TransformID) error {
+func (t *HeaderTransport) AddTransform(trans TransformID) error {
 	if sup, ok := supportedTransforms[trans]; !ok || !sup {
-		return NewTTransportException(
+		return NewTransportException(
 			NOT_IMPLEMENTED, fmt.Sprintf("unimplemented transform ID: %s (%#x)", trans.String(), int64(trans)),
 		)
 	}
@@ -213,7 +213,7 @@ func (t *THeaderTransport) AddTransform(trans TransformID) error {
 
 // applyUntransform Fully read the frame and untransform into a local buffer
 // we need to know the full size of the untransformed data
-func (t *THeaderTransport) applyUntransform() error {
+func (t *HeaderTransport) applyUntransform() error {
 	out, err := ioutil.ReadAll(t.framebuf)
 	if err != nil {
 		return err
@@ -226,7 +226,7 @@ func (t *THeaderTransport) applyUntransform() error {
 // ResetProtocol Needs to be called between every frame receive (BeginMessageRead)
 // We do this to read out the header for each frame. This contains the length of the
 // frame and protocol / metadata info.
-func (t *THeaderTransport) ResetProtocol() error {
+func (t *HeaderTransport) ResetProtocol() error {
 	t.readHeader = nil
 	// TODO(carlverge): We should probably just read in the whole
 	// frame here. A bit of extra memory, probably a lot less CPU.
@@ -236,7 +236,7 @@ func (t *THeaderTransport) ResetProtocol() error {
 	// Consume the header from the input stream
 	err := hdr.Read(t.rbuf)
 	if err != nil {
-		return NewTTransportExceptionFromError(err)
+		return NewTransportExceptionFromError(err)
 	}
 
 	// Set new header
@@ -260,12 +260,12 @@ func (t *THeaderTransport) ResetProtocol() error {
 	for _, trans := range hdr.transforms {
 		xformer, terr := trans.Untransformer()
 		if terr != nil {
-			return NewTTransportExceptionFromError(terr)
+			return NewTransportExceptionFromError(terr)
 		}
 
 		t.framebuf, terr = xformer(t.framebuf)
 		if terr != nil {
-			return NewTTransportExceptionFromError(terr)
+			return NewTransportExceptionFromError(terr)
 		}
 	}
 
@@ -273,7 +273,7 @@ func (t *THeaderTransport) ResetProtocol() error {
 	if len(hdr.transforms) > 0 {
 		err = t.applyUntransform()
 		if err != nil {
-			return NewTTransportExceptionFromError(err)
+			return NewTransportExceptionFromError(err)
 		}
 	}
 
@@ -284,22 +284,22 @@ func (t *THeaderTransport) ResetProtocol() error {
 }
 
 // Open Open the internal transport
-func (t *THeaderTransport) Open() error {
+func (t *HeaderTransport) Open() error {
 	return t.transport.Open()
 }
 
 // IsOpen Is the current transport open
-func (t *THeaderTransport) IsOpen() bool {
+func (t *HeaderTransport) IsOpen() bool {
 	return t.transport.IsOpen()
 }
 
 // Close Close the internal transport
-func (t *THeaderTransport) Close() error {
+func (t *HeaderTransport) Close() error {
 	return t.transport.Close()
 }
 
 // Read Read from the current framebuffer. EOF if the frame is done.
-func (t *THeaderTransport) Read(buf []byte) (int, error) {
+func (t *HeaderTransport) Read(buf []byte) (int, error) {
 	// If we detected unframed, just pass the transport up
 	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
 		return t.framebuf.Read(buf)
@@ -314,7 +314,7 @@ func (t *THeaderTransport) Read(buf []byte) (int, error) {
 }
 
 // ReadByte Read a single byte from the current framebuffer. EOF if the frame is done.
-func (t *THeaderTransport) ReadByte() (byte, error) {
+func (t *HeaderTransport) ReadByte() (byte, error) {
 	// If we detected unframed, just pass the transport up
 	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
 		return t.framebuf.ReadByte()
@@ -325,25 +325,25 @@ func (t *THeaderTransport) ReadByte() (byte, error) {
 }
 
 // Write Write multiple bytes to the framebuffer, does not send to transport.
-func (t *THeaderTransport) Write(buf []byte) (int, error) {
+func (t *HeaderTransport) Write(buf []byte) (int, error) {
 	n, err := t.wbuf.Write(buf)
-	return n, NewTTransportExceptionFromError(err)
+	return n, NewTransportExceptionFromError(err)
 }
 
 // WriteByte Write a single byte to the framebuffer, does not send to transport.
-func (t *THeaderTransport) WriteByte(c byte) error {
+func (t *HeaderTransport) WriteByte(c byte) error {
 	err := t.wbuf.WriteByte(c)
-	return NewTTransportExceptionFromError(err)
+	return NewTransportExceptionFromError(err)
 }
 
 // WriteString Write a string to the framebuffer, does not send to transport.
-func (t *THeaderTransport) WriteString(s string) (int, error) {
+func (t *HeaderTransport) WriteString(s string) (int, error) {
 	n, err := t.wbuf.WriteString(s)
-	return n, NewTTransportExceptionFromError(err)
+	return n, NewTransportExceptionFromError(err)
 }
 
 // RemainingBytes Return how many bytes remain in the current recv framebuffer.
-func (t *THeaderTransport) RemainingBytes() uint64 {
+func (t *HeaderTransport) RemainingBytes() uint64 {
 	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
 		// We cannot really tell the size without reading the whole struct in here
 		return math.MaxUint64
@@ -368,7 +368,7 @@ func applyTransforms(buf *bytes.Buffer, transforms []TransformID) (*bytes.Buffer
 			buf, tmpbuf = tmpbuf, buf
 			tmpbuf.Reset()
 		default:
-			return nil, NewTTransportException(
+			return nil, NewTransportException(
 				NOT_IMPLEMENTED, fmt.Sprintf("unimplemented transform ID: %s (%#x)", trans.String(), int64(trans)),
 			)
 		}
@@ -376,7 +376,7 @@ func applyTransforms(buf *bytes.Buffer, transforms []TransformID) (*bytes.Buffer
 	return buf, nil
 }
 
-func (t *THeaderTransport) flushHeader() error {
+func (t *HeaderTransport) flushHeader() error {
 	hdr := tHeader{}
 	hdr.headers = t.writeInfoHeaders
 	hdr.pHeaders = t.persistentWriteInfoHeaders
@@ -393,44 +393,44 @@ func (t *THeaderTransport) flushHeader() error {
 
 	outbuf, err := applyTransforms(t.wbuf, t.writeTransforms)
 	if err != nil {
-		return NewTTransportExceptionFromError(err)
+		return NewTransportExceptionFromError(err)
 	}
 	t.wbuf = outbuf
 
 	hdr.payloadLen = uint64(t.wbuf.Len())
 	err = hdr.calcLenFromPayload()
 	if err != nil {
-		return NewTTransportExceptionFromError(err)
+		return NewTransportExceptionFromError(err)
 	}
 
 	hdrbuf := bytes.NewBuffer(make([]byte, 64))
 	hdrbuf.Reset()
 	err = hdr.Write(hdrbuf)
 	if err != nil {
-		return NewTTransportExceptionFromError(err)
+		return NewTransportExceptionFromError(err)
 	}
 
 	_, err = hdrbuf.WriteTo(t.transport)
-	return NewTTransportExceptionFromError(err)
+	return NewTransportExceptionFromError(err)
 }
 
-func (t *THeaderTransport) flushFramed() error {
+func (t *HeaderTransport) flushFramed() error {
 	buflen := t.wbuf.Len()
 	framesize := uint32(buflen)
 	if buflen > int(MaxFrameSize) {
-		return NewTTransportException(
+		return NewTransportException(
 			INVALID_FRAME_SIZE,
 			fmt.Sprintf("cannot send bigframe of size %d", buflen),
 		)
 	}
 
 	err := binary.Write(t.transport, binary.BigEndian, framesize)
-	return NewTTransportExceptionFromError(err)
+	return NewTransportExceptionFromError(err)
 }
 
-func (t *THeaderTransport) Flush() error {
+func (t *HeaderTransport) Flush() error {
 	// Closure incase wbuf pointer changes in xform
-	defer func(tp *THeaderTransport) {
+	defer func(tp *HeaderTransport) {
 		tp.wbuf.Reset()
 	}(t)
 	var err error
@@ -447,7 +447,7 @@ func (t *THeaderTransport) Flush() error {
 	case UnframedDeprecated:
 		err = nil
 	default:
-		return NewTTransportException(
+		return NewTransportException(
 			UNKNOWN_TRANSPORT_EXCEPTION,
 			fmt.Sprintf("tHeader cannot flush for clientType %s", t.clientType.String()),
 		)
@@ -461,7 +461,7 @@ func (t *THeaderTransport) Flush() error {
 	if t.wbuf.Len() > 0 {
 		_, err = t.wbuf.WriteTo(t.transport)
 		if err != nil {
-			return NewTTransportExceptionFromError(err)
+			return NewTransportExceptionFromError(err)
 		}
 	}
 
@@ -469,5 +469,5 @@ func (t *THeaderTransport) Flush() error {
 	t.ClearHeaders()
 
 	err = t.transport.Flush()
-	return NewTTransportExceptionFromError(err)
+	return NewTransportExceptionFromError(err)
 }

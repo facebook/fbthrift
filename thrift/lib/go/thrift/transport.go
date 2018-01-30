@@ -36,7 +36,7 @@ type ReadSizeProvider interface {
 
 
 // Encapsulates the I/O layer
-type TTransport interface {
+type Transport interface {
 	io.ReadWriteCloser
 	Flusher
 	ReadSizeProvider
@@ -55,9 +55,9 @@ type stringWriter interface {
 
 // This is "enchanced" transport with extra capabilities. You need to use one of these
 // to construct protocol.
-// Notably, TSocket does not implement this interface, and it is always a mistake to use
-// TSocket directly in protocol.
-type TRichTransport interface {
+// Notably, Socket does not implement this interface, and it is always a mistake to use
+// Socket directly in protocol.
+type RichTransport interface {
 	io.ReadWriter
 	io.ByteReader
 	io.ByteWriter

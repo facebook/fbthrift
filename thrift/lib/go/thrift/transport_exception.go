@@ -29,8 +29,8 @@ type timeoutable interface {
 }
 
 // Thrift Transport exception
-type TTransportException interface {
-	TException
+type TransportException interface {
+	Exception
 	TypeId() int
 	Err() error
 }
@@ -53,48 +53,48 @@ const (
 	NETWORK_ERROR               = 15
 )
 
-type tTransportException struct {
+type transportException struct {
 	typeId int
 	err    error
 }
 
-func (p *tTransportException) TypeId() int {
+func (p *transportException) TypeId() int {
 	return p.typeId
 }
 
-func (p *tTransportException) Error() string {
+func (p *transportException) Error() string {
 	return p.err.Error()
 }
 
-func (p *tTransportException) Err() error {
+func (p *transportException) Err() error {
 	return p.err
 }
 
-func NewTTransportException(t int, e string) TTransportException {
-	return &tTransportException{typeId: t, err: errors.New(e)}
+func NewTransportException(t int, e string) TransportException {
+	return &transportException{typeId: t, err: errors.New(e)}
 }
 
-func NewTTransportExceptionFromError(e error) TTransportException {
+func NewTransportExceptionFromError(e error) TransportException {
 	if e == nil {
 		return nil
 	}
 
-	if t, ok := e.(TTransportException); ok {
+	if t, ok := e.(TransportException); ok {
 		return t
 	}
 
 	switch v := e.(type) {
-	case TTransportException:
+	case TransportException:
 		return v
 	case timeoutable:
 		if v.Timeout() {
-			return &tTransportException{typeId: TIMED_OUT, err: e}
+			return &transportException{typeId: TIMED_OUT, err: e}
 		}
 	}
 
 	if e == io.EOF {
-		return &tTransportException{typeId: END_OF_FILE, err: e}
+		return &transportException{typeId: END_OF_FILE, err: e}
 	}
 
-	return &tTransportException{typeId: UNKNOWN_TRANSPORT_EXCEPTION, err: e}
+	return &transportException{typeId: UNKNOWN_TRANSPORT_EXCEPTION, err: e}
 }

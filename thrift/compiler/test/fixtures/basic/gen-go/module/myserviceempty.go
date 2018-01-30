@@ -20,10 +20,10 @@ var _ = bytes.Equal
 type MyServiceEmpty interface {}
 
 type MyServiceEmptyClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
 }
 
@@ -31,7 +31,7 @@ func (client *MyServiceEmptyClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyServiceEmptyClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceEmptyClient {
+func NewMyServiceEmptyClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceEmptyClient {
   return &MyServiceEmptyClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -40,7 +40,7 @@ func NewMyServiceEmptyClientFactory(t thrift.TTransport, f thrift.TProtocolFacto
   }
 }
 
-func NewMyServiceEmptyClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceEmptyClient {
+func NewMyServiceEmptyClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyClient {
   return &MyServiceEmptyClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -51,15 +51,15 @@ func NewMyServiceEmptyClientProtocol(t thrift.TTransport, iprot thrift.TProtocol
 
 
 type MyServiceEmptyThreadsafeClient struct {
-  Transport thrift.TTransport
-  ProtocolFactory thrift.TProtocolFactory
-  InputProtocol thrift.TProtocol
-  OutputProtocol thrift.TProtocol
+  Transport thrift.Transport
+  ProtocolFactory thrift.ProtocolFactory
+  InputProtocol thrift.Protocol
+  OutputProtocol thrift.Protocol
   SeqId int32
   Mu sync.Mutex
 }
 
-func NewMyServiceEmptyThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServiceEmptyThreadsafeClient {
+func NewMyServiceEmptyThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceEmptyThreadsafeClient {
   return &MyServiceEmptyThreadsafeClient{Transport: t,
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
@@ -68,7 +68,7 @@ func NewMyServiceEmptyThreadsafeClientFactory(t thrift.TTransport, f thrift.TPro
   }
 }
 
-func NewMyServiceEmptyThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServiceEmptyThreadsafeClient {
+func NewMyServiceEmptyThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyThreadsafeClient {
   return &MyServiceEmptyThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -81,30 +81,30 @@ func (p *MyServiceEmptyThreadsafeClient) Threadsafe() {}
 
 
 type MyServiceEmptyProcessor struct {
-  processorMap map[string]thrift.TProcessorFunction
+  processorMap map[string]thrift.ProcessorFunction
   handler MyServiceEmpty
 }
 
-func (p *MyServiceEmptyProcessor) AddToProcessorMap(key string, processor thrift.TProcessorFunction) {
+func (p *MyServiceEmptyProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
 }
 
-func (p *MyServiceEmptyProcessor) GetProcessorFunction(key string) (processor thrift.TProcessorFunction, ok bool) {
+func (p *MyServiceEmptyProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
   return processor, ok
 }
 
-func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
+func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
 func NewMyServiceEmptyProcessor(handler MyServiceEmpty) *MyServiceEmptyProcessor {
 
-  self56 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self56 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
 return self56
 }
 
-func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   name, _, seqId, err := iprot.ReadMessageBegin()
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
@@ -112,7 +112,7 @@ func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.TProtocol) (succes
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x57 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x57 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
   x57.Write(oprot)
   oprot.WriteMessageEnd()

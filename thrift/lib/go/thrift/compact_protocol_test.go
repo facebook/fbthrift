@@ -25,30 +25,30 @@ import (
 )
 
 func TestReadWriteCompactProtocol(t *testing.T) {
-	ReadWriteProtocolTest(t, NewTCompactProtocolFactory())
-	transports := []TTransport{
-		NewTMemoryBuffer(),
+	ReadWriteProtocolTest(t, NewCompactProtocolFactory())
+	transports := []Transport{
+		NewMemoryBuffer(),
 		NewStreamTransportRW(bytes.NewBuffer(make([]byte, 0, 16384))),
-		NewTFramedTransport(NewTMemoryBuffer()),
+		NewFramedTransport(NewMemoryBuffer()),
 	}
 	for _, trans := range transports {
-		p := NewTCompactProtocol(trans)
+		p := NewCompactProtocol(trans)
 		ReadWriteBool(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteByte(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteI16(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteI32(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteI64(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteDouble(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteFloat(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteString(t, p, trans)
-		p = NewTCompactProtocol(trans)
+		p = NewCompactProtocol(trans)
 		ReadWriteBinary(t, p, trans)
 		trans.Close()
 	}

@@ -23,257 +23,257 @@ import (
 	"log"
 )
 
-type TDebugProtocol struct {
-	Delegate  TProtocol
+type DebugProtocol struct {
+	Delegate  Protocol
 	LogPrefix string
 }
 
-type TDebugProtocolFactory struct {
-	Underlying TProtocolFactory
+type DebugProtocolFactory struct {
+	Underlying ProtocolFactory
 	LogPrefix  string
 }
 
-func NewTDebugProtocolFactory(underlying TProtocolFactory, logPrefix string) *TDebugProtocolFactory {
-	return &TDebugProtocolFactory{
+func NewDebugProtocolFactory(underlying ProtocolFactory, logPrefix string) *DebugProtocolFactory {
+	return &DebugProtocolFactory{
 		Underlying: underlying,
 		LogPrefix:  logPrefix,
 	}
 }
 
-func (t *TDebugProtocolFactory) GetProtocol(trans TTransport) TProtocol {
-	return &TDebugProtocol{
+func (t *DebugProtocolFactory) GetProtocol(trans Transport) Protocol {
+	return &DebugProtocol{
 		Delegate:  t.Underlying.GetProtocol(trans),
 		LogPrefix: t.LogPrefix,
 	}
 }
 
-func (tdp *TDebugProtocol) WriteMessageBegin(name string, typeId TMessageType, seqid int32) error {
+func (tdp *DebugProtocol) WriteMessageBegin(name string, typeId MessageType, seqid int32) error {
 	err := tdp.Delegate.WriteMessageBegin(name, typeId, seqid)
 	log.Printf("%sWriteMessageBegin(name=%#v, typeId=%#v, seqid=%#v) => %#v", tdp.LogPrefix, name, typeId, seqid, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteMessageEnd() error {
+func (tdp *DebugProtocol) WriteMessageEnd() error {
 	err := tdp.Delegate.WriteMessageEnd()
 	log.Printf("%sWriteMessageEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteStructBegin(name string) error {
+func (tdp *DebugProtocol) WriteStructBegin(name string) error {
 	err := tdp.Delegate.WriteStructBegin(name)
 	log.Printf("%sWriteStructBegin(name=%#v) => %#v", tdp.LogPrefix, name, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteStructEnd() error {
+func (tdp *DebugProtocol) WriteStructEnd() error {
 	err := tdp.Delegate.WriteStructEnd()
 	log.Printf("%sWriteStructEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteFieldBegin(name string, typeId TType, id int16) error {
+func (tdp *DebugProtocol) WriteFieldBegin(name string, typeId Type, id int16) error {
 	err := tdp.Delegate.WriteFieldBegin(name, typeId, id)
 	log.Printf("%sWriteFieldBegin(name=%#v, typeId=%#v, id%#v) => %#v", tdp.LogPrefix, name, typeId, id, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteFieldEnd() error {
+func (tdp *DebugProtocol) WriteFieldEnd() error {
 	err := tdp.Delegate.WriteFieldEnd()
 	log.Printf("%sWriteFieldEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteFieldStop() error {
+func (tdp *DebugProtocol) WriteFieldStop() error {
 	err := tdp.Delegate.WriteFieldStop()
 	log.Printf("%sWriteFieldStop() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteMapBegin(keyType TType, valueType TType, size int) error {
+func (tdp *DebugProtocol) WriteMapBegin(keyType Type, valueType Type, size int) error {
 	err := tdp.Delegate.WriteMapBegin(keyType, valueType, size)
 	log.Printf("%sWriteMapBegin(keyType=%#v, valueType=%#v, size=%#v) => %#v", tdp.LogPrefix, keyType, valueType, size, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteMapEnd() error {
+func (tdp *DebugProtocol) WriteMapEnd() error {
 	err := tdp.Delegate.WriteMapEnd()
 	log.Printf("%sWriteMapEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteListBegin(elemType TType, size int) error {
+func (tdp *DebugProtocol) WriteListBegin(elemType Type, size int) error {
 	err := tdp.Delegate.WriteListBegin(elemType, size)
 	log.Printf("%sWriteListBegin(elemType=%#v, size=%#v) => %#v", tdp.LogPrefix, elemType, size, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteListEnd() error {
+func (tdp *DebugProtocol) WriteListEnd() error {
 	err := tdp.Delegate.WriteListEnd()
 	log.Printf("%sWriteListEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteSetBegin(elemType TType, size int) error {
+func (tdp *DebugProtocol) WriteSetBegin(elemType Type, size int) error {
 	err := tdp.Delegate.WriteSetBegin(elemType, size)
 	log.Printf("%sWriteSetBegin(elemType=%#v, size=%#v) => %#v", tdp.LogPrefix, elemType, size, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteSetEnd() error {
+func (tdp *DebugProtocol) WriteSetEnd() error {
 	err := tdp.Delegate.WriteSetEnd()
 	log.Printf("%sWriteSetEnd() => %#v", tdp.LogPrefix, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteBool(value bool) error {
+func (tdp *DebugProtocol) WriteBool(value bool) error {
 	err := tdp.Delegate.WriteBool(value)
 	log.Printf("%sWriteBool(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteByte(value byte) error {
+func (tdp *DebugProtocol) WriteByte(value byte) error {
 	err := tdp.Delegate.WriteByte(value)
 	log.Printf("%sWriteByte(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteI16(value int16) error {
+func (tdp *DebugProtocol) WriteI16(value int16) error {
 	err := tdp.Delegate.WriteI16(value)
 	log.Printf("%sWriteI16(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteI32(value int32) error {
+func (tdp *DebugProtocol) WriteI32(value int32) error {
 	err := tdp.Delegate.WriteI32(value)
 	log.Printf("%sWriteI32(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteI64(value int64) error {
+func (tdp *DebugProtocol) WriteI64(value int64) error {
 	err := tdp.Delegate.WriteI64(value)
 	log.Printf("%sWriteI64(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteDouble(value float64) error {
+func (tdp *DebugProtocol) WriteDouble(value float64) error {
 	err := tdp.Delegate.WriteDouble(value)
 	log.Printf("%sWriteDouble(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteFloat(value float32) error {
+func (tdp *DebugProtocol) WriteFloat(value float32) error {
 	err := tdp.Delegate.WriteFloat(value)
 	log.Printf("%sWriteFloat(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteString(value string) error {
+func (tdp *DebugProtocol) WriteString(value string) error {
 	err := tdp.Delegate.WriteString(value)
 	log.Printf("%sWriteString(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteBinary(value []byte) error {
+func (tdp *DebugProtocol) WriteBinary(value []byte) error {
 	err := tdp.Delegate.WriteBinary(value)
 	log.Printf("%sWriteBinary(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
 
-func (tdp *TDebugProtocol) ReadMessageBegin() (name string, typeId TMessageType, seqid int32, err error) {
+func (tdp *DebugProtocol) ReadMessageBegin() (name string, typeId MessageType, seqid int32, err error) {
 	name, typeId, seqid, err = tdp.Delegate.ReadMessageBegin()
 	log.Printf("%sReadMessageBegin() (name=%#v, typeId=%#v, seqid=%#v, err=%#v)", tdp.LogPrefix, name, typeId, seqid, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadMessageEnd() (err error) {
+func (tdp *DebugProtocol) ReadMessageEnd() (err error) {
 	err = tdp.Delegate.ReadMessageEnd()
 	log.Printf("%sReadMessageEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadStructBegin() (name string, err error) {
+func (tdp *DebugProtocol) ReadStructBegin() (name string, err error) {
 	name, err = tdp.Delegate.ReadStructBegin()
 	log.Printf("%sReadStructBegin() (name%#v, err=%#v)", tdp.LogPrefix, name, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadStructEnd() (err error) {
+func (tdp *DebugProtocol) ReadStructEnd() (err error) {
 	err = tdp.Delegate.ReadStructEnd()
 	log.Printf("%sReadStructEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadFieldBegin() (name string, typeId TType, id int16, err error) {
+func (tdp *DebugProtocol) ReadFieldBegin() (name string, typeId Type, id int16, err error) {
 	name, typeId, id, err = tdp.Delegate.ReadFieldBegin()
 	log.Printf("%sReadFieldBegin() (name=%#v, typeId=%#v, id=%#v, err=%#v)", tdp.LogPrefix, name, typeId, id, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadFieldEnd() (err error) {
+func (tdp *DebugProtocol) ReadFieldEnd() (err error) {
 	err = tdp.Delegate.ReadFieldEnd()
 	log.Printf("%sReadFieldEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadMapBegin() (keyType TType, valueType TType, size int, err error) {
+func (tdp *DebugProtocol) ReadMapBegin() (keyType Type, valueType Type, size int, err error) {
 	keyType, valueType, size, err = tdp.Delegate.ReadMapBegin()
 	log.Printf("%sReadMapBegin() (keyType=%#v, valueType=%#v, size=%#v, err=%#v)", tdp.LogPrefix, keyType, valueType, size, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadMapEnd() (err error) {
+func (tdp *DebugProtocol) ReadMapEnd() (err error) {
 	err = tdp.Delegate.ReadMapEnd()
 	log.Printf("%sReadMapEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadListBegin() (elemType TType, size int, err error) {
+func (tdp *DebugProtocol) ReadListBegin() (elemType Type, size int, err error) {
 	elemType, size, err = tdp.Delegate.ReadListBegin()
 	log.Printf("%sReadListBegin() (elemType=%#v, size=%#v, err=%#v)", tdp.LogPrefix, elemType, size, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadListEnd() (err error) {
+func (tdp *DebugProtocol) ReadListEnd() (err error) {
 	err = tdp.Delegate.ReadListEnd()
 	log.Printf("%sReadListEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadSetBegin() (elemType TType, size int, err error) {
+func (tdp *DebugProtocol) ReadSetBegin() (elemType Type, size int, err error) {
 	elemType, size, err = tdp.Delegate.ReadSetBegin()
 	log.Printf("%sReadSetBegin() (elemType=%#v, size=%#v, err=%#v)", tdp.LogPrefix, elemType, size, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadSetEnd() (err error) {
+func (tdp *DebugProtocol) ReadSetEnd() (err error) {
 	err = tdp.Delegate.ReadSetEnd()
 	log.Printf("%sReadSetEnd() err=%#v", tdp.LogPrefix, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadBool() (value bool, err error) {
+func (tdp *DebugProtocol) ReadBool() (value bool, err error) {
 	value, err = tdp.Delegate.ReadBool()
 	log.Printf("%sReadBool() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadByte() (value byte, err error) {
+func (tdp *DebugProtocol) ReadByte() (value byte, err error) {
 	value, err = tdp.Delegate.ReadByte()
 	log.Printf("%sReadByte() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadI16() (value int16, err error) {
+func (tdp *DebugProtocol) ReadI16() (value int16, err error) {
 	value, err = tdp.Delegate.ReadI16()
 	log.Printf("%sReadI16() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadI32() (value int32, err error) {
+func (tdp *DebugProtocol) ReadI32() (value int32, err error) {
 	value, err = tdp.Delegate.ReadI32()
 	log.Printf("%sReadI32() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadI64() (value int64, err error) {
+func (tdp *DebugProtocol) ReadI64() (value int64, err error) {
 	value, err = tdp.Delegate.ReadI64()
 	log.Printf("%sReadI64() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadDouble() (value float64, err error) {
+func (tdp *DebugProtocol) ReadDouble() (value float64, err error) {
 	value, err = tdp.Delegate.ReadDouble()
 	log.Printf("%sReadDouble() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadFloat() (value float32, err error) {
+func (tdp *DebugProtocol) ReadFloat() (value float32, err error) {
 	value, err = tdp.Delegate.ReadFloat()
 	log.Printf("%sReadFloat() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadString() (value string, err error) {
+func (tdp *DebugProtocol) ReadString() (value string, err error) {
 	value, err = tdp.Delegate.ReadString()
 	log.Printf("%sReadString() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadBinary() (value []byte, err error) {
+func (tdp *DebugProtocol) ReadBinary() (value []byte, err error) {
 	value, err = tdp.Delegate.ReadBinary()
 	log.Printf("%sReadBinary() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) Skip(fieldType TType) (err error) {
+func (tdp *DebugProtocol) Skip(fieldType Type) (err error) {
 	err = tdp.Delegate.Skip(fieldType)
 	log.Printf("%sSkip(fieldType=%#v) (err=%#v)", tdp.LogPrefix, fieldType, err)
 	return
 }
-func (tdp *TDebugProtocol) Flush() (err error) {
+func (tdp *DebugProtocol) Flush() (err error) {
 	err = tdp.Delegate.Flush()
 	log.Printf("%sFlush() (err=%#v)", tdp.LogPrefix, err)
 	return
 }
 
-func (tdp *TDebugProtocol) Transport() TTransport {
+func (tdp *DebugProtocol) Transport() Transport {
 	return tdp.Delegate.Transport()
 }

@@ -31,10 +31,10 @@ func (client *MyServicePrioChildClient) Close() error {
   return client.Transport.Close()
 }
 
-func NewMyServicePrioChildClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioChildClient {
+func NewMyServicePrioChildClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioChildClient {
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClientFactory(t, f)}}
 
-func NewMyServicePrioChildClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServicePrioChildClient {
+func NewMyServicePrioChildClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildClient {
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClientProtocol(t, iprot, oprot)}
 }
 
@@ -76,15 +76,15 @@ func (p *MyServicePrioChildClient) recvPang() (err error) {
     return
   }
   if method != "pang" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "pang failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "pang failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "pang failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "pang failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error68 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error68 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error69 error
     error69, err = error68.Read(iprot)
     if err != nil {
@@ -97,7 +97,7 @@ func (p *MyServicePrioChildClient) recvPang() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pang failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pang failed: invalid message type")
     return
   }
   result := MyServicePrioChildPangResult{}
@@ -115,10 +115,10 @@ type MyServicePrioChildThreadsafeClient struct {
   *MyServicePrioParentThreadsafeClient
 }
 
-func NewMyServicePrioChildThreadsafeClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *MyServicePrioChildThreadsafeClient {
+func NewMyServicePrioChildThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientFactory(t, f)}}
 
-func NewMyServicePrioChildThreadsafeClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *MyServicePrioChildThreadsafeClient {
+func NewMyServicePrioChildThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientProtocol(t, iprot, oprot)}
 }
 
@@ -164,15 +164,15 @@ func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
     return
   }
   if method != "pang" {
-    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "pang failed: wrong method name")
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "pang failed: wrong method name")
     return
   }
   if p.SeqId != seqId {
-    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "pang failed: out of sequence response")
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "pang failed: out of sequence response")
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error70 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    error70 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
     var error71 error
     error71, err = error70.Read(iprot)
     if err != nil {
@@ -185,7 +185,7 @@ func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
     return
   }
   if mTypeId != thrift.REPLY {
-    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pang failed: invalid message type")
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pang failed: invalid message type")
     return
   }
   result := MyServicePrioChildPangResult{}
@@ -213,11 +213,11 @@ type myServicePrioChildProcessorPang struct {
   handler MyServicePrioChild
 }
 
-func (p *myServicePrioChildProcessorPang) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+func (p *myServicePrioChildProcessorPang) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
   args := MyServicePrioChildPangArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
     oprot.WriteMessageBegin("pang", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -229,7 +229,7 @@ func (p *myServicePrioChildProcessorPang) Process(seqId int32, iprot, oprot thri
   result := MyServicePrioChildPangResult{}
   var err2 error
   if err2 = p.handler.Pang(); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pang: " + err2.Error())
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pang: " + err2.Error())
     oprot.WriteMessageBegin("pang", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
@@ -264,7 +264,7 @@ func NewMyServicePrioChildPangArgs() *MyServicePrioChildPangArgs {
   return &MyServicePrioChildPangArgs{}
 }
 
-func (p *MyServicePrioChildPangArgs) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioChildPangArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -289,7 +289,7 @@ func (p *MyServicePrioChildPangArgs) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioChildPangArgs) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioChildPangArgs) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("pang_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -313,7 +313,7 @@ func NewMyServicePrioChildPangResult() *MyServicePrioChildPangResult {
   return &MyServicePrioChildPangResult{}
 }
 
-func (p *MyServicePrioChildPangResult) Read(iprot thrift.TProtocol) error {
+func (p *MyServicePrioChildPangResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -338,7 +338,7 @@ func (p *MyServicePrioChildPangResult) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *MyServicePrioChildPangResult) Write(oprot thrift.TProtocol) error {
+func (p *MyServicePrioChildPangResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("pang_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {

@@ -19,23 +19,23 @@
 
 package thrift
 
-type TDeserializer struct {
-	Transport TTransport
-	Protocol  TProtocol
+type Deserializer struct {
+	Transport Transport
+	Protocol  Protocol
 }
 
-func NewTDeserializer() *TDeserializer {
-	var transport TTransport
-	transport = NewTMemoryBufferLen(1024)
+func NewDeserializer() *Deserializer {
+	var transport Transport
+	transport = NewMemoryBufferLen(1024)
 
-	protocol := NewTBinaryProtocolFactoryDefault().GetProtocol(transport)
+	protocol := NewBinaryProtocolFactoryDefault().GetProtocol(transport)
 
-	return &TDeserializer{
+	return &Deserializer{
 		transport,
 		protocol}
 }
 
-func (t *TDeserializer) ReadString(msg TStruct, s string) (err error) {
+func (t *Deserializer) ReadString(msg Struct, s string) (err error) {
 	err = nil
 	if _, err = t.Transport.Write([]byte(s)); err != nil {
 		return
@@ -46,7 +46,7 @@ func (t *TDeserializer) ReadString(msg TStruct, s string) (err error) {
 	return
 }
 
-func (t *TDeserializer) Read(msg TStruct, b []byte) (err error) {
+func (t *Deserializer) Read(msg Struct, b []byte) (err error) {
 	err = nil
 	if _, err = t.Transport.Write(b); err != nil {
 		return
