@@ -25,10 +25,6 @@ import (
 	"testing"
 )
 
-type ProtocolFactory interface {
-	GetProtocol(t Transport) Protocol
-}
-
 func compareStructs(m, m1 MyTestStruct) (bool, error) {
 	switch {
 	case m.On != m1.On:
