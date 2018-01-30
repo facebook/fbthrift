@@ -247,7 +247,7 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
     std::unique_ptr<StreamRequestCallback> callback) noexcept {
   auto output = callback->getOutput();
 
-  auto input = yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
+  auto input = yarpl::flowable::Flowable<rsocket::Payload>::fromPublisher(
       [initialBuf = std::move(buf),
        metadata = std::move(metadata),
        callback = std::move(callback)](

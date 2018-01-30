@@ -77,11 +77,9 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
   // TODO This id is internally used by RSocketStateMachine but we need one more
   // id that represents each RPC call - seqId.
 
-  return yarpl::flowable::Flowables::fromPublisher<
-             std::unique_ptr<folly::IOBuf>>([this,
-                                             request = std::move(request),
-                                             streamId](
-                                                auto subscriber) mutable {
+  return yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::
+      fromPublisher([this, request = std::move(request), streamId](
+                        auto subscriber) mutable {
            auto metadata = RequestResponseThriftChannel::deserializeMetadata(
                *request.metadata);
            DCHECK(metadata->__isset.kind);
@@ -98,10 +96,10 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
                std::move(request.data),
                std::move(channel));
          })
-      ->map([](auto buff) {
-        VLOG(3) << "Sending mapped output buffer";
-        return rsocket::Payload(std::move(buff));
-      });
+          ->map([](auto buff) {
+            VLOG(3) << "Sending mapped output buffer";
+            return rsocket::Payload(std::move(buff));
+          });
 }
 
 RSResponder::FlowableRef RSResponder::handleRequestChannel(
@@ -115,7 +113,7 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
   // on the IO thread.
 
   auto requestStreamFlowable =
-      yarpl::flowable::Flowables::fromPublisher<rsocket::Payload>(
+      yarpl::flowable::Flowable<rsocket::Payload>::fromPublisher(
           [requestStream = std::move(requestStream), evb = evb_](
               std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
                   subscriber) {
@@ -125,13 +123,11 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
                     std::move(subscriber), *evb));
           });
 
-  return yarpl::flowable::Flowables::fromPublisher<
-             std::unique_ptr<folly::IOBuf>>([this,
-                                             request = std::move(request),
-                                             requestStream = std::move(
-                                                 requestStreamFlowable),
-                                             streamId](
-                                                auto subscriber) mutable {
+  return yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::
+      fromPublisher([this,
+                     request = std::move(request),
+                     requestStream = std::move(requestStreamFlowable),
+                     streamId](auto subscriber) mutable {
            auto metadata = RequestResponseThriftChannel::deserializeMetadata(
                *request.metadata);
            DCHECK(metadata->__isset.kind);
@@ -154,7 +150,7 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
                std::move(request.data),
                std::move(channel));
          })
-      ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
+          ->map([](auto buff) { return rsocket::Payload(std::move(buff)); });
 }
 } // namespace thrift
 } // namespace apache

@@ -32,7 +32,7 @@ class DiffTypesStreamingService
 
 TEST(StreamingTest, DISABLED_DifferentStreamClientCompiles) {
   std::unique_ptr<streaming_tests::DiffTypesStreamingServiceAsyncClient> client;
-  auto instream = yarpl::flowable::Flowables::fromPublisher<std::string>(
+  auto instream = yarpl::flowable::Flowable<std::string>::fromPublisher(
       [](auto subscriber) { subscriber->onNext(std::string("foobar")); });
   client->uploadObject(instream, 123L)->subscribe([](int32_t) {});
 }
