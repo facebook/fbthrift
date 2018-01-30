@@ -268,7 +268,9 @@ class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type> {
   }
   template <class Protocol>
   static void read(Protocol* prot, Type* value) {
-    prot->readI32(reinterpret_cast<int32_t&>(*value));
+    int32_t val;
+    prot->readI32(val);
+    *value = static_cast<Type>(val);
   }
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
