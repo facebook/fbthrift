@@ -36,17 +36,26 @@ namespace apache { namespace thrift {
 template <typename Reader, typename Writer>
 struct Serializer {
   template <class T>
-  static uint32_t deserialize(
-      const folly::IOBuf* buf, T& obj,
+  static folly::io::Cursor deserialize(
+      const folly::io::Cursor& cursor,
+      T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     Reader reader(sharing);
-    reader.setInput(buf);
+    reader.setInput(cursor);
 
     // This can be obj.read(&reader);
     // if you don't need to support thrift1-compatibility types
     apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
 
-    return reader.getCurrentPosition().getCurrentPosition();
+    return reader.getCurrentPosition();
+  }
+  template <class T>
+  static uint32_t deserialize(
+      const folly::IOBuf* buf,
+      T& obj,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    return deserialize(folly::io::Cursor{buf}, obj, sharing)
+        .getCurrentPosition();
   }
 
   template <class T>
@@ -62,6 +71,29 @@ struct Serializer {
       folly::StringPiece range, T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     return deserialize(folly::ByteRange(range), obj, sharing);
+  }
+
+  /**
+   * Deserialize an object from a folly::io::Cursor.
+   *
+   * When given a non-const Cursor reference we will update the input cursor
+   * to point at the end of the deserialized data.
+   */
+  template <class T>
+  static T deserialize(folly::io::Cursor& cursor) {
+    return returning<T>([&](T& obj) { cursor = deserialize(cursor, obj); });
+  }
+
+  /**
+   * Deserialize an object from a folly::io::Cursor.
+   *
+   * When given a reference to a const Cursor we cannot return the size of data
+   * that was deserialized.  Pass in a non-const Cursor to use the API above if
+   * you do need to determine the length of the deserialized data.
+   */
+  template <class T>
+  static T deserialize(const folly::io::Cursor& cursor) {
+    return returning<T>([&](T& obj) { deserialize(cursor, obj); });
   }
 
   template <class T>
