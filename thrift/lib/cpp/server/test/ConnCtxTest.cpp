@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
 #include <iostream>
@@ -48,7 +47,6 @@ using apache::thrift::transport::TSocket;
 using folly::SocketAddress;
 using apache::thrift::util::ScopedServerThread;
 using apache::thrift::util::ServerCreator;
-using apache::thrift::util::TSimpleServerCreator;
 using apache::thrift::util::TThreadedServerCreator;
 using apache::thrift::test::getLocalAddresses;
 
@@ -215,14 +213,6 @@ void runTest() {
   ServerCreatorT serverCreator(processor, port);
 
   runTest(handler, &serverCreator);
-}
-
-TEST(ConnCtxTest, TSimpleServerTest) {
-  // "For testing TSimpleServerCreator"
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  runTest<TSimpleServerCreator>();
-  #pragma GCC diagnostic pop
 }
 
 TEST(ConnCtxTest, TThreadedServerTest) {

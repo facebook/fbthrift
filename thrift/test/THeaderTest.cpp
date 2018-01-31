@@ -28,14 +28,12 @@
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/THttpClient.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/ServerCreatorBase.h>
-#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
 #include <thrift/test/gen-cpp/Service.h>
@@ -126,7 +124,6 @@ enum ClientType {
 };
 
 enum ServerType {
-  SERVER_TYPE_SIMPLE = 0,
   SERVER_TYPE_THREADED = 1,
 };
 
@@ -276,14 +273,6 @@ void runTestCase(ServerType sType, ClientType clientType) {
 
   shared_ptr<ServerCreatorBase> serverCreator;
   switch(sType) {
-    case SERVER_TYPE_SIMPLE:
-      // "Testing TSimpleServerCreator"
-      #pragma GCC diagnostic push
-      #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-      serverCreator = make_shared<TSimpleServerCreator>(
-          testProcessor, port, false);
-      #pragma GCC diagnostic pop
-      break;
     case SERVER_TYPE_THREADED:
       serverCreator = make_shared<TThreadedServerCreator>(
           testProcessor, port, false);
@@ -298,40 +287,20 @@ void runTestCase(ServerType sType, ClientType clientType) {
 
 // Listed individually to make it easy to see in the unit runner
 
-TEST(THeaderTest, simpleServerUnframed) {
-  runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_UNFRAMED);
-}
-
 TEST(THeaderTest, threadedServerUnframed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_UNFRAMED);
-}
-
-TEST(THeaderTest, simpleServerFramed) {
-  runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED);
 }
 
 TEST(THeaderTest, threadedServerFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED);
 }
 
-TEST(THeaderTest, simpleServerHeader) {
-  runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_HEADER);
-}
-
 TEST(THeaderTest, threadedServerHeader) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HEADER);
 }
 
-TEST(THeaderTest, simpleServerHttp) {
-  runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_HTTP);
-}
-
 TEST(THeaderTest, threadedServerHttp) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HTTP);
-}
-
-TEST(THeaderTest, simpleServerCompactFramed) {
-  runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
 TEST(THeaderTest, threadedServerCompactFramed) {

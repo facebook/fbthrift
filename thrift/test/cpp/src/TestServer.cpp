@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -357,7 +356,7 @@ class TestProcessorEventHandler : public TProcessorEventHandler {
 int main(int argc, char **argv) {
 
   int port = 9090;
-  string serverType = "simple";
+  string serverType = "threaded";
   string protocolType = "binary";
   size_t workerCount = 4;
   bool   ssl = false;
@@ -369,8 +368,8 @@ int main(int argc, char **argv) {
     argv[0] << " [--port=<port number>] [--server-type=<server-type>] " <<
     "[--protocol-type=<protocol-type>] [--workers=<worker-count>] " <<
     "[--processor-events]" << endl <<
-    "\t\tserver-type\t\ttype of server, \"simple\", \"thread-pool\", " <<
-    "or \"threaded\"  Default is " << serverType << endl <<
+    "\t\tserver-type\t\ttype of server, " <<
+    "\"threaded\"  Default is " << serverType << endl <<
     "\t\tprotocol-type\t\ttype of protocol, \"binary\", \"header\", " <<
     "\"ascii\", or \"xml\".  Default is " << protocolType << endl <<
     "\t\tworkers\t\tNumber of thread pools workers.  Only valid for " <<
@@ -400,9 +399,7 @@ int main(int argc, char **argv) {
 
     if (!args["server-type"].empty()) {
       serverType = args["server-type"];
-      if (serverType == "simple") {
-      } else if (serverType == "thread-pool") {
-      } else if (serverType == "threaded") {
+      if (serverType == "threaded") {
       } else {
         throw invalid_argument("Unknown server type "+serverType);
       }
@@ -487,21 +484,7 @@ int main(int argc, char **argv) {
     new TSingleTransportFactory<TTransportFactory>(transportFactory));
   std::shared_ptr<TServer> server;
 
-  if (serverType == "simple") {
-
-    // Server
-    // "Testing TSimpleServer"
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    server = std::shared_ptr<TServer>(new TSimpleServer(testProcessor,
-                                                   serverSocket,
-                                                   transportFactory,
-                                                   protocolFactory));
-    #pragma GCC diagnostic pop
-
-    printf("Starting the server on port %d...\n", port);
-
-  } else if (serverType == "threaded") {
+  if (serverType == "threaded") {
 
     server = std::shared_ptr<TServer>(new TThreadedServer(testProcessor,
                                                      serverSocket,

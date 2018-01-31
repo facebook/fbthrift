@@ -36,8 +36,7 @@ class TServerSocket;
 namespace util {
 
 /**
- * Helper class for the standard synchronous server types (TSimpleServer,
- * TThreadedServer, TThreadPoolServer)
+ * Helper class for the standard synchronous server types (TThreadedServer)
  */
 class SyncServerCreator : public ServerCreatorBase {
  public:
