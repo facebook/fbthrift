@@ -33,9 +33,9 @@ import builtins as _builtins
 
 
 class Enum(__enum.Enum):
-    ONE = <int> (Enum__ONE)
-    TWO = <int> (Enum__TWO)
-    THREE = <int> (Enum__THREE)
+    ONE = 1
+    TWO = 2
+    THREE = 3
 
     __hash__ = __enum.Enum.__hash__
 
@@ -48,13 +48,13 @@ class Enum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cEnum Enum_to_cpp(value):
-    if value == Enum.ONE:
+cdef inline cEnum Enum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
         return Enum__ONE
-    elif value == Enum.TWO:
+    elif cvalue == 2:
         return Enum__TWO
-    elif value == Enum.THREE:
+    elif cvalue == 3:
         return Enum__THREE
 
 

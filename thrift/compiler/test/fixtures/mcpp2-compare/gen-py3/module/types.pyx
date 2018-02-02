@@ -35,9 +35,9 @@ import includes.types as _includes_types
 
 
 class MyEnumA(__enum.Enum):
-    fieldA = <int> (MyEnumA__fieldA)
-    fieldB = <int> (MyEnumA__fieldB)
-    fieldC = <int> (MyEnumA__fieldC)
+    fieldA = 1
+    fieldB = 2
+    fieldC = 4
 
     __hash__ = __enum.Enum.__hash__
 
@@ -50,18 +50,18 @@ class MyEnumA(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cMyEnumA MyEnumA_to_cpp(value):
-    if value == MyEnumA.fieldA:
+cdef inline cMyEnumA MyEnumA_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
         return MyEnumA__fieldA
-    elif value == MyEnumA.fieldB:
+    elif cvalue == 2:
         return MyEnumA__fieldB
-    elif value == MyEnumA.fieldC:
+    elif cvalue == 4:
         return MyEnumA__fieldC
 class AnnotatedEnum(__enum.Enum):
-    FIELDA = <int> (AnnotatedEnum__FIELDA)
-    FIELDB = <int> (AnnotatedEnum__FIELDB)
-    FIELDC = <int> (AnnotatedEnum__FIELDC)
+    FIELDA = 2
+    FIELDB = 4
+    FIELDC = 9
 
     __hash__ = __enum.Enum.__hash__
 
@@ -74,18 +74,18 @@ class AnnotatedEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cAnnotatedEnum AnnotatedEnum_to_cpp(value):
-    if value == AnnotatedEnum.FIELDA:
+cdef inline cAnnotatedEnum AnnotatedEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 2:
         return AnnotatedEnum__FIELDA
-    elif value == AnnotatedEnum.FIELDB:
+    elif cvalue == 4:
         return AnnotatedEnum__FIELDB
-    elif value == AnnotatedEnum.FIELDC:
+    elif cvalue == 9:
         return AnnotatedEnum__FIELDC
 class AnnotatedEnum2(__enum.Enum):
-    FIELDA = <int> (AnnotatedEnum2__FIELDA)
-    FIELDB = <int> (AnnotatedEnum2__FIELDB)
-    FIELDC = <int> (AnnotatedEnum2__FIELDC)
+    FIELDA = 2
+    FIELDB = 4
+    FIELDC = 9
 
     __hash__ = __enum.Enum.__hash__
 
@@ -98,16 +98,16 @@ class AnnotatedEnum2(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cAnnotatedEnum2 AnnotatedEnum2_to_cpp(value):
-    if value == AnnotatedEnum2.FIELDA:
+cdef inline cAnnotatedEnum2 AnnotatedEnum2_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 2:
         return AnnotatedEnum2__FIELDA
-    elif value == AnnotatedEnum2.FIELDB:
+    elif cvalue == 4:
         return AnnotatedEnum2__FIELDB
-    elif value == AnnotatedEnum2.FIELDC:
+    elif cvalue == 9:
         return AnnotatedEnum2__FIELDC
 class MyEnumB(__enum.Enum):
-    AField = <int> (MyEnumB__AField)
+    AField = 0
 
     __hash__ = __enum.Enum.__hash__
 
@@ -120,9 +120,9 @@ class MyEnumB(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cMyEnumB MyEnumB_to_cpp(value):
-    if value == MyEnumB.AField:
+cdef inline cMyEnumB MyEnumB_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return MyEnumB__AField
 
 

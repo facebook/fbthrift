@@ -33,10 +33,10 @@ import builtins as _builtins
 
 
 class AnEnum(__enum.Enum):
-    ONE = <int> (AnEnum__ONE)
-    TWO = <int> (AnEnum__TWO)
-    THREE = <int> (AnEnum__THREE)
-    FOUR = <int> (AnEnum__FOUR)
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
 
     __hash__ = __enum.Enum.__hash__
 
@@ -49,21 +49,21 @@ class AnEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cAnEnum AnEnum_to_cpp(value):
-    if value == AnEnum.ONE:
+cdef inline cAnEnum AnEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
         return AnEnum__ONE
-    elif value == AnEnum.TWO:
+    elif cvalue == 2:
         return AnEnum__TWO
-    elif value == AnEnum.THREE:
+    elif cvalue == 3:
         return AnEnum__THREE
-    elif value == AnEnum.FOUR:
+    elif cvalue == 4:
         return AnEnum__FOUR
 class Flags(__enum.Flag):
-    flag_A = <int> (Flags__flag_A)
-    flag_B = <int> (Flags__flag_B)
-    flag_C = <int> (Flags__flag_C)
-    flag_D = <int> (Flags__flag_D)
+    flag_A = 1
+    flag_B = 2
+    flag_C = 4
+    flag_D = 8
 
     __hash__ = __enum.Flag.__hash__
 
@@ -76,8 +76,7 @@ class Flags(__enum.Flag):
     def __int__(self):
         return self.value
 
-
-cdef cFlags Flags_to_cpp(value):
+cdef inline cFlags Flags_to_cpp(value):
     return <cFlags>(<int>value.value)
 
 

@@ -33,9 +33,9 @@ import builtins as _builtins
 
 
 class MyEnumA(__enum.Enum):
-    fieldA = <int> (MyEnumA__fieldA)
-    fieldB = <int> (MyEnumA__fieldB)
-    fieldC = <int> (MyEnumA__fieldC)
+    fieldA = 1
+    fieldB = 2
+    fieldC = 4
 
     __hash__ = __enum.Enum.__hash__
 
@@ -48,13 +48,13 @@ class MyEnumA(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cMyEnumA MyEnumA_to_cpp(value):
-    if value == MyEnumA.fieldA:
+cdef inline cMyEnumA MyEnumA_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
         return MyEnumA__fieldA
-    elif value == MyEnumA.fieldB:
+    elif cvalue == 2:
         return MyEnumA__fieldB
-    elif value == MyEnumA.fieldC:
+    elif cvalue == 4:
         return MyEnumA__fieldC
 
 

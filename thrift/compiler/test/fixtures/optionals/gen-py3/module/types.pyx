@@ -33,9 +33,9 @@ import builtins as _builtins
 
 
 class Animal(__enum.Enum):
-    DOG = <int> (Animal__DOG)
-    CAT = <int> (Animal__CAT)
-    TARANTULA = <int> (Animal__TARANTULA)
+    DOG = 1
+    CAT = 2
+    TARANTULA = 3
 
     __hash__ = __enum.Enum.__hash__
 
@@ -48,13 +48,13 @@ class Animal(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cAnimal Animal_to_cpp(value):
-    if value == Animal.DOG:
+cdef inline cAnimal Animal_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 1:
         return Animal__DOG
-    elif value == Animal.CAT:
+    elif cvalue == 2:
         return Animal__CAT
-    elif value == Animal.TARANTULA:
+    elif cvalue == 3:
         return Animal__TARANTULA
 
 

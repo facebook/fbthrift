@@ -33,8 +33,8 @@ import builtins as _builtins
 
 
 class AnEnum(__enum.Enum):
-    FIELDA = <int> (AnEnum__FIELDA)
-    FIELDB = <int> (AnEnum__FIELDB)
+    FIELDA = 2
+    FIELDB = 4
 
     __hash__ = __enum.Enum.__hash__
 
@@ -47,11 +47,11 @@ class AnEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cAnEnum AnEnum_to_cpp(value):
-    if value == AnEnum.FIELDA:
+cdef inline cAnEnum AnEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 2:
         return AnEnum__FIELDA
-    elif value == AnEnum.FIELDB:
+    elif cvalue == 4:
         return AnEnum__FIELDB
 
 

@@ -35,11 +35,11 @@ import include.types as _include_types
 
 
 class has_bitwise_ops(__enum.Enum):
-    none = <int> (has_bitwise_ops__none)
-    zero = <int> (has_bitwise_ops__zero)
-    one = <int> (has_bitwise_ops__one)
-    two = <int> (has_bitwise_ops__two)
-    three = <int> (has_bitwise_ops__three)
+    none = 0
+    zero = 1
+    one = 2
+    two = 4
+    three = 8
 
     __hash__ = __enum.Enum.__hash__
 
@@ -52,21 +52,21 @@ class has_bitwise_ops(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value):
-    if value == has_bitwise_ops.none:
+cdef inline chas_bitwise_ops has_bitwise_ops_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return has_bitwise_ops__none
-    elif value == has_bitwise_ops.zero:
+    elif cvalue == 1:
         return has_bitwise_ops__zero
-    elif value == has_bitwise_ops.one:
+    elif cvalue == 2:
         return has_bitwise_ops__one
-    elif value == has_bitwise_ops.two:
+    elif cvalue == 4:
         return has_bitwise_ops__two
-    elif value == has_bitwise_ops.three:
+    elif cvalue == 8:
         return has_bitwise_ops__three
 class is_unscoped(__enum.Enum):
-    hello = <int> (is_unscoped__hello)
-    world = <int> (is_unscoped__world)
+    hello = 0
+    world = 1
 
     __hash__ = __enum.Enum.__hash__
 
@@ -79,11 +79,11 @@ class is_unscoped(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cis_unscoped is_unscoped_to_cpp(value):
-    if value == is_unscoped.hello:
+cdef inline cis_unscoped is_unscoped_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return is_unscoped__hello
-    elif value == is_unscoped.world:
+    elif cvalue == 1:
         return is_unscoped__world
 
 

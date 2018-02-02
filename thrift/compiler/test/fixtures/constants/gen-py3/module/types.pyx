@@ -45,14 +45,14 @@ class EmptyEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cEmptyEnum EmptyEnum_to_cpp(value):
+cdef inline cEmptyEnum EmptyEnum_to_cpp(value):
+    cdef int cvalue = value.value
     pass
 class City(__enum.Enum):
-    NYC = <int> (City__NYC)
-    MPK = <int> (City__MPK)
-    SEA = <int> (City__SEA)
-    LON = <int> (City__LON)
+    NYC = 0
+    MPK = 1
+    SEA = 2
+    LON = 3
 
     __hash__ = __enum.Enum.__hash__
 
@@ -65,21 +65,21 @@ class City(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cCity City_to_cpp(value):
-    if value == City.NYC:
+cdef inline cCity City_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return City__NYC
-    elif value == City.MPK:
+    elif cvalue == 1:
         return City__MPK
-    elif value == City.SEA:
+    elif cvalue == 2:
         return City__SEA
-    elif value == City.LON:
+    elif cvalue == 3:
         return City__LON
 class Company(__enum.Enum):
-    FACEBOOK = <int> (Company__FACEBOOK)
-    WHATSAPP = <int> (Company__WHATSAPP)
-    OCULUS = <int> (Company__OCULUS)
-    INSTAGRAM = <int> (Company__INSTAGRAM)
+    FACEBOOK = 0
+    WHATSAPP = 1
+    OCULUS = 2
+    INSTAGRAM = 3
 
     __hash__ = __enum.Enum.__hash__
 
@@ -92,15 +92,15 @@ class Company(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cCompany Company_to_cpp(value):
-    if value == Company.FACEBOOK:
+cdef inline cCompany Company_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return Company__FACEBOOK
-    elif value == Company.WHATSAPP:
+    elif cvalue == 1:
         return Company__WHATSAPP
-    elif value == Company.OCULUS:
+    elif cvalue == 2:
         return Company__OCULUS
-    elif value == Company.INSTAGRAM:
+    elif cvalue == 3:
         return Company__INSTAGRAM
 
 

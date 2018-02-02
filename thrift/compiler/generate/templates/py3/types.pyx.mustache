@@ -70,7 +70,7 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 {{#program:enums}}
 class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
-    {{enumValue:name}} = <int> ({{enum:name}}__{{enumValue:name}})
+    {{enumValue:name}} = {{enumValue:value}}
     {{/enum:values}}
 
     __hash__ = __enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}.__hash__
@@ -84,11 +84,15 @@ class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}F
     def __int__(self):
         return self.value
 
-
-cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
+cdef inline c{{enum:name}} {{enum:name}}_to_cpp(value):
     {{^enum:flags?}}
+    {{! We do .value once because it slow Python, and Cython will turn the
+        if/elif chain into a switch statement when the vars on both sides are
+        C ints
+    }}
+    cdef int cvalue = value.value
     {{#enum:values}}
-    {{^first?}}el{{/first?}}if value == {{enum:name}}.{{enumValue:name}}:
+    {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
         return {{enum:name}}__{{enumValue:name}}
     {{/enum:values}}
     {{^enum:values}}

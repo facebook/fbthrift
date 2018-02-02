@@ -33,8 +33,8 @@ import builtins as _builtins
 
 
 class MyEnum(__enum.Enum):
-    MyValue1 = <int> (MyEnum__MyValue1)
-    MyValue2 = <int> (MyEnum__MyValue2)
+    MyValue1 = 0
+    MyValue2 = 1
 
     __hash__ = __enum.Enum.__hash__
 
@@ -47,11 +47,11 @@ class MyEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cMyEnum MyEnum_to_cpp(value):
-    if value == MyEnum.MyValue1:
+cdef inline cMyEnum MyEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return MyEnum__MyValue1
-    elif value == MyEnum.MyValue2:
+    elif cvalue == 1:
         return MyEnum__MyValue2
 
 

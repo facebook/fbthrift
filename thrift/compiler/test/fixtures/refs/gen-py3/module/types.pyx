@@ -33,8 +33,8 @@ import builtins as _builtins
 
 
 class TypedEnum(__enum.Enum):
-    VAL1 = <int> (TypedEnum__VAL1)
-    VAL2 = <int> (TypedEnum__VAL2)
+    VAL1 = 0
+    VAL2 = 1
 
     __hash__ = __enum.Enum.__hash__
 
@@ -47,11 +47,11 @@ class TypedEnum(__enum.Enum):
     def __int__(self):
         return self.value
 
-
-cdef cTypedEnum TypedEnum_to_cpp(value):
-    if value == TypedEnum.VAL1:
+cdef inline cTypedEnum TypedEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
         return TypedEnum__VAL1
-    elif value == TypedEnum.VAL2:
+    elif cvalue == 1:
         return TypedEnum__VAL2
 
 
