@@ -21,7 +21,7 @@ namespace testservice {
 apache::thrift::Stream<int32_t> TestServiceMock::range(
     int32_t from,
     int32_t to) {
-  return yarpl::flowable::Flowables::range(from, to)->map(
+  return yarpl::flowable::Flowable<>::range(from, to)->map(
       [](auto i) { return (int32_t)i; });
 }
 

@@ -151,7 +151,7 @@ TEST_F(StreamingTest, SimpleStream) {
 
 TEST_F(StreamingTest, SimpleChannel) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowables::range(0, 10)->map(
+    auto input = yarpl::flowable::Flowable<>::range(0, 10)->map(
         [](auto i) { return (int32_t)i; });
     auto result = client->prefixSumIOThread(input);
     int j = 0, k = 1;
@@ -183,7 +183,7 @@ TEST_F(StreamingTest, DefaultStreamImplementation) {
 
 TEST_F(StreamingTest, DefaultChannelImplementation) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowables::just(Message());
+    auto input = yarpl::flowable::Flowable<>::just(Message());
     auto result = client->nonImplementedChannel(input, "test");
     folly::Baton<> done;
     result->subscribe(
@@ -210,7 +210,7 @@ TEST_F(StreamingTest, ReturnsNullptr) {
 TEST_F(StreamingTest, ThrowsException) {
   // User function throws an exception.
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowables::just(Message());
+    auto input = yarpl::flowable::Flowable<>::just(Message());
     auto result = client->throwException(input);
     folly::Baton<> done;
     result->subscribe(
