@@ -115,7 +115,7 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
       QPSStats* stats_;
     };
 
-    return yarpl::flowable::Flowables::fromPublisher<Chunk2>(
+    return yarpl::flowable::Flowable<Chunk2>::fromPublisher(
         [this, input = std::move(input)](auto subscriber) mutable {
           if (FLAGS_chunk_size > 0) {
             auto subscription = yarpl::make_ref<Subscription>(stats_);

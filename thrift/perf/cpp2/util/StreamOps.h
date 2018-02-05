@@ -201,7 +201,7 @@ class StreamUploadDownload {
       QPSStats* stats_;
     };
 
-    auto input = yarpl::flowable::Flowables::fromPublisher<Chunk2>(
+    auto input = yarpl::flowable::Flowable<Chunk2>::fromPublisher(
         [this](auto subscriber) mutable {
           auto subscription = yarpl::make_ref<Subscription>(stats_);
           subscriber->onSubscribe(subscription);
