@@ -84,6 +84,7 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
                *request.metadata);
            DCHECK(metadata->__isset.kind);
            DCHECK(metadata->__isset.seqId);
+           request.metadata.reset();
 
            auto channel = std::make_shared<StreamingOutput>(
                evb_,
