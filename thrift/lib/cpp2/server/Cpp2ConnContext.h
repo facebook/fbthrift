@@ -32,6 +32,7 @@ using apache::thrift::concurrency::PriorityThreadManager;
 namespace apache { namespace thrift {
 
 using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
+    const folly::AsyncTransportWrapper* transport,
     X509* cert,
     const apache::thrift::SaslServer* sasl,
     const folly::SocketAddress& peerAddress)>;
@@ -54,7 +55,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
         requestHeader_(nullptr),
         duplexChannel_(duplexChannel),
         peerCert_(peerCert),
-        peerIdentities_(nullptr, [](void*) {}) {
+        peerIdentities_(nullptr, [](void*) {}),
+        transport_(transport) {
     if (address) {
       peerAddress_ = *address;
     }
@@ -66,7 +68,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
     if (clientIdentityHook) {
       peerIdentities_ = clientIdentityHook(
-          peerCert_.get(), sasl_server, peerAddress_);
+          transport_, peerCert_.get(), sasl_server, peerAddress_);
     }
   }
 
@@ -130,6 +132,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return peerIdentities_.get();
   }
 
+  const apache::thrift::async::TAsyncTransport* getTransport() const {
+    return transport_;
+  }
+
  private:
   const apache::thrift::SaslServer* saslServer_;
   folly::EventBaseManager* manager_;
@@ -139,6 +145,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<X509> peerCert_;
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
   std::string securityProtocol_;
+  const apache::thrift::async::TAsyncTransport* transport_;
 };
 
 // Request-specific context

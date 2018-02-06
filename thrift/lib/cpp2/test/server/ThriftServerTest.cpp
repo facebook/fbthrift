@@ -915,9 +915,10 @@ TEST(ThriftServer, ClientIdentityHook) {
 
   std::atomic<bool> flag{false};
   auto hook = [&flag](
-      const X509* /* unused */,
-      const SaslServer* /* unused */,
-      const folly::SocketAddress& /* unused */) {
+                  const folly::AsyncTransportWrapper* /* unused */,
+                  const X509* /* unused */,
+                  const SaslServer* /* unused */,
+                  const folly::SocketAddress& /* unused */) {
     flag = true;
     return std::unique_ptr<void, void (*)(void*)>(nullptr, [](void *){});
   };
