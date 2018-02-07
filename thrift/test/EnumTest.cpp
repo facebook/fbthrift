@@ -70,8 +70,8 @@ TEST(EnumTest, test_enum_constant) {
 TEST(EnumTest, test_enum_names) {
   EXPECT_EQ(enumName(MyEnum3::ME3_1), std::string{"ME3_1"});
   EXPECT_EQ(enumName(MyEnum2::ME2_2), std::string{"ME2_2"});
-  EXPECT_EQ(enumName(static_cast<MyEnum2>(-10)), (const char*)nullptr);
-  EXPECT_EQ(enumName(static_cast<MyEnum2>(-10), "foo"), "foo");
+  EXPECT_EQ(enumName(static_cast<MyEnum2>(3)), (const char*)nullptr);
+  EXPECT_EQ(enumName(static_cast<MyEnum2>(3), "foo"), "foo");
 }
 
 TEST(EnumTest, test_enum_parse) {
