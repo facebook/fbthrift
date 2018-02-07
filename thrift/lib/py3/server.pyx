@@ -112,12 +112,12 @@ cdef class ConnectionContext:
         return self._peer_address
 
     @property
-    def is_tls(ConnectionContext self):
-        return self._ctx.isTls()
-
-    @property
     def peer_common_name(ConnectionContext self):
         return self._ctx.getPeerCommonName().decode('utf-8')
+
+    @property
+    def security_protocol(ConnectionContext self):
+        return self._ctx.getSecurityProtocol().decode('utf-8')
 
     @property
     def peer_certificate(ConnectionContext self):
@@ -125,8 +125,8 @@ cdef class ConnectionContext:
         cdef unique_ptr[IOBuf] der
         cdef shared_ptr[X509] cert
         cdef uint64_t length
-        if self._ctx.isTls():
-            cert = self._ctx.getPeerCertificate()
+        cert = self._ctx.getPeerCertificate()
+        if cert.get():
             der = move(derEncode(deref(cert.get())))
             length = der.get().length()
             data = der.get().data()

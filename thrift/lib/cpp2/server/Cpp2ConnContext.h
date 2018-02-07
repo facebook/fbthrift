@@ -120,12 +120,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return client;
   }
 
-  const std::string& getSecurityProtocol() const {
+  virtual const std::string& getSecurityProtocol() const {
     return securityProtocol_;
-  }
-
-  virtual bool isTls() const {
-    return securityProtocol_ == "TLS";
   }
 
   virtual void* getPeerIdentities() const {

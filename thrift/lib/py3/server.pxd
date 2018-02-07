@@ -62,7 +62,7 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         namespace "apache::thrift":
 
     cdef cppclass Cpp2ConnContext:
-        bint isTls()
+        string getSecurityProtocol()
         string getPeerCommonName()
         shared_ptr[X509] getPeerCertificate()
         cfollySocketAddress* getPeerAddress()
