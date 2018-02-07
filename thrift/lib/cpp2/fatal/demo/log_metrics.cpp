@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
   metric.network_connection_reset = 3;
   metric.network_packets_dropped = 1;
 
-  int iterations = argc > 2 ? iterations = atoi(argv[2]) : 1000000;
+  int iterations = argc > 2 ? atoi(argv[2]) : 1000000;
 
   // try running this binary through `perf stat` for both versions
   if (argc > 1 && argv[1] == std::string("dynamic")) {
