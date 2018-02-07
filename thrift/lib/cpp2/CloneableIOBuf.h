@@ -30,7 +30,7 @@ namespace detail {
 
 // Implementation of a subset of unique_ptr functionality that also supports
 // copy constructor
-template<typename T, typename Deleter = std::default_delete<T>>
+template <typename T, typename Deleter = std::default_delete<T>>
 class CloneableUniquePtr : public std::unique_ptr<T, Deleter> {
 public:
   typedef std::unique_ptr<T, Deleter> Base;
@@ -77,25 +77,20 @@ public:
     Base::operator=(other ? other->clone() : nullptr);
     return *this;
   }
-
-  friend void std::swap<>(CloneableUniquePtr<T, Deleter>& lhs,
-                          CloneableUniquePtr<T, Deleter>& rhs);
 };
+
+template <class T, class Deleter>
+void swap(
+    CloneableUniquePtr<T, Deleter>& lhs,
+    CloneableUniquePtr<T, Deleter>& rhs) {
+  using base = std::unique_ptr<T, Deleter>;
+  return swap(static_cast<base&>(lhs), static_cast<base&>(rhs));
+}
 
 }
 
 typedef detail::CloneableUniquePtr<folly::IOBuf> CloneableIOBuf;
 
 }} // apache::thrift
-
-namespace std {
-
-template<class T, class Deleter>
-void swap(apache::thrift::detail::CloneableUniquePtr<T, Deleter>& lhs,
-          apache::thrift::detail::CloneableUniquePtr<T, Deleter>& rhs) {
-  std::swap<std::unique_ptr<T, Deleter>>(lhs, rhs);
-}
-
-}
 
 #endif // #ifndef THRIFT_CLONEABLE_IOBUF_H_
