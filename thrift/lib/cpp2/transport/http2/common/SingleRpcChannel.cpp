@@ -220,8 +220,10 @@ EventBase* SingleRpcChannel::getEventBase() noexcept {
 
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  VLOG(2) << "onH2StreamBegin: " << headers->getStatusCode() << " "
-          << headers->getStatusMessage();
+  VLOG(2) << "onH2StreamBegin";
+  VLOG_IF(2, headers->isResponse())
+      << "onH2StreamBegin: " << headers->getStatusCode() << " "
+      << headers->getStatusMessage();
   headers_ = std::move(headers);
 }
 
