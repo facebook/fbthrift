@@ -775,22 +775,22 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->map_of_string_to_i32 = $shape['map_of_string_to_i32'];
     $me->map_of_string_to_A = $shape['map_of_string_to_A']
       |> Dict\map(
-        $$,
+        $$ ?? dict[],
         $_val38 ==> $_val38
           |> A::__fromShape($$),
       );
     $me->map_of_string_to_self = $shape['map_of_string_to_self']
       |> Dict\map(
-        $$,
+        $$ ?? dict[],
         $_val39 ==> $_val39
           |> B::__fromShape($$),
       );
     $me->map_of_string_to_list_of_A = $shape['map_of_string_to_list_of_A']
       |> Dict\map(
-        $$,
+        $$ ?? dict[],
         $_val40 ==> $_val40
           |> Vec\map(
-            $$,
+            $$ ?? vec[],
             $_val41 ==> $_val41
               |> A::__fromShape($$),
           ),
@@ -798,10 +798,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->map_of_string_to_map_of_string_to_i32 = $shape['map_of_string_to_map_of_string_to_i32'];
     $me->map_of_string_to_map_of_string_to_A = $shape['map_of_string_to_map_of_string_to_A']
       |> Dict\map(
-        $$,
+        $$ ?? dict[],
         $_val42 ==> $_val42
           |> Dict\map(
-            $$,
+            $$ ?? dict[],
             $_val43 ==> $_val43
               |> A::__fromShape($$),
           ),
@@ -809,39 +809,39 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->list_of_string = $shape['list_of_string'];
     $me->list_of_map_of_string_to_A = $shape['list_of_map_of_string_to_A']
       |> Vec\map(
-        $$,
+        $$ ?? vec[],
         $_val44 ==> $_val44
           |> Dict\map(
-            $$,
+            $$ ?? dict[],
             $_val45 ==> $_val45
               |> A::__fromShape($$),
           ),
       );
     $me->list_of_self = $shape['list_of_self']
       |> Vec\map(
-        $$,
+        $$ ?? vec[],
         $_val46 ==> $_val46
           |> B::__fromShape($$),
       );
     $me->list_of_list_of_self = $shape['list_of_list_of_self']
       |> Vec\map(
-        $$,
+        $$ ?? vec[],
         $_val47 ==> $_val47
           |> Vec\map(
-            $$,
+            $$ ?? vec[],
             $_val48 ==> $_val48
               |> B::__fromShape($$),
           ),
       );
     $me->list_of_map_of_string_to_list_of_A = $shape['list_of_map_of_string_to_list_of_A']
       |> Vec\map(
-        $$,
+        $$ ?? vec[],
         $_val49 ==> $_val49
           |> Dict\map(
-            $$,
+            $$ ?? dict[],
             $_val50 ==> $_val50
               |> Vec\map(
-                $$,
+                $$ ?? vec[],
                 $_val51 ==> $_val51
                   |> A::__fromShape($$),
               ),
@@ -856,66 +856,66 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_string_to_i32' => $this->map_of_string_to_i32,
       'map_of_string_to_A' => $this->map_of_string_to_A
         |> Dict\map(
-          $$,
+          $$ ?? dict[],
           $_val0 ==> $_val0->__toShape(),
         ),
       'map_of_string_to_self' => $this->map_of_string_to_self
         |> Dict\map(
-          $$,
+          $$ ?? dict[],
           $_val0 ==> $_val0->__toShape(),
         ),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A
         |> Dict\map(
-          $$,
+          $$ ?? dict[],
           $_val0 ==> $_val0
             |> Vec\map(
-              $$,
+              $$ ?? vec[],
               $_val1 ==> $_val1->__toShape(),
             ),
         ),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A
         |> Dict\map(
-          $$,
+          $$ ?? dict[],
           $_val0 ==> $_val0
             |> Dict\map(
-              $$,
+              $$ ?? dict[],
               $_val1 ==> $_val1->__toShape(),
             ),
         ),
       'list_of_string' => $this->list_of_string,
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A
         |> Vec\map(
-          $$,
+          $$ ?? vec[],
           $_val0 ==> $_val0
             |> Dict\map(
-              $$,
+              $$ ?? dict[],
               $_val1 ==> $_val1->__toShape(),
             ),
         ),
       'list_of_self' => $this->list_of_self
         |> Vec\map(
-          $$,
+          $$ ?? vec[],
           $_val0 ==> $_val0->__toShape(),
         ),
       'list_of_list_of_self' => $this->list_of_list_of_self
         |> Vec\map(
-          $$,
+          $$ ?? vec[],
           $_val0 ==> $_val0
             |> Vec\map(
-              $$,
+              $$ ?? vec[],
               $_val1 ==> $_val1->__toShape(),
             ),
         ),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A
         |> Vec\map(
-          $$,
+          $$ ?? vec[],
           $_val0 ==> $_val0
             |> Dict\map(
-              $$,
+              $$ ?? dict[],
               $_val1 ==> $_val1
                 |> Vec\map(
-                  $$,
+                  $$ ?? vec[],
                   $_val2 ==> $_val2->__toShape(),
                 ),
             ),

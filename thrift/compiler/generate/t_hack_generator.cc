@@ -1590,7 +1590,7 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
     out << "Vec\\map(" << endl;
   }
   indent_up();
-  indent(out) << "$$," << endl;
+  indent(out) << "$$ ?? " << (t->is_map() ? "dict[]" : "vec[]") << "," << endl;
   string tmp = namer("_val");
   indent(out) << "$" << tmp << " ==> $" << tmp;
 
@@ -1634,7 +1634,7 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
     out << "Vec\\map(" << endl;
   }
   indent_up();
-  indent(out) << "$$," << endl;
+  indent(out) << "$$ ?? " << (t->is_map() ? "dict[]" : "vec[]") << "," << endl;
   string tmp = namer("_val");
   indent(out) << "$" << tmp << " ==> $" << tmp;
 
@@ -2198,7 +2198,11 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
         if (arrays_) {
           if (type_has_nested_struct(t)) {
-            val << (nullable ? " ? null :" : "") << endl;
+            if (nullable) {
+              val << " ? null : $this->" << (*m_iter)->get_name() << endl;
+            } else {
+              val << endl;
+            }
             indent_up();
             indent(val) << "|> ";
             generate_shape_from_hack_array_lambda(val, ngen, t);
