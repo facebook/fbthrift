@@ -995,8 +995,9 @@ decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
   };
   Reader reader(refiller);
   IOobject *ioobj = IOOOBJECT(input->stringiobuf);
-  auto buf = folly::IOBuf::wrapBuffer(IOBUF(ioobj) + ioobj->pos,
-        ioobj->string_size - ioobj->pos);
+  auto buf = folly::IOBuf::wrapBuffer(
+      static_cast<char*>(IOBUF(ioobj)) + ioobj->pos, // IOBUF(ioobj) is char[1]
+      ioobj->string_size - ioobj->pos);
   reader.setInput(buf.get());
 
   try {
