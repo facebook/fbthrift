@@ -247,23 +247,25 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
     std::unique_ptr<StreamRequestCallback> callback) noexcept {
   auto output = callback->getOutput();
 
-  auto input = yarpl::flowable::Flowable<rsocket::Payload>::fromPublisher(
-      [initialBuf = std::move(buf),
-       metadata = std::move(metadata),
-       callback = std::move(callback)](
-          std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
-              subscriber) mutable {
-        VLOG(3) << "Input is started to be consumed: "
+  auto input =
+      yarpl::flowable::internal::flowableFromSubscriber<rsocket::Payload>(
+          [initialBuf = std::move(buf),
+           metadata = std::move(metadata),
+           callback = std::move(callback)](
+              std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
+                  subscriber) mutable {
+            VLOG(3)
+                << "Input is started to be consumed: "
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
-        StreamRequestCallback* scb =
-            static_cast<StreamRequestCallback*>(callback.get());
-        auto rpc_subscriber = yarpl::make_ref<RPCSubscriber>(
-            serializeMetadata(*metadata),
-            std::move(initialBuf),
-            std::move(subscriber));
-        rpc_subscriber->init();
-        scb->subscribeToInput(std::move(rpc_subscriber));
-      });
+            StreamRequestCallback* scb =
+                static_cast<StreamRequestCallback*>(callback.get());
+            auto rpc_subscriber = yarpl::make_ref<RPCSubscriber>(
+                serializeMetadata(*metadata),
+                std::move(initialBuf),
+                std::move(subscriber));
+            rpc_subscriber->init();
+            scb->subscribeToInput(std::move(rpc_subscriber));
+          });
 
   // Perform the rpc call
   auto result = rsRequester_->requestChannel(input);

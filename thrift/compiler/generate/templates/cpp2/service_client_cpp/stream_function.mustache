@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>return yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::fromPublisher(
+%>return yarpl::flowable::internal::flowableFromSubscriber<std::unique_ptr<folly::IOBuf>>(
         [this, rpcOptions<%function:comma%><% > service_common/param_list_move_assignment %>](
                        apache::thrift::StreamRequestCallback::SubscriberRef
                            _subscriber) mutable {
