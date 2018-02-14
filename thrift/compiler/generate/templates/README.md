@@ -3,16 +3,16 @@
 A quick guide to understand our use of the
 [mustache](https://mustache.github.io/mustache.5.html) template system.
 
-## Delimeters
+## Delimiters
 
-There are two kinds of delimeters for our mustache templates. For most languages
+There are two kinds of delimiters for our mustache templates. For most languages
 it's `{{` and `}}`. For C++ they were replaced with `<%` and `%>` to avoid
 confusion with normal C++ brackets. These are the basic building blocks of
-mustache templates. The examples here will use the cpp delimeters. You
+mustache templates. The examples here will use the cpp delimiters. You
 should replace those with the double brackets if you are working on another
 language.
 
-## Special Delimeters
+## Special Delimiters
 
 * Variables: `<%var%>`
 * Existence: `<%#var%>content<%/var%>`
@@ -105,7 +105,7 @@ Let's imagine you have various constants values:
 `42, "foo", 1.23, 32, 40, false`.  
 The output will be:
 ```
-These are your constant integers: 42, Not an integer, Not an integer, 32, 40, Not an integer, 
+These are your constant integers: 42, Not an integer, Not an integer, 32, 40, Not an integer,
 ```
 
 ## File Paths and Recursion
