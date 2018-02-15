@@ -292,7 +292,7 @@ class CoupledBufferBases : public CoupledTransports<TBufferBase> {
  * Just for templates magic.
  */
 template <class T>
-using Identity = T;
+using IdentityT = T;
 
 /**************************************************************************
  * Alarm handling code for use in tests that check the transport blocking
@@ -750,7 +750,7 @@ class TransportTest : public testing::Test {
 
 #define TEST_RW_4(CoupledTransports, ...) \
     /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_4_A(Identity, CoupledTransports, __VA_ARGS__) \
+    TEST_RW_4_A(IdentityT, CoupledTransports, __VA_ARGS__) \
     /* \
      * Also test using the transport as a TTransport*, to test \
      * the read_virt()/write_virt() calls \
@@ -776,7 +776,7 @@ class TransportTest : public testing::Test {
 
 #define TEST_RW_6(CoupledTransports, ...) \
     /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_6_A(Identity, CoupledTransports, __VA_ARGS__) \
+    TEST_RW_6_A(IdentityT, CoupledTransports, __VA_ARGS__) \
     /* \
      * Also test using the transport as a TTransport*, to test \
      * the read_virt()/write_virt() calls \
@@ -804,7 +804,7 @@ class TransportTest : public testing::Test {
 
 #define TEST_RW_7(CoupledTransports, ...) \
     /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_7_A(Identity, CoupledTransports, __VA_ARGS__) \
+    TEST_RW_7_A(IdentityT, CoupledTransports, __VA_ARGS__) \
     /* \
      * Also test using the transport as a TTransport*, to test \
      * the read_virt()/write_virt() calls \
@@ -824,7 +824,7 @@ class TransportTest : public testing::Test {
   }
 
 #define TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B(Identity, CoupledTransports, func) \
+  TEST_BLOCKING_BEHAVIOR_B(IdentityT, CoupledTransports, func) \
   TEST_BLOCKING_BEHAVIOR_B(CoupledTTransports, CoupledTransports, func) \
   TEST_BLOCKING_BEHAVIOR_B( \
       CoupledBufferedTransportsT, CoupledTransports, func) \

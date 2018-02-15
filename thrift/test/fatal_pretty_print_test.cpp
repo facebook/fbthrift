@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -601,59 +601,60 @@ TEST(fatal_pretty_print, pretty_print) {
 
 TEST(fatal_pretty_print, ref_unique) {
   hasRefUnique v;
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr1 = R"(
     <struct>{
       a: null
-    }
-  )"), v);
+    })";
+
+  TEST_IMPL(adjust(expectedStr1), v);
 
   v.a = std::make_unique<structA>();
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr2 = R"(
     <struct>{
       a: <struct>{
         a: 0,
         b: ""
       }
-    }
-  )"), v);
+    })";
+  TEST_IMPL(adjust(expectedStr2), v);
 }
 
 TEST(fatal_pretty_print, ref_shared) {
   hasRefShared v;
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr1 = R"(
     <struct>{
       a: null
-    }
-  )"), v);
+    })";
+  TEST_IMPL(adjust(expectedStr1), v);
 
   v.a = std::make_shared<structA>();
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr2 = R"(
     <struct>{
       a: <struct>{
         a: 0,
         b: ""
       }
-    }
-  )"), v);
+    })";
+  TEST_IMPL(adjust(expectedStr2), v);
 }
 
 TEST(fatal_pretty_print, ref_shared_const) {
   hasRefSharedConst v;
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr1 = R"(
     <struct>{
       a: null
-    }
-  )"), v);
+    })";
+  TEST_IMPL(adjust(expectedStr1), v);
 
   v.a = std::make_shared<structA const>();
-  TEST_IMPL(adjust(R"(
+  const char* expectedStr2 = R"(
     <struct>{
       a: <struct>{
         a: 0,
         b: ""
       }
-    }
-  )"), v);
+    })";
+  TEST_IMPL(adjust(expectedStr2), v);
 }
 
 } // namespace cpp_reflection {

@@ -575,7 +575,7 @@ class fatal_folly_dynamic_enum : public ::testing::Test {
   using member_meta =
       apache::thrift::get_struct_member_by_name<type, member_name>;
 
-  std::string member_name_s = fatal::to_instance<std::string, member_name>();
+  std::string member_name_s{fatal::to_instance<std::string, member_name>()};
 };
 }
 
