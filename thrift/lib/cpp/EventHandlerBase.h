@@ -16,26 +16,32 @@
 #ifndef THRIFT_EVENTHANDLERBASE_H_
 #define THRIFT_EVENTHANDLERBASE_H_ 1
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
+
+#include <folly/ExceptionWrapper.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <folly/ExceptionWrapper.h>
-#include <folly/SocketAddress.h>
 
 namespace folly {
 class IOBuf;
 }
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 class TAsyncChannel;
-}}}
+}
+} // namespace thrift
+} // namespace apache
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using server::TConnectionContext;
 
@@ -59,7 +65,6 @@ struct SerializedMessage {
  */
 class TProcessorEventHandler {
  public:
-
   virtual ~TProcessorEventHandler() {}
 
   /**
@@ -68,20 +73,22 @@ class TProcessorEventHandler {
    * The return value is passed to all other callbacks
    * for that function invocation.
    */
-  virtual void* getServiceContext(const char* /*service_name*/,
-                           const char* fn_name,
-                           TConnectionContext* connectionContext) {
+  virtual void* getServiceContext(
+      const char* /*service_name*/,
+      const char* fn_name,
+      TConnectionContext* connectionContext) {
     return getContext(fn_name, connectionContext);
   }
-  virtual void* getContext(const char* /*fn_name*/,
-                           TConnectionContext* /*connectionContext*/) {
+  virtual void* getContext(
+      const char* /*fn_name*/,
+      TConnectionContext* /*connectionContext*/) {
     return nullptr;
   }
 
   /**
    * Expected to free resources associated with a context.
    */
-  virtual void freeContext(void* /*ctx*/, const char* /*fn_name*/) { }
+  virtual void freeContext(void* /*ctx*/, const char* /*fn_name*/) {}
 
   /**
    * Called before reading arguments.
@@ -97,16 +104,19 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2.
    */
-  virtual void onReadData(void* /*ctx*/, const char* /*fn_name*/,
-                          const SerializedMessage& /*msg*/) {}
+  virtual void onReadData(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      const SerializedMessage& /*msg*/) {}
 
   /**
    * Called between reading arguments and calling the handler.
    */
-  virtual void postRead(void* /*ctx*/,
-                        const char* /*fn_name*/,
-                        apache::thrift::transport::THeader* /*header*/,
-                        uint32_t /*bytes*/) {}
+  virtual void postRead(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      apache::thrift::transport::THeader* /*header*/,
+      uint32_t /*bytes*/) {}
 
   /**
    * Called between calling the handler and writing the response.
@@ -122,15 +132,16 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2.
    */
-  virtual void onWriteData(void* /*ctx*/, const char* /*fn_name*/,
-                           const SerializedMessage& /*msg*/) {}
+  virtual void onWriteData(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      const SerializedMessage& /*msg*/) {}
 
   /**
    * Called after writing the response.
    */
-  virtual void postWrite(void* /*ctx*/,
-                         const char* /*fn_name*/,
-                         uint32_t /*bytes*/) {}
+  virtual void
+  postWrite(void* /*ctx*/, const char* /*fn_name*/, uint32_t /*bytes*/) {}
 
   /**
    * Called when an async function call completes successfully.
@@ -141,9 +152,10 @@ class TProcessorEventHandler {
    * Called if the handler throws an undeclared exception.
    */
   virtual void handlerError(void* /*ctx*/, const char* /*fn_name*/) {}
-  virtual void handlerErrorWrapped(void* ctx,
-                                   const char* fn_name,
-                                   const folly::exception_wrapper& /*ew*/) {
+  virtual void handlerErrorWrapped(
+      void* ctx,
+      const char* fn_name,
+      const folly::exception_wrapper& /*ew*/) {
     handlerError(ctx, fn_name);
   }
 
@@ -152,14 +164,16 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2
    */
-  virtual void userException(void* /*ctx*/,
-                             const char* /*fn_name*/,
-                             const std::string& /*ex*/,
-                             const std::string& /*ex_what*/) {}
-  virtual void userExceptionWrapped(void* ctx,
-                                    const char* fn_name,
-                                    bool declared,
-                                    const folly::exception_wrapper& ew_) {
+  virtual void userException(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      const std::string& /*ex*/,
+      const std::string& /*ex_what*/) {}
+  virtual void userExceptionWrapped(
+      void* ctx,
+      const char* fn_name,
+      bool declared,
+      const folly::exception_wrapper& ew_) {
     auto ew = ew_; // make a local, mutable copy
     const auto type = ew.class_name();
     const auto what = ew.what();
@@ -180,16 +194,20 @@ class TProcessorEventHandler {
  */
 class TProcessorContextFreer {
  public:
-  TProcessorContextFreer(std::shared_ptr<TProcessorEventHandler> handler,
-                         void* context, const char* method) :
-    handler_(handler), context_(context), method_(method) {}
+  TProcessorContextFreer(
+      std::shared_ptr<TProcessorEventHandler> handler,
+      void* context,
+      const char* method)
+      : handler_(handler), context_(context), method_(method) {}
   ~TProcessorContextFreer() {
     if (handler_ != nullptr) {
       handler_->freeContext(context_, method_);
     }
   }
 
-  void unregister() { handler_.reset(); }
+  void unregister() {
+    handler_.reset();
+  }
 
  private:
   std::shared_ptr<TProcessorEventHandler> handler_;
@@ -202,37 +220,29 @@ class ContextStack {
 
  public:
   explicit ContextStack(const char* method)
-      : ctxs_()
-      , handlers_()
-      , method_(method) {}
+      : ctxs_(), handlers_(), method_(method) {}
 
   ContextStack(
-    const std::shared_ptr<
-      std::vector<std::shared_ptr<TProcessorEventHandler>>
-      >& handlers,
-    const char* serviceName,
-    const char* method,
-    TConnectionContext* connectionContext)
-      : ctxs_()
-      , handlers_(handlers)
-      , method_(method) {
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
+      const char* method,
+      TConnectionContext* connectionContext)
+      : ctxs_(), handlers_(handlers), method_(method) {
     ctxs_.reserve(handlers->size());
-    for (auto handler: *handlers) {
-      ctxs_.push_back(handler->getServiceContext(serviceName,
-                                                 method, connectionContext));
+    for (auto handler : *handlers) {
+      ctxs_.push_back(
+          handler->getServiceContext(serviceName, method, connectionContext));
     }
   }
 
   ContextStack(
-    const std::shared_ptr<
-      std::vector<std::shared_ptr<TProcessorEventHandler>>
-      >& handlers,
-    const char* method,
-    TConnectionContext* connectionContext)
-      : ctxs_()
-      , handlers_(handlers)
-      , method_(method) {
-    for (auto handler: *handlers) {
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* method,
+      TConnectionContext* connectionContext)
+      : ctxs_(), handlers_(handlers), method_(method) {
+    for (auto handler : *handlers) {
       ctxs_.push_back(handler->getContext(method, connectionContext));
     }
   }
@@ -247,7 +257,7 @@ class ContextStack {
 
   void preWrite() {
     if (handlers_) {
-      for (size_t  i = 0; i < handlers_->size(); i++) {
+      for (size_t i = 0; i < handlers_->size(); i++) {
         (*handlers_)[i]->preWrite(ctxs_[i], getMethod());
       }
     }
@@ -321,11 +331,10 @@ class ContextStack {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
         (*handlers_)[i]->userExceptionWrapped(
-          ctxs_[i], getMethod(), declared, ew);
+            ctxs_[i], getMethod(), declared, ew);
       }
     }
   }
-
 
   void asyncComplete() {
     if (handlers_) {
@@ -341,21 +350,19 @@ class ContextStack {
 
  private:
   std::vector<void*> ctxs_;
-  std::shared_ptr<
-    std::vector<std::shared_ptr<TProcessorEventHandler>>
-    >handlers_;
+  std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
+      handlers_;
   std::string method_;
 };
 
 class EventHandlerBase {
  public:
   EventHandlerBase()
-    : handlers_(std::make_shared<
-                std::vector<std::shared_ptr<TProcessorEventHandler> > >())
-    , setEventHandlerPos_(-1) {}
+      : handlers_(std::make_shared<
+                  std::vector<std::shared_ptr<TProcessorEventHandler>>>()),
+        setEventHandlerPos_(-1) {}
 
-  void addEventHandler(
-      const std::shared_ptr<TProcessorEventHandler>& handler) {
+  void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler) {
     handlers_->push_back(handler);
   }
 
@@ -390,24 +397,22 @@ class EventHandlerBase {
       const char* fn_name,
       TConnectionContext* connectionContext) {
     std::unique_ptr<ContextStack> ctx(
-      new ContextStack(handlers_, service_name, fn_name, connectionContext));
+        new ContextStack(handlers_, service_name, fn_name, connectionContext));
     return ctx;
   }
 
  public:
-  std::shared_ptr<
-    std::vector<std::shared_ptr<TProcessorEventHandler>>
-    > handlers_;
+  std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
+      handlers_;
   std::shared_ptr<TProcessorEventHandler> eventHandler_;
 
  private:
   int setEventHandlerPos_;
-
 };
 
 class TProcessorEventHandlerFactory {
  public:
-  virtual ~TProcessorEventHandlerFactory() { }
+  virtual ~TProcessorEventHandlerFactory() {}
   virtual std::shared_ptr<TProcessorEventHandler> getEventHandler() = 0;
 };
 
@@ -420,16 +425,16 @@ class TProcessorBase : public EventHandlerBase {
   TProcessorBase();
 
   static void addProcessorEventHandlerFactory(
-    std::shared_ptr<TProcessorEventHandlerFactory> factory);
+      std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
   static void removeProcessorEventHandlerFactory(
-    std::shared_ptr<TProcessorEventHandlerFactory> factory);
+      std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
  private:
   static concurrency::ReadWriteMutex& getRWMutex();
 
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
-    getFactories();
+  getFactories();
 };
 
 /**
@@ -443,17 +448,15 @@ class TClientBase : public EventHandlerBase {
   // Explicit copy constructor to skip copying the current client context stack
   // (it's a unique pointer so it can't be copied, but it also wouldn't make
   // sense to copy it).
-  TClientBase(const TClientBase& original) :
-    EventHandlerBase(original),
-    s_() {}
+  TClientBase(const TClientBase& original) : EventHandlerBase(original), s_() {}
 
   virtual ~TClientBase() {}
 
   static void addClientEventHandlerFactory(
-    std::shared_ptr<TProcessorEventHandlerFactory> factory);
+      std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
   static void removeClientEventHandlerFactory(
-    std::shared_ptr<TProcessorEventHandlerFactory> factory);
+      std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
   /**
    * These functions are only used in the client handler
@@ -468,14 +471,16 @@ class TClientBase : public EventHandlerBase {
    * The generated code should be the ONLY user of s_.  All other functions
    * should just use the ContextStack parameter.
    */
-  void generateClientContextStack(const char* fn_name,
-                                  TConnectionContext* connectionContext) {
+  void generateClientContextStack(
+      const char* fn_name,
+      TConnectionContext* connectionContext) {
     auto s = getContextStack("", fn_name, connectionContext);
     s_ = std::move(s);
   }
-  void generateClientContextStack(const char* service_name,
-                                  const char* fn_name,
-                                  TConnectionContext* connectionContext) {
+  void generateClientContextStack(
+      const char* service_name,
+      const char* fn_name,
+      TConnectionContext* connectionContext) {
     auto s = getContextStack(service_name, fn_name, connectionContext);
     s_ = std::move(s);
   }
@@ -500,9 +505,10 @@ class TClientBase : public EventHandlerBase {
         std::shared_ptr<protocol::TProtocol> inputProtocol,
         std::shared_ptr<protocol::TProtocol> outputProtocol);
 
-    void init(const folly::SocketAddress* address,
-              std::shared_ptr<protocol::TProtocol> inputProtocol,
-              std::shared_ptr<protocol::TProtocol> outputProtocol);
+    void init(
+        const folly::SocketAddress* address,
+        std::shared_ptr<protocol::TProtocol> inputProtocol,
+        std::shared_ptr<protocol::TProtocol> outputProtocol);
 
     std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
       return inputProtocol_;
@@ -521,11 +527,12 @@ class TClientBase : public EventHandlerBase {
   static concurrency::ReadWriteMutex& getRWMutex();
 
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
-    getFactories();
+  getFactories();
 
   std::unique_ptr<ContextStack> s_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_EVENTHANDLERBASE_H_
