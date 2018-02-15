@@ -331,9 +331,9 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_moduleAMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -352,7 +352,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -375,9 +375,9 @@ void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_moduleBMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleBMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleBMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -396,7 +396,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleBMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleBMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleBMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -419,9 +419,9 @@ void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_i32StrDoubleMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32StrDoubleMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32StrDoubleMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -440,7 +440,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function frozen2_i32StrDoubleMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -464,9 +464,9 @@ void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_versioningMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_versioningMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_versioningMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -485,7 +485,7 @@ void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function frozen2_versioningMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_versioningMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_versioningMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -509,9 +509,9 @@ void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_retI32Method_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retI32Method", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retI32Method", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -530,7 +530,7 @@ void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function frozen2_retI32Method";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_retI32Method<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_retI32Method<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -551,9 +551,9 @@ void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_retModAMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retModAMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_retModAMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -572,7 +572,7 @@ void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_retModAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(c), return_retModAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(ctxStack), return_retModAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -593,9 +593,9 @@ void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_throwMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_throwMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_throwMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -614,7 +614,7 @@ void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function frozen2_throwMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throwMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throwMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -635,9 +635,9 @@ void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_multiThrowMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_multiThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_multiThrowMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -656,7 +656,7 @@ void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function frozen2_multiThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_multiThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_multiThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -677,9 +677,9 @@ void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_i32ThrowMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32ThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_i32ThrowMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -698,7 +698,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function frozen2_i32ThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -720,9 +720,9 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_moduleAThrowMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_moduleAThrowMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -741,7 +741,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -764,9 +764,9 @@ void ServiceAAsyncProcessor::process_frozen2_mixedMethod(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<ServiceA_mixedMethod_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_mixedMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.frozen2_mixedMethod", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -785,7 +785,7 @@ void ServiceAAsyncProcessor::process_frozen2_mixedMethod(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function frozen2_mixedMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_mixedMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_mixedMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

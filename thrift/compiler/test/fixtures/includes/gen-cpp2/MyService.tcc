@@ -36,9 +36,9 @@ void MyServiceAsyncProcessor::process_query(std::unique_ptr<apache::thrift::Resp
   args.get<0>().value = uarg_s.get();
   std::unique_ptr< ::cpp2::Included> uarg_i(new  ::cpp2::Included());
   args.get<1>().value = uarg_i.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "MyService.query", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.query", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -57,7 +57,7 @@ void MyServiceAsyncProcessor::process_query(std::unique_ptr<apache::thrift::Resp
       LOG(ERROR) << ex.what() << " in oneway function query";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_query<ProtocolIn_,ProtocolOut_>, throw_wrapped_query<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_query<ProtocolIn_,ProtocolOut_>, throw_wrapped_query<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -111,9 +111,9 @@ void MyServiceAsyncProcessor::process_has_arg_docs(std::unique_ptr<apache::thrif
   args.get<0>().value = uarg_s.get();
   std::unique_ptr< ::cpp2::Included> uarg_i(new  ::cpp2::Included());
   args.get<1>().value = uarg_i.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -132,7 +132,7 @@ void MyServiceAsyncProcessor::process_has_arg_docs(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function has_arg_docs";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_has_arg_docs<ProtocolIn_,ProtocolOut_>, throw_wrapped_has_arg_docs<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_has_arg_docs<ProtocolIn_,ProtocolOut_>, throw_wrapped_has_arg_docs<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

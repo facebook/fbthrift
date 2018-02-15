@@ -131,8 +131,7 @@ void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thri
   auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
   apache::thrift::detail::si::async_tm_oneway(
       this, std::move(callback), [&, this] {
-        auto _input = yarpl::flowable::Flowables::fromPublisher<
-            std::unique_ptr<folly::IOBuf>>(
+        auto _input = yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::fromPublisher(
             [_channel](std::shared_ptr<yarpl::flowable::Subscriber<
                           std::unique_ptr<folly::IOBuf>>> subscriber) {
               _channel->setInput(0, subscriber);

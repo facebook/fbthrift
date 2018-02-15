@@ -30,9 +30,9 @@ void MyLeafAsyncProcessor::process_do_leaf(std::unique_ptr<apache::thrift::Respo
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyLeaf_do_leaf_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -51,7 +51,7 @@ void MyLeafAsyncProcessor::process_do_leaf(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << ex.what() << " in oneway function do_leaf";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_do_leaf<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_leaf<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

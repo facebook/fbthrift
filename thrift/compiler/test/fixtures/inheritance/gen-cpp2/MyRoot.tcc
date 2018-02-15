@@ -30,9 +30,9 @@ void MyRootAsyncProcessor::process_do_root(std::unique_ptr<apache::thrift::Respo
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyRoot_do_root_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "MyRoot.do_root", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyRoot.do_root", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -51,7 +51,7 @@ void MyRootAsyncProcessor::process_do_root(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << ex.what() << " in oneway function do_root";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_do_root<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_root<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_root<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_root<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

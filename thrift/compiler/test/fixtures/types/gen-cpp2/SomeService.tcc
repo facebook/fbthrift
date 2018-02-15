@@ -32,9 +32,9 @@ void SomeServiceAsyncProcessor::process_bounce_map(std::unique_ptr<apache::thrif
   SomeService_bounce_map_pargs args;
   std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> uarg_m(new  ::apache::thrift::fixtures::types::SomeMap());
   args.get<0>().value = uarg_m.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -53,7 +53,7 @@ void SomeServiceAsyncProcessor::process_bounce_map(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function bounce_map";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>>(std::move(req), std::move(c), return_bounce_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_bounce_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>>(std::move(req), std::move(ctxStack), return_bounce_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_bounce_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

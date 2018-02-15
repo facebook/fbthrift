@@ -65,9 +65,9 @@ void ReturnServiceAsyncProcessor::process_noReturn(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_noReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.noReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.noReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -86,7 +86,7 @@ void ReturnServiceAsyncProcessor::process_noReturn(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function noReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_noReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_noReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_noReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_noReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_noReturn(std::move(callback));
 }
@@ -132,9 +132,9 @@ void ReturnServiceAsyncProcessor::process_boolReturn(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_boolReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.boolReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.boolReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -153,7 +153,7 @@ void ReturnServiceAsyncProcessor::process_boolReturn(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function boolReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_boolReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_boolReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_boolReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_boolReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -205,9 +205,9 @@ void ReturnServiceAsyncProcessor::process_i16Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i16Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.i16Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i16Return", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -226,7 +226,7 @@ void ReturnServiceAsyncProcessor::process_i16Return(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function i16Return";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int16_t>>(std::move(req), std::move(c), return_i16Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i16Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int16_t>>(std::move(req), std::move(ctxStack), return_i16Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i16Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -278,9 +278,9 @@ void ReturnServiceAsyncProcessor::process_i32Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i32Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.i32Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i32Return", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -299,7 +299,7 @@ void ReturnServiceAsyncProcessor::process_i32Return(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function i32Return";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_i32Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_i32Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -351,9 +351,9 @@ void ReturnServiceAsyncProcessor::process_i64Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i64Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.i64Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i64Return", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -372,7 +372,7 @@ void ReturnServiceAsyncProcessor::process_i64Return(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function i64Return";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(c), return_i64Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64Return<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64Return<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -424,9 +424,9 @@ void ReturnServiceAsyncProcessor::process_floatReturn(std::unique_ptr<apache::th
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_floatReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.floatReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.floatReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -445,7 +445,7 @@ void ReturnServiceAsyncProcessor::process_floatReturn(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function floatReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<float>>(std::move(req), std::move(c), return_floatReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_floatReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<float>>(std::move(req), std::move(ctxStack), return_floatReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_floatReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -497,9 +497,9 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_doubleReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.doubleReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.doubleReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -518,7 +518,7 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(std::unique_ptr<apache::t
       LOG(ERROR) << ex.what() << " in oneway function doubleReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(c), return_doubleReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_doubleReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_doubleReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_doubleReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -565,9 +565,9 @@ void ReturnServiceAsyncProcessor::process_stringReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_stringReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.stringReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.stringReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -586,7 +586,7 @@ void ReturnServiceAsyncProcessor::process_stringReturn(std::unique_ptr<apache::t
       LOG(ERROR) << ex.what() << " in oneway function stringReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_stringReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_stringReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_stringReturn(std::move(callback));
 }
@@ -634,9 +634,9 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_binaryReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.binaryReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.binaryReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -655,7 +655,7 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
       LOG(ERROR) << ex.what() << " in oneway function binaryReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_binaryReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_binaryReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_binaryReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_binaryReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -707,9 +707,9 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_mapReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.mapReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.mapReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -728,7 +728,7 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function mapReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>>(std::move(req), std::move(c), return_mapReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_mapReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -780,9 +780,9 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_simpleTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.simpleTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.simpleTypedefReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -801,7 +801,7 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function simpleTypedefReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(c), return_simpleTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_simpleTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_simpleTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_simpleTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -853,9 +853,9 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_complexTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.complexTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.complexTypedefReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -874,7 +874,7 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function complexTypedefReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>>>(std::move(req), std::move(c), return_complexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>>>(std::move(req), std::move(ctxStack), return_complexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -926,9 +926,9 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_mostComplexTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.list_mostComplexTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_mostComplexTypedefReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -947,7 +947,7 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
       LOG(ERROR) << ex.what() << " in oneway function list_mostComplexTypedefReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>>(std::move(req), std::move(c), return_list_mostComplexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>>(std::move(req), std::move(ctxStack), return_list_mostComplexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -994,9 +994,9 @@ void ReturnServiceAsyncProcessor::process_enumReturn(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_enumReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.enumReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.enumReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1015,7 +1015,7 @@ void ReturnServiceAsyncProcessor::process_enumReturn(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function enumReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(c), return_enumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_enumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_enumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_enumReturn(std::move(callback));
 }
@@ -1058,9 +1058,9 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_EnumReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.list_EnumReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_EnumReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1079,7 +1079,7 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function list_EnumReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(c), return_list_EnumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_list_EnumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_list_EnumReturn(std::move(callback));
 }
@@ -1127,9 +1127,9 @@ void ReturnServiceAsyncProcessor::process_structReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_structReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.structReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.structReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1148,7 +1148,7 @@ void ReturnServiceAsyncProcessor::process_structReturn(std::unique_ptr<apache::t
       LOG(ERROR) << ex.what() << " in oneway function structReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(c), return_structReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_structReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_structReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_structReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1200,9 +1200,9 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_set_StructReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.set_StructReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.set_StructReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1221,7 +1221,7 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function set_StructReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(c), return_set_StructReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_StructReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_set_StructReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_StructReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1268,9 +1268,9 @@ void ReturnServiceAsyncProcessor::process_unionReturn(std::unique_ptr<apache::th
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_unionReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.unionReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.unionReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1289,7 +1289,7 @@ void ReturnServiceAsyncProcessor::process_unionReturn(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function unionReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(c), return_unionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_unionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_unionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_unionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_unionReturn(std::move(callback));
 }
@@ -1337,9 +1337,9 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_UnionReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.list_UnionReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_UnionReturn", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1358,7 +1358,7 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function list_UnionReturn";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(c), return_list_UnionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_UnionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_list_UnionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_UnionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1407,9 +1407,9 @@ void ReturnServiceAsyncProcessor::process_readDataEb(std::unique_ptr<apache::thr
   ReturnService_readDataEb_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.readDataEb", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.readDataEb", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1428,7 +1428,7 @@ void ReturnServiceAsyncProcessor::process_readDataEb(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function readDataEb";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>>(std::move(req), std::move(c), return_readDataEb<ProtocolIn_,ProtocolOut_>, throw_wrapped_readDataEb<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>>(std::move(req), std::move(ctxStack), return_readDataEb<ProtocolIn_,ProtocolOut_>, throw_wrapped_readDataEb<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_readDataEb(std::move(callback), args.get<0>().ref());
 }
@@ -1478,9 +1478,9 @@ void ReturnServiceAsyncProcessor::process_readData(std::unique_ptr<apache::thrif
   ReturnService_readData_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ReturnService.readData", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.readData", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1499,7 +1499,7 @@ void ReturnServiceAsyncProcessor::process_readData(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function readData";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>>(std::move(req), std::move(c), return_readData<ProtocolIn_,ProtocolOut_>, throw_wrapped_readData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>>(std::move(req), std::move(ctxStack), return_readData<ProtocolIn_,ProtocolOut_>, throw_wrapped_readData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

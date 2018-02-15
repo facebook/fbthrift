@@ -38,16 +38,16 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   apache::thrift::frozen::MappedFrozen<<%service:name%>_<%function:name%>_pargs> mapped;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "<%service:name%>.frozen2_<%function:name%>", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:name%>.frozen2_<%function:name%>", ctx));
   try {
-    deserializeRequest(mapped, buf.get(), iprot.get(), c.get());
+    deserializeRequest(mapped, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
 <%#function:oneway?%>
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
 <%/function:oneway?%>
 <%^function:oneway?%>
     apache::thrift::Frozen2ProtocolWriter prot;
@@ -67,10 +67,10 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
     }
   }
 <%^type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(ctxStack), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(c), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%^function:eb%>
   if (!callback->isRequestActive()) {

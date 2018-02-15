@@ -42,9 +42,9 @@ void PubSubStreamingServiceAsyncProcessor::process_client(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_client_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.client", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.client", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -63,7 +63,7 @@ void PubSubStreamingServiceAsyncProcessor::process_client(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function client";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_client<ProtocolIn_,ProtocolOut_>, throw_wrapped_client<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_client<ProtocolIn_,ProtocolOut_>, throw_wrapped_client<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -113,9 +113,9 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_server_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -134,7 +134,7 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function server";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_server<ProtocolIn_,ProtocolOut_>, throw_wrapped_server<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_server<ProtocolIn_,ProtocolOut_>, throw_wrapped_server<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -194,9 +194,9 @@ void PubSubStreamingServiceAsyncProcessor::process_both(std::unique_ptr<apache::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_both_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.both", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.both", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -215,7 +215,7 @@ void PubSubStreamingServiceAsyncProcessor::process_both(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function both";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_both<ProtocolIn_,ProtocolOut_>, throw_wrapped_both<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_both<ProtocolIn_,ProtocolOut_>, throw_wrapped_both<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -282,15 +282,15 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
   args.get<0>().value = &uarg_i32_from;
   int32_t uarg_i32_to{0};
   args.get<1>().value = &uarg_i32_to;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstream", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstream", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -308,9 +308,9 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
   PubSubStreamingService_takesstream_pargs args;
   int32_t uarg_other_param{0};
   args.get<0>().value = &uarg_other_param;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -329,7 +329,7 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function takesstream";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_takesstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_takesstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_takesstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_takesstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -379,9 +379,9 @@ void PubSubStreamingServiceAsyncProcessor::process_clientthrows(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_clientthrows_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.clientthrows", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.clientthrows", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -400,7 +400,7 @@ void PubSubStreamingServiceAsyncProcessor::process_clientthrows(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function clientthrows";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_clientthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_clientthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_clientthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_clientthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -455,15 +455,15 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
   PubSubStreamingService_different_pargs args;
   int64_t uarg_firstparam{0};
   args.get<0>().value = &uarg_firstparam;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_tm_different(std::move(callback), args.get<0>().ref());
 }

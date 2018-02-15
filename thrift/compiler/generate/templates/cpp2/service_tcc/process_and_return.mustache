@@ -58,22 +58,22 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   args.get<<%field:index%>>().value = uarg_<%field:name%>.get();
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%>
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
 <%#function:oneway?%>
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
 <%/function:oneway?%>
 <%#function:returns_stream?%>
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
 <%/function:returns_stream?%>
 <%^function:returns_stream?%>
 <%^function:oneway?%>
@@ -94,10 +94,10 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     }
   }
 <%^type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(ctxStack), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%^function:eb%>
   if (!callback->isRequestActive()) {

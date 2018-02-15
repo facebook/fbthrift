@@ -83,9 +83,9 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(std::unique_ptr<apac
   ParamService_void_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -104,7 +104,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function void_ret_i16_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_void_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
@@ -154,9 +154,9 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(std::unique_ptr
   args.get<0>().value = &uarg_param1;
   int16_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_byte_i16_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_byte_i16_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -175,7 +175,7 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(std::unique_ptr
       LOG(ERROR) << ex.what() << " in oneway function void_ret_byte_i16_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_byte_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_byte_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_byte_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_byte_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -227,9 +227,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(std::unique_ptr<apac
   ParamService_void_ret_map_param_pargs args;
   std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -248,7 +248,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function void_ret_map_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -302,9 +302,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(std::unique_
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<std::set<std::vector<std::string>>> uarg_param2(new std::set<std::vector<std::string>>());
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_setlist_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_setlist_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -323,7 +323,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function void_ret_map_setlist_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -375,9 +375,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(std::unique_
   ParamService_void_ret_map_typedef_param_pargs args;
    ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -396,7 +396,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function void_ret_map_typedef_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_map_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_map_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_map_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -448,9 +448,9 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(std::unique_ptr<apa
   ParamService_void_ret_enum_param_pargs args;
    ::some::valid::ns::MyEnumA uarg_param1{static_cast< ::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -469,7 +469,7 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function void_ret_enum_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -521,9 +521,9 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(std::unique_ptr<a
   ParamService_void_ret_struct_param_pargs args;
   std::unique_ptr< ::some::valid::ns::MyStruct> uarg_param1(new  ::some::valid::ns::MyStruct());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -542,7 +542,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function void_ret_struct_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_struct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_struct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_struct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_struct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -594,9 +594,9 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(std::unique_pt
   ParamService_void_ret_listunion_param_pargs args;
   std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> uarg_param1(new std::vector< ::some::valid::ns::ComplexUnion>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -615,7 +615,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(std::unique_pt
       LOG(ERROR) << ex.what() << " in oneway function void_ret_listunion_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_listunion_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_listunion_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -669,9 +669,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(std::unique_ptr<
   args.get<0>().value = &uarg_param1;
   int64_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_i32_i64_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_i32_i64_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -690,7 +690,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function bool_ret_i32_i64_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_bool_ret_i32_i64_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_i32_i64_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_i32_i64_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_i32_i64_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -744,9 +744,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(std::unique_ptr<apac
   ParamService_bool_ret_map_param_pargs args;
   std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -765,7 +765,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function bool_ret_map_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_bool_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -819,9 +819,9 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(std::unique_ptr<ap
   ParamService_bool_ret_union_param_pargs args;
   std::unique_ptr< ::some::valid::ns::ComplexUnion> uarg_param1(new  ::some::valid::ns::ComplexUnion());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -840,7 +840,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function bool_ret_union_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_bool_ret_union_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_union_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_bool_ret_union_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_bool_ret_union_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -896,9 +896,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(std::unique_
   args.get<0>().value = &uarg_param1;
   double uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_float_double_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_float_double_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -917,7 +917,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function i64_ret_float_double_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(c), return_i64_ret_float_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_float_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_float_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -973,9 +973,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(std::uniqu
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> uarg_param2(new std::set< ::some::valid::ns::mostComplexTypeDef>());
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -994,7 +994,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(std::uniqu
       LOG(ERROR) << ex.what() << " in oneway function i64_ret_string_typedef_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(c), return_i64_ret_string_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_string_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_string_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1051,9 +1051,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(std::
   args.get<3>().value = &uarg_param4;
   int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_i32_i32_i32_i32_i32_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1072,7 +1072,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(std::
       LOG(ERROR) << ex.what() << " in oneway function i64_ret_i32_i32_i32_i32_i32_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(c), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
@@ -1122,9 +1122,9 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(std::unique_
   ParamService_double_ret_setstruct_param_pargs args;
   std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> uarg_param1(new std::set< ::some::valid::ns::MyStruct>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1143,7 +1143,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function double_ret_setstruct_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(c), return_double_ret_setstruct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_double_ret_setstruct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<double>>(std::move(req), std::move(ctxStack), return_double_ret_setstruct_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_double_ret_setstruct_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1197,9 +1197,9 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(std::unique_ptr
   ParamService_string_ret_string_param_pargs args;
   std::unique_ptr<std::string> uarg_param1(new std::string());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1218,7 +1218,7 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(std::unique_ptr
       LOG(ERROR) << ex.what() << " in oneway function string_ret_string_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_string_ret_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_string_ret_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_string_ret_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_string_ret_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1272,9 +1272,9 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(std::unique_ptr
   ParamService_binary_ret_binary_param_pargs args;
   std::unique_ptr<std::string> uarg_param1(new std::string());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1293,7 +1293,7 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(std::unique_ptr
       LOG(ERROR) << ex.what() << " in oneway function binary_ret_binary_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_binary_ret_binary_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_binary_ret_binary_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_binary_ret_binary_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_binary_ret_binary_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1347,9 +1347,9 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(std::unique_ptr<apac
   ParamService_map_ret_bool_param_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1368,7 +1368,7 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function map_ret_bool_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>>(std::move(req), std::move(c), return_map_ret_bool_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_ret_bool_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_map_ret_bool_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_map_ret_bool_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1424,9 +1424,9 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(std::unique_
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<std::vector<std::string>> uarg_param2(new std::vector<std::string>());
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.list_ret_map_setlist_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.list_ret_map_setlist_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1445,7 +1445,7 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function list_ret_map_setlist_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<bool>>>>(std::move(req), std::move(c), return_list_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<bool>>>>(std::move(req), std::move(ctxStack), return_list_ret_map_setlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1499,9 +1499,9 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> uarg_param1(new std::vector<std::vector<std::vector<std::vector<int32_t>>>>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1520,7 +1520,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
       LOG(ERROR) << ex.what() << " in oneway function mapsetlistmapliststring_ret_listlistlist_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>>>(std::move(req), std::move(c), return_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>>>(std::move(req), std::move(ctxStack), return_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapsetlistmapliststring_ret_listlistlist_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1574,9 +1574,9 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(std::unique_ptr<a
   ParamService_typedef_ret_i32_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1595,7 +1595,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function typedef_ret_i32_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(c), return_typedef_ret_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>>(std::move(req), std::move(ctxStack), return_typedef_ret_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_typedef_ret_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1644,9 +1644,9 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::uniq
   ParamService_listtypedef_ret_typedef_param_pargs args;
   std::unique_ptr< ::some::valid::ns::complexStructTypeDef> uarg_param1(new  ::some::valid::ns::complexStructTypeDef());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1665,7 +1665,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::uniq
       LOG(ERROR) << ex.what() << " in oneway function listtypedef_ret_typedef_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(c), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1715,9 +1715,9 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(std::unique_ptr<a
   ParamService_enum_ret_double_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1736,7 +1736,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function enum_ret_double_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(c), return_enum_ret_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1792,9 +1792,9 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(std::unique_
   args.get<0>().value = &uarg_param1;
    ::some::valid::ns::MyEnumA uarg_param2{static_cast< ::some::valid::ns::MyEnumA>(0)};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_enum_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_enum_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1813,7 +1813,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(std::unique_
       LOG(ERROR) << ex.what() << " in oneway function enum_ret_double_enum_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(c), return_enum_ret_double_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>>(std::move(req), std::move(ctxStack), return_enum_ret_double_enum_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_enum_ret_double_enum_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1867,9 +1867,9 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(std::unique_ptr<
   ParamService_listenum_ret_map_param_pargs args;
   std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1888,7 +1888,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function listenum_ret_map_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(c), return_listenum_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_listenum_ret_map_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listenum_ret_map_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1937,9 +1937,9 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(std::unique_ptr<ap
   ParamService_struct_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -1958,7 +1958,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function struct_ret_i16_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(c), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
@@ -2008,9 +2008,9 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(std::unique_ptr
   ParamService_setstruct_ret_set_param_pargs args;
   std::unique_ptr<std::set<std::string>> uarg_param1(new std::set<std::string>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -2029,7 +2029,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(std::unique_ptr
       LOG(ERROR) << ex.what() << " in oneway function setstruct_ret_set_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(c), return_setstruct_ret_set_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_setstruct_ret_set_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_setstruct_ret_set_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2085,9 +2085,9 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(std::unique_ptr
   args.get<0>().value = &uarg_param1;
   int32_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.union_ret_i32_i32_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.union_ret_i32_i32_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -2106,7 +2106,7 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(std::unique_ptr
       LOG(ERROR) << ex.what() << " in oneway function union_ret_i32_i32_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(c), return_union_ret_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>>(std::move(req), std::move(ctxStack), return_union_ret_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_union_ret_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2160,9 +2160,9 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(std::unique_ptr<
   ParamService_listunion_string_param_pargs args;
   std::unique_ptr<std::string> uarg_param1(new std::string());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -2181,7 +2181,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function listunion_string_param";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(c), return_listunion_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listunion_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_listunion_string_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listunion_string_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

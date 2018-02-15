@@ -36,9 +36,9 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_simple_function_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -57,7 +57,7 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function simple_function";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_simple_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_simple_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_simple_function(std::move(callback));
 }
@@ -100,9 +100,9 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_throws_function_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -121,7 +121,7 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function throws_function";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throws_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throws_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function(std::move(callback));
 }
@@ -180,9 +180,9 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
   ExtraService_throws_function2_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -201,7 +201,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function throws_function2";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_throws_function2<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_throws_function2<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function2(std::move(callback), args.get<0>().ref());
 }
@@ -264,9 +264,9 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<std::string> uarg_param2(new std::string());
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -285,7 +285,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function throws_function3";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>>(std::move(req), std::move(c), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -347,15 +347,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret(std::move(callback));
 }
@@ -379,15 +379,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   args.get<3>().value = &uarg_param4;
   int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
@@ -405,15 +405,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<std::set<std::vector<std::string>>> uarg_param2(new std::set<std::vector<std::string>>());
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret_map_setlist_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -429,15 +429,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
   ExtraService_oneway_void_ret_struct_param_pargs args;
   std::unique_ptr< ::some::valid::ns::MyStruct> uarg_param1(new  ::some::valid::ns::MyStruct());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret_struct_param(std::move(callback), args.get<0>().ref());
 }
@@ -453,15 +453,15 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
   ExtraService_oneway_void_ret_listunion_param_pargs args;
   std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> uarg_param1(new std::vector< ::some::valid::ns::ComplexUnion>());
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_eb_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
 }

@@ -40,9 +40,9 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
   NestedContainers_mapList_pargs args;
   std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> uarg_foo(new std::map<int32_t, std::vector<int32_t>>());
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -61,7 +61,7 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function mapList";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapList<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapList<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -113,9 +113,9 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
   NestedContainers_mapSet_pargs args;
   std::unique_ptr<std::map<int32_t, std::set<int32_t>>> uarg_foo(new std::map<int32_t, std::set<int32_t>>());
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -134,7 +134,7 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function mapSet";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -186,9 +186,9 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
   NestedContainers_listMap_pargs args;
   std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> uarg_foo(new std::vector<std::map<int32_t, int32_t>>());
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -207,7 +207,7 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function listMap";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listMap<ProtocolIn_,ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listMap<ProtocolIn_,ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -259,9 +259,9 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
   NestedContainers_listSet_pargs args;
   std::unique_ptr<std::vector<std::set<int32_t>>> uarg_foo(new std::vector<std::set<int32_t>>());
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -280,7 +280,7 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function listSet";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -332,9 +332,9 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
   NestedContainers_turtles_pargs args;
   std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> uarg_foo(new std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>());
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -353,7 +353,7 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function turtles";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_turtles<ProtocolIn_,ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_turtles<ProtocolIn_,ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

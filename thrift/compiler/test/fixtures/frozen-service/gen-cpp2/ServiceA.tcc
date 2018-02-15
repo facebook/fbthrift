@@ -52,9 +52,9 @@ void ServiceAAsyncProcessor::process_moduleAMethod(std::unique_ptr<apache::thrif
   ServiceA_moduleAMethod_pargs args;
   std::unique_ptr< ::some::ns::ModuleA> uarg_modArg(new  ::some::ns::ModuleA());
   args.get<0>().value = uarg_modArg.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.moduleAMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleAMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -73,7 +73,7 @@ void ServiceAAsyncProcessor::process_moduleAMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function moduleAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -125,9 +125,9 @@ void ServiceAAsyncProcessor::process_moduleBMethod(std::unique_ptr<apache::thrif
   ServiceA_moduleBMethod_pargs args;
   std::unique_ptr< ::some::ns::ModuleB> uarg_modArg(new  ::some::ns::ModuleB());
   args.get<0>().value = uarg_modArg.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.moduleBMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleBMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -146,7 +146,7 @@ void ServiceAAsyncProcessor::process_moduleBMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function moduleBMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleBMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleBMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleBMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleBMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -202,9 +202,9 @@ void ServiceAAsyncProcessor::process_i32StrDoubleMethod(std::unique_ptr<apache::
   args.get<1>().value = uarg_strArg.get();
   double uarg_doubleArg{0};
   args.get<2>().value = &uarg_doubleArg;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.i32StrDoubleMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.i32StrDoubleMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -223,7 +223,7 @@ void ServiceAAsyncProcessor::process_i32StrDoubleMethod(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function i32StrDoubleMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32StrDoubleMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32StrDoubleMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32StrDoubleMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32StrDoubleMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -279,9 +279,9 @@ void ServiceAAsyncProcessor::process_versioningMethod(std::unique_ptr<apache::th
   args.get<1>().value = uarg_strArg.get();
   double uarg_doubleArg{0};
   args.get<2>().value = &uarg_doubleArg;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.versioningMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.versioningMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -300,7 +300,7 @@ void ServiceAAsyncProcessor::process_versioningMethod(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function versioningMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_versioningMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_versioningMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_versioningMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_versioningMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -350,9 +350,9 @@ void ServiceAAsyncProcessor::process_retI32Method(std::unique_ptr<apache::thrift
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_retI32Method_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.retI32Method", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.retI32Method", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -371,7 +371,7 @@ void ServiceAAsyncProcessor::process_retI32Method(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in oneway function retI32Method";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_retI32Method<ProtocolIn_,ProtocolOut_>, throw_wrapped_retI32Method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_retI32Method<ProtocolIn_,ProtocolOut_>, throw_wrapped_retI32Method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -423,9 +423,9 @@ void ServiceAAsyncProcessor::process_retModAMethod(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_retModAMethod_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.retModAMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.retModAMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -444,7 +444,7 @@ void ServiceAAsyncProcessor::process_retModAMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function retModAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(c), return_retModAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_retModAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(ctxStack), return_retModAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_retModAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -496,9 +496,9 @@ void ServiceAAsyncProcessor::process_throwMethod(std::unique_ptr<apache::thrift:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_throwMethod_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.throwMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.throwMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -517,7 +517,7 @@ void ServiceAAsyncProcessor::process_throwMethod(std::unique_ptr<apache::thrift:
       LOG(ERROR) << ex.what() << " in oneway function throwMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throwMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_throwMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throwMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_throwMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -577,9 +577,9 @@ void ServiceAAsyncProcessor::process_multiThrowMethod(std::unique_ptr<apache::th
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_multiThrowMethod_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.multiThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.multiThrowMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -598,7 +598,7 @@ void ServiceAAsyncProcessor::process_multiThrowMethod(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function multiThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_multiThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_multiThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_multiThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_multiThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -666,9 +666,9 @@ void ServiceAAsyncProcessor::process_i32ThrowMethod(std::unique_ptr<apache::thri
   ServiceA_i32ThrowMethod_pargs args;
   int32_t uarg_i32Arg{0};
   args.get<0>().value = &uarg_i32Arg;
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.i32ThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.i32ThrowMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -687,7 +687,7 @@ void ServiceAAsyncProcessor::process_i32ThrowMethod(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function i32ThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32ThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32ThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32ThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32ThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -749,9 +749,9 @@ void ServiceAAsyncProcessor::process_moduleAThrowMethod(std::unique_ptr<apache::
   ServiceA_moduleAThrowMethod_pargs args;
   std::unique_ptr< ::some::ns::ModuleA> uarg_modArg(new  ::some::ns::ModuleA());
   args.get<0>().value = uarg_modArg.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.moduleAThrowMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleAThrowMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -770,7 +770,7 @@ void ServiceAAsyncProcessor::process_moduleAThrowMethod(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function moduleAThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -836,9 +836,9 @@ void ServiceAAsyncProcessor::process_mixedMethod(std::unique_ptr<apache::thrift:
   args.get<1>().value = &uarg_i32Arg;
   std::unique_ptr< ::some::ns::ModuleB> uarg_modArg(new  ::some::ns::ModuleB());
   args.get<2>().value = uarg_modArg.get();
-  std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "ServiceA.mixedMethod", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.mixedMethod", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), c.get());
+    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
@@ -857,7 +857,7 @@ void ServiceAAsyncProcessor::process_mixedMethod(std::unique_ptr<apache::thrift:
       LOG(ERROR) << ex.what() << " in oneway function mixedMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_mixedMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_mixedMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_mixedMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_mixedMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
