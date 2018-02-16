@@ -15,7 +15,6 @@
  */
 #include <folly/ExceptionWrapper.h>
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp/async/THeaderAsyncChannel.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
