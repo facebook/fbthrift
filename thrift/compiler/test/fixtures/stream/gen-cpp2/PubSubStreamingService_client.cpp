@@ -539,7 +539,7 @@ apache::thrift::Stream<int32_t> PubSubStreamingServiceAsyncClient::returnstream(
 }
 
 apache::thrift::Stream<int32_t> PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
-  return yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::fromPublisher(
+  return yarpl::flowable::internal::flowableFromSubscriber<std::unique_ptr<folly::IOBuf>>(
           [this, rpcOptions, i32_from, i32_to](
                          apache::thrift::StreamRequestCallback::SubscriberRef
                              _subscriber) mutable {
@@ -874,7 +874,7 @@ apache::thrift::Stream<std::string> PubSubStreamingServiceAsyncClient::different
 }
 
 apache::thrift::Stream<std::string> PubSubStreamingServiceAsyncClient::different(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo, int64_t firstparam) {
-  return yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>::fromPublisher(
+  return yarpl::flowable::internal::flowableFromSubscriber<std::unique_ptr<folly::IOBuf>>(
           [this, rpcOptions, foo = std::move(foo), firstparam](
                          apache::thrift::StreamRequestCallback::SubscriberRef
                              _subscriber) mutable {
