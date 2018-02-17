@@ -453,11 +453,11 @@ class CppOutputContext(OutputContext):
                         '#include <thrift/lib/cpp/TApplicationException.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBuf.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBufQueue.h>'
-                print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp/transport/THeader.h>'
                 # Make sure we don't add these into the 'types' libraries
                 # so that they can be a separate rule
                 if self._add_common_service_includes_to_tcc:
+                    print >>self._output_tcc, \
+                        '#include <thrift/lib/cpp/transport/THeader.h>'
                     print >>self._output_tcc, \
                         '#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>'
                     print >>self._output_tcc, \
