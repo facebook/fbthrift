@@ -51,14 +51,3 @@ const StructWithRefTypeSharedConst kStructWithRefTypeSharedConst = {
   "req_field": {},
 }
 
-struct StructWithRefTypeCustom {
-  1:          Empty def_field (cpp.ref_type = "std::unique_ptr"),
-  2: optional Empty opt_field (cpp.ref_type = "std::unique_ptr"),
-  3: required Empty req_field (cpp.ref_type = "std::unique_ptr"),
-}
-
-const StructWithRefTypeCustom kStructWithRefTypeCustom = {
-  "def_field": {},
-  "opt_field": {},
-  "req_field": {},
-}
