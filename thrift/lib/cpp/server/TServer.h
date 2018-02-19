@@ -24,11 +24,12 @@
 
 #include <stdexcept>
 
-#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/TProcessor.h>
-#include <thrift/lib/cpp/transport/TServerTransport.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/server/TServerEventHandler.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
 #include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 namespace folly {
@@ -55,84 +56,6 @@ using apache::thrift::transport::TDualTransportFactory;
 using apache::thrift::transport::TSingleTransportFactory;
 
 class TConnectionContext;
-
-/**
- * Virtual interface class that can handle events from the server core. To
- * use this you should subclass it and implement the methods that you care
- * about. Your subclass can also store local data that you may care about,
- * such as additional "arguments" to these methods (stored in the object
- * instance's state).
- */
-class TServerEventHandler {
- public:
-
-  virtual ~TServerEventHandler() {}
-
-  /**
-   * Called before the server begins.
-   *
-   * @param address The address on which the server is listening.
-   */
-  virtual void preServe(const folly::SocketAddress* /*address*/) {}
-
-  /**
-   * Called if the server will not begin.
-   *
-   * @param e The exception that caused the failure, if any.
-   */
-  virtual void handleServeError(const std::exception& x) {
-    (void)x;
-  }
-
-  void handleServeError() {
-    handleServeError(TLibraryException("serve() threw non-exception type"));
-  }
-
-  /**
-   * Called when a new client has connected and is about to begin processing.
-   *
-   * @param ctx A pointer to the connection context.  The context will remain
-   *            valid until the corresponding connectionDestroyed() call.
-   */
-  virtual void newConnection(TConnectionContext* ctx) {
-    (void)ctx;
-  }
-
-  /**
-   * Called when a connection started processing a new request.
-   *
-   * @param connCtx A pointer to the connection context. The context will remain
-   *                valid until the corresponding connectionDestroyed() call.
-   * @param reqCtx  A pointer to folly::RequestContext specific to this request.
-   *                The context will remain valid until everything started by
-   *                this request stopped running.
-   */
-  virtual void connectionNewRequest(
-    TConnectionContext* connCtx, folly::RequestContext* reqCtx
-  ) {
-    (void)connCtx;
-    (void)reqCtx;
-  }
-
-  /**
-   * Called when a client has finished request-handling to delete server
-   * context.
-   *
-   * @param ctx A pointer to the connection context.  The context will be
-   *            destroyed after connectionDestroyed() returns.
-   */
-  virtual void connectionDestroyed(TConnectionContext* ctx) {
-    (void)ctx;
-  }
-
- protected:
-
-  /**
-   * Prevent direct instantiation.
-   */
-  TServerEventHandler() {}
-
-};
 
 /**
  * Thrift server.
