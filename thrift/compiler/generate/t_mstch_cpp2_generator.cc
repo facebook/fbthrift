@@ -629,6 +629,61 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 };
 
+class mstch_cpp2_function : public mstch_function {
+ public:
+  mstch_cpp2_function(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_function(function, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"function:cache_key?", &mstch_cpp2_function::has_cache_key},
+            {"function:cache_key_id", &mstch_cpp2_function::cache_key_id},
+        });
+  }
+  mstch::node has_cache_key() {
+    return get_cache_key_arg() != nullptr;
+  }
+  mstch::node cache_key_id() {
+    auto field = get_cache_key_arg();
+    return field ? field->get_key() : 0;
+  }
+
+ private:
+  const t_field* get_cache_key_arg() const {
+    const t_field* result = nullptr;
+    for (auto* arg : function_->get_arglist()->get_members()) {
+      auto iter = arg->annotations_.find("cpp.cache");
+      if (iter != arg->annotations_.end()) {
+        if (!arg->get_type()->is_string()) {
+          printf(
+              "Cache annotation is only allowed on string types, "
+              "got '%s' for argument '%s' in function '%s' at line %d",
+              arg->get_type()->get_name().data(),
+              arg->get_name().data(),
+              function_->get_name().data(),
+              arg->get_lineno());
+          exit(1);
+        }
+        if (result) {
+          printf(
+              "Multiple cache annotations are not allowed! (See argument '%s' "
+              "in function '%s' at line %d)",
+              arg->get_name().data(),
+              function_->get_name().data(),
+              arg->get_lineno());
+          exit(1);
+        }
+        result = arg;
+      }
+    }
+    return result;
+  }
+};
+
 class mstch_cpp2_service : public mstch_service {
  public:
   mstch_cpp2_service(
@@ -646,6 +701,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:namespace_cpp2", &mstch_cpp2_service::namespace_cpp2},
             {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
+            {"service:cache_keys?", &mstch_cpp2_service::has_cache_keys},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:frozen2?", &mstch_cpp2_service::frozen2},
         });
@@ -697,6 +753,16 @@ class mstch_cpp2_service : public mstch_service {
     for (auto const* function : service_->get_functions()) {
       if (function->is_oneway()) {
         return true;
+      }
+    }
+    return false;
+  }
+  mstch::node has_cache_keys() {
+    for (auto const* function : service_->get_functions()) {
+      for (auto const* arg : function->get_arglist()->get_members()) {
+        if (arg->annotations_.find("cpp.cache") != arg->annotations_.end()) {
+          return true;
+        }
       }
     }
     return false;
@@ -892,6 +958,21 @@ class field_cpp2_generator : public field_generator {
   }
 };
 
+class function_cpp2_generator : public function_generator {
+ public:
+  function_cpp2_generator() = default;
+  virtual ~function_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_function>(
+        function, generators, cache, pos);
+  }
+};
+
 class struct_cpp2_generator : public struct_generator {
  public:
   struct_cpp2_generator() = default;
@@ -977,6 +1058,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
   generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
   generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
+  generators_->set_function_generator(
+      std::make_unique<function_cpp2_generator>());
   generators_->set_struct_generator(std::make_unique<struct_cpp2_generator>());
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());

@@ -60,7 +60,7 @@ bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
 }
 
 <% > service_cpp/oneway_methods%>
-std::unordered_map<std::string, int16_t> <%service:name%>AsyncProcessor::cacheKeyMap_ {};
+<% > service_cpp/cache_key_map%>
 <% > service_cpp/binary_processmap%>
 
 <% > service_cpp/compact_processmap%>
