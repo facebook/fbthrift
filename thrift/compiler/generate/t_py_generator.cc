@@ -2179,7 +2179,7 @@ void t_py_generator::generate_service_interface(t_service* tservice,
     "class " << iface_prefix << "Iface" << extends_if << ":" << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
-  if (!tservice->annotations_.empty()) {
+  if (!gen_twisted_ && !tservice->annotations_.empty()) {
     f_service_ << indent() << "annotations = {" << endl;
     generate_py_string_dict(f_service_, tservice->annotations_);
     f_service_ << indent() << "}" << endl << endl;
