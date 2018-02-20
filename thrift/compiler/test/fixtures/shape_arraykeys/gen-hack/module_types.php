@@ -797,6 +797,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_i32'][$key3] = $value4;
     }
 
@@ -814,6 +815,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_string'][$key5] = $value6;
     }
 
@@ -832,6 +834,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_i32'][$key7] = $value8;
     }
 
@@ -851,6 +854,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_A'][$key9] = $value10;
     }
 
@@ -876,9 +880,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value12[$key13] = $value14;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_list_of_i32'][$key11] = $value12;
     }
 
@@ -905,9 +911,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value16[$key17] = $value18;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_list_of_A'][$key15] = $value16;
     }
 
@@ -934,6 +942,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       }
       $value20 = $the_set23;
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_set_of_i32'][$key19] = $value20;
     }
 
@@ -960,9 +969,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value25[$key26] = $value27;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_map_of_string_to_i32'][$key24] = $value25;
     }
 
@@ -990,9 +1001,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value29[$key30] = $value31;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_map_of_string_to_A'][$key28] = $value29;
     }
 
@@ -1018,6 +1031,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       }
       $value33 = $the_set36;
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_set_of_i32'][$key32] = $value33;
     }
 
@@ -1051,12 +1065,15 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             return null;
           }
           /* HH_IGNORE_ERROR[4005] */
+          /* HH_IGNORE_ERROR[4063] */
           $value40[$key41] = $value42;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value38[$key39] = $value40;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_map_of_string_to_list_of_A'][$key37] = $value38;
     }
 
@@ -1083,9 +1100,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value44[$key45] = $value46;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_map_of_string_to_A'][$key43] = $value44;
     }
 
@@ -1104,6 +1123,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_self'][$key47] = $value48;
     }
 
@@ -1123,6 +1143,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_self'][$key49] = $value50;
     }
 
@@ -1175,6 +1196,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_list_of_i32'][$key54] = $value55;
       }
     }
@@ -1194,6 +1216,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_list_of_string'][$key56] = $value57;
       }
     }
@@ -1214,6 +1237,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_map_of_string_to_i32'][$key58] = $value59;
       }
     }
@@ -1235,6 +1259,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_map_of_string_to_A'][$key60] = $value61;
       }
     }
@@ -1262,9 +1287,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             return null;
           }
           /* HH_IGNORE_ERROR[4005] */
+          /* HH_IGNORE_ERROR[4063] */
           $value63[$key64] = $value65;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_map_of_string_to_list_of_i32'][$key62] = $value63;
       }
     }
@@ -1293,9 +1320,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             return null;
           }
           /* HH_IGNORE_ERROR[4005] */
+          /* HH_IGNORE_ERROR[4063] */
           $value67[$key68] = $value69;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_map_of_string_to_list_of_A'][$key66] = $value67;
       }
     }
@@ -1324,6 +1353,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         }
         $value71 = $the_set74;
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $shape_data['optional_map_of_string_to_set_of_i32'][$key70] = $value71;
       }
     }

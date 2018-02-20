@@ -1267,9 +1267,11 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value1[$key2] = $value3;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['foo'][$key0] = $value1;
     }
 
@@ -1383,6 +1385,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
       }
       $value1 = $the_set4;
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['foo'][$key0] = $value1;
     }
 
@@ -1495,9 +1498,11 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value1[$key2] = $value3;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['foo'][$key0] = $value1;
     }
 
@@ -1607,6 +1612,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
       }
       $value1 = $the_set4;
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['foo'][$key0] = $value1;
     }
 
@@ -1760,15 +1766,19 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
             }
             $value7 = $the_set10;
             /* HH_IGNORE_ERROR[4005] */
+            /* HH_IGNORE_ERROR[4063] */
             $value5[$key6] = $value7;
           }
           /* HH_IGNORE_ERROR[4005] */
+          /* HH_IGNORE_ERROR[4063] */
           $value3[$key4] = $value5;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value1[$key2] = $value3;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['foo'][$key0] = $value1;
     }
 

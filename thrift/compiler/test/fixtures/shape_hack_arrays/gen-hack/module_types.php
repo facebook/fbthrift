@@ -96,6 +96,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_string'][$key0] = $value1;
     }
 
@@ -498,6 +499,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_string'][$key0] = $value1;
     }
 
@@ -515,6 +517,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_i32'][$key2] = $value3;
     }
 
@@ -533,6 +536,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_A'][$key4] = $value5;
     }
 
@@ -551,6 +555,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_self'][$key6] = $value7;
     }
 
@@ -576,9 +581,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value9[$key10] = $value11;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_list_of_A'][$key8] = $value9;
     }
 
@@ -603,9 +610,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value13[$key14] = $value15;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_map_of_string_to_i32'][$key12] = $value13;
     }
 
@@ -631,9 +640,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value17[$key18] = $value19;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['map_of_string_to_map_of_string_to_A'][$key16] = $value17;
     }
 
@@ -651,6 +662,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_string'][$key20] = $value21;
     }
 
@@ -676,9 +688,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value23[$key24] = $value25;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_map_of_string_to_A'][$key22] = $value23;
     }
 
@@ -697,6 +711,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_self'][$key26] = $value27;
     }
 
@@ -722,9 +737,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value29[$key30] = $value31;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_list_of_self'][$key28] = $value29;
     }
 
@@ -757,12 +774,15 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
             return null;
           }
           /* HH_IGNORE_ERROR[4005] */
+          /* HH_IGNORE_ERROR[4063] */
           $value35[$key36] = $value37;
         }
         /* HH_IGNORE_ERROR[4005] */
+        /* HH_IGNORE_ERROR[4063] */
         $value33[$key34] = $value35;
       }
       /* HH_IGNORE_ERROR[4005] */
+      /* HH_IGNORE_ERROR[4063] */
       $shape_data['list_of_map_of_string_to_list_of_A'][$key32] = $value33;
     }
 

@@ -1840,6 +1840,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
                                               val_type,
                                               namer);
     indent(out) << "/* HH_IGNORE_ERROR[4005] */" << endl;
+    indent(out) << "/* HH_IGNORE_ERROR[4063] */" << endl;
     indent(out) << shape_data << "[" << k << "] = " << v << ";" << endl;
     indent_down();
     indent(out) << "}" << endl;
@@ -1893,6 +1894,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
                                               val_type,
                                               namer);
     indent(out) << "/* HH_IGNORE_ERROR[4005] */" << endl;
+    indent(out) << "/* HH_IGNORE_ERROR[4063] */" << endl;
     indent(out) << shape_data << "[" << k << "] = " << v << ";" << endl;
     indent_down();
     indent(out) << "}" << endl;
