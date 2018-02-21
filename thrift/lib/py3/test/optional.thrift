@@ -9,3 +9,6 @@ struct WithDefaults {
   2: i64 unflagged_field = 20
   3: optional i64 opt_field = 30
 }
+
+service NullService {
+}

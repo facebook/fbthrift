@@ -13,7 +13,6 @@ namespace cpp2 {
 NullServiceWrapper::NullServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_empty__services();
     Py_XINCREF(this->if_object);
   }
 
