@@ -18,7 +18,6 @@
 #define THRIFT2_PROTOCOL_TSIMPLEJSONPROTOCOL_TCC_ 1
 
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 
 #include <limits>
@@ -28,8 +27,6 @@
 #include <folly/json.h>
 
 namespace apache { namespace thrift {
-
-using protocol::TJSONProtocol;
 
 /*
  * Public writing methods
@@ -248,12 +245,12 @@ uint32_t SimpleJSONProtocolReader::readBool(
 
 bool SimpleJSONProtocolReader::peekMap() {
   skipWhitespace();
-  return *in_.peek().first != TJSONProtocol::kJSONObjectEnd;
+  return *in_.peek().first != detail::json::kJSONObjectEnd;
 }
 
 bool SimpleJSONProtocolReader::peekList() {
   skipWhitespace();
-  return *in_.peek().first != TJSONProtocol::kJSONArrayEnd;
+  return *in_.peek().first != detail::json::kJSONArrayEnd;
 }
 
 bool SimpleJSONProtocolReader::peekSet() {

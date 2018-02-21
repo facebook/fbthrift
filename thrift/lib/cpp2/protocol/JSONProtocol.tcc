@@ -286,7 +286,7 @@ uint32_t JSONProtocolReader::readFieldBegin(
     int16_t& fieldId) {
   skipWhitespace();
   auto peek = *in_.peek().first;
-  if (peek == TJSONProtocol::kJSONObjectEnd) {
+  if (peek == detail::json::kJSONObjectEnd) {
     fieldType = TType::T_STOP;
     fieldId = 0;
     return 0;

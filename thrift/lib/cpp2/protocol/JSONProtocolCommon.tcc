@@ -37,7 +37,7 @@ uint32_t JSONProtocolWriterCommon::writeMessageBegin(const std::string& name,
                                                      MessageType messageType,
                                                      int32_t seqid) {
   auto ret = beginContext(ContextType::ARRAY);
-  ret += writeI32(TJSONProtocol::kThriftVersion1);
+  ret += writeI32(detail::json::kThriftVersion1);
   ret += writeString(name);
   ret += writeI32(messageType);
   ret += writeI32(seqid);
@@ -207,10 +207,10 @@ uint32_t JSONProtocolWriterCommon::beginContext(ContextType type) {
   context.push_back({type, 0});
   switch (type) {
     case ContextType::MAP:
-      out_.write(TJSONProtocol::kJSONObjectStart);
+      out_.write(detail::json::kJSONObjectStart);
       return 1;
     case ContextType::ARRAY:
-      out_.write(TJSONProtocol::kJSONArrayStart);
+      out_.write(detail::json::kJSONArrayStart);
       return 1;
   }
   CHECK(false);
@@ -221,10 +221,10 @@ uint32_t JSONProtocolWriterCommon::endContext() {
   DCHECK(!context.empty());
   switch (context.back().type) {
     case ContextType::MAP:
-      out_.write(TJSONProtocol::kJSONObjectEnd);
+      out_.write(detail::json::kJSONObjectEnd);
       break;
     case ContextType::ARRAY:
-      out_.write(TJSONProtocol::kJSONArrayEnd);
+      out_.write(detail::json::kJSONArrayEnd);
       break;
   }
   context.pop_back();
@@ -243,14 +243,14 @@ uint32_t JSONProtocolWriterCommon::writeContext() {
       if (meta == 0) {
         return 0;
       } else if (meta % 2 == 0) {
-        out_.write(TJSONProtocol::kJSONElemSeparator);
+        out_.write(detail::json::kJSONElemSeparator);
       } else {
-        out_.write(TJSONProtocol::kJSONPairSeparator);
+        out_.write(detail::json::kJSONPairSeparator);
       }
       return 1;
     case ContextType::ARRAY:
       if (meta != 0) {
-        out_.write(TJSONProtocol::kJSONElemSeparator);
+        out_.write(detail::json::kJSONElemSeparator);
         return 1;
       }
       return 0;
@@ -260,8 +260,8 @@ uint32_t JSONProtocolWriterCommon::writeContext() {
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONEscapeChar(uint8_t ch) {
-  DCHECK(TJSONProtocol::kJSONEscapePrefix.length() == 4);
-  out_.push((const uint8_t*)TJSONProtocol::kJSONEscapePrefix.c_str(), 4);
+  DCHECK(detail::json::kJSONEscapePrefix.size() == 4);
+  out_.push((const uint8_t*)detail::json::kJSONEscapePrefix.data(), 4);
   out_.write(hexChar(ch >> 4));
   out_.write(hexChar(ch));
   return 6;
@@ -270,9 +270,9 @@ uint32_t JSONProtocolWriterCommon::writeJSONEscapeChar(uint8_t ch) {
 uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
   if (ch >= 0x30) {
     // Only special character >= 0x30 is '\'
-    if (ch == TJSONProtocol::kJSONBackslash) {
-      out_.write(TJSONProtocol::kJSONBackslash);
-      out_.write(TJSONProtocol::kJSONBackslash);
+    if (ch == detail::json::kJSONBackslash) {
+      out_.write(detail::json::kJSONBackslash);
+      out_.write(detail::json::kJSONBackslash);
       return 2;
     }
     else {
@@ -287,7 +287,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
       return 1;
     }
     else if (outCh > 1) {
-      out_.write(TJSONProtocol::kJSONBackslash);
+      out_.write(detail::json::kJSONBackslash);
       out_.write(outCh);
       return 2;
     }
@@ -300,11 +300,11 @@ uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
 uint32_t JSONProtocolWriterCommon::writeJSONString(folly::StringPiece str) {
   uint32_t ret = 2;
 
-  out_.write(TJSONProtocol::kJSONStringDelimiter);
+  out_.write(detail::json::kJSONStringDelimiter);
   for (auto c : str) {
     ret += writeJSONChar(c);
   }
-  out_.write(TJSONProtocol::kJSONStringDelimiter);
+  out_.write(detail::json::kJSONStringDelimiter);
 
   return ret;
 }
@@ -312,7 +312,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONString(folly::StringPiece str) {
 uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
   uint32_t ret = 2;
 
-  out_.write(TJSONProtocol::kJSONStringDelimiter);
+  out_.write(detail::json::kJSONStringDelimiter);
   auto bytes = v.data();
   auto len = v.size();
   uint8_t b[4];
@@ -333,17 +333,15 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
     }
     ret += len + 1;
   }
-  out_.write(TJSONProtocol::kJSONStringDelimiter);
+  out_.write(detail::json::kJSONStringDelimiter);
 
   return ret;
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONBool(bool val) {
-  const std::string& out = val
-    ? TJSONProtocol::kJSONTrue
-    : TJSONProtocol::kJSONFalse;
-  out_.push((const uint8_t*)out.c_str(), out.length());
-  return out.length();
+  const auto& out = val ? detail::json::kJSONTrue : detail::json::kJSONFalse;
+  out_.push((const uint8_t*)out.data(), out.size());
+  return out.size();
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {
@@ -353,11 +351,11 @@ uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {
 template<typename T>
 uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
   if (dbl == std::numeric_limits<T>::infinity()) {
-    return writeJSONString(TJSONProtocol::kThriftInfinity);
+    return writeJSONString(detail::json::kThriftInfinity);
   } else if (dbl == -std::numeric_limits<T>::infinity()) {
-    return writeJSONString(TJSONProtocol::kThriftNegativeInfinity);
+    return writeJSONString(detail::json::kThriftNegativeInfinity);
   } else if (std::isnan(dbl)) {
-    return writeJSONString(TJSONProtocol::kThriftNan);
+    return writeJSONString(detail::json::kThriftNan);
   } else {
     return writeJSONDoubleInternal(dbl);
   }
@@ -373,7 +371,7 @@ uint32_t JSONProtocolReaderCommon::readMessageBegin(std::string& name,
   auto ret = ensureAndBeginContext(ContextType::ARRAY);
   int64_t tmpVal;
   ret += readI64(tmpVal);
-  if (tmpVal != TJSONProtocol::kThriftVersion1) {
+  if (tmpVal != detail::json::kThriftVersion1) {
     throwBadVersion();
   }
   ret += readString(name);
@@ -447,28 +445,28 @@ uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
   auto ret = ensureAndReadContext(keyish);
   ret += readWhitespace();
   auto ch = peekCharSafe();
-  if (ch == TJSONProtocol::kJSONObjectStart) {
+  if (ch == detail::json::kJSONObjectStart) {
     ret += beginContext(ContextType::MAP);
     while (true) {
       skipWhitespace();
-      if (peekCharSafe() == TJSONProtocol::kJSONObjectEnd) {
+      if (peekCharSafe() == detail::json::kJSONObjectEnd) {
         break;
       }
       ret += skip(TType::T_VOID);
       ret += skip(TType::T_VOID);
     }
     return ret + endContext();
-  } else if (ch == TJSONProtocol::kJSONArrayStart) {
+  } else if (ch == detail::json::kJSONArrayStart) {
     ret += beginContext(ContextType::ARRAY);
     while (true) {
       skipWhitespace();
-      if (peekCharSafe() == TJSONProtocol::kJSONArrayEnd) {
+      if (peekCharSafe() == detail::json::kJSONArrayEnd) {
         break;
       }
       ret += skip(TType::T_VOID);
     }
     return ret + endContext();
-  } else if (ch == TJSONProtocol::kJSONStringDelimiter) {
+  } else if (ch == detail::json::kJSONStringDelimiter) {
     std::string tmp;
     return ret + readJSONVal(tmp);
   } else if (ch == '-' || ch == '+' || (ch >= '0' && ch <= '9')) {
@@ -511,10 +509,9 @@ void JSONProtocolReaderCommon::skipWhitespace() {
   for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
     uint32_t size = 0;
     for (char ch : peek) {
-      if (ch != TJSONProtocol::kJSONSpace &&
-          ch != TJSONProtocol::kJSONNewline &&
-          ch != TJSONProtocol::kJSONTab &&
-          ch != TJSONProtocol::kJSONCarriageReturn) {
+      if (ch != detail::json::kJSONSpace && ch != detail::json::kJSONNewline &&
+          ch != detail::json::kJSONTab &&
+          ch != detail::json::kJSONCarriageReturn) {
         in_.skip(size);
         return;
       }
@@ -557,16 +554,16 @@ void JSONProtocolReaderCommon::ensureAndSkipContext() {
       case ContextType::MAP:
         if (meta % 2 == 0) {
           if (meta != 0) {
-            skippedChars_ += ensureChar(TJSONProtocol::kJSONElemSeparator);
+            skippedChars_ += ensureChar(detail::json::kJSONElemSeparator);
           }
           keyish_ = true;
         } else {
-          skippedChars_ += ensureChar(TJSONProtocol::kJSONPairSeparator);
+          skippedChars_ += ensureChar(detail::json::kJSONPairSeparator);
         }
         break;
       case ContextType::ARRAY:
         if (meta != 0) {
-          skippedChars_ += ensureChar(TJSONProtocol::kJSONElemSeparator);
+          skippedChars_ += ensureChar(detail::json::kJSONElemSeparator);
         }
         break;
     }
@@ -594,9 +591,9 @@ uint32_t JSONProtocolReaderCommon::beginContext(ContextType type) {
   context.push_back({type, 0});
   switch (type) {
     case ContextType::MAP:
-      return ensureChar(TJSONProtocol::kJSONObjectStart);
+      return ensureChar(detail::json::kJSONObjectStart);
     case ContextType::ARRAY:
-      return ensureChar(TJSONProtocol::kJSONArrayStart);
+      return ensureChar(detail::json::kJSONArrayStart);
   }
   CHECK(false);
   return 0;
@@ -609,9 +606,9 @@ uint32_t JSONProtocolReaderCommon::endContext() {
   context.pop_back();
   switch (type) {
     case ContextType::MAP:
-      return ensureChar(TJSONProtocol::kJSONObjectEnd);
+      return ensureChar(detail::json::kJSONObjectEnd);
     case ContextType::ARRAY:
-      return ensureChar(TJSONProtocol::kJSONArrayEnd);
+      return ensureChar(detail::json::kJSONArrayEnd);
   }
   CHECK(false);
   return 0;
@@ -696,18 +693,16 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
 
 uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
   auto ret = readWhitespace();
-  if (peekCharSafe() == TJSONProtocol::kJSONStringDelimiter) {
+  if (peekCharSafe() == detail::json::kJSONStringDelimiter) {
     std::string str;
     ret += readJSONString(str);
-    if (str == TJSONProtocol::kThriftNan) {
+    if (str == detail::json::kThriftNan) {
       val = HUGE_VAL/HUGE_VAL; // generates NaN
-    } else if (str == TJSONProtocol::kThriftNegativeNan) {
+    } else if (str == detail::json::kThriftNegativeNan) {
       val = -NAN;
-    }
-    else if (str == TJSONProtocol::kThriftInfinity) {
+    } else if (str == detail::json::kThriftInfinity) {
       val = HUGE_VAL;
-    }
-    else if (str == TJSONProtocol::kThriftNegativeInfinity) {
+    } else if (str == detail::json::kThriftNegativeInfinity) {
       val = -HUGE_VAL;
     } else {
       throwUnrecognizableAsFloatingPoint(str);
@@ -771,8 +766,8 @@ uint32_t JSONProtocolReaderCommon::readJSONKeyword(std::string& kw) {
 
 uint32_t JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
   uint8_t b1, b2;
-  ensureCharNoWhitespace(TJSONProtocol::kJSONZeroChar);
-  ensureCharNoWhitespace(TJSONProtocol::kJSONZeroChar);
+  ensureCharNoWhitespace(detail::json::kJSONZeroChar);
+  ensureCharNoWhitespace(detail::json::kJSONZeroChar);
   b1 = in_.read<uint8_t>();
   b2 = in_.read<uint8_t>();
   out = (hexVal(b1) << 4) + hexVal(b2);
@@ -781,20 +776,20 @@ uint32_t JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
 
 template <typename StrType>
 uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
-  auto ret = ensureChar(TJSONProtocol::kJSONStringDelimiter);
+  auto ret = ensureChar(detail::json::kJSONStringDelimiter);
 
   std::string json = "\"";
   val.clear();
   while (true) {
     auto ch = in_.read<uint8_t>();
     ret++;
-    if (ch == TJSONProtocol::kJSONStringDelimiter) {
+    if (ch == detail::json::kJSONStringDelimiter) {
       break;
     }
-    if (ch == TJSONProtocol::kJSONBackslash) {
+    if (ch == detail::json::kJSONBackslash) {
       ch = in_.read<uint8_t>();
       ret++;
-      if (ch == TJSONProtocol::kJSONEscapeChar) {
+      if (ch == detail::json::kJSONEscapeChar) {
         if (allowDecodeUTF8_) {
           json += "\\u";
           continue;

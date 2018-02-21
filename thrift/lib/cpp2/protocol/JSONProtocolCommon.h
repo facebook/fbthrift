@@ -29,7 +29,6 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/json.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
-#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache { namespace thrift {
@@ -37,7 +36,32 @@ namespace apache { namespace thrift {
 namespace detail {
 template <typename Str>
 using is_string = std::is_same<typename Str::value_type, char>;
-}
+
+namespace json {
+constexpr uint8_t kJSONObjectStart = '{';
+constexpr uint8_t kJSONObjectEnd = '}';
+constexpr uint8_t kJSONArrayStart = '[';
+constexpr uint8_t kJSONArrayEnd = ']';
+constexpr uint8_t kJSONPairSeparator = ':';
+constexpr uint8_t kJSONElemSeparator = ',';
+constexpr uint8_t kJSONBackslash = '\\';
+constexpr uint8_t kJSONStringDelimiter = '"';
+constexpr uint8_t kJSONZeroChar = '0';
+constexpr uint8_t kJSONEscapeChar = 'u';
+constexpr uint8_t kJSONSpace = ' ';
+constexpr uint8_t kJSONNewline = '\n';
+constexpr uint8_t kJSONTab = '\t';
+constexpr uint8_t kJSONCarriageReturn = '\r';
+constexpr uint32_t kThriftVersion1 = 1;
+constexpr folly::StringPiece kJSONEscapePrefix("\\u00");
+constexpr folly::StringPiece kJSONTrue("true");
+constexpr folly::StringPiece kJSONFalse("false");
+constexpr folly::StringPiece kThriftNan("NaN");
+constexpr folly::StringPiece kThriftNegativeNan("-NaN");
+constexpr folly::StringPiece kThriftInfinity("Infinity");
+constexpr folly::StringPiece kThriftNegativeInfinity("-Infinity");
+} // namespace json
+} // namespace detail
 
 class JSONProtocolWriterCommon {
 
@@ -101,8 +125,6 @@ class JSONProtocolWriterCommon {
       const std::unique_ptr<folly::IOBuf>& data) const;
 
  protected:
-
-  using TJSONProtocol = protocol::TJSONProtocol;
 
   enum class ContextType { MAP, ARRAY };
   inline uint32_t beginContext(ContextType);
@@ -190,8 +212,6 @@ class JSONProtocolReaderCommon {
                                             std::unique_ptr<folly::IOBuf>& ser);
 
  protected:
-
-  using TJSONProtocol = protocol::TJSONProtocol;
 
   enum class ContextType { MAP, ARRAY };
 
