@@ -26,6 +26,7 @@ class Included;
 // BEGIN typedefs
 namespace cpp2 {
 typedef int64_t IncludedInt64;
+typedef  ::cpp2::Foo TransitiveFoo;
 
 } // cpp2
 // END typedefs

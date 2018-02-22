@@ -52,6 +52,8 @@ import qualified Transitive_Types as Transitive_Types
 
 type IncludedInt64 = Int.Int64
 
+type TransitiveFoo = Transitive_Types.Foo
+
 data Included = Included
   { included_MyIntField :: Int.Int64
   , included_MyTransitiveField :: Transitive_Types.Foo

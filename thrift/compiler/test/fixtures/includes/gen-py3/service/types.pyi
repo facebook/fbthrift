@@ -18,3 +18,5 @@ import module.types as _module_types
 import includes.types as _includes_types
 
 
+IncludesIncluded = _includes_types.Included
+IncludesTransitiveFoo = _transitive_types.Foo

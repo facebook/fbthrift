@@ -23,7 +23,11 @@
 
 // END forward_declare
 // BEGIN typedefs
+namespace cpp2 {
+typedef  ::cpp2::Included IncludesIncluded;
+typedef  ::cpp2::TransitiveFoo IncludesTransitiveFoo;
 
+} // cpp2
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to

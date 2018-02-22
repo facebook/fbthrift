@@ -51,3 +51,7 @@ import qualified Module_Types as Module_Types
 import qualified Includes_Types as Includes_Types
 
 
+type IncludesIncluded = Includes_Types.Included
+
+type IncludesTransitiveFoo = Transitive_Types.Foo
+

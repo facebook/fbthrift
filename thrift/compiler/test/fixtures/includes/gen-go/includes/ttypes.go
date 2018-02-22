@@ -26,6 +26,10 @@ type IncludedInt64 int64
 
 func IncludedInt64Ptr(v IncludedInt64) *IncludedInt64 { return &v }
 
+type TransitiveFoo *transitive0.Foo
+
+func TransitiveFooPtr(v TransitiveFoo) *TransitiveFoo { return &v }
+
 // Attributes:
 //  - MyIntField
 //  - MyTransitiveField

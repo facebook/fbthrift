@@ -19,6 +19,11 @@
       "lineno" : 16,
       "type_enum" : "I64",
       "spec_args" : null
+    },
+    "TransitiveFoo" : {
+      "lineno" : 21,
+      "type_enum" : "STRUCT",
+      "spec_args" : "transitive.Foo"
     }
   },
   "structs" : {

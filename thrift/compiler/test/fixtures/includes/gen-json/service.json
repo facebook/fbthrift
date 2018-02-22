@@ -1,5 +1,17 @@
 {
   "thrift_module" : "service",
+  "typedefs" : {
+    "IncludesIncluded" : {
+      "lineno" : 13,
+      "type_enum" : "STRUCT",
+      "spec_args" : "includes.Included"
+    },
+    "IncludesTransitiveFoo" : {
+      "lineno" : 15,
+      "type_enum" : "TYPEDEF",
+      "spec_args" : "includes.TransitiveFoo"
+    }
+  },
   "services" : {
     "MyService" : {
       "lineno" : 6,

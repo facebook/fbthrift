@@ -23,6 +23,8 @@
 
 typedef int64_t IncludedInt64;
 
+typedef Foo * TransitiveFoo;
+
 @interface Included : TBaseStruct <TBase, NSCoding> {
   int64_t __thrift_MyIntField;
   Foo * __thrift_MyTransitiveField;

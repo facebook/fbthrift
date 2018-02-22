@@ -208,3 +208,4 @@ cdef class Included(thrift.py3.types.Struct):
 ExampleIncluded = Included.create(make_shared[cIncluded](cExampleIncluded()))
 IncludedConstant = 42
 IncludedInt64 = int
+TransitiveFoo = _transitive_types.Foo

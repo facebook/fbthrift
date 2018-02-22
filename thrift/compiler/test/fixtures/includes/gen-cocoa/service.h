@@ -22,6 +22,10 @@
 #import "module.h"
 #import "includes.h"
 
+typedef Included * IncludesIncluded;
+
+typedef TransitiveFoo IncludesTransitiveFoo;
+
 @protocol MyService <NSObject>
 - (void) query: (MyStruct *) s i: (Included *) i;  // throws TException
 - (void) has_arg_docs: (MyStruct *) s i: (Included *) i;  // throws TException

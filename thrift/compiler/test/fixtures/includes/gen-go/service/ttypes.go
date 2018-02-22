@@ -24,3 +24,11 @@ var _ = module0.GoUnusedProtection__
 var _ = includes1.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
+type IncludesIncluded *includes1.Included
+
+func IncludesIncludedPtr(v IncludesIncluded) *IncludesIncluded { return &v }
+
+type IncludesTransitiveFoo *includes1.TransitiveFoo
+
+func IncludesTransitiveFooPtr(v IncludesTransitiveFoo) *IncludesTransitiveFoo { return &v }
+
