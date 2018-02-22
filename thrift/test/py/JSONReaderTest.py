@@ -41,7 +41,7 @@ class TestJSONReader(unittest.TestCase):
             struct.readFromJson('{ "data" : null }')
             self.assertFalse(True,
                     "Should have failed with required field missing")
-        except TProtocolException as ex:
+        except TProtocolException:
             pass
 
 if __name__ == '__main__':

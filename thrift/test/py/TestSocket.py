@@ -78,7 +78,7 @@ class TimeoutTest(unittest.TestCase):
             socket = TSocket.TSocket('localhost', self.port)
             socket.setTimeout(10)
             socket.open()
-            lsock = self.listen_sock.accept()
+            self.listen_sock.accept()
             while True:
                 socket.write("hi" * 100)
 

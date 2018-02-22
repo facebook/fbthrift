@@ -41,7 +41,7 @@ class TestUnionStructs(unittest.TestCase):
         self.assertNotEqual(u, v)
 
         try:
-            j = TestUnion(string_field="test", i32_field=100)
+            TestUnion(string_field="test", i32_field=100)
             self.assertTrue(False, "Cannot initialize union with 1+ fields")
         except:
             pass

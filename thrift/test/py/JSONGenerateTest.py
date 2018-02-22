@@ -80,7 +80,7 @@ class TestJSONGenerate(unittest.TestCase):
 
         for JSONFile in self.thriftFiles:
             with open(self.getGenPath(JSONFile)) as jsonData:
-                data = json.load(jsonData)
+                json.load(jsonData)
 
         for JSONFile in self.unsupportedThriftFiles:
             path = 'gen-json/' + JSONFile + '.json'

@@ -161,7 +161,7 @@ class SimpleJSONToThriftTest(unittest.TestCase):
         try:
             self._testStruct(struct, is_empty)
             self.fail()
-        except TProtocolException as e:
+        except TProtocolException:
             pass
 
     def testBinaryStruct(self):
