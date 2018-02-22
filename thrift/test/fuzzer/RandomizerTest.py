@@ -696,13 +696,13 @@ class TestStructRandomizer(TestRandomizer):
         # (ttype, thrift_spec, is_union)
         return (ttype, ttype.thrift_spec, ttype.isUnion())
 
-    def struct_randomizer(self, ttype=None, constraints={}):
+    def struct_randomizer(self, ttype=None, constraints=None):
         if ttype is None:
             ttype = self.__class__.ttype
         return self.get_randomizer(
             Thrift.TType.STRUCT,
             self.get_spec_args(ttype),
-            constraints
+            constraints or {}
         )
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
