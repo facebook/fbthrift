@@ -15,21 +15,23 @@
  */
 #include <gtest/gtest.h>
 
+#include <folly/SocketAddress.h>
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/io/async/AsyncTimeout.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/test/SocketPair.h>
+#include <folly/io/async/test/TestSSLServer.h>
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/Cpp2Channel.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/HeaderServerChannel.h>
-#include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <folly/io/Cursor.h>
-#include <folly/io/async/test/SocketPair.h>
-#include <thrift/lib/cpp/EventHandlerBase.h>
-#include <folly/io/async/AsyncTimeout.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <folly/io/async/EventBase.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
@@ -135,12 +137,27 @@ unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
 template<typename Channel1, typename Channel2>
 class SocketPairTest {
  public:
-  SocketPairTest()
-    : eventBase_() {
+  struct Config {
+    bool ssl{false};
+  };
+
+  SocketPairTest(Config config = Config()) : eventBase_() {
     folly::SocketPair socketPair;
 
-    socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD0());
-    socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD1());
+    if (config.ssl) {
+      auto clientCtx = std::make_shared<folly::SSLContext>();
+      auto serverCtx = std::make_shared<folly::SSLContext>();
+      getctx(clientCtx, serverCtx);
+      socket0_ = TAsyncSSLSocket::newSocket(
+          clientCtx, &eventBase_, socketPair.extractFD0(), false);
+      socket1_ = TAsyncSSLSocket::newSocket(
+          serverCtx, &eventBase_, socketPair.extractFD1(), true);
+      dynamic_cast<TAsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
+      dynamic_cast<TAsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
+    } else {
+      socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD0());
+      socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD1());
+    }
 
     channel0_ = createChannel<Channel1>(socket0_);
     channel1_ = createChannel<Channel2>(socket1_);
@@ -154,6 +171,16 @@ class SocketPairTest {
 
   void run() {
     runWithTimeout();
+  }
+
+  void getctx(
+      std::shared_ptr<folly::SSLContext> clientCtx,
+      std::shared_ptr<folly::SSLContext> serverCtx) {
+    clientCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+
+    serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+    serverCtx->loadCertificate(folly::kTestCert);
+    serverCtx->loadPrivateKey(folly::kTestKey);
   }
 
   int getFd0() {
@@ -308,10 +335,8 @@ class ResponseCallback
 class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
                   , public MessageCallback {
  public:
-  explicit MessageTest(size_t len)
-      : len_(len)
-      , header_(new THeader) {
-  }
+  explicit MessageTest(size_t len, Config socketConfig = Config())
+      : SocketPairTest(socketConfig), len_(len), header_(new THeader) {}
 
   void preLoop() override {
     channel0_->sendMessage(&sendCallback_, makeTestBuf(len_), header_.get());
@@ -347,6 +372,14 @@ TEST(Channel, Cpp2Channel) {
   MessageTest(1).run();
   MessageTest(100).run();
   MessageTest(1024*1024).run();
+}
+
+TEST(Channel, Cpp2ChannelSSL) {
+  MessageTest::Config socketConfig;
+  socketConfig.ssl = true;
+  MessageTest(1, socketConfig).run();
+  MessageTest(100, socketConfig).run();
+  MessageTest(1024 * 1024, socketConfig).run();
 }
 
 class MessageCloseTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
@@ -420,20 +453,19 @@ class HeaderChannelTest
     , public TestRequestCallback
     , public ResponseCallback {
 public:
-  explicit HeaderChannelTest(size_t len)
-      : len_(len) {
-  }
+ explicit HeaderChannelTest(size_t len, Config socketConfig = Config())
+     : SocketPairTest(socketConfig), len_(len) {}
 
-  class Callback : public TestRequestCallback {
-   public:
-    explicit Callback(HeaderChannelTest* c)
-    : c_(c) {}
-    void replyReceived(ClientReceiveState&& state) override {
-      TestRequestCallback::replyReceived(std::move(state));
-      c_->channel1_->setCallback(nullptr);
-    }
-   private:
-    HeaderChannelTest* c_;
+ class Callback : public TestRequestCallback {
+  public:
+   explicit Callback(HeaderChannelTest* c) : c_(c) {}
+   void replyReceived(ClientReceiveState&& state) override {
+     TestRequestCallback::replyReceived(std::move(state));
+     c_->channel1_->setCallback(nullptr);
+   }
+
+  private:
+   HeaderChannelTest* c_;
   };
 
   void preLoop() override {
@@ -477,6 +509,14 @@ TEST(Channel, HeaderChannelTest) {
   HeaderChannelTest(1).run();
   HeaderChannelTest(100).run();
   HeaderChannelTest(1024*1024).run();
+}
+
+TEST(Channel, HeaderChannelTestSSL) {
+  HeaderChannelTest::Config socketConfig;
+  socketConfig.ssl = true;
+  HeaderChannelTest(1, socketConfig).run();
+  HeaderChannelTest(100, socketConfig).run();
+  HeaderChannelTest(1024 * 1024, socketConfig).run();
 }
 
 class HeaderChannelClosedTest
@@ -857,9 +897,8 @@ class InOrderTest
     , public TestRequestCallback
     , public ResponseCallback {
  public:
-  explicit InOrderTest()
-      : len_(1) {
-  }
+  explicit InOrderTest(Config socketConfig = Config())
+      : SocketPairTest(socketConfig), len_(1) {}
 
   class Callback : public TestRequestCallback {
    public:
@@ -929,27 +968,31 @@ TEST(Channel, InOrderTest) {
   InOrderTest().run();
 }
 
+TEST(Channel, InOrderTestSSL) {
+  InOrderTest::Config socketConfig;
+  socketConfig.ssl = true;
+  InOrderTest(socketConfig).run();
+}
+
 class BadSeqIdTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
     , public ResponseCallback {
 public:
-  explicit BadSeqIdTest(size_t len)
-      : len_(len) {
-  }
+ explicit BadSeqIdTest(size_t len, Config socketConfig = Config())
+     : SocketPairTest(socketConfig), len_(len) {}
 
-  class Callback : public TestRequestCallback {
-   public:
-    explicit Callback(BadSeqIdTest* c)
-    : c_(c) {}
+ class Callback : public TestRequestCallback {
+  public:
+   explicit Callback(BadSeqIdTest* c) : c_(c) {}
 
-    void requestError(ClientReceiveState&& state) override {
-      c_->channel1_->setCallback(nullptr);
-      TestRequestCallback::requestError(std::move(state));
-    }
+   void requestError(ClientReceiveState&& state) override {
+     c_->channel1_->setCallback(nullptr);
+     TestRequestCallback::requestError(std::move(state));
+   }
 
-   private:
-    BadSeqIdTest* c_;
+  private:
+   BadSeqIdTest* c_;
   };
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
@@ -1008,34 +1051,37 @@ TEST(Channel, BadSeqIdTest) {
   BadSeqIdTest(1).run();
 }
 
+TEST(Channel, BadSeqIdTestSSL) {
+  BadSeqIdTest::Config socketConfig;
+  socketConfig.ssl = true;
+  BadSeqIdTest(1, socketConfig).run();
+}
 
 class TimeoutTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
     , public ResponseCallback {
 public:
-  explicit TimeoutTest(uint32_t timeout)
-      : timeout_(timeout)
-      , len_(1) {
-  }
+ explicit TimeoutTest(uint32_t timeout, Config socketConfig = Config())
+     : SocketPairTest(socketConfig), timeout_(timeout), len_(1) {}
 
-  void preLoop() override {
-    TestRequestCallback::reset();
-    channel1_->setCallback(this);
-    channel0_->setTimeout(timeout_);
-    channel0_->setCloseCallback(this);
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new TestRequestCallback),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new TestRequestCallback),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+ void preLoop() override {
+   TestRequestCallback::reset();
+   channel1_->setCallback(this);
+   channel0_->setTimeout(timeout_);
+   channel0_->setCloseCallback(this);
+   channel0_->sendRequest(
+       std::unique_ptr<RequestCallback>(new TestRequestCallback),
+       // Fake method name for creating a ContextStatck
+       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
+       makeTestBuf(len_),
+       std::unique_ptr<THeader>(new THeader));
+   channel0_->sendRequest(
+       std::unique_ptr<RequestCallback>(new TestRequestCallback),
+       // Fake method name for creating a ContextStatck
+       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
+       makeTestBuf(len_),
+       std::unique_ptr<THeader>(new THeader));
   }
 
   void postLoop() override {
@@ -1077,42 +1123,50 @@ TEST(Channel, TimeoutTest) {
   TimeoutTest(250).run();
 }
 
+TEST(Channel, TimeoutTestSSL) {
+  TimeoutTest::Config socketConfig;
+  socketConfig.ssl = true;
+  TimeoutTest(25, socketConfig).run();
+  TimeoutTest(100, socketConfig).run();
+  TimeoutTest(250, socketConfig).run();
+}
+
 // Test client per-call timeout options
 class OptionsTimeoutTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
     , public ResponseCallback {
 public:
-  explicit OptionsTimeoutTest()
-      : len_(1) {
-  }
+ explicit OptionsTimeoutTest(Config socketConfig = Config())
+     : SocketPairTest(socketConfig), len_(1) {}
 
-  void preLoop() override {
-    TestRequestCallback::reset();
-    channel1_->setCallback(this);
-    channel0_->setTimeout(1000);
-    RpcOptions options;
-    options.setTimeout(std::chrono::milliseconds(25));
-    channel0_->sendRequest(
-        options,
-        std::unique_ptr<RequestCallback>(new TestRequestCallback),
-        // Fake method name for creating a ContextStatck
-        std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-        makeTestBuf(len_),
-        std::unique_ptr<THeader>(new THeader));
-    // Verify the timeout worked within 10ms
-    channel0_->getEventBase()->tryRunAfterDelay([&](){
-        EXPECT_EQ(replyError_, 1);
-      }, 35);
-    // Verify that subsequent successful requests don't delay timeout
-    channel0_->getEventBase()->tryRunAfterDelay([&](){
-        channel0_->sendRequest(
-          std::unique_ptr<RequestCallback>(new TestRequestCallback),
-          // Fake method name for creating a ContextStatck
-          std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-          makeTestBuf(len_),
-          std::unique_ptr<THeader>(new THeader));
-      }, 20);
+ void preLoop() override {
+   TestRequestCallback::reset();
+   channel1_->setCallback(this);
+   channel0_->setTimeout(1000);
+   RpcOptions options;
+   options.setTimeout(std::chrono::milliseconds(25));
+   channel0_->sendRequest(
+       options,
+       std::unique_ptr<RequestCallback>(new TestRequestCallback),
+       // Fake method name for creating a ContextStatck
+       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
+       makeTestBuf(len_),
+       std::unique_ptr<THeader>(new THeader));
+   // Verify the timeout worked within 10ms
+   channel0_->getEventBase()->tryRunAfterDelay(
+       [&]() { EXPECT_EQ(replyError_, 1); }, 35);
+   // Verify that subsequent successful requests don't delay timeout
+   channel0_->getEventBase()->tryRunAfterDelay(
+       [&]() {
+         channel0_->sendRequest(
+             std::unique_ptr<RequestCallback>(new TestRequestCallback),
+             // Fake method name for creating a ContextStatck
+             std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
+             makeTestBuf(len_),
+             std::unique_ptr<THeader>(new THeader));
+       },
+       20);
   }
 
   void postLoop() override {
@@ -1146,40 +1200,34 @@ TEST(Channel, OptionsTimeoutTest) {
   OptionsTimeoutTest().run();
 }
 
+TEST(Channel, OptionsTimeoutTestSSL) {
+  OptionsTimeoutTest::Config socketConfig;
+  socketConfig.ssl = true;
+  OptionsTimeoutTest(socketConfig).run();
+}
+
 class ClientCloseTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
     , public ResponseCallback {
 public:
-  explicit ClientCloseTest(bool halfClose)
-      : halfClose_(halfClose) {
-  }
+ explicit ClientCloseTest(bool halfClose) : halfClose_(halfClose) {}
 
-  void preLoop() override {
-    TestRequestCallback::reset();
-    channel1_->setCallback(this);
-    channel0_->setCloseCallback(this);
-    if (halfClose_) {
-      channel1_->getEventBase()->tryRunAfterDelay(
-        [&](){channel1_->getTransport()->shutdownWrite();
-
-        },
-        10);
-    } else {
-      channel1_->getEventBase()->tryRunAfterDelay(
-        [&](){channel1_->getTransport()->close();},
-        10);
-    }
-    channel1_->getEventBase()->tryRunAfterDelay(
-      [&](){
-        channel1_->setCallback(nullptr);
-      },
-    20);
-    channel0_->getEventBase()->tryRunAfterDelay(
-      [&](){
-        channel0_->setCloseCallback(nullptr);
-      },
-    20);
+ void preLoop() override {
+   TestRequestCallback::reset();
+   channel1_->setCallback(this);
+   channel0_->setCloseCallback(this);
+   if (halfClose_) {
+     channel1_->getEventBase()->tryRunAfterDelay(
+         [&]() { channel1_->getTransport()->shutdownWrite(); }, 10);
+   } else {
+     channel1_->getEventBase()->tryRunAfterDelay(
+         [&]() { channel1_->getTransport()->close(); }, 10);
+   }
+   channel1_->getEventBase()->tryRunAfterDelay(
+       [&]() { channel1_->setCallback(nullptr); }, 20);
+   channel0_->getEventBase()->tryRunAfterDelay(
+       [&]() { channel0_->setCloseCallback(nullptr); }, 20);
   }
 
   void postLoop() override {
