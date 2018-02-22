@@ -35,9 +35,9 @@ class CppHasAResult {
   class Foo {
    public:
     explicit Foo(std::int32_t& obj) : obj_(obj) {}
-    auto& result() & { return obj_; }
-    auto&& result() && { return std::move(obj_); }
-    auto const& result() const& { return obj_; }
+    std::int32_t& result() & { return obj_; }
+    std::int32_t&& result() && { return std::move(obj_); }
+    std::int32_t const& result() const& { return obj_; }
    private:
     std::int32_t& obj_;
   };
