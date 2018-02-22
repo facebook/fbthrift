@@ -408,7 +408,7 @@ class TestStringRandomizer(TestRandomizer, unittest.TestCase):
         gen = self.get_randomizer(Thrift.TType.STRING, None, constraints)
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
-            for char in val:
+            for _char in val:
                 self.assertEquals(0, len(val))
 
     def testChoices(self):
