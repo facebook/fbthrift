@@ -43,7 +43,7 @@ class TestUnionStructs(unittest.TestCase):
         try:
             TestUnion(string_field="test", i32_field=100)
             self.assertTrue(False, "Cannot initialize union with 1+ fields")
-        except:
+        except Exception:
             pass
 
     def test_get_set(self):

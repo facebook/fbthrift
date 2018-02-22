@@ -14,7 +14,7 @@ import psutil
 
 try:
     from guppy import hpy
-except:
+except ImportError:
     hpy = None
 
 from FastProto.ttypes import AStruct, OneOfEach

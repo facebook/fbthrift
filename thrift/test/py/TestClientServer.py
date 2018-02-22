@@ -38,7 +38,7 @@ _ports = {}
 
 try:
     from thrift.protocol import fastproto
-except:
+except ImportError:
     fastproto = None
 
 def start_server(server_type, ssl, server_header, server_context,

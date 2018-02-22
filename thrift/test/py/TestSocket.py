@@ -54,7 +54,7 @@ class TimeoutTest(unittest.TestCase):
                 self.listen_sock.bind(('localhost', self.port))
                 self.listen_sock.listen(5)
                 break
-            except:
+            except Exception:
                 if i == 49:
                     raise
 
@@ -68,7 +68,7 @@ class TimeoutTest(unittest.TestCase):
                 socket.setTimeout(10)
                 socket.open()
                 leaky.append(socket)
-        except:
+        except Exception:
             self.assert_(time.time() - starttime < 5.0)
 
     def testWriteTimeout(self):
@@ -82,7 +82,7 @@ class TimeoutTest(unittest.TestCase):
             while True:
                 socket.write("hi" * 100)
 
-        except:
+        except Exception:
             self.assert_(time.time() - starttime < 5.0)
 
 def suite():
