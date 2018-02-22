@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ class t_type : public t_annotated {
   virtual void set_name(const std::string& name) { name_ = name; }
 
   /**
-   * t_type setters
+   * t_type getters
    */
   const t_program* get_program() const { return program_; }
   const std::string& get_name() const { return name_; }

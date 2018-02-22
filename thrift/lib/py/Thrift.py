@@ -354,3 +354,7 @@ class TApplicationException(TException):
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
+
+
+class UnimplementedTypedef:
+    pass

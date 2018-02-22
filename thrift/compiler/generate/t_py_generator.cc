@@ -269,7 +269,7 @@ class t_py_generator : public t_concat_generator {
   std::string render_fastproto_includes();
   std::string declare_argument(std::string structname, t_field* tfield);
   std::string render_field_default_value(t_field* tfield);
-  std::string type_name(t_type* ttype);
+  std::string type_name(const t_type* ttype);
   std::string function_signature(
       t_function* tfunction,
       std::string prefix = "");
@@ -931,11 +931,37 @@ void t_py_generator::close_generator() {
 }
 
 /**
- * Generates a typedef. This is not done in Python, types are all implicit.
- *
- * @param ttypedef The type definition
+ * Print typedefs of typedefs, enums, exceptions, and structs as "Name = Type".
+ * Unsupported types get `UnimplementedTypedef()` as the l-value.
  */
-void t_py_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
+void t_py_generator::generate_typedef(t_typedef* ttypedef) {
+  const auto varname = rename_reserved_keywords(ttypedef->get_symbolic());
+  const auto* type = ttypedef->get_type();
+  // Typedefs of user-defined types are useful as aliases.  On the other
+  // hand, base types are implicit, so it is not as helpful to support
+  // creating aliases to their Python analogs.  That said, if you need it,
+  // add an `else if` below.
+  if (type->is_typedef() || type->is_enum() || type->is_struct() ||
+      type->is_xception()) {
+    f_types_ << varname << " = " << type_name(type) << endl;
+  } else {
+    // Emit dummy symbols for other type names, because otherwise a typedef
+    // to a typedef to a base type would result in non-importable code.
+    //
+    // The dummy is a proper object instance rather than None because:
+    //  - Some questionable files, e.g. PythonReservedKeywords.thrift
+    //    shadow a struct with a typedef, and the parser accepts it.
+    //  - This generator splits struct-like object creation into two passes,
+    //    forward_declaration (reality: class definition), which happens
+    //    before typedefs are instantiated, and definition (reality:
+    //    mutation of the class object) , which happens after.  If the
+    //    typedef shadowed a struct, and its value were None, all of the
+    //    mutations would fail at import time with mysterious messages.  By
+    //    substituting an UnimplementedTypedef(), we instead let this blow
+    //    up at runtime, as the author of the shadowing file richly deseres.
+    f_types_ << varname << " = UnimplementedTypedef()" << endl;
+  }
+}
 
 /**
  * Generates code for an enumerated type. Done using a class to scope
@@ -3828,7 +3854,7 @@ string t_py_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_py_generator::type_name(t_type* ttype) {
+string t_py_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
   if (ttype->is_service()) {
     return get_real_py_module(program) + "." +

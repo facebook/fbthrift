@@ -636,6 +636,12 @@ class NewStructureNestedField:
   if not six.PY2:
     __hash__ = object.__hash__
 
+FloatFeatures = UnimplementedTypedef()
+DoubleMapType = UnimplementedTypedef()
+OldMapMap = UnimplementedTypedef()
+NewMapMap = UnimplementedTypedef()
+OldMapList = UnimplementedTypedef()
+NewMapList = UnimplementedTypedef()
 all_structs.append(OldStructure)
 OldStructure.thrift_spec = (
   None, # 0

@@ -123,6 +123,8 @@ class Included:
   if not six.PY2:
     __hash__ = object.__hash__
 
+IncludedInt64 = UnimplementedTypedef()
+TransitiveFoo = transitive.ttypes.Foo
 all_structs.append(Included)
 Included.thrift_spec = (
   None, # 0
