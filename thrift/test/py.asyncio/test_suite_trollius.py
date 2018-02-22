@@ -184,7 +184,7 @@ class ThriftCoroTestCase(unittest.TestCase):
             self.fail("Xception not raised")
         except Xception as x:
             self.assertEqual(x.errorCode, 1001)
-            self.assertEqual(x.message, 'Xception')
+            self.assertEqual(x.message, 'Xception')  # noqa
 
         try:
             yield From(self.client.testException("throw_undeclared"))

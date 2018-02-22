@@ -172,7 +172,7 @@ class ThriftTestCase(unittest.TestCase):
             self.fail("should have gotten exception")
         except Xception as x:
             self.assertEquals(x.errorCode, 1001)
-            self.assertEquals(x.message, 'Xception')
+            self.assertEquals(x.message, 'Xception')  # noqa
 
         try:
             yield self.client.testException("throw_undeclared")

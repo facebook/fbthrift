@@ -204,7 +204,7 @@ class AbstractTest(object):
             self.fail("should have gotten exception")
         except Xception as x:
             self.assertEqual(x.errorCode, 1001)
-            self.bytes_comp(x.message, 'Xception')
+            self.bytes_comp(x.message, 'Xception')  # noqa
 
         try:
             self.client.testException("throw_undeclared")
