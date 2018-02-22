@@ -16,7 +16,7 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
 using namespace frozen;
@@ -55,7 +55,7 @@ TEST(FrozenUtil, FutureVersion) {
     schema.__isset.fileVersion = true;
 
     std::string schemaStr;
-    util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
+    CompactSerializer::serialize(schema, &schemaStr);
     write(tmp.fd(), schemaStr.data(), schemaStr.size());
   }
 

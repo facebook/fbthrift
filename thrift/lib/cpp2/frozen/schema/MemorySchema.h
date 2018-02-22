@@ -18,7 +18,7 @@
 #include <folly/hash/Hash.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/DistinctTable.h>
-#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
+#include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
 #include <cstdint>
 #include <vector>
 

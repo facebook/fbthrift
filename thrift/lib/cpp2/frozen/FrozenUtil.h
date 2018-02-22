@@ -20,9 +20,9 @@
 #include <folly/File.h>
 #include <folly/portability/GFlags.h>
 #include <folly/system/MemoryMapping.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
-#include <thrift/lib/thrift/gen-cpp/frozen_constants.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/thrift/gen-cpp2/frozen_constants.h>
 
 DECLARE_bool(thrift_frozen_util_disable_mlock);
 
@@ -125,14 +125,14 @@ void serializeRootLayout(const Layout<T>& layout, std::string& out) {
   schema::convert(memSchema, schema);
 
   schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion();
-  util::ThriftSerializerCompact<>().serialize(schema, &out);
+  out.clear();
+  CompactSerializer::serialize(schema, &out);
 }
 
 template <class T>
 void deserializeRootLayout(folly::ByteRange& range, Layout<T>& layoutOut) {
   schema::Schema schema;
-  size_t schemaSize = util::ThriftSerializerCompact<>().deserialize(
-      range.begin(), range.size(), &schema);
+  size_t schemaSize = CompactSerializer::deserialize(range, schema);
 
   if (schema.fileVersion >
       schema::frozen_constants::kCurrentFrozenFileVersion()) {

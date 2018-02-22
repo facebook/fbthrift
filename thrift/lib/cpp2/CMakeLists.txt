@@ -13,7 +13,7 @@ set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 #
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 
-bypass_source_check("${frozen_cpp_SOURCES}")
+bypass_source_check("${frozen_cpp2_SOURCES}")
 add_library(
   thriftfrozen2
 
@@ -21,9 +21,9 @@ add_library(
   frozen/FrozenUtil.cpp
   frozen/schema/MemorySchema.cpp
   protocol/Frozen2Protocol.cpp
-  ${frozen_cpp_SOURCES}
+  ${frozen_cpp2_SOURCES}
 )
-add_dependencies(thriftfrozen2 frozen-cpp-target)
+add_dependencies(thriftfrozen2 frozen-cpp2-target)
 target_link_libraries(
   thriftfrozen2
 

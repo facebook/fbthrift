@@ -1,4 +1,4 @@
-namespace cpp apache.thrift.frozen.schema
+namespace cpp2 apache.thrift.frozen.schema
 
 struct Field {
   // layout id, indexes into layouts

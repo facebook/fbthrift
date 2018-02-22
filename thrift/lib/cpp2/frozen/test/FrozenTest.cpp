@@ -16,7 +16,6 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TDebugProtocol.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -172,7 +171,6 @@ TEST(Frozen, Compatibility) {
 
 TEST(Frozen, EmbeddedSchema) {
   std::string storage;
-  ThriftSerializerCompact<> serializer;
   {
     schema::Schema schema;
     schema::MemorySchema memSchema;
@@ -185,7 +183,7 @@ TEST(Frozen, EmbeddedSchema) {
 
     schema::convert(memSchema, schema);
 
-    serializer.serialize(schema, &storage);
+    CompactSerializer::serialize(schema, &storage);
     size_t start = storage.size();
     storage.resize(size + storage.size());
 
@@ -198,7 +196,7 @@ TEST(Frozen, EmbeddedSchema) {
     schema::MemorySchema memSchema;
     Layout<example2::Person2> person2;
 
-    size_t start = serializer.deserialize(storage, &schema);
+    size_t start = CompactSerializer::deserialize(storage, schema);
 
     schema::convert(std::move(schema), memSchema);
 

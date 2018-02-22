@@ -42,7 +42,7 @@
 #include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
 
-#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
+#include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
 
 namespace apache { namespace thrift { namespace frozen {
 /**
