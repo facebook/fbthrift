@@ -1,6 +1,6 @@
 cpp_include "<unordered_map>"
 
-namespace cpp apache.thrift.reflection
+namespace cpp2 apache.thrift.reflection
 
 // A type id is a 64-bit value.  The least significant 5 bits of the type id
 // are the actual type (one of the values of the Type enum, below).  The

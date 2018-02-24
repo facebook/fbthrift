@@ -41,7 +41,7 @@ TEST(Reflection, Basic) {
   {
     auto& f = s1.fields.at(1);
     EXPECT_TRUE(f.isRequired);
-    EXPECT_EQ(Type::TYPE_I32, f.type);
+    EXPECT_EQ(int(Type::TYPE_I32), f.type);
     EXPECT_EQ("a", f.name);
     EXPECT_EQ(1, f.order);
     EXPECT_FALSE(f.__isset.annotations);
@@ -50,7 +50,7 @@ TEST(Reflection, Basic) {
   {
     auto& f = s1.fields.at(2);
     EXPECT_FALSE(f.isRequired);
-    EXPECT_EQ(Type::TYPE_I32, f.type);
+    EXPECT_EQ(int(Type::TYPE_I32), f.type);
     EXPECT_EQ("b", f.name);
     EXPECT_EQ(2, f.order);
     EXPECT_FALSE(f.__isset.annotations);
@@ -61,7 +61,7 @@ TEST(Reflection, Basic) {
     // Fields that aren't declared "required" or "optional" are always
     // sent on the wire, so we'll consider them "required" for our purposes.
     EXPECT_TRUE(f.isRequired);
-    EXPECT_EQ(Type::TYPE_I32, f.type);
+    EXPECT_EQ(int(Type::TYPE_I32), f.type);
     EXPECT_EQ("c", f.name);
     EXPECT_EQ(0, f.order);
     EXPECT_FALSE(f.__isset.annotations);
@@ -70,7 +70,7 @@ TEST(Reflection, Basic) {
   {
     auto& f = s1.fields.at(4);
     EXPECT_TRUE(f.isRequired);
-    EXPECT_EQ(Type::TYPE_STRING, f.type);
+    EXPECT_EQ(int(Type::TYPE_STRING), f.type);
     EXPECT_EQ("d", f.name);
     EXPECT_EQ(3, f.order);
     EXPECT_TRUE(f.__isset.annotations);
@@ -101,7 +101,7 @@ TEST(Reflection, Complex) {
     EXPECT_EQ("map<byte, struct ReflectionTest.ReflectionTestStruct1>", m.name);
     EXPECT_EQ(f.type, schema.names.at(m.name));
     EXPECT_TRUE(m.__isset.mapKeyType);
-    EXPECT_EQ(Type::TYPE_BYTE, m.mapKeyType);
+    EXPECT_EQ(int(Type::TYPE_BYTE), m.mapKeyType);
     EXPECT_TRUE(m.__isset.valueType);
     EXPECT_EQ(ReflectionTestStruct1::_reflection_id, m.valueType);
   }
@@ -116,7 +116,7 @@ TEST(Reflection, Complex) {
     EXPECT_EQ("set<string>", m.name);
     EXPECT_EQ(f.type, schema.names.at("set<string>"));
     EXPECT_TRUE(m.__isset.valueType);
-    EXPECT_EQ(Type::TYPE_STRING, m.valueType);
+    EXPECT_EQ(int(Type::TYPE_STRING), m.valueType);
   }
 
   {
@@ -129,7 +129,7 @@ TEST(Reflection, Complex) {
     EXPECT_EQ("list<i64>", m.name);
     EXPECT_EQ(f.type, schema.names.at(m.name));
     EXPECT_TRUE(m.__isset.valueType);
-    EXPECT_EQ(Type::TYPE_I64, m.valueType);
+    EXPECT_EQ(int(Type::TYPE_I64), m.valueType);
   }
 
   {

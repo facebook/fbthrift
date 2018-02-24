@@ -23,7 +23,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <thrift/lib/thrift/gen-cpp/reflection_types.h>
+#include <thrift/lib/thrift/gen-cpp2/reflection_types.h>
 
 namespace apache {
 namespace thrift {
@@ -35,7 +35,8 @@ const uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 }  // namespace detail
 
 inline int64_t makeTypeId(Type type, uint64_t hash) {
-  return static_cast<int64_t>((hash & ~detail::kTypeMask) | type);
+  return static_cast<int64_t>(
+      (hash & ~detail::kTypeMask) | static_cast<int>(type));
 }
 
 inline Type getType(int64_t typeId) {

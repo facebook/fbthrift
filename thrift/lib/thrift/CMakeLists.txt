@@ -4,7 +4,7 @@ set(LIB_THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 thrift_generate(
   "reflection" #file_name
   "" #services
-  "cpp" #language
+  "cpp2" #language
   "templates" #options
   "${LIB_THRIFT_HOME}" #file_path
   "${LIB_THRIFT_HOME}" #output_path
@@ -33,3 +33,4 @@ thrift_generate(
 
 set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES ${RpcMetadata-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY frozen-cpp2-SOURCES ${frozen-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY reflection-cpp2-SOURCES ${reflection-cpp2-SOURCES})

@@ -1,3 +1,5 @@
+get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
+
 add_library(
   thrift-core
 
@@ -29,7 +31,7 @@ target_link_libraries(
 )
 install(TARGETS concurrency DESTINATION lib)
 
-bypass_source_check("${reflection-cpp-SOURCES}")
+bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
   protocol
 
@@ -38,9 +40,9 @@ add_library(
   protocol/TBase64Utils.cpp
   protocol/TProtocolException.cpp
   protocol/TSimpleJSONProtocol.cpp
-  ${reflection-cpp-SOURCES}
+  ${reflection-cpp2-SOURCES}
 )
-add_dependencies(protocol reflection-cpp-target)
+add_dependencies(protocol reflection-cpp2-target)
 target_link_libraries(
   protocol
 
