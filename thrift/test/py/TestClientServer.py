@@ -77,18 +77,19 @@ def wait_for_server(port, timeout, ssl=False):
     while time.time() < end:
         try:
             sock = socket.socket()
+            sock.settimeout(end - time.time())
             if ssl:
                 sock = SSL.wrap_socket(sock)
             sock.connect(('localhost', port))
-            sock.close()
             return True
         except socket.timeout:
             return False
         except socket.error as e:
             if not isConnectionRefused(e):
                 raise
-            time.sleep(0.1)
-            continue
+        finally:
+            sock.close()
+        time.sleep(0.1)
     return False
 
 class AbstractTest(object):
