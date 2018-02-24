@@ -845,10 +845,12 @@ string t_py_generator::render_fastproto_includes() {
     "from thrift.protocol import TBinaryProtocol\n"
     "from thrift.protocol import TCompactProtocol\n"
     "from thrift.protocol import THeaderProtocol\n"
-    "try:\n"
-    "  from thrift.protocol import fastproto\n"
-    "except:\n"
-    "  fastproto = None\n";
+    "fastproto = None\n"
+    "if not '__pypy__' in sys.builtin_module_names:\n"
+    "  try:\n"
+    "    from thrift.protocol import fastproto\n"
+    "  except:\n"
+    "    pass\n";
 }
 
 /**
