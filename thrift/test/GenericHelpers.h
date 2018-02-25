@@ -49,37 +49,37 @@ class GenericIO {
   /* Write functions */
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const int8_t& val) {
     return proto->writeByte(val);
   }
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const int16_t& val) {
     return proto->writeI16(val);
   }
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const int32_t& val) {
     return proto->writeI32(val);
   }
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const double& val) {
     return proto->writeDouble(val);
   }
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const int64_t& val) {
     return proto->writeI64(val);
   }
 
   static uint32_t write(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       const std::string& val) {
     return proto->writeString(val);
   }
@@ -87,37 +87,37 @@ class GenericIO {
   /* Read functions */
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       int8_t& val) {
     return proto->readByte(val);
   }
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       int16_t& val) {
     return proto->readI16(val);
   }
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       int32_t& val) {
     return proto->readI32(val);
   }
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       int64_t& val) {
     return proto->readI64(val);
   }
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       double& val) {
     return proto->readDouble(val);
   }
 
   static uint32_t read(
-      shared_ptr<apache::thrift::protocol::TProtocol> proto,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> proto,
       std::string& val) {
     return proto->readString(val);
   }
