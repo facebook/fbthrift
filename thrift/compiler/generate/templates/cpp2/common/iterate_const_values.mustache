@@ -19,11 +19,13 @@
 Base Types:
 
 %><%^value:container?%><%!
-  %><%#value:string?%><%!
-    %>apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::fromStringLiteral(<% > common/const_value%>)<%!
-  %><%/value:string?%><%!
+  %><%^type:struct%><%!
+    %><%#value:string?%><%!
+      %>apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::fromStringLiteral(<% > common/const_value%>)<%!
+    %><%/value:string?%><%!
 
-  %><%^value:string?%><% > common/const_value%><%/value:string?%><%!
+    %><%^value:string?%><% > common/const_value%><%/value:string?%><%!
+  %><%/type:struct%><%!
 %><%/value:container?%><%!
 
 Containers:
@@ -77,6 +79,8 @@ Map:
   %>}<%!
 %><%/value:map?%><%!
 %><%/type:struct%><%!
+
+Struct:
 %><%#type:struct%><%!
     %><% > common/type_namespace_cpp2%><%type:name%>(<%#value:const_struct%><%#constant:type%><%#constant:value%>::apache::thrift::detail::wrap_argument<<%constant:index%>>(<% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>)<%^last?%>, <%/last?%><%/constant:value%><%/constant:type%><%/value:const_struct%>)<%!
 %><%/type:struct%>
