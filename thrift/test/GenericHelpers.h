@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/Thrift.h>
 
-using std::shared_ptr;
 
 /* ClassName Helper for cleaner exceptions */
 class ClassNames {
