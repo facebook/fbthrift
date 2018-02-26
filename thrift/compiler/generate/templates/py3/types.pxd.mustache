@@ -39,6 +39,9 @@ from folly.optional cimport cOptional
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/program:includeNamespaces}}
+{{#program:extraNamespaces}}
+cimport {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespace}}{{value}}_{{/extraNamespace}}types
+{{/program:extraNamespaces}}
 
 {{#program:cppIncludes}}
 cdef extern from "{{path}}":

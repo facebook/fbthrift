@@ -79,9 +79,14 @@ class t_mstch_py3_generator : public t_mstch_generator {
     std::set<string> custom_template_names;
     vector<const t_type*> custom_types;
     std::set<string> custom_type_names;
+    mstch::array extra_namespaces;
+    std::set<string> extra_namespace_paths;
   };
   void visit_type(t_type* type, type_data& data);
-  void visit_single_type(const t_type& type, type_data& data);
+  void visit_single_type(
+      const t_type& type,
+      const t_type& orig_type,
+      type_data& data);
   string ref_type(const t_field& field) const;
   string get_cpp_template(const t_type& type) const;
   string to_cython_template(const string& cpp_template) const;
@@ -480,6 +485,13 @@ void t_mstch_py3_generator::add_per_type_data(
     mstch::map& results) {
   type_data data;
 
+  // Put in all the directly-referenced paths, since we don't need to repeat
+  // them in extras
+  data.extra_namespace_paths.insert(program.get_path());
+  for (const auto included_program : program.get_includes()) {
+    data.extra_namespace_paths.insert(included_program->get_path());
+  }
+
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
       for (const auto field : function->get_arglist()->get_members()) {
@@ -508,6 +520,8 @@ void t_mstch_py3_generator::add_per_type_data(
   results.emplace("containerTypes", dump_elems(data.containers));
   results.emplace("customTemplates", dump_elems(data.custom_templates));
   results.emplace("customTypes", dump_elems(data.custom_types));
+  // extra_namespaces is already a mstch::array, so we don't need to dump it:
+  results.emplace("extraNamespaces", data.extra_namespaces);
 
   // create second set of container types that treats strings and binaries
   // the same
@@ -558,11 +572,12 @@ void t_mstch_py3_generator::visit_type(t_type* orig_type, type_data& data) {
     visit_type(value_type, data);
   }
 
-  visit_single_type(*type, data);
+  visit_single_type(*type, *orig_type, data);
 }
 
 void t_mstch_py3_generator::visit_single_type(
     const t_type& type,
+    const t_type& orig_type,
     type_data& data) {
   if (type.is_container()) {
     string flat_name = flatten_type_name(type);
@@ -583,6 +598,23 @@ void t_mstch_py3_generator::visit_single_type(
   if (cpp_type != "" && !data.custom_type_names.count(cpp_type)) {
     data.custom_type_names.insert(cpp_type);
     data.custom_types.push_back(&type);
+  }
+
+  // If the original type is a typedef, then add the namespace of the
+  // *resolved* type:
+  if (orig_type.is_typedef()) {
+    auto prog = type.get_program();
+    if (prog != nullptr) {
+      auto path = prog->get_path();
+      if (!data.extra_namespace_paths.count(path)) {
+        const auto ns = get_py3_namespace(*prog, {prog->get_name()});
+        data.extra_namespace_paths.insert(path);
+        const mstch::map extra_ns{
+            {"extraNamespace", ns},
+        };
+        data.extra_namespaces.push_back(extra_ns);
+      }
+    }
   }
 }
 

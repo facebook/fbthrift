@@ -35,6 +35,9 @@ import enum as __enum
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/hasTypes?}}
 {{/program:includeNamespaces}}
+{{#program:extraNamespaces}}
+import {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespace}}{{value}}_{{/extraNamespace}}types
+{{/program:extraNamespaces}}
 
 
 {{#program:enums}}
