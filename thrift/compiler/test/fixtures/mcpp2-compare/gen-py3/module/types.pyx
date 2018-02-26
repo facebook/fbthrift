@@ -5404,6 +5404,144 @@ cdef class FloatUnion(thrift.py3.types.Union):
         return (deserialize, (FloatUnion, serialize(self)))
 
 
+cdef cAllRequiredNoExceptMoveCtrStruct _AllRequiredNoExceptMoveCtrStruct_defaults = cAllRequiredNoExceptMoveCtrStruct()
+
+cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        AllRequiredNoExceptMoveCtrStruct self, *,
+        intField
+    ):
+        if intField is not None:
+            if not isinstance(intField, int):
+                raise TypeError(f'intField is not a { int !r}.')
+            <int64_t> intField
+
+        self._cpp_obj = move(AllRequiredNoExceptMoveCtrStruct._make_instance(
+          NULL,
+          intField,
+        ))
+
+    def __call__(
+        AllRequiredNoExceptMoveCtrStruct self,
+        intField=__NOTSET
+    ):
+        changes = any((
+            intField is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if intField is None:
+            raise TypeError('field intField is required and has no default, it can not be unset')
+        if None is not intField is not __NOTSET:
+            if not isinstance(intField, int):
+                raise TypeError(f'intField is not a { int !r}.')
+            <int64_t> intField
+
+        inst = <AllRequiredNoExceptMoveCtrStruct>AllRequiredNoExceptMoveCtrStruct.__new__(AllRequiredNoExceptMoveCtrStruct)
+        inst._cpp_obj = move(AllRequiredNoExceptMoveCtrStruct._make_instance(
+          self._cpp_obj.get(),
+          intField,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
+        cAllRequiredNoExceptMoveCtrStruct* base_instance,
+        object intField
+    ) except *:
+        cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cAllRequiredNoExceptMoveCtrStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cAllRequiredNoExceptMoveCtrStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if intField is None:
+                pass
+            elif intField is __NOTSET:
+                intField = None
+
+        if intField is not None:
+            deref(c_inst).intField = intField
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'intField', self.intField
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct] cpp_obj):
+        inst = <AllRequiredNoExceptMoveCtrStruct>AllRequiredNoExceptMoveCtrStruct.__new__(AllRequiredNoExceptMoveCtrStruct)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def intField(self):
+
+        return self._cpp_obj.get().intField
+
+
+    def __hash__(AllRequiredNoExceptMoveCtrStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.intField,
+            ))
+        return self.__hash
+
+    def __repr__(AllRequiredNoExceptMoveCtrStruct self):
+        return f'AllRequiredNoExceptMoveCtrStruct(intField={repr(self.intField)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, AllRequiredNoExceptMoveCtrStruct) and
+                isinstance(other, AllRequiredNoExceptMoveCtrStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cAllRequiredNoExceptMoveCtrStruct cself = deref((<AllRequiredNoExceptMoveCtrStruct>self)._cpp_obj)
+        cdef cAllRequiredNoExceptMoveCtrStruct cother = deref((<AllRequiredNoExceptMoveCtrStruct>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(AllRequiredNoExceptMoveCtrStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(AllRequiredNoExceptMoveCtrStruct self, const IOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct]()
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cAllRequiredNoExceptMoveCtrStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cAllRequiredNoExceptMoveCtrStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cAllRequiredNoExceptMoveCtrStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (AllRequiredNoExceptMoveCtrStruct, serialize(self)))
+
+
 cdef class Map__string_i64:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i64):

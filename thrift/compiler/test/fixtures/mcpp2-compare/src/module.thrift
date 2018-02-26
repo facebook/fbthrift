@@ -378,3 +378,7 @@ union FloatUnion {
   1: float floatSide,
   2: double doubleSide,
 }
+
+struct AllRequiredNoExceptMoveCtrStruct {
+  1: required i64 intField,
+} (cpp.noexcept_move_ctor)

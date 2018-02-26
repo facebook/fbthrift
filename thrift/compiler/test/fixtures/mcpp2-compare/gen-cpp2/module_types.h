@@ -325,6 +325,7 @@ class MyIncludedStruct;
 class AnnotatedStruct;
 class FloatStruct;
 class FloatUnion;
+class AllRequiredNoExceptMoveCtrStruct;
 }}} // some::valid::ns
 // END forward_declare
 // BEGIN typedefs
@@ -6019,6 +6020,116 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Float
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::FloatUnion const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::st::ComparisonOperators<AllRequiredNoExceptMoveCtrStruct> {
+ public:
+
+  AllRequiredNoExceptMoveCtrStruct() :
+      intField(0) {}
+  // FragileConstructor for use in initialization lists only.
+  AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AllRequiredNoExceptMoveCtrStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AllRequiredNoExceptMoveCtrStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    intField = arg.move();
+  }
+  AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
+      intField(std::move(other.intField)),
+      __isset(other.__isset) {}
+  AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
+
+  AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
+
+  AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
+  void __clear();
+  int64_t intField;
+  bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
+
+  bool operator < (const AllRequiredNoExceptMoveCtrStruct& rhs) const {
+    if (!(intField == rhs.intField)) {
+      return intField < rhs.intField;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int64_t get_intField() const {
+    return intField;
+  }
+
+  int64_t& set_intField(int64_t intField_) {
+    intField = intField_;
+    return intField;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< AllRequiredNoExceptMoveCtrStruct >;
+};
+
+void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b);
+extern template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::clear( ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::write(Protocol* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::read(Protocol* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

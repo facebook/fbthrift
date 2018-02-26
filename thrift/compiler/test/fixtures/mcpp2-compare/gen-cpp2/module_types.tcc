@@ -6537,3 +6537,105 @@ uint32_t FloatUnion::write(Protocol_* prot_) const {
 }
 
 }}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
+void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+  bool isset_intField = false;
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_intField:
+  {
+    iprot->readI64(this->intField);
+    isset_intField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  if (!isset_intField) {
+    TProtocolException::throwMissingRequiredField("intField", "AllRequiredNoExceptMoveCtrStruct");
+  }
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+        goto _readField_intField;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AllRequiredNoExceptMoveCtrStruct");
+  xfer += prot_->serializedFieldSize("intField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->intField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AllRequiredNoExceptMoveCtrStruct");
+  xfer += prot_->serializedFieldSize("intField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->intField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AllRequiredNoExceptMoveCtrStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AllRequiredNoExceptMoveCtrStruct");
+  xfer += prot_->writeFieldBegin("intField", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->intField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns

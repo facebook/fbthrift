@@ -204,6 +204,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "some::
     cdef cppclass cFloatStruct "some::valid::ns::FloatStruct"
     # Forward Declaration
     cdef cppclass cFloatUnion "some::valid::ns::FloatUnion"
+    # Forward Declaration
+    cdef cppclass cAllRequiredNoExceptMoveCtrStruct "some::valid::ns::AllRequiredNoExceptMoveCtrStruct"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef cppclass cEmpty__isset "some::valid::ns::Empty::__isset":
@@ -664,6 +666,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         const double& get_doubleSide() const
         double& set_doubleSide(const double&)
 
+    cdef cppclass cAllRequiredNoExceptMoveCtrStruct__isset "some::valid::ns::AllRequiredNoExceptMoveCtrStruct::__isset":
+        bint intField
+
+    cdef cppclass cAllRequiredNoExceptMoveCtrStruct "some::valid::ns::AllRequiredNoExceptMoveCtrStruct":
+        cAllRequiredNoExceptMoveCtrStruct() except +
+        cAllRequiredNoExceptMoveCtrStruct(const cAllRequiredNoExceptMoveCtrStruct&) except +
+        bint operator==(cAllRequiredNoExceptMoveCtrStruct&)
+        int64_t intField
+        cAllRequiredNoExceptMoveCtrStruct__isset __isset
+
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
     cdef shared_ptr[cMyStruct] aliasing_constructor_ref_field2 "std::shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct*)
     cdef shared_ptr[_includes_types.cAStruct] aliasing_constructor_ARefField "std::shared_ptr<a::different::ns::AStruct>"(shared_ptr[cMyIncludedStruct]&, _includes_types.cAStruct*)
@@ -726,6 +738,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFloatUnion] move(unique_ptr[cFloatUnion])
     cdef shared_ptr[cFloatUnion] move_shared "std::move"(shared_ptr[cFloatUnion])
     cdef unique_ptr[cFloatUnion] move_unique "std::move"(unique_ptr[cFloatUnion])
+    cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] move(unique_ptr[cAllRequiredNoExceptMoveCtrStruct])
+    cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] move_shared "std::move"(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
+    cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] move_unique "std::move"(unique_ptr[cAllRequiredNoExceptMoveCtrStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::Empty>"(shared_ptr[cEmpty])
@@ -741,6 +756,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cAnnotatedStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::AnnotatedStruct>"(shared_ptr[cAnnotatedStruct])
     cdef shared_ptr[const cFloatStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatStruct>"(shared_ptr[cFloatStruct])
     cdef shared_ptr[const cFloatUnion] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatUnion>"(shared_ptr[cFloatUnion])
+    cdef shared_ptr[const cAllRequiredNoExceptMoveCtrStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::AllRequiredNoExceptMoveCtrStruct>"(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
 
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
@@ -1193,6 +1209,23 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
     @staticmethod
     cdef create(shared_ptr[cFloatUnion])
+
+# Forward Definition of the cython struct
+cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct)
+
+cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
+        cAllRequiredNoExceptMoveCtrStruct* base_instance,
+        object intField
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
 
 
 cdef class Map__string_i64:

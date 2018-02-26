@@ -3073,3 +3073,47 @@ template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtoco
 template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg) :
+    intField(std::move(intField__arg)) {}
+
+void AllRequiredNoExceptMoveCtrStruct::__clear() {
+  // clear all fields
+  intField = 0;
+}
+
+bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
+  if (!((intField == rhs.intField))) {
+    return false;
+  }
+  return true;
+}
+
+void AllRequiredNoExceptMoveCtrStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+
+void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b) {
+  using ::std::swap;
+  swap(a.intField, b.intField);
+}
+
+template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
