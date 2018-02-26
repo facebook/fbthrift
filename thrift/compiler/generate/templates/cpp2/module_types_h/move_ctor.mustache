@@ -16,6 +16,10 @@
 
 %>  <%struct:name%>(<%struct:name%>&& other) noexcept :
 <%#struct:fields%>
-      <%field:name%>(std::move(other.<%field:name%>)),
+      <%field:name%>(std::move(other.<%field:name%>))<%^last?%>,<%/last?%><%!
+        %><%#last?%><%#struct:non_req_fields?%>,<%/struct:non_req_fields?%><%!
+          %><%^struct:non_req_fields?%> {}<%/struct:non_req_fields?%><%/last?%>
 <%/struct:fields%>
-      __isset(other.__isset) {}
+<%#struct:non_req_fields?%>
+      __isset(other.__isset) {}<%!
+%><%/struct:non_req_fields?%>

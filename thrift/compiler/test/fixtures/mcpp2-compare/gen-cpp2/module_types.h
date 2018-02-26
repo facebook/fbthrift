@@ -6039,8 +6039,8 @@ class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::s
     intField = arg.move();
   }
   AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
-      intField(std::move(other.intField)),
-      __isset(other.__isset) {}
+      intField(std::move(other.intField)) {}
+
   AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
 
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
