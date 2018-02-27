@@ -358,7 +358,9 @@ uint32_t TMemoryBuffer::readSlow(uint8_t* buf, uint32_t len) {
   computeRead(len, &start, &give);
 
   // Copy into the provided buffer.
-  memcpy(buf, start, give);
+  if (start) {
+    memcpy(buf, start, give);
+  }
 
   return give;
 }
