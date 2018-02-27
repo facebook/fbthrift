@@ -8,7 +8,7 @@ from testing.types import I32List, Color, easy
 from thrift.py3 import TransportError, get_client
 
 
-async def bad_client_connect():
+async def bad_client_connect() -> None:
     async with get_client(TestingService, port=1) as client:
         await client.complex_action('foo', 'bar', 9, 'baz')
 
@@ -72,7 +72,7 @@ class ClientTests(unittest.TestCase):
         """
         loop = asyncio.get_event_loop()
 
-        async def test():
+        async def test() -> None:
             async with get_client(TestingService, port=1, headers={'foo': 'bar'}):
                 pass
 

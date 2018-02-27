@@ -39,7 +39,7 @@ class ServicesTests(unittest.TestCase):
         coro = self.get_address(loop)
         self.assertIsInstance(loop.run_until_complete(coro), SocketAddress)
 
-    async def get_address(self, loop) -> SocketAddress:
+    async def get_address(self, loop: asyncio.AbstractEventLoop) -> SocketAddress:
         server = ThriftServer(Handler(), port=0)
         serve_task = loop.create_task(server.serve())
         addy = await server.get_address()
