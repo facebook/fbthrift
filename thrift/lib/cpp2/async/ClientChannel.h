@@ -40,10 +40,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
 
     SaturationStatus() = default;
 
-    SaturationStatus(uint32_t usedCapacity, uint32_t capacity)
-        : type(SaturationType::REQUEST),
-          usedCapacity(usedCapacity),
-          capacity(capacity) {}
+    SaturationStatus(uint32_t usedCap, uint32_t cap)
+        : type(SaturationType::REQUEST), usedCapacity(usedCap), capacity(cap) {}
   };
 
   typedef

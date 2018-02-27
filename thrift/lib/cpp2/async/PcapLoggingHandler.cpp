@@ -553,9 +553,9 @@ class LoggingThread {
 
   void setConfigPrivate(const PcapLoggingConfig& config) {
     if (config.enabled()) {
-      file_.emplace(config.prefix().c_str(), config.rotateAfterMB());
-      numMessagesConnStart_ = config.numMessagesConnStart();
-      numMessagesConnEnd_ = config.numMessagesConnEnd();
+      file_.emplace(config.getPrefix().c_str(), config.getRotateAfterMB());
+      numMessagesConnStart_ = config.getNumMessagesConnStart();
+      numMessagesConnEnd_ = config.getNumMessagesConnEnd();
       enabled_ = true;
     } else {
       file_ = folly::none;
@@ -684,15 +684,15 @@ void PcapLoggingHandler::transportActive(Context* ctx) {
   }
 
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
-  if (config->sampleConnectionPct() != 100) {
+  if (config->getSampleConnectionPct() != 100) {
     int rnd = folly::Random::rand32(100);
-    if (rnd >= config->sampleConnectionPct()) {
+    if (rnd >= config->getSampleConnectionPct()) {
       return;
     }
   }
 
   enabled_ = true;
-  snaplen_ = config->snaplen();
+  snaplen_ = config->getSnaplen();
 
   auto transport = ctx->getTransport();
   transport->getLocalAddress(&local_);
