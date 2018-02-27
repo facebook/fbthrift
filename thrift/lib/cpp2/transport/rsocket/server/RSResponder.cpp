@@ -91,7 +91,7 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
            auto channel = std::make_shared<StreamingOutput>(
                evb_,
                streamId,
-               yarpl::make_ref<
+               std::make_shared<
                    rsocket::ScheduledSubscriber<std::unique_ptr<folly::IOBuf>>>(
                    std::move(subscriber), *evb_));
            processor_->onThriftRequest(
@@ -121,7 +121,7 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
               std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
                   subscriber) {
             requestStream->subscribe(
-                yarpl::make_ref<
+                std::make_shared<
                     rsocket::ScheduledSubscriptionSubscriber<rsocket::Payload>>(
                     std::move(subscriber), *evb));
           });
@@ -147,7 +147,7 @@ RSResponder::FlowableRef RSResponder::handleRequestChannel(
                evb_,
                requestStream,
                streamId,
-               yarpl::make_ref<
+               std::make_shared<
                    rsocket::ScheduledSubscriber<std::unique_ptr<folly::IOBuf>>>(
                    std::move(subscriber), *evb_));
            processor_->onThriftRequest(

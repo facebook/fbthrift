@@ -217,7 +217,7 @@ void RSClientThriftChannel::sendSingleRequestResponse(
   DCHECK(metadata);
   bool canExecute = channelCounters_.incPendingRequests();
 
-  auto singleObserver = yarpl::make_ref<CountedSingleObserver>(
+  auto singleObserver = std::make_shared<CountedSingleObserver>(
       std::move(callback), canExecute ? &channelCounters_ : nullptr);
 
   if (canExecute) {
@@ -259,7 +259,7 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
                 << initialBuf->cloneAsValue().moveToFbString().toStdString();
             StreamRequestCallback* scb =
                 static_cast<StreamRequestCallback*>(callback.get());
-            auto rpc_subscriber = yarpl::make_ref<RPCSubscriber>(
+            auto rpc_subscriber = std::make_shared<RPCSubscriber>(
                 serializeMetadata(*metadata),
                 std::move(initialBuf),
                 std::move(subscriber));

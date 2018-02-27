@@ -118,10 +118,10 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     return yarpl::flowable::Flowable<Chunk2>::fromPublisher(
         [this, input = std::move(input)](auto subscriber) mutable {
           if (FLAGS_chunk_size > 0) {
-            auto subscription = yarpl::make_ref<Subscription>(stats_);
+            auto subscription = std::make_shared<Subscription>(stats_);
             subscriber->onSubscribe(subscription);
 
-            subscriber = yarpl::make_ref<rsocket::ScheduledSubscriber<Chunk2>>(
+            subscriber = std::make_shared<rsocket::ScheduledSubscriber<Chunk2>>(
                 subscriber, *folly::EventBaseManager::get()->getEventBase());
             std::thread([subscriber, subscription, this]() {
               int32_t requested = 0;

@@ -203,7 +203,7 @@ class StreamUploadDownload {
 
     auto input = yarpl::flowable::Flowable<Chunk2>::fromPublisher(
         [this](auto subscriber) mutable {
-          auto subscription = yarpl::make_ref<Subscription>(stats_);
+          auto subscription = std::make_shared<Subscription>(stats_);
           subscriber->onSubscribe(subscription);
 
           if (chunk_.data.length() > 0) {

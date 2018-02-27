@@ -50,7 +50,7 @@ static std::shared_ptr<RSocketStateMachine> createStateMachine(
     framedConn = std::make_unique<FramedDuplexConnection>(
         std::move(conn), setupParameters.protocolVersion);
   }
-  auto transport = yarpl::make_ref<FrameTransportImpl>(std::move(framedConn));
+  auto transport = std::make_shared<FrameTransportImpl>(std::move(framedConn));
 
   stateMachine->connectClient(std::move(transport), std::move(setupParameters));
 
