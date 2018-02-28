@@ -18,6 +18,17 @@
  public:
   virtual ~<%service:name%>SvAsyncIf() {}
 <%#service:functions%><%#function:returnType%>
+<%#type:deprecated_stream?%>
+  <%#type:streamElemType%>
+    <%#type:resolves_to_complex_return?%>
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+    <%/type:resolves_to_complex_return?%>
+    <%^type:resolves_to_complex_return?%>
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
+    <%/type:resolves_to_complex_return?%>
+  <%/type:streamElemType%>
+<%/type:deprecated_stream?%>
+<%^type:deprecated_stream?%>
 <%#function:oneway?%>
   virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) = 0;
   virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list%>) = 0;
@@ -62,5 +73,6 @@
 <%/type:resolves_to_complex_return?%>
 <%/function:oneway?%>
 <%/service:frozen2?%>
+<%/type:deprecated_stream?%>
 <%/function:returnType%><%/service:functions%>
 };

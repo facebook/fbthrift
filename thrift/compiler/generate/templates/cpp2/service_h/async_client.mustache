@@ -31,6 +31,28 @@
  private:
   virtual void <%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>);
  public:
+<%#type:deprecated_stream?%>
+  <%#type:streamElemType%>
+  virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual wangle::ObservablePtr<<% > types/type%>> observable_<%function:name%>(<% > service_common/function_param_list_const%>);
+  virtual wangle::ObservablePtr<<% > types/type%>> observable_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  static folly::exception_wrapper recv_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+    <%#type:resolves_to_complex_return?%>
+  static void recv_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+    <%/type:resolves_to_complex_return?%>
+    <%^type:resolves_to_complex_return?%>
+  static <% > types/type%> recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual <% > types/type%> recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+    <%/type:resolves_to_complex_return?%>
+  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>);
+  <%/type:streamElemType%>
+<%/type:deprecated_stream?%>
+<%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
 <%^type:stream?%>
   virtual <% > types/type%> sync_<%function:name%>(<% > service_common/function_param_list_const%>);
@@ -66,8 +88,6 @@
  private:
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
-<%^function:oneway?%>
-<%/function:oneway?%>
  public:
 <%/type:void?%>
 <%^type:void?%>
@@ -104,5 +124,6 @@
  public:
 <%/function:oneway?%>
 <%/type:void?%>
+<%/type:deprecated_stream?%>
 <%/function:returnType%><%/service:functions%>
 };

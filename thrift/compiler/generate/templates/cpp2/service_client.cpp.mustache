@@ -47,6 +47,7 @@
 <% > service_client_cpp/function_implementation%>
 
 
+<%^type:deprecated_stream?%>
 <%#function:oneway?%>
 <%^type:stream?%>
 <% > service_client_cpp/oneway_sync_functions%>
@@ -70,9 +71,30 @@
 <% > service_client_cpp/future_functions%>
 <%/function:returns_stream?%>
 <%/function:oneway?%>
+<%/type:deprecated_stream?%>
 
+<% > service_client_cpp/observable_functions%><%!
+%><%^function:returns_stream?%>
+
+void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+  <%function:name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
+}
+<%/function:returns_stream?%>
 
 <%^function:oneway?%>
+<%#type:deprecated_stream?%>
+  <%#type:streamElemType%>
+<% > service_client_cpp/received_wrapped%>
+
+
+<% > service_client_cpp/received%>
+
+
+<% > service_client_cpp/received_instance%>
+
+  <%/type:streamElemType%>
+<%/type:deprecated_stream?%>
+<%^type:deprecated_stream?%>
 <% > service_client_cpp/received_wrapped%>
 
 
@@ -83,6 +105,7 @@
 <% > service_client_cpp/received_instance%>
 
 <%/function:returns_stream?%>
+<%/type:deprecated_stream?%>
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>
 <% > common/namespace_cpp2_end%>

@@ -226,6 +226,12 @@ mstch::node mstch_type::get_stream_elem_type() {
         generators_,
         cache_,
         pos_);
+  } else if (type_->is_stream()) {
+    return generators_->type_generator_->generate(
+        dynamic_cast<const t_stream*>(type_)->get_elem_type(),
+        generators_,
+        cache_,
+        pos_);
   }
   return mstch::node();
 }

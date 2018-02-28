@@ -19,6 +19,17 @@
   typedef <%service:name%>AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 <%#service:functions%><%#function:returnType%>
+<%#type:deprecated_stream?%>
+  <%#type:streamElemType%>
+    <%#type:resolves_to_complex_return?%>
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
+    <%/type:resolves_to_complex_return?%>
+    <%^type:resolves_to_complex_return?%>
+  virtual void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
+    <%/type:resolves_to_complex_return?%>
+  <%/type:streamElemType%>
+<%/type:deprecated_stream?%>
+<%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
   virtual <% > types/type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>);
 <%^type:stream?%>
@@ -62,5 +73,6 @@
   void frozen2_async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/service:frozen2?%>
+<%/type:deprecated_stream?%>
 <%/function:returnType%><%/service:functions%>
 };

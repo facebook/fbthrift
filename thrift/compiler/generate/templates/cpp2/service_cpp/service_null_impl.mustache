@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%><%^function:eb%>
+%><%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
 <%#type:void?%>
 void <%service:name%>SvNull::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {}
@@ -55,4 +55,4 @@ void <%service:name%>SvNull::frozen2_<%function:name%>(<% > types/type%>& /*_ret
 <%/type:resolves_to_complex_return?%>
 
 <%/service:frozen2?%>
-<%/function:eb%><%/function:returnType%><%/service:functions%>
+<%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>

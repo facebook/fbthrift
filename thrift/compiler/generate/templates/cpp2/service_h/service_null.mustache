@@ -16,7 +16,7 @@
 
 %>class <%service:name%>SvNull : public <%service:name%>SvIf<%#service:extends%>, virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%> {
  public:
-<%#service:functions%><%#function:returnType%><%^function:eb%>
+<%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
   <% > types/type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
@@ -36,5 +36,5 @@
   void frozen2_<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/service:frozen2?%>
-<%/function:eb%><%/function:returnType%><%/service:functions%>
+<%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
 };

@@ -15,6 +15,19 @@
   limitations under the License.
 
 %><%#service:functions%><%#function:returnType%>
+<%#type:deprecated_stream?%>
+  <%#type:streamElemType%>
+    <%#type:resolves_to_complex_return?%>
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+    <%/type:resolves_to_complex_return?%>
+    <%^type:resolves_to_complex_return?%>
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::StreamingHandlerCallback<<% > types/type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+    <%/type:resolves_to_complex_return?%>
+  <%/type:streamElemType%>
+  callback->exception(folly::make_exception_wrapper<apache::thrift::TApplicationException>("Function <%function:name%> is unimplemented"));
+}
+<%/type:deprecated_stream?%>
+<%^type:deprecated_stream?%>
 
 <%#type:stream?%>
 void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams%>) {
@@ -99,4 +112,5 @@ void <%service:name%>SvIf::frozen2_async_<%#function:eb%>eb<%/function:eb%><%^fu
 }
 <%/type:resolves_to_complex_return?%>
 <%/service:frozen2?%>
+<%/type:deprecated_stream?%>
 <%/function:returnType%><%/service:functions%>

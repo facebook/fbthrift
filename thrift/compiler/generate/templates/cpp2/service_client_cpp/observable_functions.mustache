@@ -1,0 +1,32 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#type:deprecated_stream?%><%#type:streamElemType%>
+wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:name%>(<% > service_common/function_param_list_const%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return observable_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+}
+
+wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+  auto _subj = std::make_shared<wangle::Subject<<% > types/type%>>>();
+  <%function:name%>(rpcOptions, std::unique_ptr<apache::thrift::RequestCallback>(
+      new apache::thrift::FunctionReplyCallback(
+        [_subj](apache::thrift::ClientReceiveState&& state) mutable {
+          apache::thrift::clientCallbackToObservable(state, recv_wrapped_<%function:name%>, _subj);
+        }))<%function:comma%><% > service_common/param_list%>);
+  return _subj;
+}
+<%/type:streamElemType%><%/type:deprecated_stream?%>

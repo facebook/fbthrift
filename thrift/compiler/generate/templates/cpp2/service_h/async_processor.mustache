@@ -79,7 +79,14 @@
   static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
+  <%^type:deprecated_stream?%>
   static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
+  <%/type:deprecated_stream?%>
+  <%#type:deprecated_stream?%>
+    <%#type:streamElemType%>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
+    <%/type:streamElemType%>
+  <%/type:deprecated_stream?%>
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);

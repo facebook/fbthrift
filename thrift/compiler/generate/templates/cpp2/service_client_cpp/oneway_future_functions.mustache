@@ -26,7 +26,3 @@ folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%f
   <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return _future;
 }
-
-void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
-  <%function:name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
-}

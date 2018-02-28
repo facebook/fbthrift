@@ -540,6 +540,7 @@ class mstch_type : public mstch_base {
             {"type:struct?", &mstch_type::is_struct},
             {"type:enum?", &mstch_type::is_enum},
             {"type:stream?", &mstch_type::is_stream},
+            {"type:deprecated_stream?", &mstch_type::is_deprecated_stream},
             {"type:service?", &mstch_type::is_service},
             {"type:base?", &mstch_type::is_base},
             {"type:container?", &mstch_type::is_container},
@@ -599,6 +600,9 @@ class mstch_type : public mstch_base {
   }
   mstch::node is_stream() {
     return resolved_type_->is_pubsub_stream();
+  }
+  mstch::node is_deprecated_stream() {
+    return resolved_type_->is_stream();
   }
   mstch::node is_service() {
     return resolved_type_->is_service();
