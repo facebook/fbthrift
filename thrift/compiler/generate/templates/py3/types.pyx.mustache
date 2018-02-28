@@ -65,6 +65,10 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#include
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
 {{/hasTypes?}}
 {{/program:includeNamespaces}}
+{{#program:extraNamespaces}}
+cimport {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespace}}{{value}}_{{/extraNamespace}}types
+import {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespace}}{{value}}_{{/extraNamespace}}types
+{{/program:extraNamespaces}}
 
 
 {{#program:enums}}
