@@ -115,7 +115,7 @@ MAX_BIG_FRAME_SIZE = 2 ** 61 - 1
 
 class THeaderTransport(TTransportBase, CReadableTransport):
     """Transport that sends headers.  Also understands framed/unframed/HTTP
-    transports and and will do the right thing"""
+    transports and will do the right thing"""
 
     __max_frame_size = MAX_FRAME_SIZE
 
