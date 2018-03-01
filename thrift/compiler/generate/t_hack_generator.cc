@@ -2039,7 +2039,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
       if (nullable) {
         val << source.str() << " === null ? null : ";
       }
-      if (arraysets_) {
+      if (arraysets_ || arrays_) {
         val << source.str() << ";" << endl;
       } else {
         val << "new Set(array_keys("
@@ -2237,7 +2237,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
         if (nullable) {
           val << "$this->" << (*m_iter)->get_name() << " === null ? null : ";
         }
-        if (arraysets_) {
+        if (arraysets_ || arrays_) {
           val << "$this->" << (*m_iter)->get_name() << "," << endl;
         } else {
           val << "array_fill_keys("
