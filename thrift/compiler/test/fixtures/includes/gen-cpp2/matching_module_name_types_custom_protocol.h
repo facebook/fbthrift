@@ -16,4 +16,4 @@
 
 #include "src/gen-cpp2/matching_module_name_types.tcc"
 
-#include "src/gen-cpp2/matching_module_name_types_custom_protocol.h"
+#include "other/gen-cpp2/matching_module_name_types_custom_protocol.h"

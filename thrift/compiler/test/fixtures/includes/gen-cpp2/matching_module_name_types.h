@@ -10,7 +10,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "src/gen-cpp2/matching_module_name_types.h"
+#include "other/gen-cpp2/matching_module_name_types.h"
 
 // BEGIN declare_enums
 

@@ -722,8 +722,7 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node thrift_includes() {
     mstch::array a{};
     for (auto const* program : service_->get_program()->get_includes()) {
-      std::string program_id =
-          program->get_name() + get_service_namespace(service_->get_program());
+      const auto& program_id = program->get_path();
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
             generators_->program_generator_->generate(
@@ -878,8 +877,7 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a{};
     for (auto const* program : program_->get_includes()) {
-      std::string program_id =
-          program->get_name() + get_program_namespace(program);
+      const auto& program_id = program->get_path();
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
             generators_->program_generator_->generate(
@@ -1070,7 +1068,7 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
 
 void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
   std::string name = program->get_name();
-  std::string id = name + get_cpp2_namespace(program);
+  const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
         generators_->program_generator_->generate(program, generators_, cache_);
@@ -1083,7 +1081,7 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
   auto name = program->get_name();
-  std::string id = name + get_cpp2_namespace(program);
+  const auto& id = program->get_path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] =
         generators_->program_generator_->generate(program, generators_, cache_);
@@ -1108,8 +1106,7 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service const* service) {
-  std::string id =
-      get_program()->get_name() + get_cpp2_namespace(service->get_program());
+  const auto& id = get_program()->get_path();
   std::string name = service->get_name();
   std::string service_id = id + name;
   if (!cache_->services_.count(service_id)) {
