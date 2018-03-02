@@ -136,13 +136,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::IOThreadPoolExecutor> ioThreadPool_ =
-      std::make_shared<folly::IOThreadPoolExecutor>(0);
+      std::make_shared<folly::IOThreadPoolExecutor>(
+          0,
+          std::make_shared<folly::NamedThreadFactory>("ThriftIO"));
 
   //! Separate thread pool for handling SSL handshakes.
   std::shared_ptr<folly::IOThreadPoolExecutor> sslHandshakePool_ =
       std::make_shared<folly::IOThreadPoolExecutor>(
           0,
-          std::make_shared<folly::NamedThreadFactory>("SSLHandshakePool"));
+          std::make_shared<folly::NamedThreadFactory>("ThriftTLS"));
 
   /**
    * The speed for adjusting connection accept rate.
