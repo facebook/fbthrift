@@ -56,6 +56,22 @@ class t_hack_generator : public t_oop_generator {
     array_migration_ = option_is_specified(parsed_options, "array_migration");
     arrays_ = option_is_specified(parsed_options, "arrays");
     generate_legacy_read_write_ = option_is_specified(parsed_options, "generate_legacy_read_write");
+    no_use_hack_collections_ = option_is_specified(parsed_options, "no_use_hack_collections");
+    client_accepts_null_ = option_is_specified(parsed_options, "client_accepts_null");
+
+    // no_use_hack_collections_ is only used to migrate away from php gen
+    if (no_use_hack_collections_ && strict_types_) {
+      throw std::runtime_error(
+          "Don't use no_use_hack_collections with strict_types");
+    } else if (shapes_ && no_use_hack_collections_) {
+      throw std::runtime_error("Don't use no_use_hack_collections with shapes");
+    } else if (no_use_hack_collections_ && !arraysets_) {
+      throw std::runtime_error(
+          "Don't use no_use_hack_collections without arraysets");
+    } else if (no_use_hack_collections_ && arrays_) {
+      throw std::runtime_error(
+          "Don't use no_use_hack_collections with arrays. Just use arrays");
+    }
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -142,12 +158,18 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_service           (t_service* tservice, bool mangle);
   void generate_service_helpers   (t_service* tservice);
-  void generate_service_interface (t_service* tservice, bool mangle, bool async);
-  void generate_service_rest      (t_service* tservice, bool mangle);
+  void generate_service_interface (t_service* tservice,
+                                   bool mangle,
+                                   bool async);
+  void generate_service_rest(t_service* tservice, bool mangle);
   void generate_service_client    (t_service* tservice, bool mangle);
   void _generate_service_client   (std::ofstream& out,
                                    t_service* tservice,
                                    bool mangle);
+  void _generate_sendImpl_arg      (ofstream& out,
+                                   t_name_generator& namer,
+                                   const string& var,
+                                   t_type* t);
   void _generate_service_client_children (std::ofstream& out,
                                           t_service* tservice,
                                           bool mangle,
@@ -288,7 +310,11 @@ class t_hack_generator : public t_oop_generator {
                                  std::string prefix="",
                                  std::string moreparameters="",
                                  std::string typehint="");
-  std::string argument_list(t_struct* tstruct, std::string moreparameters="", bool typehints = true);
+  std::string argument_list(
+      t_struct* tstruct,
+      std::string moreparameters = "",
+      bool typehints = true,
+      bool force_nullable = false);
   std::string type_to_cast(t_type* ttype);
   std::string type_to_enum(t_type* ttype);
   void generate_php_docstring(ofstream& out, t_doc* tdoc);
@@ -521,6 +547,16 @@ class t_hack_generator : public t_oop_generator {
    */
   bool generate_legacy_read_write_;
 
+  /**
+   * True to never use hack collection objects. Only used for migrations
+   */
+  bool no_use_hack_collections_;
+
+  /**
+   * True to force client methods to accept null arguments. Only used for migrations
+   */
+  bool client_accepts_null_;
+
   std::string array_keyword_;
 };
 
@@ -643,12 +679,16 @@ void t_hack_generator::generate_json_container(std::ofstream& out,
   if (ttype->is_map()) {
     if (arrays_) {
       indent(out) << container << " = dict[];" << endl;
+    } else if (no_use_hack_collections_) {
+      indent(out) << container << " = darray[];" << endl;
     } else {
       indent(out) << container << " = Map {};" << endl;
     }
   } else if (ttype->is_list()) {
     if (arrays_) {
       indent(out) << container << " = vec[];" << endl;
+    } else if (no_use_hack_collections_) {
+      indent(out) << container << " = varray[];" << endl;
     } else {
       indent(out) << container << " = Vector {};" << endl;
     }
@@ -1134,6 +1174,8 @@ string t_hack_generator::render_const_value(
     if (map_construct_) {
       if (arrays_) {
         out << indent() << "dict[" << endl;
+      } else if (no_use_hack_collections_) {
+        out << indent() << "darray[" << endl;
       } else {
         out << indent() << "Map {" << endl;
       }
@@ -1182,7 +1224,7 @@ string t_hack_generator::render_const_value(
     }
     if (map_construct_) {
       indent_down();
-      if (arrays_) {
+      if (arrays_ || no_use_hack_collections_) {
         out << indent() << "]" << endl;
       } else {
         out << indent() << "}" << endl;
@@ -1195,6 +1237,8 @@ string t_hack_generator::render_const_value(
     t_type* vtype = ((t_map*)type)->get_val_type();
     if (arrays_) {
       out << "dict[" << endl;
+    } else if (no_use_hack_collections_) {
+      out << "darray[" << endl;
     } else {
       out << "Map {" << endl;
     }
@@ -1209,7 +1253,7 @@ string t_hack_generator::render_const_value(
       out << "," << endl;
     }
     indent_down();
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       indent(out) << "]";
     } else {
       indent(out) << "}";
@@ -1218,6 +1262,8 @@ string t_hack_generator::render_const_value(
     t_type* etype = ((t_list*)type)->get_elem_type();
     if (arrays_) {
       out << "vec[" << endl;
+    } else if (no_use_hack_collections_) {
+      out << "varray[" << endl;
     } else {
       out << "Vector {" << endl;
     }
@@ -1230,7 +1276,7 @@ string t_hack_generator::render_const_value(
       out << "," << endl;
     }
     indent_down();
-    if (arrays_) {
+    if (arrays_ || no_use_hack_collections_) {
       indent(out) << "]";
     } else {
       indent(out) << "}";
@@ -1311,12 +1357,16 @@ string t_hack_generator::render_default_value(t_type* type) {
   } else if (type->is_map()) {
     if (arrays_) {
       dval = "dict[]";
+    } else if (no_use_hack_collections_) {
+      dval = "darray[]";
     } else {
       dval = "Map {}";
     }
   } else if (type->is_list()) {
     if (arrays_) {
       dval = "vec[]";
+    } else if (no_use_hack_collections_) {
+      dval = "varray[]";
     } else {
       dval = "Vector {}";
     }
@@ -1385,6 +1435,8 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     indent(out) << "]," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
+    } else if (no_use_hack_collections_) {
+      indent(out) << "'format' => 'array'," << endl;
     } else {
       indent(out) << "'format' => 'collection'," << endl;
     }
@@ -1398,6 +1450,8 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     indent(out) << "]," << endl;
     if (arrays_) {
       indent(out) << "'format' => 'harray'," << endl;
+    } else if (no_use_hack_collections_) {
+      indent(out) << "'format' => 'array'," << endl;
     } else {
       indent(out) << "'format' => 'collection'," << endl;
     }
@@ -2451,14 +2505,7 @@ void t_hack_generator::_generate_php_struct_definition(
     // result structs only contain fields: success and e.
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
-    // TODO(ckwalsh) Extract this logic into a helper function
-    bool nullable = (dval == "null")
-      || tstruct->is_union()
-        || is_result
-      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-          && (*m_iter)->get_value() == nullptr)
-      || (t->is_enum()
-          && (*m_iter)->get_req() != t_field::T_REQUIRED);
+    bool nullable = is_result || field_is_nullable(tstruct, (*m_iter), dval);
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
@@ -3546,7 +3593,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     if (is_bitmask_enum((t_enum*) ttype)) {
       return "int";
     } else {
-      return (nullable ? "?" : "") + hack_name(ttype);
+      return (nullable ? "?" : "") + hack_name(ttype) + (oldenum_ ? "Type" : "");
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
@@ -3554,6 +3601,8 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     string prefix;
     if (arrays_) {
       prefix = "vec";
+    } else if (no_use_hack_collections_) {
+      prefix = "varray";
     } else if (shape) {
       prefix = array_migration_ ? "varray" : "vec";
     } else {
@@ -3564,12 +3613,14 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     string prefix;
     if (arrays_) {
       prefix = "dict";
+    } else if (no_use_hack_collections_) {
+      prefix = "darray";
     } else if (shape) {
       prefix = array_keyword_;
     } else {
       prefix = "Map";
     }
-    string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape);
+    string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), false, shape);
     if (shape &&
         shape_arraykeys_ &&
         key_type == "string") {
@@ -3686,6 +3737,9 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
   f_service_ <<
     indent() << "public function __construct(" << long_name
              << "If $impl) {" << endl;
+  if (!extends.empty()) {
+    f_service_ << indent() << "parent::__construct($impl);" << endl;
+  }
   f_service_ <<
     indent() << "  $this->impl_ = $impl;" << endl <<
     indent() << "}" << endl <<
@@ -3781,118 +3835,47 @@ void t_hack_generator::_generate_service_client(
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
 
-    indent(out) <<
-      "protected function sendImpl_" << function_signature(*f_iter, "", "", "int") << " {" << endl;
+    if (client_accepts_null_) {
+      indent(out) << "protected function sendImpl_" << funname << "("
+                  << argument_list((*f_iter)->get_arglist(), "", true, true)
+                  << "): int {" << endl;
+    } else {
+      indent(out) << "protected function sendImpl_"
+                  << function_signature(*f_iter, "", "", "int") << " {" << endl;
+    }
     indent_up();
 
     std::string argsname =
         hack_name(tservice) + "_" + (*f_iter)->get_name() + "_args";
 
     out << indent() << "$currentseqid = $this->getNextSequenceID();" << endl
-        << indent() << "$args = new " << argsname << "();" << endl;
-
+        << indent() << "$args = new " << argsname << "(";
+    if (map_construct_) {
+      out << "Map {";
+    }
+    out << endl;
+    indent_up();
     // Loop through the fields and assign to the args struct
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      out << indent() << "$args->" << (*fld_iter)->get_name() << " = ";
-      t_type* t = (*fld_iter)->get_type();
-      if (!strict_types_ && t->is_container() && !t->is_set()) {
-        // If !strict_types, containers are typehinted as Indexish<Key, Value>
-        // to better support passing in arrays/dicts/maps/vecs/vectors and
-        // handle backwards compatibility. However, structs are typehinted as
-        // the actual container (ex: Map<Key, Val>), and we need to safely
-        // convert the typehints.
-        //
-        // This isn't as simple as dict($param) or new Map($param). If there is
-        // a nested container, that also needs to have its typehints converted.
-        // This iterates through the type object and generates the appropriate
-        // code to convert all the nested typehints.
-        //
-        // sets are treated somewhat specially in this code, since we are
-        // guaranteed sets in Hack cannot contain complex structures, and are
-        // not typed as Indexish at any point.
-        if (arrays_) {
-          t_type* val_type;
-          std::string var = "$" + (*fld_iter)->get_name();
-          t_name_generator namer;
-          int close_parens = 0;
-          while (t->is_container()) {
-            if (t->is_map()) {
-              val_type = ((t_map*)t)->get_val_type();
-            } else if (t->is_list()) {
-              val_type = ((t_list*)t)->get_elem_type();
-            } else if (t->is_set()) {
-              val_type = ((t_set*)t)->get_elem_type();
-            } else {
-              throw std::runtime_error("Unknown container type");
-            }
-            val_type = get_true_type(val_type);
-            if (val_type->is_container()) {
-              if (t->is_map()) {
-                out << "ThriftUtil::mapDict(" << var << ", ";
-              } else if (t->is_list()) {
-                out << "ThriftUtil::mapVec(" << var << ", ";
-              } else if (t->is_set()) {
-                out << "ThriftUtil::mapKeyset(" << var << ", ";
-              } else {
-                throw std::runtime_error("Unknown container type");
-              }
-              var = "$"+namer("_val");
-              out << var << " ==> ";
-              close_parens++;
-            } else {
-              if (t->is_map()) {
-                out << "dict(" << var << ")";
-              } else if (t->is_list()) {
-                out << "vec(" << var << ")";
-              } else if (t->is_set()) {
-                out << "keyset(" << var << ")";
-              } else {
-                throw std::runtime_error("Unknown container type");
-              }
-            }
-            t = val_type;
-          }
-          for (int i = 0; i < close_parens; i++) {
-            out << ")";
-          }
-          out << ";" << endl;
-        } else {
-          t_type* val_type;
-          if (t->is_map()) {
-            out << "(new Map($" << (*fld_iter)->get_name() << "))";
-            val_type = ((t_map*)t)->get_val_type();
-          } else {
-            out << "(new Vector($" << (*fld_iter)->get_name() << "))";
-            val_type = ((t_list*)t)->get_elem_type();
-          }
-          val_type = get_true_type(val_type);
-          int nest = 0;
-          t_name_generator namer;
-          while (val_type->is_container() && !val_type->is_set()) {
-            nest++;
-            string val = namer("_val");
-            indent_up();
-            out << "->map(" << endl << indent() << "$" << val << " ==> ";
-            if (val_type->is_map()) {
-              out << "(new Map($" << val << "))";
-              val_type = ((t_map*)val_type)->get_val_type();
-            } else {
-              out << "(new Vector($" << val << "))";
-              val_type = ((t_list*)val_type)->get_elem_type();
-            }
-            val_type = get_true_type(val_type);
-          }
-          for (int i = nest; i > 0; i--) {
-            indent_down();
-            out << endl << indent() << ")";
-          }
-          out << ";" << endl;
-        }
-      } else {
-        out << "$" << (*fld_iter)->get_name() << ";" << endl;
+      indent(out);
+      string name = "$" + (*fld_iter)->get_name();
+      if (map_construct_) {
+        out << "'" << (*fld_iter)->get_name() << "' => ";
       }
+      if (client_accepts_null_) {
+        // just passthrough null
+        out << name << " === null ? null : ";
+      }
+      t_name_generator namer;
+      this->_generate_sendImpl_arg(out, namer, name, (*fld_iter)->get_type());
+      out << "," << endl;
     }
-
+    indent_down();
+    out << indent();
+    if (map_construct_) {
+      out << "}";
+    }
+    out << ");" << endl;
     out << indent() << "try {" << endl;
     indent_up();
     out <<
@@ -4156,6 +4139,99 @@ void t_hack_generator::_generate_service_client(
   _generate_service_client_children(out, tservice, mangle, /*async*/ false);
 }
 
+// If !strict_types, containers are typehinted as Indexish<Key, Value>
+// to better support passing in arrays/dicts/maps/vecs/vectors and
+// handle backwards compatibility. However, structs are typehinted as
+// the actual container (ex: Map<Key, Val>), and we need to safely
+// convert the typehints.
+//
+// This isn't as simple as dict($param) or new Map($param). If there is
+// a nested container, that also needs to have its typehints converted.
+// This iterates through the type object and generates the appropriate
+// code to convert all the nested typehints.
+void t_hack_generator::_generate_sendImpl_arg(
+    ofstream& out,
+    t_name_generator& namer,
+    const string& var,
+    t_type* t) {
+  t_type* val_type;
+  if (strict_types_ || !t->is_container()) {
+    out << var;
+    return;
+  }
+
+  if (t->is_map()) {
+    val_type = ((t_map*)t)->get_val_type();
+  } else if (t->is_list()) {
+    val_type = ((t_list*)t)->get_elem_type();
+  } else if (t->is_set()) {
+    val_type = ((t_set*)t)->get_elem_type();
+  } else {
+    throw std::runtime_error("Unknown container type");
+  }
+
+  val_type = get_true_type(val_type);
+  if (val_type->is_container() && !val_type->is_set()) {
+    if (t->is_map()) {
+      if (arrays_) {
+        out << "Dict\\map(" << var << ", ";
+      } else if (no_use_hack_collections_) {
+        out << "darray(Dict\\map(" << var << ", ";
+      } else {
+        out << "(new Map(" << var << "))->map(";
+      }
+    } else if (t->is_list()) {
+      if (arrays_) {
+        out << "Vec\\map(" << var << ", ";
+      } else if (no_use_hack_collections_) {
+        out << "varray(Vec\\map(" << var << ", ";
+      } else {
+        out << "(new Vector(" << var << "))->map(";
+      }
+    } else if (t->is_set()) {
+      throw std::runtime_error("Sets can't have nested containers");
+    } else {
+      throw std::runtime_error("Unknown container type");
+    }
+    indent_up();
+    out << endl << indent();
+    // update var to what it will be next, since we no longer need the old value
+    string new_var = "$" + namer("_val");
+    out << new_var << " ==> ";
+    this->_generate_sendImpl_arg(out, namer, new_var, val_type);
+    indent_down();
+    out << endl << indent();
+    if (no_use_hack_collections_) {
+      out << ")";
+    }
+    out << ")";
+  } else {
+    // the parens around the collections are unnecessary but I'm leaving them
+    // so that I don't end up changing literally all files
+    if (t->is_map()) {
+      if (arrays_) {
+        out << "dict(" << var << ")";
+      } else if (no_use_hack_collections_) {
+        out << "darray(" << var << ")";
+      } else {
+        out << "new Map(" << var << ")";
+      }
+    } else if (t->is_list()) {
+      if (arrays_) {
+        out << "vec(" << var << ")";
+      } else if (no_use_hack_collections_) {
+        out << "varray(" << var << ")";
+      } else {
+        out << "new Vector(" << var << ")";
+      }
+    } else if (t->is_set()) {
+      out << var;
+    } else {
+      throw std::runtime_error("Unknown container type");
+    }
+  }
+}
+
 void t_hack_generator::_generate_service_client_children(
         ofstream& out, t_service* tservice, bool mangle, bool async) {
   string long_name = php_servicename_mangle(mangle, tservice);
@@ -4167,6 +4243,10 @@ void t_hack_generator::_generate_service_client_children(
     extends = php_servicename_mangle(mangle, tservice->get_extends()) + suffix + "Client";
   }
 
+  if (client_accepts_null_) {
+    out << "/* HH_FIXME[4110] Client accepts null args for backwards compat */"
+        << endl;
+  }
   out << "class " << long_name << suffix << "Client extends " << extends << " implements " << long_name << suffix <<"If {" << endl
       << "  use " << long_name << "ClientBase;" << endl
       << endl;
@@ -4187,8 +4267,14 @@ void t_hack_generator::_generate_service_client_children(
     if (!async) {
       // Non-Async function
       indent(out) << "<<__Deprecated('use gen_" << funname << "()')>>" << endl;
-      indent(out) <<
-        "public function " << function_signature(*f_iter) << " {" << endl;
+      if (client_accepts_null_) {
+        indent(out) << "public function " << funname << "("
+                    << argument_list((*f_iter)->get_arglist(), "", true, true)
+                    << "): " << return_typehint << " {" << endl;
+      } else {
+        indent(out) << "public function " << function_signature(*f_iter) << " {"
+                    << endl;
+      }
       indent_up();
         indent(out) <<
           "$currentseqid = $this->sendImpl_" << funname << "(";
@@ -4218,14 +4304,21 @@ void t_hack_generator::_generate_service_client_children(
 
     // Async function
     generate_php_docstring(out, *f_iter);
-    indent(out)
-      << "public async function "
-      << function_signature(
-          *f_iter,
-          async ? "" : "gen_",
-          "",
-          "Awaitable<" + return_typehint + ">")
-      << " {" << endl;
+    string prefix = async ? "" : "gen_";
+    if (client_accepts_null_) {
+      indent(out) << "public async function " << prefix << funname << "("
+                  << argument_list((*f_iter)->get_arglist(), "", true, true)
+                  << "): Awaitable<" + return_typehint + "> {" << endl;
+    } else {
+      indent(out) << "public async function "
+                  << function_signature(
+                         *f_iter,
+                         prefix,
+                         "",
+                         "Awaitable<" + return_typehint + ">")
+                  << " {" << endl;
+    }
+
     indent_up();
     indent(out) <<
       "$currentseqid = $this->sendImpl_" << funname << "(";
@@ -4422,6 +4515,8 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
   if (ttype->is_map()) {
     if (arrays_) {
       out << indent() << "$" << val << " = dict[];" << endl;
+    } else if (no_use_hack_collections_) {
+      out << indent() << "$" << val << " = darray[];" << endl;
     } else {
       out << indent() << "$" << val << " = Map {};" << endl;
     }
@@ -4446,6 +4541,8 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
   } else if (ttype->is_list()) {
     if (arrays_) {
       out << indent() << "$" << val << " = vec[];" << endl;
+    } else if (no_use_hack_collections_) {
+      out << indent() << "$" << val << " = varray[];" << endl;
     } else {
       out << indent() << "$" << val << " = Vector {};" << endl;
     }
@@ -4822,12 +4919,16 @@ string t_hack_generator::declare_field(t_field* tfield, bool init,
     } else if (type->is_map()) {
       if (arrays_) {
         result += " = dict[]";
+      } else if (no_use_hack_collections_) {
+        result += " = darray[]";
       } else {
         result += " = Map {}";
       }
     } else if (type->is_list()) {
       if (arrays_) {
         result += " = vec[]";
+      } else if (no_use_hack_collections_) {
+        result += " = varray[]";
       } else {
         result += " = Vector {}";
       }
@@ -4875,7 +4976,8 @@ string t_hack_generator::function_signature(t_function* tfunction,
  */
 string t_hack_generator::argument_list(t_struct* tstruct,
                                       string moreparameters,
-                                      bool typehints) {
+                                      bool typehints,
+                                      bool force_nullable) {
   string result = "";
 
   const vector<t_field*>& fields = tstruct->get_members();
@@ -4896,6 +4998,10 @@ string t_hack_generator::argument_list(t_struct* tstruct,
            || (*f_iter)->get_req() != t_field::T_REQUIRED
           )
         );
+      if (force_nullable &&
+          !field_is_nullable(tstruct, *f_iter, render_default_value(ftype))) {
+        result += "?";
+      }
       result += type_to_param_typehint((*f_iter)->get_type(), nullable) + " ";
     }
     result += "$" + (*f_iter)->get_name();
@@ -4941,7 +5047,7 @@ string t_hack_generator::type_to_cast(t_type* type) {
 /**
  * Converts the parse type to a C++ enum string for the given type.
  */
-string t_hack_generator ::type_to_enum(t_type* type) {
+string t_hack_generator::type_to_enum(t_type* type) {
   type = get_true_type(type);
 
   if (type->is_base_type()) {

@@ -115,7 +115,8 @@ trait MyServiceClientBase {
 
   protected function sendImpl_ping(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_ping_args();
+    $args = new MyService_ping_args(
+    );
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -204,7 +205,8 @@ return;
 
   protected function sendImpl_getRandomData(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_getRandomData_args();
+    $args = new MyService_getRandomData_args(
+    );
     try {
       $this->eventHandler_->preSend('getRandomData', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -299,8 +301,9 @@ return;
 
   protected function sendImpl_hasDataById(int $id): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_hasDataById_args();
-    $args->id = $id;
+    $args = new MyService_hasDataById_args(
+      $id,
+    );
     try {
       $this->eventHandler_->preSend('hasDataById', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -395,8 +398,9 @@ return;
 
   protected function sendImpl_getDataById(int $id): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_getDataById_args();
-    $args->id = $id;
+    $args = new MyService_getDataById_args(
+      $id,
+    );
     try {
       $this->eventHandler_->preSend('getDataById', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -491,9 +495,10 @@ return;
 
   protected function sendImpl_putDataById(int $id, string $data): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_putDataById_args();
-    $args->id = $id;
-    $args->data = $data;
+    $args = new MyService_putDataById_args(
+      $id,
+      $data,
+    );
     try {
       $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -582,9 +587,10 @@ return;
 
   protected function sendImpl_lobDataById(int $id, string $data): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyService_lobDataById_args();
-    $args->id = $id;
-    $args->data = $data;
+    $args = new MyService_lobDataById_args(
+      $id,
+      $data,
+    );
     try {
       $this->eventHandler_->preSend('lobDataById', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)

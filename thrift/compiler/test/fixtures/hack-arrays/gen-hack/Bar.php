@@ -43,9 +43,12 @@ trait BarClientBase {
 
   protected function sendImpl_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args();
-    $args->a = $a;
-    $args->b = ThriftUtil::mapVec($b, $_val0 ==> ThriftUtil::mapDict($_val0, $_val1 ==> keyset($_val1)));
+    $args = new Bar_baz_args(
+      $a,
+      Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
+    );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)

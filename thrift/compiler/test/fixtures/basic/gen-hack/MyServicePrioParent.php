@@ -55,7 +55,8 @@ trait MyServicePrioParentClientBase {
 
   protected function sendImpl_ping(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioParent_ping_args();
+    $args = new MyServicePrioParent_ping_args(
+    );
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -144,7 +145,8 @@ return;
 
   protected function sendImpl_pong(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioParent_pong_args();
+    $args = new MyServicePrioParent_pong_args(
+    );
     try {
       $this->eventHandler_->preSend('pong', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)

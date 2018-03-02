@@ -41,7 +41,8 @@ trait MyServicePrioChildClientBase {
 
   protected function sendImpl_pang(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioChild_pang_args();
+    $args = new MyServicePrioChild_pang_args(
+    );
     try {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)

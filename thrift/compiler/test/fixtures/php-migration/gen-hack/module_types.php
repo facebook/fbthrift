@@ -21,7 +21,7 @@ class Foo implements \IThriftStruct {
       'elem' => darray[
         'type' => \TType::STRING,
         ],
-        'format' => 'collection',
+        'format' => 'array',
       ],
     2 => darray[
       'var' => 'b',
@@ -42,9 +42,9 @@ class Foo implements \IThriftStruct {
             ],
             'format' => 'array',
           ],
-          'format' => 'collection',
+          'format' => 'array',
         ],
-        'format' => 'collection',
+        'format' => 'array',
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -56,18 +56,18 @@ class Foo implements \IThriftStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public Vector<string> $a;
+  public varray<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?Map<string, Vector<darray<int, bool>>> $b;
+  public ?darray<string, varray<darray<int, bool>>> $b;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
-    $this->a = idx($vals, 'a', Vector {});
+    $this->a = idx($vals, 'a', varray[]);
     if (array_key_exists('b', $vals)) {
-      $this->b = idx($vals, 'b', Map {});
+      $this->b = idx($vals, 'b', darray[]);
     }
   }
 

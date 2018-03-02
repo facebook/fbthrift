@@ -41,13 +41,14 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends ThriftClientBase;
 
-  protected function sendImpl_baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): int {
+  protected function sendImpl_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args();
-    $args->a = $a;
-    $args->b = (new Vector($b))->map(
-      $_val0 ==> (new Map($_val0))
-    );
+    $args = new Bar_baz_args(Map {
+      'a' => $a === null ? null : $a,
+      'b' => $b === null ? null : varray(Vec\map($b, 
+        $_val0 ==> darray($_val0)
+      )),
+    });
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -142,6 +143,7 @@ trait BarClientBase {
 
 }
 
+/* HH_FIXME[4110] Client accepts null args for backwards compat */
 class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
   use BarClientBase;
 
@@ -151,7 +153,7 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public async function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
+  public async function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -159,11 +161,12 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
 
 }
 
+/* HH_FIXME[4110] Client accepts null args for backwards compat */
 class BarClient extends ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): string {
+  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): string {
     $currentseqid = $this->sendImpl_baz($a, $b);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -174,7 +177,7 @@ class BarClient extends ThriftClientBase implements BarIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public async function gen_baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
+  public async function gen_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -223,9 +226,9 @@ class Bar_baz_args implements \IThriftStruct {
             ],
             'format' => 'array',
           ],
-          'format' => 'collection',
+          'format' => 'array',
         ],
-        'format' => 'collection',
+        'format' => 'array',
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -234,12 +237,12 @@ class Bar_baz_args implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 5283012534631553068;
   public darray<int, bool> $a;
-  public Vector<Map<int, darray<string, bool>>> $b;
+  public varray<darray<int, darray<string, bool>>> $b;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', darray[]);
-    $this->b = idx($vals, 'b', Vector {});
+    $this->b = idx($vals, 'b', varray[]);
   }
 
   public function getName(): string {
