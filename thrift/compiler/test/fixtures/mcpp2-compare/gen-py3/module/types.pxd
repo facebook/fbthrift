@@ -1800,107 +1800,107 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cMyStruct]] move(unique_ptr[vector[cMyStruct]])
     cdef unique_ptr[vector[cMyStruct]] move_unique "std::move"(unique_ptr[vector[cMyStruct]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cmap[string,int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,int64_t]])
+    cdef shared_ptr[const cmap[string,int64_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int64_t>>"(shared_ptr[cmap[string,int64_t]])
 
-    cdef shared_ptr[const cmap[cEmpty,cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[cEmpty,cMyStruct]])
+    cdef shared_ptr[const cmap[cEmpty,cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>"(shared_ptr[cmap[cEmpty,cMyStruct]])
 
-    cdef shared_ptr[const vector[cmap[cEmpty,cMyStruct]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
+    cdef shared_ptr[const vector[cmap[cEmpty,cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>"(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
 
-    cdef shared_ptr[const vector[vector[cmap[cEmpty,cMyStruct]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
+    cdef shared_ptr[const vector[vector[cmap[cEmpty,cMyStruct]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>"(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
 
-    cdef shared_ptr[const vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef shared_ptr[const vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>"(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
 
-    cdef shared_ptr[const vector[cMyEnumA]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cMyEnumA]])
+    cdef shared_ptr[const vector[cMyEnumA]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::MyEnumA>>"(shared_ptr[vector[cMyEnumA]])
 
-    cdef shared_ptr[const cset[cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cMyStruct]])
+    cdef shared_ptr[const cset[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::set<some::valid::ns::MyStruct>>"(shared_ptr[cset[cMyStruct]])
 
-    cdef shared_ptr[const vector[cComplexUnion]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cComplexUnion]])
+    cdef shared_ptr[const vector[cComplexUnion]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::ComplexUnion>>"(shared_ptr[vector[cComplexUnion]])
 
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[string]])
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
 
-    cdef shared_ptr[const cset[vector[string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[vector[string]]])
+    cdef shared_ptr[const cset[vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<std::string>>>"(shared_ptr[cset[vector[string]]])
 
-    cdef shared_ptr[const cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef shared_ptr[const cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>"(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
 
-    cdef shared_ptr[const cmap[int32_t,vector[string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,vector[string]]])
+    cdef shared_ptr[const cmap[int32_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::vector<std::string>>>"(shared_ptr[cmap[int32_t,vector[string]]])
 
-    cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cbool]])
+    cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast<const std::vector<bool>>"(shared_ptr[vector[cbool]])
 
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 
-    cdef shared_ptr[const vector[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[int32_t]]])
+    cdef shared_ptr[const vector[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<int32_t>>>"(shared_ptr[vector[vector[int32_t]]])
 
-    cdef shared_ptr[const vector[vector[vector[int32_t]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[vector[int32_t]]]])
+    cdef shared_ptr[const vector[vector[vector[int32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<int32_t>>>>"(shared_ptr[vector[vector[vector[int32_t]]]])
 
-    cdef shared_ptr[const vector[vector[vector[vector[int32_t]]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
+    cdef shared_ptr[const vector[vector[vector[vector[int32_t]]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<std::vector<int32_t>>>>>"(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
 
-    cdef shared_ptr[const cset[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[vector[int32_t]]])
+    cdef shared_ptr[const cset[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<int32_t>>>"(shared_ptr[cset[vector[int32_t]]])
 
-    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[string]])
+    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
 
-    cdef shared_ptr[const vector[cset[string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cset[string]]])
+    cdef shared_ptr[const vector[cset[string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<std::string>>>"(shared_ptr[vector[cset[string]]])
 
-    cdef shared_ptr[const cmap[vector[cset[string]],string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[vector[cset[string]],string]])
+    cdef shared_ptr[const cmap[vector[cset[string]],string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::vector<std::set<std::string>>,std::string>>"(shared_ptr[cmap[vector[cset[string]],string]])
 
-    cdef shared_ptr[const cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
+    cdef shared_ptr[const cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>"(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
 
-    cdef shared_ptr[const cmap[cMyEnumA,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[cMyEnumA,string]])
+    cdef shared_ptr[const cmap[cMyEnumA,string]] const_pointer_cast "std::const_pointer_cast<const std::map<some::valid::ns::MyEnumA,std::string>>"(shared_ptr[cmap[cMyEnumA,string]])
 
-    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int64_t]])
+    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
 
-    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
 
-    cdef shared_ptr[const vector[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cSimpleUnion]])
+    cdef shared_ptr[const vector[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::SimpleUnion>>"(shared_ptr[vector[cSimpleUnion]])
 
-    cdef shared_ptr[const cset[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cSimpleUnion]])
+    cdef shared_ptr[const cset[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast<const std::set<some::valid::ns::SimpleUnion>>"(shared_ptr[cset[cSimpleUnion]])
 
-    cdef shared_ptr[const vector[cset[cSimpleUnion]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cset[cSimpleUnion]]])
+    cdef shared_ptr[const vector[cset[cSimpleUnion]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<some::valid::ns::SimpleUnion>>>"(shared_ptr[vector[cset[cSimpleUnion]]])
 
-    cdef shared_ptr[const cmap[string,cbool]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,cbool]])
+    cdef shared_ptr[const cmap[string,cbool]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,bool>>"(shared_ptr[cmap[string,cbool]])
 
-    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
 
-    cdef shared_ptr[const cmap[string,cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,cmap[string,int32_t]]])
+    cdef shared_ptr[const cmap[string,cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,int32_t>>>"(shared_ptr[cmap[string,cmap[string,int32_t]]])
 
-    cdef shared_ptr[const cmap[string,cmap[string,cmap[string,int32_t]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
+    cdef shared_ptr[const cmap[string,cmap[string,cmap[string,int32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,std::map<std::string,int32_t>>>>"(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
 
-    cdef shared_ptr[const vector[cset[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cset[int32_t]]])
+    cdef shared_ptr[const vector[cset[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<int32_t>>>"(shared_ptr[vector[cset[int32_t]]])
 
-    cdef shared_ptr[const cmap[string,vector[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,vector[int32_t]]])
+    cdef shared_ptr[const cmap[string,vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::vector<int32_t>>>"(shared_ptr[cmap[string,vector[int32_t]]])
 
-    cdef shared_ptr[const cset[cbool]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cbool]])
+    cdef shared_ptr[const cset[cbool]] const_pointer_cast "std::const_pointer_cast<const std::set<bool>>"(shared_ptr[cset[cbool]])
 
-    cdef shared_ptr[const cset[cset[cbool]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cset[cbool]]])
+    cdef shared_ptr[const cset[cset[cbool]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<bool>>>"(shared_ptr[cset[cset[cbool]]])
 
-    cdef shared_ptr[const cset[cset[cset[cbool]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cset[cset[cbool]]]])
+    cdef shared_ptr[const cset[cset[cset[cbool]]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<std::set<bool>>>>"(shared_ptr[cset[cset[cset[cbool]]]])
 
-    cdef shared_ptr[const cmap[Bar,Baz]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[Bar,Baz]])
+    cdef shared_ptr[const cmap[Bar,Baz]] const_pointer_cast "std::const_pointer_cast<const std::map<Bar,Baz>>"(shared_ptr[cmap[Bar,Baz]])
 
-    cdef shared_ptr[const folly_small_vector_int64_t_8 ] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_small_vector_int64_t_8 ])
+    cdef shared_ptr[const folly_small_vector_int64_t_8 ] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[folly_small_vector_int64_t_8 ])
 
-    cdef shared_ptr[const FakeMap] const_pointer_cast "std::const_pointer_cast"(shared_ptr[FakeMap])
+    cdef shared_ptr[const FakeMap] const_pointer_cast "std::const_pointer_cast<const FakeMap>"(shared_ptr[FakeMap])
 
-    cdef shared_ptr[const std_unordered_map_std_string_containerStruct] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_unordered_map_std_string_containerStruct])
+    cdef shared_ptr[const std_unordered_map_std_string_containerStruct] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<std::string, containerStruct>>"(shared_ptr[std_unordered_map_std_string_containerStruct])
 
-    cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_list[int32_t]])
+    cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list[int32_t]])
 
-    cdef shared_ptr[const std_deque[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_deque[string]])
+    cdef shared_ptr[const std_deque[string]] const_pointer_cast "std::const_pointer_cast<const std::deque<std::string>>"(shared_ptr[std_deque[string]])
 
-    cdef shared_ptr[const folly_sorted_vector_set[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_set[string]])
+    cdef shared_ptr[const folly_sorted_vector_set[string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set[string]])
 
-    cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
+    cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int64_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
 
-    cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[Bar]])
+    cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
 
-    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[int32_t,string]])
 
-    cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[string,int32_t]]])
+    cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,int32_t]]])
 
-    cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[int16_t,string]])
 
-    cdef shared_ptr[const vector[cmap[int16_t,string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[int16_t,string]]])
+    cdef shared_ptr[const vector[cmap[int16_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<int16_t,std::string>>>"(shared_ptr[vector[cmap[int16_t,string]]])
 
-    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cMyStruct]])
+    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::MyStruct>>"(shared_ptr[vector[cMyStruct]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "some::valid::ns":
     cdef cbool caBool "some::valid::ns::module_constants::aBool"

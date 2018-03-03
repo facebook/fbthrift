@@ -86,7 +86,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cEnum]] move(unique_ptr[vector[cEnum]])
     cdef unique_ptr[vector[cEnum]] move_unique "std::move"(unique_ptr[vector[cEnum]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cEnum]])
+    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<module0::Enum>>"(shared_ptr[vector[cEnum]])
 
 cdef extern from "gen-cpp2/module0_constants.h" namespace "module0":
     cdef cStruct cc0 "module0::module0_constants::c0"()

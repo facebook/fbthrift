@@ -331,25 +331,25 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int32_t,vector[float]]] move(unique_ptr[cmap[int32_t,vector[float]]])
     cdef unique_ptr[cmap[int32_t,vector[float]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[float]]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cmap[int16_t,double]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,double]])
+    cdef shared_ptr[const cmap[int16_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,double>>"(shared_ptr[cmap[int16_t,double]])
 
-    cdef shared_ptr[const cmap[int16_t,float]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,float]])
+    cdef shared_ptr[const cmap[int16_t,float]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,float>>"(shared_ptr[cmap[int16_t,float]])
 
-    cdef shared_ptr[const vector[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[int16_t,float]]])
+    cdef shared_ptr[const vector[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<int16_t,float>>>"(shared_ptr[vector[cmap[int16_t,float]]])
 
-    cdef shared_ptr[const cmap[int16_t,cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
+    cdef shared_ptr[const cmap[int16_t,cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::map<int16_t,float>>>"(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
 
-    cdef shared_ptr[const cset[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[cmap[int16_t,float]]])
+    cdef shared_ptr[const cset[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::map<int16_t,float>>>"(shared_ptr[cset[cmap[int16_t,float]]])
 
-    cdef shared_ptr[const cmap[int64_t,double]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int64_t,double]])
+    cdef shared_ptr[const cmap[int64_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,double>>"(shared_ptr[cmap[int64_t,double]])
 
-    cdef shared_ptr[const cmap[int16_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
+    cdef shared_ptr[const cmap[int16_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::map<int64_t,double>>>"(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
 
-    cdef shared_ptr[const cmap[int32_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
+    cdef shared_ptr[const cmap[int32_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::map<int64_t,double>>>"(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
 
-    cdef shared_ptr[const vector[float]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[float]])
+    cdef shared_ptr[const vector[float]] const_pointer_cast "std::const_pointer_cast<const std::vector<float>>"(shared_ptr[vector[float]])
 
-    cdef shared_ptr[const cmap[int16_t,vector[float]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,vector[float]]])
+    cdef shared_ptr[const cmap[int16_t,vector[float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::vector<float>>>"(shared_ptr[cmap[int16_t,vector[float]]])
 
-    cdef shared_ptr[const cmap[int32_t,vector[float]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,vector[float]]])
+    cdef shared_ptr[const cmap[int32_t,vector[float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::vector<float>>>"(shared_ptr[cmap[int32_t,vector[float]]])
 

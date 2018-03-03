@@ -206,7 +206,8 @@ cdef class {{type:flat_name}}:
 {{#first?}}
 cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[const {{> types/CythonCppType}}] const_pointer_cast {{!
-    }}"std::const_pointer_cast"(shared_ptr[{{> types/CythonCppType}}]){{/program:moveContainerTypes}}
+    }}"std::const_pointer_cast<const {{> types/CppValueType}}>"{{!
+    }}(shared_ptr[{{> types/CythonCppType}}]){{/program:moveContainerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!

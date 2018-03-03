@@ -600,13 +600,13 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
     cdef unique_ptr[cmap[int32_t,int32_t]] move_unique "std::move"(unique_ptr[cmap[int32_t,int32_t]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cRecursiveStruct]])
+    cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
 
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 
-    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
 
-    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,int32_t]])
+    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[int32_t,int32_t]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef cStructWithRef ckStructWithRef "cpp2::module_constants::kStructWithRef"()

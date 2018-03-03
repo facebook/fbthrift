@@ -156,11 +156,11 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] move(unique_ptr[vector[vector[_module_types.cMyStruct]]])
     cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] move_unique "std::move"(unique_ptr[vector[vector[_module_types.cMyStruct]]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cMyStruct]])
+    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::MyStruct>>"(shared_ptr[vector[cMyStruct]])
 
-    cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[cMyStruct]]])
+    cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[vector[vector[cMyStruct]]])
 
-    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[_module_types.cMyStruct]])
+    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::MyStruct>>"(shared_ptr[vector[_module_types.cMyStruct]])
 
-    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
+    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
 

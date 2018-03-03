@@ -491,27 +491,27 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
     cdef unique_ptr[cmap[string,string]] move_unique "std::move"(unique_ptr[cmap[string,string]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 
-    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
 
-    cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[string,int32_t]]])
+    cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,int32_t]]])
 
-    cdef shared_ptr[const vector[cRange]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cRange]])
+    cdef shared_ptr[const vector[cRange]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::Range>>"(shared_ptr[vector[cRange]])
 
-    cdef shared_ptr[const vector[cInternship]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cInternship]])
+    cdef shared_ptr[const vector[cInternship]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::Internship>>"(shared_ptr[vector[cInternship]])
 
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[string]])
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
 
-    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
 
-    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[string]])
+    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
 
-    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,int32_t]])
+    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[int32_t,int32_t]])
 
-    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[int32_t,string]])
 
-    cdef shared_ptr[const cmap[string,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,string]])
+    cdef shared_ptr[const cmap[string,string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::string>>"(shared_ptr[cmap[string,string]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int32_t cmyInt "cpp2::module_constants::myInt"

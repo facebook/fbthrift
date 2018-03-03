@@ -52,9 +52,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int64_t,vector[string]]] move(unique_ptr[cmap[int64_t,vector[string]]])
     cdef unique_ptr[cmap[int64_t,vector[string]]] move_unique "std::move"(unique_ptr[cmap[int64_t,vector[string]]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[string]])
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
 
-    cdef shared_ptr[const cmap[int64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int64_t,vector[string]]])
+    cdef shared_ptr[const cmap[int64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,std::vector<std::string>>>"(shared_ptr[cmap[int64_t,vector[string]]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef cmap[int64_t,vector[string]] cTEST_MAP "cpp2::module_constants::TEST_MAP"()

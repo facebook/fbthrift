@@ -98,7 +98,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cbool]])
+    cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast<const std::vector<bool>>"(shared_ptr[vector[cbool]])
 
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 

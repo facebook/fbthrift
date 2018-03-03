@@ -166,9 +166,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int16_t,string]] move(unique_ptr[cmap[int16_t,string]])
     cdef unique_ptr[cmap[int16_t,string]] move_unique "std::move"(unique_ptr[cmap[int16_t,string]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int64_t]])
+    cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
 
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[string]])
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
 
-    cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[int16_t,string]])
 

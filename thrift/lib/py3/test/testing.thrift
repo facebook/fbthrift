@@ -100,6 +100,7 @@ struct mixed {
     3: string unq_field = "unqualified",
     4: easy opt_easy_ref (cpp.ref="True"),
     5: required easy req_easy_ref (cpp.ref="True"),
+    6: list<string> const_container_ref (cpp.ref_type="shared_const"),
 }
 
 struct numerical {

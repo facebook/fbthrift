@@ -224,9 +224,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cVehicle]] move(unique_ptr[vector[cVehicle]])
     cdef unique_ptr[vector[cVehicle]] move_unique "std::move"(unique_ptr[vector[cVehicle]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int64_t]])
+    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
 
-    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[cAnimal,string]])
+    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
 
-    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cVehicle]])
+    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
 

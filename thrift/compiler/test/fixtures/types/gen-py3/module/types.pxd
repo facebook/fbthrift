@@ -470,19 +470,19 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] move(unique_ptr[folly_sorted_vector_map[int32_t,string]])
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int32_t,string]])
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_unordered_map[int32_t,string]])
+    cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
 
-    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 
-    cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_list[int32_t]])
+    cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list[int32_t]])
 
-    cdef shared_ptr[const std_deque[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[std_deque[int32_t]])
+    cdef shared_ptr[const std_deque[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::deque<int32_t>>"(shared_ptr[std_deque[int32_t]])
 
-    cdef shared_ptr[const folly_fbvector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_fbvector[int32_t]])
+    cdef shared_ptr[const folly_fbvector[int32_t]] const_pointer_cast "std::const_pointer_cast<const folly::fbvector<int32_t>>"(shared_ptr[folly_fbvector[int32_t]])
 
-    cdef shared_ptr[const folly_small_vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_small_vector[int32_t]])
+    cdef shared_ptr[const folly_small_vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int32_t>>"(shared_ptr[folly_small_vector[int32_t]])
 
-    cdef shared_ptr[const folly_sorted_vector_set[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_set[int32_t]])
+    cdef shared_ptr[const folly_sorted_vector_set[int32_t]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<int32_t>>"(shared_ptr[folly_sorted_vector_set[int32_t]])
 
-    cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
+    cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
 
