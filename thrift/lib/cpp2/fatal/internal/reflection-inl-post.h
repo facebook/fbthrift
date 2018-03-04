@@ -20,35 +20,80 @@
 # error "This file must be included from reflection.h"
 #endif
 
+namespace folly {
+template <class Value>
+class Optional;
+}
+
 namespace apache { namespace thrift {
 namespace detail { namespace reflection_impl {
 
+template <typename T>
+struct is_optional : std::false_type {};
+template <typename T>
+struct is_optional<folly::Optional<T>> : std::true_type {};
+
+template <typename, typename T>
+struct has_isset_ : std::false_type {};
+template <typename T>
+struct has_isset_<folly::void_t<decltype(std::declval<T>().__isset)>, T>
+  : std::true_type {};
+template <typename T>
+using has_isset = has_isset_<void, T>;
+
 template <typename Owner, typename Getter, bool HasIsSet>
-struct is_set {
+struct isset {
+  template <int I>
+  struct kind {};
+
   template <typename T>
-  static constexpr bool check(T const &owner) {
+  using kind_of = std::conditional_t<
+    is_optional<
+      std::decay_t<decltype(Getter::ref(std::declval<T const&>()))>
+    >::value,
+    kind<0>,
+    std::conditional_t<HasIsSet && has_isset<T>::value, kind<1>, kind<2>>
+  >;
+
+  template <typename T>
+  static constexpr bool check(kind<0>, T const &owner) {
+    return Getter::ref(owner).has_value();
+  }
+  template <typename T>
+  static constexpr bool check(kind<1>, T const &owner) {
     return Getter::copy(owner.__isset);
   }
-};
-
-template <typename Owner, typename Getter>
-struct is_set<Owner, Getter, false> {
   template <typename T>
-  static constexpr bool check(T const &) { return true; }
-};
-
-template <typename Owner, typename Getter, bool HasIsSet>
-struct mark_set {
+  static constexpr bool check(kind<2>, T const &) {
+    return true;
+  }
   template <typename T>
-  static constexpr inline bool mark(T& owner, bool set) {
+  static constexpr bool check(T const &owner) {
+    return check(kind_of<T>{}, owner);
+  }
+
+  template <typename T>
+  static constexpr bool mark(kind<0>, T &owner, bool set) {
+    auto& field = Getter::ref(owner);
+    if (set && !field.has_value()) {
+      field.emplace();
+    } else if (!set && field.has_value()) {
+      field.clear();
+    }
+    return set;
+  }
+  template <typename T>
+  static constexpr bool mark(kind<1>, T &owner, bool set) {
     return Getter::ref(owner.__isset) = set;
   }
-};
-
-template <typename Owner, typename Getter>
-struct mark_set<Owner, Getter, false> {
   template <typename T>
-  static constexpr inline bool mark(T&, bool set) { return set; }
+  static constexpr bool mark(kind<2>, T &, bool set) {
+    return set;
+  }
+  template <typename T>
+  static constexpr bool mark(T &owner, bool set) {
+    return mark(kind_of<T>{}, owner, set);
+  }
 };
 
 } // reflection_impl

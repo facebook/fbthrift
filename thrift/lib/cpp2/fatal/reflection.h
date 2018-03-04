@@ -1257,7 +1257,7 @@ struct reflected_struct_data_member {
   static constexpr inline bool is_set(T const &owner) {
     namespace impl = detail::reflection_impl;
     using getter = impl::getter_direct_getter_t<getter>;
-    return impl::is_set<Owner, getter, HasIsSet>::check(owner);
+    return impl::isset<Owner, getter, HasIsSet>::check(owner);
   }
 
   /**
@@ -1290,7 +1290,7 @@ struct reflected_struct_data_member {
   static constexpr inline bool mark_set(T& owner, bool set) {
     namespace impl = detail::reflection_impl;
     using getter = impl::getter_direct_getter_t<getter>;
-    return impl::mark_set<Owner, getter, HasIsSet>::mark(owner, set);
+    return impl::isset<Owner, getter, HasIsSet>::mark(owner, set);
   }
 
 };
