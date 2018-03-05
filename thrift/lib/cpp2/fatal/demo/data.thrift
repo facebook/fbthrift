@@ -81,8 +81,8 @@ const nested_struct example_3 = {
     "hard": 0,
     "worth it": 1
   },
-  "set_field": {
-  },
+  "set_field": [
+  ],
   "variant_field": {
     "fp_data": 0.5
   }
