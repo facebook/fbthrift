@@ -6,9 +6,33 @@
  */
 #pragma once
 
-// Simple wrapper header to make interoperating between mstch
-// and non mstch generated classes easier, without dependencies
-// between the client -> server and server -> client. This is
-// an internal implementation detail, and may be deleted at any
-// time.
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.h"
+#include <folly/futures/Future.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/AsyncClient.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include "src/gen-cpp2/module_types.h"
+
+namespace folly {
+  class IOBuf;
+  class IOBufQueue;
+}
+namespace apache { namespace thrift {
+  class Cpp2RequestContext;
+  class BinaryProtocolReader;
+  class CompactProtocolReader;
+  namespace transport { class THeader; }
+}}
+
+namespace cpp2 {
+
+class MyServiceEmptyAsyncClient : public apache::thrift::GeneratedAsyncClient {
+ public:
+  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
+
+  char const* getServiceName() const noexcept override {
+    return "MyServiceEmpty";
+  }
+
+};
+
+} // cpp2

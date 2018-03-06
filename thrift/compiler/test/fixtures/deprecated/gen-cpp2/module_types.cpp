@@ -4,25 +4,20 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/deprecated/gen-cpp2/module_types.h"
-
-#include "thrift/compiler/test/fixtures/deprecated/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/deprecated/gen-cpp2/module_data.h"
-
-
+#include "src/gen-cpp2/module_data.h"
 
 namespace cpp2 {
 
 House::House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg) :
     id(std::move(id__arg)),
     houseName(std::move(houseName__arg)),
-    houseColors(std::move(houseColors__arg))
- {}
+    houseColors(std::move(houseColors__arg)) {}
 
 void House::__clear() {
   // clear all fields
@@ -67,25 +62,21 @@ void swap(House& a, House& b) {
   swap(a.houseColors, b.houseColors);
 }
 
-template uint32_t House::read<>(apache::thrift::BinaryProtocolReader*);
+template void House::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t House::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t House::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t House::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t House::read<>(apache::thrift::CompactProtocolReader*);
+template void House::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t House::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t House::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 Field::Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
     id(std::move(id__arg)),
-    fieldType(std::move(fieldType__arg))
- {}
+    fieldType(std::move(fieldType__arg)) {}
 
 void Field::__clear() {
   // clear all fields
@@ -121,19 +112,13 @@ void swap(Field& a, Field& b) {
   swap(a.fieldType, b.fieldType);
 }
 
-template uint32_t Field::read<>(apache::thrift::BinaryProtocolReader*);
+template void Field::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Field::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Field::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Field::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Field::read<>(apache::thrift::CompactProtocolReader*);
+template void Field::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Field::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Field::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Field::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

@@ -4,17 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_types.h"
-
-#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_data.h"
-
-
+#include "src/gen-cpp2/module_data.h"
 
 namespace cpp2 {
 
@@ -45,8 +41,7 @@ namespace cpp2 {
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg) :
     MyIntField(std::move(MyIntField__arg)),
-    MyStringField(std::move(MyStringField__arg))
- {
+    MyStringField(std::move(MyStringField__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
 }
@@ -87,19 +82,13 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t MyStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyStruct::read<>(apache::thrift::CompactProtocolReader*);
+template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

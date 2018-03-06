@@ -4,15 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.h"
+#include "src/gen-cpp2/MyServiceFast.h"
+#include "src/gen-cpp2/MyServiceFast.tcc"
 
-#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.tcc"
-
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor() {
   return std::make_unique<MyServiceFastAsyncProcessor>(this);
 }
@@ -50,7 +49,7 @@ folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, con
 }
 
 void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id, data]() mutable { return future_putDataById(id, data); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id, data = std::move(data)]() mutable { return future_putDataById(id, data); });
 }
 
 void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
@@ -62,7 +61,7 @@ folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, con
 }
 
 void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) {
-  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, id, data]() mutable { return future_lobDataById(id, data); });
+  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, id, data = std::move(data)]() mutable { return future_lobDataById(id, data); });
 }
 
 const char* MyServiceFastAsyncProcessor::getServiceName() {

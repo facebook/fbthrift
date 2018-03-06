@@ -6,17 +6,14 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/ServiceIncludes.h>
-#include <thrift/lib/cpp2/async/AsyncClient.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
-
-
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent.h"
-
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include "src/gen-cpp2/MyServicePrioChildAsyncClient.h"
+#include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/MyServicePrioParent.h"
 
 namespace folly {
   class IOBuf;
@@ -96,37 +93,6 @@ class MyServicePrioChildAsyncProcessor : public  ::cpp2::MyServicePrioParentAsyn
       iface_(iface) {}
 
   virtual ~MyServicePrioChildAsyncProcessor() {}
-};
-
-class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncClient {
- public:
-  using  ::cpp2::MyServicePrioParentAsyncClient::MyServicePrioParentAsyncClient;
-
-  char const* getServiceName() const noexcept override {
-    return "MyServicePrioChild";
-  }
-  virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
-  virtual void pangImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- public:
-  virtual void sync_pang();
-  virtual void sync_pang(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<folly::Unit> future_pang();
-  virtual folly::Future<folly::Unit> future_pang(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_pang(apache::thrift::RpcOptions& rpcOptions);
-  virtual void pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_pang(::apache::thrift::ClientReceiveState& state);
-  static void recv_pang(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_pang(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_pang(::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void pangT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_pangT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_pangT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
 };
 
 } // cpp2

@@ -4,13 +4,22 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.h"
 
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.tcc"
+#include "src/gen-cpp2/MyServiceEmptyAsyncClient.h"
 
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+
 namespace cpp2 {
+
+
 
 } // cpp2
 namespace apache { namespace thrift {

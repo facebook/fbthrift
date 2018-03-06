@@ -4,15 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent.h"
+#include "src/gen-cpp2/MyServicePrioParent.h"
+#include "src/gen-cpp2/MyServicePrioParent.tcc"
 
-#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent.tcc"
-
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioParentSvIf::getProcessor() {
   return std::make_unique<MyServicePrioParentAsyncProcessor>(this);
 }

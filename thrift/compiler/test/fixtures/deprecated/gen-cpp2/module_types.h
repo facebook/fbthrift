@@ -6,31 +6,39 @@
  */
 #pragma once
 
+#include <folly/Optional.h>
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/Optional.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
-
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
+
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class House;
 class Field;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+namespace cpp2 {
 typedef int64_t ColorID;
 
-class FOLLY_DEPRECATED(
-  "class House is deprecated"
-) House final : private apache::thrift::detail::st::ComparisonOperators<House> {
+} // cpp2
+// END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
+namespace cpp2 {
+class House final : private apache::thrift::detail::st::ComparisonOperators<House> {
  public:
 
   House() :
       id(0) {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   House(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -61,9 +69,7 @@ class FOLLY_DEPRECATED(
   void __clear();
    ::cpp2::ColorID id;
   std::string houseName;
-  folly::Optional<std::set< ::cpp2::ColorID>> FOLLY_DEPRECATED(
-    "Not used anymore"
-  )  houseColors;
+  folly::Optional<std::set< ::cpp2::ColorID>> houseColors;
   bool operator==(const House& rhs) const;
   bool operator < (const House& rhs) const;
 
@@ -78,17 +84,29 @@ class FOLLY_DEPRECATED(
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< House >;
 };
 
 void swap(House& a, House& b);
-extern template uint32_t House::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void House::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t House::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t House::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t House::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t House::read<>(apache::thrift::CompactProtocolReader*);
+extern template void House::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t House::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t House::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t House::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -106,7 +124,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::write(Pr
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::House>::read(Protocol* proto,  ::cpp2::House* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::serializedSize(Protocol const* proto,  ::cpp2::House const* obj) {
@@ -119,16 +137,13 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::serializ
 
 }} // apache::thrift
 namespace cpp2 {
-
-class FOLLY_DEPRECATED(
-  "No longer supported"
-) Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
+class Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
  public:
 
   Field() :
       id(0),
       fieldType(5) {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Field(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -152,9 +167,7 @@ class FOLLY_DEPRECATED(
   Field& operator=(const Field&) = default;
   void __clear();
    ::cpp2::ColorID id;
-  int32_t FOLLY_DEPRECATED(
-    "int32_t fieldType is deprecated"
-  )  fieldType;
+  int32_t fieldType;
   bool operator==(const Field& rhs) const;
   bool operator < (const Field& rhs) const;
 
@@ -169,17 +182,29 @@ class FOLLY_DEPRECATED(
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< Field >;
 };
 
 void swap(Field& a, Field& b);
-extern template uint32_t Field::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void Field::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t Field::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t Field::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t Field::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Field::read<>(apache::thrift::CompactProtocolReader*);
+extern template void Field::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t Field::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Field::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Field::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t Field::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -197,7 +222,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::write(Pr
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::Field>::read(Protocol* proto,  ::cpp2::Field* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::serializedSize(Protocol const* proto,  ::cpp2::Field const* obj) {
@@ -209,6 +234,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::serializ
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2
