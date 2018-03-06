@@ -51,18 +51,17 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
+    {{#struct:fields}}
+    {{#field:type}}
+    {{field:name}}: {{> common/OptionalFieldType}}
+    {{/field:type}}
+    {{/struct:fields}}
+
     def __init__(
         self{{#struct:fields}},
         {{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{/struct:fields}}
     ) -> None:
-        {{#struct:fields}}
-        {{#field:type}}
-        self.{{field:name}}: {{> common/OptionalFieldType}}
-        {{/field:type}}
-        {{/struct:fields}}
-        {{^struct:fields}}
         ...
-        {{/struct:fields}}
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...

@@ -29,11 +29,13 @@ class SimpleException(Thrift.TException):
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
+    err_code: t.Optional[int]
+
     def __init__(
         self,
         err_code: t.Optional[int] = ...
     ) -> None:
-        self.err_code: t.Optional[int]
+        ...
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...
@@ -48,6 +50,16 @@ class SimpleStruct:
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
+    is_on: t.Optional[bool]
+    tiny_int: int
+    small_int: t.Optional[int]
+    nice_sized_int: t.Optional[int]
+    big_int: t.Optional[int]
+    coarse_real: t.Optional[float]
+    precise_real: t.Optional[float]
+    a_str: t.Optional[str]
+    a_bytes: t.Optional[bytes]
+
     def __init__(
         self,
         is_on: t.Optional[bool] = ...,
@@ -60,15 +72,7 @@ class SimpleStruct:
         a_str: t.Optional[str] = ...,
         a_bytes: t.Optional[bytes] = ...
     ) -> None:
-        self.is_on: t.Optional[bool]
-        self.tiny_int: int
-        self.small_int: t.Optional[int]
-        self.nice_sized_int: t.Optional[int]
-        self.big_int: t.Optional[int]
-        self.coarse_real: t.Optional[float]
-        self.precise_real: t.Optional[float]
-        self.a_str: t.Optional[str]
-        self.a_bytes: t.Optional[bytes]
+        ...
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...
@@ -83,6 +87,17 @@ class ComplexStruct:
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
+    structOne: t.Optional[SimpleStruct]
+    structTwo: t.Optional[SimpleStruct]
+    an_integer: t.Optional[int]
+    name: t.Optional[str]
+    an_enum: t.Optional[int]
+    values: t.Optional[t.List[int]]
+    structs: t.Optional[t.List[SimpleStruct]]
+    amap: t.Optional[t.Dict[str, str]]
+    aset: t.Optional[t.Set[str]]
+    item: t.Optional[simple.dependent_asyncio.dependent.ttypes.Item]
+
     def __init__(
         self,
         structOne: t.Optional[SimpleStruct] = ...,
@@ -96,16 +111,7 @@ class ComplexStruct:
         aset: t.Optional[t.Set[str]] = ...,
         item: t.Optional[simple.dependent_asyncio.dependent.ttypes.Item] = ...
     ) -> None:
-        self.structOne: t.Optional[SimpleStruct]
-        self.structTwo: t.Optional[SimpleStruct]
-        self.an_integer: t.Optional[int]
-        self.name: t.Optional[str]
-        self.an_enum: t.Optional[int]
-        self.values: t.Optional[t.List[int]]
-        self.structs: t.Optional[t.List[SimpleStruct]]
-        self.amap: t.Optional[t.Dict[str, str]]
-        self.aset: t.Optional[t.Set[str]]
-        self.item: t.Optional[simple.dependent_asyncio.dependent.ttypes.Item]
+        ...
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...

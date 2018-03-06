@@ -18,13 +18,15 @@ class Item:
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
+    key: t.Optional[str]
+    value: t.Optional[bytes]
+
     def __init__(
         self,
         key: t.Optional[str] = ...,
         value: t.Optional[bytes] = ...
     ) -> None:
-        self.key: t.Optional[str]
-        self.value: t.Optional[bytes]
+        ...
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...
