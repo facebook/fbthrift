@@ -22,12 +22,13 @@
 #ifndef THRIFT_ASYNC_RESPONSECHANNEL_H_
 #define THRIFT_ASYNC_RESPONSECHANNEL_H_ 1
 
-#include <memory>
-#include <limits>
-#include <chrono>
-#include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/Stream.h>
+#include <chrono>
+#include <limits>
+#include <memory>
 
 namespace folly {
 class IOBuf;
@@ -69,6 +70,10 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
     folly::IOBuf* getBuf() { return buf_.get(); }
     std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
 
+    Stream<std::unique_ptr<folly::IOBuf>> extractStream() {
+      return std::move(stream_);
+    }
+
     virtual bool isActive() = 0;
 
     virtual void cancel() = 0;
@@ -77,6 +82,14 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
     virtual void sendReply(std::unique_ptr<folly::IOBuf>&&,
                            MessageChannel::SendCallback* cb = nullptr) = 0;
+
+    virtual void sendStreamReply(
+        ResponseAndStream<
+            std::unique_ptr<folly::IOBuf>,
+            std::unique_ptr<folly::IOBuf>>&&,
+        MessageChannel::SendCallback* = nullptr) {
+      throw std::logic_error("unimplemented");
+    }
 
     virtual void sendErrorWrapped(
         folly::exception_wrapper ex,
@@ -93,6 +106,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
    protected:
     std::unique_ptr<folly::IOBuf> buf_;
+    Stream<std::unique_ptr<folly::IOBuf>> stream_;
   };
 
   class Callback {

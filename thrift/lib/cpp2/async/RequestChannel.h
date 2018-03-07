@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
@@ -63,6 +64,22 @@ class ClientReceiveState {
       isSecurityActive_(_isSecurityActive),
       isStreamEnd_(_isStreamEnd) {
   }
+  ClientReceiveState(
+      uint16_t _protocolId,
+      ResponseAndStream<
+          std::unique_ptr<folly::IOBuf>,
+          std::unique_ptr<folly::IOBuf>> bufAndStream,
+      std::unique_ptr<apache::thrift::transport::THeader> _header,
+      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      bool _isSecurityActive,
+      bool _isStreamEnd = false)
+      : protocolId_(_protocolId),
+        ctx_(std::move(_ctx)),
+        buf_(std::move(bufAndStream.response)),
+        header_(std::move(_header)),
+        isSecurityActive_(_isSecurityActive),
+        isStreamEnd_(_isStreamEnd),
+        stream_(std::move(bufAndStream.stream)) {}
   ClientReceiveState(folly::exception_wrapper _excw,
                      std::shared_ptr<apache::thrift::ContextStack> _ctx,
                      bool _isSecurityActive)
@@ -96,6 +113,10 @@ class ClientReceiveState {
 
   std::unique_ptr<folly::IOBuf> extractBuf() {
     return std::move(buf_);
+  }
+
+  Stream<std::unique_ptr<folly::IOBuf>> extractStream() {
+    return std::move(stream_);
   }
 
   apache::thrift::transport::THeader* header() const {
@@ -134,6 +155,7 @@ class ClientReceiveState {
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
   bool isStreamEnd_;
+  Stream<std::unique_ptr<folly::IOBuf>> stream_;
 };
 
 class RequestCallback {
@@ -413,6 +435,21 @@ class RequestChannel : virtual public folly::DelayedDestruction {
                              std::move(buf),
                              std::move(header));
   }
+
+  /**
+   * ReplyCallback will be invoked when the reply to this request is
+   * received.  RequestChannel is responsible for associating requests with
+   * responses, and invoking the correct ReplyCallback when a response
+   * message is received. A response to this request may contain a stream.
+   *
+   * cb must not be null.
+   */
+  virtual uint32_t sendStreamRequest(
+      RpcOptions&,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>);
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 

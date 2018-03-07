@@ -50,7 +50,7 @@ class ClientSyncEventBaseCallback final : public RequestCallback {
   std::unique_ptr<RequestCallback> cb_;
   folly::EventBase* eb_;
 };
-}
+} // namespace
 
 uint32_t RequestChannel::sendRequestSync(
     RpcOptions& options,
@@ -83,5 +83,14 @@ uint32_t RequestChannel::sendRequestSync(
     return x;
   }
 }
+
+uint32_t RequestChannel::sendStreamRequest(
+    RpcOptions&,
+    std::unique_ptr<RequestCallback>,
+    std::unique_ptr<apache::thrift::ContextStack>,
+    std::unique_ptr<folly::IOBuf>,
+    std::shared_ptr<apache::thrift::transport::THeader>) {
+  throw std::logic_error("unimplemented");
 }
-} // apache::thrift
+} // namespace thrift
+} // namespace apache
