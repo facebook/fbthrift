@@ -15,9 +15,12 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    * Original thrift definition:-
    * string
    *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b);
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
    */
-  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string>;
+  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -29,9 +32,12 @@ interface BarIf extends \IThriftSyncIf {
    * Original thrift definition:-
    * string
    *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b);
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
    */
-  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): string;
+  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): string;
 }
 
 /**
@@ -41,13 +47,16 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends ThriftClientBase;
 
-  protected function sendImpl_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): int {
+  protected function sendImpl_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(Map {
       'a' => $a === null ? null : $a,
       'b' => $b === null ? null : varray(Vec\map($b, 
         $_val0 ==> darray($_val0)
       )),
+      'c' => $c === null ? null : $c,
+      'd' => $d === null ? null : $d,
+      'e' => $e === null ? null : $e,
     });
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
@@ -151,10 +160,13 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
    * Original thrift definition:-
    * string
    *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b);
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
-    $currentseqid = $this->sendImpl_baz($a, $b);
+  public async function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -166,8 +178,8 @@ class BarClient extends ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): string {
-    $currentseqid = $this->sendImpl_baz($a, $b);
+  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string {
+    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     return $this->recvImpl_baz($currentseqid);
   }
 
@@ -175,22 +187,129 @@ class BarClient extends ThriftClientBase implements BarIf {
    * Original thrift definition:-
    * string
    *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b);
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
    */
-  public async function gen_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b): Awaitable<string> {
-    $currentseqid = $this->sendImpl_baz($a, $b);
+  public async function gen_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b): int {
-    return $this->sendImpl_baz($a, $b);
+  public function send_baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
+    return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
     return $this->recvImpl_baz($expectedsequenceid);
   }
 }
+
+abstract class BarAsyncProcessorBase extends ThriftAsyncProcessor {
+  abstract const type TThriftIf as BarAsyncIf;
+  protected async function process_baz(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+
+    if ($input instanceof \TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
+    } else {
+      $args = new Bar_baz_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
+    $result = new Bar_baz_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
+      $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
+      $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
+    } catch (Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'baz', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'baz', $result);
+    if ($output instanceof \TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof \TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("baz", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'baz', $result);
+  }
+}
+class BarAsyncProcessor extends BarAsyncProcessorBase {
+  const type TThriftIf = BarAsyncIf;
+}
+
+abstract class BarSyncProcessorBase extends ThriftSyncProcessor {
+  abstract const type TThriftIf as BarIf;
+  protected function process_baz(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+
+    if ($input instanceof \TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
+    } else {
+      $args = new Bar_baz_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
+    $result = new Bar_baz_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
+      $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
+      $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
+    } catch (Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'baz', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'baz', $result);
+    if ($output instanceof \TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof \TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("baz", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'baz', $result);
+  }
+}
+class BarSyncProcessor extends BarSyncProcessorBase {
+  const type TThriftIf = BarIf;
+}
+// For backwards compatibility
+class BarProcessor extends BarSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
@@ -230,19 +349,41 @@ class Bar_baz_args implements \IThriftStruct {
         ],
         'format' => 'array',
       ],
+    3 => darray[
+      'var' => 'c',
+      'type' => \TType::I64,
+      ],
+    4 => darray[
+      'var' => 'd',
+      'type' => \TType::STRUCT,
+      'class' => 'Foo',
+      ],
+    5 => darray[
+      'var' => 'e',
+      'type' => \TType::I64,
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
+    'c' => 3,
+    'd' => 4,
+    'e' => 5,
   };
-  const int STRUCTURAL_ID = 5283012534631553068;
+  const int STRUCTURAL_ID = 7865027497865509792;
   public darray<int, bool> $a;
   public varray<darray<int, darray<string, bool>>> $b;
+  public int $c;
+  public ?Foo $d;
+  public int $e;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', darray[]);
     $this->b = idx($vals, 'b', varray[]);
+    $this->c = (int)idx($vals, 'c', 0);
+    $this->d = idx($vals, 'd', null);
+    $this->e = (int)idx($vals, 'e', 4);
   }
 
   public function getName(): string {

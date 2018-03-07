@@ -46,12 +46,22 @@ class Foo implements \IThriftStruct {
         ],
         'format' => 'array',
       ],
+    3 => darray[
+      'var' => 'c',
+      'type' => \TType::I64,
+      ],
+    4 => darray[
+      'var' => 'd',
+      'type' => \TType::BOOL,
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
+    'c' => 3,
+    'd' => 4,
   };
-  const int STRUCTURAL_ID = 1155106830598774159;
+  const int STRUCTURAL_ID = 3946809642153193229;
   /**
    * Original thrift field:-
    * 1: list<string> a
@@ -62,6 +72,16 @@ class Foo implements \IThriftStruct {
    * 2: map<string, list<set<i32>>> b
    */
   public ?darray<string, varray<darray<int, bool>>> $b;
+  /**
+   * Original thrift field:-
+   * 3: i64 c
+   */
+  public int $c;
+  /**
+   * Original thrift field:-
+   * 4: bool d
+   */
+  public bool $d;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
@@ -69,10 +89,47 @@ class Foo implements \IThriftStruct {
     if (array_key_exists('b', $vals)) {
       $this->b = idx($vals, 'b', darray[]);
     }
+    $this->c = (int)idx($vals, 'c', 7);
+    $this->d = (bool)idx($vals, 'd', false);
   }
 
   public function getName(): string {
     return 'Foo';
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * Baz
+ */
+class Baz extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
+    1 => darray[
+      'var' => 'message',
+      'type' => \TType::STRING,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'message' => 1,
+  };
+  const int STRUCTURAL_ID = 2427562471238739676;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
+
+  public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
+    // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
+    parent::__construct();
+    $this->message = (string)idx($vals, 'message', '');
+  }
+
+  public function getName(): string {
+    return 'Baz';
   }
 
 }
