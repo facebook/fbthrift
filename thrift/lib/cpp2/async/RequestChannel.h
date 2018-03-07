@@ -16,20 +16,21 @@
 #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_
 #define THRIFT_ASYNC_REQUESTCHANNEL_H_ 1
 
-#include <functional>
-#include <memory>
-#include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp/Thrift.h>
-#include <folly/Function.h>
-#include <folly/io/async/EventBase.h>
-#include <folly/io/async/Request.h>
-#include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/EventHandlerBase.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <folly/ExceptionWrapper.h>
+#include <folly/Function.h>
 #include <folly/String.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/Request.h>
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
+#include <functional>
+#include <memory>
 
 #include <glog/logging.h>
 
@@ -422,13 +423,16 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
 class ClientSyncCallback : public RequestCallback {
  public:
-  explicit ClientSyncCallback(ClientReceiveState* rs, bool oneway = false)
-      : rs_(rs), oneway_(oneway) {}
+  explicit ClientSyncCallback(
+      ClientReceiveState* rs,
+      apache::thrift::RpcKind kind =
+          apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)
+      : rs_(rs), rpcKind_(kind) {}
 
   void requestSent() override {}
   void replyReceived(ClientReceiveState&& rs) override {
     assert(rs.buf());
-    assert(!oneway_);
+    assert(!isOneway());
     *rs_ = std::move(rs);
   }
   void requestError(ClientReceiveState&& rs) override {
@@ -436,15 +440,20 @@ class ClientSyncCallback : public RequestCallback {
     *rs_ = std::move(rs);
   }
   bool isOneway() const {
-    return oneway_;
+    return rpcKind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   }
+  RpcKind rpcKind() const {
+    return rpcKind_;
+  }
+
  private:
   ClientReceiveState* rs_;
-  bool oneway_;
+  apache::thrift::RpcKind rpcKind_;
 };
 
 template <typename T>
-void clientCallbackToObservable(ClientReceiveState& state,
+void clientCallbackToObservable(
+    ClientReceiveState& state,
     folly::exception_wrapper (*recv_wrapped)(T&, ClientReceiveState&),
     wangle::SubjectPtr<T>& subj) {
   if (auto const& ew = state.exception()) {

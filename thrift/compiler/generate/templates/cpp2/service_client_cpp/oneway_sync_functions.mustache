@@ -38,6 +38,6 @@ void <%service:name%>AsyncClient::sync_<%function:name%>(<% > types/type%>& _ret
 void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   <%function:name%>Impl(true, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
 }

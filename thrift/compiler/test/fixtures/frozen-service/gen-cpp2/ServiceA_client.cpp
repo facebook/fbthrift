@@ -254,7 +254,8 @@ void ServiceAAsyncClient::sync_moduleAMethod(const  ::some::ns::ModuleA& modArg)
 
 void ServiceAAsyncClient::sync_moduleAMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   moduleAMethodImpl(true, rpcOptions, std::move(callback), modArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -387,7 +388,8 @@ void ServiceAAsyncClient::sync_moduleBMethod(const  ::some::ns::ModuleB& modArg)
 
 void ServiceAAsyncClient::sync_moduleBMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleB& modArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   moduleBMethodImpl(true, rpcOptions, std::move(callback), modArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -520,7 +522,8 @@ void ServiceAAsyncClient::sync_i32StrDoubleMethod(int32_t i32Arg, const std::str
 
 void ServiceAAsyncClient::sync_i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   i32StrDoubleMethodImpl(true, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -653,7 +656,8 @@ void ServiceAAsyncClient::sync_versioningMethod(int32_t i32Arg, const std::strin
 
 void ServiceAAsyncClient::sync_versioningMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   versioningMethodImpl(true, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -786,7 +790,8 @@ int32_t ServiceAAsyncClient::sync_retI32Method() {
 
 int32_t ServiceAAsyncClient::sync_retI32Method(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   retI32MethodImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -921,7 +926,8 @@ void ServiceAAsyncClient::sync_retModAMethod( ::some::ns::ModuleA& _return) {
 
 void ServiceAAsyncClient::sync_retModAMethod(apache::thrift::RpcOptions& rpcOptions,  ::some::ns::ModuleA& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   retModAMethodImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1054,7 +1060,8 @@ void ServiceAAsyncClient::sync_throwMethod() {
 
 void ServiceAAsyncClient::sync_throwMethod(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   throwMethodImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1187,7 +1194,8 @@ void ServiceAAsyncClient::sync_multiThrowMethod() {
 
 void ServiceAAsyncClient::sync_multiThrowMethod(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   multiThrowMethodImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1320,7 +1328,8 @@ void ServiceAAsyncClient::sync_i32ThrowMethod(int32_t i32Arg) {
 
 void ServiceAAsyncClient::sync_i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   i32ThrowMethodImpl(true, rpcOptions, std::move(callback), i32Arg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1453,7 +1462,8 @@ void ServiceAAsyncClient::sync_moduleAThrowMethod(const  ::some::ns::ModuleA& mo
 
 void ServiceAAsyncClient::sync_moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   moduleAThrowMethodImpl(true, rpcOptions, std::move(callback), modArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1586,7 +1596,8 @@ void ServiceAAsyncClient::sync_mixedMethod(std::string& _return, const std::stri
 
 void ServiceAAsyncClient::sync_mixedMethod(apache::thrift::RpcOptions& rpcOptions, std::string& _return, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   mixedMethodImpl(true, rpcOptions, std::move(callback), strArg, i32Arg, modArg);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {

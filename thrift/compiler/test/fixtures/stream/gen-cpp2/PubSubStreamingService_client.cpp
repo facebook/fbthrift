@@ -177,7 +177,8 @@ void PubSubStreamingServiceAsyncClient::sync_client(apache::thrift::Stream<int32
 
 void PubSubStreamingServiceAsyncClient::sync_client(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   clientImpl(true, rpcOptions, std::move(callback), foo);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -298,7 +299,8 @@ void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::Stream<int32
 
 void PubSubStreamingServiceAsyncClient::sync_server(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   serverImpl(true, rpcOptions, std::move(callback), foo);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -419,7 +421,8 @@ void PubSubStreamingServiceAsyncClient::sync_both(apache::thrift::Stream<int32_t
 
 void PubSubStreamingServiceAsyncClient::sync_both(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   bothImpl(true, rpcOptions, std::move(callback), foo);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -633,7 +636,8 @@ void PubSubStreamingServiceAsyncClient::sync_takesstream(apache::thrift::Stream<
 
 void PubSubStreamingServiceAsyncClient::sync_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> instream, int32_t other_param) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   takesstreamImpl(true, rpcOptions, std::move(callback), instream, other_param);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -754,7 +758,8 @@ void PubSubStreamingServiceAsyncClient::sync_clientthrows(apache::thrift::Stream
 
 void PubSubStreamingServiceAsyncClient::sync_clientthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foostream) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   clientthrowsImpl(true, rpcOptions, std::move(callback), foostream);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {

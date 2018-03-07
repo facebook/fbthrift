@@ -144,7 +144,7 @@ uint32_t StreamThriftClient::sendStreamRequestHelper(
   cb->context_ = RequestContext::saveContext();
   auto metadata = createRequestRpcMetadata(
       rpcOptions,
-      cb->kind_,
+      cb->rpcKind(),
       static_cast<apache::thrift::ProtocolId>(protocolId_),
       header.get());
 

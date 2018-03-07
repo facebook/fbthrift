@@ -33,14 +33,10 @@ class StreamRequestCallback : public ClientSyncCallback {
  public:
   using SubscriberRef = std::shared_ptr<
       yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
-  using FlowableRef = std::shared_ptr<
-      yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
+  using FlowableRef =
+      std::shared_ptr<yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
-  StreamRequestCallback(RpcKind kind)
-      : ClientSyncCallback(
-            &rs_,
-            kind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE),
-        kind_(kind) {}
+  StreamRequestCallback(RpcKind kind) : ClientSyncCallback(&rs_, kind) {}
 
   // Called from the compiler generated code
   void subscribeToOutput(SubscriberRef subscriber) {
@@ -73,16 +69,11 @@ class StreamRequestCallback : public ClientSyncCallback {
   folly::Future<folly::Unit> getReplyFuture() {
     // if the function type is no response, just return the empty Future
     // otherwise return a promise dependent future to wait.
-    if (kind_ == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {
+    if (rpcKind() == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {
       return replyPromise_.getFuture();
     }
     return folly::unit;
   }
-
- public:
-  // Even though it is a streaming request,
-  // we have various kinds of streaming requests.
-  RpcKind kind_;
 
  protected:
   ClientReceiveState rs_;

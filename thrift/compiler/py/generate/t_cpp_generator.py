@@ -1731,10 +1731,17 @@ class CppGenerator(t_generator.Generator):
             else:
                 out('apache::thrift::ClientReceiveState _returnState;')
 
-                out("auto callback = "
+                out(
+                    "auto callback = "
                     "std::make_unique<apache::thrift::ClientSyncCallback>("
-                    "&_returnState, {isOneWay});"
-                  .format(isOneWay=str(function.oneway).lower()))
+                    "&_returnState, {isOneWay});".format(
+                        isOneWay=(
+                            "apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE"
+                            if function.oneway else
+                            "apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE"
+                        )
+                    )
+                )
 
                 args = ["true", "rpcOptions", "std::move(callback)"]
                 args.extend(common_args)
