@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): string;
+  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
 }
 
 /**
@@ -152,7 +152,6 @@ trait BarClientBase {
 
 }
 
-/* HH_FIXME[4110] Client accepts null args for backwards compat */
 class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
   use BarClientBase;
 
@@ -173,7 +172,6 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
 
 }
 
-/* HH_FIXME[4110] Client accepts null args for backwards compat */
 class BarClient extends ThriftClientBase implements BarIf {
   use BarClientBase;
 
@@ -371,19 +369,19 @@ class Bar_baz_args implements \IThriftStruct {
     'e' => 5,
   };
   const int STRUCTURAL_ID = 7865027497865509792;
-  public darray<int, bool> $a;
-  public varray<darray<int, darray<string, bool>>> $b;
-  public int $c;
+  public ?darray<int, bool> $a;
+  public ?varray<darray<int, darray<string, bool>>> $b;
+  public ?int $c;
   public ?Foo $d;
-  public int $e;
+  public ?int $e;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
-    $this->a = idx($vals, 'a', darray[]);
-    $this->b = idx($vals, 'b', varray[]);
-    $this->c = (int)idx($vals, 'c', 0);
+    $this->a = idx($vals, 'a', null);
+    $this->b = idx($vals, 'b', null);
+    $this->c = idx($vals, 'c', null);
     $this->d = idx($vals, 'd', null);
-    $this->e = (int)idx($vals, 'e', 4);
+    $this->e = idx($vals, 'e', 4);
   }
 
   public function getName(): string {

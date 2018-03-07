@@ -66,7 +66,7 @@ class Foo implements \IThriftStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public varray<string> $a;
+  public ?varray<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
@@ -76,21 +76,21 @@ class Foo implements \IThriftStruct {
    * Original thrift field:-
    * 3: i64 c
    */
-  public int $c;
+  public ?int $c;
   /**
    * Original thrift field:-
    * 4: bool d
    */
-  public bool $d;
+  public ?bool $d;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
-    $this->a = idx($vals, 'a', varray[]);
+    $this->a = idx($vals, 'a', null);
     if (array_key_exists('b', $vals)) {
-      $this->b = idx($vals, 'b', darray[]);
+      $this->b = idx($vals, 'b', null);
     }
-    $this->c = (int)idx($vals, 'c', 7);
-    $this->d = (bool)idx($vals, 'd', false);
+    $this->c = idx($vals, 'c', 7);
+    $this->d = idx($vals, 'd', false);
   }
 
   public function getName(): string {
@@ -103,6 +103,7 @@ class Foo implements \IThriftStruct {
  * Original thrift exception:-
  * Baz
  */
+/* HH_FIXME[4110] Client has nullable message for backwards compat */
 class Baz extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -120,12 +121,12 @@ class Baz extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 1: string message
    */
-  public string $message;
+  public ?string $message;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = idx($vals, 'message', null);
   }
 
   public function getName(): string {

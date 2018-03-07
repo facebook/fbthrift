@@ -57,7 +57,7 @@ class t_hack_generator : public t_oop_generator {
     arrays_ = option_is_specified(parsed_options, "arrays");
     generate_legacy_read_write_ = option_is_specified(parsed_options, "generate_legacy_read_write");
     no_use_hack_collections_ = option_is_specified(parsed_options, "no_use_hack_collections");
-    client_accepts_null_ = option_is_specified(parsed_options, "client_accepts_null");
+    nullable_everything_ = option_is_specified(parsed_options, "nullable_everything");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -555,7 +555,7 @@ class t_hack_generator : public t_oop_generator {
   /**
    * True to force client methods to accept null arguments. Only used for migrations
    */
-  bool client_accepts_null_;
+  bool nullable_everything_;
 
   std::string array_keyword_;
 };
@@ -2443,6 +2443,10 @@ void t_hack_generator::_generate_php_struct_definition(
   if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, is_exception);
   }
+  if (is_exception && nullable_everything_) {
+    out << "/* HH_FIXME[4110] Client has nullable message for backwards compat */"
+        << endl;
+  }
   out << (generateAsTrait ? "trait " : "class ")
       << hack_name(tstruct, true);
   if (generateAsTrait) {
@@ -2506,7 +2510,7 @@ void t_hack_generator::_generate_php_struct_definition(
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
     bool nullable = is_result || field_is_nullable(tstruct, (*m_iter), dval);
-    string typehint = nullable ? "?" : "";
+    string typehint = nullable || nullable_everything_ ? "?" : "";
 
     typehint += type_to_typehint(t);
     if (!is_result && !is_args) {
@@ -2566,14 +2570,14 @@ void t_hack_generator::_generate_php_struct_definition(
     string dval = "";
     if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
-    } else if (tstruct->is_union()) {
+    } else if (tstruct->is_union() || nullable_everything_) {
       dval = "null";
     } else {
       dval = render_default_value(t);
     }
 
     if (map_construct_) {
-      string cast = type_to_cast(t);
+      string cast = nullable_everything_ ? "" : type_to_cast(t);
 
       if (strict_types_) {
         out <<
@@ -3704,8 +3708,15 @@ void t_hack_generator::generate_service_interface(t_service* tservice,
     if (async) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
-    indent(f_service_) <<
-      "public function " << function_signature(*f_iter, "", "", return_typehint) << ";" << endl;
+    if (nullable_everything_) {
+      string funname = (*f_iter)->get_name();
+      indent(f_service_) << "public function " << funname << "("
+                  << argument_list((*f_iter)->get_arglist(), "", true, true)
+                  << "): " << return_typehint << ";" << endl;
+    } else {
+      indent(f_service_) <<
+        "public function " << function_signature(*f_iter, "", "", return_typehint) << ";" << endl;
+    }
   }
   indent_down();
   f_service_ <<
@@ -3835,7 +3846,7 @@ void t_hack_generator::_generate_service_client(
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
 
-    if (client_accepts_null_) {
+    if (nullable_everything_) {
       indent(out) << "protected function sendImpl_" << funname << "("
                   << argument_list((*f_iter)->get_arglist(), "", true, true)
                   << "): int {" << endl;
@@ -3862,7 +3873,7 @@ void t_hack_generator::_generate_service_client(
       if (map_construct_) {
         out << "'" << (*fld_iter)->get_name() << "' => ";
       }
-      if (client_accepts_null_) {
+      if (nullable_everything_) {
         // just passthrough null
         out << name << " === null ? null : ";
       }
@@ -4243,10 +4254,6 @@ void t_hack_generator::_generate_service_client_children(
     extends = php_servicename_mangle(mangle, tservice->get_extends()) + suffix + "Client";
   }
 
-  if (client_accepts_null_) {
-    out << "/* HH_FIXME[4110] Client accepts null args for backwards compat */"
-        << endl;
-  }
   out << "class " << long_name << suffix << "Client extends " << extends << " implements " << long_name << suffix <<"If {" << endl
       << "  use " << long_name << "ClientBase;" << endl
       << endl;
@@ -4267,7 +4274,7 @@ void t_hack_generator::_generate_service_client_children(
     if (!async) {
       // Non-Async function
       indent(out) << "<<__Deprecated('use gen_" << funname << "()')>>" << endl;
-      if (client_accepts_null_) {
+      if (nullable_everything_) {
         indent(out) << "public function " << funname << "("
                     << argument_list((*f_iter)->get_arglist(), "", true, true)
                     << "): " << return_typehint << " {" << endl;
@@ -4305,7 +4312,7 @@ void t_hack_generator::_generate_service_client_children(
     // Async function
     generate_php_docstring(out, *f_iter);
     string prefix = async ? "" : "gen_";
-    if (client_accepts_null_) {
+    if (nullable_everything_) {
       indent(out) << "public async function " << prefix << funname << "("
                   << argument_list((*f_iter)->get_arglist(), "", true, true)
                   << "): Awaitable<" + return_typehint + "> {" << endl;
