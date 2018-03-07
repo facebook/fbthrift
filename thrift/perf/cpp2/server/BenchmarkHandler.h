@@ -89,8 +89,8 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->add(kDownload_);
   }
 
-  apache::thrift::Stream<Chunk2> streamUploadDownload(
-      apache::thrift::Stream<Chunk2> input) override {
+  apache::thrift::YarplStream<Chunk2> streamUploadDownload(
+      apache::thrift::YarplStream<Chunk2> input) override {
     input->subscribe( // next
         [this](const Chunk2&) { stats_->add(ks_Download_); },
         FLAGS_batch_size);

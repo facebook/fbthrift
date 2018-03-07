@@ -22,8 +22,8 @@ using namespace ::testing;
 class DiffTypesStreamingService
     : public streaming_tests::DiffTypesStreamingServiceSvIf {
  public:
-  apache::thrift::Stream<int32_t> uploadObject(
-      apache::thrift::Stream<std::string> chunks,
+  apache::thrift::YarplStream<int32_t> uploadObject(
+      apache::thrift::YarplStream<std::string> chunks,
       int64_t) override {
     return chunks->map(
         [](auto chunk) { return static_cast<int32_t>(chunk.size()); });

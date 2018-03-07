@@ -23,13 +23,13 @@ namespace testservice {
 
 class TestServiceMock : public StreamServiceSvIf {
  public:
-  apache::thrift::Stream<int32_t> range(int32_t from, int32_t to) override;
-  apache::thrift::Stream<int32_t> prefixSumIOThread(
-      apache::thrift::Stream<int32_t> input) override;
+  apache::thrift::YarplStream<int32_t> range(int32_t from, int32_t to) override;
+  apache::thrift::YarplStream<int32_t> prefixSumIOThread(
+      apache::thrift::YarplStream<int32_t> input) override;
 
-  apache::thrift::Stream<Message> returnNullptr() override;
-  apache::thrift::Stream<Message> throwException(
-      apache::thrift::Stream<Message> input) override;
+  apache::thrift::YarplStream<Message> returnNullptr() override;
+  apache::thrift::YarplStream<Message> throwException(
+      apache::thrift::YarplStream<Message> input) override;
 };
 
 } // namespace testservice
