@@ -236,7 +236,6 @@ class ThriftSerializationHelper {
         $xfer += $protocol->readSetBegin(&$element_type, &$size);
 
         // Use the correct collection.
-        $set = null;
         if ($tspec['format'] === 'harray') {
           $set = keyset[];
         } else if ($tspec['format'] === 'collection') {
@@ -268,9 +267,8 @@ class ThriftSerializationHelper {
           // Therefore, we need to distinguish between the two types
           // before we add the element to the set.
           if ($tspec['format'] === 'array') {
-            /* HH_IGNORE_ERROR[4005] type will be array */
-            /* HH_IGNORE_ERROR[4156] type will be array */
-            $set[$set_element] = $set_element;
+            invariant(is_array($set), 'for hack');
+            $set[$set_element] = true;
           } else {
             /* HH_IGNORE_ERROR[4006] type will be Set or keyset */
             $set[] = $set_element;
@@ -292,7 +290,7 @@ class ThriftSerializationHelper {
         } else if ($tspec['format'] === 'collection') {
           $map = Map {};
         } else { // format === 'array'
-          $map = darray[];
+          $map = array();
         }
 
         for ($i = 0; $size === null || $i < $size; ++$i) {
@@ -403,7 +401,7 @@ class ThriftSerializationHelper {
       case TType::LST:
         $xfer += $protocol->writeListBegin($tspec['etype'], count($object));
         if ($object !== null) {
-          foreach ($object as $iter) {
+          foreach ($object ?? vec[] as $iter) {
             $xfer += self::writeStructHelper(
               $protocol,
               $tspec['etype'],
@@ -417,11 +415,11 @@ class ThriftSerializationHelper {
       case TType::SET:
         $xfer += $protocol->writeSetBegin($tspec['etype'], count($object));
         if ($object !== null) {
-          foreach ($object as $iter) {
+          foreach ($object as $kiter => $iter) {
             $xfer += self::writeStructHelper(
               $protocol,
               $tspec['etype'],
-              $iter,
+              $tspec['format'] === 'array' ? $kiter : $iter,
               $tspec['elem'],
             );
           }
@@ -435,7 +433,7 @@ class ThriftSerializationHelper {
           count($object),
         );
         if ($object !== null) {
-          foreach ($object as $kiter => $viter) {
+          foreach ($object ?? dict[] as $kiter => $viter) {
             $xfer += self::writeStructHelper(
               $protocol,
               $tspec['ktype'],
