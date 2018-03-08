@@ -16,25 +16,73 @@
 
 #pragma once
 
+#include <folly/ExceptionWrapper.h>
+#include <folly/Function.h>
+
 namespace apache {
 namespace thrift {
-namespace detail {
+
+class SubscriptionIf {
+ public:
+  virtual ~SubscriptionIf() = default;
+
+  virtual void request(int64_t n) = 0;
+  virtual void cancel() = 0;
+};
+
 template <typename T>
+class SubscriberIf {
+ public:
+  virtual ~SubscriberIf() = default;
+
+  virtual void onSubscribe(std::unique_ptr<SubscriptionIf>) = 0;
+  virtual void onNext(T&&) = 0;
+  virtual void onComplete() = 0;
+  virtual void onError(folly::exception_wrapper) = 0;
+};
+
+namespace detail {
+class ValueIf {
+ public:
+  virtual ~ValueIf() = default;
+};
+
+template <typename T>
+struct Value : public ValueIf {
+  explicit Value(T&& value_) : value(std::move(value_)) {}
+  T value;
+};
+
 class StreamImplIf {
  public:
-  virtual ~StreamImplIf() {}
+  using Value = std::unique_ptr<ValueIf>;
+
+  virtual ~StreamImplIf() = default;
+
+  virtual std::unique_ptr<StreamImplIf> map(folly::Function<Value(Value)>) = 0;
+  virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) = 0;
 };
 } // namespace detail
 
 template <typename T>
 class Stream {
  public:
+  Stream() {}
+
+  explicit Stream(std::unique_ptr<detail::StreamImplIf> impl)
+      : impl_(std::move(impl)) {}
+
   explicit operator bool() const {
     return impl_;
   }
 
+  template <typename U>
+  Stream<U> map(folly::Function<U(T&&)>) &&;
+
+  void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
+
  private:
-  std::unique_ptr<detail::StreamImplIf<T>> impl_;
+  std::unique_ptr<detail::StreamImplIf> impl_;
 };
 
 template <typename Response, typename StreamElement>
@@ -44,3 +92,5 @@ struct ResponseAndStream {
 };
 } // namespace thrift
 } // namespace apache
+
+#include "thrift/lib/cpp2/async/Stream-inl.h"
