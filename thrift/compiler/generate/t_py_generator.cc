@@ -797,6 +797,9 @@ void t_py_generator::init_generator() {
   for (auto& object : program_->get_objects()) {
     f_types_ << ", '" << rename_reserved_keywords(object->get_name()) << "'";
   }
+  for (auto& td : program_->get_typedefs()) {
+    f_types_ << ", '" << rename_reserved_keywords(td->get_symbolic()) << "'";
+  }
   f_types_ << "]" << endl << endl;
 
   f_consts_ <<

@@ -32,7 +32,7 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS']
+__all__ = ['UTF8STRINGS', 'IncludesIncluded', 'IncludesTransitiveFoo']
 
 IncludesIncluded = includes.ttypes.Included
 IncludesTransitiveFoo = includes.ttypes.TransitiveFoo

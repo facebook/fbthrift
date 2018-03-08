@@ -31,7 +31,7 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Included']
+__all__ = ['UTF8STRINGS', 'Included', 'IncludedInt64', 'TransitiveFoo']
 
 class Included:
   """
