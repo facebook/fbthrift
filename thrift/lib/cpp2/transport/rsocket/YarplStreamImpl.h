@@ -81,6 +81,12 @@ class YarplStreamImpl : public StreamImplIf {
     flowable_->subscribe(
         std::make_shared<SubscriberAdaptor>(std::move(subscriber)));
   }
+  void observeVia(folly::Executor* executor) {
+    flowable_ = flowable_->observeOn(*executor);
+  }
+  void subscribeVia(folly::Executor* executor) {
+    flowable_ = flowable_->subscribeOn(*executor);
+  }
 
  private:
   std::shared_ptr<yarpl::flowable::Flowable<Value>> flowable_;
@@ -88,11 +94,15 @@ class YarplStreamImpl : public StreamImplIf {
 } // namespace detail
 
 template <typename T>
-Stream<T> toStream(std::shared_ptr<yarpl::flowable::Flowable<T>> flowable) {
-  return Stream<T>(std::make_unique<detail::YarplStreamImpl>(
-      flowable->map([](T&& value) -> std::unique_ptr<detail::ValueIf> {
-        return std::make_unique<detail::Value<T>>(std::move(value));
-      })));
+Stream<T> toStream(
+    std::shared_ptr<yarpl::flowable::Flowable<T>> flowable,
+    folly::Executor* executor) {
+  return Stream<T>::create(
+      std::make_unique<detail::YarplStreamImpl>(
+          flowable->map([](T&& value) -> std::unique_ptr<detail::ValueIf> {
+            return std::make_unique<detail::Value<T>>(std::move(value));
+          })),
+      executor);
 }
 
 template <typename T>

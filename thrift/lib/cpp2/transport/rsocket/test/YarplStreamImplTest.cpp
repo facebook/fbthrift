@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#include <folly/io/async/ScopedEventBaseThread.h>
+
+#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 #include <gmock/gmock.h>
@@ -39,12 +42,40 @@ std::vector<T> run(
 } // namespace
 
 TEST(YarplStreamImplTest, Basic) {
+  folly::ScopedEventBaseThread evbThread;
+
   auto flowable = yarpl::flowable::Flowable<>::justN({12, 34, 56, 98});
-  auto stream = toStream(std::move(flowable));
-  auto stream2 = std::move(stream).map<int>([](int x) { return x * 2; });
+  auto stream = toStream(std::move(flowable), evbThread.getEventBase());
+  auto stream2 = std::move(stream).map<int>([&](int x) {
+    EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
+    return x * 2;
+  });
+
   auto flowable2 = toFlowable(std::move(stream2));
 
   EXPECT_EQ(run(flowable2), std::vector<int>({12 * 2, 34 * 2, 56 * 2, 98 * 2}));
+}
+
+TEST(YarplStreamImplTest, SemiStream) {
+  folly::ScopedEventBaseThread evbThread;
+  folly::ScopedEventBaseThread evbThread2;
+
+  auto flowable = yarpl::flowable::Flowable<>::justN({12, 34, 56, 98});
+  auto stream = toStream(std::move(flowable), evbThread.getEventBase());
+  SemiStream<int> stream2 = std::move(stream).map<int>([&](int x) {
+    EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
+    return x * 2;
+  });
+  auto streamString = std::move(stream2).map<std::string>([&](int x) {
+    EXPECT_TRUE(evbThread2.getEventBase()->inRunningEventBaseThread());
+    return folly::to<std::string>(x);
+  });
+  auto flowableString =
+      toFlowable(std::move(streamString).via(evbThread2.getEventBase()));
+
+  EXPECT_EQ(
+      run(flowableString),
+      std::vector<std::string>({"24", "68", "112", "196"}));
 }
 
 } // namespace thrift

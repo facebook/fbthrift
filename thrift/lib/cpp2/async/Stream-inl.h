@@ -55,19 +55,22 @@ template <typename T>
 template <typename U>
 Stream<U> Stream<T>::map(folly::Function<U(T&&)> mapFunc) && {
   auto impl = std::move(impl_);
-  return Stream<U>(impl->map(
-      [mapFunc =
-           std::move(mapFunc)](std::unique_ptr<detail::ValueIf> value) mutable
-      -> std::unique_ptr<detail::ValueIf> {
-        assert(dynamic_cast<detail::Value<T>*>(value.get()));
-        auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
-        return std::make_unique<detail::Value<U>>(
-            mapFunc(std::move(valuePtr->value)));
-      }));
+  return Stream<U>(
+      impl->map(
+          [mapFunc = std::move(mapFunc)](
+              std::unique_ptr<detail::ValueIf> value) mutable
+          -> std::unique_ptr<detail::ValueIf> {
+            assert(dynamic_cast<detail::Value<T>*>(value.get()));
+            auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
+            return std::make_unique<detail::Value<U>>(
+                mapFunc(std::move(valuePtr->value)));
+          }),
+      executor_);
 }
 
 template <typename T>
 void Stream<T>::subscribe(std::unique_ptr<SubscriberIf<T>> subscriber) && {
+  impl_->subscribeVia(executor_);
   impl_->subscribe(
       std::make_unique<detail::SubscriberAdaptor<T>>(std::move(subscriber)));
   impl_.reset();

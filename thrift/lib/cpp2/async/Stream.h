@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Executor.h>
 #include <folly/Function.h>
 
 namespace apache {
@@ -61,19 +62,33 @@ class StreamImplIf {
 
   virtual std::unique_ptr<StreamImplIf> map(folly::Function<Value(Value)>) = 0;
   virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) = 0;
+  virtual void subscribeVia(folly::Executor*) = 0;
+  virtual void observeVia(folly::Executor*) = 0;
 };
 } // namespace detail
+
+template <typename T>
+class SemiStream;
 
 template <typename T>
 class Stream {
  public:
   Stream() {}
 
-  explicit Stream(std::unique_ptr<detail::StreamImplIf> impl)
-      : impl_(std::move(impl)) {}
+  static Stream create(
+      std::unique_ptr<detail::StreamImplIf> impl,
+      folly::Executor* executor) {
+    Stream stream(std::move(impl), executor);
+    stream.impl_->observeVia(executor);
+    return stream;
+  }
 
   explicit operator bool() const {
     return impl_;
+  }
+
+  folly::Executor* getExecutor() const {
+    return executor_;
   }
 
   template <typename U>
@@ -82,7 +97,15 @@ class Stream {
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 
  private:
+  template <typename U>
+  friend class Stream;
+  friend class SemiStream<T>;
+
+  Stream(std::unique_ptr<detail::StreamImplIf> impl, folly::Executor* executor)
+      : impl_(std::move(impl)), executor_(executor) {}
+
   std::unique_ptr<detail::StreamImplIf> impl_;
+  folly::Executor* executor_{nullptr};
 };
 
 template <typename Response, typename StreamElement>

@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
@@ -66,7 +66,7 @@ class ClientReceiveState {
   }
   ClientReceiveState(
       uint16_t _protocolId,
-      ResponseAndStream<
+      ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>> bufAndStream,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
@@ -115,7 +115,7 @@ class ClientReceiveState {
     return std::move(buf_);
   }
 
-  Stream<std::unique_ptr<folly::IOBuf>> extractStream() {
+  SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
     return std::move(stream_);
   }
 
@@ -155,7 +155,7 @@ class ClientReceiveState {
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
   bool isStreamEnd_;
-  Stream<std::unique_ptr<folly::IOBuf>> stream_;
+  SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
 };
 
 class RequestCallback {

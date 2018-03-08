@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <chrono>
 #include <limits>
 #include <memory>
@@ -70,7 +70,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
     folly::IOBuf* getBuf() { return buf_.get(); }
     std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
 
-    Stream<std::unique_ptr<folly::IOBuf>> extractStream() {
+    SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
       return std::move(stream_);
     }
 
@@ -84,7 +84,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
                            MessageChannel::SendCallback* cb = nullptr) = 0;
 
     virtual void sendStreamReply(
-        ResponseAndStream<
+        ResponseAndSemiStream<
             std::unique_ptr<folly::IOBuf>,
             std::unique_ptr<folly::IOBuf>>&&,
         MessageChannel::SendCallback* = nullptr) {
@@ -106,7 +106,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
    protected:
     std::unique_ptr<folly::IOBuf> buf_;
-    Stream<std::unique_ptr<folly::IOBuf>> stream_;
+    SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
   };
 
   class Callback {
