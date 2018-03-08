@@ -127,7 +127,8 @@ bool MyServiceFastAsyncClient::sync_hasDataById(int64_t id) {
 
 bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   hasDataByIdImpl(true, rpcOptions, std::move(callback), id);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -250,7 +251,8 @@ void MyServiceFastAsyncClient::sync_getDataById(std::string& _return, int64_t id
 
 void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   getDataByIdImpl(true, rpcOptions, std::move(callback), id);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -371,7 +373,8 @@ void MyServiceFastAsyncClient::sync_putDataById(int64_t id, const std::string& d
 
 void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   putDataByIdImpl(true, rpcOptions, std::move(callback), id, data);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {

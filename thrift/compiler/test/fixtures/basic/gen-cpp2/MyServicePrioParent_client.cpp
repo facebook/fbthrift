@@ -90,7 +90,8 @@ void MyServicePrioParentAsyncClient::sync_ping() {
 
 void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   pingImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -211,7 +212,8 @@ void MyServicePrioParentAsyncClient::sync_pong() {
 
 void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
   pongImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
