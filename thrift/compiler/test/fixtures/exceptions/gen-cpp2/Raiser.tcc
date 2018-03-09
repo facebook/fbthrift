@@ -81,7 +81,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function doBland";
+      LOG(ERROR) << ew << " in function doBland";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -91,7 +91,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function doBland";
+      LOG(ERROR) << ew << " in oneway function doBland";
     }
   }
 }
@@ -165,7 +165,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function doRaise";
+      LOG(ERROR) << ew << " in function doRaise";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -175,7 +175,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function doRaise";
+      LOG(ERROR) << ew << " in oneway function doRaise";
     }
   }
   auto queue = serializeResponse("doRaise", &prot, protoSeqId, ctx, result);
@@ -241,7 +241,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function get200";
+      LOG(ERROR) << ew << " in function get200";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -251,7 +251,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function get200";
+      LOG(ERROR) << ew << " in oneway function get200";
     }
   }
 }
@@ -327,7 +327,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function get500";
+      LOG(ERROR) << ew << " in function get500";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -337,7 +337,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function get500";
+      LOG(ERROR) << ew << " in oneway function get500";
     }
   }
   auto queue = serializeResponse("get500", &prot, protoSeqId, ctx, result);

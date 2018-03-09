@@ -75,7 +75,7 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function do_root";
+      LOG(ERROR) << ew << " in function do_root";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -85,7 +85,7 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function do_root";
+      LOG(ERROR) << ew << " in oneway function do_root";
     }
   }
 }

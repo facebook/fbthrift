@@ -75,7 +75,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apache::thr
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function ping";
+      LOG(ERROR) << ew << " in function ping";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -85,7 +85,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apache::thr
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function ping";
+      LOG(ERROR) << ew << " in oneway function ping";
     }
   }
 }
@@ -139,7 +139,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getRandomData(std::unique_ptr<ap
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function getRandomData";
+      LOG(ERROR) << ew << " in function getRandomData";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -149,7 +149,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getRandomData(std::unique_ptr<ap
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function getRandomData";
+      LOG(ERROR) << ew << " in oneway function getRandomData";
     }
   }
 }
@@ -205,7 +205,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apac
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function hasDataById";
+      LOG(ERROR) << ew << " in function hasDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -215,7 +215,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apac
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function hasDataById";
+      LOG(ERROR) << ew << " in oneway function hasDataById";
     }
   }
 }
@@ -271,7 +271,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apac
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function getDataById";
+      LOG(ERROR) << ew << " in function getDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -281,7 +281,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apac
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function getDataById";
+      LOG(ERROR) << ew << " in oneway function getDataById";
     }
   }
 }
@@ -337,7 +337,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apac
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function putDataById";
+      LOG(ERROR) << ew << " in function putDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -347,7 +347,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apac
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function putDataById";
+      LOG(ERROR) << ew << " in oneway function putDataById";
     }
   }
 }

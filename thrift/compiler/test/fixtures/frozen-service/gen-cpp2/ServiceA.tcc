@@ -97,7 +97,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleAMethod(std::unique_ptr<apache:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function moduleAMethod";
+      LOG(ERROR) << ew << " in function moduleAMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -107,7 +107,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleAMethod(std::unique_ptr<apache:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function moduleAMethod";
+      LOG(ERROR) << ew << " in oneway function moduleAMethod";
     }
   }
 }
@@ -170,7 +170,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleBMethod(std::unique_ptr<apache:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function moduleBMethod";
+      LOG(ERROR) << ew << " in function moduleBMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -180,7 +180,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleBMethod(std::unique_ptr<apache:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function moduleBMethod";
+      LOG(ERROR) << ew << " in oneway function moduleBMethod";
     }
   }
 }
@@ -247,7 +247,7 @@ void ServiceAAsyncProcessor::throw_wrapped_i32StrDoubleMethod(std::unique_ptr<ap
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function i32StrDoubleMethod";
+      LOG(ERROR) << ew << " in function i32StrDoubleMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -257,7 +257,7 @@ void ServiceAAsyncProcessor::throw_wrapped_i32StrDoubleMethod(std::unique_ptr<ap
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function i32StrDoubleMethod";
+      LOG(ERROR) << ew << " in oneway function i32StrDoubleMethod";
     }
   }
 }
@@ -324,7 +324,7 @@ void ServiceAAsyncProcessor::throw_wrapped_versioningMethod(std::unique_ptr<apac
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function versioningMethod";
+      LOG(ERROR) << ew << " in function versioningMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -334,7 +334,7 @@ void ServiceAAsyncProcessor::throw_wrapped_versioningMethod(std::unique_ptr<apac
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function versioningMethod";
+      LOG(ERROR) << ew << " in oneway function versioningMethod";
     }
   }
 }
@@ -397,7 +397,7 @@ void ServiceAAsyncProcessor::throw_wrapped_retI32Method(std::unique_ptr<apache::
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function retI32Method";
+      LOG(ERROR) << ew << " in function retI32Method";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -407,7 +407,7 @@ void ServiceAAsyncProcessor::throw_wrapped_retI32Method(std::unique_ptr<apache::
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function retI32Method";
+      LOG(ERROR) << ew << " in oneway function retI32Method";
     }
   }
 }
@@ -470,7 +470,7 @@ void ServiceAAsyncProcessor::throw_wrapped_retModAMethod(std::unique_ptr<apache:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function retModAMethod";
+      LOG(ERROR) << ew << " in function retModAMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -480,7 +480,7 @@ void ServiceAAsyncProcessor::throw_wrapped_retModAMethod(std::unique_ptr<apache:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function retModAMethod";
+      LOG(ERROR) << ew << " in oneway function retModAMethod";
     }
   }
 }
@@ -548,7 +548,7 @@ void ServiceAAsyncProcessor::throw_wrapped_throwMethod(std::unique_ptr<apache::t
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function throwMethod";
+      LOG(ERROR) << ew << " in function throwMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -558,7 +558,7 @@ void ServiceAAsyncProcessor::throw_wrapped_throwMethod(std::unique_ptr<apache::t
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function throwMethod";
+      LOG(ERROR) << ew << " in oneway function throwMethod";
     }
   }
   auto queue = serializeResponse("throwMethod", &prot, protoSeqId, ctx, result);
@@ -635,7 +635,7 @@ void ServiceAAsyncProcessor::throw_wrapped_multiThrowMethod(std::unique_ptr<apac
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function multiThrowMethod";
+      LOG(ERROR) << ew << " in function multiThrowMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -645,7 +645,7 @@ void ServiceAAsyncProcessor::throw_wrapped_multiThrowMethod(std::unique_ptr<apac
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function multiThrowMethod";
+      LOG(ERROR) << ew << " in oneway function multiThrowMethod";
     }
   }
   auto queue = serializeResponse("multiThrowMethod", &prot, protoSeqId, ctx, result);
@@ -718,7 +718,7 @@ void ServiceAAsyncProcessor::throw_wrapped_i32ThrowMethod(std::unique_ptr<apache
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function i32ThrowMethod";
+      LOG(ERROR) << ew << " in function i32ThrowMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -728,7 +728,7 @@ void ServiceAAsyncProcessor::throw_wrapped_i32ThrowMethod(std::unique_ptr<apache
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function i32ThrowMethod";
+      LOG(ERROR) << ew << " in oneway function i32ThrowMethod";
     }
   }
   auto queue = serializeResponse("i32ThrowMethod", &prot, protoSeqId, ctx, result);
@@ -801,7 +801,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleAThrowMethod(std::unique_ptr<ap
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function moduleAThrowMethod";
+      LOG(ERROR) << ew << " in function moduleAThrowMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -811,7 +811,7 @@ void ServiceAAsyncProcessor::throw_wrapped_moduleAThrowMethod(std::unique_ptr<ap
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function moduleAThrowMethod";
+      LOG(ERROR) << ew << " in oneway function moduleAThrowMethod";
     }
   }
   auto queue = serializeResponse("moduleAThrowMethod", &prot, protoSeqId, ctx, result);
@@ -896,7 +896,7 @@ void ServiceAAsyncProcessor::throw_wrapped_mixedMethod(std::unique_ptr<apache::t
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function mixedMethod";
+      LOG(ERROR) << ew << " in function mixedMethod";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -906,7 +906,7 @@ void ServiceAAsyncProcessor::throw_wrapped_mixedMethod(std::unique_ptr<apache::t
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function mixedMethod";
+      LOG(ERROR) << ew << " in oneway function mixedMethod";
     }
   }
   auto queue = serializeResponse("mixedMethod", &prot, protoSeqId, ctx, result);

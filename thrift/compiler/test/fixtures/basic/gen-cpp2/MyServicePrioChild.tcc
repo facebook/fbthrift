@@ -75,7 +75,7 @@ void MyServicePrioChildAsyncProcessor::throw_wrapped_pang(std::unique_ptr<apache
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function pang";
+      LOG(ERROR) << ew << " in function pang";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -85,7 +85,7 @@ void MyServicePrioChildAsyncProcessor::throw_wrapped_pang(std::unique_ptr<apache
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function pang";
+      LOG(ERROR) << ew << " in oneway function pang";
     }
   }
 }

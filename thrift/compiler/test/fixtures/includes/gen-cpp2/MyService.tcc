@@ -81,7 +81,7 @@ void MyServiceAsyncProcessor::throw_wrapped_query(std::unique_ptr<apache::thrift
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function query";
+      LOG(ERROR) << ew << " in function query";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -91,7 +91,7 @@ void MyServiceAsyncProcessor::throw_wrapped_query(std::unique_ptr<apache::thrift
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function query";
+      LOG(ERROR) << ew << " in oneway function query";
     }
   }
 }
@@ -156,7 +156,7 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(std::unique_ptr<apache:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function has_arg_docs";
+      LOG(ERROR) << ew << " in function has_arg_docs";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -166,7 +166,7 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(std::unique_ptr<apache:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function has_arg_docs";
+      LOG(ERROR) << ew << " in oneway function has_arg_docs";
     }
   }
 }

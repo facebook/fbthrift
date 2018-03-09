@@ -124,7 +124,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_i16_param(std::unique_pt
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_i16_param";
+      LOG(ERROR) << ew << " in function void_ret_i16_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -134,7 +134,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_i16_param(std::unique_pt
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_i16_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_i16_param";
     }
   }
 }
@@ -199,7 +199,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_byte_i16_param(std::uniq
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_byte_i16_param";
+      LOG(ERROR) << ew << " in function void_ret_byte_i16_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -209,7 +209,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_byte_i16_param(std::uniq
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_byte_i16_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_byte_i16_param";
     }
   }
 }
@@ -272,7 +272,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_param(std::unique_pt
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_map_param";
+      LOG(ERROR) << ew << " in function void_ret_map_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -282,7 +282,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_param(std::unique_pt
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_map_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_map_param";
     }
   }
 }
@@ -347,7 +347,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_setlist_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_map_setlist_param";
+      LOG(ERROR) << ew << " in function void_ret_map_setlist_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -357,7 +357,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_setlist_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_map_setlist_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_map_setlist_param";
     }
   }
 }
@@ -420,7 +420,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_typedef_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_map_typedef_param";
+      LOG(ERROR) << ew << " in function void_ret_map_typedef_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -430,7 +430,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_map_typedef_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_map_typedef_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_map_typedef_param";
     }
   }
 }
@@ -493,7 +493,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_enum_param(std::unique_p
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_enum_param";
+      LOG(ERROR) << ew << " in function void_ret_enum_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -503,7 +503,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_enum_param(std::unique_p
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_enum_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_enum_param";
     }
   }
 }
@@ -566,7 +566,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_struct_param(std::unique
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_struct_param";
+      LOG(ERROR) << ew << " in function void_ret_struct_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -576,7 +576,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_struct_param(std::unique
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_struct_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_struct_param";
     }
   }
 }
@@ -639,7 +639,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_listunion_param(std::uni
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function void_ret_listunion_param";
+      LOG(ERROR) << ew << " in function void_ret_listunion_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -649,7 +649,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_void_ret_listunion_param(std::uni
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function void_ret_listunion_param";
+      LOG(ERROR) << ew << " in oneway function void_ret_listunion_param";
     }
   }
 }
@@ -716,7 +716,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_i32_i64_param(std::uniqu
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function bool_ret_i32_i64_param";
+      LOG(ERROR) << ew << " in function bool_ret_i32_i64_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -726,7 +726,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_i32_i64_param(std::uniqu
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function bool_ret_i32_i64_param";
+      LOG(ERROR) << ew << " in oneway function bool_ret_i32_i64_param";
     }
   }
 }
@@ -791,7 +791,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_map_param(std::unique_pt
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function bool_ret_map_param";
+      LOG(ERROR) << ew << " in function bool_ret_map_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -801,7 +801,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_map_param(std::unique_pt
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function bool_ret_map_param";
+      LOG(ERROR) << ew << " in oneway function bool_ret_map_param";
     }
   }
 }
@@ -866,7 +866,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_union_param(std::unique_
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function bool_ret_union_param";
+      LOG(ERROR) << ew << " in function bool_ret_union_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -876,7 +876,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_bool_ret_union_param(std::unique_
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function bool_ret_union_param";
+      LOG(ERROR) << ew << " in oneway function bool_ret_union_param";
     }
   }
 }
@@ -943,7 +943,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_float_double_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function i64_ret_float_double_param";
+      LOG(ERROR) << ew << " in function i64_ret_float_double_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -953,7 +953,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_float_double_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function i64_ret_float_double_param";
+      LOG(ERROR) << ew << " in oneway function i64_ret_float_double_param";
     }
   }
 }
@@ -1020,7 +1020,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_string_typedef_param(std:
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function i64_ret_string_typedef_param";
+      LOG(ERROR) << ew << " in function i64_ret_string_typedef_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1030,7 +1030,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_string_typedef_param(std:
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function i64_ret_string_typedef_param";
+      LOG(ERROR) << ew << " in oneway function i64_ret_string_typedef_param";
     }
   }
 }
@@ -1094,7 +1094,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function i64_ret_i32_i32_i32_i32_i32_param";
+      LOG(ERROR) << ew << " in function i64_ret_i32_i32_i32_i32_i32_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1104,7 +1104,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function i64_ret_i32_i32_i32_i32_i32_param";
+      LOG(ERROR) << ew << " in oneway function i64_ret_i32_i32_i32_i32_i32_param";
     }
   }
 }
@@ -1169,7 +1169,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_double_ret_setstruct_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function double_ret_setstruct_param";
+      LOG(ERROR) << ew << " in function double_ret_setstruct_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1179,7 +1179,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_double_ret_setstruct_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function double_ret_setstruct_param";
+      LOG(ERROR) << ew << " in oneway function double_ret_setstruct_param";
     }
   }
 }
@@ -1244,7 +1244,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_string_ret_string_param(std::uniq
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function string_ret_string_param";
+      LOG(ERROR) << ew << " in function string_ret_string_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1254,7 +1254,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_string_ret_string_param(std::uniq
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function string_ret_string_param";
+      LOG(ERROR) << ew << " in oneway function string_ret_string_param";
     }
   }
 }
@@ -1319,7 +1319,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_binary_ret_binary_param(std::uniq
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function binary_ret_binary_param";
+      LOG(ERROR) << ew << " in function binary_ret_binary_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1329,7 +1329,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_binary_ret_binary_param(std::uniq
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function binary_ret_binary_param";
+      LOG(ERROR) << ew << " in oneway function binary_ret_binary_param";
     }
   }
 }
@@ -1394,7 +1394,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_map_ret_bool_param(std::unique_pt
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function map_ret_bool_param";
+      LOG(ERROR) << ew << " in function map_ret_bool_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1404,7 +1404,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_map_ret_bool_param(std::unique_pt
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function map_ret_bool_param";
+      LOG(ERROR) << ew << " in oneway function map_ret_bool_param";
     }
   }
 }
@@ -1471,7 +1471,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_list_ret_map_setlist_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function list_ret_map_setlist_param";
+      LOG(ERROR) << ew << " in function list_ret_map_setlist_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1481,7 +1481,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_list_ret_map_setlist_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function list_ret_map_setlist_param";
+      LOG(ERROR) << ew << " in oneway function list_ret_map_setlist_param";
     }
   }
 }
@@ -1546,7 +1546,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_mapsetlistmapliststring_ret_listl
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function mapsetlistmapliststring_ret_listlistlist_param";
+      LOG(ERROR) << ew << " in function mapsetlistmapliststring_ret_listlistlist_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1556,7 +1556,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_mapsetlistmapliststring_ret_listl
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function mapsetlistmapliststring_ret_listlistlist_param";
+      LOG(ERROR) << ew << " in oneway function mapsetlistmapliststring_ret_listlistlist_param";
     }
   }
 }
@@ -1621,7 +1621,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_typedef_ret_i32_param(std::unique
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function typedef_ret_i32_param";
+      LOG(ERROR) << ew << " in function typedef_ret_i32_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1631,7 +1631,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_typedef_ret_i32_param(std::unique
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function typedef_ret_i32_param";
+      LOG(ERROR) << ew << " in oneway function typedef_ret_i32_param";
     }
   }
 }
@@ -1687,7 +1687,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listtypedef_ret_typedef_param(std
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function listtypedef_ret_typedef_param";
+      LOG(ERROR) << ew << " in function listtypedef_ret_typedef_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1697,7 +1697,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listtypedef_ret_typedef_param(std
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function listtypedef_ret_typedef_param";
+      LOG(ERROR) << ew << " in oneway function listtypedef_ret_typedef_param";
     }
   }
 }
@@ -1762,7 +1762,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_param(std::unique
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function enum_ret_double_param";
+      LOG(ERROR) << ew << " in function enum_ret_double_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1772,7 +1772,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_param(std::unique
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function enum_ret_double_param";
+      LOG(ERROR) << ew << " in oneway function enum_ret_double_param";
     }
   }
 }
@@ -1839,7 +1839,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_enum_param(std::u
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function enum_ret_double_enum_param";
+      LOG(ERROR) << ew << " in function enum_ret_double_enum_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1849,7 +1849,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_enum_ret_double_enum_param(std::u
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function enum_ret_double_enum_param";
+      LOG(ERROR) << ew << " in oneway function enum_ret_double_enum_param";
     }
   }
 }
@@ -1914,7 +1914,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listenum_ret_map_param(std::uniqu
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function listenum_ret_map_param";
+      LOG(ERROR) << ew << " in function listenum_ret_map_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1924,7 +1924,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listenum_ret_map_param(std::uniqu
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function listenum_ret_map_param";
+      LOG(ERROR) << ew << " in oneway function listenum_ret_map_param";
     }
   }
 }
@@ -1980,7 +1980,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_struct_ret_i16_param(std::unique_
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function struct_ret_i16_param";
+      LOG(ERROR) << ew << " in function struct_ret_i16_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -1990,7 +1990,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_struct_ret_i16_param(std::unique_
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function struct_ret_i16_param";
+      LOG(ERROR) << ew << " in oneway function struct_ret_i16_param";
     }
   }
 }
@@ -2055,7 +2055,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_setstruct_ret_set_param(std::uniq
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function setstruct_ret_set_param";
+      LOG(ERROR) << ew << " in function setstruct_ret_set_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -2065,7 +2065,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_setstruct_ret_set_param(std::uniq
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function setstruct_ret_set_param";
+      LOG(ERROR) << ew << " in oneway function setstruct_ret_set_param";
     }
   }
 }
@@ -2132,7 +2132,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_union_ret_i32_i32_param(std::uniq
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function union_ret_i32_i32_param";
+      LOG(ERROR) << ew << " in function union_ret_i32_i32_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -2142,7 +2142,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_union_ret_i32_i32_param(std::uniq
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function union_ret_i32_i32_param";
+      LOG(ERROR) << ew << " in oneway function union_ret_i32_i32_param";
     }
   }
 }
@@ -2207,7 +2207,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listunion_string_param(std::uniqu
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function listunion_string_param";
+      LOG(ERROR) << ew << " in function listunion_string_param";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -2217,7 +2217,7 @@ void ParamServiceAsyncProcessor::throw_wrapped_listunion_string_param(std::uniqu
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function listunion_string_param";
+      LOG(ERROR) << ew << " in oneway function listunion_string_param";
     }
   }
 }

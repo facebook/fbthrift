@@ -77,7 +77,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function ping";
+      LOG(ERROR) << ew << " in function ping";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -87,7 +87,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function ping";
+      LOG(ERROR) << ew << " in oneway function ping";
     }
   }
 }
@@ -148,7 +148,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_pong(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function pong";
+      LOG(ERROR) << ew << " in function pong";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -158,7 +158,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_pong(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function pong";
+      LOG(ERROR) << ew << " in oneway function pong";
     }
   }
 }

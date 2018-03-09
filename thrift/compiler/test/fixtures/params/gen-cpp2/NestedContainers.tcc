@@ -85,7 +85,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function mapList";
+      LOG(ERROR) << ew << " in function mapList";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -95,7 +95,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function mapList";
+      LOG(ERROR) << ew << " in oneway function mapList";
     }
   }
 }
@@ -158,7 +158,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(std::unique_ptr<apache
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function mapSet";
+      LOG(ERROR) << ew << " in function mapSet";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -168,7 +168,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(std::unique_ptr<apache
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function mapSet";
+      LOG(ERROR) << ew << " in oneway function mapSet";
     }
   }
 }
@@ -231,7 +231,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function listMap";
+      LOG(ERROR) << ew << " in function listMap";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -241,7 +241,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function listMap";
+      LOG(ERROR) << ew << " in oneway function listMap";
     }
   }
 }
@@ -304,7 +304,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function listSet";
+      LOG(ERROR) << ew << " in function listSet";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -314,7 +314,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function listSet";
+      LOG(ERROR) << ew << " in oneway function listSet";
     }
   }
 }
@@ -377,7 +377,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function turtles";
+      LOG(ERROR) << ew << " in function turtles";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -387,7 +387,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function turtles";
+      LOG(ERROR) << ew << " in oneway function turtles";
     }
   }
 }

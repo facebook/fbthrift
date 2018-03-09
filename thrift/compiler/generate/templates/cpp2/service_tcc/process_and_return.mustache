@@ -180,7 +180,7 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
 <%/function:exceptions%>
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function <%function:name%>";
+      LOG(ERROR) << ew << " in function <%function:name%>";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -190,7 +190,7 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function <%function:name%>";
+      LOG(ERROR) << ew << " in oneway function <%function:name%>";
     }
   }
 <%#function:exceptions?%>

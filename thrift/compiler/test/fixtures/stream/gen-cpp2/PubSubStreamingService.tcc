@@ -87,7 +87,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_client(std::unique_ptr<
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function client";
+      LOG(ERROR) << ew << " in function client";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -97,7 +97,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_client(std::unique_ptr<
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function client";
+      LOG(ERROR) << ew << " in oneway function client";
     }
   }
 }
@@ -165,7 +165,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_server(std::unique_ptr<
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function server";
+      LOG(ERROR) << ew << " in function server";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -175,7 +175,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_server(std::unique_ptr<
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function server";
+      LOG(ERROR) << ew << " in oneway function server";
     }
   }
   auto queue = serializeResponse("server", &prot, protoSeqId, ctx, result);
@@ -246,7 +246,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_both(std::unique_ptr<ap
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function both";
+      LOG(ERROR) << ew << " in function both";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -256,7 +256,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_both(std::unique_ptr<ap
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function both";
+      LOG(ERROR) << ew << " in oneway function both";
     }
   }
   auto queue = serializeResponse("both", &prot, protoSeqId, ctx, result);
@@ -353,7 +353,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_takesstream(std::unique
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function takesstream";
+      LOG(ERROR) << ew << " in function takesstream";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -363,7 +363,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_takesstream(std::unique
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function takesstream";
+      LOG(ERROR) << ew << " in oneway function takesstream";
     }
   }
 }
@@ -424,7 +424,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_clientthrows(std::uniqu
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function clientthrows";
+      LOG(ERROR) << ew << " in function clientthrows";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -434,7 +434,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_clientthrows(std::uniqu
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function clientthrows";
+      LOG(ERROR) << ew << " in oneway function clientthrows";
     }
   }
 }

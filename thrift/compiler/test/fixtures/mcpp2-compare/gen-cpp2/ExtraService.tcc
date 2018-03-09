@@ -79,7 +79,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_simple_function(std::unique_ptr<a
   ProtocolOut_ prot;
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function simple_function";
+      LOG(ERROR) << ew << " in function simple_function";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -89,7 +89,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_simple_function(std::unique_ptr<a
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function simple_function";
+      LOG(ERROR) << ew << " in oneway function simple_function";
     }
   }
 }
@@ -154,7 +154,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(std::unique_ptr<a
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function throws_function";
+      LOG(ERROR) << ew << " in function throws_function";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -164,7 +164,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(std::unique_ptr<a
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function throws_function";
+      LOG(ERROR) << ew << " in oneway function throws_function";
     }
   }
   auto queue = serializeResponse("throws_function", &prot, protoSeqId, ctx, result);
@@ -236,7 +236,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(std::unique_ptr<
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function throws_function2";
+      LOG(ERROR) << ew << " in function throws_function2";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -246,7 +246,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(std::unique_ptr<
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function throws_function2";
+      LOG(ERROR) << ew << " in oneway function throws_function2";
     }
   }
   auto queue = serializeResponse("throws_function2", &prot, protoSeqId, ctx, result);
@@ -320,7 +320,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(std::unique_ptr<
   )) {} else
    {
     if (req) {
-      LOG(ERROR) << ew.what().toStdString() << " in function throws_function3";
+      LOG(ERROR) << ew << " in function throws_function3";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
@@ -330,7 +330,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(std::unique_ptr<
       return;
     }
     else {
-      LOG(ERROR) << ew.what().toStdString() << " in oneway function throws_function3";
+      LOG(ERROR) << ew << " in oneway function throws_function3";
     }
   }
   auto queue = serializeResponse("throws_function3", &prot, protoSeqId, ctx, result);
