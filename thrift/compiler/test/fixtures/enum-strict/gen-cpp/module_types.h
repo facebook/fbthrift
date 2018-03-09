@@ -30,9 +30,6 @@ extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::EmptyEnum>;
-template <> const std::size_t TEnumTraits< ::EmptyEnum>::size;
-template <> const folly::Range<const  ::EmptyEnum*> TEnumTraits< ::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::EmptyEnum>::names;
 }} // apache::thrift
 
 
@@ -51,9 +48,6 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::MyEnum>;
-template <> const std::size_t TEnumTraits< ::MyEnum>::size;
-template <> const folly::Range<const  ::MyEnum*> TEnumTraits< ::MyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::MyEnum>::names;
 template <> inline constexpr  ::MyEnum TEnumTraits< ::MyEnum>::min() {
 return  ::MyEnum::kMyFoo;
 }

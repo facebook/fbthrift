@@ -36,9 +36,6 @@ extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_
 }}}} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
-template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
-template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::names;
 template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::min() {
 return  ::apache::thrift::fixtures::types::has_bitwise_ops::none;
 }
@@ -63,9 +60,6 @@ extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAME
 }}}} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped>;
-template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size;
-template <> const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names;
 template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::min() {
 return  ::apache::thrift::fixtures::types::is_unscoped::hello;
 }

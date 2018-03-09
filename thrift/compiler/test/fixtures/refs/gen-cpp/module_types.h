@@ -32,9 +32,6 @@ extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::TypedEnum>;
-template <> const std::size_t TEnumTraits< ::TypedEnum>::size;
-template <> const folly::Range<const  ::TypedEnum*> TEnumTraits< ::TypedEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::TypedEnum>::names;
 template <> inline constexpr  ::TypedEnum TEnumTraits< ::TypedEnum>::min() {
 return  ::TypedEnum::VAL1;
 }

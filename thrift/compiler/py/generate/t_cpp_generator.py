@@ -581,28 +581,16 @@ class CppGenerator(t_generator.Generator):
                     return 'folly::range({}::{})'.format(
                         storage_fullname, field)
             # TEnumTraits<T>::size
-            out(
-                'template <> const std::size_t '
-                'TEnumTraits<{fullName}>::size;'
-                .format(**locals()))
             out().impl(
                 'template <> const std::size_t '
                 'TEnumTraits<{fullName}>::size = {size};'
                 .format(size=len(constants), **locals()))
             # TEnumTraits<T>::values
-            out(
-                'template <> const folly::Range<const {fullName}*> '
-                'TEnumTraits<{fullName}>::values;'
-                .format(**locals()))
             out().impl(
                 'template <> const folly::Range<const {fullName}*> '
                 'TEnumTraits<{fullName}>::values = {range};'
                 .format(range=storage_range_of('values'), **locals()))
             # TEnumTraits<T>::names
-            out(
-                'template <> const folly::Range<const folly::StringPiece*> '
-                'TEnumTraits<{fullName}>::names;'
-                .format(**locals()))
             out().impl(
                 'template <> const folly::Range<const folly::StringPiece*> '
                 'TEnumTraits<{fullName}>::names = {range};'

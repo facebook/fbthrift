@@ -198,9 +198,6 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names;
 template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value);
 template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue);
 
@@ -214,9 +211,6 @@ template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::va
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names;
 template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value);
 template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue);
 
@@ -230,9 +224,6 @@ template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::so
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum2*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names;
 template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName( ::some::valid::ns::AnnotatedEnum2 value);
 template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum2* outValue);
 
@@ -246,9 +237,6 @@ template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::s
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumB>::size;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumB*> TEnumTraits< ::some::valid::ns::MyEnumB>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumB>::names;
 template <> const char* TEnumTraits< ::some::valid::ns::MyEnumB>::findName( ::some::valid::ns::MyEnumB value);
 template <> bool TEnumTraits< ::some::valid::ns::MyEnumB>::findValue(const char* name,  ::some::valid::ns::MyEnumB* outValue);
 

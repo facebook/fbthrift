@@ -33,9 +33,6 @@ extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUE
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::Animal>;
-template <> const std::size_t TEnumTraits< ::Animal>::size;
-template <> const folly::Range<const  ::Animal*> TEnumTraits< ::Animal>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::Animal>::names;
 template <> inline constexpr  ::Animal TEnumTraits< ::Animal>::min() {
 return  ::Animal::DOG;
 }
