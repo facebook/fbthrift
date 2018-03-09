@@ -7,6 +7,7 @@
 
 #include "src/gen-cpp2/module_constants.h"
 
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_constants.h"
 #include <folly/Indestructible.h>
 
 namespace some { namespace valid { namespace ns {

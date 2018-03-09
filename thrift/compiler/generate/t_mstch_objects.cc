@@ -39,9 +39,11 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t index) const {
+    int32_t index,
+    t_const const* current_const,
+    t_type const* expected_type) const {
   return std::make_shared<mstch_const_value>(
-      const_value, generators, cache, pos, index);
+      const_value, current_const, expected_type, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> const_value_generator::generate(
@@ -49,9 +51,11 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t index) const {
+    int32_t index,
+    t_const const* current_const,
+    std::pair<t_type*, t_type*> const& expected_types) const {
   return std::make_shared<mstch_const_value_key_mapped_pair>(
-      value_pair, generators, cache, pos, index);
+      value_pair, current_const, expected_types, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> type_generator::generate(
@@ -113,8 +117,11 @@ std::shared_ptr<mstch_base> const_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t index) const {
-  return std::make_shared<mstch_const>(cnst, generators, cache, pos, index);
+    int32_t index,
+    t_const const* current_const,
+    t_type const* expected_type) const {
+  return std::make_shared<mstch_const>(
+      cnst, current_const, expected_type, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> program_generator::generate(
@@ -246,12 +253,24 @@ mstch::node mstch_field::value() {
 
 mstch::node mstch_const_value_key_mapped_pair::element_key() {
   return generators_->const_value_generator_->generate(
-      pair_.first, generators_, cache_, pos_, index_);
+      pair_.first,
+      generators_,
+      cache_,
+      pos_,
+      index_,
+      current_const_,
+      expected_types_.first);
 }
 
 mstch::node mstch_const_value_key_mapped_pair::element_value() {
   return generators_->const_value_generator_->generate(
-      pair_.second, generators_, cache_, pos_, index_);
+      pair_.second,
+      generators_,
+      cache_,
+      pos_,
+      index_,
+      current_const_,
+      expected_types_.second);
 }
 
 mstch::node mstch_const_value::value() {
@@ -333,22 +352,41 @@ mstch::node mstch_const_value::string_value() {
 
 mstch::node mstch_const_value::list_elems() {
   if (type_ == cv::CV_LIST) {
+    t_type* expected_type = nullptr;
+    if (expected_type_) {
+      if (expected_type_->is_list()) {
+        expected_type =
+            dynamic_cast<const t_list*>(expected_type_)->get_elem_type();
+      } else if (expected_type_->is_set()) {
+        expected_type =
+            dynamic_cast<const t_set*>(expected_type_)->get_elem_type();
+      }
+    }
     return generate_elements(
         const_value_->get_list(),
         generators_->const_value_generator_.get(),
         generators_,
-        cache_);
+        cache_,
+        current_const_,
+        expected_type);
   }
   return mstch::node();
 }
 
 mstch::node mstch_const_value::map_elems() {
   if (type_ == cv::CV_MAP) {
+    std::pair<t_type*, t_type*> expected_types;
+    if (expected_type_ && expected_type_->is_map()) {
+      const auto* m = dynamic_cast<const t_map*>(expected_type_);
+      expected_types = {m->get_key_type(), m->get_val_type()};
+    }
     return generate_elements(
         const_value_->get_map(),
         generators_->const_value_generator_.get(),
         generators_,
-        cache_);
+        cache_,
+        current_const_,
+        expected_types);
   }
   return mstch::node();
 }
@@ -369,8 +407,25 @@ mstch::node mstch_const_value::const_struct() {
       idx.push_back(strct->get_member(member.first->get_string())->get_key());
     }
   }
-  return generate_elements(
-      constants, generators_->const_generator_.get(), generators_, cache_, idx);
+
+  mstch::array a{};
+  for (size_t i = 0; i < constants.size(); ++i) {
+    auto pos = element_position(i, constants.size());
+    a.push_back(generators_->const_generator_->generate(
+        constants[i],
+        generators_,
+        cache_,
+        pos,
+        idx[i],
+        current_const_,
+        constants[i]->get_type()));
+  }
+  return a;
+}
+
+mstch::node mstch_const_value::owning_const() {
+  return generators_->const_generator_->generate(
+      const_value_->get_owner(), generators_, cache_, pos_);
 }
 
 mstch::node mstch_field::type() {
@@ -484,7 +539,12 @@ mstch::node mstch_const::type() {
 
 mstch::node mstch_const::value() {
   return generators_->const_value_generator_->generate(
-      cnst_->get_value(), generators_, cache_, pos_);
+      cnst_->get_value(), generators_, cache_, pos_, 0, cnst_, expected_type_);
+}
+
+mstch::node mstch_const::program() {
+  return generators_->program_generator_->generate(
+      cnst_->get_program(), generators_, cache_, pos_);
 }
 
 mstch::node mstch_program::structs() {
@@ -529,9 +589,18 @@ mstch::node mstch_program::typedefs() {
 }
 
 mstch::node mstch_program::constants() {
-  return generate_elements(
-      program_->get_consts(),
-      generators_->const_generator_.get(),
-      generators_,
-      cache_);
+  mstch::array a{};
+  const auto& container = program_->get_consts();
+  for (size_t i = 0; i < container.size(); ++i) {
+    auto pos = element_position(i, container.size());
+    a.push_back(generators_->const_generator_->generate(
+        container[i],
+        generators_,
+        cache_,
+        pos,
+        i,
+        container[i],
+        container[i]->get_type()));
+  }
+  return a;
 }

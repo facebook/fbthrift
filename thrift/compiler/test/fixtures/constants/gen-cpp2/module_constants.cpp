@@ -46,7 +46,7 @@ std::vector< ::cpp2::Range> const& module_constants::kRanges() {
 }
 
 std::vector< ::cpp2::Internship> const& module_constants::internList() {
-  static folly::Indestructible<std::vector< ::cpp2::Internship>> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),
+  static folly::Indestructible<std::vector< ::cpp2::Internship>> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::cpp2::module_constants::instagram()),
    ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
   return *instance;
 }

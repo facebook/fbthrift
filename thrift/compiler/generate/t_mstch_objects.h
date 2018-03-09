@@ -71,13 +71,18 @@ class const_value_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr) const;
   virtual std::shared_ptr<mstch_base> generate(
       std::pair<t_const_value*, t_const_value*> const& value_pair,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      std::pair<t_type*, t_type*> const& expected_types =
+          std::pair<t_type*, t_type*>(nullptr, nullptr)) const;
 };
 
 class type_generator {
@@ -161,7 +166,9 @@ class const_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const;
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr) const;
 };
 
 class program_generator {
@@ -263,6 +270,8 @@ class mstch_base : public mstch::object {
             {"last?", &mstch_base::last},
         });
   }
+  virtual ~mstch_base() = default;
+
   mstch::node first() {
     return pos_ == ELEMENT_POSITION::FIRST ||
         pos_ == ELEMENT_POSITION::FIRST_AND_LAST;
@@ -293,19 +302,18 @@ class mstch_base : public mstch::object {
     return pos;
   }
 
-  template <typename Container, typename Generator>
+  template <typename Container, typename Generator, typename... Args>
   static mstch::array generate_elements(
       Container const& container,
       Generator const* generator,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      std::vector<int32_t> const& custom_index = std::vector<int32_t>()) {
+      Args const&... args) {
     mstch::array a{};
     for (size_t i = 0; i < container.size(); ++i) {
       auto pos = element_position(i, container.size());
-      auto index = custom_index.empty() ? i : custom_index[i];
-      a.push_back(
-          generator->generate(container[i], generators, cache, pos, index));
+      a.push_back(generator->generate(
+          container[i], generators, cache, pos, i, args...));
     }
     return a;
   }
@@ -380,7 +388,6 @@ class mstch_enum : public mstch_base {
             {"enum:values", &mstch_enum::values},
         });
   }
-  ~mstch_enum() = default;
 
   mstch::node name() {
     return enm_->get_name();
@@ -396,12 +403,16 @@ class mstch_const_value : public mstch_base {
   using cv = t_const_value::t_const_value_type;
   mstch_const_value(
       t_const_value const* const_value,
+      t_const const* current_const,
+      t_type const* expected_type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
       : mstch_base(generators, cache, pos),
         const_value_(const_value),
+        current_const_(current_const),
+        expected_type_(expected_type),
         type_(const_value->get_type()),
         index_(index) {
     register_methods(
@@ -430,8 +441,13 @@ class mstch_const_value : public mstch_base {
             {"value:listElements", &mstch_const_value::list_elems},
             {"value:mapElements", &mstch_const_value::map_elems},
             {"value:const_struct", &mstch_const_value::const_struct},
+            {"value:referenceable?", &mstch_const_value::referenceable},
+            {"value:owning_const", &mstch_const_value::owning_const},
+            {"value:enable_referencing",
+             &mstch_const_value::enable_referencing},
         });
   }
+
   std::string format_double_string(const double d) {
     std::ostringstream oss;
     oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
@@ -486,22 +502,42 @@ class mstch_const_value : public mstch_base {
   mstch::node list_elems();
   mstch::node map_elems();
   mstch::node const_struct();
+  mstch::node referenceable() {
+    return current_const_ && const_value_->get_owner() &&
+        current_const_ != const_value_->get_owner() && same_type_as_expected();
+  }
+  mstch::node owning_const();
+  mstch::node enable_referencing() {
+    return mstch::map{{"value:enable_referencing?", true}};
+  }
 
  protected:
   t_const_value const* const_value_;
+  t_const const* current_const_;
+  t_type const* expected_type_;
   cv const type_;
   int32_t index_;
+
+  virtual bool same_type_as_expected() const {
+    return false;
+  }
 };
 
 class mstch_const_value_key_mapped_pair : public mstch_base {
  public:
   mstch_const_value_key_mapped_pair(
       std::pair<t_const_value*, t_const_value*> const& pair_values,
+      t_const const* current_const,
+      std::pair<t_type*, t_type*> const& expected_types,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
-      : mstch_base(generators, cache, pos), pair_(pair_values), index_(index) {
+      : mstch_base(generators, cache, pos),
+        pair_(pair_values),
+        current_const_(current_const),
+        expected_types_(expected_types),
+        index_(index) {
     register_methods(
         this,
         {
@@ -515,6 +551,8 @@ class mstch_const_value_key_mapped_pair : public mstch_base {
 
  protected:
   std::pair<t_const_value*, t_const_value*> const pair_;
+  t_const const* current_const_;
+  std::pair<t_type*, t_type*> const expected_types_;
   int32_t index_;
 };
 
@@ -563,7 +601,7 @@ class mstch_type : public mstch_base {
             {"type:typedefType", &mstch_type::get_typedef_type},
         });
   }
-  virtual ~mstch_type() = default;
+
   mstch::node name() {
     return type_->get_name();
   }
@@ -860,7 +898,7 @@ class mstch_service : public mstch_base {
             {"service:any_streams?", &mstch_service::any_streams},
         });
   }
-  virtual ~mstch_service() = default;
+
   virtual std::string get_service_namespace(t_program const*) {
     return "";
   }
@@ -920,11 +958,17 @@ class mstch_const : public mstch_base {
  public:
   mstch_const(
       t_const const* cnst,
+      t_const const* current_const,
+      t_type const* expected_type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
-      : mstch_base(generators, cache, pos), cnst_(cnst), index_(index) {
+      : mstch_base(generators, cache, pos),
+        cnst_(cnst),
+        current_const_(current_const),
+        expected_type_(expected_type),
+        index_(index) {
     register_methods(
         this,
         {
@@ -932,6 +976,7 @@ class mstch_const : public mstch_base {
             {"constant:index", &mstch_const::index},
             {"constant:type", &mstch_const::type},
             {"constant:value", &mstch_const::value},
+            {"constant:program", &mstch_const::program},
         });
   }
   mstch::node name() {
@@ -942,9 +987,12 @@ class mstch_const : public mstch_base {
   }
   mstch::node type();
   mstch::node value();
+  mstch::node program();
 
  protected:
   t_const const* cnst_;
+  t_const const* current_const_;
+  t_type const* expected_type_;
   int32_t index_;
 };
 
@@ -969,9 +1017,10 @@ class mstch_program : public mstch_base {
             {"program:enums?", &mstch_program::has_enums},
             {"program:structs?", &mstch_program::has_structs},
             {"program:typedefs?", &mstch_program::has_typedefs},
+            {"program:constants?", &mstch_program::has_constants},
         });
   }
-  virtual ~mstch_program() = default;
+
   virtual std::string get_program_namespace(t_program const*) {
     return "";
   }
@@ -991,6 +1040,9 @@ class mstch_program : public mstch_base {
   }
   mstch::node has_typedefs() {
     return !program_->get_typedefs().empty();
+  }
+  mstch::node has_constants() {
+    return !program_->get_consts().empty();
   }
 
   mstch::node structs();

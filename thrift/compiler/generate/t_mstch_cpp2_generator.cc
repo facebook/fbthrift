@@ -45,6 +45,63 @@ bool is_cpp_ref(const t_field* f) {
        f->annotations_.at("cpp2.ref_type") == "unique");
 }
 
+std::string const& get_cpp_type(const t_type* type) {
+  return map_find_first(
+      type->annotations_,
+      {
+          "cpp.type",
+          "cpp2.type",
+      });
+}
+
+std::string const& get_cpp_template(const t_type* type) {
+  return map_find_first(
+      type->annotations_,
+      {
+          "cpp.template",
+          "cpp2.template",
+      });
+}
+
+bool same_types(const t_type* a, const t_type* b) {
+  if (!a || !b) {
+    return false;
+  }
+
+  if (get_cpp_template(a) != get_cpp_template(b) ||
+      get_cpp_type(a) != get_cpp_type(b)) {
+    return false;
+  }
+
+  const auto* resolved_a = mstch_base::resolve_typedef(a);
+  const auto* resolved_b = mstch_base::resolve_typedef(b);
+
+  if (resolved_a->get_type_value() != resolved_b->get_type_value()) {
+    return false;
+  }
+
+  switch (resolved_a->get_type_value()) {
+    case t_types::TypeValue::TYPE_LIST: {
+      const auto* list_a = dynamic_cast<const t_list*>(resolved_a);
+      const auto* list_b = dynamic_cast<const t_list*>(resolved_b);
+      return same_types(list_a->get_elem_type(), list_b->get_elem_type());
+    }
+    case t_types::TypeValue::TYPE_SET: {
+      const auto* set_a = dynamic_cast<const t_set*>(resolved_a);
+      const auto* set_b = dynamic_cast<const t_set*>(resolved_b);
+      return same_types(set_a->get_elem_type(), set_b->get_elem_type());
+    }
+    case t_types::TypeValue::TYPE_MAP: {
+      const auto* map_a = dynamic_cast<const t_map*>(resolved_a);
+      const auto* map_b = dynamic_cast<const t_map*>(resolved_b);
+      return same_types(map_a->get_key_type(), map_b->get_key_type()) &&
+          same_types(map_a->get_val_type(), map_b->get_val_type());
+    }
+    default:;
+  }
+  return true;
+}
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -169,6 +226,32 @@ class mstch_cpp2_enum : public mstch_enum {
   }
 };
 
+class mstch_cpp2_const_value : public mstch_const_value {
+ public:
+  mstch_cpp2_const_value(
+      t_const_value const* const_value,
+      t_const const* current_const,
+      t_type const* expected_type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_const_value(
+            const_value,
+            current_const,
+            expected_type,
+            generators,
+            cache,
+            pos,
+            index) {}
+
+ private:
+  virtual bool same_type_as_expected() const override {
+    return const_value_->get_owner() &&
+        same_types(expected_type_, const_value_->get_owner()->get_type());
+  }
+};
+
 class mstch_cpp2_type : public mstch_type {
  public:
   mstch_cpp2_type(
@@ -241,12 +324,7 @@ class mstch_cpp2_type : public mstch_type {
         resolved_type_->is_struct() || resolved_type_->is_xception();
   }
   mstch::node cpp_type() {
-    if (type_->annotations_.count("cpp.type")) {
-      return type_->annotations_.at("cpp.type");
-    } else if (type_->annotations_.count("cpp2.type")) {
-      return type_->annotations_.at("cpp2.type");
-    }
-    return std::string();
+    return get_cpp_type(type_);
   }
   mstch::node cpp_custom_type() {
     if (resolved_type_->annotations_.count("cpp.indirection") ||
@@ -256,13 +334,7 @@ class mstch_cpp2_type : public mstch_type {
       return std::string();
     }
 
-    if (resolved_type_->annotations_.count("cpp.type")) {
-      return resolved_type_->annotations_.at("cpp.type");
-    } else if (resolved_type_->annotations_.count("cpp2.type")) {
-      return resolved_type_->annotations_.at("cpp2.type");
-    }
-
-    return std::string();
+    return get_cpp_type(resolved_type_);
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string() || resolved_type_->is_binary();
@@ -271,12 +343,7 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->annotations_.count("forward_compatibility") != 0;
   }
   mstch::node cpp_template() {
-    if (type_->annotations_.count("cpp.template")) {
-      return type_->annotations_.at("cpp.template");
-    } else if (type_->annotations_.count("cpp2.template")) {
-      return type_->annotations_.at("cpp2.template");
-    }
-    return std::string();
+    return get_cpp_template(type_);
   }
   mstch::node cpp_indirection() {
     if (resolved_type_->annotations_.count("cpp.indirection")) {
@@ -775,11 +842,20 @@ class mstch_cpp2_const : public mstch_const {
  public:
   mstch_cpp2_const(
       t_const const* cnst,
+      t_const const* current_const,
+      t_type const* expected_type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index)
-      : mstch_const(cnst, generators, cache, pos, index) {
+      : mstch_const(
+            cnst,
+            current_const,
+            expected_type,
+            generators,
+            cache,
+            pos,
+            index) {
     register_methods(
         this,
         {
@@ -1009,9 +1085,34 @@ class const_cpp2_generator : public const_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const override {
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr) const override {
     return std::make_shared<mstch_cpp2_const>(
-        cnst, generators, cache, pos, index);
+        cnst, current_const, expected_type, generators, cache, pos, index);
+  }
+};
+
+class const_value_cpp2_generator : public const_value_generator {
+ public:
+  const_value_cpp2_generator() = default;
+  virtual ~const_value_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_const_value const* const_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr) const override {
+    return std::make_shared<mstch_cpp2_const_value>(
+        const_value,
+        current_const,
+        expected_type,
+        generators,
+        cache,
+        pos,
+        index);
   }
 };
 
@@ -1062,6 +1163,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
+  generators_->set_const_value_generator(
+      std::make_unique<const_value_cpp2_generator>());
   generators_->set_program_generator(
       std::make_unique<program_cpp2_generator>());
 }

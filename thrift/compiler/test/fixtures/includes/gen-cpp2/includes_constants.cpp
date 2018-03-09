@@ -7,12 +7,13 @@
 
 #include "src/gen-cpp2/includes_constants.h"
 
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/transitive_constants.h"
 #include <folly/Indestructible.h>
 
 namespace cpp2 {
 
  ::cpp2::Included const& includes_constants::ExampleIncluded() {
-  static folly::Indestructible< ::cpp2::Included> const instance( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>( ::cpp2::Foo(::apache::thrift::detail::wrap_argument<1>(2LL)))));
+  static folly::Indestructible< ::cpp2::Included> const instance( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>( ::cpp2::Foo(::cpp2::transitive_constants::ExampleFoo()))));
   return *instance;
 }
 
