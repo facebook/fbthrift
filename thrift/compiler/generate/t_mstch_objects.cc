@@ -50,7 +50,7 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index) const {
-  return std::make_shared<mstch_const_value>(
+  return std::make_shared<mstch_const_value_key_mapped_pair>(
       value_pair, generators, cache, pos, index);
 }
 
@@ -244,12 +244,12 @@ mstch::node mstch_field::value() {
   return mstch::node();
 }
 
-mstch::node mstch_const_value::element_key() {
+mstch::node mstch_const_value_key_mapped_pair::element_key() {
   return generators_->const_value_generator_->generate(
       pair_.first, generators_, cache_, pos_, index_);
 }
 
-mstch::node mstch_const_value::element_value() {
+mstch::node mstch_const_value_key_mapped_pair::element_value() {
   return generators_->const_value_generator_->generate(
       pair_.second, generators_, cache_, pos_, index_);
 }

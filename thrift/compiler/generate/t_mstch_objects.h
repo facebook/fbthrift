@@ -432,23 +432,6 @@ class mstch_const_value : public mstch_base {
             {"value:const_struct", &mstch_const_value::const_struct},
         });
   }
-  mstch_const_value(
-      std::pair<t_const_value*, t_const_value*> const& pair_values,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index)
-      : mstch_base(generators, cache, pos),
-        type_(static_cast<cv>(0)),
-        pair_(pair_values),
-        index_(index) {
-    register_methods(
-        this,
-        {
-            {"element:key", &mstch_const_value::element_key},
-            {"element:value", &mstch_const_value::element_value},
-        });
-  }
   std::string format_double_string(const double d) {
     std::ostringstream oss;
     oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
@@ -492,8 +475,6 @@ class mstch_const_value : public mstch_base {
     return (type_ == cv::CV_MAP && const_value_->get_map().empty()) ||
         (type_ == cv::CV_LIST && const_value_->get_list().empty());
   }
-  mstch::node element_key();
-  mstch::node element_value();
   mstch::node value();
   mstch::node integer_value();
   mstch::node double_value();
@@ -509,6 +490,30 @@ class mstch_const_value : public mstch_base {
  protected:
   t_const_value const* const_value_;
   cv const type_;
+  int32_t index_;
+};
+
+class mstch_const_value_key_mapped_pair : public mstch_base {
+ public:
+  mstch_const_value_key_mapped_pair(
+      std::pair<t_const_value*, t_const_value*> const& pair_values,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_base(generators, cache, pos), pair_(pair_values), index_(index) {
+    register_methods(
+        this,
+        {
+            {"element:key", &mstch_const_value_key_mapped_pair::element_key},
+            {"element:value",
+             &mstch_const_value_key_mapped_pair::element_value},
+        });
+  }
+  mstch::node element_key();
+  mstch::node element_value();
+
+ protected:
   std::pair<t_const_value*, t_const_value*> const pair_;
   int32_t index_;
 };
