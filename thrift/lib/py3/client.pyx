@@ -1,5 +1,8 @@
 from thrift.py3.client cimport (
-    Client, cRequestChannel_ptr, createThriftChannel,
+    Client,
+    cRequestChannel_ptr,
+    createThriftChannelTCP,
+    createThriftChannelUnix,
 )
 from thrift.py3.exceptions cimport raise_py_exception
 from libcpp.string cimport string
@@ -9,6 +12,7 @@ from folly cimport cFollyTry
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
+import os
 
 
 cdef object proxy_factory = None
@@ -31,20 +35,40 @@ cdef class Client:
         return NULL
 
 
-def get_client(clientKlass, *, str host='::1', int port, float timeout=1, headers=None):
+def get_client(
+        clientKlass, *,
+        str host='::1',
+        int port=0,
+        str path=None,
+        float timeout=1,
+        headers=None):
     loop = asyncio.get_event_loop()
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
-    cdef string chost = <bytes> host.encode('idna')
+    cdef string cstr
     cdef int _timeout = int(timeout * 1000)
     client = clientKlass()
-    bridgeFutureWith[cRequestChannel_ptr](
-        (<Client>client)._executor,
-        createThriftChannel(chost, port, _timeout),
-        requestchannel_callback,
-        <PyObject *> client
-    )
+    if port != 0:
+        if path is not None:
+            raise Exception("cannot specify both path and host/port")
+        cstr = <bytes> host.encode('idna')
+        bridgeFutureWith[cRequestChannel_ptr](
+            (<Client>client)._executor,
+            createThriftChannelTCP(cstr, port, _timeout),
+            requestchannel_callback,
+            <PyObject *> client
+        )
+    elif path is not None:
+        cstr = <bytes> os.fsencode(path)
+        bridgeFutureWith[cRequestChannel_ptr](
+            (<Client>client)._executor,
+            createThriftChannelUnix(cstr, _timeout),
+            requestchannel_callback,
+            <PyObject *> client
+        )
+    else:
+        raise Exception("must specify either port or path arguments")
     if headers:
         for key, value in headers.items():
             client.set_persistent_header(key, value)

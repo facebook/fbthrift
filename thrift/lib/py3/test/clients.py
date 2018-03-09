@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 import asyncio
-import unittest
+import os
+import socket
+import tempfile
 import types
+import unittest
 
 from testing.clients import TestingService
 from testing.types import I32List, Color, easy
@@ -125,3 +128,26 @@ class ClientTests(unittest.TestCase):
 
         with self.assertRaises(OverflowError):
             loop.run_until_complete(client.int_sizes(one, two, three, four * 10))
+
+    def test_connect_unix(self) -> None:
+        async def test(socket_path: str) -> None:
+            # The connection should be successful, but we expect the invert()
+            # call itself to time out, since the server never actually reads
+            # requests or responds.
+            async with get_client(TestingService, path=socket_path) as client:
+                try:
+                    await asyncio.wait_for(client.invert(True), timeout=0.1)
+                    raise Exception('expected to get a timeout')
+                except asyncio.TimeoutError:
+                    pass
+
+        # Create a temporary directory and listen on the server socket
+        # at a path inside that directory
+        with tempfile.TemporaryDirectory(prefix='thrift_test.') as tmpdir:
+            socket_path = os.path.join(tmpdir, 'socket')
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+                sock.bind(socket_path)
+                sock.listen(10)
+
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(test(socket_path))

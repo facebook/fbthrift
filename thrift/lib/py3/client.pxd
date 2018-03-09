@@ -17,9 +17,13 @@ cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thr
 ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
 
 cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
-    cdef cFollyFuture[cRequestChannel_ptr] createThriftChannel(
+    cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         const string& host,
         const uint16_t port,
+        const uint32_t connect_timeout)
+
+    cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(
+        const string& path,
         const uint32_t connect_timeout)
 
     cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)

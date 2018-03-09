@@ -19,7 +19,8 @@ def get_client(
     clientKlass: Type[cT],
     *,
     host: str = ...,
-    port: int,
+    port: int = ...,
+    path: str = ...,
     timeout: float = ...,
     headers: Dict[str, str] = None
 ) -> cT: ...

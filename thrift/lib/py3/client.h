@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Facebook, Inc.
+ * Copyright 2017-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <cstdint>
@@ -42,7 +41,10 @@ std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr channel) {
   return std::make_shared<U>(client);
 }
 
-folly::Future<RequestChannel_ptr> createThriftChannel(
+/**
+ * Create a thrift channel by connecting to a host:port over TCP.
+ */
+folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     const std::string& host,
     const uint16_t port,
     const uint32_t connect_timeout) {
@@ -51,6 +53,20 @@ folly::Future<RequestChannel_ptr> createThriftChannel(
     return apache::thrift::HeaderClientChannel::newChannel(
         apache::thrift::async::TAsyncSocket::newSocket(
             eb, host, port, connect_timeout));
+  });
+}
+
+/**
+ * Create a thrift channel by connecting to a Unix domain socket.
+ */
+folly::Future<RequestChannel_ptr> createThriftChannelUnix(
+    const std::string& path,
+    const uint32_t connect_timeout) {
+  auto eb = folly::getEventBase();
+  return folly::via(eb, [=] {
+    return apache::thrift::HeaderClientChannel::newChannel(
+        apache::thrift::async::TAsyncSocket::newSocket(
+            eb, folly::SocketAddress::makeFromPath(path), connect_timeout));
   });
 }
 
