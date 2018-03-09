@@ -352,7 +352,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(std::unique_ptr<apache:
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function oneway_void_ret";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
@@ -384,7 +384,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function oneway_void_ret_i32_i32_i32_i32_i32_param";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
@@ -410,7 +410,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function oneway_void_ret_map_setlist_param";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
@@ -434,7 +434,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function oneway_void_ret_struct_param";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
@@ -458,7 +458,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function oneway_void_ret_listunion_param";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));

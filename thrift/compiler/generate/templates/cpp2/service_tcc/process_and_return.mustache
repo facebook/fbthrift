@@ -64,13 +64,13 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   }
   catch (const std::exception& ex) {
 <%#function:oneway?%>
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function <%function:name%>";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
 <%/function:oneway?%>
 <%#function:returns_stream?%>
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function <%function:name%>";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));

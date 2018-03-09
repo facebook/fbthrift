@@ -287,7 +287,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function returnstream";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
@@ -460,7 +460,7 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function noResponse";
+    LOG(ERROR) << ex.what() << " in function different";
     return;
   }
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
