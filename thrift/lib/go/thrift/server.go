@@ -19,6 +19,8 @@
 
 package thrift
 
+import "context"
+
 type Server interface {
 	ProcessorFactory() ProcessorFactory
 	ServerTransport() ServerTransport
@@ -29,6 +31,8 @@ type Server interface {
 
 	// Starts the server
 	Serve() error
+	// Starts the server, and stops it when the context is cancelled
+	ServeContext(ctx context.Context) error
 	// Stops the server. This is optional on a per-implementation basis. Not
 	// all servers are required to be cleanly stoppable.
 	Stop() error

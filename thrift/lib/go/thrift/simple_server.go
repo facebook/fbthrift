@@ -20,6 +20,7 @@
 package thrift
 
 import (
+	"context"
 	"errors"
 	"log"
 	"runtime/debug"
@@ -149,6 +150,18 @@ func (p *SimpleServer) Serve() error {
 		return err
 	}
 	return p.AcceptLoop()
+}
+
+func (p *SimpleServer) ServeContext(ctx context.Context) error {
+	go func() {
+		<-ctx.Done()
+		p.Stop()
+	}()
+	err := p.Serve()
+	if ctx.Err() != nil {
+		return ctx.Err()
+	}
+	return err
 }
 
 func (p *SimpleServer) Stop() error {
