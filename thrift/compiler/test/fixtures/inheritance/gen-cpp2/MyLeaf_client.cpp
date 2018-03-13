@@ -94,6 +94,11 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf() {
   return future_do_leaf(rpcOptions);
 }
 
+folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_do_leaf() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_do_leaf(rpcOptions);
+}
+
 folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -102,12 +107,20 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::Rpc
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
+  return future_do_leaf(rpcOptions).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyLeafAsyncClient::header_future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_leaf, channel_);
   do_leaf(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyLeafAsyncClient::header_semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
+  return MyLeafAsyncClient::header_future_do_leaf(rpcOptions).semi();
 }
 
 void MyLeafAsyncClient::do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {

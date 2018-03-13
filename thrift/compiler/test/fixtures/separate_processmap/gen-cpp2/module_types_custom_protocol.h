@@ -14,5 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/separate_processmap/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.tcc"
 

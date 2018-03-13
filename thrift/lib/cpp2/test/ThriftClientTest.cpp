@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -50,6 +49,27 @@ TEST_F(ThriftClientTest, FutureCapturesChannel) {
   EXPECT_EQ("12", ret.value());
 }
 
+TEST_F(ThriftClientTest, SemiFutureCapturesChannel) {
+  class Handler : public TestServiceSvIf {
+   public:
+    void sendResponse(std::string& _return, int64_t size) override {
+      _return = to<string>(size);
+    }
+  };
+
+  auto handler = make_shared<Handler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+  auto fut = client->semifuture_sendResponse(15).via(&eb).waitVia(&eb);
+
+  // To prove that even if the client is gone, the channel is captured:
+  client = nullptr;
+
+  EXPECT_EQ("15", fut.value());
+}
+
 TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
   //  Generated SvIf handler methods throw. We check Try::hasValue().
   //  So this is a sanity check that the method is oneway.
@@ -64,6 +84,20 @@ TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
   auto ret = fut.waitVia(&eb).getTry();
 
   EXPECT_TRUE(ret.hasValue());
+}
+
+TEST_F(ThriftClientTest, SemiFutureCapturesChannelOneway) {
+  // Ditto previous test but with the SemiFuture<T> methods
+  auto handler = make_shared<TestServiceSvIf>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+  auto fut = client->semifuture_noResponse(12).via(&eb).waitVia(&eb);
+  // To prove that even if the client is gone, the channel is captured:
+  client = nullptr;
+
+  EXPECT_TRUE(fut.hasValue());
 }
 
 TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {

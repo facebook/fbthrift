@@ -4,24 +4,19 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.h"
-
-#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.tcc"
+#include "src/gen-cpp2/module2_types.h"
+#include "src/gen-cpp2/module2_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_data.h"
-
-
+#include "src/gen-cpp2/module2_data.h"
 
 namespace module2 {
 
 Struct::Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg) :
     first(std::move(first__arg)),
-    second(std::move(second__arg))
- {
+    second(std::move(second__arg)) {
   __isset.first = true;
   __isset.second = true;
 }
@@ -78,25 +73,21 @@ void swap(Struct& a, Struct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t Struct::read<>(apache::thrift::BinaryProtocolReader*);
+template void Struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Struct::read<>(apache::thrift::CompactProtocolReader*);
+template void Struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // module2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace module2 {
 
 BigStruct::BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg) :
     s(std::move(s__arg)),
-    id(std::move(id__arg))
- {
+    id(std::move(id__arg)) {
   __isset.s = true;
   __isset.id = true;
 }
@@ -145,19 +136,13 @@ void swap(BigStruct& a, BigStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t BigStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template void BigStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t BigStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t BigStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t BigStruct::read<>(apache::thrift::CompactProtocolReader*);
+template void BigStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t BigStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t BigStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // module2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace module2 {
 
 } // module2

@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "module2_types.h"
+
 namespace module2 {
 
 struct module2_constants {

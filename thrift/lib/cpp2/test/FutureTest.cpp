@@ -168,6 +168,22 @@ TEST(ThriftServer, FutureExceptions) {
   EXPECT_THROW(vf.value(), Xception);
 }
 
+TEST(ThriftServer, SemiFutureExceptions) {
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
+  EventBase base;
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto channel = HeaderClientChannel::newChannel(socket);
+  FutureServiceAsyncClient client(std::move(channel));
+
+  auto f = client.semifuture_throwing().via(&base).waitVia(&base);
+  EXPECT_THROW(f.value(), Xception);
+
+  auto vf = client.semifuture_voidThrowing().via(&base).waitVia(&base);
+  EXPECT_THROW(vf.get(), Xception);
+}
+
 TEST(ThriftServer, FutureClientTest) {
   using std::chrono::steady_clock;
 
@@ -222,6 +238,38 @@ TEST(ThriftServer, FutureClientTest) {
   } catch (...) {
     return;
   }
+}
+
+TEST(ThriftServer, SemiFutureClientTest) {
+  using std::chrono::steady_clock;
+
+  auto handler = std::make_shared<TestInterface>();
+  apache::thrift::ScopedServerInterfaceThread runner(handler);
+
+  EventBase base;
+  auto client = runner.newClient<FutureServiceAsyncClient>(base);
+  auto future = client->semifuture_sendResponse(1).via(&base).waitVia(&base);
+  auto value = future.value();
+
+  EXPECT_EQ(value, "test1");
+
+  auto len = client->semifuture_sendResponse(4)
+                 .via(&base)
+                 .then([](folly::Try<std::string>&& response) {
+                   EXPECT_TRUE(response.hasValue());
+                   EXPECT_EQ(response.value(), "test4");
+                   return response.value().size();
+                 })
+                 .waitVia(&base);
+  EXPECT_EQ(len.value(), 5);
+
+  RpcOptions options;
+  options.setTimeout(std::chrono::milliseconds(1));
+
+  auto f =
+      client->semifuture_sendResponse(options, 3000).via(&base).waitVia(&base);
+
+  EXPECT_TRUE(f.hasException());
 }
 
 // Needs wait()

@@ -274,6 +274,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAMethod(const  ::so
   return future_moduleAMethod(rpcOptions, modArg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleAMethod(const  ::some::ns::ModuleA& modArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_moduleAMethod(rpcOptions, modArg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -282,12 +287,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAMethod(apache::thr
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleAMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
+  return future_moduleAMethod(rpcOptions, modArg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_moduleAMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_moduleAMethod, channel_);
   moduleAMethod(rpcOptions, std::move(callback), modArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_moduleAMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
+  return ServiceAAsyncClient::header_future_moduleAMethod(rpcOptions, modArg).semi();
 }
 
 void ServiceAAsyncClient::moduleAMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::ns::ModuleA& modArg) {
@@ -408,6 +421,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleBMethod(const  ::so
   return future_moduleBMethod(rpcOptions, modArg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleBMethod(const  ::some::ns::ModuleB& modArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_moduleBMethod(rpcOptions, modArg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleBMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleB& modArg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -416,12 +434,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleBMethod(apache::thr
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleBMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleB& modArg) {
+  return future_moduleBMethod(rpcOptions, modArg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_moduleBMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleB& modArg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_moduleBMethod, channel_);
   moduleBMethod(rpcOptions, std::move(callback), modArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_moduleBMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleB& modArg) {
+  return ServiceAAsyncClient::header_future_moduleBMethod(rpcOptions, modArg).semi();
 }
 
 void ServiceAAsyncClient::moduleBMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::ns::ModuleB& modArg) {
@@ -542,6 +568,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_i32StrDoubleMethod(int32_
   return future_i32StrDoubleMethod(rpcOptions, i32Arg, strArg, doubleArg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_i32StrDoubleMethod(int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_i32StrDoubleMethod(rpcOptions, i32Arg, strArg, doubleArg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -550,12 +581,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_i32StrDoubleMethod(apache
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  return future_i32StrDoubleMethod(rpcOptions, i32Arg, strArg, doubleArg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_i32StrDoubleMethod, channel_);
   i32StrDoubleMethod(rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_i32StrDoubleMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  return ServiceAAsyncClient::header_future_i32StrDoubleMethod(rpcOptions, i32Arg, strArg, doubleArg).semi();
 }
 
 void ServiceAAsyncClient::i32StrDoubleMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i32Arg, const std::string& strArg, double doubleArg) {
@@ -676,6 +715,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_versioningMethod(int32_t 
   return future_versioningMethod(rpcOptions, i32Arg, strArg, doubleArg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_versioningMethod(int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_versioningMethod(rpcOptions, i32Arg, strArg, doubleArg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_versioningMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -684,12 +728,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_versioningMethod(apache::
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_versioningMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  return future_versioningMethod(rpcOptions, i32Arg, strArg, doubleArg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_versioningMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_versioningMethod, channel_);
   versioningMethod(rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_versioningMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg, const std::string& strArg, double doubleArg) {
+  return ServiceAAsyncClient::header_future_versioningMethod(rpcOptions, i32Arg, strArg, doubleArg).semi();
 }
 
 void ServiceAAsyncClient::versioningMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i32Arg, const std::string& strArg, double doubleArg) {
@@ -810,6 +862,11 @@ folly::Future<int32_t> ServiceAAsyncClient::future_retI32Method() {
   return future_retI32Method(rpcOptions);
 }
 
+folly::SemiFuture<int32_t> ServiceAAsyncClient::semifuture_retI32Method() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_retI32Method(rpcOptions);
+}
+
 folly::Future<int32_t> ServiceAAsyncClient::future_retI32Method(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
@@ -818,12 +875,20 @@ folly::Future<int32_t> ServiceAAsyncClient::future_retI32Method(apache::thrift::
   return _future;
 }
 
+folly::SemiFuture<int32_t> ServiceAAsyncClient::semifuture_retI32Method(apache::thrift::RpcOptions& rpcOptions) {
+  return future_retI32Method(rpcOptions).semi();
+}
+
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_retI32Method(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_retI32Method, channel_);
   retI32Method(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_retI32Method(apache::thrift::RpcOptions& rpcOptions) {
+  return ServiceAAsyncClient::header_future_retI32Method(rpcOptions).semi();
 }
 
 void ServiceAAsyncClient::retI32Method(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -946,6 +1011,11 @@ folly::Future< ::some::ns::ModuleA> ServiceAAsyncClient::future_retModAMethod() 
   return future_retModAMethod(rpcOptions);
 }
 
+folly::SemiFuture< ::some::ns::ModuleA> ServiceAAsyncClient::semifuture_retModAMethod() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_retModAMethod(rpcOptions);
+}
+
 folly::Future< ::some::ns::ModuleA> ServiceAAsyncClient::future_retModAMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::ns::ModuleA> _promise;
   auto _future = _promise.getFuture();
@@ -954,12 +1024,20 @@ folly::Future< ::some::ns::ModuleA> ServiceAAsyncClient::future_retModAMethod(ap
   return _future;
 }
 
+folly::SemiFuture< ::some::ns::ModuleA> ServiceAAsyncClient::semifuture_retModAMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return future_retModAMethod(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::ns::ModuleA, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_retModAMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::ns::ModuleA, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::ns::ModuleA>>(std::move(_promise), recv_wrapped_retModAMethod, channel_);
   retModAMethod(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::ns::ModuleA, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_retModAMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return ServiceAAsyncClient::header_future_retModAMethod(rpcOptions).semi();
 }
 
 void ServiceAAsyncClient::retModAMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1080,6 +1158,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_throwMethod() {
   return future_throwMethod(rpcOptions);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_throwMethod() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_throwMethod(rpcOptions);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_throwMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -1088,12 +1171,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_throwMethod(apache::thrif
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_throwMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return future_throwMethod(rpcOptions).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_throwMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_throwMethod, channel_);
   throwMethod(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_throwMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return ServiceAAsyncClient::header_future_throwMethod(rpcOptions).semi();
 }
 
 void ServiceAAsyncClient::throwMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1214,6 +1305,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_multiThrowMethod() {
   return future_multiThrowMethod(rpcOptions);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_multiThrowMethod() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_multiThrowMethod(rpcOptions);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_multiThrowMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -1222,12 +1318,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_multiThrowMethod(apache::
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_multiThrowMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return future_multiThrowMethod(rpcOptions).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_multiThrowMethod(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_multiThrowMethod, channel_);
   multiThrowMethod(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_multiThrowMethod(apache::thrift::RpcOptions& rpcOptions) {
+  return ServiceAAsyncClient::header_future_multiThrowMethod(rpcOptions).semi();
 }
 
 void ServiceAAsyncClient::multiThrowMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1348,6 +1452,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_i32ThrowMethod(int32_t i3
   return future_i32ThrowMethod(rpcOptions, i32Arg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_i32ThrowMethod(int32_t i32Arg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_i32ThrowMethod(rpcOptions, i32Arg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -1356,12 +1465,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_i32ThrowMethod(apache::th
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg) {
+  return future_i32ThrowMethod(rpcOptions, i32Arg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_i32ThrowMethod, channel_);
   i32ThrowMethod(rpcOptions, std::move(callback), i32Arg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_i32ThrowMethod(apache::thrift::RpcOptions& rpcOptions, int32_t i32Arg) {
+  return ServiceAAsyncClient::header_future_i32ThrowMethod(rpcOptions, i32Arg).semi();
 }
 
 void ServiceAAsyncClient::i32ThrowMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i32Arg) {
@@ -1482,6 +1599,11 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAThrowMethod(const 
   return future_moduleAThrowMethod(rpcOptions, modArg);
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleAThrowMethod(const  ::some::ns::ModuleA& modArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_moduleAThrowMethod(rpcOptions, modArg);
+}
+
 folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -1490,12 +1612,20 @@ folly::Future<folly::Unit> ServiceAAsyncClient::future_moduleAThrowMethod(apache
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ServiceAAsyncClient::semifuture_moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
+  return future_moduleAThrowMethod(rpcOptions, modArg).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_moduleAThrowMethod, channel_);
   moduleAThrowMethod(rpcOptions, std::move(callback), modArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_moduleAThrowMethod(apache::thrift::RpcOptions& rpcOptions, const  ::some::ns::ModuleA& modArg) {
+  return ServiceAAsyncClient::header_future_moduleAThrowMethod(rpcOptions, modArg).semi();
 }
 
 void ServiceAAsyncClient::moduleAThrowMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::ns::ModuleA& modArg) {
@@ -1616,6 +1746,11 @@ folly::Future<std::string> ServiceAAsyncClient::future_mixedMethod(const std::st
   return future_mixedMethod(rpcOptions, strArg, i32Arg, modArg);
 }
 
+folly::SemiFuture<std::string> ServiceAAsyncClient::semifuture_mixedMethod(const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_mixedMethod(rpcOptions, strArg, i32Arg, modArg);
+}
+
 folly::Future<std::string> ServiceAAsyncClient::future_mixedMethod(apache::thrift::RpcOptions& rpcOptions, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
@@ -1624,12 +1759,20 @@ folly::Future<std::string> ServiceAAsyncClient::future_mixedMethod(apache::thrif
   return _future;
 }
 
+folly::SemiFuture<std::string> ServiceAAsyncClient::semifuture_mixedMethod(apache::thrift::RpcOptions& rpcOptions, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
+  return future_mixedMethod(rpcOptions, strArg, i32Arg, modArg).semi();
+}
+
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_future_mixedMethod(apache::thrift::RpcOptions& rpcOptions, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
   folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_mixedMethod, channel_);
   mixedMethod(rpcOptions, std::move(callback), strArg, i32Arg, modArg);
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ServiceAAsyncClient::header_semifuture_mixedMethod(apache::thrift::RpcOptions& rpcOptions, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {
+  return ServiceAAsyncClient::header_future_mixedMethod(rpcOptions, strArg, i32Arg, modArg).semi();
 }
 
 void ServiceAAsyncClient::mixedMethod(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::string& strArg, int32_t i32Arg, const  ::some::ns::ModuleB& modArg) {

@@ -69,9 +69,12 @@
 <%/type:resolves_to_complex_return?%>
 <%^type:stream?%>
   virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(<% > service_common/function_param_list_const%>);
+  virtual folly::SemiFuture<<% > types/service_type%>> semifuture_<%function:name%>(<% > service_common/function_param_list_const%>);
   virtual folly::Future<<% > types/service_type%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual folly::SemiFuture<<% > types/service_type%>> semifuture_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
   virtual folly::Future<std::pair<<% > types/service_type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual folly::SemiFuture<std::pair<<% > types/service_type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:oneway?%>
 <%/type:stream?%>
 <%^function:returns_stream?%>

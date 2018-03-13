@@ -416,6 +416,11 @@ folly::Future<folly::Unit> ReturnServiceAsyncClient::future_noReturn() {
   return future_noReturn(rpcOptions);
 }
 
+folly::SemiFuture<folly::Unit> ReturnServiceAsyncClient::semifuture_noReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_noReturn(rpcOptions);
+}
+
 folly::Future<folly::Unit> ReturnServiceAsyncClient::future_noReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -424,12 +429,20 @@ folly::Future<folly::Unit> ReturnServiceAsyncClient::future_noReturn(apache::thr
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> ReturnServiceAsyncClient::semifuture_noReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_noReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_noReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_noReturn, channel_);
   noReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_noReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_noReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::noReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -538,6 +551,11 @@ folly::Future<bool> ReturnServiceAsyncClient::future_boolReturn() {
   return future_boolReturn(rpcOptions);
 }
 
+folly::SemiFuture<bool> ReturnServiceAsyncClient::semifuture_boolReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_boolReturn(rpcOptions);
+}
+
 folly::Future<bool> ReturnServiceAsyncClient::future_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
@@ -546,12 +564,20 @@ folly::Future<bool> ReturnServiceAsyncClient::future_boolReturn(apache::thrift::
   return _future;
 }
 
+folly::SemiFuture<bool> ReturnServiceAsyncClient::semifuture_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_boolReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<bool>>(std::move(_promise), recv_wrapped_boolReturn, channel_);
   boolReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_boolReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_boolReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::boolReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -662,6 +688,11 @@ folly::Future<int16_t> ReturnServiceAsyncClient::future_i16Return() {
   return future_i16Return(rpcOptions);
 }
 
+folly::SemiFuture<int16_t> ReturnServiceAsyncClient::semifuture_i16Return() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_i16Return(rpcOptions);
+}
+
 folly::Future<int16_t> ReturnServiceAsyncClient::future_i16Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
@@ -670,12 +701,20 @@ folly::Future<int16_t> ReturnServiceAsyncClient::future_i16Return(apache::thrift
   return _future;
 }
 
+folly::SemiFuture<int16_t> ReturnServiceAsyncClient::semifuture_i16Return(apache::thrift::RpcOptions& rpcOptions) {
+  return future_i16Return(rpcOptions).semi();
+}
+
 folly::Future<std::pair<int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_i16Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int16_t>>(std::move(_promise), recv_wrapped_i16Return, channel_);
   i16Return(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_i16Return(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_i16Return(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::i16Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -786,6 +825,11 @@ folly::Future<int32_t> ReturnServiceAsyncClient::future_i32Return() {
   return future_i32Return(rpcOptions);
 }
 
+folly::SemiFuture<int32_t> ReturnServiceAsyncClient::semifuture_i32Return() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_i32Return(rpcOptions);
+}
+
 folly::Future<int32_t> ReturnServiceAsyncClient::future_i32Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
@@ -794,12 +838,20 @@ folly::Future<int32_t> ReturnServiceAsyncClient::future_i32Return(apache::thrift
   return _future;
 }
 
+folly::SemiFuture<int32_t> ReturnServiceAsyncClient::semifuture_i32Return(apache::thrift::RpcOptions& rpcOptions) {
+  return future_i32Return(rpcOptions).semi();
+}
+
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_i32Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_i32Return, channel_);
   i32Return(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_i32Return(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_i32Return(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::i32Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -910,6 +962,11 @@ folly::Future<int64_t> ReturnServiceAsyncClient::future_i64Return() {
   return future_i64Return(rpcOptions);
 }
 
+folly::SemiFuture<int64_t> ReturnServiceAsyncClient::semifuture_i64Return() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_i64Return(rpcOptions);
+}
+
 folly::Future<int64_t> ReturnServiceAsyncClient::future_i64Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
@@ -918,12 +975,20 @@ folly::Future<int64_t> ReturnServiceAsyncClient::future_i64Return(apache::thrift
   return _future;
 }
 
+folly::SemiFuture<int64_t> ReturnServiceAsyncClient::semifuture_i64Return(apache::thrift::RpcOptions& rpcOptions) {
+  return future_i64Return(rpcOptions).semi();
+}
+
 folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_i64Return(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int64_t>>(std::move(_promise), recv_wrapped_i64Return, channel_);
   i64Return(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_i64Return(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_i64Return(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::i64Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1034,6 +1099,11 @@ folly::Future<float> ReturnServiceAsyncClient::future_floatReturn() {
   return future_floatReturn(rpcOptions);
 }
 
+folly::SemiFuture<float> ReturnServiceAsyncClient::semifuture_floatReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_floatReturn(rpcOptions);
+}
+
 folly::Future<float> ReturnServiceAsyncClient::future_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<float> _promise;
   auto _future = _promise.getFuture();
@@ -1042,12 +1112,20 @@ folly::Future<float> ReturnServiceAsyncClient::future_floatReturn(apache::thrift
   return _future;
 }
 
+folly::SemiFuture<float> ReturnServiceAsyncClient::semifuture_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_floatReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<float, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<float, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<float>>(std::move(_promise), recv_wrapped_floatReturn, channel_);
   floatReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<float, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_floatReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_floatReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::floatReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1158,6 +1236,11 @@ folly::Future<double> ReturnServiceAsyncClient::future_doubleReturn() {
   return future_doubleReturn(rpcOptions);
 }
 
+folly::SemiFuture<double> ReturnServiceAsyncClient::semifuture_doubleReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_doubleReturn(rpcOptions);
+}
+
 folly::Future<double> ReturnServiceAsyncClient::future_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<double> _promise;
   auto _future = _promise.getFuture();
@@ -1166,12 +1249,20 @@ folly::Future<double> ReturnServiceAsyncClient::future_doubleReturn(apache::thri
   return _future;
 }
 
+folly::SemiFuture<double> ReturnServiceAsyncClient::semifuture_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_doubleReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<double>>(std::move(_promise), recv_wrapped_doubleReturn, channel_);
   doubleReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_doubleReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_doubleReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::doubleReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1282,6 +1373,11 @@ folly::Future<std::string> ReturnServiceAsyncClient::future_stringReturn() {
   return future_stringReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::string> ReturnServiceAsyncClient::semifuture_stringReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_stringReturn(rpcOptions);
+}
+
 folly::Future<std::string> ReturnServiceAsyncClient::future_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
@@ -1290,12 +1386,20 @@ folly::Future<std::string> ReturnServiceAsyncClient::future_stringReturn(apache:
   return _future;
 }
 
+folly::SemiFuture<std::string> ReturnServiceAsyncClient::semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_stringReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_stringReturn, channel_);
   stringReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_stringReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::stringReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1404,6 +1508,11 @@ folly::Future<std::string> ReturnServiceAsyncClient::future_binaryReturn() {
   return future_binaryReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::string> ReturnServiceAsyncClient::semifuture_binaryReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_binaryReturn(rpcOptions);
+}
+
 folly::Future<std::string> ReturnServiceAsyncClient::future_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
@@ -1412,12 +1521,20 @@ folly::Future<std::string> ReturnServiceAsyncClient::future_binaryReturn(apache:
   return _future;
 }
 
+folly::SemiFuture<std::string> ReturnServiceAsyncClient::semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_binaryReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_binaryReturn, channel_);
   binaryReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_binaryReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::binaryReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1526,6 +1643,11 @@ folly::Future<std::map<std::string, int64_t>> ReturnServiceAsyncClient::future_m
   return future_mapReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::map<std::string, int64_t>> ReturnServiceAsyncClient::semifuture_mapReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_mapReturn(rpcOptions);
+}
+
 folly::Future<std::map<std::string, int64_t>> ReturnServiceAsyncClient::future_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::map<std::string, int64_t>> _promise;
   auto _future = _promise.getFuture();
@@ -1534,12 +1656,20 @@ folly::Future<std::map<std::string, int64_t>> ReturnServiceAsyncClient::future_m
   return _future;
 }
 
+folly::SemiFuture<std::map<std::string, int64_t>> ReturnServiceAsyncClient::semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_mapReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::map<std::string, int64_t>>>(std::move(_promise), recv_wrapped_mapReturn, channel_);
   mapReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_mapReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::mapReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1648,6 +1778,11 @@ folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::futur
   return future_simpleTypedefReturn(rpcOptions);
 }
 
+folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::semifuture_simpleTypedefReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_simpleTypedefReturn(rpcOptions);
+}
+
 folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::future_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::valid::ns::simpleTypeDef> _promise;
   auto _future = _promise.getFuture();
@@ -1656,12 +1791,20 @@ folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::futur
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::semifuture_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_simpleTypedefReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::simpleTypeDef>>(std::move(_promise), recv_wrapped_simpleTypedefReturn, channel_);
   simpleTypedefReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_simpleTypedefReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::simpleTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1772,6 +1915,11 @@ folly::Future< ::some::valid::ns::complexStructTypeDef> ReturnServiceAsyncClient
   return future_complexTypedefReturn(rpcOptions);
 }
 
+folly::SemiFuture< ::some::valid::ns::complexStructTypeDef> ReturnServiceAsyncClient::semifuture_complexTypedefReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_complexTypedefReturn(rpcOptions);
+}
+
 folly::Future< ::some::valid::ns::complexStructTypeDef> ReturnServiceAsyncClient::future_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::valid::ns::complexStructTypeDef> _promise;
   auto _future = _promise.getFuture();
@@ -1780,12 +1928,20 @@ folly::Future< ::some::valid::ns::complexStructTypeDef> ReturnServiceAsyncClient
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::complexStructTypeDef> ReturnServiceAsyncClient::semifuture_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_complexTypedefReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::complexStructTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::valid::ns::complexStructTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::complexStructTypeDef>>(std::move(_promise), recv_wrapped_complexTypedefReturn, channel_);
   complexTypedefReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::complexStructTypeDef, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_complexTypedefReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::complexTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1894,6 +2050,11 @@ folly::Future<std::vector< ::some::valid::ns::mostComplexTypeDef>> ReturnService
   return future_list_mostComplexTypedefReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::mostComplexTypeDef>> ReturnServiceAsyncClient::semifuture_list_mostComplexTypedefReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_list_mostComplexTypedefReturn(rpcOptions);
+}
+
 folly::Future<std::vector< ::some::valid::ns::mostComplexTypeDef>> ReturnServiceAsyncClient::future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::vector< ::some::valid::ns::mostComplexTypeDef>> _promise;
   auto _future = _promise.getFuture();
@@ -1902,12 +2063,20 @@ folly::Future<std::vector< ::some::valid::ns::mostComplexTypeDef>> ReturnService
   return _future;
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::mostComplexTypeDef>> ReturnServiceAsyncClient::semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_list_mostComplexTypedefReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::vector< ::some::valid::ns::mostComplexTypeDef>>>(std::move(_promise), recv_wrapped_list_mostComplexTypedefReturn, channel_);
   list_mostComplexTypedefReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_list_mostComplexTypedefReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::list_mostComplexTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2016,6 +2185,11 @@ folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::future_enum
   return future_enumReturn(rpcOptions);
 }
 
+folly::SemiFuture< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::semifuture_enumReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_enumReturn(rpcOptions);
+}
+
 folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::future_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::valid::ns::MyEnumA> _promise;
   auto _future = _promise.getFuture();
@@ -2024,12 +2198,20 @@ folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::future_enum
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::semifuture_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_enumReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::MyEnumA>>(std::move(_promise), recv_wrapped_enumReturn, channel_);
   enumReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_enumReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_enumReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::enumReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2140,6 +2322,11 @@ folly::Future<std::vector< ::some::valid::ns::MyEnumA>> ReturnServiceAsyncClient
   return future_list_EnumReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::MyEnumA>> ReturnServiceAsyncClient::semifuture_list_EnumReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_list_EnumReturn(rpcOptions);
+}
+
 folly::Future<std::vector< ::some::valid::ns::MyEnumA>> ReturnServiceAsyncClient::future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::vector< ::some::valid::ns::MyEnumA>> _promise;
   auto _future = _promise.getFuture();
@@ -2148,12 +2335,20 @@ folly::Future<std::vector< ::some::valid::ns::MyEnumA>> ReturnServiceAsyncClient
   return _future;
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::MyEnumA>> ReturnServiceAsyncClient::semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_list_EnumReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::vector< ::some::valid::ns::MyEnumA>>>(std::move(_promise), recv_wrapped_list_EnumReturn, channel_);
   list_EnumReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_list_EnumReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::list_EnumReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2262,6 +2457,11 @@ folly::Future< ::some::valid::ns::MyStruct> ReturnServiceAsyncClient::future_str
   return future_structReturn(rpcOptions);
 }
 
+folly::SemiFuture< ::some::valid::ns::MyStruct> ReturnServiceAsyncClient::semifuture_structReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_structReturn(rpcOptions);
+}
+
 folly::Future< ::some::valid::ns::MyStruct> ReturnServiceAsyncClient::future_structReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::valid::ns::MyStruct> _promise;
   auto _future = _promise.getFuture();
@@ -2270,12 +2470,20 @@ folly::Future< ::some::valid::ns::MyStruct> ReturnServiceAsyncClient::future_str
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::MyStruct> ReturnServiceAsyncClient::semifuture_structReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_structReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_structReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::MyStruct>>(std::move(_promise), recv_wrapped_structReturn, channel_);
   structReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_structReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_structReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::structReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2384,6 +2592,11 @@ folly::Future<std::set< ::some::valid::ns::MyStruct>> ReturnServiceAsyncClient::
   return future_set_StructReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::set< ::some::valid::ns::MyStruct>> ReturnServiceAsyncClient::semifuture_set_StructReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_set_StructReturn(rpcOptions);
+}
+
 folly::Future<std::set< ::some::valid::ns::MyStruct>> ReturnServiceAsyncClient::future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::set< ::some::valid::ns::MyStruct>> _promise;
   auto _future = _promise.getFuture();
@@ -2392,12 +2605,20 @@ folly::Future<std::set< ::some::valid::ns::MyStruct>> ReturnServiceAsyncClient::
   return _future;
 }
 
+folly::SemiFuture<std::set< ::some::valid::ns::MyStruct>> ReturnServiceAsyncClient::semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_set_StructReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::set< ::some::valid::ns::MyStruct>>>(std::move(_promise), recv_wrapped_set_StructReturn, channel_);
   set_StructReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_set_StructReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::set_StructReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2506,6 +2727,11 @@ folly::Future< ::some::valid::ns::ComplexUnion> ReturnServiceAsyncClient::future
   return future_unionReturn(rpcOptions);
 }
 
+folly::SemiFuture< ::some::valid::ns::ComplexUnion> ReturnServiceAsyncClient::semifuture_unionReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_unionReturn(rpcOptions);
+}
+
 folly::Future< ::some::valid::ns::ComplexUnion> ReturnServiceAsyncClient::future_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise< ::some::valid::ns::ComplexUnion> _promise;
   auto _future = _promise.getFuture();
@@ -2514,12 +2740,20 @@ folly::Future< ::some::valid::ns::ComplexUnion> ReturnServiceAsyncClient::future
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::ComplexUnion> ReturnServiceAsyncClient::semifuture_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_unionReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::ComplexUnion>>(std::move(_promise), recv_wrapped_unionReturn, channel_);
   unionReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_unionReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_unionReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::unionReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2628,6 +2862,11 @@ folly::Future<std::vector< ::some::valid::ns::ComplexUnion>> ReturnServiceAsyncC
   return future_list_UnionReturn(rpcOptions);
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::ComplexUnion>> ReturnServiceAsyncClient::semifuture_list_UnionReturn() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_list_UnionReturn(rpcOptions);
+}
+
 folly::Future<std::vector< ::some::valid::ns::ComplexUnion>> ReturnServiceAsyncClient::future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::vector< ::some::valid::ns::ComplexUnion>> _promise;
   auto _future = _promise.getFuture();
@@ -2636,12 +2875,20 @@ folly::Future<std::vector< ::some::valid::ns::ComplexUnion>> ReturnServiceAsyncC
   return _future;
 }
 
+folly::SemiFuture<std::vector< ::some::valid::ns::ComplexUnion>> ReturnServiceAsyncClient::semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return future_list_UnionReturn(rpcOptions).semi();
+}
+
 folly::Future<std::pair<std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::vector< ::some::valid::ns::ComplexUnion>>>(std::move(_promise), recv_wrapped_list_UnionReturn, channel_);
   list_UnionReturn(rpcOptions, std::move(callback));
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions) {
+  return ReturnServiceAsyncClient::header_future_list_UnionReturn(rpcOptions).semi();
 }
 
 void ReturnServiceAsyncClient::list_UnionReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2750,6 +2997,11 @@ folly::Future< ::some::valid::ns::IOBuf> ReturnServiceAsyncClient::future_readDa
   return future_readDataEb(rpcOptions, size);
 }
 
+folly::SemiFuture< ::some::valid::ns::IOBuf> ReturnServiceAsyncClient::semifuture_readDataEb(int64_t size) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_readDataEb(rpcOptions, size);
+}
+
 folly::Future< ::some::valid::ns::IOBuf> ReturnServiceAsyncClient::future_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
   folly::Promise< ::some::valid::ns::IOBuf> _promise;
   auto _future = _promise.getFuture();
@@ -2758,12 +3010,20 @@ folly::Future< ::some::valid::ns::IOBuf> ReturnServiceAsyncClient::future_readDa
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::IOBuf> ReturnServiceAsyncClient::semifuture_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
+  return future_readDataEb(rpcOptions, size).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::IOBuf, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
   folly::Promise<std::pair< ::some::valid::ns::IOBuf, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::IOBuf>>(std::move(_promise), recv_wrapped_readDataEb, channel_);
   readDataEb(rpcOptions, std::move(callback), size);
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::IOBuf, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
+  return ReturnServiceAsyncClient::header_future_readDataEb(rpcOptions, size).semi();
 }
 
 void ReturnServiceAsyncClient::readDataEb(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size) {
@@ -2872,6 +3132,11 @@ folly::Future< ::some::valid::ns::IOBufPtr> ReturnServiceAsyncClient::future_rea
   return future_readData(rpcOptions, size);
 }
 
+folly::SemiFuture< ::some::valid::ns::IOBufPtr> ReturnServiceAsyncClient::semifuture_readData(int64_t size) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_readData(rpcOptions, size);
+}
+
 folly::Future< ::some::valid::ns::IOBufPtr> ReturnServiceAsyncClient::future_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
   folly::Promise< ::some::valid::ns::IOBufPtr> _promise;
   auto _future = _promise.getFuture();
@@ -2880,12 +3145,20 @@ folly::Future< ::some::valid::ns::IOBufPtr> ReturnServiceAsyncClient::future_rea
   return _future;
 }
 
+folly::SemiFuture< ::some::valid::ns::IOBufPtr> ReturnServiceAsyncClient::semifuture_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
+  return future_readData(rpcOptions, size).semi();
+}
+
 folly::Future<std::pair< ::some::valid::ns::IOBufPtr, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_future_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
   folly::Promise<std::pair< ::some::valid::ns::IOBufPtr, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::some::valid::ns::IOBufPtr>>(std::move(_promise), recv_wrapped_readData, channel_);
   readData(rpcOptions, std::move(callback), size);
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::some::valid::ns::IOBufPtr, std::unique_ptr<apache::thrift::transport::THeader>>> ReturnServiceAsyncClient::header_semifuture_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size) {
+  return ReturnServiceAsyncClient::header_future_readData(rpcOptions, size).semi();
 }
 
 void ReturnServiceAsyncClient::readData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size) {

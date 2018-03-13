@@ -42,8 +42,11 @@ class MyNodeAsyncClient : public  ::cpp2::MyRootAsyncClient {
   virtual void sync_do_mid();
   virtual void sync_do_mid(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_do_mid();
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_mid();
   virtual folly::Future<folly::Unit> future_do_mid(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_do_mid(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions);
   virtual void do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_mid(::apache::thrift::ClientReceiveState& state);
   static void recv_do_mid(::apache::thrift::ClientReceiveState& state);

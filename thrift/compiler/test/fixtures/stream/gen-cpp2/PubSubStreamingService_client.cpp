@@ -197,6 +197,11 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_client(apac
   return future_client(rpcOptions, foo);
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_client(apache::thrift::YarplStream<int32_t> foo) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_client(rpcOptions, foo);
+}
+
 folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_client(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -205,12 +210,20 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_client(apac
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_client(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return future_client(rpcOptions, foo).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_client(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_client, channel_);
   client(rpcOptions, std::move(callback), foo);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_client(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return PubSubStreamingServiceAsyncClient::header_future_client(rpcOptions, foo).semi();
 }
 
 void PubSubStreamingServiceAsyncClient::client(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, apache::thrift::YarplStream<int32_t> foo) {
@@ -319,6 +332,11 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apac
   return future_server(rpcOptions, foo);
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_server(apache::thrift::YarplStream<int32_t> foo) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_server(rpcOptions, foo);
+}
+
 folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -327,12 +345,20 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_server(apac
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_server(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return future_server(rpcOptions, foo).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_server(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_server, channel_);
   server(rpcOptions, std::move(callback), foo);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_server(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return PubSubStreamingServiceAsyncClient::header_future_server(rpcOptions, foo).semi();
 }
 
 void PubSubStreamingServiceAsyncClient::server(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, apache::thrift::YarplStream<int32_t> foo) {
@@ -441,6 +467,11 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_both(apache
   return future_both(rpcOptions, foo);
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_both(apache::thrift::YarplStream<int32_t> foo) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_both(rpcOptions, foo);
+}
+
 folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_both(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -449,12 +480,20 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_both(apache
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_both(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return future_both(rpcOptions, foo).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_both(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_both, channel_);
   both(rpcOptions, std::move(callback), foo);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_both(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foo) {
+  return PubSubStreamingServiceAsyncClient::header_future_both(rpcOptions, foo).semi();
 }
 
 void PubSubStreamingServiceAsyncClient::both(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, apache::thrift::YarplStream<int32_t> foo) {
@@ -656,6 +695,11 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_takesstream
   return future_takesstream(rpcOptions, instream, other_param);
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_takesstream(apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_takesstream(rpcOptions, instream, other_param);
+}
+
 folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -664,12 +708,20 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_takesstream
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
+  return future_takesstream(rpcOptions, instream, other_param).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_takesstream, channel_);
   takesstream(rpcOptions, std::move(callback), instream, other_param);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
+  return PubSubStreamingServiceAsyncClient::header_future_takesstream(rpcOptions, instream, other_param).semi();
 }
 
 void PubSubStreamingServiceAsyncClient::takesstream(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
@@ -778,6 +830,11 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_clientthrow
   return future_clientthrows(rpcOptions, foostream);
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_clientthrows(apache::thrift::YarplStream<int32_t> foostream) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_clientthrows(rpcOptions, foostream);
+}
+
 folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_clientthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foostream) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -786,12 +843,20 @@ folly::Future<folly::Unit> PubSubStreamingServiceAsyncClient::future_clientthrow
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> PubSubStreamingServiceAsyncClient::semifuture_clientthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foostream) {
+  return future_clientthrows(rpcOptions, foostream).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_future_clientthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foostream) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_clientthrows, channel_);
   clientthrows(rpcOptions, std::move(callback), foostream);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> PubSubStreamingServiceAsyncClient::header_semifuture_clientthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::YarplStream<int32_t> foostream) {
+  return PubSubStreamingServiceAsyncClient::header_future_clientthrows(rpcOptions, foostream).semi();
 }
 
 void PubSubStreamingServiceAsyncClient::clientthrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, apache::thrift::YarplStream<int32_t> foostream) {

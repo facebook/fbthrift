@@ -41,8 +41,11 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void sync_doBland();
   virtual void sync_doBland(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_doBland();
+  virtual folly::SemiFuture<folly::Unit> semifuture_doBland();
   virtual folly::Future<folly::Unit> future_doBland(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<folly::Unit> semifuture_doBland(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_doBland(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doBland(apache::thrift::RpcOptions& rpcOptions);
   virtual void doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_doBland(::apache::thrift::ClientReceiveState& state);
   static void recv_doBland(::apache::thrift::ClientReceiveState& state);
@@ -61,8 +64,11 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void sync_doRaise();
   virtual void sync_doRaise(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_doRaise();
+  virtual folly::SemiFuture<folly::Unit> semifuture_doRaise();
   virtual folly::Future<folly::Unit> future_doRaise(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<folly::Unit> semifuture_doRaise(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_doRaise(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doRaise(apache::thrift::RpcOptions& rpcOptions);
   virtual void doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_doRaise(::apache::thrift::ClientReceiveState& state);
   static void recv_doRaise(::apache::thrift::ClientReceiveState& state);
@@ -81,8 +87,11 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void sync_get200(std::string& _return);
   virtual void sync_get200(apache::thrift::RpcOptions& rpcOptions, std::string& _return);
   virtual folly::Future<std::string> future_get200();
+  virtual folly::SemiFuture<std::string> semifuture_get200();
   virtual folly::Future<std::string> future_get200(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::string> semifuture_get200(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get200(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get200(apache::thrift::RpcOptions& rpcOptions);
   virtual void get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state);
@@ -101,8 +110,11 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void sync_get500(std::string& _return);
   virtual void sync_get500(apache::thrift::RpcOptions& rpcOptions, std::string& _return);
   virtual folly::Future<std::string> future_get500();
+  virtual folly::SemiFuture<std::string> semifuture_get500();
   virtual folly::Future<std::string> future_get500(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::string> semifuture_get500(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get500(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get500(apache::thrift::RpcOptions& rpcOptions);
   virtual void get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state);

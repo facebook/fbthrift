@@ -114,6 +114,11 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_query(const  ::cpp2::MyS
   return future_query(rpcOptions, s, i);
 }
 
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_query(rpcOptions, s, i);
+}
+
 folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -122,12 +127,20 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_query(apache::thrift::Rp
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  return future_query(rpcOptions, s, i).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_query, channel_);
   query(rpcOptions, std::move(callback), s, i);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  return MyServiceAsyncClient::header_future_query(rpcOptions, s, i).semi();
 }
 
 void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
@@ -236,6 +249,11 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(const  ::cp
   return future_has_arg_docs(rpcOptions, s, i);
 }
 
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_has_arg_docs(rpcOptions, s, i);
+}
+
 folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -244,12 +262,20 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(apache::thr
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  return future_has_arg_docs(rpcOptions, s, i).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_has_arg_docs, channel_);
   has_arg_docs(rpcOptions, std::move(callback), s, i);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  return MyServiceAsyncClient::header_future_has_arg_docs(rpcOptions, s, i).semi();
 }
 
 void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {

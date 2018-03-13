@@ -4,17 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_types.h"
-
-#include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_data.h"
-
-
+#include "src/gen-cpp2/module_data.h"
 
 namespace cpp2 {
 
@@ -47,8 +43,7 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
     red(std::move(red__arg)),
     green(std::move(green__arg)),
     blue(std::move(blue__arg)),
-    alpha(std::move(alpha__arg))
- {}
+    alpha(std::move(alpha__arg)) {}
 
 void Color::__clear() {
   // clear all fields
@@ -102,32 +97,29 @@ void swap(Color& a, Color& b) {
   swap(a.alpha, b.alpha);
 }
 
-template uint32_t Color::read<>(apache::thrift::BinaryProtocolReader*);
+template void Color::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Color::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Color::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Color::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Color::read<>(apache::thrift::CompactProtocolReader*);
+template void Color::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Color::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
-Vehicle::Vehicle() :
-    hasAC(false)
- {}
+Vehicle::Vehicle() {}
+
+
+Vehicle::~Vehicle() {}
 
 Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg) :
     color(std::move(color__arg)),
     licensePlate(std::move(licensePlate__arg)),
     description(std::move(description__arg)),
     name(std::move(name__arg)),
-    hasAC(std::move(hasAC__arg))
- {}
+    hasAC(std::move(hasAC__arg)) {}
 
 void Vehicle::__clear() {
   // clear all fields
@@ -137,8 +129,6 @@ void Vehicle::__clear() {
   name.clear();
   hasAC.clear();
 }
-
-Vehicle::~Vehicle() {}
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
   if (!((color == rhs.color))) {
@@ -192,24 +182,23 @@ void swap(Vehicle& a, Vehicle& b) {
   swap(a.hasAC, b.hasAC);
 }
 
-template uint32_t Vehicle::read<>(apache::thrift::BinaryProtocolReader*);
+template void Vehicle::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Vehicle::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Vehicle::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Vehicle::read<>(apache::thrift::CompactProtocolReader*);
+template void Vehicle::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Vehicle::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Vehicle::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 Person::Person() :
-    id(0)
- {}
+      id(0) {}
+
+
+Person::~Person() {}
 
 Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg) :
     id(std::move(id__arg)),
@@ -221,8 +210,7 @@ Person::Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, st
     bestFriend(std::move(bestFriend__arg)),
     petNames(std::move(petNames__arg)),
     afraidOfAnimal(std::move(afraidOfAnimal__arg)),
-    vehicles(std::move(vehicles__arg))
- {}
+    vehicles(std::move(vehicles__arg)) {}
 
 void Person::__clear() {
   // clear all fields
@@ -237,8 +225,6 @@ void Person::__clear() {
   afraidOfAnimal.clear();
   vehicles.clear();
 }
-
-Person::~Person() {}
 
 bool Person::operator==(const Person& rhs) const {
   if (!((id == rhs.id))) {
@@ -332,19 +318,13 @@ void swap(Person& a, Person& b) {
   swap(a.vehicles, b.vehicles);
 }
 
-template uint32_t Person::read<>(apache::thrift::BinaryProtocolReader*);
+template void Person::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Person::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Person::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t Person::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Person::read<>(apache::thrift::CompactProtocolReader*);
+template void Person::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Person::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Person::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

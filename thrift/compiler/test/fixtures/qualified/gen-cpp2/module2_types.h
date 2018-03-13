@@ -6,28 +6,36 @@
  */
 #pragma once
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
 
-#include "module0_types.h"
-#include "module1_types.h"
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_types.h"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_types.h"
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
 
+// END struct_indirection
+// BEGIN forward_declare
 namespace module2 {
-
 class Struct;
 class BigStruct;
+} // module2
+// END forward_declare
+// BEGIN typedefs
 
+// END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
+namespace module2 {
 class Struct final : private apache::thrift::detail::st::ComparisonOperators<Struct> {
  public:
 
   Struct() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -56,7 +64,6 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
    ::module1::Struct second;
 
   struct __isset {
-
     bool first;
     bool second;
   } __isset = {};
@@ -102,17 +109,29 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< Struct >;
 };
 
 void swap(Struct& a, Struct& b);
-extern template uint32_t Struct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void Struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t Struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t Struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t Struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Struct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void Struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t Struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t Struct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // module2
 namespace apache { namespace thrift {
@@ -130,7 +149,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::writ
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::module2::Struct>::read(Protocol* proto,  ::module2::Struct* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::serializedSize(Protocol const* proto,  ::module2::Struct const* obj) {
@@ -143,13 +162,12 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::seri
 
 }} // apache::thrift
 namespace module2 {
-
 class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<BigStruct> {
  public:
 
   BigStruct() :
       id(0) {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   BigStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -178,7 +196,6 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   int32_t id;
 
   struct __isset {
-
     bool s;
     bool id;
   } __isset = {};
@@ -225,17 +242,29 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< BigStruct >;
 };
 
 void swap(BigStruct& a, BigStruct& b);
-extern template uint32_t BigStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void BigStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t BigStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t BigStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t BigStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void BigStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t BigStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t BigStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BigStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t BigStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // module2
 namespace apache { namespace thrift {
@@ -253,7 +282,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::w
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::module2::BigStruct>::read(Protocol* proto,  ::module2::BigStruct* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::serializedSize(Protocol const* proto,  ::module2::BigStruct const* obj) {
@@ -265,6 +294,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::s
 }
 
 }} // apache::thrift
-namespace module2 {
-
-} // module2

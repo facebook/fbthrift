@@ -95,6 +95,11 @@ folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClien
   return future_bounce_map(rpcOptions, m);
 }
 
+folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_bounce_map(rpcOptions, m);
+}
+
 folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   folly::Promise< ::apache::thrift::fixtures::types::SomeMap> _promise;
   auto _future = _promise.getFuture();
@@ -103,12 +108,20 @@ folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClien
   return _future;
 }
 
+folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+  return future_bounce_map(rpcOptions, m).semi();
+}
+
 folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   folly::Promise<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::apache::thrift::fixtures::types::SomeMap>>(std::move(_promise), recv_wrapped_bounce_map, channel_);
   bounce_map(rpcOptions, std::move(callback), m);
   return _future;
+}
+
+folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+  return SomeServiceAsyncClient::header_future_bounce_map(rpcOptions, m).semi();
 }
 
 void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {

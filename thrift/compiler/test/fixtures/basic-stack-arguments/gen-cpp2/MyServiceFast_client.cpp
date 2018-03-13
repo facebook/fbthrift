@@ -147,6 +147,11 @@ folly::Future<bool> MyServiceFastAsyncClient::future_hasDataById(int64_t id) {
   return future_hasDataById(rpcOptions, id);
 }
 
+folly::SemiFuture<bool> MyServiceFastAsyncClient::semifuture_hasDataById(int64_t id) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_hasDataById(rpcOptions, id);
+}
+
 folly::Future<bool> MyServiceFastAsyncClient::future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
@@ -155,12 +160,20 @@ folly::Future<bool> MyServiceFastAsyncClient::future_hasDataById(apache::thrift:
   return _future;
 }
 
+folly::SemiFuture<bool> MyServiceFastAsyncClient::semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  return future_hasDataById(rpcOptions, id).semi();
+}
+
 folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   folly::Promise<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<bool>>(std::move(_promise), recv_wrapped_hasDataById, channel_);
   hasDataById(rpcOptions, std::move(callback), id);
   return _future;
+}
+
+folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  return MyServiceFastAsyncClient::header_future_hasDataById(rpcOptions, id).semi();
 }
 
 void MyServiceFastAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -271,6 +284,11 @@ folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(int64_t 
   return future_getDataById(rpcOptions, id);
 }
 
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getDataById(int64_t id) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_getDataById(rpcOptions, id);
+}
+
 folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
@@ -279,12 +297,20 @@ folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(apache::
   return _future;
 }
 
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  return future_getDataById(rpcOptions, id).semi();
+}
+
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_getDataById, channel_);
   getDataById(rpcOptions, std::move(callback), id);
   return _future;
+}
+
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  return MyServiceFastAsyncClient::header_future_getDataById(rpcOptions, id).semi();
 }
 
 void MyServiceFastAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -393,6 +419,11 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(int64_t 
   return future_putDataById(rpcOptions, id, data);
 }
 
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(int64_t id, const std::string& data) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_putDataById(rpcOptions, id, data);
+}
+
 folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
@@ -401,12 +432,20 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::
   return _future;
 }
 
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  return future_putDataById(rpcOptions, id, data).semi();
+}
+
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_putDataById, channel_);
   putDataById(rpcOptions, std::move(callback), id, data);
   return _future;
+}
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  return MyServiceFastAsyncClient::header_future_putDataById(rpcOptions, id, data).semi();
 }
 
 void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
@@ -504,12 +543,21 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(int64_t 
   return future_lobDataById(rpcOptions, id, data);
 }
 
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(int64_t id, const std::string& data) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_lobDataById(rpcOptions, id, data);
+}
+
 folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
   lobDataById(rpcOptions, std::move(callback), id, data);
   return _future;
+}
+
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  return future_lobDataById(rpcOptions, id, data);
 }
 
 void MyServiceFastAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {

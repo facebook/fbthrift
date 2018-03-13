@@ -6,19 +6,13 @@
  */
 #pragma once
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
-
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
-
+// BEGIN declare_enums
 namespace cpp2 {
-
-class MyStruct;
 
 enum class MyEnum {
   MyValue1 = 0,
@@ -29,14 +23,20 @@ using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum, M
 extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
 extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 
+
+
 } // cpp2
 namespace std {
+
 
 template<> struct hash<typename  ::cpp2::MyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnum> {};
 template<> struct equal_to<typename  ::cpp2::MyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnum> {};
 
+
 } // std
+
 namespace apache { namespace thrift {
+
 
 template <> struct TEnumDataStorage< ::cpp2::MyEnum>;
 template <> const char* TEnumTraits< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value);
@@ -50,15 +50,31 @@ template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max()
   return  ::cpp2::MyEnum::MyValue2;
 }
 
-}} // apache::thrift
-namespace cpp2 {
 
+}} // apache::thrift
+
+
+// END declare_enums
+// BEGIN struct_indirection
+
+// END struct_indirection
+// BEGIN forward_declare
+namespace cpp2 {
+class MyStruct;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+
+// END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
+namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() :
       MyIntField(0) {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -87,7 +103,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   std::string MyStringField;
 
   struct __isset {
-
     bool MyIntField;
     bool MyStringField;
   } __isset = {};
@@ -140,17 +155,29 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
 };
 
 void swap(MyStruct& a, MyStruct& b);
-extern template uint32_t MyStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t MyStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -168,7 +195,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::write
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::MyStruct>::read(Protocol* proto,  ::cpp2::MyStruct* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::serializedSize(Protocol const* proto,  ::cpp2::MyStruct const* obj) {
@@ -180,6 +207,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::seria
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2
