@@ -37,7 +37,7 @@ class SemiStream {
   template <typename U>
   SemiStream<U> map(folly::Function<U(T&&)>) &&;
 
-  Stream<T> via(folly::Executor*) &&;
+  Stream<T> via(folly::SequencedExecutor*) &&;
 
  private:
   template <typename U>

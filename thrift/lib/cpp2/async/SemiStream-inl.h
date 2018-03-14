@@ -40,7 +40,7 @@ SemiStream<U> SemiStream<T>::map(folly::Function<U(T&&)> mapFunc) && {
 }
 
 template <typename T>
-Stream<T> SemiStream<T>::via(folly::Executor* executor) && {
+Stream<T> SemiStream<T>::via(folly::SequencedExecutor* executor) && {
   auto impl = std::move(impl_);
   impl->observeVia(executor);
   for (auto& mapFunc : mapFuncs_) {

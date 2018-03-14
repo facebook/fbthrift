@@ -81,10 +81,10 @@ class YarplStreamImpl : public StreamImplIf {
     flowable_->subscribe(
         std::make_shared<SubscriberAdaptor>(std::move(subscriber)));
   }
-  void observeVia(folly::Executor* executor) {
+  void observeVia(folly::SequencedExecutor* executor) {
     flowable_ = flowable_->observeOn(*executor);
   }
-  void subscribeVia(folly::Executor* executor) {
+  void subscribeVia(folly::SequencedExecutor* executor) {
     flowable_ = flowable_->subscribeOn(*executor);
   }
 
@@ -96,7 +96,7 @@ class YarplStreamImpl : public StreamImplIf {
 template <typename T>
 Stream<T> toStream(
     std::shared_ptr<yarpl::flowable::Flowable<T>> flowable,
-    folly::Executor* executor) {
+    folly::SequencedExecutor* executor) {
   return Stream<T>::create(
       std::make_unique<detail::YarplStreamImpl>(
           flowable->map([](T&& value) -> std::unique_ptr<detail::ValueIf> {
