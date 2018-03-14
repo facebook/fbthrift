@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <folly/Benchmark.h>
 #include <folly/Optional.h>
 #include <folly/Conv.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
@@ -323,11 +322,4 @@ TEST(Frozen, SpillBug) {
   EXPECT_EQ(distance(fmaps[0].equal_range(3)), 0);
   EXPECT_EQ(distance(fmaps[0].equal_range(-1)), 0);
   EXPECT_EQ(distance(fmaps[1].equal_range(-1)), 1);
-}
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  return RUN_ALL_TESTS();
 }

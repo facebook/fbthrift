@@ -178,10 +178,3 @@ TEST(Frozen, FreezeDataToString) {
   EXPECT_EQ(view[1], "123");
   EXPECT_EQ(view[2], "xyz");
 }
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  return RUN_ALL_TESTS();
-}

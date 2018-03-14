@@ -289,6 +289,7 @@ benchmarkLookup(hashMap_i64)                                51.68us   19.35K
 benchmarkLookup(frozenHashMap_i64)                61.69%    83.77us   11.94K
 ============================================================================
 #endif
+
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);

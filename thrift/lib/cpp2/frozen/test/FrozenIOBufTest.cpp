@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <folly/Benchmark.h>
 #include <folly/Memory.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp/Binary_layouts.h>
@@ -66,11 +65,4 @@ TEST(FrozenIOBuf, IOBufChain) {
   auto combined = fb2.iobuf();
   EXPECT_TRUE(combined.startsWith(testRange));
   EXPECT_TRUE(combined.endsWith(test2Range));
-}
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  return RUN_ALL_TESTS();
 }

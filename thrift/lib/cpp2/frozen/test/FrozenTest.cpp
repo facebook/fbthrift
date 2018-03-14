@@ -466,10 +466,3 @@ TEST(Frozen, Bundled) {
   EXPECT_EQ(47, *s.findFirstOfType<int>());
   EXPECT_EQ(nullptr, s.findFirstOfType<std::string>());
 }
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  return RUN_ALL_TESTS();
-}

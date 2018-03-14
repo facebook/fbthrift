@@ -67,10 +67,3 @@ INSTANTIATE_TEST_CASE_P(
     AllCases,
     CompatibilityTest,
     ::testing::ValuesIn(Compatibility_constants::kTestCases()));
-
-int main(int argc, char** argv) {
-  google::InitGoogleLogging(argv[0]);
-  testing::InitGoogleTest(&argc, argv);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-  return RUN_ALL_TESTS();
-}
