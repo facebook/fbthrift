@@ -664,8 +664,8 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
  public:
 
   MyStructWithForwardRefEnum() :
-      a(static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("NONZERO")),
-      b(static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("MyForwardRefEnum.NONZERO")) {}
+      a( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO),
+      b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {}
   // FragileConstructor for use in initialization lists only.
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>

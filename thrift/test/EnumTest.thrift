@@ -54,3 +54,13 @@ enum MyEnumUnscoped {
   MEU_A = 4,
   MEU_B = 3,
 } (cpp.deprecated_enum_unscoped)
+
+struct MyStructWithForwardRefEnum {
+  1: MyForwardRefEnum a = NONZERO,
+  2: MyForwardRefEnum b = MyForwardRefEnum.NONZERO,
+}
+
+enum MyForwardRefEnum {
+  ZERO = 0,
+  NONZERO = 12,
+}

@@ -36,6 +36,8 @@ class mutator : virtual public visitor {
  private:
   template <typename T, typename... Args>
   friend std::unique_ptr<T> make_mutator(Args&&...);
+
+  t_program* program_;
 };
 
 template <typename T, typename... Args>

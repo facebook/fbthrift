@@ -376,8 +376,8 @@ MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileCo
 
 void MyStructWithForwardRefEnum::__clear() {
   // clear all fields
-  a = static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("NONZERO");
-  b = static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("MyForwardRefEnum.NONZERO");
+  a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
   __isset = {};
 }
 

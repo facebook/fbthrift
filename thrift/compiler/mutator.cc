@@ -68,7 +68,8 @@ static void fill_mutators(mutator_list& ms) {
 
 }
 
-bool mutator::visit(t_program* const /* program */) {
+bool mutator::visit(t_program* const program) {
+  program_ = program;
   return true;
 }
 
@@ -116,6 +117,23 @@ void mutator::traverse_field(
     value->set_is_enum();
     auto enm = dynamic_cast<t_enum const*>(type);
     value->set_enum(enm);
+    if (value->get_type() == t_const_value::CV_STRING) {
+      // The enum was defined after the struct field with that type was declared
+      // so the field default value, if present, was treated as a string rather
+      // than resolving to the enum constant in the parser
+      // So we have to resolve the string to the enum constant here instead
+      auto str = value->get_string();
+      auto constant = program_->scope()->get_constant(str);
+      if (!constant) {
+        auto full_str = program_->get_name() + "." + str;
+        constant = program_->scope()->get_constant(full_str);
+      }
+      if (!constant) {
+        throw std::runtime_error(
+            std::string("type error: no matching constant: ") + str);
+      }
+      *value = *constant->get_value();
+    }
     if (enm->find_value(value->get_integer())) {
       value->set_enum_value(enm->find_value(value->get_integer()));
     }

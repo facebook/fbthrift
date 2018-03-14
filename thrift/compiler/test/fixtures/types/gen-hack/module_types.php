@@ -340,12 +340,12 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
 
   public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null  ) {
     if ($a === null) {
-      $this->a = MyForwardRefEnum::coerce(-4702111234474983746);
+      $this->a = MyForwardRefEnum::NONZERO;
     } else {
       $this->a = $a;
     }
     if ($b === null) {
-      $this->b = MyForwardRefEnum::coerce(-4702111234474983746);
+      $this->b = MyForwardRefEnum::NONZERO;
     } else {
       $this->b = $b;
     }

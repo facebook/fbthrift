@@ -900,8 +900,8 @@ uint32_t MyStructWithForwardRefEnum::read(apache::thrift::protocol::TProtocol* i
 }
 
 void MyStructWithForwardRefEnum::__clear() {
-  a = MyForwardRefEnum(-4702111234474983746);
-  b = MyForwardRefEnum(-4702111234474983746);
+  a = MyForwardRefEnum::NONZERO;
+  b = MyForwardRefEnum::NONZERO;
   __isset.__clear();
 }
 uint32_t MyStructWithForwardRefEnum::write(apache::thrift::protocol::TProtocol* oprot) const {

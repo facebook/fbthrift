@@ -88,3 +88,9 @@ TEST(EnumTest, test_enum_parse) {
   EXPECT_FALSE(tryParseEnum("FOO_ME2_0", &e2));
   EXPECT_FALSE(tryParseEnum("BAR_ME3_N2", &e3));
 }
+
+TEST(EnumTest, test_enum_forward_reference) {
+  MyStructWithForwardRefEnum obj;
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.a);
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.b);
+}

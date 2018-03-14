@@ -412,7 +412,7 @@ class MyStructWithForwardRefEnum final : public apache::thrift::TStructType<MySt
 
   static const uint64_t _reflection_id = 4311102400659715084U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
-  MyStructWithForwardRefEnum() : a(MyForwardRefEnum(-4702111234474983746)), b(MyForwardRefEnum(-4702111234474983746)) {
+  MyStructWithForwardRefEnum() : a(MyForwardRefEnum::NONZERO), b(MyForwardRefEnum::NONZERO) {
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,

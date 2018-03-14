@@ -112,3 +112,9 @@ TEST(EnumTestCpp2, test_unscoped) {
   EXPECT_EQ(MEU_A, value) << "unscoped usage";
   EXPECT_EQ(int(MEU_A), value) << "implicit conversion";
 }
+
+TEST(EnumTest, test_enum_forward_reference) {
+  MyStructWithForwardRefEnum obj;
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.a);
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.b);
+}
