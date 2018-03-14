@@ -670,7 +670,7 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   const  ::cpp2::MyField& get_f() const&;
    ::cpp2::MyField get_f() &&;
 
-  template <typename T_StructWithUnion_f_struct_setter>
+  template <typename T_StructWithUnion_f_struct_setter =  ::cpp2::MyField>
    ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
     f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
     __isset.f = true;
@@ -774,7 +774,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
 
-  template <typename T_RecursiveStruct_mes_struct_setter>
+  template <typename T_RecursiveStruct_mes_struct_setter = std::vector< ::cpp2::RecursiveStruct>>
   std::vector< ::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
     mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
     __isset.mes = true;

@@ -191,7 +191,7 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
     return std::move(title);
   }
 
-  template <typename T_Internship_title_struct_setter>
+  template <typename T_Internship_title_struct_setter = std::string>
   std::string& set_title(T_Internship_title_struct_setter&& title_) {
     title = std::forward<T_Internship_title_struct_setter>(title_);
     __isset.title = true;
@@ -584,7 +584,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
     return std::move(b);
   }
 
-  template <typename T_struct1_b_struct_setter>
+  template <typename T_struct1_b_struct_setter = std::string>
   std::string& set_b(T_struct1_b_struct_setter&& b_) {
     b = std::forward<T_struct1_b_struct_setter>(b_);
     __isset.b = true;
@@ -747,7 +747,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
     return std::move(b);
   }
 
-  template <typename T_struct2_b_struct_setter>
+  template <typename T_struct2_b_struct_setter = std::string>
   std::string& set_b(T_struct2_b_struct_setter&& b_) {
     b = std::forward<T_struct2_b_struct_setter>(b_);
     __isset.b = true;
@@ -756,7 +756,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   const  ::cpp2::struct1& get_c() const&;
    ::cpp2::struct1 get_c() &&;
 
-  template <typename T_struct2_c_struct_setter>
+  template <typename T_struct2_c_struct_setter =  ::cpp2::struct1>
    ::cpp2::struct1& set_c(T_struct2_c_struct_setter&& c_) {
     c = std::forward<T_struct2_c_struct_setter>(c_);
     __isset.c = true;
@@ -765,7 +765,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   const std::vector<int32_t>& get_d() const&;
   std::vector<int32_t> get_d() &&;
 
-  template <typename T_struct2_d_struct_setter>
+  template <typename T_struct2_d_struct_setter = std::vector<int32_t>>
   std::vector<int32_t>& set_d(T_struct2_d_struct_setter&& d_) {
     d = std::forward<T_struct2_d_struct_setter>(d_);
     __isset.d = true;
@@ -906,7 +906,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
     return std::move(a);
   }
 
-  template <typename T_struct3_a_struct_setter>
+  template <typename T_struct3_a_struct_setter = std::string>
   std::string& set_a(T_struct3_a_struct_setter&& a_) {
     a = std::forward<T_struct3_a_struct_setter>(a_);
     __isset.a = true;
@@ -925,7 +925,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   const  ::cpp2::struct2& get_c() const&;
    ::cpp2::struct2 get_c() &&;
 
-  template <typename T_struct3_c_struct_setter>
+  template <typename T_struct3_c_struct_setter =  ::cpp2::struct2>
    ::cpp2::struct2& set_c(T_struct3_c_struct_setter&& c_) {
     c = std::forward<T_struct3_c_struct_setter>(c_);
     __isset.c = true;

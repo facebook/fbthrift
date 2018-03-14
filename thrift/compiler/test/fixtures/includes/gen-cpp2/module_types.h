@@ -81,7 +81,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;
 
-  template <typename T_MyStruct_MyIncludedField_struct_setter>
+  template <typename T_MyStruct_MyIncludedField_struct_setter =  ::cpp2::Included>
    ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
     MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
     __isset.MyIncludedField = true;
@@ -90,7 +90,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   const  ::cpp2::Included& get_MyOtherIncludedField() const&;
    ::cpp2::Included get_MyOtherIncludedField() &&;
 
-  template <typename T_MyStruct_MyOtherIncludedField_struct_setter>
+  template <typename T_MyStruct_MyOtherIncludedField_struct_setter =  ::cpp2::Included>
    ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
     MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
     __isset.MyOtherIncludedField = true;

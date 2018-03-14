@@ -123,7 +123,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
     return std::move(strField);
   }
 
-  template <typename T_ModuleA_strField_struct_setter>
+  template <typename T_ModuleA_strField_struct_setter = std::string>
   std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
     strField = std::forward<T_ModuleA_strField_struct_setter>(strField_);
     __isset.strField = true;
@@ -132,7 +132,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   const std::vector<int16_t>& get_listField() const&;
   std::vector<int16_t> get_listField() &&;
 
-  template <typename T_ModuleA_listField_struct_setter>
+  template <typename T_ModuleA_listField_struct_setter = std::vector<int16_t>>
   std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
     __isset.listField = true;
@@ -141,7 +141,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   const std::map<std::string, int32_t>& get_mapField() const&;
   std::map<std::string, int32_t> get_mapField() &&;
 
-  template <typename T_ModuleA_mapField_struct_setter>
+  template <typename T_ModuleA_mapField_struct_setter = std::map<std::string, int32_t>>
   std::map<std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
     __isset.mapField = true;
@@ -392,7 +392,7 @@ class ExceptionA final : private apache::thrift::detail::st::ComparisonOperators
     return std::move(msg);
   }
 
-  template <typename T_ExceptionA_msg_struct_setter>
+  template <typename T_ExceptionA_msg_struct_setter = std::string>
   std::string& set_msg(T_ExceptionA_msg_struct_setter&& msg_) {
     msg = std::forward<T_ExceptionA_msg_struct_setter>(msg_);
     __isset.msg = true;
@@ -535,7 +535,7 @@ class ExceptionB final : private apache::thrift::detail::st::ComparisonOperators
     return std::move(msg);
   }
 
-  template <typename T_ExceptionB_msg_struct_setter>
+  template <typename T_ExceptionB_msg_struct_setter = std::string>
   std::string& set_msg(T_ExceptionB_msg_struct_setter&& msg_) {
     msg = std::forward<T_ExceptionB_msg_struct_setter>(msg_);
     __isset.msg = true;

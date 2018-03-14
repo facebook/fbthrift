@@ -64,7 +64,7 @@
   }
 <%/field:optional?%>
 
-  template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
+  template <typename T_<%struct:name%>_<%field:name%>_struct_setter = <% > types/type%>>
   <% > types/type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
     <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
 <%^field:required?%>
@@ -85,7 +85,7 @@
   <% > types/type%> get_<%field:name%>() &&;
 <%/field:optional?%>
 
-  template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
+  template <typename T_<%struct:name%>_<%field:name%>_struct_setter = <% > types/type%>>
   <% > types/type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
     <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
 <%^field:required?%>

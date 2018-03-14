@@ -96,7 +96,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   const  ::cpp2::Foo& get_MyTransitiveField() const&;
    ::cpp2::Foo get_MyTransitiveField() &&;
 
-  template <typename T_Included_MyTransitiveField_struct_setter>
+  template <typename T_Included_MyTransitiveField_struct_setter =  ::cpp2::Foo>
    ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
     __isset.MyTransitiveField = true;

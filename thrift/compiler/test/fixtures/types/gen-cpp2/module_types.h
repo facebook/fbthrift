@@ -212,7 +212,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
     return std::move(field);
   }
 
-  template <typename T_decorated_struct_field_struct_setter>
+  template <typename T_decorated_struct_field_struct_setter = std::string>
   std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
     field = std::forward<T_decorated_struct_field_struct_setter>(field_);
     __isset.field = true;
@@ -382,7 +382,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const std::vector<int32_t>& get_fieldA() const&;
   std::vector<int32_t> get_fieldA() &&;
 
-  template <typename T_ContainerStruct_fieldA_struct_setter>
+  template <typename T_ContainerStruct_fieldA_struct_setter = std::vector<int32_t>>
   std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
@@ -391,7 +391,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const std::list<int32_t>& get_fieldB() const&;
   std::list<int32_t> get_fieldB() &&;
 
-  template <typename T_ContainerStruct_fieldB_struct_setter>
+  template <typename T_ContainerStruct_fieldB_struct_setter = std::list<int32_t>>
   std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
@@ -400,7 +400,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const std::deque<int32_t>& get_fieldC() const&;
   std::deque<int32_t> get_fieldC() &&;
 
-  template <typename T_ContainerStruct_fieldC_struct_setter>
+  template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<int32_t>>
   std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
@@ -409,7 +409,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const folly::fbvector<int32_t>& get_fieldD() const&;
   folly::fbvector<int32_t> get_fieldD() &&;
 
-  template <typename T_ContainerStruct_fieldD_struct_setter>
+  template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<int32_t>>
   folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
@@ -418,7 +418,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const folly::small_vector<int32_t>& get_fieldE() const&;
   folly::small_vector<int32_t> get_fieldE() &&;
 
-  template <typename T_ContainerStruct_fieldE_struct_setter>
+  template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<int32_t>>
   folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
@@ -427,7 +427,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const folly::sorted_vector_set<int32_t>& get_fieldF() const&;
   folly::sorted_vector_set<int32_t> get_fieldF() &&;
 
-  template <typename T_ContainerStruct_fieldF_struct_setter>
+  template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<int32_t>>
   folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
@@ -436,7 +436,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const folly::sorted_vector_map<int32_t, std::string>& get_fieldG() const&;
   folly::sorted_vector_map<int32_t, std::string> get_fieldG() &&;
 
-  template <typename T_ContainerStruct_fieldG_struct_setter>
+  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<int32_t, std::string>>
   folly::sorted_vector_map<int32_t, std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
@@ -445,7 +445,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   const  ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
    ::apache::thrift::fixtures::types::SomeMap get_fieldH() &&;
 
-  template <typename T_ContainerStruct_fieldH_struct_setter>
+  template <typename T_ContainerStruct_fieldH_struct_setter =  ::apache::thrift::fixtures::types::SomeMap>
    ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;

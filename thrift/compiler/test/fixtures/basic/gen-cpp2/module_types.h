@@ -137,7 +137,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return std::move(MyStringField);
   }
 
-  template <typename T_MyStruct_MyStringField_struct_setter>
+  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
   std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
@@ -146,7 +146,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   const  ::cpp2::MyDataItem& get_MyDataField() const&;
    ::cpp2::MyDataItem get_MyDataField() &&;
 
-  template <typename T_MyStruct_MyDataField_struct_setter>
+  template <typename T_MyStruct_MyDataField_struct_setter =  ::cpp2::MyDataItem>
    ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     __isset.MyDataField = true;

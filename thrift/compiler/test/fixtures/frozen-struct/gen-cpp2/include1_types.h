@@ -96,7 +96,7 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
     return std::move(strField);
   }
 
-  template <typename T_IncludedA_strField_struct_setter>
+  template <typename T_IncludedA_strField_struct_setter = std::string>
   std::string& set_strField(T_IncludedA_strField_struct_setter&& strField_) {
     strField = std::forward<T_IncludedA_strField_struct_setter>(strField_);
     __isset.strField = true;

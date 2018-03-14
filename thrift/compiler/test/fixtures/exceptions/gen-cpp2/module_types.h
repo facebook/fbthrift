@@ -159,7 +159,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
     return std::move(message);
   }
 
-  template <typename T_Fiery_message_struct_setter>
+  template <typename T_Fiery_message_struct_setter = std::string>
   std::string& set_message(T_Fiery_message_struct_setter&& message_) {
     message = std::forward<T_Fiery_message_struct_setter>(message_);
     return message;
