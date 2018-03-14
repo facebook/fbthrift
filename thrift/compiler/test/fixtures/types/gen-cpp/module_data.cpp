@@ -16,3 +16,8 @@ constexpr const std::size_t _is_unscopedEnumDataStorage::size;
 constexpr const std::array<is_unscoped, 2> _is_unscopedEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 2> _is_unscopedEnumDataStorage::names;
 }}}} // namespace
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+constexpr const std::size_t _MyForwardRefEnumEnumDataStorage::size;
+constexpr const std::array<MyForwardRefEnum, 2> _MyForwardRefEnumEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 2> _MyForwardRefEnumEnumDataStorage::names;
+}}}} // namespace

@@ -64,6 +64,31 @@ template <> bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::f
 }} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES = _MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap();
+const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES = _MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::size = 2;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::MyForwardRefEnum*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::names);
+template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findName( ::apache::thrift::fixtures::types::MyForwardRefEnum value) {
+  static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(const char* name,  ::apache::thrift::fixtures::types::MyForwardRefEnum* outValue) {
+  static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, std::string field__arg) :
     field(std::move(field__arg)) {
   __isset.field = true;
@@ -338,5 +363,60 @@ template void VirtualStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+}
+
+void MyStructWithForwardRefEnum::__clear() {
+  // clear all fields
+  a = static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("NONZERO");
+  b = static_cast< ::apache::thrift::fixtures::types::MyForwardRefEnum>("MyForwardRefEnum.NONZERO");
+  __isset = {};
+}
+
+bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  return true;
+}
+
+void MyStructWithForwardRefEnum::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+template void MyStructWithForwardRefEnum::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStructWithForwardRefEnum::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStructWithForwardRefEnum::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStructWithForwardRefEnum::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

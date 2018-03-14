@@ -64,6 +64,30 @@ bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(con
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+const typename _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES = _MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap();
+
+const typename _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES = _MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <>const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::size = 2;
+template <>const folly::Range<const  ::apache::thrift::fixtures::types::MyForwardRefEnum*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::names);
+
+template<>
+const char* TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findName( ::apache::thrift::fixtures::types::MyForwardRefEnum value) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template<>
+bool TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(const char* name,  ::apache::thrift::fixtures::types::MyForwardRefEnum* out) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
+}
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 const uint64_t decorated_struct::_reflection_id;
 void decorated_struct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_2133116297910176940(schema);
@@ -787,6 +811,136 @@ void merge(VirtualStruct&& from, VirtualStruct& to) {
   using apache::thrift::merge;
   merge(std::move(from.MyIntField), to.MyIntField);
   to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
+}
+
+const uint64_t MyStructWithForwardRefEnum::_reflection_id;
+void MyStructWithForwardRefEnum::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_4311102400659715084(schema);
+}
+
+bool MyStructWithForwardRefEnum::operator == (const MyStructWithForwardRefEnum & rhs) const {
+  if (!(this->a == rhs.a))
+    return false;
+  if (!(this->b == rhs.b))
+    return false;
+  return true;
+}
+
+void MyStructWithForwardRefEnum::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+};
+
+uint32_t MyStructWithForwardRefEnum::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_4311102400659715084(*schema);
+    iprot->setNextStructType(MyStructWithForwardRefEnum::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast87;
+          xfer += iprot->readI32(ecast87);
+          this->a = (MyForwardRefEnum)ecast87;
+          this->__isset.a = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 2:
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast88;
+          xfer += iprot->readI32(ecast88);
+          this->b = (MyForwardRefEnum)ecast88;
+          this->__isset.b = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void MyStructWithForwardRefEnum::__clear() {
+  a = MyForwardRefEnum(-4702111234474983746);
+  b = MyForwardRefEnum(-4702111234474983746);
+  __isset.__clear();
+}
+uint32_t MyStructWithForwardRefEnum::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("MyStructWithForwardRefEnum");
+  xfer += oprot->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((int32_t)this->a);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("b", apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((int32_t)this->b);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(MyStructWithForwardRefEnum &a, MyStructWithForwardRefEnum &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const MyStructWithForwardRefEnum& from, MyStructWithForwardRefEnum& to) {
+  using apache::thrift::merge;
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+}
+
+void merge(MyStructWithForwardRefEnum&& from, MyStructWithForwardRefEnum& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
 }
 
 }}}} // namespace

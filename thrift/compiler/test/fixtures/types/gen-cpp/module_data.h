@@ -59,3 +59,23 @@ template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unsco
 };
 }} // apache::thrift
 
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+struct _MyForwardRefEnumEnumDataStorage {
+  using type = MyForwardRefEnum;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<MyForwardRefEnum, 2> values = {{
+    MyForwardRefEnum::ZERO,
+    MyForwardRefEnum::NONZERO,
+  }};
+  static constexpr const std::array<folly::StringPiece, 2> names = {{
+    "ZERO",
+    "NONZERO",
+  }};
+};
+}}}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::MyForwardRefEnum> {
+  using storage_type =  ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage;
+};
+}} // apache::thrift
+

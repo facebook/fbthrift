@@ -239,9 +239,14 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         bint operator==(cis_unscoped&)
     cis_unscoped is_unscoped__hello "apache::thrift::fixtures::types::is_unscoped::hello"
     cis_unscoped is_unscoped__world "apache::thrift::fixtures::types::is_unscoped::world"
+    cdef cppclass cMyForwardRefEnum "apache::thrift::fixtures::types::MyForwardRefEnum":
+        bint operator==(cMyForwardRefEnum&)
+    cMyForwardRefEnum MyForwardRefEnum__ZERO "apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
+    cMyForwardRefEnum MyForwardRefEnum__NONZERO "apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
 
 cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value)
 cdef cis_unscoped is_unscoped_to_cpp(value)
+cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache::thrift::fixtures::types":
     # Forward Declaration
@@ -250,6 +255,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct"
     # Forward Declaration
     cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct"
+    # Forward Declaration
+    cdef cppclass cMyStructWithForwardRefEnum "apache::thrift::fixtures::types::MyStructWithForwardRefEnum"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -296,6 +303,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         int64_t MyIntField
         cVirtualStruct__isset __isset
 
+    cdef cppclass cMyStructWithForwardRefEnum__isset "apache::thrift::fixtures::types::MyStructWithForwardRefEnum::__isset":
+        bint a
+        bint b
+
+    cdef cppclass cMyStructWithForwardRefEnum "apache::thrift::fixtures::types::MyStructWithForwardRefEnum":
+        cMyStructWithForwardRefEnum() except +
+        cMyStructWithForwardRefEnum(const cMyStructWithForwardRefEnum&) except +
+        bint operator==(cMyStructWithForwardRefEnum&)
+        cMyForwardRefEnum a
+        cMyForwardRefEnum b
+        cMyStructWithForwardRefEnum__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -307,11 +326,15 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cVirtualStruct] move(unique_ptr[cVirtualStruct])
     cdef shared_ptr[cVirtualStruct] move_shared "std::move"(shared_ptr[cVirtualStruct])
     cdef unique_ptr[cVirtualStruct] move_unique "std::move"(unique_ptr[cVirtualStruct])
+    cdef shared_ptr[cMyStructWithForwardRefEnum] move(unique_ptr[cMyStructWithForwardRefEnum])
+    cdef shared_ptr[cMyStructWithForwardRefEnum] move_shared "std::move"(shared_ptr[cMyStructWithForwardRefEnum])
+    cdef unique_ptr[cMyStructWithForwardRefEnum] move_unique "std::move"(unique_ptr[cMyStructWithForwardRefEnum])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
     cdef shared_ptr[const cContainerStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ContainerStruct>"(shared_ptr[cContainerStruct])
     cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
+    cdef shared_ptr[const cMyStructWithForwardRefEnum] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStructWithForwardRefEnum>"(shared_ptr[cMyStructWithForwardRefEnum])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -378,6 +401,24 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct])
+
+# Forward Definition of the cython struct
+cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct)
+
+cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyStructWithForwardRefEnum] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cMyStructWithForwardRefEnum] _make_instance(
+        cMyStructWithForwardRefEnum* base_instance,
+        object a,
+        object b
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructWithForwardRefEnum])
 
 
 cdef class std_unordered_map__Map__i32_string:

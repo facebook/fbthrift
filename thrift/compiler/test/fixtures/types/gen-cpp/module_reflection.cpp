@@ -150,6 +150,47 @@ void reflectionInitializer_6433147857901895308(::apache::thrift::reflection::Sch
   }
 }
 
+// Reflection initializer for enum module.MyForwardRefEnum
+static void reflectionInitializer_11057525912578401640(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11057525912578401640U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "enum module.MyForwardRefEnum";
+  schema.names[dt.name] = id;
+  dt.__isset.enumValues = true;
+  static const std::pair<const char*, int32_t> enumValues[] = {
+    {"NONZERO", 12},
+    {"ZERO", 0},
+  };
+  dt.enumValues.insert(enumValues, enumValues + 2);
+}
+
+static void  reflectionInitializer_11057525912578401640(::apache::thrift::reflection::Schema&);  // enum module.MyForwardRefEnum
+// Reflection initializer for struct module.MyStructWithForwardRefEnum
+void reflectionInitializer_4311102400659715084(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4311102400659715084U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.MyStructWithForwardRefEnum";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 11057525912578401640U;
+    f.name = "a";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 11057525912578401640U;
+    f.name = "b";
+    f.order = 1;
+  }
+  reflectionInitializer_11057525912578401640(schema);  // enum module.MyForwardRefEnum
+}
+
 static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
 // Reflection initializer for struct module.SomeService_bounce_map_args
 void reflectionInitializer_8067468913239303596(::apache::thrift::reflection::Schema& schema) {

@@ -27,4 +27,14 @@ constexpr const std::array<folly::StringPiece, 2> _is_unscopedEnumDataStorage::n
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+constexpr const std::size_t _MyForwardRefEnumEnumDataStorage::size;
+constexpr const std::array<MyForwardRefEnum, 2> _MyForwardRefEnumEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 2> _MyForwardRefEnumEnumDataStorage::names;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+}} // apache::thrift
 

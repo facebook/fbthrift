@@ -18,6 +18,8 @@ void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Sc
 
 void reflectionInitializer_6433147857901895308(::apache::thrift::reflection::Schema& schema);
 
+void reflectionInitializer_4311102400659715084(::apache::thrift::reflection::Schema& schema);
+
 void reflectionInitializer_8067468913239303596(::apache::thrift::reflection::Schema& schema);
 
 void reflectionInitializer_13692909882459418892(::apache::thrift::reflection::Schema& schema);

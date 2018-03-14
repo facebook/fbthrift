@@ -57,27 +57,27 @@ uint32_t SomeService_bounce_map_args::read(apache::thrift::protocol::TProtocol* 
         if (_ftype == apache::thrift::protocol::T_MAP) {
           {
             this->m.clear();
-            uint32_t _size86;
-            bool _sizeUnknown87;
-            apache::thrift::protocol::TType _ktype88 = apache::thrift::protocol::T_STOP;
-            apache::thrift::protocol::TType _vtype89 = apache::thrift::protocol::T_STOP;
-            xfer += iprot->readMapBegin(_ktype88, _vtype89, _size86, _sizeUnknown87);
-            if (!_sizeUnknown87) {
-              uint32_t _i92;
-              for (_i92 = 0; _i92 < _size86; ++_i92)
+            uint32_t _size89;
+            bool _sizeUnknown90;
+            apache::thrift::protocol::TType _ktype91 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype92 = apache::thrift::protocol::T_STOP;
+            xfer += iprot->readMapBegin(_ktype91, _vtype92, _size89, _sizeUnknown90);
+            if (!_sizeUnknown90) {
+              uint32_t _i95;
+              for (_i95 = 0; _i95 < _size89; ++_i95)
               {
-                int32_t _key93;
-                xfer += iprot->readI32(_key93);
-                std::string& _val94 = this->m[_key93];
-                xfer += iprot->readString(_val94);
+                int32_t _key96;
+                xfer += iprot->readI32(_key96);
+                std::string& _val97 = this->m[_key96];
+                xfer += iprot->readString(_val97);
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key95;
-                xfer += iprot->readI32(_key95);
-                std::string& _val96 = this->m[_key95];
-                xfer += iprot->readString(_val96);
+                int32_t _key98;
+                xfer += iprot->readI32(_key98);
+                std::string& _val99 = this->m[_key98];
+                xfer += iprot->readString(_val99);
               }
             }
             xfer += iprot->readMapEnd();
@@ -105,11 +105,11 @@ uint32_t SomeService_bounce_map_args::write(apache::thrift::protocol::TProtocol*
   xfer += oprot->writeFieldBegin("m", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->m.size());
-    std::unordered_map<int32_t, std::string> ::const_iterator _iter97;
-    for (_iter97 = this->m.begin(); _iter97 != this->m.end(); ++_iter97)
+    std::unordered_map<int32_t, std::string> ::const_iterator _iter100;
+    for (_iter100 = this->m.begin(); _iter100 != this->m.end(); ++_iter100)
     {
-      xfer += oprot->writeI32(_iter97->first);
-      xfer += oprot->writeString(_iter97->second);
+      xfer += oprot->writeI32(_iter100->first);
+      xfer += oprot->writeString(_iter100->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -141,11 +141,11 @@ uint32_t SomeService_bounce_map_pargs::write(apache::thrift::protocol::TProtocol
   xfer += oprot->writeFieldBegin("m", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, (*(this->m)).size());
-    std::unordered_map<int32_t, std::string> ::const_iterator _iter98;
-    for (_iter98 = (*(this->m)).begin(); _iter98 != (*(this->m)).end(); ++_iter98)
+    std::unordered_map<int32_t, std::string> ::const_iterator _iter101;
+    for (_iter101 = (*(this->m)).begin(); _iter101 != (*(this->m)).end(); ++_iter101)
     {
-      xfer += oprot->writeI32(_iter98->first);
-      xfer += oprot->writeString(_iter98->second);
+      xfer += oprot->writeI32(_iter101->first);
+      xfer += oprot->writeString(_iter101->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -201,27 +201,27 @@ uint32_t SomeService_bounce_map_presult::read(apache::thrift::protocol::TProtoco
         if (_ftype == apache::thrift::protocol::T_MAP) {
           {
             (*(this->success)).clear();
-            uint32_t _size99;
-            bool _sizeUnknown100;
-            apache::thrift::protocol::TType _ktype101 = apache::thrift::protocol::T_STOP;
-            apache::thrift::protocol::TType _vtype102 = apache::thrift::protocol::T_STOP;
-            xfer += iprot->readMapBegin(_ktype101, _vtype102, _size99, _sizeUnknown100);
-            if (!_sizeUnknown100) {
-              uint32_t _i105;
-              for (_i105 = 0; _i105 < _size99; ++_i105)
+            uint32_t _size102;
+            bool _sizeUnknown103;
+            apache::thrift::protocol::TType _ktype104 = apache::thrift::protocol::T_STOP;
+            apache::thrift::protocol::TType _vtype105 = apache::thrift::protocol::T_STOP;
+            xfer += iprot->readMapBegin(_ktype104, _vtype105, _size102, _sizeUnknown103);
+            if (!_sizeUnknown103) {
+              uint32_t _i108;
+              for (_i108 = 0; _i108 < _size102; ++_i108)
               {
-                int32_t _key106;
-                xfer += iprot->readI32(_key106);
-                std::string& _val107 = (*(this->success))[_key106];
-                xfer += iprot->readString(_val107);
+                int32_t _key109;
+                xfer += iprot->readI32(_key109);
+                std::string& _val110 = (*(this->success))[_key109];
+                xfer += iprot->readString(_val110);
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key108;
-                xfer += iprot->readI32(_key108);
-                std::string& _val109 = (*(this->success))[_key108];
-                xfer += iprot->readString(_val109);
+                int32_t _key111;
+                xfer += iprot->readI32(_key111);
+                std::string& _val112 = (*(this->success))[_key111];
+                xfer += iprot->readString(_val112);
               }
             }
             xfer += iprot->readMapEnd();
@@ -253,11 +253,11 @@ uint32_t SomeService_bounce_map_presult::write(apache::thrift::protocol::TProtoc
     xfer += oprot->writeFieldBegin("success", apache::thrift::protocol::T_MAP, 0);
     {
       xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, (*(this->success)).size());
-      std::unordered_map<int32_t, std::string> ::const_iterator _iter110;
-      for (_iter110 = (*(this->success)).begin(); _iter110 != (*(this->success)).end(); ++_iter110)
+      std::unordered_map<int32_t, std::string> ::const_iterator _iter113;
+      for (_iter113 = (*(this->success)).begin(); _iter113 != (*(this->success)).end(); ++_iter113)
       {
-        xfer += oprot->writeI32(_iter110->first);
-        xfer += oprot->writeString(_iter110->second);
+        xfer += oprot->writeI32(_iter113->first);
+        xfer += oprot->writeString(_iter113->second);
       }
       xfer += oprot->writeMapEnd();
     }
@@ -319,9 +319,9 @@ void SomeServiceClient::send_bounce_map(const  ::apache::thrift::fixtures::types
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes111 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes114 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes111);
+  if (ctx) ctx->postWrite(_bytes114);
   return;
 }
 

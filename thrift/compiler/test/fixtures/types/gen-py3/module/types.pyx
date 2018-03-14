@@ -85,6 +85,27 @@ cdef inline cis_unscoped is_unscoped_to_cpp(value):
         return is_unscoped__hello
     elif cvalue == 1:
         return is_unscoped__world
+class MyForwardRefEnum(__enum.Enum):
+    ZERO = 0
+    NONZERO = 12
+
+    __hash__ = __enum.Enum.__hash__
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self.value == other.value
+
+    def __int__(self):
+        return self.value
+
+cdef inline cMyForwardRefEnum MyForwardRefEnum_to_cpp(value):
+    cdef int cvalue = value.value
+    if cvalue == 0:
+        return MyForwardRefEnum__ZERO
+    elif cvalue == 12:
+        return MyForwardRefEnum__NONZERO
 
 
 cdef cdecorated_struct _decorated_struct_defaults = cdecorated_struct()
@@ -670,6 +691,175 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (VirtualStruct, serialize(self)))
+
+
+cdef cMyStructWithForwardRefEnum _MyStructWithForwardRefEnum_defaults = cMyStructWithForwardRefEnum()
+
+cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
+
+    def __init__(
+        MyStructWithForwardRefEnum self, *,
+        a=None,
+        b=None
+    ):
+        if a is not None:
+            if not isinstance(a, MyForwardRefEnum):
+                raise TypeError(f'field a value: { a !r} is not of the enum type { MyForwardRefEnum }.')
+
+        if b is not None:
+            if not isinstance(b, MyForwardRefEnum):
+                raise TypeError(f'field b value: { b !r} is not of the enum type { MyForwardRefEnum }.')
+
+        self._cpp_obj = move(MyStructWithForwardRefEnum._make_instance(
+          NULL,
+          a,
+          b,
+        ))
+
+    def __call__(
+        MyStructWithForwardRefEnum self,
+        a=__NOTSET,
+        b=__NOTSET
+    ):
+        changes = any((
+            a is not __NOTSET,
+
+            b is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, MyForwardRefEnum):
+                raise TypeError(f'field a value: { a !r} is not of the enum type { MyForwardRefEnum }.')
+
+        if None is not b is not __NOTSET:
+            if not isinstance(b, MyForwardRefEnum):
+                raise TypeError(f'field b value: { b !r} is not of the enum type { MyForwardRefEnum }.')
+
+        inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
+        inst._cpp_obj = move(MyStructWithForwardRefEnum._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyStructWithForwardRefEnum] _make_instance(
+        cMyStructWithForwardRefEnum* base_instance,
+        object a,
+        object b
+    ) except *:
+        cdef unique_ptr[cMyStructWithForwardRefEnum] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStructWithForwardRefEnum](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStructWithForwardRefEnum]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if a is None:
+                deref(c_inst).a = _MyStructWithForwardRefEnum_defaults.a
+                deref(c_inst).__isset.a = False
+                pass
+            elif a is __NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _MyStructWithForwardRefEnum_defaults.b
+                deref(c_inst).__isset.b = False
+                pass
+            elif b is __NOTSET:
+                b = None
+
+        if a is not None:
+            deref(c_inst).a = MyForwardRefEnum_to_cpp(a)
+            deref(c_inst).__isset.a = True
+        if b is not None:
+            deref(c_inst).b = MyForwardRefEnum_to_cpp(b)
+            deref(c_inst).__isset.b = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+
+    def __bool__(self):
+        return True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStructWithForwardRefEnum] cpp_obj):
+        inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+
+        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a))
+
+    @property
+    def b(self):
+
+        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b))
+
+
+    def __hash__(MyStructWithForwardRefEnum self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            ))
+        return self.__hash
+
+    def __repr__(MyStructWithForwardRefEnum self):
+        return f'MyStructWithForwardRefEnum(a={repr(self.a)}, b={repr(self.b)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, MyStructWithForwardRefEnum) and
+                isinstance(other, MyStructWithForwardRefEnum)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cMyStructWithForwardRefEnum cself = deref((<MyStructWithForwardRefEnum>self)._cpp_obj)
+        cdef cMyStructWithForwardRefEnum cother = deref((<MyStructWithForwardRefEnum>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(MyStructWithForwardRefEnum self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cMyStructWithForwardRefEnum](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cMyStructWithForwardRefEnum](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cMyStructWithForwardRefEnum](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(MyStructWithForwardRefEnum self, const IOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyStructWithForwardRefEnum]()
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cMyStructWithForwardRefEnum](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cMyStructWithForwardRefEnum](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cMyStructWithForwardRefEnum](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyStructWithForwardRefEnum, serialize(self)))
 
 
 cdef class std_unordered_map__Map__i32_string:

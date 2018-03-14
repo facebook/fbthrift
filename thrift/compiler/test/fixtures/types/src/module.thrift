@@ -38,3 +38,13 @@ service SomeService {
 struct VirtualStruct {
   1: i64 MyIntField,
 } (cpp.virtual)
+
+struct MyStructWithForwardRefEnum {
+  1: MyForwardRefEnum a = NONZERO,
+  2: MyForwardRefEnum b = MyForwardRefEnum.NONZERO,
+}
+
+enum MyForwardRefEnum {
+  ZERO = 0,
+  NONZERO = 12,
+}

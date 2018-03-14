@@ -70,11 +70,37 @@ return  ::apache::thrift::fixtures::types::is_unscoped::world;
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+enum MyForwardRefEnum {
+  ZERO = 0,
+  NONZERO = 12,
+};
+
+using _MyForwardRefEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyForwardRefEnum, int>;
+
+extern const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES;
+
+extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES;
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::MyForwardRefEnum>;
+template <> inline constexpr  ::apache::thrift::fixtures::types::MyForwardRefEnum TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::min() {
+return  ::apache::thrift::fixtures::types::MyForwardRefEnum::ZERO;
+}
+template <> inline constexpr  ::apache::thrift::fixtures::types::MyForwardRefEnum TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::max() {
+return  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+}
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class decorated_struct;
 
 class ContainerStruct;
 
 class VirtualStruct;
+
+class MyStructWithForwardRefEnum;
 
 void swap(decorated_struct &a, decorated_struct &b);
 
@@ -379,5 +405,79 @@ class VirtualStruct : public apache::thrift::TStructType<VirtualStruct> {
 class VirtualStruct;
 void merge(const VirtualStruct& from, VirtualStruct& to);
 void merge(VirtualStruct&& from, VirtualStruct& to);
+void swap(MyStructWithForwardRefEnum &a, MyStructWithForwardRefEnum &b);
+
+class MyStructWithForwardRefEnum final : public apache::thrift::TStructType<MyStructWithForwardRefEnum> {
+ public:
+
+  static const uint64_t _reflection_id = 4311102400659715084U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  MyStructWithForwardRefEnum() : a(MyForwardRefEnum(-4702111234474983746)), b(MyForwardRefEnum(-4702111234474983746)) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStructWithForwardRefEnum(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStructWithForwardRefEnum(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStructWithForwardRefEnum(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStructWithForwardRefEnum(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+
+  MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
+  MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum& src)= default;
+  MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
+  MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) = default;
+
+  void __clear();
+  MyForwardRefEnum a;
+  MyForwardRefEnum b;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      a = false;
+      b = false;
+    }
+    bool a;
+    bool b;
+  } __isset;
+
+  bool operator == (const MyStructWithForwardRefEnum &) const;
+  bool operator != (const MyStructWithForwardRefEnum& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const MyStructWithForwardRefEnum & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+class MyStructWithForwardRefEnum;
+void merge(const MyStructWithForwardRefEnum& from, MyStructWithForwardRefEnum& to);
+void merge(MyStructWithForwardRefEnum&& from, MyStructWithForwardRefEnum& to);
 }}}} // namespace
 
