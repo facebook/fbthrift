@@ -79,9 +79,6 @@ class t_cpp_generator : public t_oop_generator {
     gen_templates_only_ =
       (iter != parsed_options.end() && iter->second == "only");
 
-    iter = parsed_options.find("perfhash");
-    gen_perfhash_ = (iter != parsed_options.end());
-
     iter = parsed_options.find("enum_strict");
     gen_enum_strict_ = (iter != parsed_options.end());
 
@@ -221,7 +218,6 @@ class t_cpp_generator : public t_oop_generator {
   void generate_process_function  (t_service* tservice, t_function* tfunction,
                                    bool specialized=false);
   void generate_function_helpers  (t_service* tservice, t_function* tfunction);
-  void generate_service_perfhash_keywords (t_service* tservice);
 
   /**
    * Serialization constructs
@@ -403,14 +399,6 @@ class t_cpp_generator : public t_oop_generator {
   bool use_include_prefix_;
 
   /**
-   * True if we should generate a perfect hash instead of processMap_
-   * when dispatching server commands.
-   *
-   * Requires gperf in the path.
-   */
-  bool gen_perfhash_;
-
-  /**
    * True iff we should use new, C++ 11 style class enums.
    */
   bool gen_enum_strict_;
@@ -468,7 +456,6 @@ class t_cpp_generator : public t_oop_generator {
   std::ofstream f_header_;
   std::ofstream f_service_;
   std::ofstream f_service_tcc_;
-  std::ofstream f_service_gperf_;
   std::ofstream f_reflection_;
   std::ofstream f_reflection_impl_;
 
@@ -4071,48 +4058,6 @@ void t_cpp_generator::generate_service(t_service* tservice) {
   f_service_tcc_ <<
     endl << ns_open_ << endl << endl;
 
-  if (gen_perfhash_) {
-    f_service_ <<
-      "#define THRIFT_INCLUDE_GPERF_OUTPUT" << endl <<
-      "#include \"" << get_include_prefix(*get_program()) << svcname <<
-      "_gperf.tcc\"" << endl <<
-      "#undef THRIFT_INCLUDE_GPERF_OUTPUT" << endl;
-    if (gen_templates_) {
-      f_service_tcc_ <<
-        "int " << svcname << "_method_lookup(const std::string&);" << endl;
-    }
-  }
-
-  string f_service_gperf_name;
-  string f_service_gperf_out_name;
-  if (gen_perfhash_) {
-    f_service_gperf_name = get_out_dir() + svcname + ".gperf";
-    f_service_gperf_out_name = get_out_dir() + svcname + "_gperf.tcc";
-    f_service_gperf_.open(f_service_gperf_name.c_str());
-    record_genfile(f_service_gperf_name);
-
-    // Raw include section
-    f_service_gperf_ <<
-      "%{" << endl <<
-      autogen_comment() <<
-      "#ifndef THRIFT_INCLUDE_GPERF_OUTPUT" << endl <<
-      "#error This file may not be included directly." << endl <<
-      "#endif" << endl <<
-      "namespace {" << endl <<
-      "%}" << endl;
-    f_service_gperf_ <<
-      "%language=C++" << endl <<
-      "%compare-strncmp" << endl <<
-      "%readonly-tables" << endl <<
-      "%define hash-function-name thrift_method_hash" << endl <<
-      "%define lookup-function-name thrift_method_lookup" << endl <<
-      "%enum" << endl <<
-      "%struct-type" << endl <<
-      "struct ThriftMethodPerfHash { const char* name; int idx; }" <<
-      endl <<
-      "%%" << endl;
-  }
-
   // Generate all the components
   generate_service_interface(tservice);
   generate_service_interface_factory(tservice);
@@ -4121,10 +4066,6 @@ void t_cpp_generator::generate_service(t_service* tservice) {
   generate_service_client(tservice);
   generate_service_processor(tservice);
   generate_service_multiface(tservice);
-
-  if (gen_perfhash_) {
-    generate_service_perfhash_keywords(tservice);
-  }
 
   // Close the namespace
   f_service_ <<
@@ -4136,39 +4077,6 @@ void t_cpp_generator::generate_service(t_service* tservice) {
   f_header_ <<
     ns_close_ << endl <<
     endl;
-
-  if (gen_perfhash_) {
-    f_service_gperf_ <<
-      "%%" << endl <<
-      "}  // namespace" << endl <<
-      "int " << svcname << "_method_lookup(const std::string& f) {" << endl <<
-      "  const ThriftMethodPerfHash* h = Perfect_Hash::thrift_method_lookup(f.data(), "
-      "f.size());" << endl <<
-      "  return h ? h->idx : -1;" << endl <<
-      "}" << endl;
-    f_service_gperf_.close();
-
-    string cmd =
-      "gperf " + f_service_gperf_name + " --output-file=" +
-      f_service_gperf_out_name;
-
-    int result = system(cmd.c_str());
-    if (result != 0) {
-      int savedErrno = errno;
-      string error = "Executing \"" + cmd + "\" failed: ";
-      char buf[15];
-      if (result == -1) {
-        snprintf(buf, sizeof(buf), "%d", savedErrno);
-        error += "errno=";
-        error += buf;
-      } else {
-        snprintf(buf, sizeof(buf), "%d", result);
-        error += "status=";
-        error += buf;
-      }
-      throw error;
-    }
-  }
 
   // TODO(simpkins): Make this a separate option
   if (gen_templates_) {
@@ -5291,13 +5199,11 @@ void ProcessorGenerator::generate_class_definition() {
       indent() << "};" << endl;
   }
 
-  if (!generator_->gen_perfhash_) {
-    f_header_ <<
-      indent() << "typedef std::map<std::string, " << pf_type << "> " <<
-        "ProcessMap;" << endl;
-    f_header_ <<
-      indent() << "ProcessMap processMap_;" << endl;
-  }
+  f_header_ <<
+    indent() << "typedef std::map<std::string, " << pf_type << "> " <<
+      "ProcessMap;" << endl;
+  f_header_ <<
+    indent() << "ProcessMap processMap_;" << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     indent(f_header_) <<
@@ -5322,26 +5228,24 @@ void ProcessorGenerator::generate_class_definition() {
     indent() << "  iface_(iface) {" << endl;
   indent_up();
 
-  if (!generator_->gen_perfhash_) {
-    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-      f_header_ <<
-        indent() << "processMap_[\"" << (*f_iter)->get_name() << "\"] = ";
-      if (generator_->gen_templates_) {
-        f_header_ << "ProcessFunctions(" << endl;
-        if (generator_->gen_templates_only_) {
-          indent(f_header_) << "  NULL," << endl;
-        } else {
-          indent(f_header_) << "  &" << class_name_ << "::process_" <<
-            (*f_iter)->get_name() << "," << endl;
-        }
-        indent(f_header_) << "  &" << class_name_ << "::process_" <<
-          (*f_iter)->get_name() << ")";
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    f_header_ <<
+      indent() << "processMap_[\"" << (*f_iter)->get_name() << "\"] = ";
+    if (generator_->gen_templates_) {
+      f_header_ << "ProcessFunctions(" << endl;
+      if (generator_->gen_templates_only_) {
+        indent(f_header_) << "  NULL," << endl;
       } else {
-        f_header_ << "&" << class_name_ << "::process_" << (*f_iter)->get_name();
+        indent(f_header_) << "  &" << class_name_ << "::process_" <<
+          (*f_iter)->get_name() << "," << endl;
       }
-      f_header_ <<
-        ";" << endl;
+      indent(f_header_) << "  &" << class_name_ << "::process_" <<
+        (*f_iter)->get_name() << ")";
+    } else {
+      f_header_ << "&" << class_name_ << "::process_" << (*f_iter)->get_name();
     }
+    f_header_ <<
+      ";" << endl;
   }
 
   indent_down();
@@ -5418,40 +5322,10 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
     generator_->gen_templates_ ? "ProcessFunctions" : "ProcessFunction";
 
   // HOT: member function pointer map
-  if (generator_->gen_perfhash_) {
-    vector<t_function*>::iterator f_iter;
-    vector<t_function*> functions = service_->get_functions();
-    f_out_ << indent() << "static const " << pf_type << " pfs[] = {" << endl;
-    indent_up();
-    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-      if (generator_->gen_templates_) {
-        f_out_ << indent() << "ProcessFunctions(" << endl;
-        if (generator_->gen_templates_only_) {
-          f_out_ << indent() << "  NULL," << endl;
-        } else {
-          f_out_ << indent() << "  &" << class_name_ << "::process_" <<
-            (*f_iter)->get_name() << "," << endl;
-        }
-        f_out_ << indent() << "  &" << class_name_ << "::process_" <<
-          (*f_iter)->get_name() << ")," << endl;
-      } else {
-        f_out_ << indent() << "&" << class_name_ << "::process_" <<
-          (*f_iter)->get_name() << "," << endl;
-      }
-    }
-    indent_down();
-    f_out_ << indent() << "};" << endl;
-
-    f_out_ <<
-      indent() << "int idx = " << service_name_ << "_method_lookup(_fname);" <<
-      endl <<
-      indent() << "if (idx == -1) {" << endl;
-  } else {
-    f_out_ <<
-      indent() << typename_str_ << "ProcessMap::iterator pfn;" << endl <<
-      indent() << "pfn = processMap_.find(_fname);" << endl <<
-      indent() << "if (pfn == processMap_.end()) {" << endl;
-  }
+  f_out_ <<
+    indent() << typename_str_ << "ProcessMap::iterator pfn;" << endl <<
+    indent() << "pfn = processMap_.find(_fname);" << endl <<
+    indent() << "if (pfn == processMap_.end()) {" << endl;
 
   // error case
   if (extends_.empty()) {
@@ -5478,11 +5352,7 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
     indent() << "}" << endl;
 
   // normal case
-  if (generator_->gen_perfhash_) {
-    f_out_ << indent() << "const " << pf_type << "& pf = pfs[idx];" << endl;
-  } else {
-    f_out_ << indent() << "const " << pf_type << "& pf = pfn->second;" << endl;
-  }
+  f_out_ << indent() << "const " << pf_type << "& pf = pfn->second;" << endl;
 
   if (template_protocol) {
     f_out_ <<
@@ -5841,15 +5711,6 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
   // Close function
   scope_down(out);
   out << endl;
-}
-
-void t_cpp_generator::generate_service_perfhash_keywords(t_service* tservice) {
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator f_iter;
-  int i = 0;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter, ++i) {
-    f_service_gperf_ << (*f_iter)->get_name() << ", " << i << endl;
-  }
 }
 
 /**
