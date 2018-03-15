@@ -23,8 +23,8 @@
 #include <fatal/type/conditional.h>
 #include <fatal/type/list.h>
 #include <fatal/type/push.h>
-#include <fatal/type/sort.h>
 #include <fatal/type/sequence.h>
+#include <fatal/type/sort.h>
 
 #include <cstdint>
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
 
