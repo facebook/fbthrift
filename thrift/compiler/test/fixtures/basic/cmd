@@ -1,5 +1,5 @@
 cpp:frozen,frozen2 src/module.thrift
-#cpp2:frozen2,modulemap src/module.thrift
+#cpp2:frozen2 src/module.thrift
 go src/module.thrift
 java src/module.thrift
 hack:server=1,shapes=1 src/module.thrift

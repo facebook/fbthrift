@@ -193,7 +193,7 @@ foreach(service ${services})
     ${output_path}/gen-${language}/${service}_processmap_compact.cpp
   )
   if("${language}" STREQUAL "cpp2")
-    if (NOT "${options}" MATCHES ".*(future|py_generator|compatibility|implicit_templates|separate_processmap|terse_writes|modulemap).*")
+    if (NOT "${options}" MATCHES ".*(future|py_generator|compatibility|implicit_templates|separate_processmap|terse_writes).*")
       set("${file_name}-${language}-HEADERS"
         ${${file_name}-${language}-HEADERS}
         ${output_path}/gen-${language}/${service}AsyncClient.h
