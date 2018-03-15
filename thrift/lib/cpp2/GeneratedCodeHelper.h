@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
@@ -350,6 +351,15 @@ class ThriftPresult : private std::tuple<Field...>,
     xfer += prot->writeStructEnd();
     return xfer;
   }
+};
+
+template <typename PResults, typename StreamPresult>
+struct ThriftPResultStream {
+  using StreamPResultType = StreamPresult;
+  using FieldsType = PResults;
+
+  PResults fields;
+  StreamPresult stream;
 };
 
 namespace frozen {
@@ -730,6 +740,23 @@ folly::exception_wrapper recv_wrapped_helper(
   }
 }
 
+template <typename PResult, typename Protocol, typename T>
+folly::exception_wrapper recv_wrapped_helper(
+    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream,
+    apache::thrift::SemiStream<T>& result) {
+  result = std::move(stream).template map<T>([](auto&& iobuf) {
+    T retVal;
+    PResult res;
+    res.template get<0>().value = &retVal;
+
+    Protocol prot;
+    prot.setInput(iobuf.get());
+    res.read(&prot);
+    return retVal;
+  });
+  return {};
+}
+
 template <typename PResult, typename Protocol, typename... ReturnTs>
 folly::exception_wrapper recv_wrapped(
     const char* method,
@@ -943,7 +970,25 @@ bool is_oneway_method(
     const transport::THeader* header,
     const std::unordered_set<std::string>& oneways);
 
-}} // detail::ap
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::Stream<folly::IOBufQueue> encode_stream(
+    apache::thrift::Stream<T>&& stream) {
+  return std::move(stream).template map<folly::IOBufQueue>(
+      [](T&& _item) mutable -> folly::IOBufQueue {
+        PResult res;
+        res.template get<0>().value = const_cast<T*>(&_item);
+        res.setIsSet(0);
+
+        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+        Protocol prot;
+        prot.setOutput(&queue);
+
+        res.write(&prot);
+        return queue;
+      });
+}
+} // namespace ap
+} // namespace detail
 
 //  ServerInterface helpers
 namespace detail { namespace si {

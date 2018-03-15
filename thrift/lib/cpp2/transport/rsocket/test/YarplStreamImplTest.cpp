@@ -18,23 +18,24 @@
 
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#include <yarpl/flowable/TestSubscriber.h>
 
 #include <gmock/gmock.h>
 
-#include "yarpl/flowable/TestSubscriber.h"
-
 namespace apache {
 namespace thrift {
+
+using namespace yarpl::flowable;
+
 namespace {
 /// Construct a pipeline with a test subscriber against the supplied
 /// flowable.  Return the items that were sent to the subscriber.  If some
 /// exception was sent, the exception is thrown.
 template <typename T>
 std::vector<T> run(
-    std::shared_ptr<yarpl::flowable::Flowable<T>> flowable,
+    std::shared_ptr<Flowable<T>> flowable,
     int64_t requestCount = 100) {
-  auto subscriber =
-      std::make_shared<yarpl::flowable::TestSubscriber<T>>(requestCount);
+  auto subscriber = std::make_shared<TestSubscriber<T>>(requestCount);
   flowable->subscribe(subscriber);
   subscriber->awaitTerminalEvent(std::chrono::seconds(1));
   return std::move(subscriber->values());
@@ -44,7 +45,7 @@ std::vector<T> run(
 TEST(YarplStreamImplTest, Basic) {
   folly::ScopedEventBaseThread evbThread;
 
-  auto flowable = yarpl::flowable::Flowable<>::justN({12, 34, 56, 98});
+  auto flowable = Flowable<>::justN({12, 34, 56, 98});
   auto stream = toStream(std::move(flowable), evbThread.getEventBase());
   auto stream2 = std::move(stream).map<int>([&](int x) {
     EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
@@ -60,7 +61,7 @@ TEST(YarplStreamImplTest, SemiStream) {
   folly::ScopedEventBaseThread evbThread;
   folly::ScopedEventBaseThread evbThread2;
 
-  auto flowable = yarpl::flowable::Flowable<>::justN({12, 34, 56, 98});
+  auto flowable = Flowable<>::justN({12, 34, 56, 98});
   auto stream = toStream(std::move(flowable), evbThread.getEventBase());
   SemiStream<int> stream2 = std::move(stream).map<int>([&](int x) {
     EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());

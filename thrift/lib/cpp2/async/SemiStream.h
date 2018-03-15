@@ -30,8 +30,8 @@ class SemiStream {
     impl_->subscribeVia(stream.executor_);
   }
 
-  explicit operator bool() const {
-    return impl_;
+  operator bool() const {
+    return (bool)impl_;
   }
 
   template <typename U>
@@ -51,6 +51,9 @@ class SemiStream {
 
 template <typename Response, typename StreamElement>
 struct ResponseAndSemiStream {
+  using ResponseType = Response;
+  using StreamElementType = StreamElement;
+
   Response response;
   SemiStream<StreamElement> stream;
 };

@@ -462,8 +462,7 @@ class ClientSyncCallback : public RequestCallback {
  public:
   explicit ClientSyncCallback(
       ClientReceiveState* rs,
-      apache::thrift::RpcKind kind =
-          apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)
+      RpcKind kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)
       : rs_(rs), rpcKind_(kind) {}
 
   void requestSent() override {}
@@ -485,7 +484,7 @@ class ClientSyncCallback : public RequestCallback {
 
  private:
   ClientReceiveState* rs_;
-  apache::thrift::RpcKind rpcKind_;
+  RpcKind rpcKind_;
 };
 
 template <typename T>

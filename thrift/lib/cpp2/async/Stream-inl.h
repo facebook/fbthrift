@@ -49,6 +49,7 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
  private:
   std::unique_ptr<SubscriberIf<T>> impl_;
 };
+
 } // namespace detail
 
 template <typename T>

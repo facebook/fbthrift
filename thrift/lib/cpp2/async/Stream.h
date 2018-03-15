@@ -83,8 +83,8 @@ class Stream {
     return stream;
   }
 
-  explicit operator bool() const {
-    return impl_;
+  operator bool() const {
+    return (bool)impl_;
   }
 
   folly::SequencedExecutor* getExecutor() const {
@@ -112,6 +112,9 @@ class Stream {
 
 template <typename Response, typename StreamElement>
 struct ResponseAndStream {
+  using ResponseType = Response;
+  using StreamElementType = StreamElement;
+
   Response response;
   Stream<StreamElement> stream;
 };
