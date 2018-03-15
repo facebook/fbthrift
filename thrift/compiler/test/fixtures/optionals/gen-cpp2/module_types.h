@@ -41,6 +41,9 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::cpp2::Animal>;
+template <> const std::size_t TEnumTraits< ::cpp2::Animal>::size;
+template <> const folly::Range<const  ::cpp2::Animal*> TEnumTraits< ::cpp2::Animal>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::Animal>::names;
 template <> const char* TEnumTraits< ::cpp2::Animal>::findName( ::cpp2::Animal value);
 template <> bool TEnumTraits< ::cpp2::Animal>::findValue(const char* name,  ::cpp2::Animal* outValue);
 

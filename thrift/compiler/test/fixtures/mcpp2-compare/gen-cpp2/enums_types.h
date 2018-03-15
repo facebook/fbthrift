@@ -95,6 +95,9 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumA>;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::size;
+template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumA*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::names;
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findName( ::facebook::ns::qwerty::AnEnumA value);
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumA* outValue);
 
@@ -108,6 +111,9 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumA TEnumTraits< ::fac
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumB>;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size;
+template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumB*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::names;
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName( ::facebook::ns::qwerty::AnEnumB value);
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumB* outValue);
 
@@ -121,6 +127,9 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::fac
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumC>;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::size;
+template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumC*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::names;
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findName( ::facebook::ns::qwerty::AnEnumC value);
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumC* outValue);
 
@@ -134,6 +143,9 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumC TEnumTraits< ::fac
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumD>;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::size;
+template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumD*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::names;
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findName( ::facebook::ns::qwerty::AnEnumD value);
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumD* outValue);
 
@@ -147,6 +159,9 @@ template <> inline constexpr  ::facebook::ns::qwerty::AnEnumD TEnumTraits< ::fac
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumE>;
+template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::size;
+template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumE*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::names;
 template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findName( ::facebook::ns::qwerty::AnEnumE value);
 template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumE* outValue);
 

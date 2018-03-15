@@ -40,6 +40,9 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::some::ns::EnumB>;
+template <> const std::size_t TEnumTraits< ::some::ns::EnumB>::size;
+template <> const folly::Range<const  ::some::ns::EnumB*> TEnumTraits< ::some::ns::EnumB>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::ns::EnumB>::names;
 template <> const char* TEnumTraits< ::some::ns::EnumB>::findName( ::some::ns::EnumB value);
 template <> bool TEnumTraits< ::some::ns::EnumB>::findValue(const char* name,  ::some::ns::EnumB* outValue);
 

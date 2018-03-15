@@ -914,7 +914,13 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   f_types_ <<
     ns_close_ << endl <<
     "namespace apache { namespace thrift {" << endl <<
-    "template <> struct TEnumDataStorage<" << fullname << ">;" << endl;
+    "template <> struct TEnumDataStorage<" << fullname << ">;" << endl <<
+    "template <> const std::size_t " <<
+    "TEnumTraits<" << fullname << ">::size;" << endl <<
+    "template <> const folly::Range<const " << fullname << "*> " <<
+    "TEnumTraits<" << fullname << ">::values;" << endl <<
+    "template <> const folly::Range<const folly::StringPiece*> " <<
+    "TEnumTraits<" << fullname << ">::names;" << endl;
 
   if (!minName.empty()) {
     f_types_ <<

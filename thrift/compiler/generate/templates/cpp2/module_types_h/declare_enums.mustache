@@ -55,6 +55,9 @@ namespace apache { namespace thrift {
 <%#program:enums%>
 
 template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>;
+template <> const std::size_t TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::size;
+template <> const folly::Range<const <% > common/namespace_cpp2%><%enum:name%>*> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::names;
 template <> const char* TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findName(<% > common/namespace_cpp2%><%enum:name%> value);
 template <> bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(const char* name, <% > common/namespace_cpp2%><%enum:name%>* outValue);
 

@@ -90,6 +90,9 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum1> : publi
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum1>;
+template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::size;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum1*> TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::names;
 template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value);
 template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum1* outValue);
 
@@ -124,6 +127,9 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum2> : publi
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum2>;
+template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::size;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum2*> TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::names;
 template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value);
 template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum2* outValue);
 
@@ -158,6 +164,9 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum3> : publi
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum3>;
+template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::size;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum3*> TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::names;
 template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value);
 template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum3* outValue);
 
@@ -217,6 +226,9 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum_with_spec
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum_with_special_names>;
+template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::size;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum_with_special_names*> TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::names;
 template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value);
 template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum_with_special_names* outValue);
 
