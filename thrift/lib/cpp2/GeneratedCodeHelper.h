@@ -633,6 +633,17 @@ class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
   }
 };
 
+// Forward declaration
+namespace detail {
+namespace ap {
+
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::SemiStream<T> decode_stream(
+    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream);
+
+} // namespace ap
+} // namespace detail
+
 //  AsyncClient helpers
 namespace detail {
 namespace ac {
@@ -744,16 +755,7 @@ template <typename PResult, typename Protocol, typename T>
 folly::exception_wrapper recv_wrapped_helper(
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream,
     apache::thrift::SemiStream<T>& result) {
-  result = std::move(stream).template map<T>([](auto&& iobuf) {
-    T retVal;
-    PResult res;
-    res.template get<0>().value = &retVal;
-
-    Protocol prot;
-    prot.setInput(iobuf.get());
-    res.read(&prot);
-    return retVal;
-  });
+  result = detail::ap::decode_stream<Protocol, PResult, T>(std::move(stream));
   return {};
 }
 
@@ -987,6 +989,23 @@ apache::thrift::Stream<folly::IOBufQueue> encode_stream(
         return queue;
       });
 }
+
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::SemiStream<T> decode_stream(
+    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
+  return std::move(stream).template map<T>(
+      [](std::unique_ptr<folly::IOBuf>&& buf) mutable -> T {
+        PResult args;
+        T res{};
+        args.template get<0>().value = &res;
+
+        Protocol prot;
+        prot.setInput(buf.get());
+        args.read(&prot);
+        return res;
+      });
+}
+
 } // namespace ap
 } // namespace detail
 

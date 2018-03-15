@@ -16,8 +16,11 @@
 
 #include <folly/io/async/ScopedEventBaseThread.h>
 
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 #include <yarpl/flowable/TestSubscriber.h>
 
 #include <gmock/gmock.h>
@@ -26,6 +29,7 @@ namespace apache {
 namespace thrift {
 
 using namespace yarpl::flowable;
+using namespace testutil::testservice;
 
 namespace {
 /// Construct a pipeline with a test subscriber against the supplied
@@ -79,5 +83,46 @@ TEST(YarplStreamImplTest, SemiStream) {
       std::vector<std::string>({"24", "68", "112", "196"}));
 }
 
+TEST(YarplStreamImplTest, EncodeDecode) {
+  folly::ScopedEventBaseThread evbThread;
+
+  Message mIn;
+  mIn.set_message("Test Message");
+  mIn.__isset.message = true;
+  mIn.set_timestamp(2015);
+  mIn.__isset.timestamp = true;
+
+  auto flowable = Flowable<>::justN({mIn});
+  auto inStream = toStream(std::move(flowable), evbThread.getEventBase());
+
+  using PResult =
+      ThriftPresult<true, FieldData<0, protocol::T_STRUCT, Message*>>;
+
+  // Encode in the thread of the flowable, namely at the user's thread
+  auto encodedStream =
+      detail::ap::encode_stream<CompactProtocolWriter, PResult>(
+          std::move(inStream))
+          .map<std::unique_ptr<folly::IOBuf>>(
+              [](folly::IOBufQueue&& in) mutable
+              -> std::unique_ptr<folly::IOBuf> { return in.move(); });
+
+  // No event base is involved, as this is a defered decoding
+  auto decodedStream =
+      detail::ap::decode_stream<CompactProtocolReader, PResult, Message>(
+          SemiStream<std::unique_ptr<folly::IOBuf>>(std::move(encodedStream)));
+
+  // Actual decode operation happens at the given user thread
+  auto flowableOut =
+      toFlowable(std::move(decodedStream).via(evbThread.getEventBase()));
+
+  auto subscriber = std::make_shared<TestSubscriber<Message>>(1);
+  flowableOut->subscribe(subscriber);
+
+  subscriber->awaitTerminalEvent(std::chrono::seconds(1));
+
+  Message mOut = std::move(subscriber->values()[0]);
+  ASSERT_STREQ(mIn.get_message().c_str(), mOut.get_message().c_str());
+  ASSERT_EQ(mIn.get_timestamp(), mOut.get_timestamp());
+}
 } // namespace thrift
 } // namespace apache
