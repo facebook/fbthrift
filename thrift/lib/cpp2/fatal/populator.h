@@ -231,7 +231,6 @@ struct populator_methods <
 // Enumerations
 template<typename Type>
 struct populator_methods<type_class::enumeration, Type> {
-
   using int_type = typename std::underlying_type<Type>::type;
   using int_methods = populator_methods<type_class::integral, int_type>;
 
@@ -270,7 +269,6 @@ struct populator_methods<type_class::list<ElemClass>, Type> {
 // Sets
 template <typename ElemClass, typename Type>
 struct populator_methods<type_class::set<ElemClass>, Type> {
-
   // TODO: fair amount of shared code bewteen this and specialization for
   // type_class::list
   using elem_type   = typename Type::value_type;

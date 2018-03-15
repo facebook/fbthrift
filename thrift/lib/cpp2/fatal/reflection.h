@@ -1293,7 +1293,6 @@ struct reflected_struct_data_member {
     using getter = impl::getter_direct_getter_t<getter>;
     return impl::isset<Owner, getter, HasIsSet>::mark(owner, set);
   }
-
 };
 
 /**

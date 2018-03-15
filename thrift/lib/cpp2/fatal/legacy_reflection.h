@@ -51,7 +51,6 @@ using legacy_reflection_schema_t = reflection::Schema;
  */
 template <typename T>
 struct legacy_reflection {
-
   /***
    *  Registers legacy metadata about Thrift type `T`, and all Thrift types
    *  transitively used by `T`, into `schema` using Thrift's static reflection
@@ -166,7 +165,6 @@ struct legacy_reflection {
    *  is not thread-safe until OpenSSL is initialized.
    */
   static legacy_reflection_id_t id();
-
 };
 
 } // namespace thrift
