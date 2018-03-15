@@ -1,2 +1,0 @@
-#cpp2:separate_processmap=1 src/module.thrift
-mstch_cpp2:separate_processmap src/module.thrift

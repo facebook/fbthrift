@@ -99,7 +99,6 @@ class CppGenerator(t_generator.Generator):
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
-        'separate_processmap': "generate processmap in separate files",
         'optionals': "produce folly::Optional<...> for optional members",
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
@@ -797,7 +796,7 @@ class CppGenerator(t_generator.Generator):
         self._generate_async_client_h_shim(service)
 
         # open files and instantiate outputs
-        context = self._make_context(service.name, True, True, True, True)
+        context = self._make_context(service.name, True, True, True)
         self._out_tcc = context.tcc
         self._additional_outputs = context.additional_outputs
         self._custom_protocol_h = context.custom_protocol_h
@@ -1525,8 +1524,6 @@ class CppGenerator(t_generator.Generator):
                 process_map = out().defn('const ' + map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
-                if self.flag_separate_processmap:
-                    process_map.output = self._additional_outputs[prot]
                 if prot < 1:  # TODO: fix build tool to use more than 2 outputs
                     prot = prot + 1
                 process_map.epilogue = ';\n\n'
@@ -5518,7 +5515,6 @@ class CppGenerator(t_generator.Generator):
 
     def _make_context(self, filename,
                       tcc=False,
-                      processmap=False,
                       separateclient=False,
                       custom_protocol=False,
                       impl=True,
@@ -5532,9 +5528,6 @@ class CppGenerator(t_generator.Generator):
         custom_protocol_h = self._write_to(filename + "_custom_protocol.h") \
                 if custom_protocol else None
 
-        if processmap:
-            for a, b, c in self.protocols:
-                additional_outputs.append(self._write_to(filename + "_processmap_" + a + ".cpp"))
         if separateclient:
             additional_outputs.append(self._write_to(filename + "_client.cpp"))
         header_path = self._with_include_prefix(self._program, filename)
