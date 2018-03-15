@@ -24,10 +24,9 @@ namespace thrift {
 namespace detail {
 
 template <
-  typename,
-  typename T,
-  bool StructHasMemberForCriteria = !std::is_same<void, T>::value
->
+    typename,
+    typename T,
+    bool StructHasMemberForCriteria = !std::is_same<void, T>::value>
 struct check_struct_has_member_for_criteria {
   using type = T;
 

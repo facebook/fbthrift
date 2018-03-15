@@ -173,7 +173,7 @@ struct populator_methods<type_class::binary, std::string> {
 };
 
 template <>
-  struct populator_methods<type_class::binary, folly::IOBuf> {
+struct populator_methods<type_class::binary, folly::IOBuf> {
   template <typename Rng>
   static void populate(
     Rng& rng,
@@ -205,10 +205,7 @@ struct populator_methods<type_class::binary, std::unique_ptr<folly::IOBuf>> {
 };
 
 // handle dereferencing smart pointers
-template <
-  typename TypeClass,
-  typename PtrType
->
+template <typename TypeClass, typename PtrType>
 struct populator_methods <
   TypeClass,
   PtrType,
@@ -229,7 +226,7 @@ struct populator_methods <
 };
 
 // Enumerations
-template<typename Type>
+template <typename Type>
 struct populator_methods<type_class::enumeration, Type> {
   using int_type = typename std::underlying_type<Type>::type;
   using int_methods = populator_methods<type_class::integral, int_type>;
@@ -243,7 +240,7 @@ struct populator_methods<type_class::enumeration, Type> {
 };
 
 // Lists
-template<typename ElemClass, typename Type>
+template <typename ElemClass, typename Type>
 struct populator_methods<type_class::list<ElemClass>, Type> {
   using elem_type   = typename Type::value_type;
   using elem_tclass = ElemClass;
@@ -416,23 +413,21 @@ struct populator_methods<type_class::structure, Struct> {
   using isset_array = std::array<bool, fatal::size<required_fields>::value>;
 
   template <
-    typename Member,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    optionality optional,
-    typename Enable = void
-  >
+      typename Member,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      optionality optional,
+      typename Enable = void>
   struct field_populator;
 
   // generic field writer
   template <
-    typename Member,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    optionality opt
-  >
+      typename Member,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      optionality opt>
   struct field_populator
   <
     Member, TypeClass, MemberType, Methods, opt,
@@ -450,11 +445,10 @@ struct populator_methods<type_class::structure, Struct> {
 
   // writer for default/required ref structs
   template <
-    typename Member,
-    typename PtrType,
-    typename Methods,
-    optionality opt
-  >
+      typename Member,
+      typename PtrType,
+      typename Methods,
+      optionality opt>
   struct field_populator <
     Member, type_class::structure, PtrType, Methods, opt,
     detail::enable_if_smart_pointer<PtrType>
@@ -484,10 +478,9 @@ struct populator_methods<type_class::structure, Struct> {
   // writer for optional ref structs
   // 50/50 chance that they will be populated
   template <
-    typename Member,
-    typename PtrType,
-    typename Methods
-  >
+      typename Member,
+      typename PtrType,
+      typename Methods>
   struct field_populator <
     Member, type_class::structure, PtrType, Methods, optionality::optional,
     detail::enable_if_smart_pointer<PtrType>

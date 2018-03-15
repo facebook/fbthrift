@@ -33,9 +33,12 @@ struct reflect_module_tag_selector {
   );
 };
 
-template <typename> struct reflect_module_tag_get;
-template <typename, typename> struct reflect_module_tag_try_get;
-template <typename> struct reflect_type_class_impl;
+template <typename>
+struct reflect_module_tag_get;
+template <typename, typename>
+struct reflect_module_tag_try_get;
+template <typename>
+struct reflect_type_class_impl;
 
 struct reflection_metadata_tag {};
 struct struct_traits_metadata_tag {};
@@ -53,7 +56,8 @@ struct getter_direct_getter<G, folly::void_t<typename G::head>> {
 template <typename G>
 using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
 
-template <typename, typename, bool> struct isset;
+template <typename, typename, bool>
+struct isset;
 
 struct variant_member_name {
   template <typename Descriptor>
@@ -87,7 +91,8 @@ struct variant_member_field_id {
     > \
   )
 
-template <typename = void> struct reflected_annotations;
+template <typename = void>
+struct reflected_annotations;
 
 } // namespace thrift
 } // namespace apache

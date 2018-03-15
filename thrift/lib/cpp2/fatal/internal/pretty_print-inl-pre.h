@@ -20,7 +20,8 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <typename> struct pretty_print_impl;
+template <typename>
+struct pretty_print_impl;
 
 } // namespace detail
 } // namespace thrift

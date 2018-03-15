@@ -85,7 +85,7 @@ template <typename Output>
 struct debug_output_callback {
   explicit debug_output_callback(Output &out): out_(out) {}
 
-  template <typename  T>
+  template <typename T>
   void operator ()(
     T const &lhs,
     T const &rhs,

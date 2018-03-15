@@ -26,18 +26,21 @@ namespace flatten_getters_impl {
 
 // member handler: non-terminal non-struct
 template <
-  typename, typename TerminalFilter, typename Member,
-  typename = typename Member::type_class,
-  bool = TerminalFilter::template apply<Member>::value
->
+    typename,
+    typename TerminalFilter,
+    typename Member,
+    typename = typename Member::type_class,
+    bool = TerminalFilter::template apply<Member>::value>
 struct m {
   using type = fatal::list<>;
 };
 
 // member handler: terminal non-struct
 template <
-  typename Path, typename TerminalFilter, typename Member, typename TypeClass
->
+    typename Path,
+    typename TerminalFilter,
+    typename Member,
+    typename TypeClass>
 struct m<Path, TerminalFilter, Member, TypeClass, true> {
   using type = fatal::list<flat_getter<Path, Member>>;
 };
@@ -61,7 +64,7 @@ struct m<Path, TerminalFilter, Member, type_class::structure, false>:
 // currying of the member handler
 template <typename Path, typename TerminalFilter>
 struct c {
-  template<typename Member>
+  template <typename Member>
   using apply = typename m<Path, TerminalFilter, Member>::type;
 };
 

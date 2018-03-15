@@ -218,14 +218,13 @@ using reflect_type_class = typename detail::reflect_type_class_impl<T>::type;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <
-  typename Name,
-  typename Namespaces,
-  typename Enums,
-  typename Unions,
-  typename Structs,
-  typename Constants,
-  typename Services
->
+    typename Name,
+    typename Namespaces,
+    typename Enums,
+    typename Unions,
+    typename Structs,
+    typename Constants,
+    typename Services>
 struct reflected_module {
   /**
    * The name.
@@ -782,13 +781,12 @@ struct reflected_annotations {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <
-  typename Struct,
-  typename Name,
-  typename MembersInfo,
-  typename Info,
-  typename MembersAnnotations,
-  typename Metadata
->
+    typename Struct,
+    typename Name,
+    typename MembersInfo,
+    typename Info,
+    typename MembersAnnotations,
+    typename Metadata>
 struct reflected_struct {
   /**
    * A type alias for the struct itself.
@@ -944,17 +942,16 @@ struct reflected_struct {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <
-  typename Name,
-  typename Type,
-  field_id_t Id,
-  optionality Optionality,
-  typename Getter,
-  typename TypeClass,
-  template <typename> class Pod,
-  typename Annotations,
-  typename Owner,
-  bool HasIsSet
->
+    typename Name,
+    typename Type,
+    field_id_t Id,
+    optionality Optionality,
+    typename Getter,
+    typename TypeClass,
+    template <typename> class Pod,
+    typename Annotations,
+    typename Owner,
+    bool HasIsSet>
 struct reflected_struct_data_member {
   /**
    * A `fatal::sequence` of `char` representing the data member name as
@@ -1971,7 +1968,8 @@ using is_reflectable_union = fatal::has_variant_traits<T>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename> struct thrift_string_traits;
+template <typename>
+struct thrift_string_traits;
 
 template <typename String>
 struct thrift_string_traits_std {
@@ -2088,7 +2086,8 @@ class thrift_string_traits_adapter {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename> struct thrift_list_traits;
+template <typename>
+struct thrift_list_traits;
 
 template <typename List>
 struct thrift_list_traits_std {
@@ -2221,7 +2220,8 @@ class thrift_list_traits_adapter {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename> struct thrift_set_traits;
+template <typename>
+struct thrift_set_traits;
 
 template <typename Set>
 struct thrift_set_traits_std {
@@ -2385,7 +2385,8 @@ class thrift_set_traits_adapter {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename> struct thrift_map_traits;
+template <typename>
+struct thrift_map_traits;
 
 template <typename Map>
 struct thrift_map_traits_std {

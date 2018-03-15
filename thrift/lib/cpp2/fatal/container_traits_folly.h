@@ -29,7 +29,7 @@ template <typename C, typename T, typename A, typename S>
 struct thrift_string_traits<folly::basic_fbstring<C, T, A, S>>
     : thrift_string_traits_std<folly::basic_fbstring<C, T, A, S>> {};
 
-template<class T, std::size_t M, class A, class B, class C>
+template <class T, std::size_t M, class A, class B, class C>
 struct thrift_list_traits<folly::small_vector<T, M, A, B, C>>
     : thrift_list_traits_std<folly::small_vector<T, M, A, B, C>> {};
 

@@ -31,7 +31,8 @@ struct f {
   >;
 };
 
-template <typename, typename, typename> struct s;
+template <typename, typename, typename>
+struct s;
 
 } // namespace flatten_getters_impl
 } // namespace detail

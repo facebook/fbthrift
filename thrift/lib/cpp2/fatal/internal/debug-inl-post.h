@@ -38,7 +38,8 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <typename> struct debug_equals_impl;
+template <typename>
+struct debug_equals_impl;
 
 template <typename T, typename Callback>
 bool debug_equals(

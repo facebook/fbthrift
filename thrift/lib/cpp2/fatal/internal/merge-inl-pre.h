@@ -24,8 +24,10 @@ template <typename T>
 using remove_const_reference =
     typename std::remove_const<typename std::remove_reference<T>::type>::type;
 
-template <typename T> struct merge;
-template <typename TypeClass> struct merge_impl;
+template <typename T>
+struct merge;
+template <typename TypeClass>
+struct merge_impl;
 
 } // namespace merge_into_detail
 } // namespace thrift

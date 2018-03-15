@@ -160,10 +160,7 @@ using disable_if_smart_pointer =
 } /* namespace detail */
 
 // handle dereferencing smart pointers
-template <
-  typename TypeClass,
-  typename PtrType
->
+template <typename TypeClass, typename PtrType>
 struct protocol_methods <
   TypeClass,
   PtrType,
@@ -205,7 +202,7 @@ struct protocol_methods<type_class::enumeration, Type>
 };
 
 // Lists
-template<typename ElemClass, typename Type>
+template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
@@ -473,12 +470,11 @@ struct is_required_field {
 // marks isset either on the required field array,
 // or the appropriate member within the Struct being read
 template <
-  std::underlying_type<optionality>::type Optional,
-  typename,
-  typename MemberInfo,
-  typename isset_array,
-  typename Struct
->
+    std::underlying_type<optionality>::type Optional,
+    typename,
+    typename MemberInfo,
+    typename isset_array,
+    typename Struct>
 typename std::enable_if<
   static_cast<optionality>(Optional) != optionality::required
 >::type mark_isset(isset_array& /*isset*/, Struct& obj) {
@@ -486,12 +482,11 @@ typename std::enable_if<
 }
 
 template <
-  std::underlying_type<optionality>::type Optional,
-  typename required_fields,
-  typename MemberInfo,
-  typename isset_array,
-  typename Struct
->
+    std::underlying_type<optionality>::type Optional,
+    typename required_fields,
+    typename MemberInfo,
+    typename isset_array,
+    typename Struct>
 typename std::enable_if<
   static_cast<optionality>(Optional) == optionality::required
 >::type mark_isset(isset_array& isset, Struct& /*obj*/) {
@@ -867,11 +862,10 @@ struct protocol_methods <
   struct set_member_by_fid {
     // Fid is a std::integral_constant<field_id_t, fid>
     template <
-      typename Fid,
-      std::size_t Index,
-      typename Protocol,
-      typename isset_array
-    >
+        typename Fid,
+        std::size_t Index,
+        typename Protocol,
+        typename isset_array>
     void operator ()(
       fatal::indexed<Fid, Index>,
       const TType ftype,
@@ -966,25 +960,23 @@ struct protocol_methods <
 
  private:
   template <
-    typename Protocol,
-    field_id_t MemberFid,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    std::underlying_type<optionality>::type Optional,
-    typename Enable = void
-  >
+      typename Protocol,
+      field_id_t MemberFid,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      std::underlying_type<optionality>::type Optional,
+      typename Enable = void>
   struct field_writer;
 
   // generic field writer
   template <
-    typename Protocol,
-    field_id_t MemberFid,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    std::underlying_type<optionality>::type Optional
-  >
+      typename Protocol,
+      field_id_t MemberFid,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      std::underlying_type<optionality>::type Optional>
   struct field_writer<
     Protocol, MemberFid, TypeClass, MemberType, Methods, Optional,
     detail::disable_if_smart_pointer<MemberType>
@@ -1014,12 +1006,11 @@ struct protocol_methods <
 
   // writer for default/required ref structrs
   template <
-    typename Protocol,
-    field_id_t MemberFid,
-    typename PtrType,
-    typename Methods,
-    std::underlying_type<optionality>::type Optional
-  >
+      typename Protocol,
+      field_id_t MemberFid,
+      typename PtrType,
+      typename Methods,
+      std::underlying_type<optionality>::type Optional>
   struct field_writer<
     Protocol, MemberFid, type_class::structure, PtrType, Methods, Optional,
     detail::enable_if_smart_pointer<PtrType>
@@ -1070,11 +1061,10 @@ struct protocol_methods <
 
   // writer for optional ref structs
   template <
-    typename Protocol,
-    field_id_t MemberFid,
-    typename PtrType,
-    typename Methods
-  >
+      typename Protocol,
+      field_id_t MemberFid,
+      typename PtrType,
+      typename Methods>
   struct field_writer<
     Protocol, MemberFid, type_class::structure, PtrType, Methods,
     static_cast<std::underlying_type<optionality>::type>(optionality::optional),
@@ -1139,27 +1129,25 @@ struct protocol_methods <
   };
 
   template <
-    bool ZeroCopy,
-    typename Protocol,
-    field_id_t MemberFid,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    std::underlying_type<optionality>::type,
-    typename Enable = void
-  >
+      bool ZeroCopy,
+      typename Protocol,
+      field_id_t MemberFid,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      std::underlying_type<optionality>::type,
+      typename Enable = void>
   struct field_size;
 
   // generic field size
   template <
-    bool ZeroCopy,
-    typename Protocol,
-    field_id_t MemberFid,
-    typename TypeClass,
-    typename MemberType,
-    typename Methods,
-    std::underlying_type<optionality>::type Optional
-  >
+      bool ZeroCopy,
+      typename Protocol,
+      field_id_t MemberFid,
+      typename TypeClass,
+      typename MemberType,
+      typename Methods,
+      std::underlying_type<optionality>::type Optional>
   struct field_size<
     ZeroCopy, Protocol, MemberFid, TypeClass, MemberType, Methods, Optional,
     detail::disable_if_smart_pointer<MemberType>
@@ -1187,13 +1175,12 @@ struct protocol_methods <
 
   // size for default/required ref structrs
   template <
-    bool ZeroCopy,
-    typename Protocol,
-    field_id_t MemberFid,
-    typename PtrType,
-    typename Methods,
-    std::underlying_type<optionality>::type Optional
-  >
+      bool ZeroCopy,
+      typename Protocol,
+      field_id_t MemberFid,
+      typename PtrType,
+      typename Methods,
+      std::underlying_type<optionality>::type Optional>
   struct field_size<
     ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods,
     Optional, detail::enable_if_smart_pointer<PtrType>
@@ -1240,12 +1227,11 @@ struct protocol_methods <
 
   // size for optional ref structs
   template <
-    bool ZeroCopy,
-    typename Protocol,
-    field_id_t MemberFid,
-    typename PtrType,
-    typename Methods
-  >
+      bool ZeroCopy,
+      typename Protocol,
+      field_id_t MemberFid,
+      typename PtrType,
+      typename Methods>
   struct field_size<
     ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods,
     static_cast<std::underlying_type<optionality>::type>(optionality::optional),

@@ -137,11 +137,10 @@ struct type_common_metadata_impl {
 };
 
 template <
-  typename T,
-  bool = fatal::is_complete<thrift_list_traits<T>>::value,
-  bool = fatal::is_complete<thrift_map_traits<T>>::value,
-  bool = fatal::is_complete<thrift_set_traits<T>>::value
->
+    typename T,
+    bool = fatal::is_complete<thrift_list_traits<T>>::value,
+    bool = fatal::is_complete<thrift_map_traits<T>>::value,
+    bool = fatal::is_complete<thrift_set_traits<T>>::value>
 struct reflect_container_type_class_impl {
   using type = type_class::unknown;
 };

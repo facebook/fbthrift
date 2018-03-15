@@ -181,9 +181,10 @@ template <std::size_t, typename T>
 struct D { T x; };
 
 // implementation of simulated struct
-template <typename...> struct S;
+template <typename...>
+struct S;
 
-template <template <typename...> class  V, typename... T, std::size_t... I>
+template <template <typename...> class V, typename... T, std::size_t... I>
 struct S<V<T...>, fatal::index_sequence<I...>>: D<I, T>...  {};
 
 template <typename MemberTypes>
@@ -215,22 +216,20 @@ using physical_layout = typename P<T, refl_type_class<T>>::type;
 
 // frozen1 layout calculation accumulator for use with fatal::accumulate //
 template <
-  std::ptrdiff_t ActualOffset = 0,
-  std::ptrdiff_t DesiredOffset = 0,
-  std::size_t BitIndex = 0,
-  typename PhysicalLayout = fatal::list<>,
-  typename... FrozenLayout
->
+    std::ptrdiff_t ActualOffset = 0,
+    std::ptrdiff_t DesiredOffset = 0,
+    std::size_t BitIndex = 0,
+    typename PhysicalLayout = fatal::list<>,
+    typename... FrozenLayout>
 struct A {
   using frozen = fatal::list<FrozenLayout...>;
   using physical = PhysicalLayout;
 
   template <
-    typename Member,
-    typename PhysicalType,
-    bool IsBool,
-    std::ptrdiff_t AlignedOffset
-  >
+      typename Member,
+      typename PhysicalType,
+      bool IsBool,
+      std::ptrdiff_t AlignedOffset>
   using impl = A<
     ActualOffset + 1,
     AlignedOffset + (IsBool ? BitIndex + 1 == CHAR_BIT : sizeof(PhysicalType)),

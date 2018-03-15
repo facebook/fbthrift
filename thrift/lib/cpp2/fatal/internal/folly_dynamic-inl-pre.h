@@ -20,7 +20,8 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <typename> struct dynamic_converter_impl;
+template <typename>
+struct dynamic_converter_impl;
 
 } // namespace detail
 } // namespace thrift
