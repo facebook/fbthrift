@@ -131,32 +131,33 @@ template <typename T>
 using disable_if_smart_pointer =
   typename std::enable_if<!is_smart_pointer<T>::value>::type;
 
-  // enums, unions, and structs from IDLs without fatal metadata might
-  // be included in e,u,s from IDLs with fatal metadata. If those fields
-  // don't have fatal metadata, we fall back to using their legacy generated
-  // read/write/serializedSize(ZC) methods.
-  template <typename Type, protocol::TType TTypeValue>
-  struct legacy_fallback_methods {
-    constexpr static protocol::TType ttype_value = TTypeValue;
+// enums, unions, and structs from IDLs without fatal metadata might
+// be included in e,u,s from IDLs with fatal metadata. If those fields
+// don't have fatal metadata, we fall back to using their legacy generated
+// read/write/serializedSize(ZC) methods.
+template <typename Type, protocol::TType TTypeValue>
+struct legacy_fallback_methods {
+  constexpr static protocol::TType ttype_value = TTypeValue;
 
-    template <typename Protocol>
-    static void read(Protocol& protocol, Type& out) {
-      Cpp2Ops<Type>::read(&protocol, &out);
+  template <typename Protocol>
+  static void read(Protocol& protocol, Type& out) {
+    Cpp2Ops<Type>::read(&protocol, &out);
+  }
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Type const& in) {
+    return Cpp2Ops<Type>::write(&protocol, &in);
+  }
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+    if(ZeroCopy) {
+      return Cpp2Ops<Type>::serializedSizeZC(&protocol, &in);
     }
-    template <typename Protocol>
-    static std::size_t write(Protocol& protocol, Type const& in) {
-      return Cpp2Ops<Type>::write(&protocol, &in);
+    else {
+      return Cpp2Ops<Type>::serializedSize(&protocol, &in);
     }
-    template <bool ZeroCopy, typename Protocol>
-    static std::size_t serialized_size(Protocol& protocol, Type const& in) {
-      if(ZeroCopy) {
-        return Cpp2Ops<Type>::serializedSizeZC(&protocol, &in);
-      }
-      else {
-        return Cpp2Ops<Type>::serializedSize(&protocol, &in);
-      }
-    }
-  };
+  }
+};
+
 } /* namespace detail */
 
 // handle dereferencing smart pointers
