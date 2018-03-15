@@ -155,7 +155,7 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
             except Exception as e:
                 args = argtype()
-                log.error(
+                log.exception(
                     'Exception thrown while reading arguments: `%s`',
                     str(e),
                 )
