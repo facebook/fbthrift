@@ -37,7 +37,8 @@ ThriftProcessor::ThriftProcessor(
 void ThriftProcessor::onThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<IOBuf> payload,
-    std::shared_ptr<ThriftChannelIf> channel) noexcept {
+    std::shared_ptr<ThriftChannelIf> channel,
+    std::unique_ptr<Cpp2ConnContext> connContext) noexcept {
   DCHECK(metadata);
   DCHECK(payload);
   DCHECK(channel);
@@ -48,7 +49,7 @@ void ThriftProcessor::onThriftRequest(
         metadata->__isset.kind && metadata->__isset.seqId);
 
   auto request = std::make_unique<ThriftRequest>(
-      serverConfigs_, channel, std::move(metadata));
+      serverConfigs_, channel, std::move(metadata), std::move(connContext));
 
   auto* evb = channel->getEventBase();
   if (UNLIKELY(invalidMetadata)) {

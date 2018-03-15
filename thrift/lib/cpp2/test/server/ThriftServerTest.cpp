@@ -30,9 +30,11 @@
 #include <folly/io/async/EventBase.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
+#include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -44,6 +46,7 @@
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
@@ -66,6 +69,40 @@ std::shared_ptr<TestServiceClient> getThrift1Client(
   std::shared_ptr<TBinaryProtocolT<TBufferBase>> protocol =
       std::make_shared<TBinaryProtocolT<TBufferBase>>(transport);
   return std::make_shared<TestServiceClient>(protocol);
+}
+
+std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
+    ThriftServer& server) {
+  auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
+  h2_options->threads = static_cast<size_t>(server.getNumIOWorkerThreads());
+  h2_options->idleTimeout = server.getIdleTimeout();
+  h2_options->shutdownOn = {SIGINT, SIGTERM};
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server.getThriftProcessor(), server);
+}
+
+TEST(ThriftServer, H2ClientAddressTest) {
+  class EchoClientAddrTestInterface : public TestServiceSvIf {
+    void sendResponse(std::string& _return, int64_t /* size */) override {
+      _return = getConnectionContext()->getPeerAddress()->describe();
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<EchoClientAddrTestInterface>());
+  auto& thriftServer = runner.getThriftServer();
+  thriftServer.addRoutingHandler(createHTTP2RoutingHandler(thriftServer));
+
+  folly::EventBase base;
+  TAsyncSocket::UniquePtr socket(new TAsyncSocket(&base, runner.getAddress()));
+  TestServiceAsyncClient client(
+      HTTPClientChannel::newHTTP2Channel(std::move(socket)));
+  auto channel =
+      boost::polymorphic_downcast<HTTPClientChannel*>(client.getChannel());
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, channel->getTransport()->getLocalAddress().describe());
 }
 
 TEST(ThriftServer, OnewayClientConnectionCloseTest) {

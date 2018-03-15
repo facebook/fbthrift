@@ -53,7 +53,8 @@ class EchoProcessor : public ThriftProcessor {
   void onThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
-      std::shared_ptr<ThriftChannelIf> channel) noexcept override;
+      std::shared_ptr<ThriftChannelIf> channel,
+      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept override;
 
  private:
   // The new entry to add to the header.

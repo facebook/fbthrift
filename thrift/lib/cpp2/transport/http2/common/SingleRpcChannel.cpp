@@ -316,8 +316,13 @@ void SingleRpcChannel::onThriftRequest() noexcept {
   }
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
+  auto connContext =
+      std::make_unique<Cpp2ConnContext>(&headers_->getClientAddress());
   processor_->onThriftRequest(
-      std::move(metadata), std::move(contents_), shared_from_this());
+      std::move(metadata),
+      std::move(contents_),
+      shared_from_this(),
+      std::move(connContext));
 }
 
 void SingleRpcChannel::onThriftResponse() noexcept {

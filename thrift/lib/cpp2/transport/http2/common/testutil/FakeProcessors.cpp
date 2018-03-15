@@ -27,7 +27,8 @@ using folly::IOBuf;
 void EchoProcessor::onThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> payload,
-    std::shared_ptr<ThriftChannelIf> channel) noexcept {
+    std::shared_ptr<ThriftChannelIf> channel,
+    std::unique_ptr<Cpp2ConnContext> /* connContext */) noexcept {
   evb_->runInEventBaseThread([
     this,
     evbMetadata = std::move(metadata),

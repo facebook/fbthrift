@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -59,7 +60,8 @@ class ThriftProcessor {
   virtual void onThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
-      std::shared_ptr<ThriftChannelIf> channel) noexcept;
+      std::shared_ptr<ThriftChannelIf> channel,
+      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept;
 
   // Called from the server initialization code if there's an update
   // to the thread manager used to manage the server
