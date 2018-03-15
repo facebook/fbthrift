@@ -50,7 +50,10 @@ if(compiler_only OR build_all)
   find_package(BISON REQUIRED)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
-  include_directories(${MSTCH_INCLUDE_DIRS})
+  include_directories(
+    ${MSTCH_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
+  )
   set(THRIFT1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thrift1)
   set(THRIFT_TEMPLATES ${THRIFT_HOME}/thrift/compiler/generate/templates)
   set(THRIFTCPP2 thriftcpp2)
