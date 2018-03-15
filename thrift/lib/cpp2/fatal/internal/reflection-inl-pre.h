@@ -20,7 +20,9 @@
 # error "This file must be included from reflection.h"
 #endif
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename, typename, bool IsTry, typename Default = void>
 struct reflect_module_tag_selector {
@@ -63,7 +65,8 @@ struct variant_member_field_id {
   using apply = typename Descriptor::metadata::id;
 };
 
-}} // detail::reflection_impl
+} // namespace reflection_impl
+} // namespace detail
 
 #define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
   FATAL_REGISTER_TYPE( \
@@ -86,6 +89,7 @@ struct variant_member_field_id {
 
 template <typename = void> struct reflected_annotations;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_REFLECTION_INL_PRE_H_

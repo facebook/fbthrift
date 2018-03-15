@@ -22,7 +22,8 @@
 
 #include <fatal/type/get_type.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Gets the reflection metadata for a given struct's member based on a user
@@ -127,6 +128,7 @@ using get_struct_member_by_id = typename detail
     >
   >::type;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_HELPERS_H_

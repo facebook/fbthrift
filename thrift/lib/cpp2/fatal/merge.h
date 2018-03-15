@@ -31,7 +31,8 @@
 
 #include <thrift/lib/cpp2/fatal/internal/merge-inl-pre.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /***
  *  Merges `src` into `dst` using Thrift's static reflection support.
@@ -62,6 +63,7 @@ namespace apache { namespace thrift {
 template <typename T>
 void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst);
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/merge-inl-post.h>

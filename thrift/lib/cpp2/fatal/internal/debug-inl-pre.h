@@ -16,11 +16,15 @@
 #ifndef THRIFT_FATAL_DEBUG_PRE_INL_H_
 #define THRIFT_FATAL_DEBUG_PRE_INL_H_ 1
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename T, typename Callback>
 bool debug_equals(std::string &, T const &, T const &, Callback &&);
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_DEBUG_PRE_INL_H_

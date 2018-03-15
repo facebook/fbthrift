@@ -40,7 +40,8 @@
 
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Compares two objects for equality, field-by-fields, in a DFS traversal.
@@ -130,7 +131,8 @@ debug_output_callback<Output> make_debug_output_callback(Output &output) {
   return debug_output_callback<Output>(output);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/debug-inl-post.h>
 

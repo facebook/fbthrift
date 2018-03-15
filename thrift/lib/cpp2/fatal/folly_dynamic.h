@@ -44,7 +44,8 @@
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Describes the format of the data contained in the `folly::dynamic`.
@@ -200,7 +201,8 @@ T from_dynamic(
   format_adherence adherence = format_adherence::STRICT
 ) = delete;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl-post.h>
 

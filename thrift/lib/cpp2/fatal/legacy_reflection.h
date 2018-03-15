@@ -38,7 +38,8 @@
 
 #include <thrift/lib/cpp2/fatal/internal/legacy_reflection-inl-pre.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using legacy_reflection_id_t = std::uint64_t;
 using legacy_reflection_schema_t = reflection::Schema;
@@ -168,6 +169,7 @@ struct legacy_reflection {
 
 };
 
-}}
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/legacy_reflection-inl-post.h>

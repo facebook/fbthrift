@@ -24,7 +24,9 @@
 
 #include <stdexcept>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <>
 struct dynamic_converter_impl<type_class::enumeration> {
@@ -437,6 +439,8 @@ struct dynamic_converter_impl<type_class::integral> {
   }
 };
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_

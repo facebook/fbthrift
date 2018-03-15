@@ -28,7 +28,8 @@
 
 #include <cassert>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 namespace detail {
 template <typename T, typename V>
 using variant_helper = typename reflect_variant<
@@ -256,6 +257,7 @@ T &variant_emplace(V &variant, Args &&...args) {
   return by_type::template get<T>(variant);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_VARIANT_H_

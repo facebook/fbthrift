@@ -29,7 +29,9 @@
 #include <unordered_set>
 #include <utility>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename LHS, typename RHS>
 void compare_elements_eq(LHS const &lhs, RHS const &rhs) {
@@ -198,7 +200,7 @@ constexpr std::array<int, 10> const test_data::primes;
 constexpr std::array<std::pair<const int, int>, 10> const test_data::primes_2x;
 constexpr std::array<std::pair<const int, int>, 10> const test_data::primes_3x;
 
-} // detail
+} // namespace detail
 
 template <typename T>
 void test_thrift_list_traits() {
@@ -487,6 +489,7 @@ void test_thrift_map_traits() {
 #undef THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL
 #undef THRIFT_COMPARE_ITERATORS_IMPL
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_TRAITS_TEST_HELPERS_INL_H

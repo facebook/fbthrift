@@ -34,7 +34,9 @@
 
 #include <cassert>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename> struct debug_equals_impl;
 
@@ -406,6 +408,8 @@ struct debug_equals_impl<type_class::integral> {
   }
 };
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_DEBUG_POST_INL_H_

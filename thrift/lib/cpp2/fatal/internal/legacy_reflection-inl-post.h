@@ -16,7 +16,8 @@
 
 #pragma once
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace legacy_reflection_detail {
 
@@ -33,7 +34,7 @@ FATAL_S(angle_r, ">");
 FATAL_S(comma, ",");
 FATAL_S(dot, ".");
 FATAL_S(space, " ");
-}
+} // namespace str
 
 // utils
 
@@ -399,7 +400,7 @@ struct helper<T, TC, typename std::enable_if<
   static id_t id() { return {}; }
 };
 
-}
+} // namespace legacy_reflection_detail
 
 // legacy_reflection
 
@@ -429,4 +430,5 @@ legacy_reflection_id_t legacy_reflection<T>::id() {
   return legacy_reflection_detail::helper<T, TC>::id();
 }
 
-}}
+} // namespace thrift
+} // namespace apache

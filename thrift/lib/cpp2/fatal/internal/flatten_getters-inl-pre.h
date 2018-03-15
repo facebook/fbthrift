@@ -18,8 +18,10 @@
 
 #include <fatal/type/logical.h>
 
-namespace apache { namespace thrift {
-namespace detail { namespace flatten_getters_impl {
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace flatten_getters_impl {
 
 // default filter
 struct f {
@@ -31,7 +33,9 @@ struct f {
 
 template <typename, typename, typename> struct s;
 
-}} // detail::flatten_getters_impl
-}} // apache::thrift
+} // namespace flatten_getters_impl
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_FLATTEN_GETTERS_INL_PRE_H_

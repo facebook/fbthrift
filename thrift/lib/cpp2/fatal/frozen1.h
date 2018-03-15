@@ -517,7 +517,7 @@ struct t<
   using type = I<std::pair<Frozen<FrozenFirst> const, Frozen<FrozenSecond>>>;
 };
 
-} // namespace frzn_dtl {
+} // namespace frzn_dtl
 
 ////////////////
 // START HERE //
@@ -530,7 +530,7 @@ struct Frozen<T, frzn_dtl::enable_if_struct<T>>:
   public frzn_dtl::frozen1_layout<T>
 {};
 
-} // namespace thrift {
-} // namespace apache {
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_FROZEN1_H_

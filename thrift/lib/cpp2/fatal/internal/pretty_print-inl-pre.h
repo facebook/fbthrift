@@ -16,10 +16,14 @@
 #ifndef THRIFT_FATAL_PRETTY_PRINT_INL_PRE_H_
 #define THRIFT_FATAL_PRETTY_PRINT_INL_PRE_H_ 1
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename> struct pretty_print_impl;
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_PRETTY_PRINT_INL_PRE_H_

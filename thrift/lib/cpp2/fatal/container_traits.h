@@ -26,7 +26,8 @@
 #include <unordered_set>
 #include <vector>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <typename C, typename T, typename A>
 struct thrift_string_traits<std::basic_string<C, T, A>>
@@ -56,6 +57,7 @@ template <typename K, typename T, typename H, typename E, typename A>
 struct thrift_map_traits<std::unordered_map<K, T, H, E, A>>
     : thrift_map_traits_std<std::unordered_map<K, T, H, E, A>> {};
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_CONTAINER_TRAITS_H_

@@ -19,7 +19,9 @@
 
 #include <fatal/type/find.h>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <
   typename,
@@ -35,6 +37,8 @@ struct check_struct_has_member_for_criteria {
   );
 };
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_HELPERS_INL_PRE_H_

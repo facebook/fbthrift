@@ -42,7 +42,8 @@
 
 #include <thrift/lib/cpp2/fatal/internal/pretty_print-inl-pre.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Pretty-prints an object to the given output stream using Thrift's reflection
@@ -83,7 +84,8 @@ std::string pretty_string(Args &&...args) {
   return out.str();
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/pretty_print-inl-post.h>
 

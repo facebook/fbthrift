@@ -16,7 +16,9 @@
 
 #pragma once
 
-namespace apache { namespace thrift { namespace merge_into_detail {
+namespace apache {
+namespace thrift {
+namespace merge_into_detail {
 
 template <typename T>
 using remove_const_reference =
@@ -25,4 +27,6 @@ using remove_const_reference =
 template <typename T> struct merge;
 template <typename TypeClass> struct merge_impl;
 
-}}} // apache::thrift::merge_into_detail
+} // namespace merge_into_detail
+} // namespace thrift
+} // namespace apache

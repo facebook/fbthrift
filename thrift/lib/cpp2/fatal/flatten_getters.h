@@ -25,7 +25,8 @@
 
 #include <thrift/lib/cpp2/fatal/internal/flatten_getters-inl-pre.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <typename Path, typename Member>
 struct flat_getter {
@@ -44,7 +45,8 @@ using flatten_getters = typename detail::flatten_getters_impl::s<
   fatal::list<>, TerminalFilter, reflect_struct<T>
 >::type;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/flatten_getters-inl-post.h>
 

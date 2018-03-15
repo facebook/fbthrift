@@ -18,7 +18,8 @@
 
 #include <thrift/lib/cpp2/fatal/debug.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 struct EqualHelperCallback {
   explicit EqualHelperCallback(
@@ -61,7 +62,9 @@ thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
     return result;
   }
 }
-}}
+
+} // namespace thrift
+} // namespace apache
 
 #define EXPECT_THRIFT_EQ(a, b) \
   EXPECT_PRED_FORMAT2(::apache::thrift::thriftEqualHelper, a, b)

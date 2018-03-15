@@ -25,8 +25,10 @@ template <class Value>
 class Optional;
 }
 
-namespace apache { namespace thrift {
-namespace detail { namespace reflection_impl {
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace reflection_impl {
 
 template <typename T>
 struct is_optional : std::false_type {};
@@ -96,7 +98,7 @@ struct isset {
   }
 };
 
-} // reflection_impl
+} // namespace reflection_impl
 
 template <typename...>
 struct chained_data_member_getter;
@@ -214,7 +216,7 @@ struct reflect_module_tag_selector<type_class::structure, T, IsTry> {
   using type = typename reflect_struct<T>::module;
 };
 
-} // detail
+} // namespace detail
 
 template <>
 struct reflected_annotations<void> {
@@ -223,6 +225,7 @@ struct reflected_annotations<void> {
   using map = fatal::list<>;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_REFLECTION_INL_POST_H_

@@ -42,7 +42,8 @@
 
 #include <cstdint>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * READ ME FIRST: this file is divided into sections for each specific
@@ -2506,7 +2507,8 @@ class thrift_map_traits_adapter {
   }
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/reflection-inl-post.h>
 

@@ -16,10 +16,14 @@
 #ifndef THRIFT_FATAL_FOLLY_DYNAMIC_INL_PRE_H_
 #define THRIFT_FATAL_FOLLY_DYNAMIC_INL_PRE_H_ 1
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 template <typename> struct dynamic_converter_impl;
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_FOLLY_DYNAMIC_INL_PRE_H_

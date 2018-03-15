@@ -17,7 +17,8 @@
 #ifndef THRIFT_FATAL_TRAITS_TEST_HELPERS_H
 #define THRIFT_FATAL_TRAITS_TEST_HELPERS_H
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Test procedure for `thrift_list_traits` specializations of lists that
@@ -79,7 +80,8 @@ void test_thrift_set_traits();
 template <typename T>
 void test_thrift_map_traits();
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/fatal/internal/traits_test_helpers-inl.h>
 

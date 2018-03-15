@@ -34,7 +34,9 @@
 #include <fatal/type/conditional.h>
 #include <fatal/type/convert.h>
 
-namespace apache { namespace thrift { namespace populator {
+namespace apache {
+namespace thrift {
+namespace populator {
 
 struct populator_opts {
   template <typename Int = std::size_t>
@@ -571,4 +573,6 @@ void populate(Type& out, populator_opts const& opts, Rng& rng) {
     ::populate(rng, opts, out);
 }
 
-} } } // namespace apache::thrift::populator
+} // namespace populator
+} // namespace thrift
+} // namespace apache

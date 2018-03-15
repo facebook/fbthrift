@@ -19,8 +19,10 @@
 #include <fatal/type/apply.h>
 #include <fatal/type/cat.h>
 
-namespace apache { namespace thrift {
-namespace detail { namespace flatten_getters_impl {
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace flatten_getters_impl {
 
 // member handler: non-terminal non-struct
 template <
@@ -72,7 +74,9 @@ struct s {
   >;
 };
 
-}} // detail::flatten_getters_impl
-}} // apache::thrift
+} // namespace flatten_getters_impl
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_FLATTEN_GETTERS_INL_POST_H_

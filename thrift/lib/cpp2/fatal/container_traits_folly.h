@@ -22,7 +22,8 @@
 #include <folly/small_vector.h>
 #include <folly/sorted_vector_types.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <typename C, typename T, typename A, typename S>
 struct thrift_string_traits<folly::basic_fbstring<C, T, A, S>>
@@ -40,6 +41,7 @@ template <typename K, typename V, typename C, typename A, typename G>
 struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>>
     : thrift_map_traits_std<folly::sorted_vector_map<K, V, C, A, G>> {};
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_CONTAINER_TRAITS_FOLLY_H_

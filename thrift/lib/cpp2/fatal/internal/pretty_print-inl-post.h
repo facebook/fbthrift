@@ -22,7 +22,9 @@
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 /**
  * Pretty print specialization for enumerations.
@@ -235,6 +237,8 @@ struct pretty_print_impl {
   }
 };
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_PRETTY_PRINT_INL_POST_H_

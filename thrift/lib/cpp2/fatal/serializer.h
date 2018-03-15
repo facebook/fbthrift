@@ -29,7 +29,8 @@
 #include <type_traits>
 #include <vector>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace detail {
 
@@ -37,7 +38,7 @@ inline bool is_unknown_container_size(uint32_t const size) {
   return size == std::numeric_limits<decltype(size)>::max();
 }
 
-} // namespace detail {
+} // namespace detail
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -1367,5 +1368,5 @@ std::size_t serializer_serialized_size_zc(Type const& in, Protocol& protocol) {
     ::template serialized_size<true>(protocol, in);
 }
 
-
-} } // namespace apache::thrift
+} // namespace thrift
+} // namespace apache

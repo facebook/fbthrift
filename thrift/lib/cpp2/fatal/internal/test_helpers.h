@@ -25,7 +25,9 @@
 #include <tuple>
 #include <typeinfo>
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache {
+namespace thrift {
+namespace detail {
 
 struct expect_same {
   expect_same(char const *filename, std::size_t line):
@@ -58,6 +60,8 @@ private:
 #define EXPECT_SAME \
   ::apache::thrift::detail::expect_same(__FILE__, __LINE__).check
 
-}}} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_FATAL_INTERNAL_TEST_HELPERS_H

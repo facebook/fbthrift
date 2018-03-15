@@ -16,7 +16,9 @@
 
 #pragma once
 
-namespace apache { namespace thrift { namespace merge_into_detail {
+namespace apache {
+namespace thrift {
+namespace merge_into_detail {
 
 template <typename T>
 struct merge {
@@ -167,9 +169,12 @@ struct merge_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   }
 };
 
-}}} // apache::thrift::merge_into_detail
+} // namespace merge_into_detail
+} // namespace thrift
+} // namespace apache
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <typename T>
 void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst) {
@@ -180,4 +185,5 @@ void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst) {
   merge_into_detail::merge<D>::go(static_cast<W>(src), dst);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

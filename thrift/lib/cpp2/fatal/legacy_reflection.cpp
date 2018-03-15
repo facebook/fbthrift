@@ -20,7 +20,8 @@
 #include <folly/lang/Bits.h>
 #include <folly/ssl/OpenSSLHash.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace legacy_reflection_detail {
 
@@ -36,6 +37,7 @@ id_t get_type_id(type_t type, folly::StringPiece name) {
   return (truncated & ~kTypeMask) | id_t(type);
 }
 
-}
+} // namespace legacy_reflection_detail
 
-}}
+} // namespace thrift
+} // namespace apache
