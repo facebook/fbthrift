@@ -52,7 +52,7 @@ struct expect_same {
     EXPECT_EQ(lhs, rhs);
   }
 
-private:
+ private:
   std::string const filename_;
   std::size_t const line_;
 };

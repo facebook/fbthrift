@@ -40,7 +40,7 @@ struct metrics_client {
     }
   }
 
-private:
+ private:
   std::unordered_map<std::string, std::intmax_t> metrics_;
 };
 

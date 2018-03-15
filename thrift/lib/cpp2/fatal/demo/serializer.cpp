@@ -53,7 +53,7 @@ struct memory_buffer {
 
   bool empty() const { return index_ == buffer_.size(); }
 
-private:
+ private:
   using buffer_type = std::vector<char>;
 
   buffer_type buffer_;
@@ -82,7 +82,7 @@ struct data_writer {
     write_opaque(data, size);
   }
 
-private:
+ private:
   memory_buffer &buffer_;
 };
 
@@ -116,7 +116,7 @@ struct data_reader {
     out.append(data.first, data.second);
   }
 
-private:
+ private:
   memory_buffer &buffer_;
 };
 

@@ -423,7 +423,7 @@ struct I {
   bool operator >(I const &rhs) const { return i_ > rhs.i_; }
   bool operator >=(I const &rhs) const { return i_ >= rhs.i_; }
 
-private:
+ private:
   pointer i_;
 };
 

@@ -61,11 +61,11 @@ class indenter {
       return *this;
     }
 
-  private:
+   private:
     indenter *out_;
   };
 
-public:
+ public:
   template <typename UOutputStream, typename Indentation>
   indenter(UOutputStream &&out, Indentation &&indentation, std::string margin)
     : out_(out), margin_(std::move(margin))
@@ -131,7 +131,7 @@ public:
     return *this;
   }
 
-private:
+ private:
   OutputStream &out_;
   std::vector<std::string> indentation_;
   std::size_t level_ = 0;

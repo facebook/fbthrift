@@ -100,7 +100,7 @@ struct debug_output_callback {
     out_ << std::endl;
   }
 
-private:
+ private:
   Output &out_;
 };
 

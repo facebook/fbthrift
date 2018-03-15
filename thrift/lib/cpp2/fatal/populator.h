@@ -330,7 +330,7 @@ template <typename Union>
 struct populator_methods<type_class::variant, Union> {
   using traits = fatal::variant_traits<Union>;
 
-private:
+ private:
   struct write_member_by_fid {
     template <typename Fid, std::size_t Index, typename Rng>
     void operator ()(
@@ -363,7 +363,7 @@ private:
     }
   };
 
-public:
+ public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Union& out) {
     DVLOG(3) << "begin writing union: "
@@ -403,7 +403,7 @@ public:
 // specialization for structs
 template <typename Struct>
 struct populator_methods<type_class::structure, Struct> {
-private:
+ private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
   using all_fields = fatal::partition<
@@ -543,7 +543,7 @@ private:
     }
   };
 
-public:
+ public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
     fatal::foreach<typename traits::members>(
