@@ -43,7 +43,6 @@ Cpp2Channel::Cpp2Channel(
     std::unique_ptr<ProtectionHandler> protectionHandler,
     std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
     : transport_(transport),
-      queue_(new IOBufQueue(IOBufQueue::cacheChainLength())),
       recvCallback_(nullptr),
       eofInvoked_(false),
       outputBufferingHandler_(
