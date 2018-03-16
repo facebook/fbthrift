@@ -83,7 +83,7 @@ class Stream {
     return stream;
   }
 
-  operator bool() const {
+  explicit operator bool() const {
     return (bool)impl_;
   }
 
@@ -91,8 +91,8 @@ class Stream {
     return executor_;
   }
 
-  template <typename U>
-  Stream<U> map(folly::Function<U(T&&)>) &&;
+  template <typename F>
+  Stream<folly::invoke_result_t<F, T&&>> map(F&&) &&;
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 

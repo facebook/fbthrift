@@ -22,19 +22,20 @@ namespace apache {
 namespace thrift {
 
 template <typename T>
-template <typename U>
-SemiStream<U> SemiStream<T>::map(folly::Function<U(T&&)> mapFunc) && {
+template <typename F>
+SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(F&& f) && {
+  using U = folly::invoke_result_t<F, T&&>;
+
   SemiStream<U> result;
   result.impl_ = std::move(impl_);
   result.mapFuncs_ = std::move(mapFuncs_);
   result.mapFuncs_.push_back(
-      [mapFunc =
-           std::move(mapFunc)](std::unique_ptr<detail::ValueIf> value) mutable
+      [f = std::forward<F>(f)](std::unique_ptr<detail::ValueIf> value) mutable
       -> std::unique_ptr<detail::ValueIf> {
         assert(dynamic_cast<detail::Value<T>*>(value.get()));
         auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
         return std::make_unique<detail::Value<U>>(
-            mapFunc(std::move(valuePtr->value)));
+            std::forward<F>(f)(std::move(valuePtr->value)));
       });
   return result;
 }

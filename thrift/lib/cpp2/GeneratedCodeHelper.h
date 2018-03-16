@@ -975,35 +975,33 @@ bool is_oneway_method(
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::Stream<folly::IOBufQueue> encode_stream(
     apache::thrift::Stream<T>&& stream) {
-  return std::move(stream).template map<folly::IOBufQueue>(
-      [](T&& _item) mutable -> folly::IOBufQueue {
-        PResult res;
-        res.template get<0>().value = const_cast<T*>(&_item);
-        res.setIsSet(0);
+  return std::move(stream).map([](T&& _item) mutable {
+    PResult res;
+    res.template get<0>().value = const_cast<T*>(&_item);
+    res.setIsSet(0);
 
-        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-        Protocol prot;
-        prot.setOutput(&queue);
+    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+    Protocol prot;
+    prot.setOutput(&queue);
 
-        res.write(&prot);
-        return queue;
-      });
+    res.write(&prot);
+    return queue;
+  });
 }
 
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::SemiStream<T> decode_stream(
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
-  return std::move(stream).template map<T>(
-      [](std::unique_ptr<folly::IOBuf>&& buf) mutable -> T {
-        PResult args;
-        T res{};
-        args.template get<0>().value = &res;
+  return std::move(stream).map([](std::unique_ptr<folly::IOBuf>&& buf) mutable {
+    PResult args;
+    T res{};
+    args.template get<0>().value = &res;
 
-        Protocol prot;
-        prot.setInput(buf.get());
-        args.read(&prot);
-        return res;
-      });
+    Protocol prot;
+    prot.setInput(buf.get());
+    args.read(&prot);
+    return res;
+  });
 }
 
 } // namespace ap

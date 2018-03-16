@@ -53,18 +53,19 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
 } // namespace detail
 
 template <typename T>
-template <typename U>
-Stream<U> Stream<T>::map(folly::Function<U(T&&)> mapFunc) && {
+template <typename F>
+Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
+  using U = folly::invoke_result_t<F, T&&>;
   auto impl = std::move(impl_);
   return Stream<U>(
       impl->map(
-          [mapFunc = std::move(mapFunc)](
+          [f = std::forward<F>(f)](
               std::unique_ptr<detail::ValueIf> value) mutable
           -> std::unique_ptr<detail::ValueIf> {
             assert(dynamic_cast<detail::Value<T>*>(value.get()));
             auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
             return std::make_unique<detail::Value<U>>(
-                mapFunc(std::move(valuePtr->value)));
+                std::forward<F>(f)(std::move(valuePtr->value)));
           }),
       executor_);
 }

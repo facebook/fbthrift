@@ -51,7 +51,7 @@ TEST(YarplStreamImplTest, Basic) {
 
   auto flowable = Flowable<>::justN({12, 34, 56, 98});
   auto stream = toStream(std::move(flowable), evbThread.getEventBase());
-  auto stream2 = std::move(stream).map<int>([&](int x) {
+  auto stream2 = std::move(stream).map([&](int x) {
     EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
     return x * 2;
   });
@@ -67,11 +67,11 @@ TEST(YarplStreamImplTest, SemiStream) {
 
   auto flowable = Flowable<>::justN({12, 34, 56, 98});
   auto stream = toStream(std::move(flowable), evbThread.getEventBase());
-  SemiStream<int> stream2 = std::move(stream).map<int>([&](int x) {
+  SemiStream<int> stream2 = std::move(stream).map([&](int x) {
     EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
     return x * 2;
   });
-  auto streamString = std::move(stream2).map<std::string>([&](int x) {
+  auto streamString = std::move(stream2).map([&](int x) {
     EXPECT_TRUE(evbThread2.getEventBase()->inRunningEventBaseThread());
     return folly::to<std::string>(x);
   });
@@ -102,9 +102,7 @@ TEST(YarplStreamImplTest, EncodeDecode) {
   auto encodedStream =
       detail::ap::encode_stream<CompactProtocolWriter, PResult>(
           std::move(inStream))
-          .map<std::unique_ptr<folly::IOBuf>>(
-              [](folly::IOBufQueue&& in) mutable
-              -> std::unique_ptr<folly::IOBuf> { return in.move(); });
+          .map([](folly::IOBufQueue&& in) mutable { return in.move(); });
 
   // No event base is involved, as this is a defered decoding
   auto decodedStream =
