@@ -8,9 +8,8 @@
 
 #include <array>
 #include <cstddef>
-
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
+#include "src/gen-cpp2/forward_compatibility_types.h"
 
 

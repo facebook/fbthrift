@@ -115,31 +115,10 @@ bool record_genfiles = false;
 
 static void preprocess_cpp2_generator_strings(
     std::string& gen_string,
-    bool& gen_py_cpp2,
-    bool& gen_mstch_cpp2,
     bool& gen_py_cpp2_reflection) {
-  // Use cpp2 python generator if only cpp2 is marked
-  if (gen_string.find("cpp2") != std::string::npos &&
-      gen_string.find("mstch_cpp2") == std::string::npos) {
-    gen_py_cpp2 = true;
-  }
-
-  // Use cpp2 python generator if mstch_cpp2 and any of these flags are present
-  if (gen_string.find("mstch_cpp2") != std::string::npos &&
-      (gen_string.find("py_generator") != std::string::npos ||
-       gen_string.find("compatibility") != std::string::npos)) {
-    gen_py_cpp2 = true;
-  }
-
-  // Use mstch_cpp2 generator if gen_py_cpp2 is false and mstch_cpp2 is present
-  if (!gen_py_cpp2 && gen_string.find("mstch_cpp2") != std::string::npos) {
-    gen_mstch_cpp2 = true;
-  }
-
-  // Use mstch_cpp2 and python generator if mstch_cpp2 and reflection present
-  if (gen_mstch_cpp2 &&
-      (gen_string.find("reflection") != std::string::npos ||
-       gen_string.find("fatal") != std::string::npos)) {
+  // Use python generator for reflection
+  if (gen_string.find("reflection") != std::string::npos ||
+      gen_string.find("fatal") != std::string::npos) {
     gen_py_cpp2_reflection = true;
   }
 }
@@ -223,40 +202,27 @@ static bool generate_cpp2(
     std::string& gen_string,
     const std::string& user_python_compiler,
     std::vector<std::string>& arguments) {
-  bool gen_py_cpp2 = false;
-  bool gen_mstch_cpp2 = false;
   bool gen_py_cpp2_reflection = false;
-  preprocess_cpp2_generator_strings(
-      gen_string,
-      gen_py_cpp2,
-      gen_mstch_cpp2,
-      gen_py_cpp2_reflection);
+  preprocess_cpp2_generator_strings(gen_string, gen_py_cpp2_reflection);
 
-  if (gen_mstch_cpp2) {
-    t_generator* generator =
-        t_generator_registry::get_generator(program, gen_string);
-    if (generator) {
-      pverbose("Generating \"%s\"\n", gen_string.c_str());
-      generator->generate_program();
-      if (record_genfiles) {
-        for (const std::string& s : generator->get_genfiles()) {
-          genfile_file << s << "\n";
-        }
+  t_generator* generator =
+      t_generator_registry::get_generator(program, gen_string);
+  if (generator) {
+    pverbose("Generating \"%s\"\n", gen_string.c_str());
+    generator->generate_program();
+    if (record_genfiles) {
+      for (const std::string& s : generator->get_genfiles()) {
+        genfile_file << s << "\n";
       }
-      delete generator;
     }
+    delete generator;
   }
 
-  if (gen_py_cpp2 || gen_py_cpp2_reflection) {
-    //mstch_cpp2 -> cpp2
-    if (gen_mstch_cpp2) {
-      search_and_replace_args(arguments, "mstch_cpp2", "cpp2");
-    }
+  if (gen_py_cpp2_reflection) {
+    search_and_replace_args(arguments, "mstch_cpp2", "cpp2");
 
-    //reflection -> only_reflection
-    if (gen_py_cpp2_reflection) {
-      search_and_replace_args(arguments, "reflection", "only_reflection");
-    }
+    // reflection -> only_reflection
+    search_and_replace_args(arguments, "reflection", "only_reflection");
 
     python_generator(gen_string, user_python_compiler, arguments);
   }

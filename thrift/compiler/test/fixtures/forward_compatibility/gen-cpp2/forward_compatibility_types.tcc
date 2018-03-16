@@ -6,60 +6,79 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
+#include "src/gen-cpp2/forward_compatibility_types.h"
+
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t OldStructure::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+void OldStructure::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->features = std::map<int16_t, double>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
-          this->__isset.features = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_features:
+  {
+    this->features = std::map<int16_t, double>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
+    this->__isset.features = true;
+  }
 
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_features;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -95,54 +114,70 @@ uint32_t OldStructure::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t NewStructure::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+void NewStructure::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->features = std::map<int16_t, double>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
-          this->__isset.features = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_features:
+  {
+    this->features = std::map<int16_t, double>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, std::map<int16_t, double>>::read(*iprot, this->features);
+    this->__isset.features = true;
+  }
 
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_features;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -178,54 +213,70 @@ uint32_t NewStructure::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t NewStructure2::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+void NewStructure2::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->features =  ::cpp2::FloatFeatures();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::read(*iprot, this->features);
-          this->__isset.features = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_features:
+  {
+    this->features =  ::cpp2::FloatFeatures();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>,  ::cpp2::FloatFeatures>::read(*iprot, this->features);
+    this->__isset.features = true;
+  }
 
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_features;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -261,76 +312,114 @@ uint32_t NewStructure2::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t NewStructureNested::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+void NewStructureNested::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_LIST) {
-          this->lst = std::vector< ::cpp2::FloatFeatures>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::FloatFeatures>>::read(*iprot, this->lst);
-          this->__isset.lst = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 2:
-      {
-        if (_ftype == apache::thrift::protocol::T_MAP) {
-          this->mp = std::map<int16_t,  ::cpp2::FloatFeatures>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::map<int16_t,  ::cpp2::FloatFeatures>>::read(*iprot, this->mp);
-          this->__isset.mp = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      case 3:
-      {
-        if (_ftype == apache::thrift::protocol::T_SET) {
-          this->s = std::set< ::cpp2::FloatFeatures>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::set< ::cpp2::FloatFeatures>>::read(*iprot, this->s);
-          this->__isset.s = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_LIST))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_lst:
+  {
+    this->lst = std::vector< ::cpp2::FloatFeatures>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::FloatFeatures>>::read(*iprot, this->lst);
+    this->__isset.lst = true;
+  }
 
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_mp:
+  {
+    this->mp = std::map<int16_t,  ::cpp2::FloatFeatures>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::map<int16_t,  ::cpp2::FloatFeatures>>::read(*iprot, this->mp);
+    this->__isset.mp = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          3,
+          apache::thrift::protocol::T_SET))) {
+    goto _loop;
+  }
+_readField_s:
+  {
+    this->s = std::set< ::cpp2::FloatFeatures>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::map_forward_compatibility<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>>, std::set< ::cpp2::FloatFeatures>>::read(*iprot, this->s);
+    this->__isset.s = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_LIST)) {
+        goto _readField_lst;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_mp;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_SET)) {
+        goto _readField_s;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -380,53 +469,69 @@ uint32_t NewStructureNested::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t NewStructureNestedField::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
-  std::string _fname;
-  apache::thrift::protocol::TType _ftype;
-  int16_t fid;
+void NewStructureNestedField::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
-  iprot->readStructBegin(_fname);
+  _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
 
-  while (true) {
-    iprot->readFieldBegin(_fname, _ftype, fid);
-    if (_ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_fname, fid, _ftype);
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (_ftype == apache::thrift::protocol::T_STRUCT) {
-          ::apache::thrift::Cpp2Ops<  ::cpp2::NewStructureNested>::read(iprot, &this->f);
-          this->__isset.f = true;
-        } else {
-          iprot->skip(_ftype);
-        }
-        break;
-      }
-      default:
-      {
-        iprot->skip(_ftype);
-        break;
-      }
-    }
-    iprot->readFieldEnd();
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRUCT))) {
+    goto _loop;
   }
-  iprot->readStructEnd();
+_readField_f:
+  {
+    ::apache::thrift::Cpp2Ops<  ::cpp2::NewStructureNested>::read(iprot, &this->f);
+    this->__isset.f = true;
+  }
 
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRUCT)) {
+        goto _readField_f;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
 }
 
 template <class Protocol_>
@@ -460,11 +565,5 @@ uint32_t NewStructureNestedField::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

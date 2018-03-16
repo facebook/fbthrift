@@ -14,5 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.tcc"
+#include "src/gen-cpp2/forward_compatibility_types.tcc"
 

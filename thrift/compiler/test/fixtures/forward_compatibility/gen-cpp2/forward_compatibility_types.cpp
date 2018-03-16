@@ -4,23 +4,18 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
-
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.tcc"
+#include "src/gen-cpp2/forward_compatibility_types.h"
+#include "src/gen-cpp2/forward_compatibility_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_data.h"
-
-
+#include "src/gen-cpp2/forward_compatibility_data.h"
 
 namespace cpp2 {
 
 OldStructure::OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
-    features(std::move(features__arg))
- {
+    features(std::move(features__arg)) {
   __isset.features = true;
 }
 
@@ -59,28 +54,24 @@ void swap(OldStructure& a, OldStructure& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t OldStructure::read<>(apache::thrift::BinaryProtocolReader*);
+template void OldStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t OldStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t OldStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t OldStructure::read<>(apache::thrift::CompactProtocolReader*);
+template void OldStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t OldStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t OldStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t OldStructure::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void OldStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t OldStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t OldStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 NewStructure::NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
-    features(std::move(features__arg))
- {
+    features(std::move(features__arg)) {
   __isset.features = true;
 }
 
@@ -119,28 +110,24 @@ void swap(NewStructure& a, NewStructure& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t NewStructure::read<>(apache::thrift::BinaryProtocolReader*);
+template void NewStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t NewStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t NewStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t NewStructure::read<>(apache::thrift::CompactProtocolReader*);
+template void NewStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t NewStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NewStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t NewStructure::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void NewStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t NewStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t NewStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 NewStructure2::NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg) :
-    features(std::move(features__arg))
- {
+    features(std::move(features__arg)) {
   __isset.features = true;
 }
 
@@ -179,30 +166,26 @@ void swap(NewStructure2& a, NewStructure2& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t NewStructure2::read<>(apache::thrift::BinaryProtocolReader*);
+template void NewStructure2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t NewStructure2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t NewStructure2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t NewStructure2::read<>(apache::thrift::CompactProtocolReader*);
+template void NewStructure2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t NewStructure2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NewStructure2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t NewStructure2::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void NewStructure2::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t NewStructure2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t NewStructure2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 NewStructureNested::NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg) :
     lst(std::move(lst__arg)),
     mp(std::move(mp__arg)),
-    s(std::move(s__arg))
- {
+    s(std::move(s__arg)) {
   __isset.lst = true;
   __isset.mp = true;
   __isset.s = true;
@@ -277,28 +260,24 @@ void swap(NewStructureNested& a, NewStructureNested& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t NewStructureNested::read<>(apache::thrift::BinaryProtocolReader*);
+template void NewStructureNested::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t NewStructureNested::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t NewStructureNested::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t NewStructureNested::read<>(apache::thrift::CompactProtocolReader*);
+template void NewStructureNested::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t NewStructureNested::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NewStructureNested::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t NewStructureNested::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void NewStructureNested::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t NewStructureNested::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t NewStructureNested::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 
 NewStructureNestedField::NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg) :
-    f(std::move(f__arg))
- {
+    f(std::move(f__arg)) {
   __isset.f = true;
 }
 
@@ -337,23 +316,17 @@ void swap(NewStructureNestedField& a, NewStructureNestedField& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t NewStructureNestedField::read<>(apache::thrift::BinaryProtocolReader*);
+template void NewStructureNestedField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t NewStructureNestedField::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t NewStructureNestedField::read<>(apache::thrift::CompactProtocolReader*);
+template void NewStructureNestedField::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t NewStructureNestedField::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t NewStructureNestedField::read<>(apache::thrift::SimpleJSONProtocolReader*);
+template void NewStructureNestedField::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 template uint32_t NewStructureNestedField::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
 
 } // cpp2

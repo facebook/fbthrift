@@ -6,40 +6,45 @@
  */
 #pragma once
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/Cursor.h>
-
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
+// BEGIN declare_enums
 
+// END declare_enums
+// BEGIN struct_indirection
+
+// END struct_indirection
+// BEGIN forward_declare
 namespace cpp2 {
-
 class OldStructure;
 class NewStructure;
 class NewStructure2;
 class NewStructureNested;
 class NewStructureNestedField;
+} // cpp2
+// END forward_declare
+// BEGIN typedefs
+namespace cpp2 {
 typedef std::map<int16_t, float> FloatFeatures;
-
 typedef std::map<int64_t, double> DoubleMapType;
-
 typedef std::map<int16_t,  ::cpp2::DoubleMapType> OldMapMap;
-
 typedef std::map<int32_t,  ::cpp2::DoubleMapType> NewMapMap;
-
 typedef std::map<int16_t, std::vector<float>> OldMapList;
-
 typedef std::map<int32_t, std::vector<float>> NewMapList;
 
+} // cpp2
+// END typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
+namespace cpp2 {
 class OldStructure final : private apache::thrift::detail::st::ComparisonOperators<OldStructure> {
  public:
 
   OldStructure() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   OldStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -60,7 +65,6 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   std::map<int16_t, double> features;
 
   struct __isset {
-
     bool features;
   } __isset = {};
   bool operator==(const OldStructure& rhs) const;
@@ -75,7 +79,7 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   const std::map<int16_t, double>& get_features() const&;
   std::map<int16_t, double> get_features() &&;
 
-  template <typename T_OldStructure_features_struct_setter>
+  template <typename T_OldStructure_features_struct_setter = std::map<int16_t, double>>
   std::map<int16_t, double>& set_features(T_OldStructure_features_struct_setter&& features_) {
     features = std::forward<T_OldStructure_features_struct_setter>(features_);
     __isset.features = true;
@@ -93,21 +97,33 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< OldStructure >;
 };
 
 void swap(OldStructure& a, OldStructure& b);
-extern template uint32_t OldStructure::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void OldStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t OldStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t OldStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OldStructure::read<>(apache::thrift::CompactProtocolReader*);
+extern template void OldStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t OldStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t OldStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OldStructure::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void OldStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t OldStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t OldStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t OldStructure::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -125,7 +141,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::w
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::OldStructure>::read(Protocol* proto,  ::cpp2::OldStructure* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::serializedSize(Protocol const* proto,  ::cpp2::OldStructure const* obj) {
@@ -138,12 +154,11 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::OldStructure>::s
 
 }} // apache::thrift
 namespace cpp2 {
-
 class NewStructure final : private apache::thrift::detail::st::ComparisonOperators<NewStructure> {
  public:
 
   NewStructure() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -164,7 +179,6 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   std::map<int16_t, double> features;
 
   struct __isset {
-
     bool features;
   } __isset = {};
   bool operator==(const NewStructure& rhs) const;
@@ -179,7 +193,7 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   const std::map<int16_t, double>& get_features() const&;
   std::map<int16_t, double> get_features() &&;
 
-  template <typename T_NewStructure_features_struct_setter>
+  template <typename T_NewStructure_features_struct_setter = std::map<int16_t, double>>
   std::map<int16_t, double>& set_features(T_NewStructure_features_struct_setter&& features_) {
     features = std::forward<T_NewStructure_features_struct_setter>(features_);
     __isset.features = true;
@@ -197,21 +211,33 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NewStructure >;
 };
 
 void swap(NewStructure& a, NewStructure& b);
-extern template uint32_t NewStructure::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void NewStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t NewStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t NewStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t NewStructure::read<>(apache::thrift::CompactProtocolReader*);
+extern template void NewStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t NewStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NewStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t NewStructure::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void NewStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t NewStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t NewStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t NewStructure::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -229,7 +255,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::w
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructure>::read(Protocol* proto,  ::cpp2::NewStructure* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::serializedSize(Protocol const* proto,  ::cpp2::NewStructure const* obj) {
@@ -242,12 +268,11 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure>::s
 
 }} // apache::thrift
 namespace cpp2 {
-
 class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperators<NewStructure2> {
  public:
 
   NewStructure2() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructure2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -268,7 +293,6 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
    ::cpp2::FloatFeatures features;
 
   struct __isset {
-
     bool features;
   } __isset = {};
   bool operator==(const NewStructure2& rhs) const;
@@ -276,7 +300,7 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
   const  ::cpp2::FloatFeatures& get_features() const&;
    ::cpp2::FloatFeatures get_features() &&;
 
-  template <typename T_NewStructure2_features_struct_setter>
+  template <typename T_NewStructure2_features_struct_setter =  ::cpp2::FloatFeatures>
    ::cpp2::FloatFeatures& set_features(T_NewStructure2_features_struct_setter&& features_) {
     features = std::forward<T_NewStructure2_features_struct_setter>(features_);
     __isset.features = true;
@@ -294,21 +318,33 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NewStructure2 >;
 };
 
 void swap(NewStructure2& a, NewStructure2& b);
-extern template uint32_t NewStructure2::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void NewStructure2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t NewStructure2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t NewStructure2::read<>(apache::thrift::CompactProtocolReader*);
+extern template void NewStructure2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t NewStructure2::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t NewStructure2::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void NewStructure2::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t NewStructure2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t NewStructure2::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -326,7 +362,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructure2>::read(Protocol* proto,  ::cpp2::NewStructure2* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::serializedSize(Protocol const* proto,  ::cpp2::NewStructure2 const* obj) {
@@ -339,12 +375,11 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructure2>::
 
 }} // apache::thrift
 namespace cpp2 {
-
 class NewStructureNested final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNested> {
  public:
 
   NewStructureNested() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructureNested(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -381,7 +416,6 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   std::set< ::cpp2::FloatFeatures> s;
 
   struct __isset {
-
     bool lst;
     bool mp;
     bool s;
@@ -391,7 +425,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   const std::vector< ::cpp2::FloatFeatures>& get_lst() const&;
   std::vector< ::cpp2::FloatFeatures> get_lst() &&;
 
-  template <typename T_NewStructureNested_lst_struct_setter>
+  template <typename T_NewStructureNested_lst_struct_setter = std::vector< ::cpp2::FloatFeatures>>
   std::vector< ::cpp2::FloatFeatures>& set_lst(T_NewStructureNested_lst_struct_setter&& lst_) {
     lst = std::forward<T_NewStructureNested_lst_struct_setter>(lst_);
     __isset.lst = true;
@@ -400,7 +434,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   const std::map<int16_t,  ::cpp2::FloatFeatures>& get_mp() const&;
   std::map<int16_t,  ::cpp2::FloatFeatures> get_mp() &&;
 
-  template <typename T_NewStructureNested_mp_struct_setter>
+  template <typename T_NewStructureNested_mp_struct_setter = std::map<int16_t,  ::cpp2::FloatFeatures>>
   std::map<int16_t,  ::cpp2::FloatFeatures>& set_mp(T_NewStructureNested_mp_struct_setter&& mp_) {
     mp = std::forward<T_NewStructureNested_mp_struct_setter>(mp_);
     __isset.mp = true;
@@ -409,7 +443,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   const std::set< ::cpp2::FloatFeatures>& get_s() const&;
   std::set< ::cpp2::FloatFeatures> get_s() &&;
 
-  template <typename T_NewStructureNested_s_struct_setter>
+  template <typename T_NewStructureNested_s_struct_setter = std::set< ::cpp2::FloatFeatures>>
   std::set< ::cpp2::FloatFeatures>& set_s(T_NewStructureNested_s_struct_setter&& s_) {
     s = std::forward<T_NewStructureNested_s_struct_setter>(s_);
     __isset.s = true;
@@ -427,21 +461,33 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NewStructureNested >;
 };
 
 void swap(NewStructureNested& a, NewStructureNested& b);
-extern template uint32_t NewStructureNested::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t NewStructureNested::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t NewStructureNested::read<>(apache::thrift::CompactProtocolReader*);
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t NewStructureNested::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t NewStructureNested::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t NewStructureNested::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t NewStructureNested::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -459,7 +505,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructureNested>::read(Protocol* proto,  ::cpp2::NewStructureNested* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNested>::serializedSize(Protocol const* proto,  ::cpp2::NewStructureNested const* obj) {
@@ -472,12 +518,11 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
 
 }} // apache::thrift
 namespace cpp2 {
-
 class NewStructureNestedField final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNestedField> {
  public:
 
   NewStructureNestedField() {}
-  // FragileConstructor for use in initialization lists only
+  // FragileConstructor for use in initialization lists only.
   NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   NewStructureNestedField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -498,7 +543,6 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
    ::cpp2::NewStructureNested f;
 
   struct __isset {
-
     bool f;
   } __isset = {};
   bool operator==(const NewStructureNestedField& rhs) const;
@@ -506,7 +550,7 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
   const  ::cpp2::NewStructureNested& get_f() const&;
    ::cpp2::NewStructureNested get_f() &&;
 
-  template <typename T_NewStructureNestedField_f_struct_setter>
+  template <typename T_NewStructureNestedField_f_struct_setter =  ::cpp2::NewStructureNested>
    ::cpp2::NewStructureNested& set_f(T_NewStructureNestedField_f_struct_setter&& f_) {
     f = std::forward<T_NewStructureNestedField_f_struct_setter>(f_);
     __isset.f = true;
@@ -524,21 +568,33 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
 
  private:
   static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NewStructureNestedField >;
 };
 
 void swap(NewStructureNestedField& a, NewStructureNestedField& b);
-extern template uint32_t NewStructureNestedField::read<>(apache::thrift::BinaryProtocolReader*);
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 extern template uint32_t NewStructureNestedField::write<>(apache::thrift::BinaryProtocolWriter*) const;
 extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t NewStructureNestedField::read<>(apache::thrift::CompactProtocolReader*);
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 extern template uint32_t NewStructureNestedField::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t NewStructureNestedField::read<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
 extern template uint32_t NewStructureNestedField::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t NewStructureNestedField::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -556,7 +612,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
 }
 
 template <> template <class Protocol> void Cpp2Ops< ::cpp2::NewStructureNestedField>::read(Protocol* proto,  ::cpp2::NewStructureNestedField* obj) {
-  obj->read(proto);
+  return obj->readNoXfer(proto);
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNestedField>::serializedSize(Protocol const* proto,  ::cpp2::NewStructureNestedField const* obj) {
@@ -568,6 +624,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::NewStructureNest
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

@@ -6,8 +6,10 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include "forward_compatibility_types.h"
+
 namespace cpp2 {
 
 struct forward_compatibility_constants {
