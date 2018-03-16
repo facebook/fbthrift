@@ -27,11 +27,48 @@
 namespace apache {
 namespace thrift {
 
+template <typename Service>
+class SampleServer {
+ public:
+  explicit SampleServer(std::shared_ptr<Service> handler);
+  virtual ~SampleServer();
+
+  // Don't forget to start the server before running the tests.
+  void startServer();
+
+  void addRoutingHandler(
+      std::unique_ptr<TransportRoutingHandler> routingHandler);
+  ThriftServer* getServer();
+
+  void connectToServer(
+      std::string transport,
+      folly::Function<
+          void(ClientChannel::Ptr, std::shared_ptr<ClientConnectionIf>)>
+          callMe);
+
+ protected:
+  void setupServer();
+  void stopServer();
+
+ public:
+  std::shared_ptr<FakeServerObserver> observer_;
+
+ protected:
+  std::shared_ptr<Service> handler_;
+  std::unique_ptr<ThriftServer> server_;
+  uint16_t port_;
+  folly::ScopedEventBaseThread workerThread_;
+
+  int numIOThreads_{10};
+  int numWorkerThreads_{10};
+
+  friend class TransportCompatibilityTest;
+};
+
 // Transport layer compliance tests.
 class TransportCompatibilityTest {
  public:
   TransportCompatibilityTest();
-  virtual ~TransportCompatibilityTest();
 
   // Don't forget to start the server before running the tests.
   void startServer();
@@ -70,12 +107,7 @@ class TransportCompatibilityTest {
   void TestConnectionStats();
   void TestObserverSendReceiveRequests();
 
- public:
-  std::shared_ptr<FakeServerObserver> observer_;
-
  protected:
-  void setupServer();
-  void stopServer();
   void connectToServer(
       folly::Function<
           void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
@@ -90,14 +122,8 @@ class TransportCompatibilityTest {
       int32_t timeoutMs,
       int32_t sleepMs);
 
-  std::shared_ptr<testing::StrictMock<testutil::testservice::TestServiceMock>>
-      handler_;
-  std::unique_ptr<ThriftServer> server_;
-  uint16_t port_;
-  folly::ScopedEventBaseThread workerThread_;
-
-  int numIOThreads_{10};
-  int numWorkerThreads_{10};
+  std::shared_ptr<testutil::testservice::TestServiceMock> handler_;
+  std::unique_ptr<SampleServer<testutil::testservice::TestServiceMock>> server_;
 };
 
 } // namespace thrift

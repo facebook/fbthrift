@@ -25,10 +25,11 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
-#include <thrift/perf/cpp2/util/Util.h>
-#include "thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h"
 
 DECLARE_bool(use_ssl);
 DECLARE_string(transport);
@@ -38,19 +39,29 @@ DEFINE_string(host, "::1", "host to connect to");
 namespace apache {
 namespace thrift {
 
+using namespace async;
 using namespace testing;
-
 using namespace apache::thrift;
 using namespace apache::thrift::transport;
 using namespace testutil::testservice;
 
 TransportCompatibilityTest::TransportCompatibilityTest()
-    : workerThread_("TransportCompatibilityTest_WorkerThread") {
+    : handler_(std::make_shared<
+               StrictMock<testutil::testservice::TestServiceMock>>()),
+      server_(std::make_unique<
+              SampleServer<testutil::testservice::TestServiceMock>>(handler_)) {
+}
+
+template <typename Service>
+SampleServer<Service>::SampleServer(std::shared_ptr<Service> handler)
+    : handler_(std::move(handler)),
+      workerThread_("TransportCompatibilityTest_WorkerThread") {
   setupServer();
 }
 
 // Tears down after the test.
-TransportCompatibilityTest::~TransportCompatibilityTest() {
+template <typename Service>
+SampleServer<Service>::~SampleServer() {
   stopServer();
 }
 
@@ -77,26 +88,36 @@ class TransportCompatibilityTestEventHandler
   int32_t port_;
 };
 
-void TransportCompatibilityTest::addRoutingHandler(
+template <typename Service>
+void SampleServer<Service>::addRoutingHandler(
     std::unique_ptr<TransportRoutingHandler> routingHandler) {
   DCHECK(server_) << "First call setupServer() function";
 
   server_->addRoutingHandler(std::move(routingHandler));
 }
 
-ThriftServer* TransportCompatibilityTest::getServer() {
+template <typename Service>
+ThriftServer* SampleServer<Service>::getServer() {
   DCHECK(server_) << "First call setupServer() function";
 
   return server_.get();
 }
 
-void TransportCompatibilityTest::setupServer() {
+void TransportCompatibilityTest::addRoutingHandler(
+    std::unique_ptr<TransportRoutingHandler> routingHandler) {
+  return server_->addRoutingHandler(std::move(routingHandler));
+}
+
+ThriftServer* TransportCompatibilityTest::getServer() {
+  return server_->getServer();
+}
+
+template <typename Service>
+void SampleServer<Service>::setupServer() {
   DCHECK(!server_) << "First close the server with stopServer()";
 
-  handler_ = std::make_shared<StrictMock<TestServiceMock>>();
   auto cpp2PFac =
-      std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
-          handler_);
+      std::make_shared<ThriftServerAsyncProcessorFactory<Service>>(handler_);
 
   server_ = std::make_unique<ThriftServer>();
   observer_ = std::make_shared<FakeServerObserver>();
@@ -107,7 +128,8 @@ void TransportCompatibilityTest::setupServer() {
   server_->setProcessorFactory(cpp2PFac);
 }
 
-void TransportCompatibilityTest::startServer() {
+template <typename Service>
+void SampleServer<Service>::startServer() {
   DCHECK(server_) << "First call setupServer() function";
   auto eventHandler =
       std::make_shared<TransportCompatibilityTestEventHandler>();
@@ -118,7 +140,12 @@ void TransportCompatibilityTest::startServer() {
   port_ = eventHandler->waitForPortAssignment();
 }
 
-void TransportCompatibilityTest::stopServer() {
+void TransportCompatibilityTest::startServer() {
+  server_->startServer();
+}
+
+template <typename Service>
+void SampleServer<Service>::stopServer() {
   if (server_) {
     server_->cleanUp();
     server_.reset();
@@ -137,8 +164,31 @@ void TransportCompatibilityTest::connectToServer(
     folly::Function<void(
         std::unique_ptr<TestServiceAsyncClient>,
         std::shared_ptr<ClientConnectionIf>)> callMe) {
+  server_->connectToServer(
+      FLAGS_transport,
+      [callMe = std::move(callMe)](
+          ClientChannel::Ptr channel,
+          std::shared_ptr<ClientConnectionIf> connection) mutable {
+        auto client =
+            std::make_unique<TestServiceAsyncClient>(std::move(channel));
+        callMe(std::move(client), std::move(connection));
+      });
+}
+
+template <typename Service>
+void SampleServer<Service>::connectToServer(
+    std::string transport,
+    folly::Function<
+        void(ClientChannel::Ptr, std::shared_ptr<ClientConnectionIf>)> callMe) {
   CHECK_GT(port_, 0) << "Check if the server has started already";
-  if (FLAGS_transport == "legacy-http2") {
+  if (transport == "header") {
+    auto addr = folly::SocketAddress(FLAGS_host, port_);
+    TAsyncSocket::UniquePtr sock(
+        new TAsyncSocket(folly::EventBaseManager::get()->getEventBase(), addr));
+    auto chan = HeaderClientChannel::newChannel(std::move(sock));
+    chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+    callMe(std::move(chan), std::unique_ptr<ClientConnectionIf>());
+  } else if (transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.
     folly::EventBase evb;
@@ -152,16 +202,14 @@ void TransportCompatibilityTest::connectToServer(
       socket.reset(sslSocket);
     }
     auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
-    auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
-    callMe(std::move(client), std::unique_ptr<ClientConnectionIf>());
+    callMe(std::move(channel), std::unique_ptr<ClientConnectionIf>());
   } else {
     auto mgr = ConnectionManager::getInstance();
     auto connection = mgr->getConnection(FLAGS_host, port_);
     auto channel = ThriftClient::Ptr(
         new ThriftClient(connection, workerThread_.getEventBase()));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-    auto client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
-    callMe(std::move(client), std::move(connection));
+    callMe(std::move(channel), std::move(connection));
   }
 }
 
@@ -220,14 +268,14 @@ void TransportCompatibilityTest::callSleep(
 
 void TransportCompatibilityTest::TestConnectionStats() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
-    EXPECT_EQ(0, observer_->connAccepted_);
-    EXPECT_EQ(0, observer_->activeConns_);
+    EXPECT_EQ(0, server_->observer_->connAccepted_);
+    EXPECT_EQ(0, server_->observer_->activeConns_);
 
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
 
-    EXPECT_EQ(1, observer_->connAccepted_);
-    EXPECT_EQ(numIOThreads_, observer_->activeConns_);
+    EXPECT_EQ(1, server_->observer_->connAccepted_);
+    EXPECT_EQ(server_->numIOThreads_, server_->observer_->activeConns_);
   });
 }
 
@@ -249,8 +297,8 @@ void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
     EXPECT_EQ(8, client->sync_add(5));
 
     // Now check the stats
-    EXPECT_EQ(5, observer_->sentReply_);
-    EXPECT_EQ(5, observer_->receivedRequest_);
+    EXPECT_EQ(5, server_->observer_->sentReply_);
+    EXPECT_EQ(5, server_->observer_->receivedRequest_);
   });
 }
 
@@ -367,8 +415,8 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-    CHECK_EQ(3, observer_->taskTimeout_);
-    CHECK_EQ(0, observer_->queueTimeout_);
+    CHECK_EQ(3, server_->observer_->taskTimeout_);
+    CHECK_EQ(0, server_->observer_->queueTimeout_);
   });
 }
 
@@ -556,8 +604,8 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     int callCount = numCores + 1; // more than the core count!
 
     // Queue expiration - executes some of the tasks ( = thread count)
-    server_->setQueueTimeout(std::chrono::milliseconds(10));
-    server_->setTaskExpireTime(std::chrono::milliseconds(10));
+    server_->getServer()->setQueueTimeout(std::chrono::milliseconds(10));
+    server_->getServer()->setTaskExpireTime(std::chrono::milliseconds(10));
     std::vector<folly::Future<folly::Unit>> futures(callCount);
     for (int i = 0; i < callCount; ++i) {
       RpcOptions opts;
@@ -584,9 +632,9 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
     EXPECT_LE(1, successCount) << "at least 1 task is expected to succeed";
 
     // Task expires - even though starts executing the tasks, all expires
-    server_->setQueueTimeout(std::chrono::milliseconds(1000));
-    server_->setUseClientTimeout(false);
-    server_->setTaskExpireTime(std::chrono::milliseconds(1));
+    server_->getServer()->setQueueTimeout(std::chrono::milliseconds(1000));
+    server_->getServer()->setUseClientTimeout(false);
+    server_->getServer()->setTaskExpireTime(std::chrono::milliseconds(1));
     for (int i = 0; i < callCount; ++i) {
       futures[i] = client->future_sleep(100 + i);
     }
@@ -614,7 +662,7 @@ void TransportCompatibilityTest::TestRequestResponse_ResponseSizeTooBig() {
     // Execute the function, but fail when sending the response
     EXPECT_CALL(*handler_.get(), hello_(_));
 
-    server_->setMaxResponseSize(1);
+    server_->getServer()->setMaxResponseSize(1);
     try {
       std::string longName(1, 'f');
       std::string result;
@@ -724,14 +772,14 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
         EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5))
             .Times(AtMost(2 * callCount));
 
-        server_->setQueueTimeout(std::chrono::milliseconds(1));
+        server_->getServer()->setQueueTimeout(std::chrono::milliseconds(1));
         for (int i = 0; i < callCount; ++i) {
           EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
         }
 
-        server_->setQueueTimeout(std::chrono::milliseconds(1000));
-        server_->setUseClientTimeout(false);
-        server_->setTaskExpireTime(std::chrono::milliseconds(1));
+        server_->getServer()->setQueueTimeout(std::chrono::milliseconds(1000));
+        server_->getServer()->setUseClientTimeout(false);
+        server_->getServer()->setTaskExpireTime(std::chrono::milliseconds(1));
         for (int i = 0; i < callCount; ++i) {
           EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
         }
@@ -739,9 +787,6 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
 }
 
 void TransportCompatibilityTest::TestRequestContextIsPreserved() {
-  auto intermServer = std::make_shared<apache::thrift::ThriftServer>();
-  uint16_t intermPort;
-
   EXPECT_CALL(*handler_.get(), add_(5)).Times(1);
 
   // A separate server/client is spun up to verify that a client backed by a new
@@ -751,33 +796,22 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
   // transport being tested, and it's verified that the RequestContext doesn't
   // change.
 
-  auto intermEventHandler =
-      std::make_shared<TransportCompatibilityTestEventHandler>();
+  auto service = std::make_shared<StrictMock<IntermHeaderService>>(
+      FLAGS_host, server_->port_);
 
-  auto serverThread = std::thread([&] {
-    auto intermHandler =
-        std::make_shared<IntermHeaderService>(FLAGS_host, port_);
-    intermServer->setInterface(intermHandler);
-    auto cpp2PFac = std::make_shared<
-        ThriftServerAsyncProcessorFactory<IntermHeaderService>>(intermHandler);
+  SampleServer<IntermHeaderService> server(service);
+  server.startServer();
 
-    intermServer->setPort(0);
-    intermServer->setProcessorFactory(cpp2PFac);
+  server.connectToServer(
+      "header",
+      [](ClientChannel::Ptr channel,
+         std::shared_ptr<ClientConnectionIf>) mutable {
+        auto client = std::make_unique<IntermHeaderServiceAsyncClient>(
+            std::move(channel));
+        EXPECT_EQ(5, client->sync_callAdd(5));
+      });
 
-    intermServer->setServerEventHandler(intermEventHandler);
-    intermServer->setup();
-  });
-
-  intermPort = intermEventHandler->waitForPortAssignment();
-
-  auto addr = folly::SocketAddress(FLAGS_host, intermPort);
-  auto client = newClient<IntermHeaderServiceAsyncClient>(
-      folly::EventBaseManager::get()->getEventBase(), addr, "header");
-
-  EXPECT_EQ(5, client->sync_callAdd(5));
-
-  intermServer->cleanUp();
-  serverThread.join();
+  server.stopServer();
 }
 
 void TransportCompatibilityTest::TestBadPayload() {
