@@ -1,6 +1,6 @@
 cpp_include "thrift/test/fatal_legacy_reflection_types.h"
 
-namespace cpp apache.thrift.test
+namespace cpp2 apache.thrift.test
 
 typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
 
@@ -31,7 +31,7 @@ struct SampleStruct {
   11: SampleSubStruct struct_field,
   12: SampleSubUnion union_field,
   13: list<i16> list_i16_field,
-  14: set<i32> set_i32_field,
+  14: set<i32> set__i32_field,
   15: map<i64, string> map_i64_string_field,
   16: list<bool> list_bool_field,
   17: list<byte> list_byte_field,
