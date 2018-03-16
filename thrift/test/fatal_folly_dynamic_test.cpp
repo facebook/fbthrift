@@ -34,6 +34,8 @@
 #include <sstream>
 #include <utility>
 
+using namespace cpp2;
+
 namespace apache { namespace thrift {
 
 template <typename T>
