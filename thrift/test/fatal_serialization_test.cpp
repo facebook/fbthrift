@@ -20,9 +20,6 @@
 #include <thrift/test/gen-cpp2/service_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/service_reflection_types_custom_protocol.h>
 
-#include <thrift/test/gen-cpp2/EnumTest_fatal_types.h>
-#include <thrift/test/gen-cpp2/EnumTest_types_custom_protocol.h>
-
 #include <thrift/lib/cpp2/fatal/serializer.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
@@ -55,21 +52,6 @@ void expect_same_serialized_size(Type& type, Protocol& protocol) {
     serializer_serialized_size_zc(type, protocol)
   );
 }
-
-namespace cpp2 {
-TYPED_TEST(MultiProtocolTest, test_compat) {
-  // from EnumTest.thrift (compiled with fatal,compatibility)
-  MyStruct a;
-  serializer_write(a, this->writer);
-  this->prep_read();
-  this->debug_buffer();
-
-  MyStruct b;
-  serializer_read(a, this->reader);
-  EXPECT_EQ(a, b);
-  expect_same_serialized_size(a, this->writer);
-}
-} // namespace cpp2
 
 // simply tests if we can compile the structs related to services
 namespace service_reflection { namespace cpp2 {
