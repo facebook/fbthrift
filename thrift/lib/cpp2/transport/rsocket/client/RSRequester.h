@@ -45,6 +45,7 @@ class RSRequester : public rsocket::RSocketRequester {
       rsocket::Payload request) override;
 
   std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestChannel(
+      rsocket::Payload request,
       std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requests)
       override;
 

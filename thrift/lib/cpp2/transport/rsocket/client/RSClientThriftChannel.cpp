@@ -17,7 +17,6 @@
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RPCSubscriber.h>
 
 namespace apache {
 namespace thrift {
@@ -248,27 +247,18 @@ void RSClientThriftChannel::sendStreamRequestStreamResponse(
   auto output = callback->getOutput();
 
   auto input =
-      yarpl::flowable::internal::flowableFromSubscriber<rsocket::Payload>(
-          [initialBuf = std::move(buf),
-           metadata = std::move(metadata),
-           callback = std::move(callback)](
-              std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
-                  subscriber) mutable {
-            VLOG(3)
-                << "Input is started to be consumed: "
-                << initialBuf->cloneAsValue().moveToFbString().toStdString();
+      yarpl::flowable::internal::flowableFromSubscriber<
+          std::unique_ptr<folly::IOBuf>>(
+          [callback = std::move(callback)](auto subscriber) mutable {
             StreamRequestCallback* scb =
                 static_cast<StreamRequestCallback*>(callback.get());
-            auto rpc_subscriber = std::make_shared<RPCSubscriber>(
-                serializeMetadata(*metadata),
-                std::move(initialBuf),
-                std::move(subscriber));
-            rpc_subscriber->init();
-            scb->subscribeToInput(std::move(rpc_subscriber));
-          });
+            scb->subscribeToInput(std::move(subscriber));
+          })
+          ->map([](auto buf) { return rsocket::Payload(std::move(buf)); });
 
   // Perform the rpc call
-  auto result = rsRequester_->requestChannel(input);
+  auto result = rsRequester_->requestChannel(
+      rsocket::Payload(std::move(buf), serializeMetadata(*metadata)), input);
   result
       ->map([](auto payload) -> std::unique_ptr<folly::IOBuf> {
         VLOG(3) << "Request channel: "
