@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-#include <boost/utility.hpp>
+#include <boost/noncopyable.hpp>
 
 namespace apache { namespace thrift { namespace concurrency {
 
