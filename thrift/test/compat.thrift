@@ -1,4 +1,3 @@
-namespace cpp test_cpp1.cpp_compat
 namespace cpp2 test_cpp2.cpp_compat
 namespace d test_d.cpp_compat
 namespace java test_java.cpp_compat
