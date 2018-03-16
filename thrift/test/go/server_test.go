@@ -86,7 +86,7 @@ func connectTestHeaderServer(
 	}
 
 	prot := protocolFactory.GetProtocol(trans)
-	return thrifttest.NewThriftTestClientProtocol(trans, prot, prot), nil
+	return thrifttest.NewThriftTestClient(trans, prot, prot), nil
 }
 
 func doClientTest(t *testing.T, transportFactory thrift.TransportFactory, protocolFactory thrift.ProtocolFactory) {
