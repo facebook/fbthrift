@@ -1,9 +1,0 @@
-include "thrift/lib/thrift/dynamic.thrift"
-
-struct Container {
-  1: dynamic.DynamicType data
-}
-
-service DynamicTestCompatService {
-  dynamic.DynamicType echo(1: dynamic.DynamicType input);
-}
