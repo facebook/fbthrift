@@ -58,7 +58,7 @@ func NewMyServiceClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *My
   }
 }
 
-func NewMyServiceClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceClient {
+func NewMyServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceClient {
   return &MyServiceClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -243,7 +243,7 @@ func NewMyServiceThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFa
   }
 }
 
-func NewMyServiceThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
+func NewMyServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
   return &MyServiceThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

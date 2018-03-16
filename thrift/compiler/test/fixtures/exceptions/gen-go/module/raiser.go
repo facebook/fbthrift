@@ -45,7 +45,7 @@ func NewRaiserClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *Raise
   }
 }
 
-func NewRaiserClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserClient {
+func NewRaiserClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserClient {
   return &RaiserClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -377,7 +377,7 @@ func NewRaiserThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
   }
 }
 
-func NewRaiserThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserThreadsafeClient {
+func NewRaiserThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserThreadsafeClient {
   return &RaiserThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

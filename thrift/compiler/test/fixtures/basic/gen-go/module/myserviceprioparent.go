@@ -43,7 +43,7 @@ func NewMyServicePrioParentClientFactory(t thrift.Transport, f thrift.ProtocolFa
   }
 }
 
-func NewMyServicePrioParentClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentClient {
+func NewMyServicePrioParentClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentClient {
   return &MyServicePrioParentClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -215,7 +215,7 @@ func NewMyServicePrioParentThreadsafeClientFactory(t thrift.Transport, f thrift.
   }
 }
 
-func NewMyServicePrioParentThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentThreadsafeClient {
+func NewMyServicePrioParentThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioParentThreadsafeClient {
   return &MyServicePrioParentThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
