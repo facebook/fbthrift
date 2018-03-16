@@ -24,8 +24,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/test/gen-cpp2/Cpp2OpsCompat_constants.h>
-#include <thrift/test/gen-cpp2/Cpp2OpsCompat_types.h>
+#include <thrift/test/gen-cpp2/Cpp2OpsNative_constants.h>
 #include <thrift/test/gen-cpp2/Cpp2OpsNative_types.h>
 
 namespace thrift { namespace test { namespace cpp2ops {
@@ -43,8 +42,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     apache::thrift::CompactProtocolWriter writer;
 
     TypeParam obj;
-    obj.num = cpp2::Cpp2OpsCompat_constants::num_test_value();
-    obj.str = cpp2::Cpp2OpsCompat_constants::str_test_value();
+    obj.num = cpp2::Cpp2OpsNative_constants::num_test_value();
+    obj.str = cpp2::Cpp2OpsNative_constants::str_test_value();
 
     // This is mainly to test that it compiles...
     EXPECT_NE(
@@ -71,14 +70,14 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     apache::thrift::Cpp2Ops<TypeParam>::read(&reader, &obj);
     EXPECT_EQ(size, reader.getCurrentPosition().getCurrentPosition());
 
-    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::num_test_value(), obj.num);
-    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::str_test_value(), obj.str);
+    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::num_test_value(), obj.num);
+    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::str_test_value(), obj.str);
   }
 }
 
 REGISTER_TYPED_TEST_CASE_P(Cpp2OpsTest, Simple);
 
-typedef testing::Types<cpp2::Native, Compat> Types;
+typedef testing::Types<cpp2::Native> Types;
 INSTANTIATE_TYPED_TEST_CASE_P(Cpp2OpsTest, Cpp2OpsTest, Types);
 
 }}}  // namespaces
