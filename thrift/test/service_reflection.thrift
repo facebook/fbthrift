@@ -1,4 +1,3 @@
-namespace cpp service_reflection.cpp
 namespace cpp2 service_reflection.cpp2
 
 enum enum1 {
