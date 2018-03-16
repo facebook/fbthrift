@@ -34,7 +34,7 @@ func (client *MyServicePrioChildClient) Close() error {
 func NewMyServicePrioChildClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioChildClient {
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClientFactory(t, f)}}
 
-func NewMyServicePrioChildClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildClient {
+func NewMyServicePrioChildClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildClient {
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClientProtocol(t, iprot, oprot)}
 }
 
@@ -118,7 +118,7 @@ type MyServicePrioChildThreadsafeClient struct {
 func NewMyServicePrioChildThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientFactory(t, f)}}
 
-func NewMyServicePrioChildThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
+func NewMyServicePrioChildThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientProtocol(t, iprot, oprot)}
 }
 

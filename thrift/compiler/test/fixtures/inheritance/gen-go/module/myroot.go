@@ -42,7 +42,7 @@ func NewMyRootClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyRoo
   }
 }
 
-func NewMyRootClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootClient {
+func NewMyRootClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootClient {
   return &MyRootClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -142,7 +142,7 @@ func NewMyRootThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
   }
 }
 
-func NewMyRootThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
+func NewMyRootThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
   return &MyRootThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

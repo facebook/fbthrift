@@ -40,7 +40,7 @@ func NewMyServiceEmptyClientFactory(t thrift.Transport, f thrift.ProtocolFactory
   }
 }
 
-func NewMyServiceEmptyClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyClient {
+func NewMyServiceEmptyClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyClient {
   return &MyServiceEmptyClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
@@ -68,7 +68,7 @@ func NewMyServiceEmptyThreadsafeClientFactory(t thrift.Transport, f thrift.Proto
   }
 }
 
-func NewMyServiceEmptyThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyThreadsafeClient {
+func NewMyServiceEmptyThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyThreadsafeClient {
   return &MyServiceEmptyThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

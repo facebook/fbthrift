@@ -1839,7 +1839,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
   // Constructor function
   f_service_
       << indent() << "func New" << serviceName
-      << "Client(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
+      << "ClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
       << serviceName << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";
@@ -2123,7 +2123,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
   // Constructor function
   f_service_
       << indent() << "func New" << serviceName
-      << "Client(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
+      << "ClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
       << serviceName << "Client {" << endl;
   indent_up();
   f_service_ << indent() << "return &" << serviceName << "Client";

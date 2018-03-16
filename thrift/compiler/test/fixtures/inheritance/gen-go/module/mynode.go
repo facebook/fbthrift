@@ -34,7 +34,7 @@ func (client *MyNodeClient) Close() error {
 func NewMyNodeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyNodeClient {
   return &MyNodeClient{MyRootClient: NewMyRootClientFactory(t, f)}}
 
-func NewMyNodeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeClient {
+func NewMyNodeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeClient {
   return &MyNodeClient{MyRootClient: NewMyRootClientProtocol(t, iprot, oprot)}
 }
 
@@ -118,7 +118,7 @@ type MyNodeThreadsafeClient struct {
 func NewMyNodeThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}}
 
-func NewMyNodeThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
+func NewMyNodeThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientProtocol(t, iprot, oprot)}
 }
 
