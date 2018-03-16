@@ -32,9 +32,9 @@ struct print_struct_member {
     auto const &value = Member::getter::ref(object);
     std::cout << "  " << name << " = " << value << '\n';
     std::cout << "  - type class: "
-      << folly::demangle(typeid(typename Member::type_class)) << '\n';
+              << folly::demangle(typeid(typename Member::type_class)) << '\n';
     std::cout << "  - concrete type: "
-      << folly::demangle(typeid(typename Member::type)) << '\n';
+              << folly::demangle(typeid(typename Member::type)) << '\n';
     std::cout << '\n';
   }
 };

@@ -345,8 +345,8 @@ struct populator_methods<type_class::variant, Union> {
       assert(Fid::value == descriptor::metadata::id::value);
 
       DVLOG(3) << "writing union field "
-        << fatal::z_data<typename descriptor::metadata::name>()
-        << ", fid: " << descriptor::metadata::id::value;
+               << fatal::z_data<typename descriptor::metadata::name>()
+               << ", fid: " << descriptor::metadata::id::value;
 
       typename descriptor::type tmp;
       typename descriptor::setter setter;
@@ -364,8 +364,8 @@ struct populator_methods<type_class::variant, Union> {
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Union& out) {
     DVLOG(3) << "begin writing union: "
-      << fatal::z_data<typename traits::name>()
-      << ", type: " << out.getType();
+             << fatal::z_data<typename traits::name>()
+             << ", type: " << out.getType();
 
     // array of all possible FIDs of this union
     using fids_seq = fatal::sort<
@@ -525,7 +525,7 @@ struct populator_methods<type_class::structure, Struct> {
       member_type tmp;
 
       DVLOG(3) << "populating member: "
-        << fatal::z_data<typename Member::name>();
+               << fatal::z_data<typename Member::name>();
 
       field_populator<
         Member,

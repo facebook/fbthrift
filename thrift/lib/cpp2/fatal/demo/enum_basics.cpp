@@ -33,7 +33,7 @@ struct print_enum_field {
   template <typename Field, std::size_t Index>
   void operator ()(fatal::indexed<Field, Index>) const {
     std::cout << "  " << fatal::z_data<typename Field::name>() << " = "
-      << fatal::to_integral(Field::value::value) << '\n';
+              << fatal::to_integral(Field::value::value) << '\n';
   }
 };
 
@@ -74,7 +74,7 @@ void try_string_to_enum(folly::StringPiece name) {
   Enum value;
   if (traits::try_parse(value, name)) {
     std::cout << "try_parse: successfully parsed " << name << ", int value"
-      << fatal::to_integral(value) << '\n';
+              << fatal::to_integral(value) << '\n';
   } else {
     std::cout << "try_parse: " << name << " is not a valid enum field\n";
   }
@@ -87,7 +87,7 @@ void string_to_enum(folly::StringPiece name) {
   try {
     auto value = traits::parse(name);
     std::cout << "parse: successfully parsed " << name << ", int value"
-      << fatal::to_integral(value) << '\n';
+              << fatal::to_integral(value) << '\n';
   } catch (std::exception const &e) {
     std::cout << "parse: " << e.what() << '\n';
   }

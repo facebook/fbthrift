@@ -30,7 +30,7 @@ struct print_annotations {
     char const *prefix
   ) const {
     std::cout << prefix << fatal::z_data<typename Annotation::key>() << ": '"
-      << fatal::z_data<typename Annotation::value>() << '\n';
+              << fatal::z_data<typename Annotation::value>() << '\n';
   }
 };
 

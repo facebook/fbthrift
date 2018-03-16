@@ -418,9 +418,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    DVLOG(3) << "start map write: " <<
-      key_methods::ttype_value << "/" <<
-      mapped_methods::ttype_value << " (" << out.size() << ")";
+    DVLOG(3) << "start map write: " << key_methods::ttype_value << "/"
+             << mapped_methods::ttype_value << " (" << out.size() << ")";
     xfer += protocol.writeMapBegin(
       key_methods::ttype_value,
       mapped_methods::ttype_value,
@@ -614,9 +613,8 @@ struct protocol_methods <
         "Instantiation failure, descriptor name mismatch");
 
       DVLOG(3) << "(union) matched string: "
-        << fatal::z_data<typename Field::name>()
-        << ", fid: " << fid
-        << ", ftype: " << ftype;
+               << fatal::z_data<typename Field::name>() << ", fid: " << fid
+               << ", ftype: " << ftype;
 
       fid   = descriptor::metadata::id::value;
       ftype = protocol_methods<field_tclass, field_type>::ttype_value;
@@ -716,9 +714,9 @@ struct protocol_methods <
       assert(Id::value == descriptor::id::value);
 
       DVLOG(3) << "writing union field "
-        << fatal::z_data<typename descriptor::metadata::name>()
-        << ", fid: " << descriptor::metadata::id::value
-        << ", ttype: " << methods::ttype_value;
+               << fatal::z_data<typename descriptor::metadata::name>()
+               << ", fid: " << descriptor::metadata::id::value
+               << ", ttype: " << methods::ttype_value;
 
       xfer += protocol.writeFieldBegin(
         fatal::z_data<typename descriptor::metadata::name>(),
@@ -772,9 +770,9 @@ struct protocol_methods <
       assert(Id::value == descriptor::id::value);
 
       DVLOG(3) << "sizing union field "
-        << fatal::z_data<typename descriptor::metadata::name>()
-        << ", fid: " << descriptor::metadata::id::value
-        << ", ttype: " << methods::ttype_value;
+               << fatal::z_data<typename descriptor::metadata::name>()
+               << ", fid: " << descriptor::metadata::id::value
+               << ", ttype: " << methods::ttype_value;
 
       xfer += protocol.serializedFieldSize(
         fatal::z_data<typename descriptor::metadata::name>(),
@@ -854,8 +852,7 @@ struct protocol_methods <
       >::ttype_value;
 
       DVLOG(3) << "matched string: " << fatal::z_data<typename Member::name>()
-        << ", fid: " << fid
-        << ", ftype: " << ftype;
+               << ", fid: " << fid << ", ftype: " << ftype;
     }
   };
 
@@ -1043,7 +1040,7 @@ struct protocol_methods <
       else {
         using field_traits = reflect_struct<struct_type>;
         DVLOG(3) << "empty ref struct, writing blank struct! "
-          << fatal::z_data<typename field_traits::name>();
+                 << fatal::z_data<typename field_traits::name>();
         xfer += protocol.writeFieldBegin(
           fatal::z_data<typename Member::name>(),
           Methods::ttype_value,
@@ -1108,9 +1105,9 @@ struct protocol_methods <
         || Member::is_set(in)
       ) {
         DVLOG(3) << "start field write: "
-          << fatal::z_data<typename Member::name>()
-          << " ttype:" << methods::ttype_value
-          << ", id:" << Member::id::value;
+                 << fatal::z_data<typename Member::name>()
+                 << " ttype:" << methods::ttype_value
+                 << ", id:" << Member::id::value;
 
         auto const& got = Member::getter::ref(in);
         using member_type = typename std::decay<decltype(got)>::type;
@@ -1211,7 +1208,7 @@ struct protocol_methods <
       else {
         using field_traits = reflect_struct<struct_type>;
         DVLOG(3) << "empty ref struct, sizing blank struct! "
-          << fatal::z_data<typename field_traits::name>();
+                 << fatal::z_data<typename field_traits::name>();
         xfer += protocol.serializedFieldSize(
           fatal::z_data<typename Member::name>(),
           Methods::ttype_value,

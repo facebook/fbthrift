@@ -51,7 +51,7 @@ struct print_variant_member {
   template <typename Member, std::size_t Index>
   void operator ()(fatal::indexed<Member, Index>) const {
     std::cout << "    " << fatal::z_data<typename Member::metadata::name>()
-      << '\n';
+              << '\n';
   }
 };
 
