@@ -19,6 +19,8 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <folly/FBString.h>
+#include <folly/container/F14Map.h>
+#include <folly/container/F14Set.h>
 #include <folly/small_vector.h>
 #include <folly/sorted_vector_types.h>
 
@@ -40,6 +42,30 @@ struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>>
 template <typename K, typename V, typename C, typename A, typename G>
 struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>>
     : thrift_map_traits_std<folly::sorted_vector_map<K, V, C, A, G>> {};
+
+template <class K, class H, class E, class A>
+struct thrift_set_traits<folly::F14ValueSet<K, H, E, A>>
+    : thrift_set_traits_std<folly::F14ValueSet<K, H, E, A>> {};
+
+template <class K, class H, class E, class A>
+struct thrift_set_traits<folly::F14NodeSet<K, H, E, A>>
+    : thrift_set_traits_std<folly::F14NodeSet<K, H, E, A>> {};
+
+template <class K, class H, class E, class A>
+struct thrift_set_traits<folly::F14VectorSet<K, H, E, A>>
+    : thrift_set_traits_std<folly::F14VectorSet<K, H, E, A>> {};
+
+template <class K, class T, class H, class E, class A>
+struct thrift_map_traits<folly::F14ValueMap<K, T, H, E, A>>
+    : thrift_map_traits_std<folly::F14ValueMap<K, T, H, E, A>> {};
+
+template <class K, class T, class H, class E, class A>
+struct thrift_map_traits<folly::F14NodeMap<K, T, H, E, A>>
+    : thrift_map_traits_std<folly::F14NodeMap<K, T, H, E, A>> {};
+
+template <class K, class T, class H, class E, class A>
+struct thrift_map_traits<folly::F14VectorMap<K, T, H, E, A>>
+    : thrift_map_traits_std<folly::F14VectorMap<K, T, H, E, A>> {};
 
 } // namespace thrift
 } // namespace apache

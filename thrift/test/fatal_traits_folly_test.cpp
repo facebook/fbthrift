@@ -36,5 +36,17 @@ TEST(reflection, thrift_sorted_vector_map_traits) {
   apache::thrift::test_thrift_map_traits<folly::sorted_vector_map<int, int>>();
 }
 
+TEST(reflection, thrift_f14_set_traits) {
+  apache::thrift::test_thrift_set_traits<folly::F14NodeSet<int>>();
+  apache::thrift::test_thrift_set_traits<folly::F14ValueSet<int>>();
+  apache::thrift::test_thrift_set_traits<folly::F14VectorSet<int>>();
+}
+
+TEST(reflection, thrift_f14_map_traits) {
+  apache::thrift::test_thrift_map_traits<folly::F14NodeMap<int, int>>();
+  apache::thrift::test_thrift_map_traits<folly::F14ValueMap<int, int>>();
+  apache::thrift::test_thrift_map_traits<folly::F14VectorMap<int, int>>();
+}
+
 } // namespace cpp_reflection {
 } // namespace test_cpp2 {
