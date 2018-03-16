@@ -5,7 +5,7 @@
 
 cpp_include "thrift/test/fatal_merge_types.h"
 
-namespace cpp apache.thrift.test
+namespace cpp2 apache.thrift.test
 
 enum FooBar {
   kFoo = 0,

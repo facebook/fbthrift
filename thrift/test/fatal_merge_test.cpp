@@ -64,24 +64,10 @@ static std::ostream& operator<<(
     EXPECT_EQ(example.exp, dst); \
     EXPECT_EQ(example.src, src); \
   } \
-  TEST_F(FatalMergeTest, name##_copy_legacy) { \
-    const auto& example = fatal_merge_constants::constant(); \
-    auto src = example.src, dst = example.dst; \
-    apache::thrift::merge(src, dst); \
-    EXPECT_EQ(example.exp, dst); \
-    EXPECT_EQ(example.src, src); \
-  } \
   TEST_F(FatalMergeTest, name##_move) { \
     const auto& example = fatal_merge_constants::constant(); \
     auto src = example.src, dst = example.dst; \
     apache::thrift::merge_into(std::move(src), dst); \
-    EXPECT_EQ(example.exp, dst); \
-    EXPECT_EQ(example.nil, src); \
-  } \
-  TEST_F(FatalMergeTest, name##_move_legacy) { \
-    const auto& example = fatal_merge_constants::constant(); \
-    auto src = example.src, dst = example.dst; \
-    apache::thrift::merge(std::move(src), dst); \
     EXPECT_EQ(example.exp, dst); \
     EXPECT_EQ(example.nil, src); \
   } \
