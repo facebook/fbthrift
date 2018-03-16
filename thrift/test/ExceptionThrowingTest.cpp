@@ -27,9 +27,9 @@ using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::util;
 using folly::EventBase;
-using thrift::test::SimpleException;
 using thrift::test::cpp2::ExceptionThrowingServiceAsyncClient;
 using thrift::test::cpp2::ExceptionThrowingServiceSvIf;
+using thrift::test::cpp2::SimpleException;
 
 class ExceptionThrowingHandler : public ExceptionThrowingServiceSvIf {
  public:
