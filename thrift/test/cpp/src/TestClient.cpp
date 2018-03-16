@@ -20,18 +20,17 @@
  */
 
 #define __STDC_FORMAT_MACROS
-#include <stdio.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/transport/TSocket.h>
-#include <thrift/lib/cpp/transport/TSSLSocket.h>
-
-#include <memory>
-#include <thrift/test/gen-cpp/ThriftTest.h>
-
-#include <folly/portability/SysTime.h>
-
 #include <inttypes.h>
+#include <stdio.h>
+#include <memory>
+
+#include <folly/init/Init.h>
+#include <folly/portability/SysTime.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/test/gen-cpp2/ThriftTest.h>
 
 using std::string;
 using std::make_pair;
@@ -40,8 +39,7 @@ using std::vector;
 using std::set;
 using namespace boost;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
+using namespace apache::thrift::async;
 using namespace thrift::test;
 
 //extern uint32_t g_socket_syscalls;
@@ -59,6 +57,8 @@ uint64_t now()
 }
 
 int main(int argc, char** argv) {
+  folly::init(&argc, &argv, false);
+
   string host = "localhost";
   int port = 9090;
   int numTests = 1;
@@ -78,8 +78,6 @@ int main(int argc, char** argv) {
       }
     } else if (strcmp(argv[i], "-n") == 0) {
       numTests = atoi(argv[++i]);
-    } else if (strcmp(argv[i], "-f") == 0) {
-      framed = true;
     } else if (strcmp(argv[i], "-hd") == 0) {
       header = true;
     } else if (strcmp(argv[i], "--ssl") == 0) {
@@ -87,40 +85,21 @@ int main(int argc, char** argv) {
     }
   }
 
-
-  std::shared_ptr<TSocket> socket;
+  folly::EventBase evb;
+  std::shared_ptr<TAsyncSocket> socket;
   if (ssl) {
-    std::shared_ptr<SSLContext> sslContext(new SSLContext());
+    std::shared_ptr<folly::SSLContext> sslContext(new folly::SSLContext());
     sslContext->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
     sslContext->loadTrustedCertificates("./trusted-ca-certificate.pem");
     sslContext->authenticate(true, false);
-    socket = std::shared_ptr<TSocket>(new TSSLSocket(sslContext, host, port));
+    socket = TAsyncSSLSocket::newSocket(sslContext, &evb);
   } else {
-    socket = std::shared_ptr<TSocket>(new TSocket(host, port));
+    socket = TAsyncSocket::newSocket(&evb);
   }
 
-  std::shared_ptr<TBufferBase> transport;
-  std::shared_ptr< TProtocol> protocol;
+  auto channel = HeaderClientChannel::newChannel(socket);
 
-  if (framed) {
-    std::shared_ptr<TFramedTransport> framedSocket(new TFramedTransport(socket));
-    transport = framedSocket;
-  } else {
-    std::shared_ptr<TBufferedTransport> bufferedSocket(new TBufferedTransport(socket));
-    transport = bufferedSocket;
-  }
-
-  if (header) {
-    std::shared_ptr<THeaderProtocolFactory> protocolFactory(
-      new THeaderProtocolFactory(T_BINARY_PROTOCOL));
-    protocolFactory->setTransform(THeaderTransport::ZLIB_TRANSFORM);
-    protocol = protocolFactory->getProtocol(transport).first;
-  } else {
-    protocol = std::shared_ptr< TBinaryProtocolT<TBufferBase> >(
-      new TBinaryProtocolT<TBufferBase>(transport));
-  }
-  ThriftTestClientT<TProtocol> testClient(protocol);
-  testClient._disableSequenceIdChecks();
+  ThriftTestAsyncClient testClient(std::move(channel));
 
   uint64_t time_min = 0;
   uint64_t time_max = 0;
@@ -128,11 +107,28 @@ int main(int argc, char** argv) {
 
   int test = 0;
   for (test = 0; test < numTests; ++test) {
+    struct ConnCb : public TAsyncSocket::ConnectCallback {
+      folly::EventBase& evb;
+      folly::Optional<transport::TTransportException> exn;
 
-    try {
-      transport->open();
-    } catch (TTransportException& ttx) {
-      printf("Connect failed: %s\n", ttx.what());
+      explicit ConnCb(folly::EventBase& eventBase) : evb(eventBase) {}
+
+      void connectSuccess() noexcept override final {
+        evb.terminateLoopSoon();
+      }
+
+      void connectError(
+          const transport::TTransportException& ex) noexcept override final {
+        exn = ex;
+        evb.terminateLoopSoon();
+      }
+    } connCb(evb);
+
+    socket->connect(&connCb, folly::SocketAddress(host, port, true));
+    evb.loopForever();
+
+    if (connCb.exn) {
+      printf("Connect failed: %s\n", connCb.exn->what());
       continue;
     }
 
@@ -148,7 +144,7 @@ int main(int argc, char** argv) {
      */
     try {
       printf("testVoid()");
-      testClient.testVoid();
+      testClient.sync_testVoid();
       printf(" = void\n");
     } catch (const TApplicationException &tax) {
       printf("%s\n", tax.what());
@@ -159,42 +155,42 @@ int main(int argc, char** argv) {
      */
     printf("testString(\"Test\")");
     string s;
-    testClient.testString(s, "Test");
+    testClient.sync_testString(s, "Test");
     printf(" = \"%s\"\n", s.c_str());
 
     /**
      * BYTE TEST
      */
     printf("testByte(1)");
-    uint8_t u8 = testClient.testByte(1);
+    uint8_t u8 = testClient.sync_testByte(1);
     printf(" = %d\n", (int)u8);
 
     /**
      * I32 TEST
      */
     printf("testI32(-1)");
-    int32_t i32 = testClient.testI32(-1);
+    int32_t i32 = testClient.sync_testI32(-1);
     printf(" = %d\n", i32);
 
     /**
      * I64 TEST
      */
     printf("testI64(-34359738368)");
-    int64_t i64 = testClient.testI64(-34359738368LL);
+    int64_t i64 = testClient.sync_testI64(-34359738368LL);
     printf(" = %" PRId64 "\n", i64);
 
     /**
      * DOUBLE TEST
      */
     printf("testDouble(-5.2098523)");
-    double dub = testClient.testDouble(-5.2098523);
+    double dub = testClient.sync_testDouble(-5.2098523);
     printf(" = %lf\n", dub);
 
     /**
      * FLOAT TEST
      */
     printf("testFloat(-5.2098523)");
-    float flt = testClient.testFloat(-5.2098523);
+    float flt = testClient.sync_testFloat(-5.2098523);
     printf(" = %lf\n", flt);
 
     /**
@@ -207,12 +203,13 @@ int main(int argc, char** argv) {
     out.i32_thing = -3;
     out.i64_thing = -5;
     Xtruct in;
-    testClient.testStruct(in, out);
-    printf(" = {\"%s\", %d, %d, %" PRId64 "}\n",
-           in.string_thing.c_str(),
-           (int)in.byte_thing,
-           in.i32_thing,
-           in.i64_thing);
+    testClient.sync_testStruct(in, out);
+    printf(
+        " = {\"%s\", %d, %d, %" PRId64 "}\n",
+        in.string_thing.c_str(),
+        (int)in.byte_thing,
+        in.i32_thing,
+        in.i64_thing);
 
     /**
      * NESTED STRUCT TEST
@@ -223,22 +220,23 @@ int main(int argc, char** argv) {
     out2.struct_thing = out;
     out2.i32_thing = 5;
     Xtruct2 in2;
-    testClient.testNest(in2, out2);
+    testClient.sync_testNest(in2, out2);
     in = in2.struct_thing;
-    printf(" = {%d, {\"%s\", %d, %d, %" PRId64 "}, %d}\n",
-           in2.byte_thing,
-           in.string_thing.c_str(),
-           (int)in.byte_thing,
-           in.i32_thing,
-           in.i64_thing,
-           in2.i32_thing);
+    printf(
+        " = {%d, {\"%s\", %d, %d, %" PRId64 "}, %d}\n",
+        in2.byte_thing,
+        in.string_thing.c_str(),
+        (int)in.byte_thing,
+        in.i32_thing,
+        in.i64_thing,
+        in2.i32_thing);
 
     /**
      * MAP TEST
      */
-    map<int32_t,int32_t> mapout;
+    map<int32_t, int32_t> mapout;
     for (int32_t i = 0; i < 5; ++i) {
-      mapout.insert(make_pair(i, i-10));
+      mapout.insert(make_pair(i, i - 10));
     }
     printf("testMap({");
     map<int32_t, int32_t>::const_iterator m_iter;
@@ -252,8 +250,8 @@ int main(int argc, char** argv) {
       printf("%d => %d", m_iter->first, m_iter->second);
     }
     printf("})");
-    map<int32_t,int32_t> mapin;
-    testClient.testMap(mapin, mapout);
+    map<int32_t, int32_t> mapin;
+    testClient.sync_testMap(mapin, mapout);
     printf(" = {");
     first = true;
     for (m_iter = mapin.begin(); m_iter != mapin.end(); ++m_iter) {
@@ -286,7 +284,7 @@ int main(int argc, char** argv) {
     }
     printf("})");
     set<int32_t> setin;
-    testClient.testSet(setin, setout);
+    testClient.sync_testSet(setin, setout);
     printf(" = {");
     first = true;
     for (s_iter = setin.begin(); s_iter != setin.end(); ++s_iter) {
@@ -319,7 +317,7 @@ int main(int argc, char** argv) {
     }
     printf("})");
     vector<int32_t> listin;
-    testClient.testList(listin, listout);
+    testClient.sync_testList(listin, listout);
     printf(" = {");
     first = true;
     for (l_iter = listin.begin(); l_iter != listin.end(); ++l_iter) {
@@ -336,40 +334,40 @@ int main(int argc, char** argv) {
      * ENUM TEST
      */
     printf("testEnum(ONE)");
-    Numberz ret = testClient.testEnum(Numberz::ONE);
+    Numberz ret = testClient.sync_testEnum(Numberz::ONE);
     printf(" = %d\n", ret);
 
     printf("testEnum(TWO)");
-    ret = testClient.testEnum(Numberz::TWO);
+    ret = testClient.sync_testEnum(Numberz::TWO);
     printf(" = %d\n", ret);
 
     printf("testEnum(THREE)");
-    ret = testClient.testEnum(Numberz::THREE);
+    ret = testClient.sync_testEnum(Numberz::THREE);
     printf(" = %d\n", ret);
 
     printf("testEnum(FIVE)");
-    ret = testClient.testEnum(Numberz::FIVE);
+    ret = testClient.sync_testEnum(Numberz::FIVE);
     printf(" = %d\n", ret);
 
     printf("testEnum(EIGHT)");
-    ret = testClient.testEnum(Numberz::EIGHT);
+    ret = testClient.sync_testEnum(Numberz::EIGHT);
     printf(" = %d\n", ret);
 
     /**
      * TYPEDEF TEST
      */
     printf("testTypedef(309858235082523)");
-    UserId uid = testClient.testTypedef(309858235082523LL);
+    UserId uid = testClient.sync_testTypedef(309858235082523LL);
     printf(" = %" PRId64 "\n", uid);
 
     /**
      * NESTED MAP TEST
      */
     printf("testMapMap(1)");
-    map<int32_t, map<int32_t, int32_t> > mm;
-    testClient.testMapMap(mm, 1);
+    map<int32_t, map<int32_t, int32_t>> mm;
+    testClient.sync_testMapMap(mm, 1);
     printf(" = {");
-    map<int32_t, map<int32_t, int32_t> >::const_iterator mi;
+    map<int32_t, map<int32_t, int32_t>>::const_iterator mi;
     for (mi = mm.begin(); mi != mm.end(); ++mi) {
       printf("%d => {", mi->first);
       map<int32_t, int32_t>::const_iterator mi2;
@@ -392,15 +390,14 @@ int main(int argc, char** argv) {
     truck.i64_thing = 8;
     insane.xtructs.push_back(truck);
     printf("testInsanity()");
-    map<UserId, map<Numberz,Insanity> > whoa;
-    testClient.testInsanity(whoa, insane);
+    map<UserId, map<Numberz, Insanity>> whoa;
+    testClient.sync_testInsanity(whoa, insane);
     printf(" = {");
-    map<UserId, map<Numberz,Insanity> >::const_iterator i_iter;
+    map<UserId, map<Numberz, Insanity>>::const_iterator i_iter;
     for (i_iter = whoa.begin(); i_iter != whoa.end(); ++i_iter) {
       printf("%" PRId64 " => {", i_iter->first);
-      map<Numberz,Insanity>::const_iterator i2_iter;
-      for (i2_iter = i_iter->second.begin();
-           i2_iter != i_iter->second.end();
+      map<Numberz, Insanity>::const_iterator i2_iter;
+      for (i2_iter = i_iter->second.begin(); i2_iter != i_iter->second.end();
            ++i2_iter) {
         printf("%d => {", i2_iter->first);
         map<Numberz, UserId> userMap = i2_iter->second.userMap;
@@ -415,11 +412,12 @@ int main(int argc, char** argv) {
         vector<Xtruct>::const_iterator x;
         printf("{");
         for (x = xtructs.begin(); x != xtructs.end(); ++x) {
-          printf("{\"%s\", %d, %d, %" PRId64 "}, ",
-                 x->string_thing.c_str(),
-                 (int)x->byte_thing,
-                 x->i32_thing,
-                 x->i64_thing);
+          printf(
+              "{\"%s\", %d, %d, %" PRId64 "}, ",
+              x->string_thing.c_str(),
+              (int)x->byte_thing,
+              x->i32_thing,
+              x->i64_thing);
         }
         printf("}");
 
@@ -433,18 +431,18 @@ int main(int argc, char** argv) {
 
     try {
       printf("testClient.testException(\"Xception\") =>");
-      testClient.testException("Xception");
+      testClient.sync_testException("Xception");
       printf("  void\nFAILURE\n");
 
-    } catch(Xception& e) {
+    } catch (Xception& e) {
       printf("  {%u, \"%s\"}\n", e.errorCode, e.message.c_str());
     }
 
     try {
       printf("testClient.testException(\"success\") =>");
-      testClient.testException("success");
+      testClient.sync_testException("success");
       printf("  void\n");
-    } catch(...) {
+    } catch (...) {
       printf("  exception\nFAILURE\n");
     }
 
@@ -452,42 +450,45 @@ int main(int argc, char** argv) {
     try {
       printf("testClient.testMultiException(\"Xception\", \"test 1\") =>");
       Xtruct result;
-      testClient.testMultiException(result, "Xception", "test 1");
+      testClient.sync_testMultiException(result, "Xception", "test 1");
       printf("  result\nFAILURE\n");
-    } catch(Xception& e) {
+    } catch (Xception& e) {
       printf("  {%u, \"%s\"}\n", e.errorCode, e.message.c_str());
     }
 
     try {
       printf("testClient.testMultiException(\"Xception2\", \"test 2\") =>");
       Xtruct result;
-      testClient.testMultiException(result, "Xception2", "test 2");
+      testClient.sync_testMultiException(result, "Xception2", "test 2");
       printf("  result\nFAILURE\n");
 
-    } catch(Xception2& e) {
-      printf("  {%u, {\"%s\"}}\n", e.errorCode, e.struct_thing.string_thing.c_str());
+    } catch (Xception2& e) {
+      printf(
+          "  {%u, {\"%s\"}}\n",
+          e.errorCode,
+          e.struct_thing.string_thing.c_str());
     }
 
     try {
       printf("testClient.testMultiException(\"success\", \"test 3\") =>");
       Xtruct result;
-      testClient.testMultiException(result, "success", "test 3");
+      testClient.sync_testMultiException(result, "success", "test 3");
       printf("  {{\"%s\"}}\n", result.string_thing.c_str());
-    } catch(...) {
+    } catch (...) {
       printf("  exception\nFAILURE\n");
     }
 
     /* test oneway void */
     {
-        printf("testClient.testOneway(3) =>");
-        uint64_t startOneway = now();
-        testClient.testOneway(3);
-        uint64_t elapsed = now() - startOneway;
-        if (elapsed > 200 * 1000) { // 0.2 seconds
-            printf("  FAILURE - took %.2f ms\n", (double)elapsed/1000.0);
-        } else {
-            printf("  success - took %.2f ms\n", (double)elapsed/1000.0);
-        }
+      printf("testClient.testOneway(3) =>");
+      uint64_t startOneway = now();
+      testClient.sync_testOneway(3);
+      uint64_t elapsed = now() - startOneway;
+      if (elapsed > 200 * 1000) { // 0.2 seconds
+        printf("  FAILURE - took %.2f ms\n", (double)elapsed / 1000.0);
+      } else {
+        printf("  success - took %.2f ms\n", (double)elapsed / 1000.0);
+      }
     }
 
     /**
@@ -502,9 +503,8 @@ int main(int argc, char** argv) {
      * I32 TEST
      */
     printf("re-test testI32(-1)");
-    i32 = testClient.testI32(-1);
+    i32 = testClient.sync_testI32(-1);
     printf(" = %d\n", i32);
-
 
     uint64_t stop = now();
     uint64_t tot = stop-start;
@@ -519,7 +519,7 @@ int main(int argc, char** argv) {
       time_max = tot;
     }
 
-    transport->close();
+    socket->close();
   }
 
   //  printf("\nSocket syscalls: %u", g_socket_syscalls);

@@ -18,7 +18,7 @@
  */
 
 namespace java thrift.test
-namespace cpp thrift.test
+namespace cpp2 thrift.test
 namespace rb Thrift.Test
 namespace perl ThriftTest
 namespace csharp Thrift.Test

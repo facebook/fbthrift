@@ -18,13 +18,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <gflags/gflags.h>
 #include <folly/Benchmark.h>
-
+#include <gflags/gflags.h>
+#include <gtest/gtest.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <cstdlib>
 #include <ctime>
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <gtest/gtest.h>
 
 #include <thrift/test/gen-cpp2/ThriftTest.h>
 
@@ -34,30 +34,24 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace thrift::test;
 
-void testMessage(uint8_t flag,
-                 int iters,
-                 bool easyMessage,
-                 bool binary = false) {
+void testMessage(
+    uint8_t flag,
+    int iters,
+    bool easyMessage,
+    bool binary = false) {
   Bonk b;
   Bonk bin;
   b.message = "";
 
-  std::shared_ptr<TMemoryBuffer> buf(new TMemoryBuffer());
-  std::shared_ptr<THeaderProtocol> prot(new THeaderProtocol(buf));
+  THeader header;
   if (flag) {
-    prot->setTransform(flag);
+    header.setTransform(flag);
   }
   if (binary) {
-    prot->setProtocolId(T_BINARY_PROTOCOL);
+    header.setProtocolId(T_BINARY_PROTOCOL);
   }
-
-  std::shared_ptr<TMemoryBuffer> bufin(new TMemoryBuffer());
-  std::shared_ptr<THeaderProtocol> protin(new THeaderProtocol(bufin));
-  if (binary) {
-    // Normally this would get set correctly by readMessageBegin,
-    // but just set it manually for a unittest
-    protin->setProtocolId(T_BINARY_PROTOCOL);
-  }
+  THeader::StringToStringMap strMap;
+  size_t neaded;
 
   for (int i = 0; i < iters; i++) {
     if (easyMessage) {
@@ -65,17 +59,23 @@ void testMessage(uint8_t flag,
     } else {
       b.message += 66 + rand() % 24;
     }
-    buf->resetBuffer();
-    b.write(prot.get());
-    prot->getTransport()->flush();
+    folly::IOBufQueue out;
+    if (binary) {
+      BinarySerializer::serialize(b, &out);
+    } else {
+      CompactSerializer::serialize(b, &out);
+    }
 
-    uint8_t* data;
-    uint32_t datasize;
-    buf->getBuffer(&data, &datasize);
-    bufin->resetBuffer(data, datasize);
-    bin.read(protin.get());
+    auto withHeader = header.addHeader(out.move(), strMap);
+    out.append(std::move(withHeader));
+    auto buf = header.removeHeader(&out, neaded, strMap);
+
+    if (binary) {
+      BinarySerializer::deserialize(buf.get(), bin);
+    } else {
+      CompactSerializer::deserialize(buf.get(), bin);
+    }
   }
-
 }
 
 void testChainedCompression(uint8_t flag, int iters) {
@@ -182,104 +182,36 @@ TEST(sdf, sdfsd) {
     b.message += 66 + rand() % 24;
   }
 
-  std::shared_ptr<TMemoryBuffer> bufout(new TMemoryBuffer());
-  std::shared_ptr<THeaderProtocol> protout(new THeaderProtocol(bufout));
-  //prot->setTransform(ZLIB_TRANSFORM);
+  THeader header;
+  THeader::StringToStringMap strMap;
+  folly::IOBufQueue out;
+  CompactSerializer::serialize(b, &out);
+  auto serialized = out.move();
 
-  std::shared_ptr<TMemoryBuffer> bufin(new TMemoryBuffer());
-  std::shared_ptr<THeaderProtocol> protin(new THeaderProtocol(bufin));
+  auto uncompressedSize =
+      header.addHeader(serialized->clone(), strMap)->computeChainDataLength();
 
-  bufout->resetBuffer();
-  b.write(protout.get());
-  protout->getTransport()->flush();
+  header.setTransform(THeader::ZLIB_TRANSFORM);
+  auto compressed = header.addHeader(serialized->clone(), strMap);
+  auto compressedSize = compressed->computeChainDataLength();
 
-  uint32_t uncompressedSize = bufout->available_read();
-  protout->setTransform(THeader::ZLIB_TRANSFORM);
+  // Should compress.
+  EXPECT_LT(compressedSize, uncompressedSize);
+  // Exactly one transform should be applied.
+  folly::io::Cursor cursor(compressed.get());
+  cursor.skip(15);
+  EXPECT_EQ(cursor.read<uint8_t>(), 1);
 
-  bufout->resetBuffer();
-  b.write(protout.get());
-  protout->getTransport()->flush();
+  header.setMinCompressBytes(uncompressedSize);
+  compressed = header.addHeader(serialized->clone(), strMap);
+  compressedSize = compressed->computeChainDataLength();
 
-  EXPECT_LT(bufout->available_read(), uncompressedSize);
-
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protout->getTransport())->setMinCompressBytes(uncompressedSize);
-  bufout->resetBuffer();
-  b.write(protout.get());
-  protout->getTransport()->flush();
-
-  EXPECT_EQ(bufout->available_read(), uncompressedSize);
-
-  // Reset Transforms
-  std::vector<uint16_t> trans;
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protout->getTransport())->setTransforms(trans);
-  // Tell _receiver_ to zlib the response only if response is
-  // more than 100 bytes
-  protout->setTransform(THeader::ZLIB_TRANSFORM);
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protout->getTransport())->setMinCompressBytes(100);
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protin->getTransport())->setMinCompressBytes(100);
-  bufout->resetBuffer();
-  b.write(protout.get());
-  protout->getTransport()->flush();
-
-  // Uncompress
-  uint8_t* data;
-  uint32_t datasize;
-  bufout->getBuffer(&data, &datasize);
-  bufin->resetBuffer(data, datasize);
-  bin.read(protin.get());
-
-  // Recompress
-  bufin->resetBuffer(uncompressedSize);
-  bin.write(protin.get());
-  protin->getTransport()->flush();
-
-  EXPECT_LT(bufin->available_read(), uncompressedSize);
-
-  // Reset Transforms
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protout->getTransport())->setTransforms(trans);
-  protout->setTransform(THeader::ZLIB_TRANSFORM);
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protout->getTransport())->setMinCompressBytes(20000);
-  std::dynamic_pointer_cast<THeaderTransport>(
-    protin->getTransport())->setMinCompressBytes(20000);
-  bufout->resetBuffer();
-  b.write(protout.get());
-  protout->getTransport()->flush();
-
-  EXPECT_EQ(bufout->available_read(), uncompressedSize );
-
-  // Uncompress
-  bufout->getBuffer(&data, &datasize);
-  bufin->resetBuffer(data, datasize);
-  bin.read(protin.get());
-
-  // Recompress
-  bufin->resetBuffer(uncompressedSize);
-  bin.write(protin.get());
-  protin->getTransport()->flush();
-
-  EXPECT_EQ(bufin->available_read(), uncompressedSize);
-  std::string buffer = bufin->getBufferAsString();
-  EXPECT_EQ(buffer[15], 0x00); // Verify there were no transforms
-
-  bin.message = "";
-  for (int i = 0; i < 20000; i++) {
-    bin.message += 66 + rand() % 24;
-  }
-
-  // Recompress x2, _should_compress
-  bufin->resetBuffer(uncompressedSize);
-  bin.write(protin.get());
-  protin->getTransport()->flush();
-
-  EXPECT_LT(bufin->available_read(), 20000);
-  buffer = bufin->getBufferAsString();
-  EXPECT_EQ(buffer[15], 0x01); // Verify there was only one transform
+  // We shouldn't compress anything due to setMinCompressBytes limit above.
+  EXPECT_EQ(compressedSize, uncompressedSize);
+  // Verify there were no transforms.
+  cursor.reset(compressed.get());
+  cursor.skip(15);
+  EXPECT_EQ(cursor.read<uint8_t>(), 0);
 }
 
 int main(int argc, char** argv) {

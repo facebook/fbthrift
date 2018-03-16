@@ -19,8 +19,8 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/ThriftTest_types.h>
 #include <thrift/test/gen-cpp/OptionalRequiredTest_types.h>
+#include <thrift/test/gen-cpp2/ThriftTest_types.h>
 
 #include <gtest/gtest.h>
 

@@ -15,16 +15,18 @@
  */
 
 #define __STDC_FORMAT_MACROS
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <folly/init/Init.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
-#include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSSLServerSocket.h>
-#include <thrift/test/gen-cpp/ThriftTest.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/test/gen-cpp2/ThriftTest.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -52,7 +54,7 @@ using namespace apache::thrift::server;
 
 using namespace thrift::test;
 
-class TestHandler : public ThriftTestIf {
+class TestHandler : public ThriftTestSvIf {
  public:
   TestHandler() {}
 
@@ -352,8 +354,21 @@ class TestProcessorEventHandler : public TProcessorEventHandler {
   }
 };
 
+class TestProcessorEventHandlerFactory : public TProcessorEventHandlerFactory {
+ public:
+  TestProcessorEventHandlerFactory()
+      : handler_(std::make_shared<TestProcessorEventHandler>()) {}
+
+  std::shared_ptr<TProcessorEventHandler> getEventHandler() override {
+    return handler_;
+  }
+
+ private:
+  std::shared_ptr<TestProcessorEventHandler> handler_;
+};
 
 int main(int argc, char **argv) {
+  folly::init(&argc, &argv, false);
 
   int port = 9090;
   string serverType = "threaded";
@@ -427,78 +442,30 @@ int main(int argc, char **argv) {
     cerr << usage.str();
   }
 
-    // OpenSSL may trigger SIGPIPE when remote sends connection reset.
-    if (args["ssl"] == "true") {
-      ssl = true;
-      signal(SIGPIPE, SIG_IGN);
-    }
-
-  // Dispatcher
-  std::shared_ptr<TProtocolFactory> protocolFactory;
-  std::shared_ptr<TDuplexProtocolFactory> duplexProtocolFactory;
-  if (header) {
-    std::bitset<CLIENT_TYPES_LEN> clientTypes;
-    clientTypes[THRIFT_UNFRAMED_DEPRECATED] = 1;
-    clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
-    clientTypes[THRIFT_HTTP_SERVER_TYPE] = 1;
-    clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
-    THeaderProtocolFactory* factory = new THeaderProtocolFactory();
-    factory->setClientTypes(clientTypes);
-    duplexProtocolFactory = std::shared_ptr<TDuplexProtocolFactory>(factory);
-  } else {
-    protocolFactory = std::shared_ptr<TProtocolFactory>(
-      new TBinaryProtocolFactoryT<TBufferBase>());
+  // OpenSSL may trigger SIGPIPE when remote sends connection reset.
+  if (args["ssl"] == "true") {
+    ssl = true;
+    signal(SIGPIPE, SIG_IGN);
   }
 
-  std::shared_ptr<TestHandler> testHandler(new TestHandler());
-
-  std::shared_ptr<TProcessor> testProcessor(
-      new ThriftTestProcessor(testHandler));
-
-
-  if (!args["processor-events"].empty()) {
-    testProcessor->setEventHandler(std::shared_ptr<TProcessorEventHandler>(
-          new TestProcessorEventHandler()));
-  }
-
-  // Transport
-  std::shared_ptr<TServerSocket> serverSocket;
+  auto handler = std::make_shared<TestHandler>();
+  auto server = std::make_shared<ThriftServer>();
+  server->setPort(port);
+  server->setInterface(handler);
 
   if (ssl) {
-    std::shared_ptr<SSLContext> sslContext(new SSLContext());
-    sslContext->loadCertificate("./server-certificate.pem");
-    sslContext->loadPrivateKey("./server-private-key.pem");
-    sslContext->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
-    std::shared_ptr<TSSLSocketFactory> sslSocketFactory(
-      new TSSLSocketFactory(sslContext));
-    serverSocket = std::shared_ptr<TServerSocket>(
-      new TSSLServerSocket(port, sslSocketFactory));
-  } else {
-    serverSocket = std::shared_ptr<TServerSocket>(new TServerSocket(port));
+    auto sslConf = server->getSSLConfig();
+    sslConf->setCertificate(
+        "./server-certificate.pem", "./server-private-key.pem", "");
+    sslConf->sslCiphers = "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH";
   }
 
-  // Factory
-  std::shared_ptr<TTransportFactory> transportFactory(
-    new TBufferedTransportFactory());
-  std::shared_ptr<TDuplexTransportFactory> duplexTransportFactory(
-    new TSingleTransportFactory<TTransportFactory>(transportFactory));
-  std::shared_ptr<TServer> server;
-
-  if (serverType == "threaded") {
-
-    server = std::shared_ptr<TServer>(new TThreadedServer(testProcessor,
-                                                     serverSocket,
-                                                     transportFactory,
-                                                     protocolFactory));
-
-    printf("Starting the server on port %d...\n", port);
-
+  if (!args["processor-events"].empty()) {
+    TProcessorBase::addProcessorEventHandlerFactory(
+        std::make_shared<TestProcessorEventHandlerFactory>());
   }
 
-  if (header) {
-    server->setDuplexTransportFactory(duplexTransportFactory);
-    server->setDuplexProtocolFactory(duplexProtocolFactory);
-  }
+  printf("Starting the server on port %d...\n", port);
 
   server->serve();
 
