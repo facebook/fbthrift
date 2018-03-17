@@ -45,21 +45,19 @@ namespace frzn_dtl {
 
 template <std::ptrdiff_t ActualOffset, std::ptrdiff_t DesiredOffset, typename T>
 struct l {
-  inline T const *operator ->() const {
-    return reinterpret_cast<T const *>(
-      reinterpret_cast<std::uint8_t const *>(this)
-        + (DesiredOffset - ActualOffset)
-    );
+  inline T const* operator->() const {
+    return reinterpret_cast<T const*>(
+        reinterpret_cast<std::uint8_t const*>(this) +
+        (DesiredOffset - ActualOffset));
   }
 
-  inline T const &operator *() const {
-    return *reinterpret_cast<T const *>(
-      reinterpret_cast<std::uint8_t const *>(this)
-        + (DesiredOffset - ActualOffset)
-    );
+  inline T const& operator*() const {
+    return *reinterpret_cast<T const*>(
+        reinterpret_cast<std::uint8_t const*>(this) +
+        (DesiredOffset - ActualOffset));
   }
 
-  /* implicit */ inline operator T const &() const {
+  /* implicit */ inline operator T const&() const {
     return **this;
   }
 };
@@ -72,28 +70,28 @@ using layout_raw = l<ActualOffset, DesiredOffset, T>;
  */
 
 template <
-  std::ptrdiff_t ActualOffset,
-  std::ptrdiff_t DesiredOffset,
-  std::size_t Bit
->
+    std::ptrdiff_t ActualOffset,
+    std::ptrdiff_t DesiredOffset,
+    std::size_t Bit>
 struct L {
   static_assert(Bit < CHAR_BIT, "internal error");
 
-  /* implicit */ inline operator bool () const { // @nolint
+  /* implicit */ inline operator bool() const { // @nolint
     return static_cast<bool>(
-      reinterpret_cast<std::uint8_t const *>(this)[DesiredOffset - ActualOffset]
-        & (1u << Bit)
-    );
+        reinterpret_cast<std::uint8_t const*>(
+            this)[DesiredOffset - ActualOffset] &
+        (1u << Bit));
   }
 
-  inline bool operator *() const { return static_cast<bool>(*this); }
+  inline bool operator*() const {
+    return static_cast<bool>(*this);
+  }
 };
 
 template <
-  std::ptrdiff_t ActualOffset,
-  std::ptrdiff_t DesiredOffset,
-  std::size_t Bit
->
+    std::ptrdiff_t ActualOffset,
+    std::ptrdiff_t DesiredOffset,
+    std::size_t Bit>
 using layout_bit = L<ActualOffset, DesiredOffset, Bit>;
 
 /**
@@ -103,8 +101,8 @@ using layout_bit = L<ActualOffset, DesiredOffset, Bit>;
 template <typename T>
 constexpr inline T align_up(T UnalignedOffset, T Alignment) {
   return UnalignedOffset % Alignment
-    ? UnalignedOffset + (Alignment - (UnalignedOffset % Alignment))
-    : UnalignedOffset;
+      ? UnalignedOffset + (Alignment - (UnalignedOffset % Alignment))
+      : UnalignedOffset;
 }
 
 /**
@@ -123,9 +121,8 @@ struct p {
 struct F {
   template <typename Member>
   using apply = std::integral_constant<
-    bool,
-    Member::optional::value != apache::thrift::optionality::required
-  >;
+      bool,
+      Member::optional::value != apache::thrift::optionality::required>;
 };
 
 /**
@@ -135,15 +132,11 @@ struct F {
 
 // implementation of `isset_struct` //
 template <typename T>
-struct i:
-  fatal::apply_to<
-    fatal::transform<
-      fatal::filter<typename reflect_struct<T>::members, F>,
-      p<bool>
-    >,
-    fatal::inherit
-  >
-{};
+struct i : fatal::apply_to<
+               fatal::transform<
+                   fatal::filter<typename reflect_struct<T>::members, F>,
+                   p<bool>>,
+               fatal::inherit> {};
 
 template <typename T>
 using isset_struct = i<T>;
@@ -178,20 +171,20 @@ using refl_type_class = typename C<T>::type;
 // the integral parameter helps uniquely identify more than one member with the
 // same type
 template <std::size_t, typename T>
-struct D { T x; };
+struct D {
+  T x;
+};
 
 // implementation of simulated struct
 template <typename...>
 struct S;
 
 template <template <typename...> class V, typename... T, std::size_t... I>
-struct S<V<T...>, fatal::index_sequence<I...>>: D<I, T>...  {};
+struct S<V<T...>, fatal::index_sequence<I...>> : D<I, T>... {};
 
 template <typename MemberTypes>
-using simulated_struct = S<
-  MemberTypes,
-  fatal::make_index_sequence<fatal::size<MemberTypes>::value>
->;
+using simulated_struct =
+    S<MemberTypes, fatal::make_index_sequence<fatal::size<MemberTypes>::value>>;
 
 /**
  * physical_layout: calculates the physical size of an artificial frozen1 layout
@@ -230,39 +223,32 @@ struct A {
       typename PhysicalType,
       bool IsBool,
       std::ptrdiff_t AlignedOffset>
-  using impl = A<
-    ActualOffset + 1,
-    AlignedOffset + (IsBool ? BitIndex + 1 == CHAR_BIT : sizeof(PhysicalType)),
-    IsBool ? (BitIndex + 1) % CHAR_BIT : 0,
-    fatal::push_back_if<!IsBool || !BitIndex, PhysicalLayout, PhysicalType>,
-    FrozenLayout...,
-    typename Member::template pod<
-      fatal::conditional<
-        std::is_same<bool, typename Member::type>::value,
-        layout_bit<ActualOffset, AlignedOffset, BitIndex>,
-        layout_raw<
-          ActualOffset,
-          AlignedOffset,
-          typename apache::thrift::Freezer<
-            typename Member::type
-          >::FrozenType
-        >
-      >
-    >
-  >;
+  using impl =
+      A<ActualOffset + 1,
+        AlignedOffset +
+            (IsBool ? BitIndex + 1 == CHAR_BIT : sizeof(PhysicalType)),
+        IsBool ? (BitIndex + 1) % CHAR_BIT : 0,
+        fatal::push_back_if<!IsBool || !BitIndex, PhysicalLayout, PhysicalType>,
+        FrozenLayout...,
+        typename Member::template pod<fatal::conditional<
+            std::is_same<bool, typename Member::type>::value,
+            layout_bit<ActualOffset, AlignedOffset, BitIndex>,
+            layout_raw<
+                ActualOffset,
+                AlignedOffset,
+                typename apache::thrift::Freezer<
+                    typename Member::type>::FrozenType>>>>;
 
   template <typename Member>
   using apply = impl<
-    Member,
-    physical_layout<typename Member::type>,
-    std::is_same<bool, typename Member::type>::value,
-    std::is_same<bool, typename Member::type>::value
-      ? DesiredOffset
-      : align_up<std::ptrdiff_t>(
-        DesiredOffset + (BitIndex != 0),
-        alignof(physical_layout<typename Member::type>)
-      )
-  >;
+      Member,
+      physical_layout<typename Member::type>,
+      std::is_same<bool, typename Member::type>::value,
+      std::is_same<bool, typename Member::type>::value
+          ? DesiredOffset
+          : align_up<std::ptrdiff_t>(
+                DesiredOffset + (BitIndex != 0),
+                alignof(physical_layout<typename Member::type>))>;
 };
 
 // emulated `reflected_struct_data_member` for the `__isset` member //
@@ -294,10 +280,9 @@ template <typename T>
 struct r {
   using type = T;
   using members = fatal::push_back_if<
-    !fatal::empty<typename r<isset_struct<T>>::members>::value,
-    typename reflect_struct<T>::members,
-    N<T>
-  >;
+      !fatal::empty<typename r<isset_struct<T>>::members>::value,
+      typename reflect_struct<T>::members,
+      N<T>>;
 };
 
 // specialization of the emulated `reflected_struct` for the artificial
@@ -308,9 +293,8 @@ struct r<isset_struct<T>> {
   using type = isset_struct<T>;
 
   using members = fatal::transform<
-    fatal::filter<typename reflect_struct<T>::members, F>,
-    fatal::applier<n>
-  >;
+      fatal::filter<typename reflect_struct<T>::members, F>,
+      fatal::applier<n>>;
 };
 
 template <typename T>
@@ -322,10 +306,8 @@ using calculate_layout = fatal::accumulate<typename r<T>::members, A<>>;
  */
 
 template <typename T>
-using frozen1_layout = fatal::apply_to<
-  typename calculate_layout<T>::frozen,
-  fatal::inherit
->;
+using frozen1_layout =
+    fatal::apply_to<typename calculate_layout<T>::frozen, fatal::inherit>;
 
 /**
  * enable_if_struct: helper to enable_if when T is a structure
@@ -333,8 +315,7 @@ using frozen1_layout = fatal::apply_to<
 
 template <typename T>
 using enable_if_struct = typename std::enable_if<
-  std::is_same<type_class::structure, refl_type_class<T>>::value
->::type;
+    std::is_same<type_class::structure, refl_type_class<T>>::value>::type;
 
 /**
  * FrozenIterator: const iterator for artificial frozen1 layouts
@@ -344,83 +325,94 @@ template <typename FrozenType>
 struct I {
   using iterator_category = std::random_access_iterator_tag;
   using value_type = FrozenType const;
-  using pointer = value_type *;
-  using reference = value_type &;
+  using pointer = value_type*;
+  using reference = value_type&;
   using difference_type = std::ptrdiff_t;
 
-  explicit I(pointer i): i_(i) {}
+  explicit I(pointer i) : i_(i) {}
 
-  I operator ++(int) const {
+  I operator++(int) const {
     auto copy(*this);
     ++*this;
     return copy;
   }
 
-  I operator --(int) const {
+  I operator--(int) const {
     auto copy(*this);
     --*this;
     return copy;
   }
 
-  I &operator ++() {
+  I& operator++() {
     i_ = reinterpret_cast<pointer>(
-      reinterpret_cast<char const *>(i_) + FrozenSizeOf<FrozenType>::size()
-    );
+        reinterpret_cast<char const*>(i_) + FrozenSizeOf<FrozenType>::size());
     return *this;
   }
 
-  I &operator --() {
+  I& operator--() {
     i_ = reinterpret_cast<pointer>(
-      reinterpret_cast<char const *>(i_) - FrozenSizeOf<FrozenType>::size()
-    );
+        reinterpret_cast<char const*>(i_) - FrozenSizeOf<FrozenType>::size());
     return *this;
   }
 
-  I operator +(difference_type increment) const {
+  I operator+(difference_type increment) const {
     DCHECK_EQ(0, increment % FrozenSizeOf<FrozenType>::size());
-    return I(
-      reinterpret_cast<pointer>(reinterpret_cast<char const *>(i_)
-        + increment * FrozenSizeOf<FrozenType>::size())
-    );
+    return I(reinterpret_cast<pointer>(
+        reinterpret_cast<char const*>(i_) +
+        increment * FrozenSizeOf<FrozenType>::size()));
   }
 
-  I operator -(difference_type decrement) const {
+  I operator-(difference_type decrement) const {
     DCHECK_EQ(0, decrement % FrozenSizeOf<FrozenType>::size());
-    return I(
-      reinterpret_cast<pointer>(reinterpret_cast<char const *>(i_)
-        - decrement * FrozenSizeOf<FrozenType>::size())
-    );
+    return I(reinterpret_cast<pointer>(
+        reinterpret_cast<char const*>(i_) -
+        decrement * FrozenSizeOf<FrozenType>::size()));
   }
 
-  I& operator +=(difference_type increment) {
+  I& operator+=(difference_type increment) {
     return *this = *this + increment;
   }
 
-  I& operator -=(difference_type increment) {
+  I& operator-=(difference_type increment) {
     return *this = *this - increment;
   }
 
-  difference_type operator -(I const &rhs) const {
+  difference_type operator-(I const& rhs) const {
     DCHECK_EQ(
-      0,
-      (reinterpret_cast<char const *>(i_)
-        - reinterpret_cast<char const *>(rhs.i_)
-      ) % FrozenSizeOf<FrozenType>::size()
-    );
-    return (reinterpret_cast<char const *>(i_)
-      - reinterpret_cast<char const *>(rhs.i_)
-    ) / FrozenSizeOf<FrozenType>::size();
+        0,
+        (reinterpret_cast<char const*>(i_) -
+         reinterpret_cast<char const*>(rhs.i_)) %
+            FrozenSizeOf<FrozenType>::size());
+    return (reinterpret_cast<char const*>(i_) -
+            reinterpret_cast<char const*>(rhs.i_)) /
+        FrozenSizeOf<FrozenType>::size();
   }
 
-  pointer operator ->() const { return i_; }
-  reference operator *() const { return *i_; }
+  pointer operator->() const {
+    return i_;
+  }
+  reference operator*() const {
+    return *i_;
+  }
 
-  bool operator ==(I const &rhs) const { return i_ == rhs.i_; }
-  bool operator !=(I const &rhs) const { return i_ != rhs.i_; }
-  bool operator <(I const &rhs) const { return i_ < rhs.i_; }
-  bool operator <=(I const &rhs) const { return i_ <= rhs.i_; }
-  bool operator >(I const &rhs) const { return i_ > rhs.i_; }
-  bool operator >=(I const &rhs) const { return i_ >= rhs.i_; }
+  bool operator==(I const& rhs) const {
+    return i_ == rhs.i_;
+  }
+  bool operator!=(I const& rhs) const {
+    return i_ != rhs.i_;
+  }
+  bool operator<(I const& rhs) const {
+    return i_ < rhs.i_;
+  }
+  bool operator<=(I const& rhs) const {
+    return i_ <= rhs.i_;
+  }
+  bool operator>(I const& rhs) const {
+    return i_ > rhs.i_;
+  }
+  bool operator>=(I const& rhs) const {
+    return i_ >= rhs.i_;
+  }
 
  private:
   pointer i_;
@@ -468,21 +460,16 @@ struct z<std::pair<Frozen<First, enable_if_struct<First>> const, Second>> {
 };
 
 template <typename First, typename Second>
-struct z<
-  std::pair<
+struct z<std::pair<
     Frozen<First, enable_if_struct<First>> const,
-    Frozen<Second, enable_if_struct<Second>>
-  >
-> {
+    Frozen<Second, enable_if_struct<Second>>>> {
   static constexpr inline std::size_t size() {
     return sizeof(
-      std::pair<physical_layout<First> const, physical_layout<Second>>
-    );
+        std::pair<physical_layout<First> const, physical_layout<Second>>);
   }
   static constexpr inline std::size_t alignment() {
     return alignof(
-      std::pair<physical_layout<First> const, physical_layout<Second>>
-    );
+        std::pair<physical_layout<First> const, physical_layout<Second>>);
   }
 };
 
@@ -493,26 +480,22 @@ struct t<Frozen<FrozenItem, enable_if_struct<FrozenItem>>> {
 };
 
 template <typename FrozenFirst, typename Second>
-struct t<
-  std::pair<Frozen<FrozenFirst, enable_if_struct<FrozenFirst>> const, Second>
-> {
+struct t<std::pair<
+    Frozen<FrozenFirst, enable_if_struct<FrozenFirst>> const,
+    Second>> {
   using type = I<std::pair<Frozen<FrozenFirst> const, Second>>;
 };
 
 template <typename First, typename FrozenSecond>
 struct t<
-  std::pair<First, Frozen<FrozenSecond, enable_if_struct<FrozenSecond>>>
-> {
+    std::pair<First, Frozen<FrozenSecond, enable_if_struct<FrozenSecond>>>> {
   using type = I<std::pair<First, Frozen<FrozenSecond>>>;
 };
 
 template <typename FrozenFirst, typename FrozenSecond>
-struct t<
-  std::pair<
+struct t<std::pair<
     Frozen<FrozenFirst, enable_if_struct<FrozenFirst>> const,
-    Frozen<FrozenSecond, enable_if_struct<FrozenSecond>>
-  >
-> {
+    Frozen<FrozenSecond, enable_if_struct<FrozenSecond>>>> {
   using type = I<std::pair<Frozen<FrozenFirst> const, Frozen<FrozenSecond>>>;
 };
 
@@ -525,9 +508,8 @@ struct t<
 // integration of the cpp2 implementation into the frozen1 library
 // this is where it all starts, the rest is just implementation mumbo jumbo
 template <typename T>
-struct Frozen<T, frzn_dtl::enable_if_struct<T>>:
-  public frzn_dtl::frozen1_layout<T>
-{};
+struct Frozen<T, frzn_dtl::enable_if_struct<T>>
+    : public frzn_dtl::frozen1_layout<T> {};
 
 } // namespace thrift
 } // namespace apache

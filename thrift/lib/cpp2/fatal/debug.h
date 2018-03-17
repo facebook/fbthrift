@@ -83,15 +83,14 @@ bool debug_equals(
  */
 template <typename Output>
 struct debug_output_callback {
-  explicit debug_output_callback(Output &out): out_(out) {}
+  explicit debug_output_callback(Output& out) : out_(out) {}
 
   template <typename T>
-  void operator ()(
-    T const &lhs,
-    T const &rhs,
-    folly::StringPiece path,
-    folly::StringPiece message
-  ) const {
+  void operator()(
+      T const& lhs,
+      T const& rhs,
+      folly::StringPiece path,
+      folly::StringPiece message) const {
     out_ << path << ": " << message;
     out_ << std::endl << "  lhs:" << std::endl;
     pretty_print(out_, lhs, "  ", "    ");
@@ -101,7 +100,7 @@ struct debug_output_callback {
   }
 
  private:
-  Output &out_;
+  Output& out_;
 };
 
 /**
@@ -127,7 +126,7 @@ struct debug_output_callback {
  */
 
 template <typename Output>
-debug_output_callback<Output> make_debug_output_callback(Output &output) {
+debug_output_callback<Output> make_debug_output_callback(Output& output) {
   return debug_output_callback<Output>(output);
 }
 

@@ -36,24 +36,23 @@ struct member_setter {
 
   struct visitor {
     template <typename Member>
-    void operator ()(fatal::tag<Member>, T &where) {
+    void operator()(fatal::tag<Member>, T& where) {
       std::cout << "value to set: ";
       std::string value;
       std::getline(std::cin, value);
-      auto &member = Member::getter::ref(where);
+      auto& member = Member::getter::ref(where);
       try {
         member = folly::to<typename Member::type>(value);
-      } catch (std::exception const &) {
+      } catch (std::exception const&) {
         std::cerr << "unable to convert '" << value << "'\n";
       }
     }
   };
 
-  static void set(folly::StringPiece name, T &where) {
-    bool found = fatal::trie_find<
-      typename info::members,
-      fatal::get_type::name
-    >(name.begin(), name.end(), visitor(), where);
+  static void set(folly::StringPiece name, T& where) {
+    bool found =
+        fatal::trie_find<typename info::members, fatal::get_type::name>(
+            name.begin(), name.end(), visitor(), where);
 
     if (!found) {
       std::cerr << "no member named " << name << '\n';
@@ -61,13 +60,13 @@ struct member_setter {
   }
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   using type = simple_struct;
   using setter = member_setter<type>;
 
-  auto prompt = [](std::string &out) {
+  auto prompt = [](std::string& out) {
     std::cout << "member to set: ";
     std::getline(std::cin, out);
     return static_cast<bool>(std::cin);
@@ -75,7 +74,7 @@ int main(int argc, char **argv) {
 
   type instance;
 
-  for (std::string name; prompt(name); ) {
+  for (std::string name; prompt(name);) {
     setter::set(name, instance);
     pretty_print(std::cout, instance);
     std::cout << std::endl;

@@ -55,10 +55,11 @@ namespace thrift {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Key, typename Filter>
-using get_struct_member_by = typename detail
-  ::check_struct_has_member_for_criteria<
-    T, fatal::find<typename reflect_struct<T>::members, Key, void, Filter>
-  >::type;
+using get_struct_member_by =
+    typename detail ::check_struct_has_member_for_criteria<
+        T,
+        fatal::find<typename reflect_struct<T>::members, Key, void, Filter>>::
+        type;
 
 /**
  * Gets the reflection metadata for a given struct's member based on its name.
@@ -84,16 +85,14 @@ using get_struct_member_by = typename detail
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Name>
-using get_struct_member_by_name = typename detail
-  ::check_struct_has_member_for_criteria<
-    T,
-    fatal::find<
-      typename reflect_struct<T>::members,
-      Name,
-      void,
-      fatal::get_type::name
-    >
-  >::type;
+using get_struct_member_by_name =
+    typename detail ::check_struct_has_member_for_criteria<
+        T,
+        fatal::find<
+            typename reflect_struct<T>::members,
+            Name,
+            void,
+            fatal::get_type::name>>::type;
 
 /**
  * Gets the reflection metadata for a given struct's member based on its name.
@@ -117,16 +116,14 @@ using get_struct_member_by_name = typename detail
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, field_id_t Id>
-using get_struct_member_by_id = typename detail
-  ::check_struct_has_member_for_criteria<
-    T,
-    fatal::find<
-      typename reflect_struct<T>::members,
-      std::integral_constant<field_id_t, Id>,
-      void,
-      fatal::get_type::id
-    >
-  >::type;
+using get_struct_member_by_id =
+    typename detail ::check_struct_has_member_for_criteria<
+        T,
+        fatal::find<
+            typename reflect_struct<T>::members,
+            std::integral_constant<field_id_t, Id>,
+            void,
+            fatal::get_type::id>>::type;
 
 } // namespace thrift
 } // namespace apache

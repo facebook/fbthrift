@@ -35,15 +35,13 @@ struct flat_getter {
   using full_path = fatal::push_back<Path, Member>;
 
   using getter = fatal::apply_to<
-    fatal::transform<full_path, fatal::get_type::getter>,
-    fatal::chained_data_member_getter
-  >;
+      fatal::transform<full_path, fatal::get_type::getter>,
+      fatal::chained_data_member_getter>;
 };
 
 template <typename T, typename TerminalFilter = detail::flatten_getters_impl::f>
-using flatten_getters = typename detail::flatten_getters_impl::s<
-  fatal::list<>, TerminalFilter, reflect_struct<T>
->::type;
+using flatten_getters = typename detail::flatten_getters_impl::
+    s<fatal::list<>, TerminalFilter, reflect_struct<T>>::type;
 
 } // namespace thrift
 } // namespace apache

@@ -31,24 +31,22 @@ using namespace static_reflection::demo;
 
 struct flat_to_nested_translator {
   template <typename Nested, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Nested, Index>,
-    flat_config const &from,
-    nested_config &to
-  ) const {
+  void operator()(
+      fatal::indexed<Nested, Index>,
+      flat_config const& from,
+      nested_config& to) const {
     using from_getter = fatal::get<
-      reflect_struct<flat_config>::members,
-      typename Nested::member::annotations::values::from_flat,
-      fatal::get_type::name
-    >;
+        reflect_struct<flat_config>::members,
+        typename Nested::member::annotations::values::from_flat,
+        fatal::get_type::name>;
 
-    auto &to_member = Nested::getter::ref(to);
-    auto const &from_member = from_getter::getter::ref(from);
+    auto& to_member = Nested::getter::ref(to);
+    auto const& from_member = from_getter::getter::ref(from);
     to_member = from_member;
   }
 };
 
-void translate(flat_config const &from, nested_config &to) {
+void translate(flat_config const& from, nested_config& to) {
   using nested_getters = flatten_getters<nested_config>;
 
   fatal::foreach<nested_getters>(flat_to_nested_translator(), from, to);
@@ -56,31 +54,29 @@ void translate(flat_config const &from, nested_config &to) {
 
 struct nested_to_flat_translator {
   template <typename Nested, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Nested, Index>,
-    nested_config const &from,
-    flat_config &to
-  ) const {
+  void operator()(
+      fatal::indexed<Nested, Index>,
+      nested_config const& from,
+      flat_config& to) const {
     using to_getter = fatal::get<
-      reflect_struct<flat_config>::members,
-      typename Nested::member::annotations::values::from_flat,
-      fatal::get_type::name
-    >;
+        reflect_struct<flat_config>::members,
+        typename Nested::member::annotations::values::from_flat,
+        fatal::get_type::name>;
 
-    auto &to_member = to_getter::getter::ref(to);
-    auto const &from_member = Nested::getter::ref(from);
+    auto& to_member = to_getter::getter::ref(to);
+    auto const& from_member = Nested::getter::ref(from);
     to_member = from_member;
   }
 };
 
-void translate(nested_config const &from, flat_config &to) {
+void translate(nested_config const& from, flat_config& to) {
   using nested_getters = flatten_getters<nested_config>;
 
   fatal::foreach<nested_getters>(nested_to_flat_translator(), from, to);
 }
 
 template <typename To, typename From>
-void test(From const &from) {
+void test(From const& from) {
   To to;
   translate(from, to);
   print(from);
@@ -90,13 +86,11 @@ void test(From const &from) {
 int main() {
   std::cerr << "nested -> flat: ";
   test<static_reflection::demo::flat_config>(
-    static_reflection::demo::nested_config_constants::example()
-  );
+      static_reflection::demo::nested_config_constants::example());
 
   std::cerr << "flat -> nested: ";
   test<static_reflection::demo::nested_config>(
-    static_reflection::demo::flat_config_constants::example()
-  );
+      static_reflection::demo::flat_config_constants::example());
 
   return 0;
 }

@@ -25,21 +25,21 @@ using namespace static_reflection::demo;
 
 struct print_namespace {
   template <typename Language, typename Namespace, std::size_t Index>
-  void operator ()(fatal::indexed_pair<Language, Namespace, Index>) const {
+  void operator()(fatal::indexed_pair<Language, Namespace, Index>) const {
     std::cout << "  namespace for '" << fatal::z_data<Language>() << "'\n";
   }
 };
 
 struct print_enum_member {
   template <typename Member, std::size_t Index>
-  void operator ()(fatal::indexed<Member, Index>) const {
+  void operator()(fatal::indexed<Member, Index>) const {
     std::cout << "    " << fatal::z_data<typename Member::name>() << '\n';
   }
 };
 
 struct print_enum {
   template <typename T, typename Name, std::size_t Index>
-  void operator ()(fatal::indexed_pair<T, Name, Index>) const {
+  void operator()(fatal::indexed_pair<T, Name, Index>) const {
     using info = fatal::enum_traits<T>;
     std::cout << "  enum " << fatal::z_data<Name>() << " {\n";
     fatal::foreach<typename info::fields>(print_enum_member());
@@ -49,7 +49,7 @@ struct print_enum {
 
 struct print_variant_member {
   template <typename Member, std::size_t Index>
-  void operator ()(fatal::indexed<Member, Index>) const {
+  void operator()(fatal::indexed<Member, Index>) const {
     std::cout << "    " << fatal::z_data<typename Member::metadata::name>()
               << '\n';
   }
@@ -57,7 +57,7 @@ struct print_variant_member {
 
 struct print_variant {
   template <typename T, typename Name, std::size_t Index>
-  void operator ()(fatal::indexed_pair<T, Name, Index>) const {
+  void operator()(fatal::indexed_pair<T, Name, Index>) const {
     using info = fatal::variant_traits<T>;
     std::cout << "  variant " << fatal::z_data<Name>() << " {\n";
     fatal::foreach<typename info::descriptors>(print_variant_member());
@@ -67,14 +67,14 @@ struct print_variant {
 
 struct print_struct_member {
   template <typename Member, std::size_t Index>
-  void operator ()(fatal::indexed<Member, Index>) const {
+  void operator()(fatal::indexed<Member, Index>) const {
     std::cout << "    " << fatal::z_data<typename Member::name>() << '\n';
   }
 };
 
 struct print_struct {
   template <typename T, typename Name, std::size_t Index>
-  void operator ()(fatal::indexed_pair<T, Name, Index>) const {
+  void operator()(fatal::indexed_pair<T, Name, Index>) const {
     using info = reflect_struct<T>;
     std::cout << "  struct " << fatal::z_data<Name>() << " {\n";
     fatal::foreach<typename info::members>(print_struct_member());

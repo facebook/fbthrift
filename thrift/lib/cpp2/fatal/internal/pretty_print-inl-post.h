@@ -34,7 +34,7 @@ namespace detail {
 template <>
 struct pretty_print_impl<type_class::enumeration> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << fatal::enum_to_string(what);
   }
 };
@@ -47,13 +47,13 @@ struct pretty_print_impl<type_class::enumeration> {
 template <typename ValueTypeClass>
 struct pretty_print_impl<type_class::list<ValueTypeClass>> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << "<list>[";
     if (!what.empty()) {
       out.newline();
       auto const size = what.size();
       std::size_t index = 0;
-      for (auto const &i: what) {
+      for (auto const& i : what) {
         auto scope = out.start_scope();
         scope << index << ": ";
         pretty_print_impl<ValueTypeClass>::print(scope, i);
@@ -75,13 +75,13 @@ struct pretty_print_impl<type_class::list<ValueTypeClass>> {
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct pretty_print_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << "<map>{";
     if (!what.empty()) {
       out.newline();
       auto const size = what.size();
       std::size_t index = 0;
-      for (auto const &i: what) {
+      for (auto const& i : what) {
         auto scope = out.start_scope();
         pretty_print_impl<KeyTypeClass>::print(scope, i.first);
         scope << ": ";
@@ -104,13 +104,13 @@ struct pretty_print_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 template <typename ValueTypeClass>
 struct pretty_print_impl<type_class::set<ValueTypeClass>> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << "<set>{";
     if (!what.empty()) {
       out.newline();
       auto const size = what.size();
       std::size_t index = 0;
-      for (auto const &i: what) {
+      for (auto const& i : what) {
         auto scope = out.start_scope();
         pretty_print_impl<ValueTypeClass>::print(scope, i);
         if (++index < size) {
@@ -131,7 +131,7 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
 template <>
 struct pretty_print_impl<type_class::variant> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     using namespace fatal;
     using descriptors = typename variant_traits<T>::descriptors;
     out << "<variant>{";
@@ -141,8 +141,7 @@ struct pretty_print_impl<type_class::variant> {
       scope.newline();
       scope << fatal::enum_to_string(what.getType()) << ": ";
       pretty_print_impl<typename descriptor::metadata::type_class>::print(
-        scope, typename descriptor::getter()(what)
-      );
+          scope, typename descriptor::getter()(what));
       scope.newline();
     });
     out << '}';
@@ -157,7 +156,7 @@ struct pretty_print_impl<type_class::variant> {
 template <>
 struct pretty_print_impl<type_class::structure> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
@@ -168,8 +167,7 @@ struct pretty_print_impl<type_class::structure> {
       auto scope = out.start_scope();
       scope << fatal::z_data<typename member::name>() << ": ";
       pretty_print_impl<typename member::type_class>::print(
-        scope, member::getter::ref(what)
-      );
+          scope, member::getter::ref(what));
       if (index + 1 < size) {
         scope << ',';
       }
@@ -179,7 +177,7 @@ struct pretty_print_impl<type_class::structure> {
   }
 
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, std::unique_ptr<T> const &what) {
+  static void print(OutputStream& out, std::unique_ptr<T> const& what) {
     if (!what) {
       out << "null";
       return;
@@ -188,7 +186,7 @@ struct pretty_print_impl<type_class::structure> {
   }
 
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, std::shared_ptr<T> const &what) {
+  static void print(OutputStream& out, std::shared_ptr<T> const& what) {
     if (!what) {
       out << "null";
       return;
@@ -197,7 +195,7 @@ struct pretty_print_impl<type_class::structure> {
   }
 
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, std::shared_ptr<T const> const &what) {
+  static void print(OutputStream& out, std::shared_ptr<T const> const& what) {
     if (!what) {
       out << "null";
       return;
@@ -214,7 +212,7 @@ struct pretty_print_impl<type_class::structure> {
 template <>
 struct pretty_print_impl<type_class::string> {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << '"' << what << '"';
   }
 };
@@ -227,12 +225,12 @@ struct pretty_print_impl<type_class::string> {
 template <typename>
 struct pretty_print_impl {
   template <typename OutputStream, typename T>
-  static void print(OutputStream &out, T const &what) {
+  static void print(OutputStream& out, T const& what) {
     out << what;
   }
 
   template <typename OutputStream>
-  static void print(OutputStream &out, bool const what) {
+  static void print(OutputStream& out, bool const what) {
     out << (what ? "true" : "false");
   }
 };

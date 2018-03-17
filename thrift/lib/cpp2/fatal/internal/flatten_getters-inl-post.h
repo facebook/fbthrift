@@ -53,13 +53,10 @@ struct m<Path, TerminalFilter, Member, type_class::structure, true> {
 
 // member handler: non-terminal struct
 template <typename Path, typename TerminalFilter, typename Member>
-struct m<Path, TerminalFilter, Member, type_class::structure, false>:
-  s<
-    fatal::push_back<Path, Member>,
-    TerminalFilter,
-    reflect_struct<typename Member::type>
-  >
-{};
+struct m<Path, TerminalFilter, Member, type_class::structure, false>
+    : s<fatal::push_back<Path, Member>,
+        TerminalFilter,
+        reflect_struct<typename Member::type>> {};
 
 // currying of the member handler
 template <typename Path, typename TerminalFilter>
@@ -72,9 +69,8 @@ struct c {
 template <typename Path, typename TerminalFilter, typename Info>
 struct s {
   using type = fatal::apply_to<
-    fatal::transform<typename Info::members, c<Path, TerminalFilter>>,
-    fatal::cat
-  >;
+      fatal::transform<typename Info::members, c<Path, TerminalFilter>>,
+      fatal::cat>;
 };
 
 } // namespace flatten_getters_impl

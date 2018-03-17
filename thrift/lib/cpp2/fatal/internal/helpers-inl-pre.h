@@ -31,9 +31,8 @@ struct check_struct_has_member_for_criteria {
   using type = T;
 
   static_assert(
-    StructHasMemberForCriteria,
-    "no struct member found for the given criteria"
-  );
+      StructHasMemberForCriteria,
+      "no struct member found for the given criteria");
 };
 
 } // namespace detail

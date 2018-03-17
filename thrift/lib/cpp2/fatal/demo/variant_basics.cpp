@@ -27,9 +27,9 @@ using namespace static_reflection::demo;
 
 struct print_variant_member {
   template <typename Member, std::size_t Index, typename T>
-  void operator ()(fatal::indexed<Member, Index>, T const &object) const {
+  void operator()(fatal::indexed<Member, Index>, T const& object) const {
     auto name = fatal::z_data<typename Member::metadata::name>();
-    auto const &value = Member::get(object);
+    auto const& value = Member::get(object);
     std::cout << "currently set: " << name << " = " << value << '\n';
     std::cout << "- type class: "
               << folly::demangle(typeid(typename Member::metadata::type_class))
@@ -41,11 +41,11 @@ struct print_variant_member {
 };
 
 template <typename T>
-void print_variant_info(T const &object) {
+void print_variant_info(T const& object) {
   using traits = fatal::variant_traits<T>;
-  bool const found = fatal::scalar_search<
-    typename traits::descriptors, fatal::get_type::id
-  >(object.getType(), print_variant_member(), object);
+  bool const found =
+      fatal::scalar_search<typename traits::descriptors, fatal::get_type::id>(
+          object.getType(), print_variant_member(), object);
 
   if (!found) {
     std::cout << "variant is empty\n";
@@ -53,7 +53,7 @@ void print_variant_info(T const &object) {
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   simple_variant value;

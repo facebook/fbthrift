@@ -56,14 +56,12 @@ namespace thrift {
  */
 template <typename OutputStream, typename T>
 void pretty_print(
-  OutputStream &&out,
-  T &&what,
-  std::string indentation = "  ",
-  std::string margin = std::string()
-) {
+    OutputStream&& out,
+    T&& what,
+    std::string indentation = "  ",
+    std::string margin = std::string()) {
   using impl = detail::pretty_print_impl<
-    reflect_type_class<typename std::decay<T>::type>
-  >;
+      reflect_type_class<typename std::decay<T>::type>>;
 
   auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
   impl::print(indenter, std::forward<T>(what));
@@ -78,7 +76,7 @@ void pretty_print(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename... Args>
-std::string pretty_string(Args &&...args) {
+std::string pretty_string(Args&&... args) {
   std::ostringstream out;
   pretty_print(out, std::forward<Args>(args)...);
   return out.str();

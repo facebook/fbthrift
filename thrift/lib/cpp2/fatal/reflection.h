@@ -386,10 +386,8 @@ struct reflected_module {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Tag>
-using reflect_module = fatal::registry_lookup<
-  detail::reflection_metadata_tag,
-  Tag
->;
+using reflect_module =
+    fatal::registry_lookup<detail::reflection_metadata_tag, Tag>;
 
 /**
  * Retrieves reflection metadata (as a `reflected_module`) associated with the
@@ -432,11 +430,8 @@ using reflect_module = fatal::registry_lookup<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Tag, typename Default = void>
-using try_reflect_module = fatal::try_registry_lookup<
-  detail::reflection_metadata_tag,
-  Tag,
-  Default
->;
+using try_reflect_module =
+    fatal::try_registry_lookup<detail::reflection_metadata_tag, Tag, Default>;
 
 /**
  * Tells whether the given type is a tag that represents the reflection metadata
@@ -472,12 +467,8 @@ using try_reflect_module = fatal::try_registry_lookup<
  */
 template <typename T>
 using is_reflectable_module = std::integral_constant<
-  bool,
-  !std::is_same<
-    try_reflect_module<T, void>,
-    void
-  >::value
->;
+    bool,
+    !std::is_same<try_reflect_module<T, void>, void>::value>;
 
 /**
  * Gets the reflection metadata tag for the Thrift file where the type `T` is
@@ -510,11 +501,8 @@ using is_reflectable_module = std::integral_constant<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_module_tag = typename detail::reflect_module_tag_selector<
-  reflect_type_class<T>,
-  T,
-  false
->::type;
+using reflect_module_tag = typename detail::
+    reflect_module_tag_selector<reflect_type_class<T>, T, false>::type;
 
 /**
  * Tries to get the reflection metadata tag for the Thrift file where the type
@@ -548,12 +536,8 @@ e:
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Default = void>
-using try_reflect_module_tag = typename detail::reflect_module_tag_selector<
-  reflect_type_class<T>,
-  T,
-  true,
-  Default
->::type;
+using try_reflect_module_tag = typename detail::
+    reflect_module_tag_selector<reflect_type_class<T>, T, true, Default>::type;
 
 /**
  * Represents an annotation from `reflected_annotations::map`.
@@ -638,7 +622,7 @@ struct annotation {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using structured  = Structured;
+  using structured = Structured;
 };
 
 /**
@@ -1252,7 +1236,7 @@ struct reflected_struct_data_member {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   template <typename T>
-  static constexpr inline bool is_set(T const &owner) {
+  static constexpr inline bool is_set(T const& owner) {
     namespace impl = detail::reflection_impl;
     using getter = impl::getter_direct_getter_t<getter>;
     return impl::isset<Owner, getter, HasIsSet>::check(owner);
@@ -1326,10 +1310,8 @@ struct reflected_struct_data_member {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Struct>
-using reflect_struct = fatal::registry_lookup<
-  detail::struct_traits_metadata_tag,
-  Struct
->;
+using reflect_struct =
+    fatal::registry_lookup<detail::struct_traits_metadata_tag, Struct>;
 
 /**
  * Retrieves reflection metadata (as a `reflected_struct`) associated with the
@@ -1366,11 +1348,8 @@ using reflect_struct = fatal::registry_lookup<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Struct, typename Default = void>
-using try_reflect_struct = fatal::try_registry_lookup<
-  detail::struct_traits_metadata_tag,
-  Struct,
-  Default
->;
+using try_reflect_struct = fatal::
+    try_registry_lookup<detail::struct_traits_metadata_tag, Struct, Default>;
 
 /**
  * Tells whether the given type is a Thrift struct with compile-time reflection
@@ -1408,12 +1387,8 @@ using try_reflect_struct = fatal::try_registry_lookup<
  */
 template <typename T>
 using is_reflectable_struct = std::integral_constant<
-  bool,
-  !std::is_same<
-    try_reflect_struct<T, void>,
-    void
-  >::value
->;
+    bool,
+    !std::is_same<try_reflect_struct<T, void>, void>::value>;
 
 //////////////////////////////
 // SECTION: ENUMERATION API //
@@ -1711,10 +1686,9 @@ struct reflected_variant {
    */
   template <typename Name>
   using by_name = fatal::get<
-    typename traits::descriptors,
-    Name,
-    detail::reflection_impl::variant_member_name
-  >;
+      typename traits::descriptors,
+      Name,
+      detail::reflection_impl::variant_member_name>;
 
   /**
    * Gets the member descriptor for the field with given `TypeId`.
@@ -1738,10 +1712,9 @@ struct reflected_variant {
    */
   template <typename type::Type TypeId>
   using by_type_id = fatal::get<
-    typename traits::descriptors,
-    std::integral_constant<typename type::Type, TypeId>,
-    fatal::get_type::id
-  >;
+      typename traits::descriptors,
+      std::integral_constant<typename type::Type, TypeId>,
+      fatal::get_type::id>;
 
   /**
    * Gets the member descriptor for the field with given `FieldId`.
@@ -1765,10 +1738,9 @@ struct reflected_variant {
    */
   template <field_id_t FieldId>
   using by_field_id = fatal::get<
-    typename traits::descriptors,
-    std::integral_constant<field_id_t, FieldId>,
-    detail::reflection_impl::variant_member_field_id
-  >;
+      typename traits::descriptors,
+      std::integral_constant<field_id_t, FieldId>,
+      detail::reflection_impl::variant_member_field_id>;
 };
 
 /**
@@ -1980,22 +1952,40 @@ struct thrift_string_traits_std {
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
 
-  static inline iterator begin(type &what) { return what.begin(); }
-  static inline iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type& what) {
+    return what.begin();
+  }
+  static inline iterator end(type& what) {
+    return what.end();
+  }
 
-  static inline const_iterator cbegin(type const &what) {
+  static inline const_iterator cbegin(type const& what) {
     return what.cbegin();
   }
-  static inline const_iterator begin(type const &what) { return what.begin(); }
-  static inline const_iterator cend(type const &what) { return what.cend(); }
-  static inline const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator begin(type const& what) {
+    return what.begin();
+  }
+  static inline const_iterator cend(type const& what) {
+    return what.cend();
+  }
+  static inline const_iterator end(type const& what) {
+    return what.end();
+  }
 
-  static inline void clear(type &what) { what.clear(); }
-  static inline bool empty(type const &what) { return what.empty(); }
-  static inline size_type size(type const &what) { return what.size(); }
+  static inline void clear(type& what) {
+    what.clear();
+  }
+  static inline bool empty(type const& what) {
+    return what.empty();
+  }
+  static inline size_type size(type const& what) {
+    return what.size();
+  }
 
-  static inline value_type const *data(type const &what) { return what.data(); }
-  static inline value_type const *c_str(type const &what) {
+  static inline value_type const* data(type const& what) {
+    return what.data();
+  }
+  static inline value_type const* c_str(type const& what) {
     return what.c_str();
   }
 };
@@ -2012,7 +2002,7 @@ class thrift_string_traits_adapter {
       fatal::is_complete<traits>::value,
       "the required thrift_string_traits specialization is missing");
 
-  deco &_;
+  deco& _;
 
  public:
   using value_type = typename traits::value_type;
@@ -2020,25 +2010,51 @@ class thrift_string_traits_adapter {
   using iterator = typename traits::iterator;
   using const_iterator = typename traits::const_iterator;
 
-  explicit thrift_string_traits_adapter(deco &what) : _(what) {}
+  explicit thrift_string_traits_adapter(deco& what) : _(what) {}
 
-  auto& operator*() { return _; }
-  auto& operator*() const { return _; }
+  auto& operator*() {
+    return _;
+  }
+  auto& operator*() const {
+    return _;
+  }
 
-  auto begin() { return traits::begin(_); }
-  auto end() { return traits::end(_); }
+  auto begin() {
+    return traits::begin(_);
+  }
+  auto end() {
+    return traits::end(_);
+  }
 
-  auto cbegin() const { return traits::cbegin(_); }
-  auto begin() const { return traits::begin(_); }
-  auto cend() const { return traits::cend(_); }
-  auto end() const { return traits::end(_); }
+  auto cbegin() const {
+    return traits::cbegin(_);
+  }
+  auto begin() const {
+    return traits::begin(_);
+  }
+  auto cend() const {
+    return traits::cend(_);
+  }
+  auto end() const {
+    return traits::end(_);
+  }
 
-  auto clear() { traits::clear(_); }
-  auto empty() const { return traits::empty(_); }
-  auto size() const { return traits::size(_); }
+  auto clear() {
+    traits::clear(_);
+  }
+  auto empty() const {
+    return traits::empty(_);
+  }
+  auto size() const {
+    return traits::size(_);
+  }
 
-  auto const *data() const { return traits::data(_); }
-  auto const *c_str() const { return traits::c_str(_); }
+  auto const* data() const {
+    return traits::data(_);
+  }
+  auto const* c_str() const {
+    return traits::c_str(_);
+  }
 };
 
 /**
@@ -2098,26 +2114,44 @@ struct thrift_list_traits_std {
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
 
-  static inline iterator begin(type &what) { return what.begin(); }
-  static inline iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type& what) {
+    return what.begin();
+  }
+  static inline iterator end(type& what) {
+    return what.end();
+  }
 
-  static inline const_iterator cbegin(type const &what) {
+  static inline const_iterator cbegin(type const& what) {
     return what.cbegin();
   }
-  static inline const_iterator begin(type const &what) { return what.begin(); }
-  static inline const_iterator cend(type const &what) { return what.cend(); }
-  static inline const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator begin(type const& what) {
+    return what.begin();
+  }
+  static inline const_iterator cend(type const& what) {
+    return what.cend();
+  }
+  static inline const_iterator end(type const& what) {
+    return what.end();
+  }
 
-  static inline void clear(type &what) { what.clear(); }
-  static inline bool empty(type const &what) { return what.empty(); }
-  static inline void push_back(type &what, value_type const &val) {
+  static inline void clear(type& what) {
+    what.clear();
+  }
+  static inline bool empty(type const& what) {
+    return what.empty();
+  }
+  static inline void push_back(type& what, value_type const& val) {
     what.push_back(val);
   }
-  static inline void push_back(type &what, value_type &&val) {
+  static inline void push_back(type& what, value_type&& val) {
     what.push_back(std::move(val));
   }
-  static inline void reserve(type &what, size_type size) { what.reserve(size); }
-  static inline size_type size(type const &what) { return what.size(); }
+  static inline void reserve(type& what, size_type size) {
+    what.reserve(size);
+  }
+  static inline size_type size(type const& what) {
+    return what.size();
+  }
   static inline iterator erase(type& what, const_iterator pos) {
     return what.erase(pos);
   }
@@ -2135,7 +2169,7 @@ class thrift_list_traits_adapter {
       fatal::is_complete<traits>::value,
       "the required thrift_list_traits specialization is missing");
 
-  deco &_;
+  deco& _;
 
  public:
   using value_type = typename traits::value_type;
@@ -2143,25 +2177,53 @@ class thrift_list_traits_adapter {
   using iterator = typename traits::iterator;
   using const_iterator = typename traits::const_iterator;
 
-  explicit thrift_list_traits_adapter(deco &what) : _(what) {}
+  explicit thrift_list_traits_adapter(deco& what) : _(what) {}
 
-  auto& operator*() { return _; }
-  auto& operator*() const { return _; }
+  auto& operator*() {
+    return _;
+  }
+  auto& operator*() const {
+    return _;
+  }
 
-  auto begin() { return traits::begin(_); }
-  auto end() { return traits::end(_); }
+  auto begin() {
+    return traits::begin(_);
+  }
+  auto end() {
+    return traits::end(_);
+  }
 
-  auto cbegin() const { return traits::cbegin(_); }
-  auto begin() const { return traits::begin(_); }
-  auto cend() const { return traits::cend(_); }
-  auto end() const { return traits::end(_); }
+  auto cbegin() const {
+    return traits::cbegin(_);
+  }
+  auto begin() const {
+    return traits::begin(_);
+  }
+  auto cend() const {
+    return traits::cend(_);
+  }
+  auto end() const {
+    return traits::end(_);
+  }
 
-  auto clear() { traits::clear(_); }
-  auto empty() const { return traits::empty(_); }
-  auto push_back(value_type const &e) { traits::push_back(_, e); }
-  auto push_back(value_type &&e) { traits::push_back(_, std::move(e)); }
-  auto reserve(size_type size) { traits::reserve(_, size); }
-  auto size() const { return traits::size(_); }
+  auto clear() {
+    traits::clear(_);
+  }
+  auto empty() const {
+    return traits::empty(_);
+  }
+  auto push_back(value_type const& e) {
+    traits::push_back(_, e);
+  }
+  auto push_back(value_type&& e) {
+    traits::push_back(_, std::move(e));
+  }
+  auto reserve(size_type size) {
+    traits::reserve(_, size);
+  }
+  auto size() const {
+    return traits::size(_);
+  }
   auto erase(const_iterator pos) {
     return traits::erase(_, pos);
   }
@@ -2235,33 +2297,49 @@ struct thrift_set_traits_std {
   using reference = typename type::reference;
   using const_reference = typename type::const_reference;
 
-  static inline iterator begin(type &what) { return what.begin(); }
-  static inline iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type& what) {
+    return what.begin();
+  }
+  static inline iterator end(type& what) {
+    return what.end();
+  }
 
-  static inline const_iterator cbegin(type const &what) {
+  static inline const_iterator cbegin(type const& what) {
     return what.cbegin();
   }
-  static inline const_iterator begin(type const &what) { return what.begin(); }
-  static inline const_iterator cend(type const &what) { return what.cend(); }
-  static inline const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator begin(type const& what) {
+    return what.begin();
+  }
+  static inline const_iterator cend(type const& what) {
+    return what.cend();
+  }
+  static inline const_iterator end(type const& what) {
+    return what.end();
+  }
 
-  static inline void clear(type &what) { what.clear(); }
-  static inline bool empty(type const &what) { return what.empty(); }
-  static inline iterator find(type &what, value_type const &val) {
+  static inline void clear(type& what) {
+    what.clear();
+  }
+  static inline bool empty(type const& what) {
+    return what.empty();
+  }
+  static inline iterator find(type& what, value_type const& val) {
     return what.find(val);
   }
-  static inline const_iterator find(type const &what, value_type const &val) {
+  static inline const_iterator find(type const& what, value_type const& val) {
     return what.find(val);
   }
-  static inline iterator insert(
-      type &what, const_iterator position, value_type const &val) {
+  static inline iterator
+  insert(type& what, const_iterator position, value_type const& val) {
     return what.insert(position, val);
   }
-  static inline iterator insert(
-      type &what, const_iterator position, value_type &&val) {
+  static inline iterator
+  insert(type& what, const_iterator position, value_type&& val) {
     return what.insert(position, std::move(val));
   }
-  static inline size_type size(type const &what) { return what.size(); }
+  static inline size_type size(type const& what) {
+    return what.size();
+  }
   static inline iterator erase(type& what, const_iterator pos) {
     return what.erase(pos);
   }
@@ -2282,7 +2360,7 @@ class thrift_set_traits_adapter {
       fatal::is_complete<traits>::value,
       "the required thrift_set_traits specialization is missing");
 
-  deco &_;
+  deco& _;
 
  public:
   using key_type = typename traits::key_type;
@@ -2293,28 +2371,56 @@ class thrift_set_traits_adapter {
   using reference = typename traits::reference;
   using const_reference = typename traits::const_reference;
 
-  explicit thrift_set_traits_adapter(deco &what) : _(what) {}
+  explicit thrift_set_traits_adapter(deco& what) : _(what) {}
 
-  auto& operator*() { return _; }
-  auto& operator*() const { return _; }
+  auto& operator*() {
+    return _;
+  }
+  auto& operator*() const {
+    return _;
+  }
 
-  auto begin() { return traits::begin(_); }
-  auto end() { return traits::end(_); }
+  auto begin() {
+    return traits::begin(_);
+  }
+  auto end() {
+    return traits::end(_);
+  }
 
-  auto cbegin() const { return traits::cbegin(_); }
-  auto begin() const { return traits::begin(_); }
-  auto cend() const { return traits::cend(_); }
-  auto end() const { return traits::end(_); }
+  auto cbegin() const {
+    return traits::cbegin(_);
+  }
+  auto begin() const {
+    return traits::begin(_);
+  }
+  auto cend() const {
+    return traits::cend(_);
+  }
+  auto end() const {
+    return traits::end(_);
+  }
 
-  auto clear() { traits::clear(_); }
-  auto empty() const { return traits::empty(_); }
-  auto find(key_type const &k) { return traits::find(_, k); }
-  auto find(key_type const &k) const { return traits::find(_, k); }
-  auto insert(const_iterator position, value_type const &val) {
-    return traits::insert(_, position, val); }
-  auto insert(const_iterator position, value_type &&val) {
-    return traits::insert(_, position, std::move(val)); }
-  auto size() const { return traits::size(_); }
+  auto clear() {
+    traits::clear(_);
+  }
+  auto empty() const {
+    return traits::empty(_);
+  }
+  auto find(key_type const& k) {
+    return traits::find(_, k);
+  }
+  auto find(key_type const& k) const {
+    return traits::find(_, k);
+  }
+  auto insert(const_iterator position, value_type const& val) {
+    return traits::insert(_, position, val);
+  }
+  auto insert(const_iterator position, value_type&& val) {
+    return traits::insert(_, position, std::move(val));
+  }
+  auto size() const {
+    return traits::size(_);
+  }
   auto erase(const_iterator pos) {
     return traits::erase(_, pos);
   }
@@ -2401,49 +2507,73 @@ struct thrift_map_traits_std {
   using reference = typename type::reference;
   using const_reference = typename type::const_reference;
 
-  using key_const_reference = key_type const &;
-  using mapped_const_reference = mapped_type const &;
-  using mapped_reference = mapped_type &;
+  using key_const_reference = key_type const&;
+  using mapped_const_reference = mapped_type const&;
+  using mapped_reference = mapped_type&;
 
-  static inline iterator begin(type &what) { return what.begin(); }
-  static inline iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type& what) {
+    return what.begin();
+  }
+  static inline iterator end(type& what) {
+    return what.end();
+  }
 
-  static inline const_iterator cbegin(type const &what) {
+  static inline const_iterator cbegin(type const& what) {
     return what.cbegin();
   }
-  static inline const_iterator begin(type const &what) { return what.begin(); }
-  static inline const_iterator cend(type const &what) { return what.cend(); }
-  static inline const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator begin(type const& what) {
+    return what.begin();
+  }
+  static inline const_iterator cend(type const& what) {
+    return what.cend();
+  }
+  static inline const_iterator end(type const& what) {
+    return what.end();
+  }
 
-  static inline key_const_reference key(const_iterator i) { return i->first; }
-  static inline key_const_reference key(iterator i) { return i->first; }
+  static inline key_const_reference key(const_iterator i) {
+    return i->first;
+  }
+  static inline key_const_reference key(iterator i) {
+    return i->first;
+  }
   static inline key_const_reference key(const_reference v) {
     return v.first;
   }
   static inline mapped_const_reference mapped(const_iterator i) {
     return i->second;
   }
-  static inline mapped_reference mapped(iterator i) { return i->second; }
-  static inline mapped_reference mapped(reference v) { return v.second; }
+  static inline mapped_reference mapped(iterator i) {
+    return i->second;
+  }
+  static inline mapped_reference mapped(reference v) {
+    return v.second;
+  }
   static inline mapped_const_reference mapped(const_reference v) {
     return v.second;
   }
 
-  static inline void clear(type &what) { what.clear(); }
-  static inline bool empty(type const &what) { return what.empty(); }
-  static inline iterator find(type &what, key_type const &k) {
+  static inline void clear(type& what) {
+    what.clear();
+  }
+  static inline bool empty(type const& what) {
+    return what.empty();
+  }
+  static inline iterator find(type& what, key_type const& k) {
     return what.find(k);
   }
-  static inline const_iterator find(type const &what, key_type const &k) {
+  static inline const_iterator find(type const& what, key_type const& k) {
     return what.find(k);
   }
-  static inline mapped_type& get_or_create(type &what, key_type const &k) {
+  static inline mapped_type& get_or_create(type& what, key_type const& k) {
     return what[k];
   }
-  static inline mapped_type& get_or_create(type &what, key_type &&k) {
+  static inline mapped_type& get_or_create(type& what, key_type&& k) {
     return what[std::move(k)];
   }
-  static inline size_type size(type const &what) { return what.size(); }
+  static inline size_type size(type const& what) {
+    return what.size();
+  }
   static inline iterator erase(type& what, const_iterator pos) {
     return what.erase(pos);
   }
@@ -2464,7 +2594,7 @@ class thrift_map_traits_adapter {
       fatal::is_complete<traits>::value,
       "the required thrift_map_traits specialization is missing");
 
-  deco &_;
+  deco& _;
 
  public:
   using key_type = typename traits::key_type;
@@ -2478,27 +2608,56 @@ class thrift_map_traits_adapter {
   using mapped_const_reference = typename traits::mapped_const_reference;
   using mapped_reference = typename traits::mapped_reference;
 
-  explicit thrift_map_traits_adapter(deco &what) : _(what) {}
+  explicit thrift_map_traits_adapter(deco& what) : _(what) {}
 
-  auto& operator*() { return _; }
-  auto& operator*() const { return _; }
+  auto& operator*() {
+    return _;
+  }
+  auto& operator*() const {
+    return _;
+  }
 
-  auto begin() { return traits::begin(_); }
-  auto end() { return traits::end(_); }
+  auto begin() {
+    return traits::begin(_);
+  }
+  auto end() {
+    return traits::end(_);
+  }
 
-  auto cbegin() const { return traits::cbegin(_); }
-  auto begin() const { return traits::begin(_); }
-  auto cend() const { return traits::cend(_); }
-  auto end() const { return traits::end(_); }
+  auto cbegin() const {
+    return traits::cbegin(_);
+  }
+  auto begin() const {
+    return traits::begin(_);
+  }
+  auto cend() const {
+    return traits::cend(_);
+  }
+  auto end() const {
+    return traits::end(_);
+  }
 
-  auto clear() { traits::clear(_); }
-  auto empty() const { return traits::empty(_); }
-  auto find(key_const_reference k) { return traits::find(_, k); }
-  auto find(key_const_reference k) const { return traits::find(_, k); }
-  auto &operator[](key_type const &k) { return traits::get_or_create(_, k); }
-  auto &operator[](key_type &&k) {
-    return traits::get_or_create(_, std::move(k)); }
-  auto size() const { return traits::size(_); }
+  auto clear() {
+    traits::clear(_);
+  }
+  auto empty() const {
+    return traits::empty(_);
+  }
+  auto find(key_const_reference k) {
+    return traits::find(_, k);
+  }
+  auto find(key_const_reference k) const {
+    return traits::find(_, k);
+  }
+  auto& operator[](key_type const& k) {
+    return traits::get_or_create(_, k);
+  }
+  auto& operator[](key_type&& k) {
+    return traits::get_or_create(_, std::move(k));
+  }
+  auto size() const {
+    return traits::size(_);
+  }
   auto erase(const_iterator pos) {
     return traits::erase(_, pos);
   }

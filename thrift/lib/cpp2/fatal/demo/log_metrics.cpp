@@ -30,12 +30,12 @@ using namespace static_reflection::demo;
 
 struct metrics_client {
   template <typename Metric, typename Value>
-  void add(Metric const &name, Value const &value) {
+  void add(Metric const& name, Value const& value) {
     metrics_[name] += value;
   }
 
   void report() {
-    for (auto const &i: metrics_) {
+    for (auto const& i : metrics_) {
       std::cout << i.first << ": " << i.second << '\n';
     }
   }
@@ -48,14 +48,13 @@ struct metrics_client {
 
 struct export_metric_dynamic {
   template <typename Member, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    metrics_client &sink,
-    T const &metrics,
-    std::string const &prefix
-  ) const {
+  void operator()(
+      fatal::indexed<Member, Index>,
+      metrics_client& sink,
+      T const& metrics,
+      std::string const& prefix) const {
     auto const key = prefix + fatal::z_data<typename Member::name>();
-    auto const &value = Member::getter::ref(metrics);
+    auto const& value = Member::getter::ref(metrics);
 
     sink.add(key, value);
   }
@@ -64,15 +63,15 @@ struct export_metric_dynamic {
 std::string const kPrefix = "my_app.";
 
 template <typename T>
-void export_metrics_dynamic(metrics_client &sink, T const &metrics) {
+void export_metrics_dynamic(metrics_client& sink, T const& metrics) {
   using info = reflect_struct<T>;
 
   fatal::foreach<typename info::members>(
-    export_metric_dynamic(),
-    sink,
-    metrics,
-    folly::to<std::string>(kPrefix, fatal::z_data<typename info::name>(), '.')
-  );
+      export_metric_dynamic(),
+      sink,
+      metrics,
+      folly::to<std::string>(
+          kPrefix, fatal::z_data<typename info::name>(), '.'));
 }
 
 // static //
@@ -82,37 +81,28 @@ struct export_metric_static {
   FATAL_S(dot, ".");
 
   template <typename Member, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    metrics_client &sink,
-    T const &metrics
-  ) const {
+  void operator()(
+      fatal::indexed<Member, Index>,
+      metrics_client& sink,
+      T const& metrics) const {
     using info = reflect_struct<T>;
-    using key = fatal::cat<
-      prefix,
-      dot,
-      typename info::name,
-      dot,
-      typename Member::name
-    >;
+    using key = fatal::
+        cat<prefix, dot, typename info::name, dot, typename Member::name>;
 
-    auto const &value = Member::getter::ref(metrics);
+    auto const& value = Member::getter::ref(metrics);
     sink.add(fatal::z_data<key>(), value);
   }
 };
 
 template <typename T>
-void export_metrics_static(metrics_client &sink, T const &metrics) {
+void export_metrics_static(metrics_client& sink, T const& metrics) {
   fatal::foreach<typename reflect_struct<T>::members>(
-    export_metric_static(),
-    sink,
-    metrics
-  );
+      export_metric_static(), sink, metrics);
 }
 
 // driver //
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   metrics_client sink;

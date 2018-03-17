@@ -34,9 +34,11 @@ namespace thrift {
 template <typename OutputStream>
 class indenter {
   struct scope {
-    explicit scope(indenter *out): out_(out) {}
-    scope(scope const &) = delete;
-    scope(scope &&rhs) noexcept: out_(rhs.out_) { rhs.out_ = nullptr; }
+    explicit scope(indenter* out) : out_(out) {}
+    scope(scope const&) = delete;
+    scope(scope&& rhs) noexcept : out_(rhs.out_) {
+      rhs.out_ = nullptr;
+    }
 
     ~scope() {
       if (out_) {
@@ -44,32 +46,33 @@ class indenter {
       }
     }
 
-    scope start_scope() { return out_->start_scope(); }
+    scope start_scope() {
+      return out_->start_scope();
+    }
 
-    scope &skip() {
+    scope& skip() {
       out_->skip();
       return *this;
     }
 
     template <typename U>
-    indenter &operator <<(U &&value) {
+    indenter& operator<<(U&& value) {
       return (*out_) << std::forward<U>(value);
     }
 
-    scope &newline() {
+    scope& newline() {
       out_->newline();
       return *this;
     }
 
    private:
-    indenter *out_;
+    indenter* out_;
   };
 
  public:
   template <typename UOutputStream, typename Indentation>
-  indenter(UOutputStream &&out, Indentation &&indentation, std::string margin)
-    : out_(out), margin_(std::move(margin))
-  {
+  indenter(UOutputStream&& out, Indentation&& indentation, std::string margin)
+      : out_(out), margin_(std::move(margin)) {
     indentation_.reserve(4);
     indentation_.emplace_back();
     indentation_.emplace_back(std::forward<Indentation>(indentation));
@@ -100,13 +103,13 @@ class indenter {
     level_ -= levels;
   }
 
-  indenter &skip() {
+  indenter& skip() {
     indent_ = false;
     return *this;
   }
 
   template <typename U>
-  indenter &operator <<(U &&value) {
+  indenter& operator<<(U&& value) {
     if (indent_) {
       assert(level_ < indentation_.size());
       put_margin();
@@ -119,7 +122,7 @@ class indenter {
     return *this;
   }
 
-  indenter &newline() {
+  indenter& newline() {
     out_ << '\n';
     indent_ = true;
     at_margin_ = true;
@@ -132,7 +135,7 @@ class indenter {
   }
 
  private:
-  OutputStream &out_;
+  OutputStream& out_;
   std::vector<std::string> indentation_;
   std::size_t level_ = 0;
   bool indent_ = true;
@@ -149,10 +152,9 @@ class indenter {
 
 template <typename OutputStream, typename Indentation>
 indenter<typename std::decay<OutputStream>::type> make_indenter(
-  OutputStream &&out,
-  Indentation &&indentation,
-  std::string margin = std::string()
-) {
+    OutputStream&& out,
+    Indentation&& indentation,
+    std::string margin = std::string()) {
   return {out, std::forward<Indentation>(indentation), std::move(margin)};
 }
 

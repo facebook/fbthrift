@@ -34,128 +34,110 @@ namespace thrift {
 namespace detail {
 
 template <typename LHS, typename RHS>
-void compare_elements_eq(LHS const &lhs, RHS const &rhs) {
+void compare_elements_eq(LHS const& lhs, RHS const& rhs) {
   EXPECT_EQ(lhs, static_cast<LHS>(rhs));
 }
 
 template <typename LHSF, typename LHSS, typename RHSF, typename RHSS>
 void compare_elements_eq(
-  std::pair<LHSF, LHSS> const &lhs,
-  std::pair<RHSF, RHSS> const &rhs
-) {
+    std::pair<LHSF, LHSS> const& lhs,
+    std::pair<RHSF, RHSS> const& rhs) {
   EXPECT_EQ(lhs.first, rhs.first);
   EXPECT_EQ(lhs.second, rhs.second);
 }
 
 #define THRIFT_COMPARE_ITERATORS_IMPL(TRAITS, EI, EE, AI, AE) \
-  do { \
-    auto ei = (EI); \
-    auto ee = (EE); \
-    auto ai = (AI); \
-    auto ae = (AE); \
-    EXPECT_EQ(std::distance(ei, ee), std::distance(ai, ae)); \
-    for (; ei != ee; ++ei, ++ai) { \
-      ASSERT_NE(ae, ai); \
-      EXPECT_EQ(*ei, *ai); \
-    } \
-    EXPECT_EQ(ae, ai); \
+  do {                                                        \
+    auto ei = (EI);                                           \
+    auto ee = (EE);                                           \
+    auto ai = (AI);                                           \
+    auto ae = (AE);                                           \
+    EXPECT_EQ(std::distance(ei, ee), std::distance(ai, ae));  \
+    for (; ei != ee; ++ei, ++ai) {                            \
+      ASSERT_NE(ae, ai);                                      \
+      EXPECT_EQ(*ei, *ai);                                    \
+    }                                                         \
+    EXPECT_EQ(ae, ai);                                        \
   } while (false)
 
 #define THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(TRAITS, CONTAINER, EI, EE) \
-  do { \
-    EXPECT_EQ( \
-      CONTAINER.size(), \
-      std::distance(TRAITS::cbegin(CONTAINER), TRAITS::cend(CONTAINER)) \
-    ); \
-    EXPECT_EQ( \
-      CONTAINER.size(), \
-      std::distance(TRAITS::begin(CONTAINER), TRAITS::end(CONTAINER)) \
-    ); \
-    THRIFT_COMPARE_ITERATORS_IMPL( \
-      TRAITS, EI, EE, \
-      TRAITS::cbegin(CONTAINER), TRAITS::cend(CONTAINER) \
-    ); \
-    THRIFT_COMPARE_ITERATORS_IMPL( \
-      TRAITS, EI, EE, \
-      TRAITS::begin(CONTAINER), TRAITS::end(CONTAINER) \
-    ); \
+  do {                                                                        \
+    EXPECT_EQ(                                                                \
+        CONTAINER.size(),                                                     \
+        std::distance(TRAITS::cbegin(CONTAINER), TRAITS::cend(CONTAINER)));   \
+    EXPECT_EQ(                                                                \
+        CONTAINER.size(),                                                     \
+        std::distance(TRAITS::begin(CONTAINER), TRAITS::end(CONTAINER)));     \
+    THRIFT_COMPARE_ITERATORS_IMPL(                                            \
+        TRAITS, EI, EE, TRAITS::cbegin(CONTAINER), TRAITS::cend(CONTAINER));  \
+    THRIFT_COMPARE_ITERATORS_IMPL(                                            \
+        TRAITS, EI, EE, TRAITS::begin(CONTAINER), TRAITS::end(CONTAINER));    \
   } while (false)
 
-#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
-  TRAITS, EXPECTED, CONTAINER, BEGIN, END \
-) \
-  do { \
-    auto ai = TRAITS::BEGIN(CONTAINER); \
-    auto ae = TRAITS::END(CONTAINER); \
-    EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae)); \
-    using expected_type = typename std::decay< \
-      decltype(*(EXPECTED).begin()) \
-    >::type; \
-    std::unordered_set<expected_type> const expected( \
-      (EXPECTED).begin(), \
-      (EXPECTED).end() \
-    ); \
-    for (auto const ee = expected.end(); ai != ae; ++ai) { \
+#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2(                   \
+    TRAITS, EXPECTED, CONTAINER, BEGIN, END)                         \
+  do {                                                               \
+    auto ai = TRAITS::BEGIN(CONTAINER);                              \
+    auto ae = TRAITS::END(CONTAINER);                                \
+    EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae));              \
+    using expected_type =                                            \
+        typename std::decay<decltype(*(EXPECTED).begin())>::type;    \
+    std::unordered_set<expected_type> const expected(                \
+        (EXPECTED).begin(), (EXPECTED).end());                       \
+    for (auto const ee = expected.end(); ai != ae; ++ai) {           \
       auto const e = expected.find(static_cast<expected_type>(*ai)); \
-      ASSERT_NE(ee, e); \
-      ::apache::thrift::detail::compare_elements_eq(*e, *ai); \
-    } \
+      ASSERT_NE(ee, e);                                              \
+      ::apache::thrift::detail::compare_elements_eq(*e, *ai);        \
+    }                                                                \
   } while (false)
 
 #define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(TRAITS, EXPECTED, CONTAINER) \
-  do { \
-    { \
-      SCOPED_TRACE("const"); \
-      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
-        TRAITS, EXPECTED, CONTAINER, cbegin, cend \
-      ); \
-    } \
-    { \
-      SCOPED_TRACE("mutable"); \
-      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
-        TRAITS, EXPECTED, CONTAINER, begin, end \
-      ); \
-    } \
+  do {                                                                        \
+    {                                                                         \
+      SCOPED_TRACE("const");                                                  \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2(                              \
+          TRAITS, EXPECTED, CONTAINER, cbegin, cend);                         \
+    }                                                                         \
+    {                                                                         \
+      SCOPED_TRACE("mutable");                                                \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2(                              \
+          TRAITS, EXPECTED, CONTAINER, begin, end);                           \
+    }                                                                         \
   } while (false)
 
-#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
-  TRAITS, EXPECTED, CONTAINER, BEGIN, END \
-) \
-  do { \
-    auto ai = TRAITS::BEGIN(CONTAINER); \
-    auto ae = TRAITS::END(CONTAINER); \
-    EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae)); \
-    using expected_type = typename TRAITS::value_type; \
-    std::unordered_set<expected_type> const expected( \
-      (EXPECTED).begin(), \
-      (EXPECTED).end() \
-    ); \
-    for (auto const ee = expected.end(); ai != ae; ++ai) { \
-      auto const e = expected.find(expected_type(*ai)); \
-      ASSERT_NE(ee, e); \
+#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS(     \
+    TRAITS, EXPECTED, CONTAINER, BEGIN, END)                  \
+  do {                                                        \
+    auto ai = TRAITS::BEGIN(CONTAINER);                       \
+    auto ae = TRAITS::END(CONTAINER);                         \
+    EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae));       \
+    using expected_type = typename TRAITS::value_type;        \
+    std::unordered_set<expected_type> const expected(         \
+        (EXPECTED).begin(), (EXPECTED).end());                \
+    for (auto const ee = expected.end(); ai != ae; ++ai) {    \
+      auto const e = expected.find(expected_type(*ai));       \
+      ASSERT_NE(ee, e);                                       \
       ::apache::thrift::detail::compare_elements_eq(*e, *ai); \
-    } \
+    }                                                         \
   } while (false)
 
 #define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS( \
-    TRAITS, EXPECTED, CONTAINER) \
-  do { \
-    { \
-      SCOPED_TRACE("const"); \
-      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
-        TRAITS, EXPECTED, CONTAINER, cbegin, cend \
-      ); \
-    } \
-    { \
-      SCOPED_TRACE("mutable"); \
-      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
-        TRAITS, EXPECTED, CONTAINER, begin, end \
-      ); \
-    } \
+    TRAITS, EXPECTED, CONTAINER)                         \
+  do {                                                   \
+    {                                                    \
+      SCOPED_TRACE("const");                             \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS(  \
+          TRAITS, EXPECTED, CONTAINER, cbegin, cend);    \
+    }                                                    \
+    {                                                    \
+      SCOPED_TRACE("mutable");                           \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS(  \
+          TRAITS, EXPECTED, CONTAINER, begin, end);      \
+    }                                                    \
   } while (false)
 
 template <typename Traits, typename T, typename Iterator>
-void copy_iterators(T &s, Iterator ei, Iterator ee) {
+void copy_iterators(T& s, Iterator ei, Iterator ee) {
   auto ai = Traits::begin(s);
   auto ae = Traits::end(s);
   EXPECT_EQ(std::distance(ai, ae), s.size());
@@ -167,33 +149,30 @@ void copy_iterators(T &s, Iterator ei, Iterator ee) {
 }
 
 struct test_data {
-  static constexpr std::array<int, 10> const primes{{
-    2, 3, 5, 7, 11, 13, 17, 19, 23, 29
-  }};
+  static constexpr std::array<int, 10> const primes{
+      {2, 3, 5, 7, 11, 13, 17, 19, 23, 29}};
 
-  #define THRIFT_DATA_ENTRY_IMPL(X, Modifier) {X, X Modifier}
-  #define THRIFT_ARRAY_DATA_IMPL(Modifier) \
-    THRIFT_DATA_ENTRY_IMPL(2, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(3, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(5, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(7, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(11, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(13, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(17, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(19, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(23, Modifier), \
-    THRIFT_DATA_ENTRY_IMPL(29, Modifier)
+#define THRIFT_DATA_ENTRY_IMPL(X, Modifier) \
+  { X, X Modifier }
+#define THRIFT_ARRAY_DATA_IMPL(Modifier)                                    \
+  THRIFT_DATA_ENTRY_IMPL(2, Modifier), THRIFT_DATA_ENTRY_IMPL(3, Modifier), \
+      THRIFT_DATA_ENTRY_IMPL(5, Modifier),                                  \
+      THRIFT_DATA_ENTRY_IMPL(7, Modifier),                                  \
+      THRIFT_DATA_ENTRY_IMPL(11, Modifier),                                 \
+      THRIFT_DATA_ENTRY_IMPL(13, Modifier),                                 \
+      THRIFT_DATA_ENTRY_IMPL(17, Modifier),                                 \
+      THRIFT_DATA_ENTRY_IMPL(19, Modifier),                                 \
+      THRIFT_DATA_ENTRY_IMPL(23, Modifier),                                 \
+      THRIFT_DATA_ENTRY_IMPL(29, Modifier)
 
-  static constexpr std::array<std::pair<const int, int>, 10> const primes_2x{{
-    THRIFT_ARRAY_DATA_IMPL(* 2)}
-  };
+  static constexpr std::array<std::pair<const int, int>, 10> const primes_2x{
+      {THRIFT_ARRAY_DATA_IMPL(*2)}};
 
-  static constexpr std::array<std::pair<const int, int>, 10> const primes_3x{{
-    THRIFT_ARRAY_DATA_IMPL(* 3)}
-  };
+  static constexpr std::array<std::pair<const int, int>, 10> const primes_3x{
+      {THRIFT_ARRAY_DATA_IMPL(*3)}};
 
-  #undef THRIFT_ARRAY_DATA_IMPL
-  #undef THRIFT_DATA_ENTRY_IMPL
+#undef THRIFT_ARRAY_DATA_IMPL
+#undef THRIFT_DATA_ENTRY_IMPL
 };
 
 constexpr std::array<int, 10> const test_data::primes;
@@ -216,8 +195,7 @@ void test_thrift_list_traits() {
     T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes, s
-    );
+        traits, detail::test_data::primes, s);
 
     auto other = detail::test_data::primes;
     detail::copy_iterators<traits>(s, other.begin(), other.end());
@@ -226,13 +204,10 @@ void test_thrift_list_traits() {
 
   {
     T const s(
-      detail::test_data::primes.begin(),
-      detail::test_data::primes.end()
-    );
+        detail::test_data::primes.begin(), detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes, s
-    );
+        traits, detail::test_data::primes, s);
   }
 
   {
@@ -275,40 +250,32 @@ void test_thrift_string_traits() {
     T s(source.begin(), source.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(traits, s, s.begin(), s.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(
-      traits, s,
-      source.begin(), source.end()
-    );
+        traits, s, source.begin(), source.end());
     detail::copy_iterators<traits>(s, other.begin(), other.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(
-      traits, s,
-      other.begin(), other.end()
-    );
+        traits, s, other.begin(), other.end());
   }
 
   {
     T const s(source.begin(), source.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(traits, s, s.begin(), s.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(
-      traits, s,
-      source.begin(), source.end()
-    );
+        traits, s, source.begin(), source.end());
 
     auto const data = traits::data(s);
     EXPECT_EQ(s.data(), data);
     THRIFT_COMPARE_ITERATORS_IMPL(
-      traits,
-      source.begin(), source.end(),
-      data, std::next(data, s.size())
-    );
+        traits, source.begin(), source.end(), data, std::next(data, s.size()));
 
     auto const c_str = traits::c_str(s);
     EXPECT_EQ(s.c_str(), c_str);
     EXPECT_EQ(0, c_str[s.size()]);
     THRIFT_COMPARE_ITERATORS_IMPL(
-      traits,
-      source.begin(), source.end(),
-      c_str, std::next(c_str, s.size())
-    );
+        traits,
+        source.begin(),
+        source.end(),
+        c_str,
+        std::next(c_str, s.size()));
   }
 
   {
@@ -339,19 +306,15 @@ void test_thrift_set_traits() {
     T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes, s
-    );
+        traits, detail::test_data::primes, s);
   }
 
   {
     T const s(
-      detail::test_data::primes.begin(),
-      detail::test_data::primes.end()
-    );
+        detail::test_data::primes.begin(), detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes, s
-    );
+        traits, detail::test_data::primes, s);
   }
 
   {
@@ -368,7 +331,7 @@ void test_thrift_set_traits() {
 
   {
     T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
-    T const &sconst = s;
+    T const& sconst = s;
     auto k = 17;
     EXPECT_EQ(1, s.count(k));
     EXPECT_EQ(s.find(k), traits::find(s, k));
@@ -403,14 +366,11 @@ void test_thrift_map_traits() {
   EXPECT_SAME<typename T::const_iterator, typename traits::const_iterator>();
 
   {
-    T s(
-      detail::test_data::primes_2x.begin(),
-      detail::test_data::primes_2x.end()
-    );
+    T s(detail::test_data::primes_2x.begin(),
+        detail::test_data::primes_2x.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes_2x, s
-    );
+        traits, detail::test_data::primes_2x, s);
 
     for (auto ai = traits::begin(s), ae = traits::end(s); ai != ae; ++ai) {
       traits::mapped(ai) = traits::key(ai) * 3;
@@ -422,26 +382,21 @@ void test_thrift_map_traits() {
       EXPECT_EQ(traits::key(ai) * 3, traits::mapped(ai));
     }
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes_3x, s
-    );
+        traits, detail::test_data::primes_3x, s);
   }
 
   {
     T const s(
-      detail::test_data::primes_2x.begin(),
-      detail::test_data::primes_2x.end()
-    );
+        detail::test_data::primes_2x.begin(),
+        detail::test_data::primes_2x.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-      traits, detail::test_data::primes_2x, s
-    );
+        traits, detail::test_data::primes_2x, s);
   }
 
   {
-    T s(
-      detail::test_data::primes_2x.begin(),
-      detail::test_data::primes_2x.end()
-    );
+    T s(detail::test_data::primes_2x.begin(),
+        detail::test_data::primes_2x.end());
     EXPECT_FALSE(traits::empty(s));
     EXPECT_EQ(s.size(), traits::size(s));
     EXPECT_EQ(detail::test_data::primes_2x.size(), traits::size(s));
@@ -453,11 +408,9 @@ void test_thrift_map_traits() {
   }
 
   {
-    T s(
-      detail::test_data::primes_2x.begin(),
-      detail::test_data::primes_2x.end()
-    );
-    T const &sconst = s;
+    T s(detail::test_data::primes_2x.begin(),
+        detail::test_data::primes_2x.end());
+    T const& sconst = s;
     auto k = 17;
     EXPECT_EQ(1, s.count(k));
     EXPECT_EQ(s.find(17), traits::find(s, 17));
@@ -465,10 +418,8 @@ void test_thrift_map_traits() {
   }
 
   {
-    T s(
-      detail::test_data::primes_2x.begin(),
-      detail::test_data::primes_2x.end()
-    );
+    T s(detail::test_data::primes_2x.begin(),
+        detail::test_data::primes_2x.end());
     EXPECT_FALSE(traits::empty(s));
     auto sizeBefore = traits::size(s);
 

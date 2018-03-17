@@ -17,7 +17,7 @@
 #define THRIFT_FATAL_REFLECTION_INL_POST_H_ 1
 
 #if !defined THRIFT_FATAL_REFLECTION_H_
-# error "This file must be included from reflection.h"
+#error "This file must be included from reflection.h"
 #endif
 
 namespace folly {
@@ -39,7 +39,7 @@ template <typename, typename T>
 struct has_isset_ : std::false_type {};
 template <typename T>
 struct has_isset_<folly::void_t<decltype(std::declval<T>().__isset)>, T>
-  : std::true_type {};
+    : std::true_type {};
 template <typename T>
 using has_isset = has_isset_<void, T>;
 
@@ -50,32 +50,30 @@ struct isset {
 
   template <typename T>
   using kind_of = std::conditional_t<
-    is_optional<
-      std::decay_t<decltype(Getter::ref(std::declval<T const&>()))>
-    >::value,
-    kind<0>,
-    std::conditional_t<HasIsSet && has_isset<T>::value, kind<1>, kind<2>>
-  >;
+      is_optional<
+          std::decay_t<decltype(Getter::ref(std::declval<T const&>()))>>::value,
+      kind<0>,
+      std::conditional_t<HasIsSet && has_isset<T>::value, kind<1>, kind<2>>>;
 
   template <typename T>
-  static constexpr bool check(kind<0>, T const &owner) {
+  static constexpr bool check(kind<0>, T const& owner) {
     return Getter::ref(owner).has_value();
   }
   template <typename T>
-  static constexpr bool check(kind<1>, T const &owner) {
+  static constexpr bool check(kind<1>, T const& owner) {
     return Getter::copy(owner.__isset);
   }
   template <typename T>
-  static constexpr bool check(kind<2>, T const &) {
+  static constexpr bool check(kind<2>, T const&) {
     return true;
   }
   template <typename T>
-  static constexpr bool check(T const &owner) {
+  static constexpr bool check(T const& owner) {
     return check(kind_of<T>{}, owner);
   }
 
   template <typename T>
-  static constexpr bool mark(kind<0>, T &owner, bool set) {
+  static constexpr bool mark(kind<0>, T& owner, bool set) {
     auto& field = Getter::ref(owner);
     if (set && !field.has_value()) {
       field.emplace();
@@ -85,15 +83,15 @@ struct isset {
     return set;
   }
   template <typename T>
-  static constexpr bool mark(kind<1>, T &owner, bool set) {
+  static constexpr bool mark(kind<1>, T& owner, bool set) {
     return Getter::ref(owner.__isset) = set;
   }
   template <typename T>
-  static constexpr bool mark(kind<2>, T &, bool set) {
+  static constexpr bool mark(kind<2>, T&, bool set) {
     return set;
   }
   template <typename T>
-  static constexpr bool mark(T &owner, bool set) {
+  static constexpr bool mark(T& owner, bool set) {
     return mark(kind_of<T>{}, owner, set);
   }
 };
@@ -104,8 +102,8 @@ template <typename...>
 struct chained_data_member_getter;
 
 template <typename OuterGetter, typename... Getters>
-struct chained_data_member_getter<OuterGetter, Getters...> :
-    fatal::chained_data_member_getter<OuterGetter, Getters...> {
+struct chained_data_member_getter<OuterGetter, Getters...>
+    : fatal::chained_data_member_getter<OuterGetter, Getters...> {
   using head = OuterGetter;
   using tail = chained_data_member_getter<Getters...>;
 };
@@ -118,13 +116,13 @@ struct chained_data_member_getter<> : fatal::chained_data_member_getter<> {
 template <typename Impl>
 struct reflection_indirection_getter {
   template <typename T>
-  using type = decltype(Impl::val(std::declval<T &&>()));
+  using type = decltype(Impl::val(std::declval<T&&>()));
 
   template <typename T>
-  using reference = decltype(Impl::ref(std::declval<T &&>()));
+  using reference = decltype(Impl::ref(std::declval<T&&>()));
 
   template <typename T>
-  static inline auto &&ref(T &&arg) {
+  static inline auto&& ref(T&& arg) {
     return Impl::ref(std::forward<T>(arg));
   }
 };
@@ -148,56 +146,48 @@ struct reflect_container_type_class_impl {
 template <typename T>
 struct reflect_container_type_class_impl<T, true, false, false> {
   using type = type_class::list<
-    reflect_type_class<typename thrift_list_traits<T>::value_type>
-  >;
+      reflect_type_class<typename thrift_list_traits<T>::value_type>>;
 };
 
 template <typename T>
 struct reflect_container_type_class_impl<T, false, true, false> {
   using type = type_class::map<
-    reflect_type_class<typename thrift_map_traits<T>::key_type>,
-    reflect_type_class<typename thrift_map_traits<T>::mapped_type>
-  >;
+      reflect_type_class<typename thrift_map_traits<T>::key_type>,
+      reflect_type_class<typename thrift_map_traits<T>::mapped_type>>;
 };
 
 template <typename T>
 struct reflect_container_type_class_impl<T, false, false, true> {
   using type = type_class::set<
-    reflect_type_class<typename thrift_set_traits<T>::value_type>
-  >;
+      reflect_type_class<typename thrift_set_traits<T>::value_type>>;
 };
 
 template <typename T>
 struct reflect_type_class_impl {
   using type = fatal::conditional<
-    is_reflectable_enum<T>::value,
-    type_class::enumeration,
-    fatal::conditional<
-      is_reflectable_union<T>::value,
-      type_class::variant,
+      is_reflectable_enum<T>::value,
+      type_class::enumeration,
       fatal::conditional<
-        is_reflectable_struct<T>::value,
-        type_class::structure,
-        fatal::conditional<
-          std::is_floating_point<T>::value,
-          type_class::floating_point,
+          is_reflectable_union<T>::value,
+          type_class::variant,
           fatal::conditional<
-            std::is_integral<T>::value,
-            type_class::integral,
-            fatal::conditional<
-              std::is_same<void, T>::value,
-              type_class::nothing,
+              is_reflectable_struct<T>::value,
+              type_class::structure,
               fatal::conditional<
-                fatal::is_complete<thrift_string_traits<T>>::value,
-                type_class::string,
-                typename reflect_container_type_class_impl<T>::type
-              >
-            >
-          >
-        >
-      >
-    >
-  >;
+                  std::is_floating_point<T>::value,
+                  type_class::floating_point,
+                  fatal::conditional<
+                      std::is_integral<T>::value,
+                      type_class::integral,
+                      fatal::conditional<
+                          std::is_same<void, T>::value,
+                          type_class::nothing,
+                          fatal::conditional<
+                              fatal::is_complete<
+                                  thrift_string_traits<T>>::value,
+                              type_class::string,
+                              typename reflect_container_type_class_impl<
+                                  T>::type>>>>>>>;
 };
 
 template <typename T, bool IsTry>

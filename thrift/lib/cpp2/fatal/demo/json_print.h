@@ -28,14 +28,13 @@
 template <typename TypeClass>
 struct printer {
   static_assert(
-    !std::is_same<apache::thrift::type_class::unknown, TypeClass>::value,
-    "no static reflection support for the given type"
-    " - did you forget to include the reflection metadata?"
-    " see thrift/lib/cpp2/fatal/reflection.h"
-  );
+      !std::is_same<apache::thrift::type_class::unknown, TypeClass>::value,
+      "no static reflection support for the given type"
+      " - did you forget to include the reflection metadata?"
+      " see thrift/lib/cpp2/fatal/reflection.h");
 
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << what;
   }
 
@@ -47,7 +46,7 @@ struct printer {
 template <>
 struct printer<apache::thrift::type_class::string> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '"' << what << '"';
   }
 };
@@ -55,7 +54,7 @@ struct printer<apache::thrift::type_class::string> {
 template <>
 struct printer<apache::thrift::type_class::enumeration> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '"' << fatal::enum_to_string(what) << '"';
   }
 };
@@ -63,11 +62,11 @@ struct printer<apache::thrift::type_class::enumeration> {
 template <typename ValueTypeClass>
 struct printer<apache::thrift::type_class::list<ValueTypeClass>> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '[';
 
     bool first = true;
-    for (auto const &i: what) {
+    for (auto const& i : what) {
       if (first) {
         first = false;
       } else {
@@ -82,18 +81,17 @@ struct printer<apache::thrift::type_class::list<ValueTypeClass>> {
 };
 
 template <typename ValueTypeClass>
-struct printer<apache::thrift::type_class::set<ValueTypeClass>>:
-  public printer<apache::thrift::type_class::list<ValueTypeClass>>
-{};
+struct printer<apache::thrift::type_class::set<ValueTypeClass>>
+    : public printer<apache::thrift::type_class::list<ValueTypeClass>> {};
 
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct printer<apache::thrift::type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '{';
 
     bool first = true;
-    for (auto const &i: what) {
+    for (auto const& i : what) {
       if (first) {
         first = false;
       } else {
@@ -111,7 +109,7 @@ struct printer<apache::thrift::type_class::map<KeyTypeClass, MappedTypeClass>> {
 
 struct struct_member_printer {
   template <typename Member, std::size_t Index, typename T>
-  void operator ()(fatal::indexed<Member, Index>, T const &what) const {
+  void operator()(fatal::indexed<Member, Index>, T const& what) const {
     if (Index) {
       std::cout << ',';
     }
@@ -119,7 +117,7 @@ struct struct_member_printer {
     auto const name = fatal::z_data<typename Member::name>();
     std::cout << '"' << name << "\":";
 
-    auto const &value = Member::getter::ref(what);
+    auto const& value = Member::getter::ref(what);
     printer<typename Member::type_class>::print(value);
   }
 };
@@ -127,23 +125,21 @@ struct struct_member_printer {
 template <>
 struct printer<apache::thrift::type_class::structure> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '{';
     fatal::foreach<typename apache::thrift::reflect_struct<T>::members>(
-      struct_member_printer(),
-      what
-    );
+        struct_member_printer(), what);
     std::cout << '}';
   }
 };
 
 struct variant_member_printer {
   template <typename Member, std::size_t Index, typename T>
-  void operator ()(fatal::indexed<Member, Index>, T const &what) const {
+  void operator()(fatal::indexed<Member, Index>, T const& what) const {
     auto const name = fatal::enum_to_string(what.getType());
     std::cout << '"' << name << "\":";
 
-    auto const &value = Member::get(what);
+    auto const& value = Member::get(what);
 
     printer<typename Member::metadata::type_class>::print(value);
   }
@@ -152,17 +148,16 @@ struct variant_member_printer {
 template <>
 struct printer<apache::thrift::type_class::variant> {
   template <typename T>
-  static void print(T const &what) {
+  static void print(T const& what) {
     std::cout << '{';
     fatal::scalar_search<
-      typename fatal::variant_traits<T>::descriptors,
-      fatal::get_type::id
-    >(what.getType(), variant_member_printer(), what);
+        typename fatal::variant_traits<T>::descriptors,
+        fatal::get_type::id>(what.getType(), variant_member_printer(), what);
     std::cout << '}';
   }
 };
 
 template <typename T>
-void print(T const &what) {
+void print(T const& what) {
   printer<apache::thrift::reflect_type_class<T>>::print(what);
 }

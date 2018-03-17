@@ -17,7 +17,7 @@
 #define THRIFT_FATAL_REFLECTION_INL_PRE_H_ 1
 
 #if !defined THRIFT_FATAL_REFLECTION_H_
-# error "This file must be included from reflection.h"
+#error "This file must be included from reflection.h"
 #endif
 
 namespace apache {
@@ -28,9 +28,8 @@ template <typename, typename, bool IsTry, typename Default = void>
 struct reflect_module_tag_selector {
   using type = Default;
   static_assert(
-    IsTry,
-    "given type has no reflection metadata or is not a struct, enum or union"
-  );
+      IsTry,
+      "given type has no reflection metadata or is not a struct, enum or union");
 };
 
 template <typename>
@@ -72,24 +71,17 @@ struct variant_member_field_id {
 } // namespace reflection_impl
 } // namespace detail
 
-#define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
-  FATAL_REGISTER_TYPE( \
-    ::apache::thrift::detail::reflection_metadata_tag, \
-    Tag, \
-    ::apache::thrift::reflected_module< \
-      __VA_ARGS__ \
-    > \
-  )
+#define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...)    \
+  FATAL_REGISTER_TYPE(                                   \
+      ::apache::thrift::detail::reflection_metadata_tag, \
+      Tag,                                               \
+      ::apache::thrift::reflected_module<__VA_ARGS__>)
 
-#define THRIFT_REGISTER_STRUCT_TRAITS(Struct, ...) \
-  FATAL_REGISTER_TYPE( \
-    ::apache::thrift::detail::struct_traits_metadata_tag, \
-    Struct, \
-    ::apache::thrift::reflected_struct< \
-      Struct, \
-      __VA_ARGS__ \
-    > \
-  )
+#define THRIFT_REGISTER_STRUCT_TRAITS(Struct, ...)          \
+  FATAL_REGISTER_TYPE(                                      \
+      ::apache::thrift::detail::struct_traits_metadata_tag, \
+      Struct,                                               \
+      ::apache::thrift::reflected_struct<Struct, __VA_ARGS__>)
 
 template <typename = void>
 struct reflected_annotations;

@@ -25,13 +25,17 @@ struct merge {
   using impl = merge_impl<reflect_type_class<T>>;
   static constexpr auto is_complete = fatal::is_complete<impl>::value;
   static_assert(is_complete, "merge_into: incomplete type");
-  static constexpr auto is_known = !std::is_same<
-      reflect_type_class<T>, type_class::unknown>::value;
+  static constexpr auto is_known =
+      !std::is_same<reflect_type_class<T>, type_class::unknown>::value;
   static_assert(is_known, "merge_into: missing reflection metadata");
 
   //  regular
-  static void go(const T& src, T& dst) { impl::template go<T>(src, dst); }
-  static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
+  static void go(const T& src, T& dst) {
+    impl::template go<T>(src, dst);
+  }
+  static void go(T&& src, T& dst) {
+    impl::template go<T>(std::move(src), dst);
+  }
 
   static void go(const std::unique_ptr<T>& src, std::unique_ptr<T>& dst) {
     dst = !src ? nullptr : std::make_unique<T>(*src);
@@ -48,11 +52,13 @@ struct merge {
   }
 
   static void go(
-      const std::shared_ptr<const T>& src, std::shared_ptr<const T>& dst) {
+      const std::shared_ptr<const T>& src,
+      std::shared_ptr<const T>& dst) {
     dst = src;
   }
   static void go(
-      std::shared_ptr<const T>&& src, std::shared_ptr<const T>& dst) {
+      std::shared_ptr<const T>&& src,
+      std::shared_ptr<const T>& dst) {
     dst = std::move(src);
   }
 };
@@ -72,7 +78,9 @@ struct merge_impl {
 template <>
 struct merge_impl<type_class::structure> {
   template <typename T>
-  struct deref { using type = T; };
+  struct deref {
+    using type = T;
+  };
   template <typename T, typename D>
   struct deref<std::unique_ptr<T, D>> : deref<T> {};
   template <typename T>
@@ -85,10 +93,8 @@ struct merge_impl<type_class::structure> {
     template <typename T>
     using Src = fatal::conditional<Move, T, const T>;
     template <typename MemberInfo, std::size_t Index, typename T>
-    void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        Src<T>& src,
-        T& dst) const {
+    void operator()(fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst)
+        const {
       using mgetter = typename MemberInfo::getter;
       using mtype = typename std::decay<decltype(mgetter::ref(src))>::type;
       using merge_field = merge<typename deref<mtype>::type>;
@@ -117,15 +123,15 @@ template <typename ValueTypeClass>
 struct merge_impl<type_class::list<ValueTypeClass>> {
   template <typename T>
   static void go(const T& src_, T& dst_) {
-    thrift_list_traits_adapter<const T> src { src_ };
-    thrift_list_traits_adapter<T> dst { dst_ };
+    thrift_list_traits_adapter<const T> src{src_};
+    thrift_list_traits_adapter<T> dst{dst_};
     dst.reserve(dst.size() + src.size());
     std::copy(src.cbegin(), src.cend(), std::back_inserter(dst));
   }
   template <typename T>
   static void go(T&& src_, T& dst_) {
-    thrift_list_traits_adapter<T> src { src_ };
-    thrift_list_traits_adapter<T> dst { dst_ };
+    thrift_list_traits_adapter<T> src{src_};
+    thrift_list_traits_adapter<T> dst{dst_};
     dst.reserve(dst.size() + src.size());
     std::move(src.begin(), src.end(), std::back_inserter(dst));
   }
@@ -135,14 +141,14 @@ template <typename ValueTypeClass>
 struct merge_impl<type_class::set<ValueTypeClass>> {
   template <typename T>
   static void go(const T& src_, T& dst_) {
-    thrift_set_traits_adapter<const T> src { src_ };
-    thrift_set_traits_adapter<T> dst { dst_ };
+    thrift_set_traits_adapter<const T> src{src_};
+    thrift_set_traits_adapter<T> dst{dst_};
     std::copy(src.cbegin(), src.cend(), std::inserter(dst, dst.end()));
   }
   template <typename T>
   static void go(T&& src_, T& dst_) {
-    thrift_set_traits_adapter<T> src { src_ };
-    thrift_set_traits_adapter<T> dst { dst_ };
+    thrift_set_traits_adapter<T> src{src_};
+    thrift_set_traits_adapter<T> dst{dst_};
     std::move(src.begin(), src.end(), std::inserter(dst, dst.end()));
   }
 };
@@ -152,8 +158,8 @@ struct merge_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
   static void go(const T& src_, T& dst_) {
     using M = typename thrift_map_traits<T>::mapped_type;
-    thrift_map_traits_adapter<const T> src { src_ };
-    thrift_map_traits_adapter<T> dst { dst_ };
+    thrift_map_traits_adapter<const T> src{src_};
+    thrift_map_traits_adapter<T> dst{dst_};
     for (const auto& kv : src) {
       merge<M>::go(kv.second, dst[kv.first]);
     }
@@ -161,8 +167,8 @@ struct merge_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
   static void go(T&& src_, T& dst_) {
     using M = typename thrift_map_traits<T>::mapped_type;
-    thrift_map_traits_adapter<T> src { src_ };
-    thrift_map_traits_adapter<T> dst { dst_ };
+    thrift_map_traits_adapter<T> src{src_};
+    thrift_map_traits_adapter<T> dst{dst_};
     for (auto& kv : src) {
       merge<M>::go(std::move(kv.second), dst[kv.first]);
     }

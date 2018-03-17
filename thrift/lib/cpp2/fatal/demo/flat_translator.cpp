@@ -39,72 +39,61 @@ struct get_property {
 
 struct legacy_to_flat_translator {
   template <typename Member>
-  void operator ()(
-    fatal::tag<Member>,
-    std::string const &from,
-    flat_config &to
-  ) const {
-    auto &value = Member::getter::ref(to);
+  void operator()(fatal::tag<Member>, std::string const& from, flat_config& to)
+      const {
+    auto& value = Member::getter::ref(to);
     value = folly::to<typename Member::type>(from);
   }
 };
 
-void translate(legacy_config const &from, flat_config &to) {
-  for (auto const &i: from) {
+void translate(legacy_config const& from, flat_config& to) {
+  for (auto const& i : from) {
     fatal::trie_find<reflect_struct<flat_config>::members, get_property>(
-      i.first.begin(),
-      i.first.end(),
-      legacy_to_flat_translator(),
-      i.second,
-      to
-    );
+        i.first.begin(),
+        i.first.end(),
+        legacy_to_flat_translator(),
+        i.second,
+        to);
   }
 }
 
 struct flat_to_legacy_translator {
   template <typename Member, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    flat_config const &from,
-    legacy_config &to
-  ) {
+  void operator()(
+      fatal::indexed<Member, Index>,
+      flat_config const& from,
+      legacy_config& to) {
     using property = typename Member::annotations::values::property;
     auto const key = fatal::z_data<property>();
-    auto const &value = Member::getter::ref(from);
+    auto const& value = Member::getter::ref(from);
     to[key] = folly::to<std::string>(value);
   }
 };
 
-void translate(flat_config const &from, legacy_config &to) {
+void translate(flat_config const& from, legacy_config& to) {
   using members = reflect_struct<flat_config>::members;
 
-  fatal::foreach<members>(
-    flat_to_legacy_translator(),
-    from,
-    to
-  );
+  fatal::foreach<members>(flat_to_legacy_translator(), from, to);
 }
 
 template <typename To, typename From>
-void test(From const &from) {
+void test(From const& from) {
   To to;
   translate(from, to);
   print(from);
   print(to);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   std::cerr << "legacy -> flat: ";
   test<static_reflection::demo::flat_config>(
-    static_reflection::demo::legacy_config_constants::example()
-  );
+      static_reflection::demo::legacy_config_constants::example());
 
   std::cerr << "flat -> legacy: ";
   test<static_reflection::demo::legacy_config>(
-    static_reflection::demo::flat_config_constants::example()
-  );
+      static_reflection::demo::flat_config_constants::example());
 
   return 0;
 }

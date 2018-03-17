@@ -21,7 +21,7 @@ namespace thrift {
 namespace detail {
 
 template <typename T, typename Callback>
-bool debug_equals(std::string &, T const &, T const &, Callback &&);
+bool debug_equals(std::string&, T const&, T const&, Callback&&);
 
 } // namespace detail
 } // namespace thrift

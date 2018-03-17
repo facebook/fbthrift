@@ -25,10 +25,7 @@ using namespace static_reflection::demo;
 
 struct print_annotations {
   template <typename Annotation, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Annotation, Index>,
-    char const *prefix
-  ) const {
+  void operator()(fatal::indexed<Annotation, Index>, char const* prefix) const {
     std::cout << prefix << fatal::z_data<typename Annotation::key>() << ": '"
               << fatal::z_data<typename Annotation::value>() << '\n';
   }
@@ -45,11 +42,10 @@ void print_enum_annotations() {
 
 struct print_struct_member_annotations {
   template <typename Member, std::size_t Index>
-  void operator ()(fatal::indexed<Member, Index>) const {
+  void operator()(fatal::indexed<Member, Index>) const {
     std::cout << "  * " << fatal::z_data<typename Member::name>() << '\n';
     fatal::foreach<typename Member::annotations::map>(
-      print_annotations(), "    - "
-    );
+        print_annotations(), "    - ");
   }
 };
 

@@ -27,8 +27,7 @@ namespace flatten_getters_impl {
 struct f {
   template <typename T>
   using apply = fatal::negate<
-    std::is_same<type_class::structure, typename T::type_class>
-  >;
+      std::is_same<type_class::structure, typename T::type_class>>;
 };
 
 template <typename, typename, typename>

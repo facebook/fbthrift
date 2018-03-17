@@ -30,25 +30,23 @@ namespace thrift {
 namespace detail {
 
 struct expect_same {
-  expect_same(char const *filename, std::size_t line):
-    filename_(filename),
-    line_(line)
-  {}
+  expect_same(char const* filename, std::size_t line)
+      : filename_(filename), line_(line) {}
 
   template <typename LHS, typename RHS>
   void check() const {
-    using type = std::tuple<
-      std::string, char const *, std::size_t, char const *, bool
-    >;
+    using type =
+        std::tuple<std::string, char const*, std::size_t, char const*, bool>;
     auto const lhs_name = folly::demangle(typeid(LHS));
     auto const rhs_name = folly::demangle(typeid(RHS));
     auto const line_caption = "line: ";
     type const lhs(filename_, line_caption, line_, lhs_name.c_str(), true);
     type const rhs(
-      filename_, line_caption, line_,
-      lhs_name == rhs_name ? lhs_name.c_str() : rhs_name.c_str(),
-      std::is_same<LHS, RHS>::value
-    );
+        filename_,
+        line_caption,
+        line_,
+        lhs_name == rhs_name ? lhs_name.c_str() : rhs_name.c_str(),
+        std::is_same<LHS, RHS>::value);
     EXPECT_EQ(lhs, rhs);
   }
 

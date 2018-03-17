@@ -32,10 +32,9 @@ namespace apache {
 namespace thrift {
 namespace detail {
 template <typename T, typename V>
-using variant_helper = typename reflect_variant<
-  typename std::decay<V>::type
->::traits;
-} // detail
+using variant_helper =
+    typename reflect_variant<typename std::decay<V>::type>::traits;
+} // namespace detail
 
 /**
  * READ ME FIRST: this header enhances Thrift unions with variant-style
@@ -88,10 +87,9 @@ using variant_helper = typename reflect_variant<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_get(V &&variant) -> decltype(
-  detail::variant_helper<T, V>::by_type
-    ::template get<T>(std::forward<V>(variant))
-) {
+auto variant_get(V&& variant)
+    -> decltype(detail::variant_helper<T, V>::by_type ::template get<T>(
+        std::forward<V>(variant))) {
   using traits = detail::variant_helper<T, V>;
   assert(traits::get_id(variant) == traits::by_type::template id<T>::value);
   return traits::by_type::template get<T>(std::forward<V>(variant));
@@ -128,17 +126,15 @@ auto variant_get(V &&variant) -> decltype(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_checked_get(V &&variant) -> decltype(
-  detail::variant_helper<T, V>::by_type
-    ::template get<T>(std::forward<V>(variant))
-) {
+auto variant_checked_get(V&& variant)
+    -> decltype(detail::variant_helper<T, V>::by_type ::template get<T>(
+        std::forward<V>(variant))) {
   using traits = detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
     throw std::invalid_argument(
-      "type requested to variant_checked_get() is not the one stored in the"
-      " variant"
-    );
+        "type requested to variant_checked_get() is not the one stored in the"
+        " variant");
   }
 
   return traits::by_type::template get<T>(std::forward<V>(variant));
@@ -175,11 +171,8 @@ auto variant_checked_get(V &&variant) -> decltype(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_try_get(V &variant) -> decltype(
-  std::addressof(
-    detail::variant_helper<T, V>::by_type::template get<T>(variant)
-  )
-) {
+auto variant_try_get(V& variant) -> decltype(std::addressof(
+    detail::variant_helper<T, V>::by_type::template get<T>(variant))) {
   using traits = detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
@@ -215,7 +208,7 @@ auto variant_try_get(V &variant) -> decltype(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename V, typename T>
-typename std::decay<T>::type &variant_set(V &variant, T &&value) {
+typename std::decay<T>::type& variant_set(V& variant, T&& value) {
   using type = typename std::decay<T>::type;
   using by_type = typename detail::variant_helper<type, V>::by_type;
 
@@ -250,7 +243,7 @@ typename std::decay<T>::type &variant_set(V &variant, T &&value) {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V, typename... Args>
-T &variant_emplace(V &variant, Args &&...args) {
+T& variant_emplace(V& variant, Args&&... args) {
   using by_type = typename detail::variant_helper<T, V>::by_type;
 
   by_type::template set<T>(variant, std::forward<Args>(args)...);

@@ -31,7 +31,7 @@ using namespace static_reflection::demo;
 
 struct print_enum_field {
   template <typename Field, std::size_t Index>
-  void operator ()(fatal::indexed<Field, Index>) const {
+  void operator()(fatal::indexed<Field, Index>) const {
     std::cout << "  " << fatal::z_data<typename Field::name>() << " = "
               << fatal::to_integral(Field::value::value) << '\n';
   }
@@ -54,12 +54,10 @@ void print_enum_info(Enum e) {
   std::cout << "enum value as integer: " << integral << '\n';
 
   static_assert(
-    std::is_same<
-      typename std::underlying_type<Enum>::type,
-      decltype(integral)
-    >::value,
-    "fatal::to_integral() should return the enum's underlying type"
-  );
+      std::is_same<
+          typename std::underlying_type<Enum>::type,
+          decltype(integral)>::value,
+      "fatal::to_integral() should return the enum's underlying type");
 
   std::cout << '\n';
 
@@ -88,12 +86,12 @@ void string_to_enum(folly::StringPiece name) {
     auto value = traits::parse(name);
     std::cout << "parse: successfully parsed " << name << ", int value"
               << fatal::to_integral(value) << '\n';
-  } catch (std::exception const &e) {
+  } catch (std::exception const& e) {
     std::cout << "parse: " << e.what() << '\n';
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
   print_enum_info(some_enum::field2);
