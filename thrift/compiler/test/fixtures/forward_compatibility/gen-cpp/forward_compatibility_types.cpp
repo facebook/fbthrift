@@ -120,8 +120,7 @@ uint32_t OldStructure::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("features", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_DOUBLE, this->features.size());
-    std::map<int16_t, double> ::const_iterator _iter12;
-    for (_iter12 = this->features.begin(); _iter12 != this->features.end(); ++_iter12)
+    for (auto _iter12 = this->features.cbegin(); _iter12 != this->features.cend(); ++_iter12)
     {
       xfer += oprot->writeI16(_iter12->first);
       xfer += oprot->writeDouble(_iter12->second);
@@ -260,8 +259,7 @@ uint32_t NewStructure::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("features", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_DOUBLE, this->features.size());
-    std::map<int16_t, double> ::const_iterator _iter25;
-    for (_iter25 = this->features.begin(); _iter25 != this->features.end(); ++_iter25)
+    for (auto _iter25 = this->features.cbegin(); _iter25 != this->features.cend(); ++_iter25)
     {
       xfer += oprot->writeI16(_iter25->first);
       xfer += oprot->writeDouble(_iter25->second);
@@ -400,8 +398,7 @@ uint32_t NewStructure2::write(apache::thrift::protocol::TProtocol* oprot) const 
   xfer += oprot->writeFieldBegin("features", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, this->features.size());
-    std::map<int16_t, float> ::const_iterator _iter38;
-    for (_iter38 = this->features.begin(); _iter38 != this->features.end(); ++_iter38)
+    for (auto _iter38 = this->features.cbegin(); _iter38 != this->features.cend(); ++_iter38)
     {
       xfer += oprot->writeI16(_iter38->first);
       xfer += oprot->writeFloat(_iter38->second);
@@ -781,13 +778,11 @@ uint32_t NewStructureNested::write(apache::thrift::protocol::TProtocol* oprot) c
   xfer += oprot->writeFieldBegin("lst", apache::thrift::protocol::T_LIST, 1);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_MAP, this->lst.size());
-    std::vector<FloatFeatures> ::const_iterator _iter134;
-    for (_iter134 = this->lst.begin(); _iter134 != this->lst.end(); ++_iter134)
+    for (auto _iter134 = this->lst.cbegin(); _iter134 != this->lst.cend(); ++_iter134)
     {
       {
         xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, (*_iter134).size());
-        std::map<int16_t, float> ::const_iterator _iter135;
-        for (_iter135 = (*_iter134).begin(); _iter135 != (*_iter134).end(); ++_iter135)
+        for (auto _iter135 = (*_iter134).cbegin(); _iter135 != (*_iter134).cend(); ++_iter135)
         {
           xfer += oprot->writeI16(_iter135->first);
           xfer += oprot->writeFloat(_iter135->second);
@@ -801,14 +796,12 @@ uint32_t NewStructureNested::write(apache::thrift::protocol::TProtocol* oprot) c
   xfer += oprot->writeFieldBegin("mp", apache::thrift::protocol::T_MAP, 2);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_MAP, this->mp.size());
-    std::map<int16_t, FloatFeatures> ::const_iterator _iter136;
-    for (_iter136 = this->mp.begin(); _iter136 != this->mp.end(); ++_iter136)
+    for (auto _iter136 = this->mp.cbegin(); _iter136 != this->mp.cend(); ++_iter136)
     {
       xfer += oprot->writeI16(_iter136->first);
       {
         xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, _iter136->second.size());
-        std::map<int16_t, float> ::const_iterator _iter137;
-        for (_iter137 = _iter136->second.begin(); _iter137 != _iter136->second.end(); ++_iter137)
+        for (auto _iter137 = _iter136->second.cbegin(); _iter137 != _iter136->second.cend(); ++_iter137)
         {
           xfer += oprot->writeI16(_iter137->first);
           xfer += oprot->writeFloat(_iter137->second);
@@ -822,13 +815,11 @@ uint32_t NewStructureNested::write(apache::thrift::protocol::TProtocol* oprot) c
   xfer += oprot->writeFieldBegin("s", apache::thrift::protocol::T_SET, 3);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_MAP, this->s.size());
-    std::set<FloatFeatures> ::const_iterator _iter138;
-    for (_iter138 = this->s.begin(); _iter138 != this->s.end(); ++_iter138)
+    for (auto _iter138 = this->s.cbegin(); _iter138 != this->s.cend(); ++_iter138)
     {
       {
         xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_FLOAT, (*_iter138).size());
-        std::map<int16_t, float> ::const_iterator _iter139;
-        for (_iter139 = (*_iter138).begin(); _iter139 != (*_iter138).end(); ++_iter139)
+        for (auto _iter139 = (*_iter138).cbegin(); _iter139 != (*_iter138).cend(); ++_iter139)
         {
           xfer += oprot->writeI16(_iter139->first);
           xfer += oprot->writeFloat(_iter139->second);

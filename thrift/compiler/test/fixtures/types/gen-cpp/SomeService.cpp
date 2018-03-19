@@ -105,8 +105,7 @@ uint32_t SomeService_bounce_map_args::write(apache::thrift::protocol::TProtocol*
   xfer += oprot->writeFieldBegin("m", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->m.size());
-    std::unordered_map<int32_t, std::string> ::const_iterator _iter100;
-    for (_iter100 = this->m.begin(); _iter100 != this->m.end(); ++_iter100)
+    for (auto _iter100 = this->m.cbegin(); _iter100 != this->m.cend(); ++_iter100)
     {
       xfer += oprot->writeI32(_iter100->first);
       xfer += oprot->writeString(_iter100->second);
@@ -141,8 +140,7 @@ uint32_t SomeService_bounce_map_pargs::write(apache::thrift::protocol::TProtocol
   xfer += oprot->writeFieldBegin("m", apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, (*(this->m)).size());
-    std::unordered_map<int32_t, std::string> ::const_iterator _iter101;
-    for (_iter101 = (*(this->m)).begin(); _iter101 != (*(this->m)).end(); ++_iter101)
+    for (auto _iter101 = (*(this->m)).cbegin(); _iter101 != (*(this->m)).cend(); ++_iter101)
     {
       xfer += oprot->writeI32(_iter101->first);
       xfer += oprot->writeString(_iter101->second);
@@ -253,8 +251,7 @@ uint32_t SomeService_bounce_map_presult::write(apache::thrift::protocol::TProtoc
     xfer += oprot->writeFieldBegin("success", apache::thrift::protocol::T_MAP, 0);
     {
       xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, (*(this->success)).size());
-      std::unordered_map<int32_t, std::string> ::const_iterator _iter113;
-      for (_iter113 = (*(this->success)).begin(); _iter113 != (*(this->success)).end(); ++_iter113)
+      for (auto _iter113 = (*(this->success)).cbegin(); _iter113 != (*(this->success)).cend(); ++_iter113)
       {
         xfer += oprot->writeI32(_iter113->first);
         xfer += oprot->writeString(_iter113->second);

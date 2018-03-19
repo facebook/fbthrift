@@ -563,8 +563,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldB", apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldB.size());
-    std::list<int32_t> ::const_iterator _iter77;
-    for (_iter77 = this->fieldB.begin(); _iter77 != this->fieldB.end(); ++_iter77)
+    for (auto _iter77 = this->fieldB.cbegin(); _iter77 != this->fieldB.cend(); ++_iter77)
     {
       xfer += oprot->writeI32((*_iter77));
     }
@@ -574,8 +573,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldC", apache::thrift::protocol::T_LIST, 3);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldC.size());
-    std::deque<int32_t> ::const_iterator _iter78;
-    for (_iter78 = this->fieldC.begin(); _iter78 != this->fieldC.end(); ++_iter78)
+    for (auto _iter78 = this->fieldC.cbegin(); _iter78 != this->fieldC.cend(); ++_iter78)
     {
       xfer += oprot->writeI32((*_iter78));
     }
@@ -585,8 +583,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldD", apache::thrift::protocol::T_LIST, 4);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldD.size());
-    folly::fbvector<int32_t> ::const_iterator _iter79;
-    for (_iter79 = this->fieldD.begin(); _iter79 != this->fieldD.end(); ++_iter79)
+    for (auto _iter79 = this->fieldD.cbegin(); _iter79 != this->fieldD.cend(); ++_iter79)
     {
       xfer += oprot->writeI32((*_iter79));
     }
@@ -596,8 +593,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldE", apache::thrift::protocol::T_LIST, 5);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldE.size());
-    folly::small_vector<int32_t> ::const_iterator _iter80;
-    for (_iter80 = this->fieldE.begin(); _iter80 != this->fieldE.end(); ++_iter80)
+    for (auto _iter80 = this->fieldE.cbegin(); _iter80 != this->fieldE.cend(); ++_iter80)
     {
       xfer += oprot->writeI32((*_iter80));
     }
@@ -607,8 +603,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldF", apache::thrift::protocol::T_SET, 6);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->fieldF.size());
-    folly::sorted_vector_set<int32_t> ::const_iterator _iter81;
-    for (_iter81 = this->fieldF.begin(); _iter81 != this->fieldF.end(); ++_iter81)
+    for (auto _iter81 = this->fieldF.cbegin(); _iter81 != this->fieldF.cend(); ++_iter81)
     {
       xfer += oprot->writeI32((*_iter81));
     }
@@ -618,8 +613,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldG", apache::thrift::protocol::T_MAP, 7);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldG.size());
-    folly::sorted_vector_map<int32_t, std::string> ::const_iterator _iter82;
-    for (_iter82 = this->fieldG.begin(); _iter82 != this->fieldG.end(); ++_iter82)
+    for (auto _iter82 = this->fieldG.cbegin(); _iter82 != this->fieldG.cend(); ++_iter82)
     {
       xfer += oprot->writeI32(_iter82->first);
       xfer += oprot->writeString(_iter82->second);
@@ -630,8 +624,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldH", apache::thrift::protocol::T_MAP, 8);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldH.size());
-    std::unordered_map<int32_t, std::string> ::const_iterator _iter83;
-    for (_iter83 = this->fieldH.begin(); _iter83 != this->fieldH.end(); ++_iter83)
+    for (auto _iter83 = this->fieldH.cbegin(); _iter83 != this->fieldH.cend(); ++_iter83)
     {
       xfer += oprot->writeI32(_iter83->first);
       xfer += oprot->writeString(_iter83->second);
@@ -642,8 +635,7 @@ uint32_t ContainerStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
   xfer += oprot->writeFieldBegin("fieldA", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
-    std::vector<int32_t> ::const_iterator _iter84;
-    for (_iter84 = this->fieldA.begin(); _iter84 != this->fieldA.end(); ++_iter84)
+    for (auto _iter84 = this->fieldA.cbegin(); _iter84 != this->fieldA.cend(); ++_iter84)
     {
       xfer += oprot->writeI32((*_iter84));
     }

@@ -767,8 +767,7 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("friends", apache::thrift::protocol::T_SET, 6);
     {
       xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I64, this->friends.size());
-      std::set<PersonID> ::const_iterator _iter34;
-      for (_iter34 = this->friends.begin(); _iter34 != this->friends.end(); ++_iter34)
+      for (auto _iter34 = this->friends.cbegin(); _iter34 != this->friends.cend(); ++_iter34)
       {
         xfer += oprot->writeI64((*_iter34));
       }
@@ -785,8 +784,7 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("petNames", apache::thrift::protocol::T_MAP, 8);
     {
       xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->petNames.size());
-      std::map<Animal, std::string> ::const_iterator _iter35;
-      for (_iter35 = this->petNames.begin(); _iter35 != this->petNames.end(); ++_iter35)
+      for (auto _iter35 = this->petNames.cbegin(); _iter35 != this->petNames.cend(); ++_iter35)
       {
         xfer += oprot->writeI32((int32_t)_iter35->first);
         xfer += oprot->writeString(_iter35->second);
@@ -804,8 +802,7 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("vehicles", apache::thrift::protocol::T_LIST, 10);
     {
       xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->vehicles.size());
-      std::vector<Vehicle> ::const_iterator _iter36;
-      for (_iter36 = this->vehicles.begin(); _iter36 != this->vehicles.end(); ++_iter36)
+      for (auto _iter36 = this->vehicles.cbegin(); _iter36 != this->vehicles.cend(); ++_iter36)
       {
         xfer += (*_iter36).write(oprot);
       }

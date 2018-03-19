@@ -759,8 +759,7 @@ uint32_t struct2::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("d", apache::thrift::protocol::T_LIST, 4);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->d.size());
-    std::vector<int32_t> ::const_iterator _iter15;
-    for (_iter15 = this->d.begin(); _iter15 != this->d.end(); ++_iter15)
+    for (auto _iter15 = this->d.cbegin(); _iter15 != this->d.cend(); ++_iter15)
     {
       xfer += oprot->writeI32((*_iter15));
     }

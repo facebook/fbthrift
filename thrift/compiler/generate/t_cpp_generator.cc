@@ -6225,10 +6225,8 @@ void t_cpp_generator::generate_serialize_container(ofstream& out,
 
   string iter = tmp("_iter");
   out <<
-    indent() << type_name(ttype) << "::const_iterator " << iter << ";" <<
-      endl <<
-    indent() << "for (" << iter << " = " << prefix  << ".begin(); " << iter <<
-      " != " << prefix << ".end(); ++" << iter << ")" << endl;
+    indent() << "for (auto " << iter << " = " << prefix  << ".cbegin(); " <<
+    iter << " != " << prefix << ".cend(); ++" << iter << ")" << endl;
   scope_up(out);
     if (ttype->is_map()) {
       generate_serialize_map_element(out, (t_map*)ttype, iter);

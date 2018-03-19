@@ -771,8 +771,7 @@ uint32_t RecursiveStruct::write(apache::thrift::protocol::TProtocol* oprot) cons
     xfer += oprot->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
     {
       xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
-      std::vector<RecursiveStruct> ::const_iterator _iter18;
-      for (_iter18 = this->mes.begin(); _iter18 != this->mes.end(); ++_iter18)
+      for (auto _iter18 = this->mes.cbegin(); _iter18 != this->mes.cend(); ++_iter18)
       {
         xfer += (*_iter18).write(oprot);
       }
@@ -1145,8 +1144,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->list_ref) {
         const auto& _rtype80 = *this->list_ref;
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype80.size());
-        std::vector<int32_t> ::const_iterator _iter81;
-        for (_iter81 = _rtype80.begin(); _iter81 != _rtype80.end(); ++_iter81)
+        for (auto _iter81 = _rtype80.cbegin(); _iter81 != _rtype80.cend(); ++_iter81)
         {
           xfer += oprot->writeI32((*_iter81));
         }
@@ -1164,8 +1162,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->set_ref) {
         const auto& _rtype82 = *this->set_ref;
         xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype82.size());
-        std::set<int32_t> ::const_iterator _iter83;
-        for (_iter83 = _rtype82.begin(); _iter83 != _rtype82.end(); ++_iter83)
+        for (auto _iter83 = _rtype82.cbegin(); _iter83 != _rtype82.cend(); ++_iter83)
         {
           xfer += oprot->writeI32((*_iter83));
         }
@@ -1183,8 +1180,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->map_ref) {
         const auto& _rtype84 = *this->map_ref;
         xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype84.size());
-        std::map<int32_t, int32_t> ::const_iterator _iter85;
-        for (_iter85 = _rtype84.begin(); _iter85 != _rtype84.end(); ++_iter85)
+        for (auto _iter85 = _rtype84.cbegin(); _iter85 != _rtype84.cend(); ++_iter85)
         {
           xfer += oprot->writeI32(_iter85->first);
           xfer += oprot->writeI32(_iter85->second);
@@ -1203,8 +1199,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->list_ref_unique) {
         const auto& _rtype86 = *this->list_ref_unique;
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype86.size());
-        std::vector<int32_t> ::const_iterator _iter87;
-        for (_iter87 = _rtype86.begin(); _iter87 != _rtype86.end(); ++_iter87)
+        for (auto _iter87 = _rtype86.cbegin(); _iter87 != _rtype86.cend(); ++_iter87)
         {
           xfer += oprot->writeI32((*_iter87));
         }
@@ -1222,8 +1217,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->set_ref_shared) {
         const auto& _rtype88 = *this->set_ref_shared;
         xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype88.size());
-        std::set<int32_t> ::const_iterator _iter89;
-        for (_iter89 = _rtype88.begin(); _iter89 != _rtype88.end(); ++_iter89)
+        for (auto _iter89 = _rtype88.cbegin(); _iter89 != _rtype88.cend(); ++_iter89)
         {
           xfer += oprot->writeI32((*_iter89));
         }
@@ -1241,8 +1235,7 @@ uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot)
       if (this->list_ref_shared_const) {
         const auto& _rtype90 = *this->list_ref_shared_const;
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype90.size());
-        std::vector<int32_t> ::const_iterator _iter91;
-        for (_iter91 = _rtype90.begin(); _iter91 != _rtype90.end(); ++_iter91)
+        for (auto _iter91 = _rtype90.cbegin(); _iter91 != _rtype90.cend(); ++_iter91)
         {
           xfer += oprot->writeI32((*_iter91));
         }

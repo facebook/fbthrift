@@ -2588,8 +2588,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j", apache::thrift::protocol::T_LIST, 10);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j.size());
-    std::vector<int32_t> ::const_iterator _iter381;
-    for (_iter381 = this->j.begin(); _iter381 != this->j.end(); ++_iter381)
+    for (auto _iter381 = this->j.cbegin(); _iter381 != this->j.cend(); ++_iter381)
     {
       xfer += oprot->writeI32((*_iter381));
     }
@@ -2599,8 +2598,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j1", apache::thrift::protocol::T_LIST, 11);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j1.size());
-    std::vector<int32_t> ::const_iterator _iter382;
-    for (_iter382 = this->j1.begin(); _iter382 != this->j1.end(); ++_iter382)
+    for (auto _iter382 = this->j1.cbegin(); _iter382 != this->j1.cend(); ++_iter382)
     {
       xfer += oprot->writeI32((*_iter382));
     }
@@ -2610,8 +2608,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j2", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j2.size());
-    std::vector<enum1> ::const_iterator _iter383;
-    for (_iter383 = this->j2.begin(); _iter383 != this->j2.end(); ++_iter383)
+    for (auto _iter383 = this->j2.cbegin(); _iter383 != this->j2.cend(); ++_iter383)
     {
       xfer += oprot->writeI32((int32_t)(*_iter383));
     }
@@ -2621,8 +2618,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j3", apache::thrift::protocol::T_LIST, 13);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->j3.size());
-    std::vector<structA> ::const_iterator _iter384;
-    for (_iter384 = this->j3.begin(); _iter384 != this->j3.end(); ++_iter384)
+    for (auto _iter384 = this->j3.cbegin(); _iter384 != this->j3.cend(); ++_iter384)
     {
       xfer += (*_iter384).write(oprot);
     }
@@ -2632,8 +2628,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k", apache::thrift::protocol::T_SET, 14);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k.size());
-    std::set<int32_t> ::const_iterator _iter385;
-    for (_iter385 = this->k.begin(); _iter385 != this->k.end(); ++_iter385)
+    for (auto _iter385 = this->k.cbegin(); _iter385 != this->k.cend(); ++_iter385)
     {
       xfer += oprot->writeI32((*_iter385));
     }
@@ -2643,8 +2638,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k1", apache::thrift::protocol::T_SET, 15);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k1.size());
-    std::set<int32_t> ::const_iterator _iter386;
-    for (_iter386 = this->k1.begin(); _iter386 != this->k1.end(); ++_iter386)
+    for (auto _iter386 = this->k1.cbegin(); _iter386 != this->k1.cend(); ++_iter386)
     {
       xfer += oprot->writeI32((*_iter386));
     }
@@ -2654,8 +2648,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k2", apache::thrift::protocol::T_SET, 16);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k2.size());
-    std::set<enum2> ::const_iterator _iter387;
-    for (_iter387 = this->k2.begin(); _iter387 != this->k2.end(); ++_iter387)
+    for (auto _iter387 = this->k2.cbegin(); _iter387 != this->k2.cend(); ++_iter387)
     {
       xfer += oprot->writeI32((int32_t)(*_iter387));
     }
@@ -2665,8 +2658,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k3", apache::thrift::protocol::T_SET, 17);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRUCT, this->k3.size());
-    std::set<structB> ::const_iterator _iter388;
-    for (_iter388 = this->k3.begin(); _iter388 != this->k3.end(); ++_iter388)
+    for (auto _iter388 = this->k3.cbegin(); _iter388 != this->k3.cend(); ++_iter388)
     {
       xfer += (*_iter388).write(oprot);
     }
@@ -2676,8 +2668,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l", apache::thrift::protocol::T_MAP, 18);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l.size());
-    std::map<int32_t, int32_t> ::const_iterator _iter389;
-    for (_iter389 = this->l.begin(); _iter389 != this->l.end(); ++_iter389)
+    for (auto _iter389 = this->l.cbegin(); _iter389 != this->l.cend(); ++_iter389)
     {
       xfer += oprot->writeI32(_iter389->first);
       xfer += oprot->writeI32(_iter389->second);
@@ -2688,8 +2679,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l1", apache::thrift::protocol::T_MAP, 19);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l1.size());
-    std::map<int32_t, int32_t> ::const_iterator _iter390;
-    for (_iter390 = this->l1.begin(); _iter390 != this->l1.end(); ++_iter390)
+    for (auto _iter390 = this->l1.cbegin(); _iter390 != this->l1.cend(); ++_iter390)
     {
       xfer += oprot->writeI32(_iter390->first);
       xfer += oprot->writeI32(_iter390->second);
@@ -2700,8 +2690,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l2", apache::thrift::protocol::T_MAP, 20);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l2.size());
-    std::map<int32_t, enum1> ::const_iterator _iter391;
-    for (_iter391 = this->l2.begin(); _iter391 != this->l2.end(); ++_iter391)
+    for (auto _iter391 = this->l2.cbegin(); _iter391 != this->l2.cend(); ++_iter391)
     {
       xfer += oprot->writeI32(_iter391->first);
       xfer += oprot->writeI32((int32_t)_iter391->second);
@@ -2712,8 +2701,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l3", apache::thrift::protocol::T_MAP, 21);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRUCT, this->l3.size());
-    std::map<int32_t, structB> ::const_iterator _iter392;
-    for (_iter392 = this->l3.begin(); _iter392 != this->l3.end(); ++_iter392)
+    for (auto _iter392 = this->l3.cbegin(); _iter392 != this->l3.cend(); ++_iter392)
     {
       xfer += oprot->writeI32(_iter392->first);
       xfer += _iter392->second.write(oprot);
@@ -2724,8 +2712,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m1", apache::thrift::protocol::T_MAP, 22);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->m1.size());
-    std::map<enum1, int32_t> ::const_iterator _iter393;
-    for (_iter393 = this->m1.begin(); _iter393 != this->m1.end(); ++_iter393)
+    for (auto _iter393 = this->m1.cbegin(); _iter393 != this->m1.cend(); ++_iter393)
     {
       xfer += oprot->writeI32((int32_t)_iter393->first);
       xfer += oprot->writeI32(_iter393->second);
@@ -2736,8 +2723,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m2", apache::thrift::protocol::T_MAP, 23);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->m2.size());
-    std::map<enum1, enum2> ::const_iterator _iter394;
-    for (_iter394 = this->m2.begin(); _iter394 != this->m2.end(); ++_iter394)
+    for (auto _iter394 = this->m2.cbegin(); _iter394 != this->m2.cend(); ++_iter394)
     {
       xfer += oprot->writeI32((int32_t)_iter394->first);
       xfer += oprot->writeI32((int32_t)_iter394->second);
@@ -2748,8 +2734,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m3", apache::thrift::protocol::T_MAP, 24);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRUCT, this->m3.size());
-    std::map<enum1, structB> ::const_iterator _iter395;
-    for (_iter395 = this->m3.begin(); _iter395 != this->m3.end(); ++_iter395)
+    for (auto _iter395 = this->m3.cbegin(); _iter395 != this->m3.cend(); ++_iter395)
     {
       xfer += oprot->writeI32((int32_t)_iter395->first);
       xfer += _iter395->second.write(oprot);
@@ -2760,8 +2745,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n1", apache::thrift::protocol::T_MAP, 25);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_I32, this->n1.size());
-    std::map<std::string, int32_t> ::const_iterator _iter396;
-    for (_iter396 = this->n1.begin(); _iter396 != this->n1.end(); ++_iter396)
+    for (auto _iter396 = this->n1.cbegin(); _iter396 != this->n1.cend(); ++_iter396)
     {
       xfer += oprot->writeString(_iter396->first);
       xfer += oprot->writeI32(_iter396->second);
@@ -2772,8 +2756,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n2", apache::thrift::protocol::T_MAP, 26);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_I32, this->n2.size());
-    std::map<std::string, enum1> ::const_iterator _iter397;
-    for (_iter397 = this->n2.begin(); _iter397 != this->n2.end(); ++_iter397)
+    for (auto _iter397 = this->n2.cbegin(); _iter397 != this->n2.cend(); ++_iter397)
     {
       xfer += oprot->writeString(_iter397->first);
       xfer += oprot->writeI32((int32_t)_iter397->second);
@@ -2784,8 +2767,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n3", apache::thrift::protocol::T_MAP, 27);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->n3.size());
-    std::map<std::string, structB> ::const_iterator _iter398;
-    for (_iter398 = this->n3.begin(); _iter398 != this->n3.end(); ++_iter398)
+    for (auto _iter398 = this->n3.cbegin(); _iter398 != this->n3.cend(); ++_iter398)
     {
       xfer += oprot->writeString(_iter398->first);
       xfer += _iter398->second.write(oprot);
@@ -2796,8 +2778,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o1", apache::thrift::protocol::T_MAP, 28);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_I32, this->o1.size());
-    std::map<structA, int32_t> ::const_iterator _iter399;
-    for (_iter399 = this->o1.begin(); _iter399 != this->o1.end(); ++_iter399)
+    for (auto _iter399 = this->o1.cbegin(); _iter399 != this->o1.cend(); ++_iter399)
     {
       xfer += _iter399->first.write(oprot);
       xfer += oprot->writeI32(_iter399->second);
@@ -2808,8 +2789,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o2", apache::thrift::protocol::T_MAP, 29);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_I32, this->o2.size());
-    std::map<structA, enum1> ::const_iterator _iter400;
-    for (_iter400 = this->o2.begin(); _iter400 != this->o2.end(); ++_iter400)
+    for (auto _iter400 = this->o2.cbegin(); _iter400 != this->o2.cend(); ++_iter400)
     {
       xfer += _iter400->first.write(oprot);
       xfer += oprot->writeI32((int32_t)_iter400->second);
@@ -2820,8 +2800,7 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o3", apache::thrift::protocol::T_MAP, 30);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_STRUCT, this->o3.size());
-    std::map<structA, structB> ::const_iterator _iter401;
-    for (_iter401 = this->o3.begin(); _iter401 != this->o3.end(); ++_iter401)
+    for (auto _iter401 = this->o3.cbegin(); _iter401 != this->o3.cend(); ++_iter401)
     {
       xfer += _iter401->first.write(oprot);
       xfer += _iter401->second.write(oprot);
@@ -4411,8 +4390,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldI", apache::thrift::protocol::T_LIST, 9);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldI.size());
-    std::vector<int32_t> ::const_iterator _iter562;
-    for (_iter562 = this->fieldI.begin(); _iter562 != this->fieldI.end(); ++_iter562)
+    for (auto _iter562 = this->fieldI.cbegin(); _iter562 != this->fieldI.cend(); ++_iter562)
     {
       xfer += oprot->writeI32((*_iter562));
     }
@@ -4422,8 +4400,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldJ", apache::thrift::protocol::T_LIST, 10);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->fieldJ.size());
-    std::vector<std::string> ::const_iterator _iter563;
-    for (_iter563 = this->fieldJ.begin(); _iter563 != this->fieldJ.end(); ++_iter563)
+    for (auto _iter563 = this->fieldJ.cbegin(); _iter563 != this->fieldJ.cend(); ++_iter563)
     {
       xfer += oprot->writeString((*_iter563));
     }
@@ -4433,8 +4410,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldK", apache::thrift::protocol::T_LIST, 11);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->fieldK.size());
-    std::vector<std::string> ::const_iterator _iter564;
-    for (_iter564 = this->fieldK.begin(); _iter564 != this->fieldK.end(); ++_iter564)
+    for (auto _iter564 = this->fieldK.cbegin(); _iter564 != this->fieldK.cend(); ++_iter564)
     {
       xfer += oprot->writeString((*_iter564));
     }
@@ -4444,8 +4420,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldL", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->fieldL.size());
-    std::vector<structA> ::const_iterator _iter565;
-    for (_iter565 = this->fieldL.begin(); _iter565 != this->fieldL.end(); ++_iter565)
+    for (auto _iter565 = this->fieldL.cbegin(); _iter565 != this->fieldL.cend(); ++_iter565)
     {
       xfer += (*_iter565).write(oprot);
     }
@@ -4455,8 +4430,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldM", apache::thrift::protocol::T_SET, 13);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->fieldM.size());
-    std::set<int32_t> ::const_iterator _iter566;
-    for (_iter566 = this->fieldM.begin(); _iter566 != this->fieldM.end(); ++_iter566)
+    for (auto _iter566 = this->fieldM.cbegin(); _iter566 != this->fieldM.cend(); ++_iter566)
     {
       xfer += oprot->writeI32((*_iter566));
     }
@@ -4466,8 +4440,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldN", apache::thrift::protocol::T_SET, 14);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRING, this->fieldN.size());
-    std::set<std::string> ::const_iterator _iter567;
-    for (_iter567 = this->fieldN.begin(); _iter567 != this->fieldN.end(); ++_iter567)
+    for (auto _iter567 = this->fieldN.cbegin(); _iter567 != this->fieldN.cend(); ++_iter567)
     {
       xfer += oprot->writeString((*_iter567));
     }
@@ -4477,8 +4450,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldO", apache::thrift::protocol::T_SET, 15);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRING, this->fieldO.size());
-    std::set<std::string> ::const_iterator _iter568;
-    for (_iter568 = this->fieldO.begin(); _iter568 != this->fieldO.end(); ++_iter568)
+    for (auto _iter568 = this->fieldO.cbegin(); _iter568 != this->fieldO.cend(); ++_iter568)
     {
       xfer += oprot->writeString((*_iter568));
     }
@@ -4488,8 +4460,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldP", apache::thrift::protocol::T_SET, 16);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRUCT, this->fieldP.size());
-    std::set<structB> ::const_iterator _iter569;
-    for (_iter569 = this->fieldP.begin(); _iter569 != this->fieldP.end(); ++_iter569)
+    for (auto _iter569 = this->fieldP.cbegin(); _iter569 != this->fieldP.cend(); ++_iter569)
     {
       xfer += (*_iter569).write(oprot);
     }
@@ -4499,8 +4470,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldQ", apache::thrift::protocol::T_MAP, 17);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->fieldQ.size());
-    std::map<std::string, structA> ::const_iterator _iter570;
-    for (_iter570 = this->fieldQ.begin(); _iter570 != this->fieldQ.end(); ++_iter570)
+    for (auto _iter570 = this->fieldQ.cbegin(); _iter570 != this->fieldQ.cend(); ++_iter570)
     {
       xfer += oprot->writeString(_iter570->first);
       xfer += _iter570->second.write(oprot);
@@ -4511,8 +4481,7 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldR", apache::thrift::protocol::T_MAP, 18);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->fieldR.size());
-    std::map<std::string, structB> ::const_iterator _iter571;
-    for (_iter571 = this->fieldR.begin(); _iter571 != this->fieldR.end(); ++_iter571)
+    for (auto _iter571 = this->fieldR.cbegin(); _iter571 != this->fieldR.cend(); ++_iter571)
     {
       xfer += oprot->writeString(_iter571->first);
       xfer += _iter571->second.write(oprot);

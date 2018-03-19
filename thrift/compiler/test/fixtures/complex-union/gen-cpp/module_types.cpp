@@ -216,8 +216,7 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 2);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I64, this->value_.intListValue.size());
-        std::vector<int64_t> ::const_iterator _iter27;
-        for (_iter27 = this->value_.intListValue.begin(); _iter27 != this->value_.intListValue.end(); ++_iter27)
+        for (auto _iter27 = this->value_.intListValue.cbegin(); _iter27 != this->value_.intListValue.cend(); ++_iter27)
         {
           xfer += oprot->writeI64((*_iter27));
         }
@@ -230,8 +229,7 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 3);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->value_.stringListValue.size());
-        std::vector<std::string> ::const_iterator _iter28;
-        for (_iter28 = this->value_.stringListValue.begin(); _iter28 != this->value_.stringListValue.end(); ++_iter28)
+        for (auto _iter28 = this->value_.stringListValue.cbegin(); _iter28 != this->value_.stringListValue.cend(); ++_iter28)
         {
           xfer += oprot->writeString((*_iter28));
         }
@@ -244,8 +242,7 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("typedefValue", apache::thrift::protocol::T_MAP, 9);
       {
         xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_STRING, this->value_.typedefValue.size());
-        std::map<int16_t, std::string> ::const_iterator _iter29;
-        for (_iter29 = this->value_.typedefValue.begin(); _iter29 != this->value_.typedefValue.end(); ++_iter29)
+        for (auto _iter29 = this->value_.typedefValue.cbegin(); _iter29 != this->value_.typedefValue.cend(); ++_iter29)
         {
           xfer += oprot->writeI16(_iter29->first);
           xfer += oprot->writeString(_iter29->second);
