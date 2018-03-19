@@ -611,7 +611,7 @@ class HandlerCallback : public HandlerCallbackBase {
       std::unique_ptr<HandlerCallback> thisPtr,
       folly::Try<T>&& r) {
     DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::forward<folly::Try<T>>(r));
+    thisPtr.release()->completeInThread(std::move(r));
   }
 
  protected:
@@ -692,8 +692,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       std::unique_ptr<HandlerCallback> thisPtr,
       folly::Try<folly::Unit>&& r) {
     DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(
-        std::forward<folly::Try<folly::Unit>>(r));
+    thisPtr.release()->completeInThread(std::move(r));
   }
 
  protected:
