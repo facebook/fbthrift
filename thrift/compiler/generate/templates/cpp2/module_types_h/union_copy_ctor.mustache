@@ -14,11 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  <%struct:name%>(<%struct:name%>&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+%>  <%struct:name%>(<%struct:name%>&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
 <%#struct:fields%>
       case Type::<%field:name%>:
       {
@@ -40,11 +40,11 @@
     rhs.__clear();
   }
 
-  <%struct:name%>(const <%struct:name%>& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  <%struct:name%>(const <%struct:name%>& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
 <%#struct:fields%>
       case Type::<%field:name%>:
       {

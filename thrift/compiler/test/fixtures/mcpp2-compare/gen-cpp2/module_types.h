@@ -989,14 +989,14 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     stringValue = 2,
   } ;
 
-  SimpleUnion() :
-      type_(Type::__EMPTY__) {}
+  SimpleUnion()
+      : type_(Type::__EMPTY__) {}
 
-  SimpleUnion(SimpleUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  SimpleUnion(SimpleUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -1016,11 +1016,11 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     rhs.__clear();
   }
 
-  SimpleUnion(const SimpleUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  SimpleUnion(const SimpleUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -1040,10 +1040,10 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
 
   SimpleUnion& operator=(SimpleUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -1065,10 +1065,10 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
 
   SimpleUnion& operator=(const SimpleUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -1306,14 +1306,14 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     excp_field = 26,
   } ;
 
-  ComplexUnion() :
-      type_(Type::__EMPTY__) {}
+  ComplexUnion()
+      : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  ComplexUnion(ComplexUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -1483,11 +1483,11 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     rhs.__clear();
   }
 
-  ComplexUnion(const ComplexUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  ComplexUnion(const ComplexUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -1657,10 +1657,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
 
   ComplexUnion& operator=(ComplexUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -1832,10 +1832,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
 
   ComplexUnion& operator=(const ComplexUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -5761,14 +5761,14 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     doubleSide = 2,
   } ;
 
-  FloatUnion() :
-      type_(Type::__EMPTY__) {}
+  FloatUnion()
+      : type_(Type::__EMPTY__) {}
 
-  FloatUnion(FloatUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  FloatUnion(FloatUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::floatSide:
       {
         set_floatSide(std::move(rhs.value_.floatSide));
@@ -5788,11 +5788,11 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     rhs.__clear();
   }
 
-  FloatUnion(const FloatUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  FloatUnion(const FloatUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::floatSide:
       {
         set_floatSide(rhs.value_.floatSide);
@@ -5812,10 +5812,10 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
   }
 
   FloatUnion& operator=(FloatUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::floatSide:
       {
         set_floatSide(std::move(rhs.value_.floatSide));
@@ -5837,10 +5837,10 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
   }
 
   FloatUnion& operator=(const FloatUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::floatSide:
       {
         set_floatSide(rhs.value_.floatSide);

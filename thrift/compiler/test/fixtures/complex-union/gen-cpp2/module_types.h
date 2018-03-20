@@ -44,14 +44,14 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     stringRef = 14,
   } ;
 
-  ComplexUnion() :
-      type_(Type::__EMPTY__) {}
+  ComplexUnion()
+      : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  ComplexUnion(ComplexUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -91,11 +91,11 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     rhs.__clear();
   }
 
-  ComplexUnion(const ComplexUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  ComplexUnion(const ComplexUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -135,10 +135,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
 
   ComplexUnion& operator=(ComplexUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(std::move(rhs.value_.intValue));
@@ -180,10 +180,10 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
 
   ComplexUnion& operator=(const ComplexUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::intValue:
       {
         set_intValue(rhs.value_.intValue);
@@ -561,14 +561,14 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     thingTwo = 2,
   } ;
 
-  VirtualComplexUnion() :
-      type_(Type::__EMPTY__) {}
+  VirtualComplexUnion()
+      : type_(Type::__EMPTY__) {}
 
-  VirtualComplexUnion(VirtualComplexUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  VirtualComplexUnion(VirtualComplexUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::thingOne:
       {
         set_thingOne(std::move(rhs.value_.thingOne));
@@ -588,11 +588,11 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     rhs.__clear();
   }
 
-  VirtualComplexUnion(const VirtualComplexUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  VirtualComplexUnion(const VirtualComplexUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::thingOne:
       {
         set_thingOne(rhs.value_.thingOne);
@@ -612,10 +612,10 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
   }
 
   VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::thingOne:
       {
         set_thingOne(std::move(rhs.value_.thingOne));
@@ -637,10 +637,10 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
   }
 
   VirtualComplexUnion& operator=(const VirtualComplexUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::thingOne:
       {
         set_thingOne(rhs.value_.thingOne);

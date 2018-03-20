@@ -1013,14 +1013,14 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     d = 2,
   } ;
 
-  union1() :
-      type_(Type::__EMPTY__) {}
+  union1()
+      : type_(Type::__EMPTY__) {}
 
-  union1(union1&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  union1(union1&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(std::move(rhs.value_.i));
@@ -1040,11 +1040,11 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     rhs.__clear();
   }
 
-  union1(const union1& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  union1(const union1& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(rhs.value_.i);
@@ -1064,10 +1064,10 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
 
   union1& operator=(union1&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(std::move(rhs.value_.i));
@@ -1089,10 +1089,10 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
 
   union1& operator=(const union1& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(rhs.value_.i);
@@ -1283,14 +1283,14 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     u = 4,
   } ;
 
-  union2() :
-      type_(Type::__EMPTY__) {}
+  union2()
+      : type_(Type::__EMPTY__) {}
 
-  union2(union2&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  union2(union2&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(std::move(rhs.value_.i));
@@ -1320,11 +1320,11 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     rhs.__clear();
   }
 
-  union2(const union2& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  union2(const union2& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(rhs.value_.i);
@@ -1354,10 +1354,10 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
 
   union2& operator=(union2&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(std::move(rhs.value_.i));
@@ -1389,10 +1389,10 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
 
   union2& operator=(const union2& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::i:
       {
         set_i(rhs.value_.i);

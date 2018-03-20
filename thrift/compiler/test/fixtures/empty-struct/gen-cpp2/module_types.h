@@ -121,14 +121,14 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     __EMPTY__ = 0,
   } ;
 
-  Nada() :
-      type_(Type::__EMPTY__) {}
+  Nada()
+      : type_(Type::__EMPTY__) {}
 
-  Nada(Nada&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  Nada(Nada&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       default:
       {
         assert(false);
@@ -138,11 +138,11 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     rhs.__clear();
   }
 
-  Nada(const Nada& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  Nada(const Nada& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       default:
       {
         assert(false);
@@ -152,10 +152,10 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
   }
 
   Nada& operator=(Nada&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       default:
       {
         assert(false);
@@ -167,10 +167,10 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
   }
 
   Nada& operator=(const Nada& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       default:
       {
         assert(false);

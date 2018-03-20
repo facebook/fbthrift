@@ -91,14 +91,14 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     aString = 2,
   } ;
 
-  MyUnion() :
-      type_(Type::__EMPTY__) {}
+  MyUnion()
+      : type_(Type::__EMPTY__) {}
 
-  MyUnion(MyUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  MyUnion(MyUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::anInteger:
       {
         set_anInteger(std::move(rhs.value_.anInteger));
@@ -118,11 +118,11 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     rhs.__clear();
   }
 
-  MyUnion(const MyUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
+  MyUnion(const MyUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::anInteger:
       {
         set_anInteger(rhs.value_.anInteger);
@@ -142,10 +142,10 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
   }
 
   MyUnion& operator=(MyUnion&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::anInteger:
       {
         set_anInteger(std::move(rhs.value_.anInteger));
@@ -167,10 +167,10 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
   }
 
   MyUnion& operator=(const MyUnion& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
       case Type::anInteger:
       {
         set_anInteger(rhs.value_.anInteger);

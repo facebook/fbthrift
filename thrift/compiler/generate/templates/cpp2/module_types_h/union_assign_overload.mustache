@@ -15,10 +15,10 @@
   limitations under the License.
 
 %>  <%struct:name%>& operator=(<%struct:name%>&& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
 <%#struct:fields%>
       case Type::<%field:name%>:
       {
@@ -42,10 +42,10 @@
   }
 
   <%struct:name%>& operator=(const <%struct:name%>& rhs) {
-    if (this == &rhs) {return *this; }
+    if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
+    switch (rhs.type_) {
 <%#struct:fields%>
       case Type::<%field:name%>:
       {
