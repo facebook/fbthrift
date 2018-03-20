@@ -5,11 +5,14 @@ from libc.stdint cimport uint64_t
 from folly.iobuf cimport IOBuf, move
 from cpython.ref cimport PyObject
 from folly.executor cimport get_executor
+from folly.range cimport StringPiece
 
 import asyncio
 import collections
 import inspect
 import ipaddress
+from pathlib import Path
+import os
 
 from enum import Enum
 
@@ -21,7 +24,10 @@ cdef inline _get_SocketAddress(const cfollySocketAddress* sadr):
     if sadr.isFamilyInet():
         ip = ipaddress.ip_address(sadr.getAddressStr().decode('utf-8'))
         return SocketAddress(ip=ip, port=sadr.getPort(), path=None)
-    return SocketAddress(ip=None, port=None, path=sadr.getPath())
+    return SocketAddress(ip=None, port=None, path=Path(
+            os.fsdecode(sadr.getPath())
+        )
+    )
 
 
 def pass_context(func):
@@ -48,7 +54,7 @@ cdef class ThriftServer:
     def __cinit__(self):
         self.server = make_shared[cThriftServer]()
 
-    def __init__(self, ServiceInterface handler, port):
+    def __init__(self, ServiceInterface handler, int port=0, ip=None, path=None):
         self.loop = asyncio.get_event_loop()
         self.handler = handler
 
@@ -59,7 +65,18 @@ cdef class ThriftServer:
                 setattr(handler, f'_pass_context_{name}', True)
 
         self.server.get().setInterface(handler.interface_wrapper)
-        self.server.get().setPort(port)
+        if path:
+            fspath = os.fsencode(path)
+            self.server.get().setAddress(
+                makeFromPath(
+                    StringPiece(fspath, len(fspath))
+                )
+            )
+        elif ip:
+            # We stringify to accept python ipaddress objects
+            self.server.get().setAddress(str(ip).encode('utf-8'), port)
+        else:
+            self.server.get().setPort(port)
         self.address_future = self.loop.create_future()
 
     async def serve(self):
@@ -77,9 +94,12 @@ cdef class ThriftServer:
                 self.server.get().serve()
         try:
             await self.loop.run_in_executor(None, _serve)
-        except Exception:
-            print("Exception In Server")
+        except Exception as e:
             self.server.get().stop()
+            # If somebody is waiting on get_address and the server died
+            # then we should forward this exception over to that future. 
+            if not self.address_future.done():
+                self.address_future.set_exception(e)
             raise
 
     async def get_address(self):

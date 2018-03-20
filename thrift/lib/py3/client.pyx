@@ -8,11 +8,13 @@ from thrift.py3.exceptions cimport raise_py_exception
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
-from folly cimport cFollyTry
+from folly cimport cFollyTry, cFollyPromise
+from folly.range cimport StringPiece
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
 import os
+from socket import SocketKind
 
 
 cdef object proxy_factory = None
@@ -35,40 +37,60 @@ cdef class Client:
         return NULL
 
 
-def get_client(
-        clientKlass, *,
-        str host='::1',
-        int port=0,
-        str path=None,
-        float timeout=1,
-        headers=None):
+cdef extern from "<stdexcept>" namespace "std" nogil:
+    cdef cppclass cruntime_error "std::runtime_error":
+        cruntime_error(string& what)
+
+
+cdef class _ResolvePromise:
+    cdef cFollyPromise[string] cPromise
+
+    def __init__(self, hostname, port):
+        loop = asyncio.get_event_loop()
+        asyncio.ensure_future(
+            loop.getaddrinfo(hostname, port, type=SocketKind.SOCK_STREAM)
+        ).add_done_callback(self._callback)
+
+    def _callback(_ResolvePromise self, fut):
+        ex = fut.exception()
+        cdef string ip
+        if ex:
+            self.cPromise.setException(cruntime_error(repr(ex).encode('utf-8')))
+        else:
+            res = fut.result()
+            ip = res[0][4][0].encode('utf-8')
+            self.cPromise.setValue(ip)
+
+
+def get_client(clientKlass, *, host='::1', int port=-1, path=None, float timeout=1, headers=None):
     loop = asyncio.get_event_loop()
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
-    cdef string cstr
+    host = str(host)  # Accept ipaddress objects
     cdef int _timeout = int(timeout * 1000)
+
+    if port == -1 and path is None:
+        raise ValueError('path or port must be set')
+
     client = clientKlass()
-    if port != 0:
-        if path is not None:
-            raise Exception("cannot specify both path and host/port")
-        cstr = <bytes> host.encode('idna')
+
+    if path:
+        fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelTCP(cstr, port, _timeout),
-            requestchannel_callback,
-            <PyObject *> client
-        )
-    elif path is not None:
-        cstr = <bytes> os.fsencode(path)
-        bridgeFutureWith[cRequestChannel_ptr](
-            (<Client>client)._executor,
-            createThriftChannelUnix(cstr, _timeout),
+            createThriftChannelUnix(StringPiece(fspath, len(fspath)), _timeout),
             requestchannel_callback,
             <PyObject *> client
         )
     else:
-        raise Exception("must specify either port or path arguments")
+        p = _ResolvePromise(host, port)
+        bridgeFutureWith[cRequestChannel_ptr](
+            (<Client>client)._executor,
+            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout),
+            requestchannel_callback,
+            <PyObject *> client
+        )
     if headers:
         for key, value in headers.items():
             client.set_persistent_header(key, value)

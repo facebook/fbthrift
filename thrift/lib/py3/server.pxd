@@ -2,6 +2,7 @@ from libc.stdint cimport uint16_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport IOBuf
+from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
 
@@ -11,6 +12,8 @@ cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
         bint isFamilyInet()
         string getAddressStr()
         string getPath()
+
+    cfollySocketAddress makeFromPath "folly::SocketAddress::makeFromPath"(StringPiece path)
 
     cdef cppclass AddressHandler:  # This isn't true but its easier for cython
         pass
@@ -43,6 +46,8 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
     cdef cppclass cThriftServer "apache::thrift::ThriftServer":
         ThriftServer() nogil except +
         void setPort(uint16_t port) nogil
+        void setAddress(cfollySocketAddress& addr) nogil
+        void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
         void serve() nogil except +
         void stop() nogil except +

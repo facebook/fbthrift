@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <functional>
 
+#include <folly/Range.h>
+#include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
@@ -25,7 +27,6 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-
 
 namespace thrift {
 namespace py3 {
@@ -45,11 +46,11 @@ std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr channel) {
  * Create a thrift channel by connecting to a host:port over TCP.
  */
 folly::Future<RequestChannel_ptr> createThriftChannelTCP(
-    const std::string& host,
+    folly::Future<std::string>&& host_fut,
     const uint16_t port,
     const uint32_t connect_timeout) {
   auto eb = folly::getEventBase();
-  return folly::via(eb, [=] {
+  return host_fut.then(eb, [=](std::string host) {
     return apache::thrift::HeaderClientChannel::newChannel(
         apache::thrift::async::TAsyncSocket::newSocket(
             eb, host, port, connect_timeout));
@@ -60,7 +61,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
  * Create a thrift channel by connecting to a Unix domain socket.
  */
 folly::Future<RequestChannel_ptr> createThriftChannelUnix(
-    const std::string& path,
+    const folly::StringPiece path,
     const uint32_t connect_timeout) {
   auto eb = folly::getEventBase();
   return folly::via(eb, [=] {

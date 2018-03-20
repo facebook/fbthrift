@@ -4,11 +4,13 @@ from folly cimport (
     cFollyExecutor,
     cFollyTry
 )
+from folly.range cimport StringPiece
 from libc.stdint cimport uint16_t, uint32_t
 from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
 from libcpp.typeinfo cimport type_info
 from cpython.ref cimport PyObject
+from libcpp cimport bool
 
 cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thrift":
     cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
@@ -18,14 +20,15 @@ ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
 
 cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
-        const string& host,
+        cFollyFuture[string] fut,
         const uint16_t port,
-        const uint32_t connect_timeout)
+        const uint32_t connect_timeout,
+    )
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(
-        const string& path,
-        const uint32_t connect_timeout)
-
+        StringPiece path,
+        const uint32_t connect_timeout,
+    )
     cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
 cdef class Client:

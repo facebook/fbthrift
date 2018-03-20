@@ -1,6 +1,10 @@
 from types import TracebackType
-from typing import TypeVar, Optional, Type, Dict, Callable, Any, Mapping, ClassVar
+from typing import TypeVar, Optional, Type, Dict, Callable, Any, Mapping, ClassVar, Union
+import ipaddress
+import os
 
+IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
+Path = Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
 cT = TypeVar('cT', bound='Client')
 
 
@@ -15,12 +19,13 @@ class Client:
     ) -> Optional[bool]: ...
     annotations: ClassVar[Mapping[str, str]] = ...
 
+
 def get_client(
     clientKlass: Type[cT],
     *,
-    host: str = ...,
+    host: Union[IPAddress, str] = ...,
     port: int = ...,
-    path: str = ...,
+    path: Optional[Path]=None,
     timeout: float = ...,
     headers: Dict[str, str] = None
 ) -> cT: ...
