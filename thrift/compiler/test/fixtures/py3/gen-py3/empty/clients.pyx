@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -64,7 +64,11 @@ cdef class NullService(thrift.py3.client.Client):
 
     def __dealloc__(NullService self):
         if self._cRequestChannel or self._empty_NullService_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._empty_NullService_client:
+                deref(self._empty_NullService_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(NullService self):
         await self._connect_future
@@ -72,10 +76,9 @@ cdef class NullService(thrift.py3.client.Client):
             NullService._empty_NullService_set_client(
                 self,
                 makeClientWrapper[cNullServiceAsyncClient, cNullServiceClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():

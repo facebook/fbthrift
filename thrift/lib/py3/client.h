@@ -30,16 +30,24 @@
 
 namespace thrift {
 namespace py3 {
-typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
+typedef std::unique_ptr<
+    apache::thrift::RequestChannel,
+    folly::DelayedDestruction::Destructor>
+    RequestChannel_ptr;
 
 /*
  * T is the cpp2 async client class
  * U is the py3 clientwraper class
  */
 template <class T, class U>
-std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr channel) {
-  auto client = std::make_shared<T>(channel);
+std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr&& channel) {
+  auto client = std::make_shared<T>(move(channel));
   return std::make_shared<U>(client);
+}
+
+void destroyInEventBaseThread(RequestChannel_ptr&& ptr) {
+  auto eb = ptr->getEventBase();
+  eb->runInEventBaseThread([ptr = std::move(ptr)] {});
 }
 
 /**

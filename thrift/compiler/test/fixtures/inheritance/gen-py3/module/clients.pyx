@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -114,7 +114,11 @@ cdef class MyRoot(thrift.py3.client.Client):
 
     def __dealloc__(MyRoot self):
         if self._cRequestChannel or self._module_MyRoot_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyRoot_client:
+                deref(self._module_MyRoot_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyRoot self):
         await self._connect_future
@@ -122,10 +126,9 @@ cdef class MyRoot(thrift.py3.client.Client):
             MyRoot._module_MyRoot_set_client(
                 self,
                 makeClientWrapper[cMyRootAsyncClient, cMyRootClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -213,7 +216,11 @@ cdef class MyNode(MyRoot):
 
     def __dealloc__(MyNode self):
         if self._cRequestChannel or self._module_MyNode_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyNode_client:
+                deref(self._module_MyNode_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyNode self):
         await self._connect_future
@@ -221,10 +228,9 @@ cdef class MyNode(MyRoot):
             MyNode._module_MyNode_set_client(
                 self,
                 makeClientWrapper[cMyNodeAsyncClient, cMyNodeClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -312,7 +318,11 @@ cdef class MyLeaf(MyNode):
 
     def __dealloc__(MyLeaf self):
         if self._cRequestChannel or self._module_MyLeaf_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyLeaf_client:
+                deref(self._module_MyLeaf_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyLeaf self):
         await self._connect_future
@@ -320,10 +330,9 @@ cdef class MyLeaf(MyNode):
             MyLeaf._module_MyLeaf_set_client(
                 self,
                 makeClientWrapper[cMyLeafAsyncClient, cMyLeafClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():

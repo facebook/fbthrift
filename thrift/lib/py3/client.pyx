@@ -112,5 +112,5 @@ cdef void requestchannel_callback(
         except Exception as ex:
             future.set_exception(ex)
     else:
-        client._cRequestChannel = result.value()
+        client._cRequestChannel = move(result.value())
         future.set_result(None)

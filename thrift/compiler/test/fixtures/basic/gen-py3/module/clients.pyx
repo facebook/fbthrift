@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -308,7 +308,11 @@ cdef class MyService(thrift.py3.client.Client):
 
     def __dealloc__(MyService self):
         if self._cRequestChannel or self._module_MyService_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyService_client:
+                deref(self._module_MyService_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyService self):
         await self._connect_future
@@ -316,10 +320,9 @@ cdef class MyService(thrift.py3.client.Client):
             MyService._module_MyService_set_client(
                 self,
                 makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -513,7 +516,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     def __dealloc__(MyServiceFast self):
         if self._cRequestChannel or self._module_MyServiceFast_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyServiceFast_client:
+                deref(self._module_MyServiceFast_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyServiceFast self):
         await self._connect_future
@@ -521,10 +528,9 @@ cdef class MyServiceFast(thrift.py3.client.Client):
             MyServiceFast._module_MyServiceFast_set_client(
                 self,
                 makeClientWrapper[cMyServiceFastAsyncClient, cMyServiceFastClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -718,7 +724,11 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
 
     def __dealloc__(MyServiceEmpty self):
         if self._cRequestChannel or self._module_MyServiceEmpty_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyServiceEmpty_client:
+                deref(self._module_MyServiceEmpty_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyServiceEmpty self):
         await self._connect_future
@@ -726,10 +736,9 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
             MyServiceEmpty._module_MyServiceEmpty_set_client(
                 self,
                 makeClientWrapper[cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -800,7 +809,11 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     def __dealloc__(MyServicePrioParent self):
         if self._cRequestChannel or self._module_MyServicePrioParent_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyServicePrioParent_client:
+                deref(self._module_MyServicePrioParent_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyServicePrioParent self):
         await self._connect_future
@@ -808,10 +821,9 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
             MyServicePrioParent._module_MyServicePrioParent_set_client(
                 self,
                 makeClientWrapper[cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
@@ -915,7 +927,11 @@ cdef class MyServicePrioChild(MyServicePrioParent):
 
     def __dealloc__(MyServicePrioChild self):
         if self._cRequestChannel or self._module_MyServicePrioChild_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+            print('client was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyServicePrioChild_client:
+                deref(self._module_MyServicePrioChild_client).disconnect().get()
+            else:
+                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
 
     async def __aenter__(MyServicePrioChild self):
         await self._connect_future
@@ -923,10 +939,9 @@ cdef class MyServicePrioChild(MyServicePrioParent):
             MyServicePrioChild._module_MyServicePrioChild_set_client(
                 self,
                 makeClientWrapper[cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper](
-                    self._cRequestChannel
+                    thrift.py3.client.move(self._cRequestChannel)
                 ),
             )
-            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
