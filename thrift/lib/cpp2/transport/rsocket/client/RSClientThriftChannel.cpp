@@ -159,7 +159,7 @@ void RSClientThriftChannel::sendStreamThriftRequest(
 
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
     LOG(ERROR) << "Unexpected problem stripping envelope";
-    callback->getOutput()->onSubscribe(yarpl::flowable::Subscription::empty());
+    callback->getOutput()->onSubscribe(yarpl::flowable::Subscription::create());
     callback->getOutput()->onError(folly::exception_wrapper(
         TTransportException("Unexpected problem stripping envelope")));
     return;
@@ -179,7 +179,7 @@ void RSClientThriftChannel::sendStreamThriftRequest(
     default: {
       LOG(ERROR) << "Unknown RpcKind value in the Metadata";
       callback->getOutput()->onSubscribe(
-          yarpl::flowable::Subscription::empty());
+          yarpl::flowable::Subscription::create());
       callback->getOutput()->onError(folly::exception_wrapper(
           TTransportException("Unknown RpcKind value in the Metadata")));
     }

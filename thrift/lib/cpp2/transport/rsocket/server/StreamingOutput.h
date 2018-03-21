@@ -46,7 +46,7 @@ class StreamingOutput : public StreamThriftChannelBase {
             << buf->cloneCoalescedAsValue().moveToFbString().toStdString();
 
     auto subscriber = getOutput(metadata->seqId);
-    subscriber->onSubscribe(yarpl::flowable::Subscription::empty());
+    subscriber->onSubscribe(yarpl::flowable::Subscription::create());
     auto str = folly::humanify(buf->cloneCoalescedAsValue().moveToFbString())
                    .toStdString();
     subscriber->onError(std::runtime_error(str));

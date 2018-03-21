@@ -67,7 +67,7 @@ apache::thrift::detail::si::async_tm_oneway(
       }
       if (_ew) {
         auto _subscriber = _channel->getOutput(0);
-        _subscriber->onSubscribe(yarpl::flowable::Subscription::empty());
+        _subscriber->onSubscribe(yarpl::flowable::Subscription::create());
         _subscriber->onError(_ew);
       }
       <%/function:returns_stream?%>

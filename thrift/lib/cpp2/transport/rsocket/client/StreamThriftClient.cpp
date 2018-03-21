@@ -163,7 +163,7 @@ uint32_t StreamThriftClient::sendStreamRequestHelper(
           }
         } catch (const TTransportException& te) {
           // Give the error as the stream!
-          cb->getOutput()->onSubscribe(yarpl::flowable::Subscription::empty());
+          cb->getOutput()->onSubscribe(yarpl::flowable::Subscription::create());
           cb->getOutput()->onError(te);
           return;
         }
