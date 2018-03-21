@@ -51,6 +51,15 @@ func NewMyRootClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot th
   }
 }
 
+func NewMyRootClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootClient {
+  return &MyRootClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
 func (p *MyRootClient) DoRoot() (err error) {
   if err = p.sendDoRoot(); err != nil { return }
   return p.recvDoRoot()
@@ -143,6 +152,15 @@ func NewMyRootThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
 }
 
 func NewMyRootThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
+  return &MyRootThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func NewMyRootThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
   return &MyRootThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

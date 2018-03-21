@@ -65,6 +65,15 @@ func NewNestedContainersClientProtocol(t thrift.Transport, iprot thrift.Protocol
   }
 }
 
+func NewNestedContainersClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersClient {
+  return &NestedContainersClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
 // Parameters:
 //  - Foo
 func (p *NestedContainersClient) MapList(foo map[int32][]int32) (err error) {
@@ -460,6 +469,15 @@ func NewNestedContainersThreadsafeClientFactory(t thrift.Transport, f thrift.Pro
 }
 
 func NewNestedContainersThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersThreadsafeClient {
+  return &NestedContainersThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func NewNestedContainersThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersThreadsafeClient {
   return &NestedContainersThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,

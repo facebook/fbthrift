@@ -38,6 +38,10 @@ func NewMyNodeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot th
   return &MyNodeClient{MyRootClient: NewMyRootClientProtocol(t, iprot, oprot)}
 }
 
+func NewMyNodeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeClient {
+  return &MyNodeClient{MyRootClient: NewMyRootClientProtocol(t, iprot, oprot)}
+}
+
 func (p *MyNodeClient) DoMid() (err error) {
   if err = p.sendDoMid(); err != nil { return }
   return p.recvDoMid()
@@ -119,6 +123,10 @@ func NewMyNodeThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}}
 
 func NewMyNodeThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
+  return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientProtocol(t, iprot, oprot)}
+}
+
+func NewMyNodeThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientProtocol(t, iprot, oprot)}
 }
 

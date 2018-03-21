@@ -66,6 +66,15 @@ func NewMyServiceClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot
   }
 }
 
+func NewMyServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceClient {
+  return &MyServiceClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
 func (p *MyServiceClient) Ping() (err error) {
   if err = p.sendPing(); err != nil { return }
   return p.recvPing()
@@ -491,6 +500,15 @@ func NewMyServiceThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFa
 }
 
 func NewMyServiceThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
+  return &MyServiceThreadsafeClient{Transport: t,
+    ProtocolFactory: nil,
+    InputProtocol: iprot,
+    OutputProtocol: oprot,
+    SeqId: 0,
+  }
+}
+
+func NewMyServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
   return &MyServiceThreadsafeClient{Transport: t,
     ProtocolFactory: nil,
     InputProtocol: iprot,
