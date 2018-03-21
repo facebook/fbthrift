@@ -71,7 +71,6 @@ void RSRequester::closeNow() {
   DCHECK(eventBase_ && eventBase_->isInEventBaseThread());
 
   if (auto stateMachine = std::move(stateMachine_)) {
-    stateMachine->disconnect(folly::exception_wrapper());
     stateMachine->close(
         folly::exception_wrapper(), StreamCompletionSignal::SOCKET_CLOSED);
   }

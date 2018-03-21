@@ -65,7 +65,8 @@ class RSClientConnection : public ClientConnectionIf {
   bool isSecure_;
   std::shared_ptr<RSConnectionStatus> connectionStatus_;
 
-  apache::thrift::detail::ChannelCounters counters_;
+  std::unique_ptr<apache::thrift::detail::ChannelCounters> counters_{
+      std::make_unique<apache::thrift::detail::ChannelCounters>()};
 };
 } // namespace thrift
 } // namespace apache

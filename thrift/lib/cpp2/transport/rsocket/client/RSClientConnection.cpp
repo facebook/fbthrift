@@ -83,15 +83,15 @@ RSClientConnection::RSClientConnection(
       std::make_shared<RSRequester>(std::move(socket), evb_, connectionStatus_);
 
   channel_ =
-      std::make_shared<RSClientThriftChannel>(rsRequester_, counters_, evb_);
+      std::make_shared<RSClientThriftChannel>(rsRequester_, *counters_, evb_);
 }
 
 RSClientConnection::~RSClientConnection() {
   if (rsRequester_) {
     if (evb_ && !evb_->isInEventBaseThread()) {
-      evb_->runInEventBaseThread([rsRequester = std::move(rsRequester_)]() {
-        rsRequester->closeNow();
-      });
+      evb_->runInEventBaseThread(
+          [rsRequester = std::move(rsRequester_),
+           counters = std::move(counters_)]() { rsRequester->closeNow(); });
     } else {
       // If evb_ is missing, this function will attach the current event base
       // instead of the missing one
@@ -112,7 +112,7 @@ std::shared_ptr<ThriftChannelIf> RSClientConnection::getChannel(
 
 void RSClientConnection::setMaxPendingRequests(uint32_t count) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  counters_.setMaxPendingRequests(count);
+  counters_->setMaxPendingRequests(count);
 }
 
 folly::EventBase* RSClientConnection::getEventBase() const {
@@ -152,7 +152,7 @@ bool RSClientConnection::good() {
 ClientChannel::SaturationStatus RSClientConnection::getSaturationStatus() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   return ClientChannel::SaturationStatus(
-      counters_.getPendingRequests(), counters_.getMaxPendingRequests());
+      counters_->getPendingRequests(), counters_->getMaxPendingRequests());
 }
 
 void RSClientConnection::attachEventBase(folly::EventBase* evb) {
@@ -189,7 +189,7 @@ bool RSClientConnection::isDetachable() {
   auto transport = getTransport();
   bool result = evb_ == nullptr || transport == nullptr ||
       channel_ == nullptr || rsRequester_ == nullptr ||
-      (counters_.getPendingRequests() == 0 && transport->isDetachable() &&
+      (counters_->getPendingRequests() == 0 && transport->isDetachable() &&
        channel_->isDetachable() && rsRequester_->isDetachable());
   return result;
 }
