@@ -15,7 +15,7 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
-from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
+from thrift.py3.exceptions cimport try_make_shared_exception, create_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -46,15 +46,12 @@ cdef void MyService_ping_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_getRandomData_callback(
     cFollyTry[string]&& result,
@@ -62,15 +59,12 @@ cdef void MyService_getRandomData_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_hasDataById_callback(
     cFollyTry[cbool]&& result,
@@ -78,15 +72,12 @@ cdef void MyService_hasDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_getDataById_callback(
     cFollyTry[string]&& result,
@@ -94,15 +85,12 @@ cdef void MyService_getDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -110,15 +98,12 @@ cdef void MyService_putDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyService_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -126,15 +111,12 @@ cdef void MyService_lobDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_ping_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -142,15 +124,12 @@ cdef void MyServiceFast_ping_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_getRandomData_callback(
     cFollyTry[string]&& result,
@@ -158,15 +137,12 @@ cdef void MyServiceFast_getRandomData_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_hasDataById_callback(
     cFollyTry[cbool]&& result,
@@ -174,15 +150,12 @@ cdef void MyServiceFast_hasDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_getDataById_callback(
     cFollyTry[string]&& result,
@@ -190,15 +163,12 @@ cdef void MyServiceFast_getDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -206,15 +176,12 @@ cdef void MyServiceFast_putDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServiceFast_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -222,15 +189,12 @@ cdef void MyServiceFast_lobDataById_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServicePrioParent_ping_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -238,15 +202,12 @@ cdef void MyServicePrioParent_ping_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServicePrioParent_pong_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -254,15 +215,12 @@ cdef void MyServicePrioParent_pong_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyServicePrioChild_pang_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -270,15 +228,12 @@ cdef void MyServicePrioChild_pang_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({

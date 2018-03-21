@@ -15,7 +15,7 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
-from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
+from thrift.py3.exceptions cimport try_make_shared_exception, create_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -42,15 +42,12 @@ cdef void Raiser_doBland_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void Raiser_doRaise_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -62,15 +59,12 @@ cdef void Raiser_doRaise_callback(
     elif result.hasException[_module_types.cFiery]():
         pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
     elif result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void Raiser_get200_callback(
     cFollyTry[string]&& result,
@@ -78,15 +72,12 @@ cdef void Raiser_get200_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void Raiser_get500_callback(
     cFollyTry[string]&& result,
@@ -98,15 +89,12 @@ cdef void Raiser_get500_callback(
     elif result.hasException[_module_types.cBanal]():
         pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
     elif result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 
 cdef object _Raiser_annotations = _py_types.MappingProxyType({

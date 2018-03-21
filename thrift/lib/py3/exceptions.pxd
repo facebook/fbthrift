@@ -79,16 +79,16 @@ cdef extern from "thrift/lib/py3/exceptions.h" namespace "thrift::py3::exception
         const cFollyExceptionWrapper& excepton)
 
 
-ctypedef void(*Handler)(const cFollyExceptionWrapper& ex) except *
+ctypedef object(*Handler)(const cFollyExceptionWrapper& ex)
 cdef void addHandler(Handler handler)
-cdef void runHandlers(const cFollyExceptionWrapper& ex) except *
-cdef raise_py_exception(const cFollyExceptionWrapper& ex)
+cdef object runHandlers(const cFollyExceptionWrapper& ex)
+cdef object create_py_exception(const cFollyExceptionWrapper& ex)
 
 # cdef Inheritence sucks in cython
-cdef create_Error(shared_ptr[cTException] ex)
-cdef create_ApplicationError(shared_ptr[cTApplicationException] ex)
-cdef create_LibraryError(shared_ptr[cTLibraryException] ex)
-cdef create_TransportError(shared_ptr[cTTransportException] ex)
+cdef object create_Error(shared_ptr[cTException] ex)
+cdef object create_ApplicationError(shared_ptr[cTApplicationException] ex)
+cdef object create_LibraryError(shared_ptr[cTLibraryException] ex)
+cdef object create_TransportError(shared_ptr[cTTransportException] ex)
 
 
 cdef class Error(Exception):
