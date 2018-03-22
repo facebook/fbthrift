@@ -628,6 +628,167 @@ class HandlerCallback : public HandlerCallbackBase {
   cob_ptr cp_;
 };
 
+template <typename Response, typename StreamItem>
+class HandlerCallback<ResponseAndStream<Response, StreamItem>>
+    : public HandlerCallbackBase {
+ protected:
+  typedef ResponseAndStream<Response, StreamItem> ResultType;
+
+ private:
+  typedef ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (
+      *cob_ptr)(int32_t protoSeqId, ContextStack*, ResultType);
+
+ public:
+  HandlerCallback() : cp_(nullptr) {}
+
+  HandlerCallback(
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<ContextStack> ctx,
+      cob_ptr cp,
+      exnw_ptr ewp,
+      int32_t protoSeqId,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      Cpp2RequestContext* reqCtx)
+      : HandlerCallbackBase(
+            std::move(req),
+            std::move(ctx),
+            ewp,
+            eb,
+            tm,
+            reqCtx),
+        cp_(cp) {
+    this->protoSeqId_ = protoSeqId;
+  }
+
+  void result(ResultType r) {
+    doResult(std::move(r));
+  }
+  void resultInThread(ResultType r) {
+    result(std::move(r));
+    delete this;
+  }
+
+  void complete(folly::Try<ResultType>&& r) {
+    if (r.hasException()) {
+      exception(std::move(r.exception()));
+    } else {
+      result(std::move(r.value()));
+    }
+  }
+  void completeInThread(folly::Try<ResultType>&& r) {
+    if (r.hasException()) {
+      exceptionInThread(std::move(r.exception()));
+    } else {
+      resultInThread(std::move(r.value()));
+    }
+  }
+  static void completeInThread(
+      std::unique_ptr<HandlerCallback> thisPtr,
+      folly::Try<ResultType>&& r) {
+    DCHECK(thisPtr);
+    thisPtr.release()->completeInThread(std::move(r));
+  }
+
+ protected:
+  void doResult(ResultType r) {
+    assert(cp_);
+    if (!r.stream) { // function returns nullptr
+      exception(
+          std::runtime_error("Should not return nullptr instead of a stream"));
+    } else {
+      auto responseAndStream =
+          cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
+      this->ctx_.reset();
+      this->sendReply(
+          std::move(responseAndStream.response),
+          std::move(responseAndStream.stream));
+    }
+  }
+
+  cob_ptr cp_;
+};
+
+template <typename StreamItem>
+class HandlerCallback<Stream<StreamItem>> : public HandlerCallbackBase {
+ public:
+  typedef Stream<StreamItem> ResultType;
+
+ private:
+  typedef ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (
+      *cob_ptr)(int32_t protoSeqId, ContextStack*, ResultType);
+
+ public:
+  HandlerCallback() : cp_(nullptr) {}
+
+  HandlerCallback(
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<ContextStack> ctx,
+      cob_ptr cp,
+      exnw_ptr ewp,
+      int32_t protoSeqId,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      Cpp2RequestContext* reqCtx)
+      : HandlerCallbackBase(
+            std::move(req),
+            std::move(ctx),
+            ewp,
+            eb,
+            tm,
+            reqCtx),
+        cp_(cp) {
+    this->protoSeqId_ = protoSeqId;
+  }
+
+  void result(ResultType r) {
+    doResult(std::move(r));
+  }
+  void resultInThread(ResultType r) {
+    result(std::move(r));
+    delete this;
+  }
+
+  void complete(folly::Try<ResultType>&& r) {
+    if (r.hasException()) {
+      exception(std::move(r.exception()));
+    } else {
+      result(std::move(r.value()));
+    }
+  }
+  void completeInThread(folly::Try<ResultType>&& r) {
+    if (r.hasException()) {
+      exceptionInThread(std::move(r.exception()));
+    } else {
+      resultInThread(std::move(r.value()));
+    }
+  }
+  static void completeInThread(
+      std::unique_ptr<HandlerCallback> thisPtr,
+      folly::Try<ResultType>&& r) {
+    DCHECK(thisPtr);
+    thisPtr.release()->completeInThread(std::move(r));
+  }
+
+ protected:
+  void doResult(ResultType r) {
+    assert(cp_);
+    if (!r) { // function returns nullptr
+      exception(
+          std::runtime_error("Should not return nullptr instead of a stream"));
+    } else {
+      auto responseAndStream =
+          cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
+      this->ctx_.reset();
+      this->sendReply(
+          std::move(responseAndStream.response),
+          std::move(responseAndStream.stream));
+    }
+  }
+
+  cob_ptr cp_;
+};
+
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
   typedef folly::IOBufQueue(*cob_ptr)(
