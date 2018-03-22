@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <gtest/gtest.h>
-#include <folly/Optional.h>
+
 #include <folly/Conv.h>
+#include <folly/Optional.h>
+#include <folly/container/F14Map.h>
+#include <folly/container/F14Set.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 using namespace apache::thrift::frozen;
@@ -75,13 +79,25 @@ TEST(FrozenMap, Iteration) {
   EXPECT_EQ(30, sumV);
 }
 
-TEST(FrozenHashMap, Basic) {
-  auto& map = usquares;
+namespace {
+template <typename HashMap>
+void testFrozenHashMapBasic() {
+  HashMap map{{1, 1}, {2, 4}, {3, 9}, {4, 16}};
+
   auto fmap = freeze(map);
   EXPECT_EQ(map.at(3), fmap.at(3));
   EXPECT_EQ(map.find(3)->second, fmap.find(3)->second());
   EXPECT_TRUE(fmap.count(2));
   EXPECT_FALSE(fmap.count(8));
+}
+} // namespace
+
+TEST(FrozenHashMap, Basic) {
+  testFrozenHashMapBasic<std::unordered_map<int, int>>();
+  testFrozenHashMapBasic<folly::F14NodeMap<int, int>>();
+  testFrozenHashMapBasic<folly::F14ValueMap<int, int>>();
+  testFrozenHashMapBasic<folly::F14VectorMap<int, int>>();
+  testFrozenHashMapBasic<folly::F14FastMap<int, int>>();
 }
 
 TEST(FrozenHashMap, Iteration) {
@@ -219,9 +235,10 @@ TEST(FrozenSet, Full) {
   EXPECT_FALSE(fprimes.count(24));
 }
 
-
-TEST(FrozenHashSet, Full) {
-  std::unordered_set<uint32_t> primes{2};
+namespace {
+template <typename HashSet>
+void testFrozenHashSetFull() {
+  HashSet primes{2};
   for (uint32_t i = 3; i < 100; i += 2) {
     bool prime = false;
     for (auto& op : primes) {
@@ -240,6 +257,15 @@ TEST(FrozenHashSet, Full) {
 
   EXPECT_TRUE(fprimes.count(23));
   EXPECT_FALSE(fprimes.count(24));
+}
+} // namespace
+
+TEST(FrozenHashSet, Full) {
+  testFrozenHashSetFull<std::unordered_set<uint32_t>>();
+  testFrozenHashSetFull<folly::F14NodeSet<uint32_t>>();
+  testFrozenHashSetFull<folly::F14ValueSet<uint32_t>>();
+  testFrozenHashSetFull<folly::F14VectorSet<uint32_t>>();
+  testFrozenHashSetFull<folly::F14FastSet<uint32_t>>();
 }
 
 TEST(Frozen, IntHashMapBig) {

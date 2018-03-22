@@ -29,14 +29,16 @@
 #include <unordered_set>
 #include <vector>
 
-#include <folly/lang/Bits.h>
 #include <folly/Demangle.h>
-#include <folly/hash/Hash.h>
 #include <folly/MapUtil.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
+#include <folly/container/F14Map-pre.h>
+#include <folly/container/F14Set-pre.h>
 #include <folly/experimental/Bits.h>
+#include <folly/hash/Hash.h>
+#include <folly/lang/Bits.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
