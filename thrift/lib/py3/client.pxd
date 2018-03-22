@@ -12,11 +12,13 @@ from libcpp.typeinfo cimport type_info
 from cpython.ref cimport PyObject
 from libcpp cimport bool
 
-cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
-    # The custome deleter is hard, so instead make cython treat it as class
-    cdef cppclass cRequestChannel_ptr "thrift::py3::RequestChannel_ptr":
-        bool operator bool()
+cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thrift":
+    cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
+        pass
 
+ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
+
+cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         cFollyFuture[string] fut,
         const uint16_t port,
@@ -27,11 +29,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
         StringPiece path,
         const uint32_t connect_timeout,
     )
-    cdef void destroyInEventBaseThread(cRequestChannel_ptr)
     cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef cRequestChannel_ptr move(cRequestChannel_ptr)
 
 cdef class Client:
     cdef object __weakref__

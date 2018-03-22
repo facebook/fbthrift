@@ -14,7 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, destroyInEventBaseThread
+from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
 from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
@@ -144,11 +144,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
 
     def __dealloc__(NestedContainers self):
         if self._cRequestChannel or self._module_NestedContainers_client:
-            print('client was not cleaned up, use the async context manager', file=sys.stderr)
-            if self._module_NestedContainers_client:
-                deref(self._module_NestedContainers_client).disconnect().get()
-            else:
-                destroyInEventBaseThread(thrift.py3.client.move(self._cRequestChannel))
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
 
     async def __aenter__(NestedContainers self):
         await self._connect_future
@@ -156,9 +152,10 @@ cdef class NestedContainers(thrift.py3.client.Client):
             NestedContainers._module_NestedContainers_set_client(
                 self,
                 makeClientWrapper[cNestedContainersAsyncClient, cNestedContainersClientWrapper](
-                    thrift.py3.client.move(self._cRequestChannel)
+                    self._cRequestChannel
                 ),
             )
+            self._cRequestChannel.reset()
         else:
             raise asyncio.InvalidStateError('Client context has been used already')
         for key, value in self._deferred_headers.items():
