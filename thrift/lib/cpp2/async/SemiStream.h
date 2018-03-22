@@ -27,7 +27,9 @@ class SemiStream {
   SemiStream() {}
 
   /* implicit */ SemiStream(Stream<T> stream) : impl_(std::move(stream.impl_)) {
-    impl_->subscribeVia(stream.executor_);
+    if (impl_) {
+      impl_->subscribeVia(stream.executor_);
+    }
   }
 
   operator bool() const {
