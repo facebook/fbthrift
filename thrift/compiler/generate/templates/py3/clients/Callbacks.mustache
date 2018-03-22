@@ -40,13 +40,15 @@ cdef void {{service:name}}_{{function:name}}_callback(
         }})){{/field:type}}
     elif {{/function:exceptions}}{{!
     }}result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        try:
+            raise_py_exception(result.exception())
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         try:
             pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})
         except Exception as ex:
-            {{! Most likely this is only ever unicode decode errors }}
-            pyfuture.set_exception(ex.with_traceback(None))
+            pyfuture.set_exception(ex)
 
 {{/service:functions}}
 {{/program:services}}

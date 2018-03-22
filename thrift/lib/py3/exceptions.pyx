@@ -153,39 +153,32 @@ cdef void addHandler(Handler handler):
     handlers.push_back(handler)
 
 
-cdef object runHandlers(const cFollyExceptionWrapper& ex):
+cdef void runHandlers(const cFollyExceptionWrapper& ex) except *:
     for handler in handlers:
-        pyex = handler(ex)
-        if pyex:
-            return pyex
+        handler(ex)
+        if PyErr_Occurred():
+            break
 
 
-cdef object create_py_exception(const cFollyExceptionWrapper& ex):
+cdef raise_py_exception(const cFollyExceptionWrapper& ex):
     # This will raise an exception if a handler raised one
-    pyex = runHandlers(ex)
-    if pyex:
-        return pyex
+    runHandlers(ex)
 
     pyex = create_ApplicationError(try_make_shared_exception[cTApplicationException](ex))
     if pyex:
-        return pyex
+        raise pyex
 
     pyex = create_TransportError(try_make_shared_exception[cTTransportException](ex))
     if pyex:
-        return pyex
+        raise pyex
 
     pyex = create_LibraryError(try_make_shared_exception[cTLibraryException](ex))
     if pyex:
-        return pyex
+        raise pyex
 
     pyex = create_Error(try_make_shared_exception[cTException](ex))
     if pyex:
-        return pyex
+        raise pyex
 
-    try:
-        # No clue what this is just throw it and let the default cython logic takeover
-        ex.throw_exception()
-    except Exception as pyex:
-        # We don't try to shorten the traceback because this is Unknown
-        # it will be helpful to know the most information possible. 
-        return pyex
+    # No clue what this is just throw it and let the default cython logic takeover
+    ex.throw_exception()

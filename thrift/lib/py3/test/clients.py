@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import asyncio
-import sys
-import traceback
 import types
 import unittest
 
@@ -67,9 +65,6 @@ class ClientTests(unittest.TestCase):
         except TransportError as ex:
             # Test that we can get the errno
             self.assertEqual(ex.errno, 0)
-            # The traceback should be short since it raises inside
-            # the rpc call not down inside the guts of thrift-py3
-            self.assertEqual(len(traceback.extract_tb(sys.exc_info()[2])), 4)
 
     def test_set_persistent_header(self) -> None:
         """
