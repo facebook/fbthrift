@@ -1837,33 +1837,30 @@ void t_go_generator::generate_service_client(t_service* tservice) {
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
   // Constructor function
-  const char* suffix[2] = {"ClientProtocol", "Client"};
-  for (size_t i = 0; i < 2; ++i) {
-    f_service_
-        << indent() << "func New" << serviceName << suffix[i]
-        << "(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
-        << serviceName << "Client {" << endl;
+  f_service_
+      << indent() << "func New" << serviceName
+      << "Client(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
+      << serviceName << "Client {" << endl;
+  indent_up();
+  f_service_ << indent() << "return &" << serviceName << "Client";
+
+  if (!extends.empty()) {
+    f_service_ << "{" << extends_field << ": " << extends_client_new << "(t, iprot, oprot)}"
+               << endl;
+  } else {
     indent_up();
-    f_service_ << indent() << "return &" << serviceName << "Client";
-
-    if (!extends.empty()) {
-      f_service_ << "{" << extends_field << ": " << extends_client_new << "Protocol(t, iprot, oprot)}"
-                 << endl;
-    } else {
-      indent_up();
-      f_service_ << "{Transport: t," << endl;
-      f_service_ << indent() << "ProtocolFactory: nil," << endl;
-      f_service_ << indent() << "InputProtocol: iprot," << endl;
-      f_service_ << indent() << "OutputProtocol: oprot," << endl;
-      f_service_ << indent() << "SeqId: 0," << endl;
-      /*f_service_ << indent() << "Reqs: make(map[int32]interface{})" << endl*/;
-      indent_down();
-      f_service_ << indent() << "}" << endl;
-    }
-
+    f_service_ << "{Transport: t," << endl;
+    f_service_ << indent() << "ProtocolFactory: nil," << endl;
+    f_service_ << indent() << "InputProtocol: iprot," << endl;
+    f_service_ << indent() << "OutputProtocol: oprot," << endl;
+    f_service_ << indent() << "SeqId: 0," << endl;
+    /*f_service_ << indent() << "Reqs: make(map[int32]interface{})" << endl*/;
     indent_down();
-    f_service_ << indent() << "}" << endl << endl;
+    f_service_ << indent() << "}" << endl;
   }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
   // Generate client method implementations
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
@@ -2124,33 +2121,30 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
   // Constructor function
-  const char* suffix[2] = {"ClientProtocol", "Client"};
-  for (size_t i = 0; i < 2; ++i) {
-    f_service_
-        << indent() << "func New" << serviceName << suffix[i]
-        << "(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
-        << serviceName << "Client {" << endl;
+  f_service_
+      << indent() << "func New" << serviceName
+      << "Client(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *"
+      << serviceName << "Client {" << endl;
+  indent_up();
+  f_service_ << indent() << "return &" << serviceName << "Client";
+
+  if (!extends.empty()) {
+    f_service_ << "{" << extends_field << ": " << extends_client_new
+               << "(t, iprot, oprot)}" << endl;
+  } else {
     indent_up();
-    f_service_ << indent() << "return &" << serviceName << "Client";
-
-    if (!extends.empty()) {
-      f_service_ << "{" << extends_field << ": " << extends_client_new
-                 << "Protocol(t, iprot, oprot)}" << endl;
-    } else {
-      indent_up();
-      f_service_ << "{Transport: t," << endl;
-      f_service_ << indent() << "ProtocolFactory: nil," << endl;
-      f_service_ << indent() << "InputProtocol: iprot," << endl;
-      f_service_ << indent() << "OutputProtocol: oprot," << endl;
-      f_service_ << indent() << "SeqId: 0," << endl;
-      /*f_service_ << indent() << "Reqs: make(map[int32]interface{})" << endl*/;
-      indent_down();
-      f_service_ << indent() << "}" << endl;
-    }
-
+    f_service_ << "{Transport: t," << endl;
+    f_service_ << indent() << "ProtocolFactory: nil," << endl;
+    f_service_ << indent() << "InputProtocol: iprot," << endl;
+    f_service_ << indent() << "OutputProtocol: oprot," << endl;
+    f_service_ << indent() << "SeqId: 0," << endl;
+    /*f_service_ << indent() << "Reqs: make(map[int32]interface{})" << endl*/;
     indent_down();
-    f_service_ << indent() << "}" << endl << endl;
+    f_service_ << indent() << "}" << endl;
   }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
 
   // Generate marker to allow users to test for thread safety
   f_service_ << indent() << "func (p *" << serviceName

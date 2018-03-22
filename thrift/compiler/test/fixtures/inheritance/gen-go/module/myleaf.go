@@ -34,12 +34,8 @@ func (client *MyLeafClient) Close() error {
 func NewMyLeafClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyLeafClient {
   return &MyLeafClient{MyNodeClient: NewMyNodeClientFactory(t, f)}}
 
-func NewMyLeafClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafClient {
-  return &MyLeafClient{MyNodeClient: NewMyNodeClientProtocol(t, iprot, oprot)}
-}
-
 func NewMyLeafClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafClient {
-  return &MyLeafClient{MyNodeClient: NewMyNodeClientProtocol(t, iprot, oprot)}
+  return &MyLeafClient{MyNodeClient: NewMyNodeClient(t, iprot, oprot)}
 }
 
 func (p *MyLeafClient) DoLeaf() (err error) {
@@ -122,12 +118,8 @@ type MyLeafThreadsafeClient struct {
 func NewMyLeafThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyLeafThreadsafeClient {
   return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientFactory(t, f)}}
 
-func NewMyLeafThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafThreadsafeClient {
-  return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientProtocol(t, iprot, oprot)}
-}
-
 func NewMyLeafThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyLeafThreadsafeClient {
-  return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClientProtocol(t, iprot, oprot)}
+  return &MyLeafThreadsafeClient{MyNodeThreadsafeClient: NewMyNodeThreadsafeClient(t, iprot, oprot)}
 }
 
 func (p *MyLeafThreadsafeClient) Threadsafe() {}

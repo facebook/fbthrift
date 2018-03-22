@@ -56,15 +56,6 @@ func NewNestedContainersClientFactory(t thrift.Transport, f thrift.ProtocolFacto
   }
 }
 
-func NewNestedContainersClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersClient {
-  return &NestedContainersClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
-}
-
 func NewNestedContainersClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersClient {
   return &NestedContainersClient{Transport: t,
     ProtocolFactory: nil,
@@ -464,15 +455,6 @@ func NewNestedContainersThreadsafeClientFactory(t thrift.Transport, f thrift.Pro
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
     OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
-}
-
-func NewNestedContainersThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *NestedContainersThreadsafeClient {
-  return &NestedContainersThreadsafeClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
     SeqId: 0,
   }
 }

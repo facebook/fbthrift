@@ -90,7 +90,7 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
         }
         if (_ew) {
           auto _subscriber = _channel->getOutput(0);
-          _subscriber->onSubscribe(yarpl::flowable::Subscription::empty());
+          _subscriber->onSubscribe(yarpl::flowable::Subscription::create());
           _subscriber->onError(_ew);
         }
       });
@@ -168,7 +168,7 @@ void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thri
         }
         if (_ew) {
           auto _subscriber = _channel->getOutput(0);
-          _subscriber->onSubscribe(yarpl::flowable::Subscription::empty());
+          _subscriber->onSubscribe(yarpl::flowable::Subscription::create());
           _subscriber->onError(_ew);
         }
       });

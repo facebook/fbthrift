@@ -57,15 +57,6 @@ func NewMyServiceFastClientFactory(t thrift.Transport, f thrift.ProtocolFactory)
   }
 }
 
-func NewMyServiceFastClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceFastClient {
-  return &MyServiceFastClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
-}
-
 func NewMyServiceFastClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceFastClient {
   return &MyServiceFastClient{Transport: t,
     ProtocolFactory: nil,
@@ -495,15 +486,6 @@ func NewMyServiceFastThreadsafeClientFactory(t thrift.Transport, f thrift.Protoc
     ProtocolFactory: f,
     InputProtocol: f.GetProtocol(t),
     OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
-}
-
-func NewMyServiceFastThreadsafeClientProtocol(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceFastThreadsafeClient {
-  return &MyServiceFastThreadsafeClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
     SeqId: 0,
   }
 }
