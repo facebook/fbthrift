@@ -40,13 +40,15 @@ TEST(reflection, thrift_f14_set_traits) {
   apache::thrift::test_thrift_set_traits<folly::F14NodeSet<int>>();
   apache::thrift::test_thrift_set_traits<folly::F14ValueSet<int>>();
   apache::thrift::test_thrift_set_traits<folly::F14VectorSet<int>>();
+  apache::thrift::test_thrift_set_traits<folly::F14FastSet<int>>();
 }
 
 TEST(reflection, thrift_f14_map_traits) {
   apache::thrift::test_thrift_map_traits<folly::F14NodeMap<int, int>>();
   apache::thrift::test_thrift_map_traits<folly::F14ValueMap<int, int>>();
   apache::thrift::test_thrift_map_traits<folly::F14VectorMap<int, int>>();
+  apache::thrift::test_thrift_map_traits<folly::F14FastMap<int, int>>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

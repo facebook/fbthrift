@@ -55,6 +55,10 @@ template <class K, class H, class E, class A>
 struct thrift_set_traits<folly::F14VectorSet<K, H, E, A>>
     : thrift_set_traits_std<folly::F14VectorSet<K, H, E, A>> {};
 
+template <class K, class H, class E, class A>
+struct thrift_set_traits<folly::F14FastSet<K, H, E, A>>
+    : thrift_set_traits_std<folly::F14FastSet<K, H, E, A>> {};
+
 template <class K, class T, class H, class E, class A>
 struct thrift_map_traits<folly::F14ValueMap<K, T, H, E, A>>
     : thrift_map_traits_std<folly::F14ValueMap<K, T, H, E, A>> {};
@@ -66,6 +70,10 @@ struct thrift_map_traits<folly::F14NodeMap<K, T, H, E, A>>
 template <class K, class T, class H, class E, class A>
 struct thrift_map_traits<folly::F14VectorMap<K, T, H, E, A>>
     : thrift_map_traits_std<folly::F14VectorMap<K, T, H, E, A>> {};
+
+template <class K, class T, class H, class E, class A>
+struct thrift_map_traits<folly::F14FastMap<K, T, H, E, A>>
+    : thrift_map_traits_std<folly::F14FastMap<K, T, H, E, A>> {};
 
 } // namespace thrift
 } // namespace apache
