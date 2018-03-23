@@ -43,7 +43,8 @@ class mutator_list {
  private:
   std::vector<std::unique_ptr<mutator>> mutators_;
 };
-}
+
+} // namespace
 
 static void fill_mutators(mutator_list& ms);
 
@@ -68,19 +69,15 @@ static void fill_mutators(mutator_list& ms) {
 
 }
 
-bool mutator::visit(t_program* const program) {
-  program_ = program;
-  return true;
-}
-
-t_type* mutator::resolve_type(t_type* type) {
+static t_type* resolve_type(t_type* type) {
   while (type->is_typedef()) {
     type = dynamic_cast<t_typedef*>(type)->get_type();
   }
   return type;
 }
 
-void mutator::traverse_field(
+static void match_type_with_const_value(
+    t_program* program,
     t_type* long_type,
     t_const_value* value) {
   t_type* type = resolve_type(long_type);
@@ -88,28 +85,28 @@ void mutator::traverse_field(
   if (type->is_list()) {
     auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
     for (auto list_val : value->get_list()) {
-      traverse_field(elem_type, list_val);
+      match_type_with_const_value(program, elem_type, list_val);
     }
   }
   if (type->is_set()) {
     auto* elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
     for (auto set_val : value->get_list()) {
-      traverse_field(elem_type, set_val);
+      match_type_with_const_value(program, elem_type, set_val);
     }
   }
   if (type->is_map()) {
     auto* key_type = dynamic_cast<const t_map*>(type)->get_key_type();
     auto* val_type = dynamic_cast<const t_map*>(type)->get_val_type();
     for (auto map_val : value->get_map()) {
-      traverse_field(key_type, map_val.first);
-      traverse_field(val_type, map_val.second);
+      match_type_with_const_value(program, key_type, map_val.first);
+      match_type_with_const_value(program, val_type, map_val.second);
     }
   }
   if (type->is_struct()) {
     auto* struct_type = dynamic_cast<const t_struct*>(type);
     for (auto map_val : value->get_map()) {
       auto tfield = struct_type->get_member(map_val.first->get_string());
-      traverse_field(tfield->get_type(), map_val.second);
+      match_type_with_const_value(program, tfield->get_type(), map_val.second);
     }
   }
   // Set constant value types as enums when they are declared with integers
@@ -123,10 +120,10 @@ void mutator::traverse_field(
       // than resolving to the enum constant in the parser
       // So we have to resolve the string to the enum constant here instead
       auto str = value->get_string();
-      auto constant = program_->scope()->get_constant(str);
+      auto constant = program->scope()->get_constant(str);
       if (!constant) {
-        auto full_str = program_->get_name() + "." + str;
-        constant = program_->scope()->get_constant(full_str);
+        auto full_str = program->get_name() + "." + str;
+        constant = program->scope()->get_constant(full_str);
       }
       if (!constant) {
         throw std::runtime_error(
@@ -147,34 +144,33 @@ void mutator::traverse_field(
 /**
  * field_type_to_const_value
  */
-bool field_type_to_const_value::visit(t_field* const tfield) {
-  match_type_with_const_value(tfield);
+bool field_type_to_const_value::visit(t_program* const program) {
+  program_ = program;
   return true;
 }
-
-void field_type_to_const_value::match_type_with_const_value(t_field* tfield) {
-  if (!tfield->get_type() || !tfield->get_value()) {
-    return;
+bool field_type_to_const_value::visit(t_field* const tfield) {
+  if (tfield->get_type() && tfield->get_value()) {
+    match_type_with_const_value(
+        program_, tfield->get_type(), tfield->get_value());
   }
-  traverse_field(tfield->get_type(), tfield->get_value());
+  return true;
 }
 
 /**
  * const_type_to_const_value
  */
+bool const_type_to_const_value::visit(t_program* const program) {
+  program_ = program;
+  return true;
+}
 bool const_type_to_const_value::visit(t_const* const tconst) {
-  match_type_with_const_value(tconst);
+  if (tconst->get_type() && tconst->get_value()) {
+    match_type_with_const_value(
+        program_, tconst->get_type(), tconst->get_value());
+  }
   return true;
 }
 
-void const_type_to_const_value::match_type_with_const_value(t_const* tconst) {
-  if (!tconst->get_type() || !tconst->get_value()) {
-    return;
-  }
-
-  traverse_field(tconst->get_type(), tconst->get_value());
-}
-
-}
-}
-}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
