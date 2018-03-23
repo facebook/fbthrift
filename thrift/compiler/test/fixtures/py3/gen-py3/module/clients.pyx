@@ -15,7 +15,7 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
-from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
+from thrift.py3.exceptions cimport try_make_shared_exception, create_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -44,15 +44,12 @@ cdef void SimpleService_get_five_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_add_five_callback(
     cFollyTry[int32_t]&& result,
@@ -60,15 +57,12 @@ cdef void SimpleService_add_five_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_do_nothing_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -76,15 +70,12 @@ cdef void SimpleService_do_nothing_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_concat_callback(
     cFollyTry[string]&& result,
@@ -92,15 +83,12 @@ cdef void SimpleService_concat_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_get_value_callback(
     cFollyTry[int32_t]&& result,
@@ -108,15 +96,12 @@ cdef void SimpleService_get_value_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_negate_callback(
     cFollyTry[cbool]&& result,
@@ -124,15 +109,12 @@ cdef void SimpleService_negate_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_tiny_callback(
     cFollyTry[int8_t]&& result,
@@ -140,15 +122,12 @@ cdef void SimpleService_tiny_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_small_callback(
     cFollyTry[int16_t]&& result,
@@ -156,15 +135,12 @@ cdef void SimpleService_small_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_big_callback(
     cFollyTry[int64_t]&& result,
@@ -172,15 +148,12 @@ cdef void SimpleService_big_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_two_callback(
     cFollyTry[double]&& result,
@@ -188,15 +161,12 @@ cdef void SimpleService_two_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_expected_exception_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -206,15 +176,12 @@ cdef void SimpleService_expected_exception_callback(
     if result.hasException[_module_types.cSimpleException]():
         pyfuture.set_exception(_module_types.SimpleException.create(try_make_shared_exception[_module_types.cSimpleException](result.exception())))
     elif result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_unexpected_exception_callback(
     cFollyTry[int32_t]&& result,
@@ -222,15 +189,12 @@ cdef void SimpleService_unexpected_exception_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_sum_i16_list_callback(
     cFollyTry[int32_t]&& result,
@@ -238,15 +202,12 @@ cdef void SimpleService_sum_i16_list_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_sum_i32_list_callback(
     cFollyTry[int32_t]&& result,
@@ -254,15 +215,12 @@ cdef void SimpleService_sum_i32_list_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_sum_i64_list_callback(
     cFollyTry[int32_t]&& result,
@@ -270,15 +228,12 @@ cdef void SimpleService_sum_i64_list_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_concat_many_callback(
     cFollyTry[string]&& result,
@@ -286,15 +241,12 @@ cdef void SimpleService_concat_many_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_count_structs_callback(
     cFollyTry[int32_t]&& result,
@@ -302,15 +254,12 @@ cdef void SimpleService_count_structs_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_sum_set_callback(
     cFollyTry[int32_t]&& result,
@@ -318,15 +267,12 @@ cdef void SimpleService_sum_set_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_contains_word_callback(
     cFollyTry[cbool]&& result,
@@ -334,15 +280,12 @@ cdef void SimpleService_contains_word_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_get_map_value_callback(
     cFollyTry[string]&& result,
@@ -350,15 +293,12 @@ cdef void SimpleService_get_map_value_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_map_length_callback(
     cFollyTry[int16_t]&& result,
@@ -366,15 +306,12 @@ cdef void SimpleService_map_length_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_sum_map_values_callback(
     cFollyTry[int16_t]&& result,
@@ -382,15 +319,12 @@ cdef void SimpleService_sum_map_values_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_complex_sum_i32_callback(
     cFollyTry[int32_t]&& result,
@@ -398,15 +332,12 @@ cdef void SimpleService_complex_sum_i32_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_repeat_name_callback(
     cFollyTry[string]&& result,
@@ -414,15 +345,12 @@ cdef void SimpleService_repeat_name_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_get_struct_callback(
     cFollyTry[_module_types.cSimpleStruct]&& result,
@@ -430,15 +358,12 @@ cdef void SimpleService_get_struct_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.SimpleStruct.create(make_shared[_module_types.cSimpleStruct](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_fib_callback(
     cFollyTry[vector[int32_t]]&& result,
@@ -446,15 +371,12 @@ cdef void SimpleService_fib_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.List__i32.create(make_shared[vector[int32_t]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_unique_words_callback(
     cFollyTry[cset[string]]&& result,
@@ -462,15 +384,12 @@ cdef void SimpleService_unique_words_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Set__string.create(make_shared[cset[string]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_words_count_callback(
     cFollyTry[cmap[string,int16_t]]&& result,
@@ -478,15 +397,12 @@ cdef void SimpleService_words_count_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Map__string_i16.create(make_shared[cmap[string,int16_t]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_set_enum_callback(
     cFollyTry[_module_types.cAnEnum]&& result,
@@ -494,15 +410,12 @@ cdef void SimpleService_set_enum_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.AnEnum(<int> result.value()))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_list_of_lists_callback(
     cFollyTry[vector[vector[int32_t]]]&& result,
@@ -510,15 +423,12 @@ cdef void SimpleService_list_of_lists_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.List__List__i32.create(make_shared[vector[vector[int32_t]]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_word_character_frequency_callback(
     cFollyTry[cmap[string,cmap[string,int32_t]]]&& result,
@@ -526,15 +436,12 @@ cdef void SimpleService_word_character_frequency_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Map__string_Map__string_i32.create(make_shared[cmap[string,cmap[string,int32_t]]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_list_of_sets_callback(
     cFollyTry[vector[cset[string]]]&& result,
@@ -542,15 +449,12 @@ cdef void SimpleService_list_of_sets_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.List__Set__string.create(make_shared[vector[cset[string]]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_nested_map_argument_callback(
     cFollyTry[int32_t]&& result,
@@ -558,15 +462,12 @@ cdef void SimpleService_nested_map_argument_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_make_sentence_callback(
     cFollyTry[string]&& result,
@@ -574,15 +475,12 @@ cdef void SimpleService_make_sentence_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_get_union_callback(
     cFollyTry[cset[int32_t]]&& result,
@@ -590,15 +488,12 @@ cdef void SimpleService_get_union_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Set__i32.create(make_shared[cset[int32_t]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_get_keys_callback(
     cFollyTry[cset[string]]&& result,
@@ -606,15 +501,12 @@ cdef void SimpleService_get_keys_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Set__string.create(make_shared[cset[string]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_lookup_double_callback(
     cFollyTry[double]&& result,
@@ -622,15 +514,12 @@ cdef void SimpleService_lookup_double_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_retrieve_binary_callback(
     cFollyTry[string]&& result,
@@ -638,15 +527,12 @@ cdef void SimpleService_retrieve_binary_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_contain_binary_callback(
     cFollyTry[cset[string]]&& result,
@@ -654,15 +540,12 @@ cdef void SimpleService_contain_binary_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.Set__binary.create(make_shared[cset[string]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void SimpleService_contain_enum_callback(
     cFollyTry[vector[_module_types.cAnEnum]]&& result,
@@ -670,15 +553,12 @@ cdef void SimpleService_contain_enum_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(_module_types.List__AnEnum.create(make_shared[vector[_module_types.cAnEnum]](result.value())))
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void DerivedService_get_six_callback(
     cFollyTry[int32_t]&& result,
@@ -686,15 +566,12 @@ cdef void DerivedService_get_six_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void RederivedService_get_seven_callback(
     cFollyTry[int32_t]&& result,
@@ -702,15 +579,12 @@ cdef void RederivedService_get_seven_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(result.value())
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 
 cdef object _SimpleService_annotations = _py_types.MappingProxyType({

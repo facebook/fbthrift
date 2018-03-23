@@ -15,7 +15,7 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper
-from thrift.py3.exceptions cimport try_make_shared_exception, raise_py_exception
+from thrift.py3.exceptions cimport try_make_shared_exception, create_py_exception
 from folly cimport cFollyTry, cFollyUnit, c_unit
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
@@ -44,15 +44,12 @@ cdef void MyRoot_do_root_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyNode_do_mid_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -60,15 +57,12 @@ cdef void MyNode_do_mid_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void MyLeaf_do_leaf_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -76,15 +70,12 @@ cdef void MyLeaf_do_leaf_callback(
 ):
     cdef object pyfuture = <object> future
     if result.hasException():
-        try:
-            raise_py_exception(result.exception())
-        except Exception as ex:
-            pyfuture.set_exception(ex)
+        pyfuture.set_exception(create_py_exception(result.exception()))
     else:
         try:
             pyfuture.set_result(None)
         except Exception as ex:
-            pyfuture.set_exception(ex)
+            pyfuture.set_exception(ex.with_traceback(None))
 
 
 cdef object _MyRoot_annotations = _py_types.MappingProxyType({
