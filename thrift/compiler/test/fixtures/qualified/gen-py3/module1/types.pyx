@@ -270,7 +270,7 @@ cdef class List__Enum:
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             citem = deref(self._cpp_obj.get())[index]
-            return Enum(<int> citem)
+            return translate_cpp_enum_to_python(Enum, <int> citem)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -310,7 +310,7 @@ cdef class List__Enum:
             raise StopIteration
         cdef cEnum citem
         for citem in deref(self._cpp_obj):
-            yield Enum(<int> citem)
+            yield translate_cpp_enum_to_python(Enum, <int> citem)
 
     def __repr__(self):
         if not self:
@@ -326,7 +326,7 @@ cdef class List__Enum:
         cdef vector[cEnum].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield Enum(<int> citem)
+            yield translate_cpp_enum_to_python(Enum, <int> citem)
             inc(loc)
 
     def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):

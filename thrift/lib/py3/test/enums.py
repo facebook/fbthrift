@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import unittest
 
+from enum import Enum
 from thrift.py3 import serialize, deserialize, Protocol, BadEnum
-from testing.types import Kind, Perm, File
-from typing import cast
+from testing.types import Color, ColorGroups, Kind, Perm, File
+from typing import cast, Type
 
 
 class EnumTests(unittest.TestCase):
@@ -47,7 +48,90 @@ class EnumTests(unittest.TestCase):
 
     def test_bad_enum_in_struct(self) -> None:
         x = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
-        self.assertIsInstance(x.type, BadEnum)
-        self.assertEqual(x.type.value, 64)
-        self.assertEqual(cast(BadEnum, x.type).enum, Kind)
-        self.assertEqual(int(x.type), 64)
+        self.assertBadEnum(cast(BadEnum, x.type), Kind, 64)
+
+    def test_bad_enum_in_list_index(self) -> None:
+        x = deserialize(ColorGroups, b'{"color_list": [1, 5, 0]}', Protocol.JSON)
+        self.assertEqual(len(x.color_list), 3)
+        self.assertEqual(x.color_list[0], Color.blue)
+        self.assertBadEnum(cast(BadEnum, x.color_list[1]), Color, 5)
+        self.assertEqual(x.color_list[2], Color.red)
+
+    def test_bad_enum_in_list_iter(self) -> None:
+        x = deserialize(ColorGroups, b'{"color_list": [1, 5, 0]}', Protocol.JSON)
+        for idx, v in enumerate(x.color_list):
+            if idx == 0:
+                self.assertEqual(v, Color.blue)
+            elif idx == 1:
+                self.assertBadEnum(cast(BadEnum, v), Color, 5)
+            else:
+                self.assertEqual(v, Color.red)
+
+    def test_bad_enum_in_list_reverse(self) -> None:
+        x = deserialize(ColorGroups, b'{"color_list": [1, 5, 0]}', Protocol.JSON)
+        for idx, v in enumerate(reversed(x.color_list)):
+            if idx == 0:
+                self.assertEqual(v, Color.red)
+            elif idx == 1:
+                self.assertBadEnum(cast(BadEnum, v), Color, 5)
+            else:
+                self.assertEqual(v, Color.blue)
+
+    def test_bad_enum_in_set_iter(self) -> None:
+        x = deserialize(ColorGroups, b'{"color_set": [1, 5, 0]}', Protocol.JSON)
+        for v in x.color_set:
+            if v not in (Color.blue, Color.red):
+                self.assertBadEnum(cast(BadEnum, v), Color, 5)
+
+    def test_bad_enum_in_map_lookup(self) -> None:
+        json = b'{"color_map": {"1": 2, "0": 5, "6": 1, "7": 8}}'
+        x = deserialize(ColorGroups, json, Protocol.JSON)
+        val = x.color_map[Color.red]
+        self.assertBadEnum(cast(BadEnum, val), Color, 5)
+
+    def test_bad_enum_in_map_iter(self) -> None:
+        json = b'{"color_map": {"1": 2, "0": 5, "6": 1, "7": 8}}'
+        x = deserialize(ColorGroups, json, Protocol.JSON)
+        s = set()
+        for k in x.color_map:
+            s.add(k)
+        self.assertEqual(len(s), 4)
+        s.discard(Color.red)
+        s.discard(Color.blue)
+        lst = sorted(s, key=lambda e: cast(BadEnum, e).value)
+        self.assertBadEnum(cast(BadEnum, lst[0]), Color, 6)
+        self.assertBadEnum(cast(BadEnum, lst[1]), Color, 7)
+
+    def test_bad_enum_in_map_values(self) -> None:
+        json = b'{"color_map": {"1": 2, "0": 5, "6": 1, "7": 8}}'
+        x = deserialize(ColorGroups, json, Protocol.JSON)
+        s = set()
+        for k in x.color_map.values():
+            s.add(k)
+        self.assertEqual(len(s), 4)
+        s.discard(Color.green)
+        s.discard(Color.blue)
+        lst = sorted(s, key=lambda e: cast(BadEnum, e).value)
+        self.assertBadEnum(cast(BadEnum, lst[0]), Color, 5)
+        self.assertBadEnum(cast(BadEnum, lst[1]), Color, 8)
+
+    def test_bad_enum_in_map_items(self) -> None:
+        json = b'{"color_map": {"1": 2, "0": 5, "6": 1, "7": 8}}'
+        x = deserialize(ColorGroups, json, Protocol.JSON)
+        for k, v in x.color_map.items():
+            if k == Color.blue:
+                self.assertEqual(v, Color.green)
+            elif k == Color.red:
+                self.assertBadEnum(cast(BadEnum, v), Color, 5)
+            else:
+                ck = cast(BadEnum, k)
+                if ck.value == 6:
+                    self.assertEqual(v, Color.blue)
+                else:
+                    self.assertBadEnum(cast(BadEnum, v), Color, 8)
+
+    def assertBadEnum(self, e: BadEnum, cls: Type[Enum], val: int) -> None:
+        self.assertIsInstance(e, BadEnum)
+        self.assertEqual(e.value, val)
+        self.assertEqual(e.enum, cls)
+        self.assertEqual(int(e), val)

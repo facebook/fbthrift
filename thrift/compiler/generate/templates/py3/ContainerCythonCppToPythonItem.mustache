@@ -43,6 +43,6 @@ citem.
     make_shared[{{> types/CythonCppType}}](citem)){{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}.create(
     make_shared[{{> types/CythonCppType}}](citem)){{/type:map?}}{{!
-}}{{#type:enum}}{{!
-    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-    }}{{enum:name}}(<int> citem){{/type:enum}}
+}}{{#type:enum}}translate_cpp_enum_to_python({{!
+    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}, {{!
+    }}<int> citem){{/type:enum}}

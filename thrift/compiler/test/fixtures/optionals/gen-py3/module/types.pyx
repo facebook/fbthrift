@@ -1192,7 +1192,7 @@ cdef class Map__Animal_string:
         cdef cAnimal citem
         for pair in deref(self._cpp_obj):
             citem = pair.first
-            yield Animal(<int> citem)
+            yield translate_cpp_enum_to_python(Animal, <int> citem)
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1263,7 +1263,7 @@ cdef class Map__Animal_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (Animal(<int> ckey), bytes(citem).decode('UTF-8'))
+            yield (translate_cpp_enum_to_python(Animal, <int> ckey), bytes(citem).decode('UTF-8'))
 
 
 

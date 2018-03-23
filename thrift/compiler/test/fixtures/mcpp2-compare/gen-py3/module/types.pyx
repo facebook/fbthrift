@@ -6359,7 +6359,7 @@ cdef class List__MyEnumA:
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             citem = deref(self._cpp_obj.get())[index]
-            return MyEnumA(<int> citem)
+            return translate_cpp_enum_to_python(MyEnumA, <int> citem)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -6399,7 +6399,7 @@ cdef class List__MyEnumA:
             raise StopIteration
         cdef cMyEnumA citem
         for citem in deref(self._cpp_obj):
-            yield MyEnumA(<int> citem)
+            yield translate_cpp_enum_to_python(MyEnumA, <int> citem)
 
     def __repr__(self):
         if not self:
@@ -6415,7 +6415,7 @@ cdef class List__MyEnumA:
         cdef vector[cMyEnumA].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield MyEnumA(<int> citem)
+            yield translate_cpp_enum_to_python(MyEnumA, <int> citem)
             inc(loc)
 
     def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
@@ -9363,7 +9363,7 @@ cdef class Map__MyEnumA_string:
         cdef cMyEnumA citem
         for pair in deref(self._cpp_obj):
             citem = pair.first
-            yield MyEnumA(<int> citem)
+            yield translate_cpp_enum_to_python(MyEnumA, <int> citem)
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -9434,7 +9434,7 @@ cdef class Map__MyEnumA_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (MyEnumA(<int> ckey), bytes(citem).decode('UTF-8'))
+            yield (translate_cpp_enum_to_python(MyEnumA, <int> ckey), bytes(citem).decode('UTF-8'))
 
 
 

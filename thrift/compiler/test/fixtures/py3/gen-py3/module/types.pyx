@@ -3951,7 +3951,7 @@ cdef class List__AnEnum:
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             citem = deref(self._cpp_obj.get())[index]
-            return AnEnum(<int> citem)
+            return translate_cpp_enum_to_python(AnEnum, <int> citem)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -3991,7 +3991,7 @@ cdef class List__AnEnum:
             raise StopIteration
         cdef cAnEnum citem
         for citem in deref(self._cpp_obj):
-            yield AnEnum(<int> citem)
+            yield translate_cpp_enum_to_python(AnEnum, <int> citem)
 
     def __repr__(self):
         if not self:
@@ -4007,7 +4007,7 @@ cdef class List__AnEnum:
         cdef vector[cAnEnum].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield AnEnum(<int> citem)
+            yield translate_cpp_enum_to_python(AnEnum, <int> citem)
             inc(loc)
 
     def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):

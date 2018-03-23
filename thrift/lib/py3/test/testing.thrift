@@ -112,6 +112,12 @@ struct numerical {
     6: list<double> float_list,
 }
 
+struct ColorGroups {
+    1: list<Color> color_list,
+    2: set<Color> color_set,
+    3: map<Color, Color> color_map,
+}
+
 service TestingService {
     bool invert(1: bool value)
     i32 complex_action(
