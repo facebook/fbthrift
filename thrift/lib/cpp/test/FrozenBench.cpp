@@ -93,7 +93,7 @@ BENCHMARK_RELATIVE(SerializerBinary, iters) {
   benchmarkSerializer<apache::thrift::util::ThriftSerializerBinary>(iters);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 BENCHMARK(Thaw, iters) {
   Team thawed;
@@ -122,7 +122,7 @@ BENCHMARK_RELATIVE(DeserializerBinary, iters) {
   benchmarkDeserializer<apache::thrift::util::ThriftSerializerBinary>(iters);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 const int nEntries = 10000000;
 auto entries = []{
@@ -182,7 +182,7 @@ BENCHMARK_RELATIVE(frozenMap, iters) {
   }
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 BENCHMARK(thawedHashMap, iters) {
   while (iters--) {
@@ -210,7 +210,7 @@ BENCHMARK_RELATIVE(frozenHashMap, iters) {
   }
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 auto bigMap = [] {
   std::map<std::string, std::pair<std::string, std::string>> bigMap;

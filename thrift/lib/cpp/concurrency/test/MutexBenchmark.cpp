@@ -92,7 +92,7 @@ BENCHMARK_RELATIVE(std_construct_and_lock, iters) {
   mallocContentionTest<std::mutex>(iters, 0);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 BENCHMARK(thrift_construct_and_lock_with_malloc_pressure, iters) {
   auto fn = [=]() {
@@ -108,7 +108,7 @@ BENCHMARK_RELATIVE(std_construct_and_lock_with_malloc_pressure, iters) {
   runConcurrently(FLAGS_num_threads, fn);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 /*
  * Thrift's Mutex grabs timers for stats collection, and uses virtual methods.
@@ -125,7 +125,7 @@ BENCHMARK_RELATIVE(std_uncontended, iters) {
   grabLockNTimes(m, iters);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 /*
  * See if there is any difference in the contended case.

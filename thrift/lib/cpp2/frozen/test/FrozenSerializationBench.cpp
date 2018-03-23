@@ -78,7 +78,7 @@ BENCHMARK_RELATIVE(FrozenFreezePreallocate, iters) {
   folly::doNotOptimizeAway(s);
 }
 
-BENCHMARK_DRAW_LINE()
+BENCHMARK_DRAW_LINE();
 
 BENCHMARK(CompactDeserialize, iters) {
   size_t s = 0;
