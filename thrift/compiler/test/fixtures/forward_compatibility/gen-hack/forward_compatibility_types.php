@@ -113,7 +113,7 @@ class OldStructure implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
-      $output->writeMapBegin(\TType::I16, \TType::DOUBLE, count($_val0));
+      $output->writeMapBegin(\TType::I16, \TType::DOUBLE, C\count($_val0));
       if ($_val0 !== null)
       {
         foreach ($_val0 as $kiter1 => $viter2)
@@ -239,7 +239,7 @@ class NewStructure implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
-      $output->writeMapBegin(\TType::I16, \TType::DOUBLE, count($_val0));
+      $output->writeMapBegin(\TType::I16, \TType::DOUBLE, C\count($_val0));
       if ($_val0 !== null)
       {
         foreach ($_val0 as $kiter1 => $viter2)
@@ -365,7 +365,7 @@ class NewStructure2 implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
-      $output->writeMapBegin(\TType::I16, \TType::FLOAT, count($_val0));
+      $output->writeMapBegin(\TType::I16, \TType::FLOAT, C\count($_val0));
       if ($_val0 !== null)
       {
         foreach ($_val0 as $kiter1 => $viter2)
@@ -658,12 +658,12 @@ class NewStructureNested implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('lst', \TType::LST, 1);
-      $output->writeListBegin(\TType::MAP, count($_val0));
+      $output->writeListBegin(\TType::MAP, C\count($_val0));
       if ($_val0 !== null)
       {
         foreach ($_val0 as $iter1)
         {
-          $output->writeMapBegin(\TType::I16, \TType::FLOAT, count($iter1));
+          $output->writeMapBegin(\TType::I16, \TType::FLOAT, C\count($iter1));
           if ($iter1 !== null)
           {
             foreach ($iter1 as $kiter2 => $viter3)
@@ -684,13 +684,13 @@ class NewStructureNested implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('mp', \TType::MAP, 2);
-      $output->writeMapBegin(\TType::I16, \TType::MAP, count($_val4));
+      $output->writeMapBegin(\TType::I16, \TType::MAP, C\count($_val4));
       if ($_val4 !== null)
       {
         foreach ($_val4 as $kiter5 => $viter6)
         {
           $xfer += $output->writeI16($kiter5);
-          $output->writeMapBegin(\TType::I16, \TType::FLOAT, count($viter6));
+          $output->writeMapBegin(\TType::I16, \TType::FLOAT, C\count($viter6));
           if ($viter6 !== null)
           {
             foreach ($viter6 as $kiter7 => $viter8)
@@ -711,12 +711,12 @@ class NewStructureNested implements \IThriftStruct {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('s', \TType::SET, 3);
-      $output->writeSetBegin(\TType::MAP, count($_val9));
+      $output->writeSetBegin(\TType::MAP, C\count($_val9));
       if ($_val9 !== null)
       {
         foreach ($_val9 as $iter10)
         {
-          $output->writeMapBegin(\TType::I16, \TType::FLOAT, count($iter10));
+          $output->writeMapBegin(\TType::I16, \TType::FLOAT, C\count($iter10));
           if ($iter10 !== null)
           {
             foreach ($iter10 as $kiter11 => $viter12)

@@ -1504,7 +1504,7 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('id', $shape_data)) {
+    if (!C\contains_key($shape_data, 'id')) {
       $shape_data['id'] = 0;
     }
     if (!is_int($shape_data['id'])) {
@@ -1587,7 +1587,7 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('id', $shape_data)) {
+    if (!C\contains_key($shape_data, 'id')) {
       $shape_data['id'] = 0;
     }
     if (!is_int($shape_data['id'])) {
@@ -1682,14 +1682,14 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('id', $shape_data)) {
+    if (!C\contains_key($shape_data, 'id')) {
       $shape_data['id'] = 0;
     }
     if (!is_int($shape_data['id'])) {
       return null;
     }
 
-    if (!array_key_exists('data', $shape_data)) {
+    if (!C\contains_key($shape_data, 'data')) {
       $shape_data['data'] = '';
     }
     if (!is_string($shape_data['data'])) {
@@ -1780,14 +1780,14 @@ class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishS
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('id', $shape_data)) {
+    if (!C\contains_key($shape_data, 'id')) {
       $shape_data['id'] = 0;
     }
     if (!is_int($shape_data['id'])) {
       return null;
     }
 
-    if (!array_key_exists('data', $shape_data)) {
+    if (!C\contains_key($shape_data, 'data')) {
       $shape_data['data'] = '';
     }
     if (!is_string($shape_data['data'])) {

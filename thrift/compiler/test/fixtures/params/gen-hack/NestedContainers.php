@@ -1251,7 +1251,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('foo', $shape_data)) {
+    if (!C\contains_key($shape_data, 'foo')) {
       $shape_data['foo'] = Map {};
     }
     if (!is_array($shape_data['foo'])) {
@@ -1368,7 +1368,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('foo', $shape_data)) {
+    if (!C\contains_key($shape_data, 'foo')) {
       $shape_data['foo'] = Map {};
     }
     if (!is_array($shape_data['foo'])) {
@@ -1400,7 +1400,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Map($shape['foo']))->map(
-      $val5 ==> new Set(array_keys($val5)),
+      $val5 ==> new Set(Keyset\keys($val5)),
     );
     return $me;
   }
@@ -1408,7 +1408,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> array_fill_keys($_val0, true),
+        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
       )->toArray(),
     );
   }
@@ -1482,7 +1482,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('foo', $shape_data)) {
+    if (!C\contains_key($shape_data, 'foo')) {
       $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
@@ -1595,7 +1595,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('foo', $shape_data)) {
+    if (!C\contains_key($shape_data, 'foo')) {
       $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
@@ -1627,7 +1627,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Vector($shape['foo']))->map(
-      $val5 ==> new Set(array_keys($val5)),
+      $val5 ==> new Set(Keyset\keys($val5)),
     );
     return $me;
   }
@@ -1635,7 +1635,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> array_fill_keys($_val0, true),
+        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
       )->toArray(),
     );
   }
@@ -1728,7 +1728,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('foo', $shape_data)) {
+    if (!C\contains_key($shape_data, 'foo')) {
       $shape_data['foo'] = Vector {};
     }
     if (!is_array($shape_data['foo'])) {
@@ -1796,7 +1796,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
       $val11 ==> (new Vector($val11))->map(
         $val12 ==> (new Map($val12))->map(
           $val13 ==> (new Map($val13))->map(
-            $val14 ==> new Set(array_keys($val14)),
+            $val14 ==> new Set(Keyset\keys($val14)),
           ),
         ),
       ),
@@ -1810,7 +1810,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->map(
             $_val2 ==> $_val2->map(
-              $_val3 ==> array_fill_keys($_val3, true),
+              $_val3 ==> darray(Dict\fill_keys($_val3, true)),
             )->toArray(),
           )->toArray(),
         )->toArray(),

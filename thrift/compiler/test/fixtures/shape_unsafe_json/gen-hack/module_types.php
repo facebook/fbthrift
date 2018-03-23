@@ -942,7 +942,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
-    $me->set_of_i32 = new Set(array_keys($shape['set_of_i32']));
+    $me->set_of_i32 = new Set(Keyset\keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
     $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
@@ -958,7 +958,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
     );
     $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
-      $val79 ==> new Set(array_keys($val79)),
+      $val79 ==> new Set(Keyset\keys($val79)),
     );
     $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
       $val80 ==> (new Map($val80)),
@@ -969,7 +969,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
     );
     $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
-      $val83 ==> new Set(array_keys($val83)),
+      $val83 ==> new Set(Keyset\keys($val83)),
     );
     $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
       $val84 ==> (new Map($val84))->map(
@@ -990,7 +990,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       $val90 ==> B::__fromShape($val90),
     );
     $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
-    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(array_keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
+    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
     $me->optional_list_of_i32 = Shapes::idx($shape, 'optional_list_of_i32') === null ? null : 
       (new Vector(Shapes::idx($shape, 'optional_list_of_i32')));
     $me->optional_list_of_string = Shapes::idx($shape, 'optional_list_of_string') === null ? null : 
@@ -1013,7 +1013,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       );
     $me->optional_map_of_string_to_set_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32')))->map(
-        $val95 ==> new Set(array_keys($val95)),
+        $val95 ==> new Set(Keyset\keys($val95)),
       );
     return $me;
   }
@@ -1021,7 +1021,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
-      'set_of_i32' => array_fill_keys($this->set_of_i32->toValuesArray(), true),
+      'set_of_i32' => darray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true)),
       'list_of_i32' => $this->list_of_i32->toArray(),
       'list_of_string' => $this->list_of_string->toArray(),
       'map_of_string_to_i32' => $this->map_of_string_to_i32->toArray(),
@@ -1037,7 +1037,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         )->toArray(),
       )->toArray(),
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32->map(
-        $_val0 ==> array_fill_keys($_val0, true),
+        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
       )->toArray(),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32->map(
         $_val0 ==> $_val0->toArray(),
@@ -1048,7 +1048,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         )->toArray(),
       )->toArray(),
       'list_of_set_of_i32' => $this->list_of_set_of_i32->map(
-        $_val0 ==> array_fill_keys($_val0, true),
+        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
       )->toArray(),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
@@ -1069,7 +1069,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         $_val0 ==> $_val0->__toShape(),
       )->toArray(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
-      'optional_set_of_i32' => $this->optional_set_of_i32 === null ? null : array_fill_keys(nullthrows($this->optional_set_of_i32->toValuesArray()), true),
+      'optional_set_of_i32' => $this->optional_set_of_i32 === null ? null : darray(Dict\fill_keys(nullthrows($this->optional_set_of_i32->toValuesArray()), true)),
       'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
       'optional_list_of_string' => $this->optional_list_of_string?->toArray(),
       'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toArray(),
@@ -1085,7 +1085,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         )->toArray(),
       )?->toArray(),
       'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32?->map(
-        $_val0 ==> array_fill_keys($_val0, true),
+        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
       )?->toArray(),
     );
   }

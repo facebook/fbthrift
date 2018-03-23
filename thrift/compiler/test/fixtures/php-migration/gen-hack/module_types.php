@@ -86,7 +86,7 @@ class Foo implements \IThriftStruct {
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', null);
-    if (array_key_exists('b', $vals)) {
+    if (C\contains_key($vals, 'b')) {
       $this->b = idx($vals, 'b', null);
     }
     $this->c = idx($vals, 'c', 7);

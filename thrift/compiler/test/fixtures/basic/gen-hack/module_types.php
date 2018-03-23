@@ -89,21 +89,21 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   ): ?self::TShape {
     $shape_data = $json_data;
 
-    if (!array_key_exists('MyIntField', $shape_data)) {
+    if (!C\contains_key($shape_data, 'MyIntField')) {
       $shape_data['MyIntField'] = 0;
     }
     if (!is_int($shape_data['MyIntField'])) {
       return null;
     }
 
-    if (!array_key_exists('MyStringField', $shape_data)) {
+    if (!C\contains_key($shape_data, 'MyStringField')) {
       $shape_data['MyStringField'] = '';
     }
     if (!is_string($shape_data['MyStringField'])) {
       return null;
     }
 
-    if (!array_key_exists('MyDataField', $shape_data)) {
+    if (!C\contains_key($shape_data, 'MyDataField')) {
       $shape_data['MyDataField'] = null;
     }
     if (!is_null($shape_data['MyDataField'])) {

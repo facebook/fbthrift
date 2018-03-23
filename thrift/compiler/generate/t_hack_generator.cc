@@ -1608,7 +1608,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(std::os
   if (t->is_struct()) {
     out << "$" << tmp << "->__toShape()," << endl;
   } else if (t->is_set()) {
-    out << "array_fill_keys($" << tmp << ", true)," << endl;
+    out << "darray(Dict\\fill_keys($" << tmp << ", true))," << endl;
   } else if (t->is_map() ||
              t->is_list()) {
 
@@ -2022,8 +2022,8 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
     // The logic below needs to be reworked so that dval is used for nullable
     // types (if available). See D4609418 for more information.
     if (!shape_unsafe_json_) {
-      indent(out) << "if (!array_key_exists('"
-                  << (*m_iter)->get_name() << "', $shape_data)) {" << endl;
+      indent(out) << "if (!C\\contains_key($shape_data, '"
+                  << (*m_iter)->get_name() << "')) {" << endl;
       if (nullable) {
         indent(out) << "  $shape_data['" << (*m_iter)->get_name() << "'] = null;"
                     << endl;
@@ -2096,7 +2096,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
       if (arraysets_ || arrays_) {
         val << source.str() << ";" << endl;
       } else {
-        val << "new Set(array_keys("
+        val << "new Set(Keyset\\keys("
             << (nullable ? "nullthrows(" : "")
             << source.str()
             << (nullable ? ")" : "")
@@ -2162,7 +2162,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
             if (val_type->is_set()) {
               string tmp = namer("val");
-              indent(val) << "$" << tmp << " ==> new Set(array_keys($" << tmp << "))," << endl;
+              indent(val) << "$" << tmp << " ==> new Set(Keyset\\keys($" << tmp << "))," << endl;
               break;
             } else if (val_type->is_map() || val_type->is_list()) {
               string tmp = namer("val");
@@ -2294,11 +2294,11 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
         if (arraysets_ || arrays_) {
           val << "$this->" << (*m_iter)->get_name() << "," << endl;
         } else {
-          val << "array_fill_keys("
+          val << "darray(Dict\\fill_keys("
               << (nullable ? "nullthrows(" : "")
               << "$this->" << (*m_iter)->get_name() << "->toValuesArray()"
               << (nullable ? ")" : "")
-              << ", true)," << endl;
+              << ", true))," << endl;
         }
       }
     } else if (t->is_struct()) {
@@ -2586,7 +2586,7 @@ void t_hack_generator::_generate_php_struct_definition(
       } else {
         if ((*m_iter)->get_req() == t_field::T_OPTIONAL && (*m_iter)->get_value() == nullptr) {
           out <<
-            indent() << "if (array_key_exists('" << (*m_iter)->get_name() << "', $vals)) {" << endl;
+            indent() << "if (C\\contains_key($vals, '" << (*m_iter)->get_name() << "')) {" << endl;
           indent_up();
         }
         out <<
@@ -4783,17 +4783,17 @@ void t_hack_generator::generate_serialize_container(ofstream& out,
       "$output->writeMapBegin(" <<
       type_to_enum(((t_map*)ttype)->get_key_type()) << ", " <<
       type_to_enum(((t_map*)ttype)->get_val_type()) << ", " <<
-      "count($" << prefix << "));" << endl;
+      "C\\count($" << prefix << "));" << endl;
   } else if (ttype->is_set()) {
     indent(out) <<
       "$output->writeSetBegin(" <<
       type_to_enum(((t_set*)ttype)->get_elem_type()) << ", " <<
-      "count($" << prefix << "));" << endl;
+      "C\\count($" << prefix << "));" << endl;
   } else if (ttype->is_list()) {
     indent(out) <<
       "$output->writeListBegin(" <<
       type_to_enum(((t_list*)ttype)->get_elem_type()) << ", " <<
-      "count($" << prefix << "));" << endl;
+      "C\\count($" << prefix << "));" << endl;
   }
 
   indent(out) <<
