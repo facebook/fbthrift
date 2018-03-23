@@ -55,7 +55,7 @@ class Foo implements \IThriftStruct {
       'type' => \TType::BOOL,
       ],
     ];
-  public static Map<string, int> $_TFIELDMAP = Map {
+  public static ConstMap<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
     'c' => 3,
@@ -66,12 +66,12 @@ class Foo implements \IThriftStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public Vector<string> $a;
+  public ConstVector<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?Map<string, Vector<Set<int>>> $b;
+  public ?ConstMap<string, ConstVector<ConstSet<int>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -83,7 +83,7 @@ class Foo implements \IThriftStruct {
    */
   public bool $d;
 
-  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
+  public function __construct(?ConstVector<string> $a = null, ?ConstMap<string, ConstVector<ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
     if ($a === null) {
       $this->a = Vector {};
     } else {
@@ -121,7 +121,7 @@ class Baz extends \TException implements \IThriftStruct {
       'type' => \TType::STRING,
       ],
     ];
-  public static Map<string, int> $_TFIELDMAP = Map {
+  public static ConstMap<string, int> $_TFIELDMAP = Map {
     'message' => 1,
   };
   const int STRUCTURAL_ID = 2427562471238739676;

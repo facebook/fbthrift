@@ -58,6 +58,7 @@ class t_hack_generator : public t_oop_generator {
     generate_legacy_read_write_ = option_is_specified(parsed_options, "generate_legacy_read_write");
     no_use_hack_collections_ = option_is_specified(parsed_options, "no_use_hack_collections");
     nullable_everything_ = option_is_specified(parsed_options, "nullable_everything");
+    const_collections_ = option_is_specified(parsed_options, "const_collections");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -556,6 +557,11 @@ class t_hack_generator : public t_oop_generator {
    * True to force client methods to accept null arguments. Only used for migrations
    */
   bool nullable_everything_;
+
+  /**
+   * True to force hack collection members be const collection objects
+   */
+  bool const_collections_;
 
   std::string array_keyword_;
 };
@@ -1514,7 +1520,8 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
   indent_down();
   indent(out) << "  ];" << endl;
 
-  indent(out) << "public static Map<string, int> $_TFIELDMAP = Map {" << endl;
+  indent(out) << "public static " << (const_collections_ ? "Const" : "")
+              << "Map<string, int> $_TFIELDMAP = Map {" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
     indent(out) << "  '" << (*m_iter)->get_name() << "' => " << (*m_iter)->get_key() << "," << endl;
@@ -2052,7 +2059,10 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
   if (shape_arraykeys_) {
     indent(out) << "public static function __stringifyMapKeys<T>("
-                << "Map<arraykey, T> $m): Map<string, T> {" << endl;
+                << (const_collections_ ? "Const" : "")
+                << "Map<arraykey, T> $m): "
+                << (const_collections_ ? "Const" : "")
+                << "Map<string, T> {" << endl;
     indent(out) << "  $new_map = Map {};" << endl;
     indent(out) << "  foreach ($m as $k => $v) {" << endl;
     indent(out) << "    $new_map[(string)$k] = $v;" << endl;
@@ -2532,8 +2542,9 @@ void t_hack_generator::_generate_php_struct_definition(
   if (map_construct_) {
     if (strict_types_) {
       // Generate constructor from Map
-      out <<
-        indent() << "public function __construct(Map<string, mixed> $vals = Map {}) {" << endl;
+      out << indent() << "public function __construct("
+          << (const_collections_ ? "Const" : "")
+          << "Map<string, mixed> $vals = Map {}) {" << endl;
     } else {
       // Generate constructor from Indexish
       out <<
@@ -3610,7 +3621,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     } else if (shape) {
       prefix = array_migration_ ? "varray" : "vec";
     } else {
-      prefix = "Vector";
+      prefix = const_collections_ ? "ConstVector" : "Vector";
     }
     return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
   } else if (ttype->is_map()) {
@@ -3622,7 +3633,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = "Map";
+      prefix = const_collections_ ? "ConstMap" : "Map";
     }
     string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), false, shape);
     if (shape &&
@@ -3640,7 +3651,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = "Set";
+      prefix = const_collections_ ? "ConstSet" : "Set";
     }
     string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
     return prefix + "<" + type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape) + suffix;
@@ -5112,4 +5123,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
 "    lazy_constants   Generate lazy initialization code for global constants.\n"
 "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
+"    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
 );

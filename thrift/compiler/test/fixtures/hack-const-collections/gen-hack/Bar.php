@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): string;
+  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string;
 }
 
 /**
@@ -47,7 +47,7 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends ThriftClientBase;
 
-  protected function sendImpl_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): int {
+  protected function sendImpl_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(
       $a,
@@ -164,7 +164,7 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -176,7 +176,7 @@ class BarClient extends ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): string {
+  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -190,14 +190,14 @@ class BarClient extends ThriftClientBase implements BarIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function gen_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function gen_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -361,7 +361,7 @@ class Bar_baz_args implements \IThriftStruct {
       'type' => \TType::I64,
       ],
     ];
-  public static Map<string, int> $_TFIELDMAP = Map {
+  public static ConstMap<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
     'c' => 3,
@@ -369,13 +369,13 @@ class Bar_baz_args implements \IThriftStruct {
     'e' => 5,
   };
   const int STRUCTURAL_ID = 7865027497865509792;
-  public Set<int> $a;
-  public Vector<Map<int, Set<string>>> $b;
+  public ConstSet<int> $a;
+  public ConstVector<ConstMap<int, ConstSet<string>>> $b;
   public int $c;
   public ?Foo $d;
   public int $e;
 
-  public function __construct(?Set<int> $a = null, ?Vector<Map<int, Set<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
+  public function __construct(?ConstSet<int> $a = null, ?ConstVector<ConstMap<int, ConstSet<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
     if ($a === null) {
       $this->a = Set {};
     } else {
@@ -414,7 +414,7 @@ class Bar_baz_result implements \IThriftStruct {
       'type' => \TType::STRING,
       ],
     ];
-  public static Map<string, int> $_TFIELDMAP = Map {
+  public static ConstMap<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
   const int STRUCTURAL_ID = 1365128170602685579;
