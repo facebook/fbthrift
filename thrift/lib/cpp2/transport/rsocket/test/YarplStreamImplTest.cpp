@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#include <thrift/lib/cpp2/transport/rsocket/client/TakeFirst.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 #include <yarpl/flowable/TestSubscriber.h>
 
@@ -122,5 +123,203 @@ TEST(YarplStreamImplTest, EncodeDecode) {
   ASSERT_STREQ(mIn.get_message().c_str(), mOut.get_message().c_str());
   ASSERT_EQ(mIn.get_timestamp(), mOut.get_timestamp());
 }
+
+TEST(FlowableTest, TakeFirstNormal) {
+  folly::ScopedEventBaseThread evbThread;
+
+  auto a = Flowable<>::range(1, 1);
+  auto b = Flowable<>::range(2, 1);
+  auto combined = a->concatWith(b);
+
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(std::move(combined));
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            EXPECT_EQ(run(result.second), std::vector<int64_t>({2}));
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstDontSubscribe) {
+  folly::ScopedEventBaseThread evbThread;
+
+  auto a = Flowable<>::range(1, 1);
+  auto b = Flowable<>::range(2, 1);
+  auto combined = a->concatWith(b);
+
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(std::move(combined));
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            // Do not subscribe to the `result.second`
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstNoResponse) {
+  folly::ScopedEventBaseThread evbThread;
+  folly::Baton<> baton;
+  auto takeFirst =
+      std::make_shared<TakeFirst<int64_t>>(Flowable<int64_t>::never());
+  takeFirst->get().via(evbThread.getEventBase()).then([&baton](auto&&) {
+    baton.post();
+  });
+
+  ASSERT_FALSE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstErrorResponse) {
+  folly::ScopedEventBaseThread evbThread;
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(
+      Flowable<int64_t>::error(std::runtime_error("error")));
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then([](auto&&) { ASSERT(false); })
+      .onError([&baton](folly::exception_wrapper ew) {
+        ASSERT_STREQ(ew.what().c_str(), "std::runtime_error: error");
+        baton.post();
+      });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstStreamError) {
+  folly::ScopedEventBaseThread evbThread;
+  folly::Baton<> baton;
+
+  auto first = Flowable<int64_t>::just(1);
+  auto error = Flowable<int64_t>::error(std::runtime_error("error"));
+  auto combined = first->concatWith(error);
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(combined);
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            auto subscriber = std::make_shared<TestSubscriber<int64_t>>(1);
+            result.second->subscribe(subscriber);
+
+            EXPECT_TRUE(subscriber->isError());
+            EXPECT_EQ(subscriber->getErrorMsg(), "error");
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstMultiSubscribe) {
+  folly::ScopedEventBaseThread evbThread;
+
+  auto a = Flowable<>::range(1, 1);
+  auto b = Flowable<>::range(2, 1);
+  auto combined = a->concatWith(b);
+
+  // First subscribe
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(combined);
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            EXPECT_EQ(run(result.second), std::vector<int64_t>({2}));
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+
+  // Second subscribe
+  baton.reset();
+  takeFirst = std::make_shared<TakeFirst<int64_t>>(combined);
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            EXPECT_EQ(run(result.second), std::vector<int64_t>({2}));
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
+  folly::ScopedEventBaseThread evbThread;
+
+  auto a = Flowable<>::range(1, 1);
+  auto b = Flowable<>::range(2, 1);
+  auto combined = a->concatWith(b);
+
+  // First subscribe
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(combined);
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            EXPECT_EQ(run(result.second), std::vector<int64_t>({2}));
+
+            // Second subscribe
+            auto subscriber = std::make_shared<TestSubscriber<int64_t>>(10);
+            result.second->subscribe(subscriber);
+
+            EXPECT_TRUE(subscriber->isError());
+            EXPECT_EQ(subscriber->getErrorMsg(), "already subscribed");
+            EXPECT_EQ(subscriber->values(), std::vector<int64_t>({}));
+
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+}
+
+TEST(FlowableTest, TakeFirstMultiGet) {
+  folly::ScopedEventBaseThread evbThread;
+
+  auto a = Flowable<>::range(1, 1);
+  auto b = Flowable<>::range(2, 1);
+  auto combined = a->concatWith(b);
+
+  // First `get` call
+  folly::Baton<> baton;
+  auto takeFirst = std::make_shared<TakeFirst<int64_t>>(combined);
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then(
+          [&baton](
+              std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&& result) {
+            EXPECT_EQ(1, result.first);
+            EXPECT_EQ(run(result.second), std::vector<int64_t>({2}));
+            baton.post();
+          });
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+
+  // Second `get` call
+  try {
+    takeFirst->get();
+    ASSERT(false);
+  } catch (std::logic_error& e) {
+    EXPECT_STREQ(e.what(), "Future already retrieved");
+  }
+}
+
 } // namespace thrift
 } // namespace apache
