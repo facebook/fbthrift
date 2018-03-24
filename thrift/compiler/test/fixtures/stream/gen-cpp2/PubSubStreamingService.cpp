@@ -13,188 +13,112 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
-#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
   return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
 }
 
-void PubSubStreamingServiceSvIf::client(apache::thrift::YarplStream<int32_t> /*foo*/) {
+void PubSubStreamingServiceSvIf::client(apache::thrift::SemiStream<int32_t> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("client");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_client(apache::thrift::YarplStream<int32_t> foo) {
-  return apache::thrift::detail::si::future([&] { return client(foo); });
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_client(apache::thrift::SemiStream<int32_t> foo) {
+  return apache::thrift::detail::si::future([&] { return client(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_client(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::YarplStream<int32_t> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_client(foo); });
+void PubSubStreamingServiceSvIf::async_tm_client(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_client(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::server(apache::thrift::YarplStream<int32_t> /*foo*/) {
+void PubSubStreamingServiceSvIf::server(apache::thrift::SemiStream<int32_t> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("server");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_server(apache::thrift::YarplStream<int32_t> foo) {
-  return apache::thrift::detail::si::future([&] { return server(foo); });
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_server(apache::thrift::SemiStream<int32_t> foo) {
+  return apache::thrift::detail::si::future([&] { return server(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::YarplStream<int32_t> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_server(foo); });
+void PubSubStreamingServiceSvIf::async_tm_server(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_server(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::both(apache::thrift::YarplStream<int32_t> /*foo*/) {
+void PubSubStreamingServiceSvIf::both(apache::thrift::SemiStream<int32_t> /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("both");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_both(apache::thrift::YarplStream<int32_t> foo) {
-  return apache::thrift::detail::si::future([&] { return both(foo); });
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_both(apache::thrift::SemiStream<int32_t> foo) {
+  return apache::thrift::detail::si::future([&] { return both(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::YarplStream<int32_t> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_both(foo); });
+void PubSubStreamingServiceSvIf::async_tm_both(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_both(std::move(foo)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t i32_from, int32_t i32_to) {
-  auto request = callback->getRequest();
-  auto thriftRequest = static_cast<apache::thrift::ThriftRequest*>(request);
-  auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
-  apache::thrift::detail::si::async_tm_oneway(
-      this, std::move(callback), [&, this] {
-        folly::exception_wrapper _ew;
-        try {
-          auto _result = returnstream(i32_from, i32_to);
-          if (!_result) {
-            _ew = folly::make_exception_wrapper<
-                apache::thrift::TApplicationException>(
-                apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT,
-                "User defined stream returning function should not return nullptr");
-          } else {
-            auto _mappedOutput = _result->map([](const int32_t& item) {
-              using codec = apache::thrift::CompactSerializer;
-              return codec::serialize<folly::IOBufQueue>(item).move();
-            });
-            auto _subscriber = _channel->getOutput(0);
-            _mappedOutput->subscribe(_subscriber);
-          }
-        } catch (const apache::thrift::TApplicationException& ex) {
-          _ew = ex;
-        } catch (const std::exception& ex) {
-          _ew = folly::make_exception_wrapper<
-              apache::thrift::TApplicationException>(
-              apache::thrift::TApplicationException::TApplicationExceptionType::
-                  UNKNOWN,
-              folly::exceptionStr(ex).toStdString());
-        }
-        if (_ew) {
-          auto _subscriber = _channel->getOutput(0);
-          _subscriber->onSubscribe(yarpl::flowable::Subscription::create());
-          _subscriber->onError(_ew);
-        }
-      });
-}
-
-apache::thrift::YarplStream<int32_t> PubSubStreamingServiceSvIf::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
+apache::thrift::Stream<int32_t> PubSubStreamingServiceSvIf::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
 }
 
+folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceSvIf::future_returnstream(int32_t i32_from, int32_t i32_to) {
+  return apache::thrift::detail::si::future([&] { return returnstream(i32_from, i32_to); });
+}
 
-void PubSubStreamingServiceSvIf::takesstream(apache::thrift::YarplStream<int32_t> /*instream*/, int32_t /*other_param*/) {
+void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_returnstream(i32_from, i32_to); });
+}
+
+void PubSubStreamingServiceSvIf::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("takesstream");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_takesstream(apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
-  return apache::thrift::detail::si::future([&] { return takesstream(instream, other_param); });
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) {
+  return apache::thrift::detail::si::future([&] { return takesstream(std::move(instream), other_param); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::YarplStream<int32_t> instream, int32_t other_param) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_takesstream(instream, other_param); });
+void PubSubStreamingServiceSvIf::async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> instream, int32_t other_param) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_takesstream(std::move(instream), other_param); });
 }
 
-void PubSubStreamingServiceSvIf::clientthrows(apache::thrift::YarplStream<int32_t> /*foostream*/) {
+void PubSubStreamingServiceSvIf::clientthrows(apache::thrift::SemiStream<int32_t> /*foostream*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("clientthrows");
 }
 
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_clientthrows(apache::thrift::YarplStream<int32_t> foostream) {
-  return apache::thrift::detail::si::future([&] { return clientthrows(foostream); });
+folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_clientthrows(apache::thrift::SemiStream<int32_t> foostream) {
+  return apache::thrift::detail::si::future([&] { return clientthrows(std::move(foostream)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_clientthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::YarplStream<int32_t> foostream) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_clientthrows(foostream); });
+void PubSubStreamingServiceSvIf::async_tm_clientthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foostream) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_clientthrows(std::move(foostream)); });
 }
 
-void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t firstparam) {
-  auto request = callback->getRequest();
-  auto thriftRequest = static_cast<apache::thrift::ThriftRequest*>(request);
-  auto _channel = std::dynamic_pointer_cast<apache::thrift::StreamThriftChannelBase>(thriftRequest->getChannel());
-  apache::thrift::detail::si::async_tm_oneway(
-      this, std::move(callback), [&, this] {
-        auto _input = yarpl::flowable::internal::flowableFromSubscriber<std::unique_ptr<folly::IOBuf>>(
-            [_channel](std::shared_ptr<yarpl::flowable::Subscriber<
-                          std::unique_ptr<folly::IOBuf>>> subscriber) {
-              _channel->setInput(0, subscriber);
-            });
-        auto _mappedInput =
-            _input->map([](std::unique_ptr<folly::IOBuf> buffer) {
-              using codec = apache::thrift::CompactSerializer;
-              return codec::deserialize<int32_t>(buffer.get());
-            });
-        folly::exception_wrapper _ew;
-        try {
-          auto _result = different(std::move(_mappedInput), firstparam);
-          if (!_result) {
-            _ew = folly::make_exception_wrapper<
-                apache::thrift::TApplicationException>(
-                apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT,
-                "User defined stream returning function should not return nullptr");
-          } else {
-            auto _mappedOutput = _result->map([](const std::string& item) {
-              using codec = apache::thrift::CompactSerializer;
-              return codec::serialize<folly::IOBufQueue>(item).move();
-            });
-            auto _subscriber = _channel->getOutput(0);
-            _mappedOutput->subscribe(_subscriber);
-          }
-        } catch (const apache::thrift::TApplicationException& ex) {
-          _ew = ex;
-        } catch (const std::exception& ex) {
-          _ew = folly::make_exception_wrapper<
-              apache::thrift::TApplicationException>(
-              apache::thrift::TApplicationException::TApplicationExceptionType::
-                  UNKNOWN,
-              folly::exceptionStr(ex).toStdString());
-        }
-        if (_ew) {
-          auto _subscriber = _channel->getOutput(0);
-          _subscriber->onSubscribe(yarpl::flowable::Subscription::create());
-          _subscriber->onError(_ew);
-        }
-      });
-}
-
-apache::thrift::YarplStream<std::string> PubSubStreamingServiceSvIf::different(apache::thrift::YarplStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
+apache::thrift::Stream<std::string> PubSubStreamingServiceSvIf::different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("different");
 }
 
-
-void PubSubStreamingServiceSvNull::client(apache::thrift::YarplStream<int32_t> /*foo*/) {}
-
-void PubSubStreamingServiceSvNull::server(apache::thrift::YarplStream<int32_t> /*foo*/) {}
-
-void PubSubStreamingServiceSvNull::both(apache::thrift::YarplStream<int32_t> /*foo*/) {}
-
-apache::thrift::YarplStream<int32_t> PubSubStreamingServiceSvNull::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
-  return 0;
+folly::Future<apache::thrift::Stream<std::string>> PubSubStreamingServiceSvIf::future_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) {
+  return apache::thrift::detail::si::future([&] { return different(std::move(foo), firstparam); });
 }
 
-void PubSubStreamingServiceSvNull::takesstream(apache::thrift::YarplStream<int32_t> /*instream*/, int32_t /*other_param*/) {}
+void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_different(std::move(foo), firstparam); });
+}
 
-void PubSubStreamingServiceSvNull::clientthrows(apache::thrift::YarplStream<int32_t> /*foostream*/) {}
+void PubSubStreamingServiceSvNull::client(apache::thrift::SemiStream<int32_t> /*foo*/) {}
 
-apache::thrift::YarplStream<std::string> PubSubStreamingServiceSvNull::different(apache::thrift::YarplStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
-  return 0;
+void PubSubStreamingServiceSvNull::server(apache::thrift::SemiStream<int32_t> /*foo*/) {}
+
+void PubSubStreamingServiceSvNull::both(apache::thrift::SemiStream<int32_t> /*foo*/) {}
+
+apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
+  return {};
+}
+
+void PubSubStreamingServiceSvNull::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {}
+
+void PubSubStreamingServiceSvNull::clientthrows(apache::thrift::SemiStream<int32_t> /*foostream*/) {}
+
+apache::thrift::Stream<std::string> PubSubStreamingServiceSvNull::different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
+  return {};
 }
 
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {

@@ -583,6 +583,8 @@ class mstch_type : public mstch_base {
             {"type:struct?", &mstch_type::is_struct},
             {"type:enum?", &mstch_type::is_enum},
             {"type:stream?", &mstch_type::is_stream},
+            {"type:streamresponse?", &mstch_type::is_streamresponse},
+            {"type:extratype?", &mstch_type::has_extratype},
             {"type:deprecated_stream?", &mstch_type::is_deprecated_stream},
             {"type:service?", &mstch_type::is_service},
             {"type:base?", &mstch_type::is_base},
@@ -596,6 +598,7 @@ class mstch_type : public mstch_base {
             {"type:listElemType", &mstch_type::get_list_type},
             {"type:setElemType", &mstch_type::get_set_type},
             {"type:streamElemType", &mstch_type::get_stream_elem_type},
+            {"type:streamResponseType", &mstch_type::get_stream_response_type},
             {"type:keyType", &mstch_type::get_key_type},
             {"type:valueType", &mstch_type::get_value_type},
             {"type:typedefType", &mstch_type::get_typedef_type},
@@ -644,6 +647,12 @@ class mstch_type : public mstch_base {
   mstch::node is_stream() {
     return resolved_type_->is_pubsub_stream();
   }
+  mstch::node is_streamresponse() {
+    return resolved_type_->is_streamresponse();
+  }
+  mstch::node has_extratype() {
+    return resolved_type_->has_extratype();
+  }
   mstch::node is_deprecated_stream() {
     return resolved_type_->is_stream();
   }
@@ -679,6 +688,7 @@ class mstch_type : public mstch_base {
   mstch::node get_value_type();
   mstch::node get_typedef_type();
   mstch::node get_stream_elem_type();
+  mstch::node get_stream_response_type();
 
  protected:
   t_type const* type_;
@@ -811,7 +821,6 @@ class mstch_function : public mstch_base {
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
-            {"function:comma_nostream", &mstch_function::has_args_nostream},
             {"function:eb", &mstch_function::event_based},
             {"function:priority", &mstch_function::priority},
             {"function:args_without_streams",
@@ -835,16 +844,6 @@ class mstch_function : public mstch_base {
   mstch::node has_args() {
     if (!function_->get_arglist()->get_members().empty()) {
       return std::string(", ");
-    }
-    return std::string();
-  }
-  mstch::node has_args_nostream() {
-    auto& members = function_->get_arglist()->get_members();
-    if (!members.empty()) {
-      bool anyStreams = function_->any_stream_params();
-      if (!anyStreams || function_->get_arglist()->get_members().size() > 1) {
-        return std::string(", ");
-      }
     }
     return std::string();
   }

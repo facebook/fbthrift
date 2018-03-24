@@ -27,14 +27,15 @@
  */
 class t_stream : public t_type {
  public:
-  explicit t_stream(t_type* elem_type) :
-    elem_type_(elem_type) {}
+  explicit t_stream(t_type* elem_type) : elem_type_(elem_type) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
   }
 
-  bool is_stream() const override { return true; }
+  bool is_stream() const override {
+    return true;
+  }
 
   std::string get_full_name() const override {
     return "stream<" + elem_type_->get_full_name() + ">";
@@ -44,7 +45,9 @@ class t_stream : public t_type {
     return "stream<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_STREAM; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_STREAM;
+  }
 
  private:
   t_type* elem_type_;
@@ -74,8 +77,39 @@ class t_pubsub_stream : public t_type {
     return TypeValue::TYPE_I32;
   }
 
- private:
+ protected:
   t_type* elem_type_;
+};
+
+class t_stream_response : public t_pubsub_stream {
+ public:
+  explicit t_stream_response(t_type* elem_type, t_type* extra_type = nullptr)
+      : t_pubsub_stream(elem_type), extra_type_(extra_type) {}
+
+  t_type* get_extra_type() const {
+    return extra_type_;
+  }
+
+  bool is_streamresponse() const override {
+    return true;
+  }
+
+  bool has_extratype() const override {
+    return (bool)(extra_type_);
+  }
+
+  std::string get_full_name() const override {
+    return "streamresponse " + elem_type_->get_full_name() +
+        (has_extratype() ? (", " + extra_type_->get_full_name()) : "");
+  }
+
+  std::string get_impl_full_name() const override {
+    return "streamresponse " + elem_type_->get_impl_full_name() +
+        (has_extratype() ? (", " + extra_type_->get_impl_full_name()) : "");
+  }
+
+ private:
+  t_type* extra_type_;
 };
 
 #endif

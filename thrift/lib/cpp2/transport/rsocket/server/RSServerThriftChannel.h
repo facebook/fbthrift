@@ -37,14 +37,14 @@ namespace thrift {
  *   The server uses the channel's "getOutput()" method to obtain a stream and
  *   to use it for streaming messages.
  */
-class StreamThriftChannelBase : public ThriftChannelIf {
+class RSServerThriftChannel : public ThriftChannelIf {
  public:
-  using SubscriberRef = std::shared_ptr<
-      yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>;
+  using SubscriberRef =
+      std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>;
 
-  explicit StreamThriftChannelBase(folly::EventBase* evb) : evb_(evb) {}
+  explicit RSServerThriftChannel(folly::EventBase* evb) : evb_(evb) {}
 
-  virtual ~StreamThriftChannelBase() = default;
+  virtual ~RSServerThriftChannel() = default;
 
   folly::EventBase* getEventBase() noexcept override {
     return evb_;
@@ -63,12 +63,18 @@ class StreamThriftChannelBase : public ThriftChannelIf {
     LOG(FATAL) << "Server should not call this function.";
   }
 
-  virtual void setInput(int32_t, SubscriberRef) noexcept {
-    LOG(FATAL) << "Use StreamThriftClient for streaming rpc calls";
+  void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata>,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::SemiStream<
+          std::unique_ptr<folly::IOBuf>>) noexcept override {
+    LOG(FATAL) << "Unexpected call of sendStreamThriftResponse";
   }
 
-  virtual SubscriberRef getOutput(int32_t) noexcept {
-    LOG(FATAL) << "Use StreamThriftClient for streaming rpc calls";
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept override {
+    // No input stream to extract..
+    return {};
   }
 
  protected:

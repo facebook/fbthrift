@@ -19,6 +19,7 @@
 #include <folly/Logging.h>
 #include <folly/system/ThreadName.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <yarpl/Flowable.h>
@@ -226,18 +227,23 @@ class StreamUploadDownload {
           }
         });
 
-    auto output = client->streamUploadDownload(rpcOptions, input);
-    output->subscribe(
-        // next
-        [this](const Chunk2&) { stats_->add(download_); },
-        // error
-        [this, &outstandingOps](const auto&) mutable {
-          stats_->add(fatal_);
-          --outstandingOps;
-        },
-        // complete
-        [&outstandingOps]() mutable { --outstandingOps; },
-        FLAGS_batch_size);
+    auto output = client->sync_streamUploadDownload(
+        rpcOptions,
+        apache::thrift::toStream(
+            input, folly::EventBaseManager::get()->getEventBase()));
+    apache::thrift::toFlowable(
+        std::move(output).via(folly::EventBaseManager::get()->getEventBase()))
+        ->subscribe(
+            // next
+            [this](auto) { stats_->add(download_); },
+            // error
+            [this, &outstandingOps](const auto&) mutable {
+              stats_->add(fatal_);
+              --outstandingOps;
+            },
+            // complete
+            [&outstandingOps]() mutable { --outstandingOps; },
+            FLAGS_batch_size);
   }
 
   void asyncReceived(AsyncClient*, ClientReceiveState&&) {}

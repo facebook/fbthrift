@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/futures/Future.h>
-#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
@@ -43,8 +42,8 @@ class ChannelCounters {
 
 class RSClientThriftChannel : public ThriftChannelIf {
  public:
-  using FlowableRef = std::shared_ptr<
-      yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
+  using FlowableRef =
+      std::shared_ptr<yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>;
 
   explicit RSClientThriftChannel(
       std::shared_ptr<RSRequester> rsRequester,
@@ -57,11 +56,6 @@ class RSClientThriftChannel : public ThriftChannelIf {
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
-
-  void sendStreamThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> payload,
-      std::unique_ptr<StreamRequestCallback> callback) noexcept;
 
   static std::unique_ptr<folly::IOBuf> serializeMetadata(
       const RequestRpcMetadata& requestMetadata);
@@ -87,17 +81,30 @@ class RSClientThriftChannel : public ThriftChannelIf {
   void sendStreamRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
-      std::unique_ptr<StreamRequestCallback> callback) noexcept;
+      std::unique_ptr<ThriftClientCallback> callback) noexcept;
 
   void sendSingleRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload,
-      std::unique_ptr<StreamRequestCallback> callback) noexcept;
+      std::unique_ptr<ThriftClientCallback> callback) noexcept;
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata>,
       std::unique_ptr<folly::IOBuf>) noexcept override {
     LOG(FATAL) << "Server side function is called in client side.";
+  }
+
+  void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata>,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::SemiStream<
+          std::unique_ptr<folly::IOBuf>>) noexcept override {
+    LOG(FATAL) << "Server side function is called in client side.";
+  }
+
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept override {
+    LOG(FATAL) << "Server side function is called in client side";
   }
 
   folly::EventBase* getEventBase() noexcept override {

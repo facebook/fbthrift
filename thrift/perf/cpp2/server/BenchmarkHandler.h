@@ -18,6 +18,7 @@
 
 #include <folly/system/ThreadName.h>
 #include <rsocket/internal/ScheduledSubscriber.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/StreamBenchmark.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 
@@ -30,6 +31,9 @@ namespace benchmarks {
 
 using apache::thrift::HandlerCallback;
 using apache::thrift::HandlerCallbackBase;
+using apache::thrift::SemiStream;
+using apache::thrift::Stream;
+using apache::thrift::toStream;
 
 class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
  public:
@@ -89,11 +93,12 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->add(kDownload_);
   }
 
-  apache::thrift::YarplStream<Chunk2> streamUploadDownload(
-      apache::thrift::YarplStream<Chunk2> input) override {
-    input->subscribe( // next
-        [this](const Chunk2&) { stats_->add(ks_Download_); },
-        FLAGS_batch_size);
+  Stream<Chunk2> streamUploadDownload(SemiStream<Chunk2> input) override {
+    toFlowable(
+        std::move(input).via(folly::EventBaseManager::get()->getEventBase()))
+        ->subscribe( // next
+            [this](const Chunk2&) { stats_->add(ks_Download_); },
+            FLAGS_batch_size);
 
     class Subscription : public yarpl::flowable::Subscription {
      public:
@@ -115,30 +120,34 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
       QPSStats* stats_;
     };
 
-    return yarpl::flowable::Flowable<Chunk2>::fromPublisher(
-        [this, input = std::move(input)](auto subscriber) mutable {
-          if (FLAGS_chunk_size > 0) {
-            auto subscription = std::make_shared<Subscription>(stats_);
-            subscriber->onSubscribe(subscription);
+    return toStream(
+        yarpl::flowable::Flowable<Chunk2>::fromPublisher(
+            [this, input = std::move(input)](auto subscriber) mutable {
+              if (FLAGS_chunk_size > 0) {
+                auto subscription = std::make_shared<Subscription>(stats_);
+                subscriber->onSubscribe(subscription);
 
-            subscriber = std::make_shared<rsocket::ScheduledSubscriber<Chunk2>>(
-                subscriber, *folly::EventBaseManager::get()->getEventBase());
-            std::thread([subscriber, subscription, this]() {
-              int32_t requested = 0;
-              while ((requested = subscription->requested_) != -1) {
-                if (requested == 0) {
-                  std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                } else {
-                  subscriber->onNext(chunk_);
-                  --subscription->requested_;
-                  stats_->add(ks_Upload_);
-                }
+                subscriber =
+                    std::make_shared<rsocket::ScheduledSubscriber<Chunk2>>(
+                        subscriber,
+                        *folly::EventBaseManager::get()->getEventBase());
+                std::thread([subscriber, subscription, this]() {
+                  int32_t requested = 0;
+                  while ((requested = subscription->requested_) != -1) {
+                    if (requested == 0) {
+                      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    } else {
+                      subscriber->onNext(chunk_);
+                      --subscription->requested_;
+                      stats_->add(ks_Upload_);
+                    }
+                  }
+                  subscriber->onComplete();
+                })
+                    .detach();
               }
-              subscriber->onComplete();
-            })
-                .detach();
-          }
-        });
+            }),
+        folly::EventBaseManager::get()->getEventBase());
   }
 
  private:

@@ -50,6 +50,18 @@
   %><%/type:enum%><%/type:enum?%><%!
 
   %><%#type:stream?%><%!
-    %><%#type:streamElemType%>apache::thrift::YarplStream<<% > types/type%>><%/type:streamElemType%><%!
+    %><%#type:streamresponse?%><%!
+      %><%#type:extratype?%>apache::thrift::ResponseAndStream<<%!
+      %><%#type:streamResponseType%><% >types/type%><%/type:streamResponseType%>,<%!
+      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+      %><%/type:extratype?%><%!
+      %><%^type:extratype?%>apache::thrift::Stream<<%!
+      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+      %><%/type:extratype?%><%!
+      %><%/type:streamresponse?%><%!
+
+    %><%^type:streamresponse?%><%!
+      %>apache::thrift::Stream<<%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+    %><%/type:streamresponse?%><%!
   %><%/type:stream?%><%!
 %><%/type:typedef?%>

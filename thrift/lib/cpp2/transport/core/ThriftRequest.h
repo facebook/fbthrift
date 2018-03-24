@@ -61,6 +61,8 @@ class ThriftRequest : public ResponseChannel::Request {
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
+    stream_ = channel->extractStream();
+
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -132,6 +134,23 @@ class ThriftRequest : public ResponseChannel::Request {
     }
   }
 
+  void sendStreamReply(
+      ResponseAndSemiStream<
+          std::unique_ptr<folly::IOBuf>,
+          std::unique_ptr<folly::IOBuf>>&& result,
+      MessageChannel::SendCallback* cb) override {
+    if (active_.exchange(false)) {
+      cancelTimeout();
+      sendReplyInternal(
+          std::move(result.response), std::move(result.stream), cb);
+
+      auto observer = serverConfigs_.getObserver();
+      if (observer) {
+        observer->sentReply();
+      }
+    }
+  }
+
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
@@ -148,21 +167,10 @@ class ThriftRequest : public ResponseChannel::Request {
 
  private:
   void sendReplyInternal(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
     if (checkResponseSize(*buf)) {
-      auto metadata = std::make_unique<ResponseRpcMetadata>();
-      metadata->seqId = seqId_;
-      metadata->__isset.seqId = true;
-      metadata->otherMetadata = header_.releaseWriteHeaders();
-      auto* eh = header_.getExtraWriteHeaders();
-      if (eh) {
-        metadata->otherMetadata.insert(eh->begin(), eh->end());
-      }
-      if (!metadata->otherMetadata.empty()) {
-        metadata->__isset.otherMetadata = true;
-      }
-      channel_->sendThriftResponse(std::move(metadata), std::move(buf));
+      channel_->sendThriftResponse(createMetadata(), std::move(buf));
     } else {
       sendErrorWrappedInternal(
           folly::make_exception_wrapper<TApplicationException>(
@@ -171,6 +179,38 @@ class ThriftRequest : public ResponseChannel::Request {
           kResponseTooBigErrorCode,
           cb);
     }
+  }
+
+  void sendReplyInternal(
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream,
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
+    if (checkResponseSize(*buf)) {
+      channel_->sendStreamThriftResponse(
+          createMetadata(), std::move(buf), std::move(stream));
+    } else {
+      sendErrorWrappedInternal(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+              "Response size too big"),
+          kResponseTooBigErrorCode,
+          cb);
+    }
+  }
+
+  std::unique_ptr<ResponseRpcMetadata> createMetadata() {
+    auto metadata = std::make_unique<ResponseRpcMetadata>();
+    metadata->seqId = seqId_;
+    metadata->__isset.seqId = true;
+    metadata->otherMetadata = header_.releaseWriteHeaders();
+    auto* eh = header_.getExtraWriteHeaders();
+    if (eh) {
+      metadata->otherMetadata.insert(eh->begin(), eh->end());
+    }
+    if (!metadata->otherMetadata.empty()) {
+      metadata->__isset.otherMetadata = true;
+    }
+    return metadata;
   }
 
   void sendErrorWrappedInternal(

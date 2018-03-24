@@ -24,8 +24,8 @@ namespace thrift {
 
 using namespace apache::thrift::transport;
 using folly::EventBase;
-using folly::IOBuf;
 using folly::exception_wrapper;
+using folly::IOBuf;
 
 const std::chrono::milliseconds ThriftClientCallback::kDefaultTimeout =
     std::chrono::milliseconds(500);
@@ -82,6 +82,35 @@ void ThriftClientCallback::onThriftResponse(
         std::move(tHeader),
         std::move(ctx_),
         isSecurityActive_));
+  }
+}
+
+void ThriftClientCallback::onThriftResponse(
+    std::unique_ptr<ResponseRpcMetadata> metadata,
+    std::unique_ptr<IOBuf> payload,
+    Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
+  DCHECK(metadata);
+  DCHECK(evb_->isInEventBaseThread());
+  cancelTimeout();
+  if (active_) {
+    active_ = false;
+    auto tHeader = std::make_unique<transport::THeader>();
+    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+    if (metadata->__isset.otherMetadata) {
+      tHeader->setReadHeaders(std::move(metadata->otherMetadata));
+    }
+    folly::RequestContextScopeGuard rctx(cb_->context_);
+
+    ClientReceiveState crs(
+        protoId_,
+        ResponseAndSemiStream<
+            std::unique_ptr<folly::IOBuf>,
+            std::unique_ptr<folly::IOBuf>>{std::move(payload),
+                                           std::move(stream)},
+        std::move(tHeader),
+        std::move(ctx_),
+        isSecurityActive_);
+    cb_->replyReceived(std::move(crs));
   }
 }
 

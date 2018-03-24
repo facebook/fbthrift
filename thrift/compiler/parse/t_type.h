@@ -108,6 +108,8 @@ class t_type : public t_annotated {
   virtual bool is_map()            const { return false; }
   virtual bool is_stream()         const { return false; }
   virtual bool is_pubsub_stream()  const { return false; }
+  virtual bool is_streamresponse() const { return false; }
+  virtual bool has_extratype()     const { return false; }
   virtual bool is_service()        const { return false; }
   virtual bool is_binary()         const { return false; }
 

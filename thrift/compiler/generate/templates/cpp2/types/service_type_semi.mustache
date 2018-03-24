@@ -14,12 +14,5 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:args_without_streams%><%#field:type%><%!
-  %><%^first?%>, <%/first?%><%!
-%><%#type:resolves_to_complex_return?%><%!
-  %>const <% > types/type%>& <%field:name%><%!
-%><%/type:resolves_to_complex_return?%><%!
-%><%^type:resolves_to_complex_return?%><%!
-  %><% > types/type%> <%field:name%><%!
-%><%/type:resolves_to_complex_return?%><%!
-%><%/field:type%><%/function:args_without_streams%>
+%><%#type:void?%>folly::Unit<%/type:void?%><%!
+%><%^type:void?%><% > types/semi_type%><%/type:void?%>

@@ -16,34 +16,39 @@
 
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+
 namespace testutil {
 namespace testservice {
-apache::thrift::YarplStream<int32_t> TestServiceMock::range(
-    int32_t from,
-    int32_t to) {
-  return yarpl::flowable::Flowable<>::range(from, to)->map(
-      [](auto i) { return (int32_t)i; });
+
+using namespace apache::thrift;
+using namespace yarpl::flowable;
+
+Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
+  return toStream(
+      Flowable<>::range(from, to)->map([](auto i) { return (int32_t)i; }),
+      &executor_);
 }
 
-apache::thrift::YarplStream<int32_t> TestServiceMock::prefixSumIOThread(
-    apache::thrift::YarplStream<int32_t> input) {
+Stream<int32_t> TestServiceMock::prefixSumIOThread(SemiStream<int32_t> input) {
   // TODO: Flow control
 
   // As we just return the input as output and as the input is part of the IO
   // thread, the map operation will be performed also in the IO thread.
-  int j = 0;
-  return input->map([j](auto i) mutable {
-    j = j + i;
-    return j;
-  });
+  return toStream(
+      toFlowable(std::move(input).via(&executor_))
+          ->map([j = (int)0](auto i) mutable {
+            j = j + i;
+            return j;
+          }),
+      &executor_);
 }
 
-apache::thrift::YarplStream<Message> TestServiceMock::returnNullptr() {
-  return nullptr;
+Stream<Message> TestServiceMock::returnNullptr() {
+  return {};
 }
 
-apache::thrift::YarplStream<Message> TestServiceMock::throwException(
-    apache::thrift::YarplStream<Message>) {
+Stream<Message> TestServiceMock::throwException(SemiStream<Message>) {
   throw std::runtime_error("random error");
 }
 

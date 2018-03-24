@@ -18,20 +18,19 @@
 
 #include <rsocket/Payload.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSServerThriftChannel.h>
 #include <yarpl/Single.h>
 
 namespace apache {
 namespace thrift {
 
-class RequestResponseThriftChannel : public StreamThriftChannelBase {
+class RequestResponse : public RSServerThriftChannel {
  public:
-  explicit RequestResponseThriftChannel(
+  explicit RequestResponse(
       folly::EventBase* evb,
       std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
           subscriber)
-      : StreamThriftChannelBase(evb), subscriber_(subscriber) {}
+      : RSServerThriftChannel(evb), subscriber_(subscriber) {}
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,

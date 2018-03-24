@@ -25,6 +25,11 @@
 %><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %><%field:name%><%!
+  %><%#type:resolves_to_stream?%><%!
+    %>std::move(<%field:name%>)<%!
+  %><%/type:resolves_to_stream?%><%!
+  %><%^type:resolves_to_stream?%><%!
+    %><%field:name%><%!
+  %><%/type:resolves_to_stream?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

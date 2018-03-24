@@ -71,6 +71,11 @@ class WaitableRequestCallback final : public RequestCallback {
     baton_.post();
   }
 
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>> extractStream()
+      override {
+    return cb_->extractStream();
+  }
+
  private:
   std::unique_ptr<RequestCallback> cb_;
   folly::Baton<>& baton_;
@@ -120,9 +125,8 @@ uint32_t ThriftClient::sendRequestSync(
   DCHECK(!connectionEvb->inRunningEventBaseThread());
   folly::Baton<> baton;
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
-  bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
-  auto kind = oneway ? RpcKind::SINGLE_REQUEST_NO_RESPONSE
-                     : RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
+  bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   auto scb =
       std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
   int result = sendRequestHelper(

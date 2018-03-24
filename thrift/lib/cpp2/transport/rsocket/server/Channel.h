@@ -20,51 +20,50 @@
 #include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
 #include <rsocket/Payload.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/StreamingInput.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/StreamingInputOutput.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/StreamingOutput.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/StreamInput.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/StreamOutput.h>
 #include <yarpl/Flowable.h>
 #include <yarpl/flowable/Flowables.h>
 
 namespace apache {
 namespace thrift {
 
-// TODO - sending multiple single request&response rpc calls
-// over a single stream?
-
-class StreamingInputOutput : public StreamThriftChannelBase {
+class Channel : public RSServerThriftChannel {
  public:
-  StreamingInputOutput(
+  Channel(
       folly::EventBase* evb,
-      StreamingInput::Input input,
+      StreamInput::Input input,
       int streamId,
       SubscriberRef subscriber)
-      : StreamThriftChannelBase(evb), streamId_(streamId) {
-    VLOG(3) << "StreamingInputOutput::ctor";
-    input_ = std::make_unique<StreamingInput>(
-        evb_, input, streamId, std::make_unique<StreamThriftChannelBase>(evb_));
-    output_ = std::make_unique<StreamingOutput>(evb_, streamId, subscriber);
+      : RSServerThriftChannel(evb), streamId_(streamId) {
+    input_ = std::make_unique<StreamInput>(
+        evb_, input, streamId, std::make_unique<RSServerThriftChannel>(evb_));
+    output_ = std::make_unique<StreamOutput>(evb_, streamId, subscriber);
   }
 
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
-    // This method gets called only in error cases, so we should
-    // redirect it to onError of the Subscriber
     output_->sendThriftResponse(std::move(metadata), std::move(buf));
   }
 
-  void setInput(int32_t seqId, SubscriberRef sink) noexcept override {
-    input_->setInput(seqId, sink);
+  void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
+          stream) noexcept override {
+    output_->sendStreamThriftResponse(
+        std::move(metadata), std::move(buf), std::move(stream));
   }
 
-  SubscriberRef getOutput(int32_t seqId) noexcept override {
-    return output_->getOutput(seqId);
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept override {
+    return input_->extractStream();
   }
 
  private:
-  std::unique_ptr<StreamingInput> input_;
-  std::unique_ptr<StreamingOutput> output_;
+  std::unique_ptr<StreamInput> input_;
+  std::unique_ptr<StreamOutput> output_;
   int streamId_;
 };
 } // namespace thrift

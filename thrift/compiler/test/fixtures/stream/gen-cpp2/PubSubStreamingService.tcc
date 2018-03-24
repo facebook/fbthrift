@@ -17,20 +17,44 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_client_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_client_pargs;
 typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_client_presult;
-typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_server_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_server_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::FooEx>> PubSubStreamingService_server_presult;
-typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_both_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_both_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::FooEx>> PubSubStreamingService_both_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_I32, int32_t*>> PubSubStreamingService_returnstream_pargs;
-typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_returnstream_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>> PubSubStreamingService_takesstream_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true>, 
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_returnstream_presult;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_takesstream_pargs;
 typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_takesstream_presult;
-typedef apache::thrift::ThriftPresult<false> PubSubStreamingService_clientthrows_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_clientthrows_pargs;
 typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_clientthrows_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> PubSubStreamingService_different_pargs;
-typedef apache::thrift::ThriftPresult<true> PubSubStreamingService_different_presult;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
+    > PubSubStreamingService_different_pargs;
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true>, 
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>>
+    > PubSubStreamingService_different_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::_processInThread_client(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -41,7 +65,7 @@ void PubSubStreamingServiceAsyncProcessor::process_client(std::unique_ptr<apache
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_client_pargs args;
+  PubSubStreamingService_client_pargs::FieldsType args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.client", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -63,13 +87,16 @@ void PubSubStreamingServiceAsyncProcessor::process_client(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function client";
     }
   }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_client_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_client<ProtocolIn_,ProtocolOut_>, throw_wrapped_client<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_client(std::move(callback));
+  iface_->async_tm_client(std::move(callback), std::move(inputStream));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -112,7 +139,7 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_server_pargs args;
+  PubSubStreamingService_server_pargs::FieldsType args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -134,13 +161,16 @@ void PubSubStreamingServiceAsyncProcessor::process_server(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function server";
     }
   }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_server_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_server<ProtocolIn_,ProtocolOut_>, throw_wrapped_server<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_server(std::move(callback));
+  iface_->async_tm_server(std::move(callback), std::move(inputStream));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -193,7 +223,7 @@ void PubSubStreamingServiceAsyncProcessor::process_both(std::unique_ptr<apache::
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_both_pargs args;
+  PubSubStreamingService_both_pargs::FieldsType args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.both", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -215,13 +245,16 @@ void PubSubStreamingServiceAsyncProcessor::process_both(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function both";
     }
   }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_both_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_both<ProtocolIn_,ProtocolOut_>, throw_wrapped_both<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_both(std::move(callback));
+  iface_->async_tm_both(std::move(callback), std::move(inputStream));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -271,9 +304,6 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream(std::un
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -287,12 +317,62 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function returnstream";
+    ProtocolOut_ prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function returnstream";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("returnstream", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function returnstream";
+    }
+  }
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return) {
+  ProtocolOut_ prot;
+  PubSubStreamingService_returnstream_presult::FieldsType result;
+  using StreamPResultType = PubSubStreamingService_returnstream_presult::StreamPResultType;
+  auto& _returnStream = _return;
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream));
+  return {serializeResponse("returnstream", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  ProtocolOut_ prot;
+   {
+    if (req) {
+      LOG(ERROR) << ew << " in function returnstream";
+      apache::thrift::TApplicationException x(ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
+      folly::IOBufQueue queue = serializeException("returnstream", &prot, protoSeqId, ctx, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
+      return;
+    }
+    else {
+      LOG(ERROR) << ew << " in oneway function returnstream";
+    }
+  }
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -305,7 +385,7 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_takesstream_pargs args;
+  PubSubStreamingService_takesstream_pargs::FieldsType args;
   int32_t uarg_other_param{0};
   args.get<0>().value = &uarg_other_param;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", ctx));
@@ -329,13 +409,16 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function takesstream";
     }
   }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_takesstream_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_takesstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_takesstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_takesstream(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_takesstream(std::move(callback), std::move(inputStream), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -378,7 +461,7 @@ void PubSubStreamingServiceAsyncProcessor::process_clientthrows(std::unique_ptr<
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_clientthrows_pargs args;
+  PubSubStreamingService_clientthrows_pargs::FieldsType args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.clientthrows", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -400,13 +483,16 @@ void PubSubStreamingServiceAsyncProcessor::process_clientthrows(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function clientthrows";
     }
   }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_clientthrows_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_clientthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_clientthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_clientthrows(std::move(callback));
+  iface_->async_tm_clientthrows(std::move(callback), std::move(inputStream));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -446,13 +532,10 @@ void PubSubStreamingServiceAsyncProcessor::_processInThread_different(std::uniqu
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
-  }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
-  PubSubStreamingService_different_pargs args;
+  PubSubStreamingService_different_pargs::FieldsType args;
   int64_t uarg_firstparam{0};
   args.get<0>().value = &uarg_firstparam;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", ctx));
@@ -460,12 +543,65 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    LOG(ERROR) << ex.what() << " in function different";
+    ProtocolOut_ prot;
+    if (req) {
+      LOG(ERROR) << ex.what() << " in function different";
+      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+      folly::IOBufQueue queue = serializeException("different", &prot, ctx->getProtoSeqId(), nullptr, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+        req->sendReply(queue.move());
+      }
+      );
+      return;
+    }
+    else {
+      LOG(ERROR) << ex.what() << " in oneway function different";
+    }
+  }
+  auto inputStream = apache::thrift::detail::ap::decode_stream<
+      ProtocolIn_, PubSubStreamingService_different_pargs::StreamPResultType,
+      int32_t>(req->extractStream());
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>>(std::move(req), std::move(ctxStack), return_different<ProtocolIn_,ProtocolOut_>, throw_wrapped_different<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
   ctx->setStartedProcessing();
-  iface_->async_tm_different(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_different(std::move(callback), std::move(inputStream), args.get<0>().ref());
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_different(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<std::string> _return) {
+  ProtocolOut_ prot;
+  PubSubStreamingService_different_presult::FieldsType result;
+  using StreamPResultType = PubSubStreamingService_different_presult::StreamPResultType;
+  auto& _returnStream = _return;
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream));
+  return {serializeResponse("different", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void PubSubStreamingServiceAsyncProcessor::throw_wrapped_different(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  ProtocolOut_ prot;
+   {
+    if (req) {
+      LOG(ERROR) << ew << " in function different";
+      apache::thrift::TApplicationException x(ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
+      folly::IOBufQueue queue = serializeException("different", &prot, protoSeqId, ctx, x);
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
+      return;
+    }
+    else {
+      LOG(ERROR) << ew << " in oneway function different";
+    }
+  }
 }
 
 } // cpp2

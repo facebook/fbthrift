@@ -15,23 +15,13 @@
   limitations under the License.
 
 %><%^type:resolves_to_complex_return?%>
-<%^type:stream?%>
-<% > types/type%> <%service:name%>AsyncClient::recv_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
-<%/type:stream?%>
-<%#type:stream?%>
-void <%service:name%>AsyncClient::recv_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
-<%/type:stream?%>
+<% > types/semi_type%> <%service:name%>AsyncClient::recv_<%function:name%>(::apache::thrift::ClientReceiveState& state) {
 <%#type:void?%>
   auto ew = recv_wrapped_<%function:name%>(state);
 <%/type:void?%>
-<%#type:stream?%>
-  auto ew = recv_wrapped_<%function:name%>(state);
-<%/type:stream?%>
 <%^type:void?%>
-<%^type:stream?%>
-  <% > types/type%> _return;
+  <% > types/semi_type%> _return;
   auto ew = recv_wrapped_<%function:name%>(_return, state);
-<%/type:stream?%>
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
@@ -43,9 +33,7 @@ void <%service:name%>AsyncClient::recv_<%function:name%>(<% > types/type%>& _ret
   }
 <%^type:resolves_to_complex_return?%>
 <%^type:void?%>
-<%^type:stream?%>
   return _return;
-<%/type:stream?%>
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 }

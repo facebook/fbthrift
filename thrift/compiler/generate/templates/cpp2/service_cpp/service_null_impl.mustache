@@ -25,7 +25,12 @@ void <%service:name%>SvNull::<%function:name%>(<% > service_common/function_para
   return (<% > types/type%>)0;
 <%/type:enum?%>
 <%^type:enum?%>
+<%#type:stream?%>
+  return {};
+<%/type:stream?%>
+<%^type:stream?%>
   return 0;
+<%/type:stream?%>
 <%/type:enum?%>
 }
 <%/type:void?%>
@@ -45,7 +50,12 @@ void <%service:name%>SvNull::frozen2_<%function:name%>(<% > service_common/froze
   return (<% > types/type%>)0;
 <%/type:enum?%>
 <%^type:enum?%>
+<%#type:stream?%>
+  return {};
+<%/type:stream?%>
+<%^type:stream?%>
   return 0;
+<%/type:stream?%>
 <%/type:enum?%>
 }
 <%/type:void?%>

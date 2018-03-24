@@ -33,7 +33,6 @@
 <%#service:any_streams?%>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-#include <thrift/lib/cpp2/transport/core/StreamRequestCallback.h>
 <%/service:any_streams?%>
 
 <% > common/namespace_cpp2_begin%>
@@ -54,12 +53,7 @@
 <%/type:stream?%>
 <%/function:oneway?%>
 <%^function:oneway?%>
-<%#type:stream?%>
-<% > service_client_cpp/stream_async_functions%>
-<%/type:stream?%>
-<%^type:stream?%>
 <% > service_client_cpp/sync_functions%>
-<%/type:stream?%>
 <%/function:oneway?%>
 
 
@@ -67,19 +61,15 @@
 <% > service_client_cpp/oneway_future_functions%>
 <%/function:oneway?%>
 <%^function:oneway?%>
-<%^function:returns_stream?%>
 <% > service_client_cpp/future_functions%>
-<%/function:returns_stream?%>
 <%/function:oneway?%>
 <%/type:deprecated_stream?%>
 
-<% > service_client_cpp/observable_functions%><%!
-%><%^function:returns_stream?%>
+<% > service_client_cpp/observable_functions%>
 
 void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%function:name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
 }
-<%/function:returns_stream?%>
 
 <%^function:oneway?%>
 <%#type:deprecated_stream?%>
@@ -101,10 +91,8 @@ void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apac
 <% > service_client_cpp/received%>
 
 
-<%^function:returns_stream?%>
 <% > service_client_cpp/received_instance%>
 
-<%/function:returns_stream?%>
 <%/type:deprecated_stream?%>
 <%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

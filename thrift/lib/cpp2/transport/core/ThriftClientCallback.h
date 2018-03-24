@@ -52,13 +52,17 @@ class ThriftClientCallback : public folly::HHWheelTimer::Callback {
   void onThriftRequestSent();
 
   // Called from the channel at the end of a single response RPC.
-  // This is not called for streaming response RPCs.
   //
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
   void onThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
+
+  void onThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload,
+      Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept;
 
   // Called from the channel in case of an error RPC (instead of
   // calling "onThriftResponse()").
@@ -71,6 +75,10 @@ class ThriftClientCallback : public folly::HHWheelTimer::Callback {
   // "onThriftResponse()", and "onError()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
+  RequestCallback* inner() const {
+    return cb_.get();
+  }
+
  protected:
   void timeoutExpired() noexcept override;
   void callbackCanceled() noexcept override;
@@ -79,7 +87,7 @@ class ThriftClientCallback : public folly::HHWheelTimer::Callback {
   // The default timeout for a Thrift RPC.
   static const std::chrono::milliseconds kDefaultTimeout;
 
- private:
+ protected:
   folly::EventBase* evb_;
   std::unique_ptr<RequestCallback> cb_;
   std::unique_ptr<ContextStack> ctx_;

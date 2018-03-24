@@ -19,6 +19,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <stdint.h>
+#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -62,6 +63,17 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   virtual void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept = 0;
+
+  // Stream response
+  virtual void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> response,
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
+          stream) noexcept = 0;
+
+  // Extract the inputStream
+  virtual apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept = 0;
 
   // Called from the client to initiate an RPC with a server.
   // "callback" is used to call back with the response for single

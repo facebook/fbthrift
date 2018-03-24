@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponseThriftChannel.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -22,7 +22,7 @@
 namespace apache {
 namespace thrift {
 
-std::unique_ptr<folly::IOBuf> RequestResponseThriftChannel::serializeMetadata(
+std::unique_ptr<folly::IOBuf> RequestResponse::serializeMetadata(
     const ResponseRpcMetadata& responseMetadata) {
   CompactProtocolWriter writer;
   folly::IOBufQueue queue;
@@ -31,8 +31,8 @@ std::unique_ptr<folly::IOBuf> RequestResponseThriftChannel::serializeMetadata(
   return queue.move();
 }
 
-std::unique_ptr<RequestRpcMetadata>
-RequestResponseThriftChannel::deserializeMetadata(const folly::IOBuf& buffer) {
+std::unique_ptr<RequestRpcMetadata> RequestResponse::deserializeMetadata(
+    const folly::IOBuf& buffer) {
   CompactProtocolReader reader;
   auto metadata = std::make_unique<RequestRpcMetadata>();
   reader.setInput(&buffer);
@@ -40,20 +40,13 @@ RequestResponseThriftChannel::deserializeMetadata(const folly::IOBuf& buffer) {
   return metadata;
 }
 
-void RequestResponseThriftChannel::sendThriftResponse(
+void RequestResponse::sendThriftResponse(
     std::unique_ptr<ResponseRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf) noexcept {
   DCHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
   DCHECK(metadata);
 
-  VLOG(3) << "sendThriftResponse";
   subscriber_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
-
-  VLOG(3)
-      << "Metadata: "
-      << folly::humanify(
-             serializeMetadata(*metadata)->cloneCoalesced()->moveToFbString());
-
   subscriber_->onSuccess(
       rsocket::Payload(std::move(buf), serializeMetadata(*metadata)));
   subscriber_ = nullptr;

@@ -17,14 +17,14 @@
 #include <folly/io/async/EventBase.h>
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponseThriftChannel.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
 
 namespace apache {
 namespace thrift {
 
 using namespace testing;
 
-TEST(RequestResponseThriftChannel, SuccessResponse) {
+TEST(RequestResponse, SuccessResponse) {
   folly::EventBase evb;
   std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
       subscriberRef;
@@ -46,8 +46,7 @@ TEST(RequestResponseThriftChannel, SuccessResponse) {
 
   subscriberBaton.wait();
 
-  auto requestResponse =
-      std::make_shared<RequestResponseThriftChannel>(&evb, subscriberRef);
+  auto requestResponse = std::make_shared<RequestResponse>(&evb, subscriberRef);
 
   evb.runInEventBaseThread([requestResponse = std::move(requestResponse)]() {
     auto metadata = std::make_unique<ResponseRpcMetadata>();

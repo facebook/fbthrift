@@ -15,6 +15,7 @@
  */
 #pragma once
 
+#include <folly/executors/SerialExecutor.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 
@@ -23,13 +24,18 @@ namespace testservice {
 
 class TestServiceMock : public StreamServiceSvIf {
  public:
-  apache::thrift::YarplStream<int32_t> range(int32_t from, int32_t to) override;
-  apache::thrift::YarplStream<int32_t> prefixSumIOThread(
-      apache::thrift::YarplStream<int32_t> input) override;
+  TestServiceMock() {}
 
-  apache::thrift::YarplStream<Message> returnNullptr() override;
-  apache::thrift::YarplStream<Message> throwException(
-      apache::thrift::YarplStream<Message> input) override;
+  apache::thrift::Stream<int32_t> range(int32_t from, int32_t to) override;
+  apache::thrift::Stream<int32_t> prefixSumIOThread(
+      apache::thrift::SemiStream<int32_t> input) override;
+
+  apache::thrift::Stream<Message> returnNullptr() override;
+  apache::thrift::Stream<Message> throwException(
+      apache::thrift::SemiStream<Message> input) override;
+
+ protected:
+  folly::SerialExecutor executor_;
 };
 
 } // namespace testservice

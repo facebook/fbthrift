@@ -14,27 +14,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>void <%service:name%>AsyncClient::<%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>) {
+%>void <%service:name%>AsyncClient::<%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
-  <%function:name%>Impl(false, rpcOptions, std::move(callback)<%function:comma_nostream%><% > service_common/param_list_without_streams%>);
+  <%function:name%>Impl(false, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
 }
 
-void <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>) {
-  <%function:name%>Impl(false, rpcOptions, std::move(callback)<%function:comma_nostream%><% > service_common/param_list_without_streams%>);
+void <%service:name%>AsyncClient::<%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+  <%function:name%>Impl(false, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
 }
 
-void <%service:name%>AsyncClient::<%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma_nostream%><% > service_common/function_param_list_without_streams_const%>) {
+void <%service:name%>AsyncClient::<%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<%function:comma_nostream%><% > service_common/param_list_without_streams%>);
+      <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<%function:comma_nostream%><% > service_common/param_list_without_streams%>);
+      <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
       break;
     }
 <%#service:frozen2?%>

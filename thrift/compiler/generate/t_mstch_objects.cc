@@ -243,6 +243,18 @@ mstch::node mstch_type::get_stream_elem_type() {
   return mstch::node();
 }
 
+mstch::node mstch_type::get_stream_response_type() {
+  if (resolved_type_->is_streamresponse()) {
+    return generators_->type_generator_->generate(
+        dynamic_cast<const t_stream_response*>(resolved_type_)
+            ->get_extra_type(),
+        generators_,
+        cache_,
+        pos_);
+  }
+  return mstch::node();
+}
+
 mstch::node mstch_field::value() {
   if (field_->get_value()) {
     return generators_->const_value_generator_->generate(

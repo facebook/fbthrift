@@ -227,6 +227,7 @@ LinenoStack lineno_stack;
 %type<ereq>      FieldRequiredness
 %type<ttype>     FieldType
 %type<ttype>     PubsubStreamType
+%type<ttype>     PubsubStreamReturnType
 %type<tconstv>   FieldValue
 %type<tstruct>   FieldList
 
@@ -1154,9 +1155,9 @@ FieldValue:
     }
 
 FunctionType:
-  PubsubStreamType
+  PubsubStreamReturnType
     {
-      pdebug("FunctionType -> PubsubStreamType");
+      pdebug("FunctionType -> PubsubStreamReturnType");
       $$ = $1;
     }
 | FieldType
@@ -1172,10 +1173,22 @@ FunctionType:
 
 PubsubStreamType:
   tok_stream FieldType
-    {
-      pdebug("PubsubStreamType -> tok_stream FieldType");
-      $$ = new t_pubsub_stream($2);
-    }
+  {
+    pdebug("PubsubStreamType -> tok_stream FieldType");
+    $$ = new t_pubsub_stream($2);
+  }
+
+PubsubStreamReturnType:
+  FieldType ',' tok_stream FieldType
+  {
+    pdebug("PubsubStreamReturnType -> tok_stream FieldType");
+    $$ = new t_stream_response($4, $1);
+  }
+| tok_stream FieldType
+  {
+    pdebug("PubsubStreamReturnType -> tok_stream FieldType tok_void");
+    $$ = new t_stream_response($2);
+  }
 
 FieldType:
   tok_identifier TypeAnnotations

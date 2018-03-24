@@ -80,7 +80,12 @@
 <%/type:void?%>
 <%^type:void?%>
   <%^type:deprecated_stream?%>
+    <%^type:stream?%>
   static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
+    <%/type:stream?%>
+    <%#type:stream?%>
+  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return);
+    <%/type:stream?%>
   <%/type:deprecated_stream?%>
   <%#type:deprecated_stream?%>
     <%#type:streamElemType%>

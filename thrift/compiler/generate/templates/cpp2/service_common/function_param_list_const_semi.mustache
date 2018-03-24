@@ -14,17 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:args_without_streams%><%#field:type%><%!
+%><%#function:args%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-%><%#type:stack_arguments?%><%!
-  %><%field:name%><%!
-%><%/type:stack_arguments?%><%!
-%><%^type:stack_arguments?%><%!
-  %>std::move(<%field:name%>)<%!
-%><%/type:stack_arguments?%><%!
+  %>const <% > types/type%>& <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %><%field:name%><%!
+  %><% > types/semi_type%> <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
-%><%/field:type%><%/function:args_without_streams%>
+%><%/field:type%><%/function:args%>

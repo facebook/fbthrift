@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
+#include <folly/executors/SerialExecutor.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <gflags/gflags.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/StreamThriftClient.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -64,7 +66,8 @@ class StreamingTest : public testing::Test {
   };
 
  public:
-  StreamingTest() : workerThread_("TransportCompatibilityTest_WorkerThread") {
+  StreamingTest()
+      : workerThread_("TransportCompatibilityTest_WorkerThread"), executor_() {
     // override the default
     FLAGS_transport = "rsocket"; // client's transport
 
@@ -115,8 +118,8 @@ class StreamingTest : public testing::Test {
     CHECK_GT(port_, 0) << "Check if the server has started already";
     auto mgr = ConnectionManager::getInstance();
     auto connection = mgr->getConnection("::1", port_);
-    auto channel = StreamThriftClient::Ptr(
-        new StreamThriftClient(connection, workerThread_.getEventBase()));
+    auto channel = ThriftClient::Ptr(
+        new ThriftClient(connection, workerThread_.getEventBase()));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     auto client =
         std::make_unique<StreamServiceAsyncClient>(std::move(channel));
@@ -133,11 +136,13 @@ class StreamingTest : public testing::Test {
 
   int numIOThreads_{10};
   int numWorkerThreads_{10};
+
+  folly::SerialExecutor executor_;
 };
 
 TEST_F(StreamingTest, SimpleStream) {
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto result = client->range(0, 10);
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto result = toFlowable(client->sync_range(0, 10).via(&executor_));
     int j = 0;
     folly::Baton<> done;
     result->subscribe(
@@ -150,10 +155,12 @@ TEST_F(StreamingTest, SimpleStream) {
 }
 
 TEST_F(StreamingTest, SimpleChannel) {
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto input = yarpl::flowable::Flowable<>::range(0, 10)->map(
         [](auto i) { return (int32_t)i; });
-    auto result = client->prefixSumIOThread(input);
+    auto result =
+        toFlowable(client->sync_prefixSumIOThread(toStream(input, &executor_))
+                       .via(&executor_));
     int j = 0, k = 1;
     folly::Baton<> done;
     result->subscribe(
@@ -170,54 +177,41 @@ TEST_F(StreamingTest, SimpleChannel) {
 }
 
 TEST_F(StreamingTest, DefaultStreamImplementation) {
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto result = client->nonImplementedStream("test");
-    folly::Baton<> done;
-    result->subscribe(
-        [](auto) { FAIL() << "Should not call onNext"; },
-        [&done](auto) { done.post(); },
-        []() { FAIL() << "Should not complete successfully"; });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
+    EXPECT_THROW(
+        toFlowable(client->sync_nonImplementedStream("test").via(&executor_)),
+        apache::thrift::TApplicationException);
   });
 }
 
 TEST_F(StreamingTest, DefaultChannelImplementation) {
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto input = yarpl::flowable::Flowable<>::just(Message());
-    auto result = client->nonImplementedChannel(input, "test");
-    folly::Baton<> done;
-    result->subscribe(
-        [](auto) mutable { FAIL() << "Should not call onNext"; },
-        [&done](auto) { done.post(); },
-        []() { FAIL() << "Should not complete successfully"; });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+    EXPECT_THROW(
+        toFlowable(client
+                       ->sync_nonImplementedChannel(
+                           toStream(input, &executor_), "test")
+                       .via(&executor_)),
+        apache::thrift::TApplicationException);
   });
 }
 
 TEST_F(StreamingTest, ReturnsNullptr) {
   // User function should return a Stream, but it returns a nullptr.
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto result = client->returnNullptr();
-    folly::Baton<> done;
-    result->subscribe(
-        [](auto) mutable { FAIL() << "Should not call onNext"; },
-        [&done](auto) { done.post(); },
-        []() { FAIL() << "Should not complete successfully"; });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
+    EXPECT_THROW(
+        client->sync_returnNullptr(), apache::thrift::TApplicationException);
   });
 }
 
 TEST_F(StreamingTest, ThrowsException) {
   // User function throws an exception.
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto input = yarpl::flowable::Flowable<>::just(Message());
-    auto result = client->throwException(input);
-    folly::Baton<> done;
-    result->subscribe(
-        [](auto) mutable { FAIL() << "Should not call onNext"; },
-        [&done](auto) { done.post(); },
-        []() { FAIL() << "Should not complete successfully"; });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+    EXPECT_THROW(
+        toFlowable(client->sync_throwException(toStream(input, &executor_))
+                       .via(&executor_)),
+        apache::thrift::TApplicationException);
   });
 }
 

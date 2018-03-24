@@ -19,46 +19,46 @@
 #include <folly/String.h>
 #include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
-#include <folly/synchronization/Baton.h>
 #include <rsocket/Payload.h>
-#include <thrift/lib/cpp2/transport/core/StreamThriftChannelBase.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSServerThriftChannel.h>
 #include <yarpl/Flowable.h>
 #include <yarpl/flowable/Flowables.h>
 
 namespace apache {
 namespace thrift {
 
-class StreamingOutput : public StreamThriftChannelBase {
+class StreamInput : public RSServerThriftChannel {
  public:
-  using Result = std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
+  using Input = std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
 
-  StreamingOutput(folly::EventBase* evb, int streamId, SubscriberRef subscriber)
-      : StreamThriftChannelBase(evb),
+  StreamInput(
+      folly::EventBase* evb,
+      Input input,
+      int streamId,
+      std::unique_ptr<RSServerThriftChannel> inner)
+      : RSServerThriftChannel(evb),
+        input_(input),
         streamId_(streamId),
-        subscriber_(std::move(subscriber)) {}
+        inner_(std::move(inner)) {}
 
-  void sendThriftResponse(
+  virtual void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
-    // This method gets called only in error cases, so we should
-    // redirect it to onError of the Subscriber
-    VLOG(3) << "sendThriftResponse: "
-            << buf->cloneCoalescedAsValue().moveToFbString().toStdString();
-
-    auto subscriber = getOutput(metadata->seqId);
-    subscriber->onSubscribe(yarpl::flowable::Subscription::create());
-    auto str = folly::humanify(buf->cloneCoalescedAsValue().moveToFbString())
-                   .toStdString();
-    subscriber->onError(std::runtime_error(str));
+    inner_->sendThriftResponse(std::move(metadata), std::move(buf));
   }
 
-  SubscriberRef getOutput(int32_t) noexcept override {
-    return subscriber_;
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept override {
+    return toStream(
+        input_->map([](auto payload) { return std::move(payload.data); }),
+        evb_);
   }
 
- protected:
+ private:
+  Input input_;
   int streamId_;
-  SubscriberRef subscriber_;
+  std::unique_ptr<RSServerThriftChannel> inner_;
 };
 } // namespace thrift
 } // namespace apache

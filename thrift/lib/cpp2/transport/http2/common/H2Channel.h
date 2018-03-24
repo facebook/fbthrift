@@ -84,6 +84,19 @@ class H2Channel : public ThriftChannelIf {
     h2ClientConnection_ = nullptr;
   }
 
+  void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata>,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::SemiStream<
+          std::unique_ptr<folly::IOBuf>>) noexcept override {
+    LOG(FATAL) << "Http2 transport layer doesn't support streaming yet";
+  }
+
+  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
+  extractStream() noexcept override {
+    return {};
+  }
+
  protected:
   // Constructor for server side that uses a ResponseHandler object
   // to write to the HTTP/2 stream.

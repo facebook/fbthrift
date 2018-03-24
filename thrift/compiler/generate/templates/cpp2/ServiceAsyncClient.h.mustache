@@ -35,7 +35,7 @@
 #include <%cpp_include%>
 <%/service:cpp_includes%>
 <%#service:any_streams?%>
-#include <yarpl/Flowable.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 <%/service:any_streams?%>
 
 namespace folly {
@@ -46,12 +46,6 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
-  <%#service:any_streams?%>
-
-  template <typename T>
-  using YarplStream = std::shared_ptr<yarpl::flowable::Flowable<T>>;
-
-  <%/service:any_streams?%>
 <%#service:frozen2?%>
   class Frozen2ProtocolReader;
 <%/service:frozen2?%>
