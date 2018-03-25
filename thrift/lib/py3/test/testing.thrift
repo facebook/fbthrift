@@ -1,3 +1,5 @@
+cpp_include "<deque>"
+
 const list<i16> int_list = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ];
@@ -116,6 +118,21 @@ struct ColorGroups {
     1: list<Color> color_list,
     2: set<Color> color_set,
     3: map<Color, Color> color_map,
+}
+
+typedef list<i32> (cpp.type = "std::deque<int>") list_typedef
+typedef set<i32> (cpp.type = "std::unordered_set<int>") set_typedef
+typedef map<i32, i32> (cpp.type = "std::unordered_map<int, int>") map_typedef
+typedef string (cpp.type = "folly::fbstring") string_typedef
+
+struct customized {
+  1: list<i32> (cpp.template = "std::deque") list_template
+  2: set<i32> (cpp.template = "std::unordered_set") set_template,
+  3: map<i32, i32> (cpp.template = "std::unordered_map") map_template,
+  4: list_typedef list_type,
+  5: set_typedef set_type,
+  6: map_typedef map_type,
+  7: string_typedef string_type,
 }
 
 service TestingService {

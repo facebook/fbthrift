@@ -249,6 +249,24 @@ cdef class Promise_List__ComplexUnion:
         inst.cPromise = move(cPromise)
         return inst
 
+cdef class Promise_folly_IOBuf__binary:
+    cdef cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise):
+        inst = <Promise_folly_IOBuf__binary>Promise_folly_IOBuf__binary.__new__(Promise_folly_IOBuf__binary)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_std_unique_ptr_folly_IOBuf__binary:
+    cdef cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise):
+        inst = <Promise_std_unique_ptr_folly_IOBuf__binary>Promise_std_unique_ptr_folly_IOBuf__binary.__new__(Promise_std_unique_ptr_folly_IOBuf__binary)
+        inst.cPromise = move(cPromise)
+        return inst
+
 cdef class Promise_List__bool:
     cdef cFollyPromise[unique_ptr[vector[cbool]]] cPromise
 
@@ -1632,7 +1650,7 @@ cdef api void call_cy_ReturnService_readDataEb(
 ):
     cdef ReturnServiceInterface iface
     iface = self
-    __promise = Promise_binary.create(move(cPromise))
+    __promise = Promise_folly_IOBuf__binary.create(move(cPromise))
     arg_size = size
     __context = None
     if iface._pass_context_readDataEb:
@@ -1649,7 +1667,7 @@ cdef api void call_cy_ReturnService_readDataEb(
 async def ReturnService_readDataEb_coro(
     object self,
     object ctx,
-    Promise_binary promise,
+    Promise_folly_IOBuf__binary promise,
     size
 ):
     try:
@@ -1683,7 +1701,7 @@ cdef api void call_cy_ReturnService_readData(
 ):
     cdef ReturnServiceInterface iface
     iface = self
-    __promise = Promise_binary.create(move(cPromise))
+    __promise = Promise_std_unique_ptr_folly_IOBuf__binary.create(move(cPromise))
     arg_size = size
     __context = None
     if iface._pass_context_readData:
@@ -1700,7 +1718,7 @@ cdef api void call_cy_ReturnService_readData(
 async def ReturnService_readData_coro(
     object self,
     object ctx,
-    Promise_binary promise,
+    Promise_std_unique_ptr_folly_IOBuf__binary promise,
     size
 ):
     try:

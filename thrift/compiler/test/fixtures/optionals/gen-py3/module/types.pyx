@@ -776,19 +776,19 @@ cdef class Person(thrift.py3.types.Struct):
             deref(c_inst).favoriteColor = deref((<Color?> favoriteColor)._cpp_obj)
             deref(c_inst).__isset.favoriteColor = True
         if friends is not None:
-            deref(c_inst).friends = <cset[int64_t]>deref(Set__i64(friends)._cpp_obj)
+            deref(c_inst).friends = deref(Set__i64(friends)._cpp_obj)
             deref(c_inst).__isset.friends = True
         if bestFriend is not None:
             deref(c_inst).bestFriend = bestFriend
             deref(c_inst).__isset.bestFriend = True
         if petNames is not None:
-            deref(c_inst).petNames = <cmap[cAnimal,string]>deref(Map__Animal_string(petNames)._cpp_obj)
+            deref(c_inst).petNames = deref(Map__Animal_string(petNames)._cpp_obj)
             deref(c_inst).__isset.petNames = True
         if afraidOfAnimal is not None:
             deref(c_inst).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
             deref(c_inst).__isset.afraidOfAnimal = True
         if vehicles is not None:
-            deref(c_inst).vehicles = <vector[cVehicle]>deref(List__Vehicle(vehicles)._cpp_obj)
+            deref(c_inst).vehicles = deref(List__Vehicle(vehicles)._cpp_obj)
             deref(c_inst).__isset.vehicles = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

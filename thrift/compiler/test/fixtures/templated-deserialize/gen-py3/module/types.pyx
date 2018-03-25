@@ -609,10 +609,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldA = fieldA
             deref(c_inst).__isset.fieldA = True
         if fieldB is not None:
-            deref(c_inst).fieldB = <cmap[string,cbool]>deref(Map__string_bool(fieldB)._cpp_obj)
+            deref(c_inst).fieldB = deref(Map__string_bool(fieldB)._cpp_obj)
             deref(c_inst).__isset.fieldB = True
         if fieldC is not None:
-            deref(c_inst).fieldC = <cset[int32_t]>deref(Set__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC = deref(Set__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
         if fieldD is not None:
             deref(c_inst).fieldD = fieldD.encode('UTF-8')
@@ -621,37 +621,37 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldE = fieldE.encode('UTF-8')
             deref(c_inst).__isset.fieldE = True
         if fieldF is not None:
-            deref(c_inst).fieldF = <vector[vector[vector[int32_t]]]>deref(List__List__List__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF = deref(List__List__List__i32(fieldF)._cpp_obj)
             deref(c_inst).__isset.fieldF = True
         if fieldG is not None:
-            deref(c_inst).fieldG = <cmap[string,cmap[string,cmap[string,int32_t]]]>deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj)
+            deref(c_inst).fieldG = deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj)
             deref(c_inst).__isset.fieldG = True
         if fieldH is not None:
-            deref(c_inst).fieldH = <vector[cset[int32_t]]>deref(List__Set__i32(fieldH)._cpp_obj)
+            deref(c_inst).fieldH = deref(List__Set__i32(fieldH)._cpp_obj)
             deref(c_inst).__isset.fieldH = True
         if fieldI is not None:
             deref(c_inst).fieldI = fieldI
             deref(c_inst).__isset.fieldI = True
         if fieldJ is not None:
-            deref(c_inst).fieldJ = <cmap[string,vector[int32_t]]>deref(Map__string_List__i32(fieldJ)._cpp_obj)
+            deref(c_inst).fieldJ = deref(Map__string_List__i32(fieldJ)._cpp_obj)
             deref(c_inst).__isset.fieldJ = True
         if fieldK is not None:
-            deref(c_inst).fieldK = <vector[vector[vector[vector[int32_t]]]]>deref(List__List__List__List__i32(fieldK)._cpp_obj)
+            deref(c_inst).fieldK = deref(List__List__List__List__i32(fieldK)._cpp_obj)
             deref(c_inst).__isset.fieldK = True
         if fieldL is not None:
-            deref(c_inst).fieldL = <cset[cset[cset[cbool]]]>deref(Set__Set__Set__bool(fieldL)._cpp_obj)
+            deref(c_inst).fieldL = deref(Set__Set__Set__bool(fieldL)._cpp_obj)
             deref(c_inst).__isset.fieldL = True
         if fieldM is not None:
-            deref(c_inst).fieldM = <cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]>deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj)
+            deref(c_inst).fieldM = deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj)
             deref(c_inst).__isset.fieldM = True
         if fieldN is not None:
-            deref(c_inst).fieldN = <vector[Foo]>deref(List__i64(fieldN)._cpp_obj)
+            deref(c_inst).fieldN = deref(List__Foo__i64(fieldN)._cpp_obj)
             deref(c_inst).__isset.fieldN = True
         if fieldO is not None:
-            deref(c_inst).fieldO = <vector[Bar]>deref(List__double(fieldO)._cpp_obj)
+            deref(c_inst).fieldO = deref(List__Bar__double(fieldO)._cpp_obj)
             deref(c_inst).__isset.fieldO = True
         if fieldP is not None:
-            deref(c_inst).fieldP = <vector[Baz]>deref(List__i32(fieldP)._cpp_obj)
+            deref(c_inst).fieldP = deref(List__Baz__i32(fieldP)._cpp_obj)
             deref(c_inst).__isset.fieldP = True
         if fieldQ is not None:
             deref(c_inst).fieldQ = MyEnumA_to_cpp(fieldQ)
@@ -790,21 +790,21 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldN(self):
 
         if self.__fieldN is None:
-            self.__fieldN = List__i64.create(make_shared[vector[Foo]](deref(self._cpp_obj).fieldN))
+            self.__fieldN = List__Foo__i64.create(make_shared[vector[Foo]](deref(self._cpp_obj).fieldN))
         return self.__fieldN
 
     @property
     def fieldO(self):
 
         if self.__fieldO is None:
-            self.__fieldO = List__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).fieldO))
+            self.__fieldO = List__Bar__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).fieldO))
         return self.__fieldO
 
     @property
     def fieldP(self):
 
         if self.__fieldP is None:
-            self.__fieldP = List__i32.create(make_shared[vector[Baz]](deref(self._cpp_obj).fieldP))
+            self.__fieldP = List__Baz__i32.create(make_shared[vector[Baz]](deref(self._cpp_obj).fieldP))
         return self.__fieldP
 
     @property
@@ -4045,16 +4045,16 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)
 
-cdef class List__i64:
+cdef class List__Foo__i64:
     def __init__(self, items=None):
-        if isinstance(items, List__i64):
-            self._cpp_obj = (<List__i64> items)._cpp_obj
+        if isinstance(items, List__Foo__i64):
+            self._cpp_obj = (<List__Foo__i64> items)._cpp_obj
         else:
-            self._cpp_obj = move(List__i64._make_instance(items))
+            self._cpp_obj = move(List__Foo__i64._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[vector[Foo]] c_items):
-        inst = <List__i64>List__i64.__new__(List__i64)
+        inst = <List__Foo__i64>List__Foo__i64.__new__(List__Foo__i64)
         inst._cpp_obj = c_items
         return inst
 
@@ -4081,7 +4081,7 @@ cdef class List__i64:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i64.create(c_inst)
+            return List__Foo__i64.create(c_inst)
         else:
             index = <int?>index_obj
             size = len(self)
@@ -4197,18 +4197,18 @@ cdef class List__i64:
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
-Sequence.register(List__i64)
+Sequence.register(List__Foo__i64)
 
-cdef class List__double:
+cdef class List__Bar__double:
     def __init__(self, items=None):
-        if isinstance(items, List__double):
-            self._cpp_obj = (<List__double> items)._cpp_obj
+        if isinstance(items, List__Bar__double):
+            self._cpp_obj = (<List__Bar__double> items)._cpp_obj
         else:
-            self._cpp_obj = move(List__double._make_instance(items))
+            self._cpp_obj = move(List__Bar__double._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[vector[Bar]] c_items):
-        inst = <List__double>List__double.__new__(List__double)
+        inst = <List__Bar__double>List__Bar__double.__new__(List__Bar__double)
         inst._cpp_obj = c_items
         return inst
 
@@ -4234,7 +4234,7 @@ cdef class List__double:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__double.create(c_inst)
+            return List__Bar__double.create(c_inst)
         else:
             index = <int?>index_obj
             size = len(self)
@@ -4350,7 +4350,161 @@ cdef class List__double:
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
-Sequence.register(List__double)
+Sequence.register(List__Bar__double)
+
+cdef class List__Baz__i32:
+    def __init__(self, items=None):
+        if isinstance(items, List__Baz__i32):
+            self._cpp_obj = (<List__Baz__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__Baz__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[Baz]] c_items):
+        inst = <List__Baz__i32>List__Baz__i32.__new__(List__Baz__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[Baz]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[Baz]] c_inst = make_unique[vector[Baz]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[Baz]] c_inst
+        cdef Baz citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[Baz]]()
+            sz = deref(self._cpp_obj).size()
+            for index in range(*index_obj.indices(sz)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+            return List__Baz__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
+            return False
+        cdef Baz citem = item
+        cdef vector[Baz] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef Baz citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef Baz citem
+        cdef vector[Baz] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[Baz].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, int):
+            raise err
+        cdef Baz citem = item
+        cdef vector[Baz] vec = deref(self._cpp_obj.get())
+        cdef vector[Baz].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[Baz].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise err
+
+    def count(self, item):
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
+            return 0
+        cdef Baz citem = item
+        cdef vector[Baz] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__Baz__i32)
 
 IndirectionA = int
 IndirectionC = int

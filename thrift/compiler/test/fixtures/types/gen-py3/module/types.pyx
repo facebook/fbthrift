@@ -391,28 +391,28 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
                 fieldH = None
 
         if fieldA is not None:
-            deref(c_inst).fieldA = <vector[int32_t]>deref(List__i32(fieldA)._cpp_obj)
+            deref(c_inst).fieldA = deref(List__i32(fieldA)._cpp_obj)
             deref(c_inst).__isset.fieldA = True
         if fieldB is not None:
-            deref(c_inst).fieldB = <std_list[int32_t]>deref(std_list__List__i32(fieldB)._cpp_obj)
+            deref(c_inst).fieldB = deref(std_list__List__i32(fieldB)._cpp_obj)
             deref(c_inst).__isset.fieldB = True
         if fieldC is not None:
-            deref(c_inst).fieldC = <std_deque[int32_t]>deref(std_deque__List__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC = deref(std_deque__List__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
         if fieldD is not None:
-            deref(c_inst).fieldD = <folly_fbvector[int32_t]>deref(folly_fbvector__List__i32(fieldD)._cpp_obj)
+            deref(c_inst).fieldD = deref(folly_fbvector__List__i32(fieldD)._cpp_obj)
             deref(c_inst).__isset.fieldD = True
         if fieldE is not None:
-            deref(c_inst).fieldE = <folly_small_vector[int32_t]>deref(folly_small_vector__List__i32(fieldE)._cpp_obj)
+            deref(c_inst).fieldE = deref(folly_small_vector__List__i32(fieldE)._cpp_obj)
             deref(c_inst).__isset.fieldE = True
         if fieldF is not None:
-            deref(c_inst).fieldF = <folly_sorted_vector_set[int32_t]>deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF = deref(folly_sorted_vector_set__Set__i32(fieldF)._cpp_obj)
             deref(c_inst).__isset.fieldF = True
         if fieldG is not None:
-            deref(c_inst).fieldG = <folly_sorted_vector_map[int32_t,string]>deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj)
+            deref(c_inst).fieldG = deref(folly_sorted_vector_map__Map__i32_string(fieldG)._cpp_obj)
             deref(c_inst).__isset.fieldG = True
         if fieldH is not None:
-            deref(c_inst).fieldH = <std_unordered_map[int32_t,string]>deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj)
+            deref(c_inst).fieldH = deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj)
             deref(c_inst).__isset.fieldH = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

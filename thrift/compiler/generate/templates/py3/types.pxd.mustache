@@ -50,10 +50,8 @@ cdef extern from "{{path}}":
 }}{{#program:customTemplates}}
 {{> CustomTemplate}}
 {{/program:customTemplates}}{{!
-}}{{#program:customTypes}}{{#first?}}
-cdef extern from *:
-{{/first?}}
-  ctypedef {{> types/CythonCppBasicType}} {{type:cythonCustomType}} "{{type:cppCustomType}}"
+}}{{#program:customTypes}}
+{{> CustomType}}
 {{/program:customTypes}}
 
 {{#program:enums}}

@@ -56,7 +56,6 @@ on a struct.
 }}{{#type:container?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
     }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
-    }}<{{> types/CythonCppType}}>{{!
     }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
     }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:container?}}{{/field:reference?}}

@@ -140,17 +140,139 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from *:
-  ctypedef string folly_IOBuf "folly::IOBuf"
-  ctypedef string std_unique_ptr_folly_IOBuf "std::unique_ptr<folly::IOBuf>"
-  ctypedef double Bar "Bar"
-  ctypedef int32_t Baz "Baz"
-  ctypedef string FooBar "FooBar"
-  ctypedef int32_t CppFakeI32 "CppFakeI32"
-  ctypedef vector[int64_t] folly_small_vector_int64_t_8  "folly::small_vector<int64_t, 8 /* maxInline */>"
-  ctypedef cset[string] folly_sorted_vector_set_std_string "folly::sorted_vector_set<std::string>"
-  ctypedef cmap[int64_t,double] FakeMap "FakeMap"
-  ctypedef cmap[string,ccontainerStruct] std_unordered_map_std_string_containerStruct "std::unordered_map<std::string, containerStruct>"
-  ctypedef int64_t Foo "Foo"
+    ctypedef string folly_IOBuf "folly::IOBuf"
+cdef extern from *:
+    ctypedef string std_unique_ptr_folly_IOBuf "std::unique_ptr<folly::IOBuf>"
+cdef extern from *:
+    ctypedef double Bar "Bar"
+cdef extern from *:
+    ctypedef int32_t Baz "Baz"
+cdef extern from *:
+    ctypedef string FooBar "FooBar"
+cdef extern from *:
+    ctypedef int32_t CppFakeI32 "CppFakeI32"
+cdef extern from * nogil:
+    cdef cppclass folly_small_vector_int64_t_8 "folly::small_vector<int64_t, 8 /* maxInline */>":
+        ctypedef int64_t value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            int64_t& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            int64_t& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_small_vector_int64_t_8() except +
+        folly_small_vector_int64_t_8(folly_small_vector_int64_t_8&) except +
+
+        int64_t& operator[](size_type)
+        void push_back(int64_t&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass folly_sorted_vector_set_std_string "folly::sorted_vector_set<std::string>":
+        ctypedef string value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            string& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            string& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_sorted_vector_set_std_string() except +
+        folly_sorted_vector_set_std_string(folly_sorted_vector_set_std_string&) except +
+
+        cpair[iterator, bint] insert(const string&) except +
+        size_type size()
+        size_type count(const string&)
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass FakeMap "FakeMap":
+        ctypedef int64_t key_type
+        ctypedef double mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[int64_t, double]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[int64_t, double]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        FakeMap() except +
+        FakeMap(FakeMap&) except +
+
+        cpair[iterator, bint] insert(cpair[int64_t, double]) except +
+        iterator find(const int64_t&)
+        size_type count(const int64_t&)
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
+    cdef cppclass std_unordered_map_std_string_containerStruct "std::unordered_map<std::string, containerStruct>":
+        ctypedef string key_type
+        ctypedef ccontainerStruct mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[string, ccontainerStruct]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[string, ccontainerStruct]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        std_unordered_map_std_string_containerStruct() except +
+        std_unordered_map_std_string_containerStruct(std_unordered_map_std_string_containerStruct&) except +
+
+        cpair[iterator, bint] insert(cpair[string, ccontainerStruct]) except +
+        iterator find(const string&)
+        size_type count(const string&)
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from *:
+    ctypedef int64_t Foo "Foo"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef cppclass cMyEnumA "some::valid::ns::MyEnumA":
@@ -617,7 +739,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         unique_ptr[ccontainerStruct] opt_ref_type_unique
         shared_ptr[cset[int32_t]] opt_ref_type_shared
         CppFakeI32 base_type
-        folly_small_vector_int64_t_8  list_type
+        folly_small_vector_int64_t_8 list_type
         folly_sorted_vector_set_std_string set_type
         FakeMap map_type
         std_unordered_map_std_string_containerStruct map_struct_type
@@ -1001,7 +1123,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef List__ComplexUnion __fieldY
     cdef Set__SimpleUnion __fieldZ
     cdef List__Set__SimpleUnion __fieldAA
-    cdef Map__double_i32 __fieldAB
+    cdef Map__Bar__double_Baz__i32 __fieldAB
     cdef Map__string_i32 __fieldAE
 
     @staticmethod
@@ -1107,10 +1229,10 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef containerStruct __opt_ref_type_const
     cdef containerStruct __opt_ref_type_unique
     cdef Set__i32 __opt_ref_type_shared
-    cdef List__i64 __list_type
-    cdef Set__string __set_type
-    cdef Map__i64_double __map_type
-    cdef Map__string_containerStruct __map_struct_type
+    cdef folly_small_vector_int64_t_8__List__i64 __list_type
+    cdef folly_sorted_vector_set_std_string__Set__string __set_type
+    cdef FakeMap__Map__i64_double __map_type
+    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __map_struct_type
     cdef std_list__List__i32 __list_i32_template
     cdef std_deque__List__string __list_string_template
     cdef folly_sorted_vector_set__Set__string __set_template
@@ -1119,8 +1241,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef std_deque__List__string __typedef_deque_template
     cdef folly_sorted_vector_set__Set__string __typedef_set_template
     cdef folly_sorted_vector_map__Map__i64_string __typedef_map_template
-    cdef List__double __indirection_b
-    cdef Set__i32 __indirection_c
+    cdef List__Bar__double __indirection_b
+    cdef Set__Baz__i32 __indirection_c
     cdef containerStruct __struct_struct
 
     @staticmethod
@@ -1570,7 +1692,7 @@ cdef class Set__Set__Set__bool:
     @staticmethod
     cdef unique_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *
 
-cdef class Map__double_i32:
+cdef class Map__Bar__double_Baz__i32:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cmap[Bar,Baz]] _cpp_obj
@@ -1579,16 +1701,25 @@ cdef class Map__double_i32:
     @staticmethod
     cdef unique_ptr[cmap[Bar,Baz]] _make_instance(object items) except *
 
-cdef class List__i64:
+cdef class folly_small_vector_int64_t_8__List__i64:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[folly_small_vector_int64_t_8 ] _cpp_obj
+    cdef shared_ptr[folly_small_vector_int64_t_8] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[folly_small_vector_int64_t_8 ])
+    cdef create(shared_ptr[folly_small_vector_int64_t_8])
     @staticmethod
-    cdef unique_ptr[folly_small_vector_int64_t_8 ] _make_instance(object items) except *
+    cdef unique_ptr[folly_small_vector_int64_t_8] _make_instance(object items) except *
 
-cdef class Map__i64_double:
+cdef class folly_sorted_vector_set_std_string__Set__string:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_sorted_vector_set_std_string] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_set_std_string])
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_set_std_string] _make_instance(object items) except *
+
+cdef class FakeMap__Map__i64_double:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[FakeMap] _cpp_obj
@@ -1597,7 +1728,7 @@ cdef class Map__i64_double:
     @staticmethod
     cdef unique_ptr[FakeMap] _make_instance(object items) except *
 
-cdef class Map__string_containerStruct:
+cdef class std_unordered_map_std_string_containerStruct__Map__string_containerStruct:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] _cpp_obj
@@ -1642,7 +1773,7 @@ cdef class folly_sorted_vector_map__Map__i64_string:
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_map[int64_t,string]] _make_instance(object items) except *
 
-cdef class List__double:
+cdef class List__Bar__double:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[vector[Bar]] _cpp_obj
@@ -1650,6 +1781,15 @@ cdef class List__double:
     cdef create(shared_ptr[vector[Bar]])
     @staticmethod
     cdef unique_ptr[vector[Bar]] _make_instance(object items) except *
+
+cdef class Set__Baz__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cset[Baz]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cset[Baz]])
+    @staticmethod
+    cdef unique_ptr[cset[Baz]] _make_instance(object items) except *
 
 cdef class Map__i32_string:
     cdef object __hash
@@ -1773,8 +1913,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cset[cset[cset[cbool]]]] move_unique "std::move"(unique_ptr[cset[cset[cset[cbool]]]])
     cdef shared_ptr[cmap[Bar,Baz]] move(unique_ptr[cmap[Bar,Baz]])
     cdef unique_ptr[cmap[Bar,Baz]] move_unique "std::move"(unique_ptr[cmap[Bar,Baz]])
-    cdef shared_ptr[folly_small_vector_int64_t_8 ] move(unique_ptr[folly_small_vector_int64_t_8 ])
-    cdef unique_ptr[folly_small_vector_int64_t_8 ] move_unique "std::move"(unique_ptr[folly_small_vector_int64_t_8 ])
+    cdef shared_ptr[folly_small_vector_int64_t_8] move(unique_ptr[folly_small_vector_int64_t_8])
+    cdef unique_ptr[folly_small_vector_int64_t_8] move_unique "std::move"(unique_ptr[folly_small_vector_int64_t_8])
+    cdef shared_ptr[folly_sorted_vector_set_std_string] move(unique_ptr[folly_sorted_vector_set_std_string])
+    cdef unique_ptr[folly_sorted_vector_set_std_string] move_unique "std::move"(unique_ptr[folly_sorted_vector_set_std_string])
     cdef shared_ptr[FakeMap] move(unique_ptr[FakeMap])
     cdef unique_ptr[FakeMap] move_unique "std::move"(unique_ptr[FakeMap])
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] move(unique_ptr[std_unordered_map_std_string_containerStruct])
@@ -1789,6 +1931,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[folly_sorted_vector_map[int64_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int64_t,string]])
     cdef shared_ptr[vector[Bar]] move(unique_ptr[vector[Bar]])
     cdef unique_ptr[vector[Bar]] move_unique "std::move"(unique_ptr[vector[Bar]])
+    cdef shared_ptr[cset[Baz]] move(unique_ptr[cset[Baz]])
+    cdef unique_ptr[cset[Baz]] move_unique "std::move"(unique_ptr[cset[Baz]])
     cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
     cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
@@ -1876,7 +2020,9 @@ cdef extern from "<memory>" namespace "std" nogil:
 
     cdef shared_ptr[const cmap[Bar,Baz]] const_pointer_cast "std::const_pointer_cast<const std::map<Bar,Baz>>"(shared_ptr[cmap[Bar,Baz]])
 
-    cdef shared_ptr[const folly_small_vector_int64_t_8 ] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[folly_small_vector_int64_t_8 ])
+    cdef shared_ptr[const folly_small_vector_int64_t_8] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[folly_small_vector_int64_t_8])
+
+    cdef shared_ptr[const folly_sorted_vector_set_std_string] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set_std_string])
 
     cdef shared_ptr[const FakeMap] const_pointer_cast "std::const_pointer_cast<const FakeMap>"(shared_ptr[FakeMap])
 
@@ -1891,6 +2037,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int64_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
 
     cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
+
+    cdef shared_ptr[const cset[Baz]] const_pointer_cast "std::const_pointer_cast<const std::set<Baz>>"(shared_ptr[cset[Baz]])
 
     cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[int32_t,string]])
 

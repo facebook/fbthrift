@@ -93,7 +93,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   bool is_default_template(const string& cpp_template, const t_type& type)
       const;
   string get_cpp_type(const t_type& type) const;
-  string to_cython_type(const string& cpp_template) const;
+  string to_cython_type(const string& cpp_type) const;
   bool is_external_program(const t_program& program) const;
   inline const t_program& get_type_program(const t_type& type);
 };
@@ -363,6 +363,7 @@ string t_mstch_py3_generator::to_cython_type(const string& cpp_type) const {
   boost::algorithm::replace_all(cython_type, "::", "_");
   boost::algorithm::replace_all(cython_type, "<", "_");
   boost::algorithm::replace_all(cython_type, ">", "");
+  boost::algorithm::replace_all(cython_type, " ", "");
   boost::algorithm::replace_all(cython_type, ", ", "_");
   boost::algorithm::replace_all(cython_type, ",", "_");
   return cython_type;
@@ -627,6 +628,11 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
   string custom_prefix = "";
   if (!this->is_default_template(cpp_template, type)) {
     custom_prefix = this->to_cython_template(cpp_template) + "__";
+  } else {
+    string cpp_type = this->get_cpp_type(type);
+    if (cpp_type != "") {
+      custom_prefix = this->to_cython_type(cpp_type) + "__";
+    }
   }
 
   if (type.is_list()) {

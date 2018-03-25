@@ -86,7 +86,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
                 features = None
 
         if features is not None:
-            deref(c_inst).features = <cmap[int16_t,double]>deref(Map__i16_double(features)._cpp_obj)
+            deref(c_inst).features = deref(Map__i16_double(features)._cpp_obj)
             deref(c_inst).__isset.features = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -217,7 +217,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
                 features = None
 
         if features is not None:
-            deref(c_inst).features = <cmap[int16_t,double]>deref(Map__i16_double(features)._cpp_obj)
+            deref(c_inst).features = deref(Map__i16_double(features)._cpp_obj)
             deref(c_inst).__isset.features = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -348,7 +348,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
                 features = None
 
         if features is not None:
-            deref(c_inst).features = <cmap[int16_t,float]>deref(Map__i16_float(features)._cpp_obj)
+            deref(c_inst).features = deref(Map__i16_float(features)._cpp_obj)
             deref(c_inst).__isset.features = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -507,13 +507,13 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
                 s = None
 
         if lst is not None:
-            deref(c_inst).lst = <vector[cmap[int16_t,float]]>deref(List__Map__i16_float(lst)._cpp_obj)
+            deref(c_inst).lst = deref(List__Map__i16_float(lst)._cpp_obj)
             deref(c_inst).__isset.lst = True
         if mp is not None:
-            deref(c_inst).mp = <cmap[int16_t,cmap[int16_t,float]]>deref(Map__i16_Map__i16_float(mp)._cpp_obj)
+            deref(c_inst).mp = deref(Map__i16_Map__i16_float(mp)._cpp_obj)
             deref(c_inst).__isset.mp = True
         if s is not None:
-            deref(c_inst).s = <cset[cmap[int16_t,float]]>deref(Set__Map__i16_float(s)._cpp_obj)
+            deref(c_inst).s = deref(Set__Map__i16_float(s)._cpp_obj)
             deref(c_inst).__isset.s = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

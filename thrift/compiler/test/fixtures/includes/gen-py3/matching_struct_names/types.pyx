@@ -263,16 +263,16 @@ cdef class Combo(thrift.py3.types.Struct):
                 listOfTheirMyStructList = None
 
         if listOfOurMyStructLists is not None:
-            deref(c_inst).listOfOurMyStructLists = <vector[vector[cMyStruct]]>deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj)
+            deref(c_inst).listOfOurMyStructLists = deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj)
             deref(c_inst).__isset.listOfOurMyStructLists = True
         if theirMyStructList is not None:
-            deref(c_inst).theirMyStructList = <vector[_module_types.cMyStruct]>deref(List__module_MyStruct(theirMyStructList)._cpp_obj)
+            deref(c_inst).theirMyStructList = deref(List__module_MyStruct(theirMyStructList)._cpp_obj)
             deref(c_inst).__isset.theirMyStructList = True
         if ourMyStructList is not None:
-            deref(c_inst).ourMyStructList = <vector[cMyStruct]>deref(List__MyStruct(ourMyStructList)._cpp_obj)
+            deref(c_inst).ourMyStructList = deref(List__MyStruct(ourMyStructList)._cpp_obj)
             deref(c_inst).__isset.ourMyStructList = True
         if listOfTheirMyStructList is not None:
-            deref(c_inst).listOfTheirMyStructList = <vector[vector[_module_types.cMyStruct]]>deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj)
+            deref(c_inst).listOfTheirMyStructList = deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj)
             deref(c_inst).__isset.listOfTheirMyStructList = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

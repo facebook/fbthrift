@@ -19,9 +19,11 @@ cimport thrift.py3.types
 from folly.optional cimport cOptional
 
 cdef extern from *:
-  ctypedef int64_t Foo "Foo"
-  ctypedef double Bar "Bar"
-  ctypedef int32_t Baz "Baz"
+    ctypedef int64_t Foo "Foo"
+cdef extern from *:
+    ctypedef double Bar "Bar"
+cdef extern from *:
+    ctypedef int32_t Baz "Baz"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyEnumA "cpp2::MyEnumA":
@@ -155,9 +157,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef List__List__List__List__i32 __fieldK
     cdef Set__Set__Set__bool __fieldL
     cdef Map__Set__List__i32_Map__List__Set__string_string __fieldM
-    cdef List__i64 __fieldN
-    cdef List__double __fieldO
-    cdef List__i32 __fieldP
+    cdef List__Foo__i64 __fieldN
+    cdef List__Bar__double __fieldO
+    cdef List__Baz__i32 __fieldP
     cdef Map__string_bool __fieldR
     cdef SmallStruct __fieldS
     cdef SmallStruct __fieldT
@@ -366,7 +368,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
     @staticmethod
     cdef unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *
 
-cdef class List__i64:
+cdef class List__Foo__i64:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[vector[Foo]] _cpp_obj
@@ -375,7 +377,7 @@ cdef class List__i64:
     @staticmethod
     cdef unique_ptr[vector[Foo]] _make_instance(object items) except *
 
-cdef class List__double:
+cdef class List__Bar__double:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[vector[Bar]] _cpp_obj
@@ -383,6 +385,15 @@ cdef class List__double:
     cdef create(shared_ptr[vector[Bar]])
     @staticmethod
     cdef unique_ptr[vector[Bar]] _make_instance(object items) except *
+
+cdef class List__Baz__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[Baz]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[Baz]])
+    @staticmethod
+    cdef unique_ptr[vector[Baz]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[string,cbool]] move(unique_ptr[cmap[string,cbool]])
@@ -427,6 +438,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[vector[Foo]] move_unique "std::move"(unique_ptr[vector[Foo]])
     cdef shared_ptr[vector[Bar]] move(unique_ptr[vector[Bar]])
     cdef unique_ptr[vector[Bar]] move_unique "std::move"(unique_ptr[vector[Bar]])
+    cdef shared_ptr[vector[Baz]] move(unique_ptr[vector[Baz]])
+    cdef unique_ptr[vector[Baz]] move_unique "std::move"(unique_ptr[vector[Baz]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cmap[string,cbool]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,bool>>"(shared_ptr[cmap[string,cbool]])
 
@@ -469,4 +482,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[Foo]] const_pointer_cast "std::const_pointer_cast<const std::vector<Foo>>"(shared_ptr[vector[Foo]])
 
     cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
+
+    cdef shared_ptr[const vector[Baz]] const_pointer_cast "std::const_pointer_cast<const std::vector<Baz>>"(shared_ptr[vector[Baz]])
 

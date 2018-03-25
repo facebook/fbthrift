@@ -146,10 +146,10 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(c_inst).myString = myString.encode('UTF-8')
             deref(c_inst).__isset.myString = True
         if myBools is not None:
-            deref(c_inst).myBools = <vector[cbool]>deref(List__bool(myBools)._cpp_obj)
+            deref(c_inst).myBools = deref(List__bool(myBools)._cpp_obj)
             deref(c_inst).__isset.myBools = True
         if myNumbers is not None:
-            deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
+            deref(c_inst).myNumbers = deref(List__i32(myNumbers)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)

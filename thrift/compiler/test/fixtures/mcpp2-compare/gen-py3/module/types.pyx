@@ -728,10 +728,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyBinaryField3 is not None:
             deref(c_inst).MyBinaryField3 = MyBinaryField3
         if MyBinaryListField4 is not None:
-            deref(c_inst).MyBinaryListField4 = <vector[string]>deref(List__binary(MyBinaryListField4)._cpp_obj)
+            deref(c_inst).MyBinaryListField4 = deref(List__binary(MyBinaryListField4)._cpp_obj)
             deref(c_inst).__isset.MyBinaryListField4 = True
         if MyMapEnumAndInt is not None:
-            deref(c_inst).MyMapEnumAndInt = <cmap[cMyEnumA,string]>deref(Map__MyEnumA_string(MyMapEnumAndInt)._cpp_obj)
+            deref(c_inst).MyMapEnumAndInt = deref(Map__MyEnumA_string(MyMapEnumAndInt)._cpp_obj)
             deref(c_inst).__isset.MyMapEnumAndInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1913,36 +1913,36 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if req_message is not None:
             deref(c_inst).req_message = req_message.encode('UTF-8')
         if exception_list is not None:
-            deref(c_inst).exception_list = <vector[int32_t]>deref(List__i32(exception_list)._cpp_obj)
+            deref(c_inst).exception_list = deref(List__i32(exception_list)._cpp_obj)
             deref(c_inst).__isset.exception_list = True
         if exception_set is not None:
-            deref(c_inst).exception_set = <cset[int64_t]>deref(Set__i64(exception_set)._cpp_obj)
+            deref(c_inst).exception_set = deref(Set__i64(exception_set)._cpp_obj)
             deref(c_inst).__isset.exception_set = True
         if exception_map is not None:
-            deref(c_inst).exception_map = <cmap[string,int32_t]>deref(Map__string_i32(exception_map)._cpp_obj)
+            deref(c_inst).exception_map = deref(Map__string_i32(exception_map)._cpp_obj)
             deref(c_inst).__isset.exception_map = True
         if req_exception_map is not None:
-            deref(c_inst).req_exception_map = <cmap[string,int32_t]>deref(Map__string_i32(req_exception_map)._cpp_obj)
+            deref(c_inst).req_exception_map = deref(Map__string_i32(req_exception_map)._cpp_obj)
         if enum_field is not None:
             deref(c_inst).enum_field = MyEnumA_to_cpp(enum_field)
             deref(c_inst).__isset.enum_field = True
         if enum_container is not None:
-            deref(c_inst).enum_container = <vector[cMyEnumA]>deref(List__MyEnumA(enum_container)._cpp_obj)
+            deref(c_inst).enum_container = deref(List__MyEnumA(enum_container)._cpp_obj)
             deref(c_inst).__isset.enum_container = True
         if a_struct is not None:
             deref(c_inst).a_struct = deref((<MyStruct?> a_struct)._cpp_obj)
             deref(c_inst).__isset.a_struct = True
         if a_set_struct is not None:
-            deref(c_inst).a_set_struct = <cset[cMyStruct]>deref(Set__MyStruct(a_set_struct)._cpp_obj)
+            deref(c_inst).a_set_struct = deref(Set__MyStruct(a_set_struct)._cpp_obj)
             deref(c_inst).__isset.a_set_struct = True
         if a_union_list is not None:
-            deref(c_inst).a_union_list = <vector[cSimpleUnion]>deref(List__SimpleUnion(a_union_list)._cpp_obj)
+            deref(c_inst).a_union_list = deref(List__SimpleUnion(a_union_list)._cpp_obj)
             deref(c_inst).__isset.a_union_list = True
         if union_typedef is not None:
-            deref(c_inst).union_typedef = <cset[cSimpleUnion]>deref(Set__SimpleUnion(union_typedef)._cpp_obj)
+            deref(c_inst).union_typedef = deref(Set__SimpleUnion(union_typedef)._cpp_obj)
             deref(c_inst).__isset.union_typedef = True
         if a_union_typedef_list is not None:
-            deref(c_inst).a_union_typedef_list = <vector[cset[cSimpleUnion]]>deref(List__Set__SimpleUnion(a_union_typedef_list)._cpp_obj)
+            deref(c_inst).a_union_typedef_list = deref(List__Set__SimpleUnion(a_union_typedef_list)._cpp_obj)
             deref(c_inst).__isset.a_union_typedef_list = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -3017,20 +3017,20 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).opt_fieldA = opt_fieldA
             deref(c_inst).__isset.opt_fieldA = True
         if fieldB is not None:
-            deref(c_inst).fieldB = <cmap[string,cbool]>deref(Map__string_bool(fieldB)._cpp_obj)
+            deref(c_inst).fieldB = deref(Map__string_bool(fieldB)._cpp_obj)
             deref(c_inst).__isset.fieldB = True
         if req_fieldB is not None:
-            deref(c_inst).req_fieldB = <cmap[string,cbool]>deref(Map__string_bool(req_fieldB)._cpp_obj)
+            deref(c_inst).req_fieldB = deref(Map__string_bool(req_fieldB)._cpp_obj)
         if opt_fieldB is not None:
-            deref(c_inst).opt_fieldB = <cmap[string,cbool]>deref(Map__string_bool(opt_fieldB)._cpp_obj)
+            deref(c_inst).opt_fieldB = deref(Map__string_bool(opt_fieldB)._cpp_obj)
             deref(c_inst).__isset.opt_fieldB = True
         if fieldC is not None:
-            deref(c_inst).fieldC = <cset[int32_t]>deref(Set__i32(fieldC)._cpp_obj)
+            deref(c_inst).fieldC = deref(Set__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
         if req_fieldC is not None:
-            deref(c_inst).req_fieldC = <cset[int32_t]>deref(Set__i32(req_fieldC)._cpp_obj)
+            deref(c_inst).req_fieldC = deref(Set__i32(req_fieldC)._cpp_obj)
         if opt_fieldC is not None:
-            deref(c_inst).opt_fieldC = <cset[int32_t]>deref(Set__i32(opt_fieldC)._cpp_obj)
+            deref(c_inst).opt_fieldC = deref(Set__i32(opt_fieldC)._cpp_obj)
             deref(c_inst).__isset.opt_fieldC = True
         if fieldD is not None:
             deref(c_inst).fieldD = fieldD.encode('UTF-8')
@@ -3044,37 +3044,37 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).opt_fieldE = opt_fieldE.encode('UTF-8')
             deref(c_inst).__isset.opt_fieldE = True
         if fieldF is not None:
-            deref(c_inst).fieldF = <vector[vector[int32_t]]>deref(List__List__i32(fieldF)._cpp_obj)
+            deref(c_inst).fieldF = deref(List__List__i32(fieldF)._cpp_obj)
             deref(c_inst).__isset.fieldF = True
         if fieldG is not None:
-            deref(c_inst).fieldG = <cmap[string,cmap[string,cmap[string,int32_t]]]>deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj)
+            deref(c_inst).fieldG = deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj)
             deref(c_inst).__isset.fieldG = True
         if fieldH is not None:
-            deref(c_inst).fieldH = <vector[cset[int32_t]]>deref(List__Set__i32(fieldH)._cpp_obj)
+            deref(c_inst).fieldH = deref(List__Set__i32(fieldH)._cpp_obj)
             deref(c_inst).__isset.fieldH = True
         if fieldI is not None:
             deref(c_inst).fieldI = fieldI
             deref(c_inst).__isset.fieldI = True
         if fieldJ is not None:
-            deref(c_inst).fieldJ = <cmap[string,vector[int32_t]]>deref(Map__string_List__i32(fieldJ)._cpp_obj)
+            deref(c_inst).fieldJ = deref(Map__string_List__i32(fieldJ)._cpp_obj)
             deref(c_inst).__isset.fieldJ = True
         if fieldK is not None:
-            deref(c_inst).fieldK = <vector[vector[vector[vector[int32_t]]]]>deref(List__List__List__List__i32(fieldK)._cpp_obj)
+            deref(c_inst).fieldK = deref(List__List__List__List__i32(fieldK)._cpp_obj)
             deref(c_inst).__isset.fieldK = True
         if fieldL is not None:
-            deref(c_inst).fieldL = <cset[cset[cset[cbool]]]>deref(Set__Set__Set__bool(fieldL)._cpp_obj)
+            deref(c_inst).fieldL = deref(Set__Set__Set__bool(fieldL)._cpp_obj)
             deref(c_inst).__isset.fieldL = True
         if fieldM is not None:
-            deref(c_inst).fieldM = <cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]>deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj)
+            deref(c_inst).fieldM = deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj)
             deref(c_inst).__isset.fieldM = True
         if fieldN is not None:
             deref(c_inst).fieldN = fieldN
             deref(c_inst).__isset.fieldN = True
         if fieldO is not None:
-            deref(c_inst).fieldO = <vector[cmap[cEmpty,cMyStruct]]>deref(List__Map__Empty_MyStruct(fieldO)._cpp_obj)
+            deref(c_inst).fieldO = deref(List__Map__Empty_MyStruct(fieldO)._cpp_obj)
             deref(c_inst).__isset.fieldO = True
         if fieldP is not None:
-            deref(c_inst).fieldP = <vector[vector[vector[cmap[cEmpty,cMyStruct]]]]>deref(List__List__List__Map__Empty_MyStruct(fieldP)._cpp_obj)
+            deref(c_inst).fieldP = deref(List__List__List__Map__Empty_MyStruct(fieldP)._cpp_obj)
             deref(c_inst).__isset.fieldP = True
         if fieldQ is not None:
             deref(c_inst).fieldQ = MyEnumA_to_cpp(fieldQ)
@@ -3091,10 +3091,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldS = MyEnumA_to_cpp(fieldS)
             deref(c_inst).__isset.fieldS = True
         if fieldT is not None:
-            deref(c_inst).fieldT = <vector[cMyEnumA]>deref(List__MyEnumA(fieldT)._cpp_obj)
+            deref(c_inst).fieldT = deref(List__MyEnumA(fieldT)._cpp_obj)
             deref(c_inst).__isset.fieldT = True
         if fieldU is not None:
-            deref(c_inst).fieldU = <vector[cMyEnumA]>deref(List__MyEnumA(fieldU)._cpp_obj)
+            deref(c_inst).fieldU = deref(List__MyEnumA(fieldU)._cpp_obj)
             deref(c_inst).__isset.fieldU = True
         if fieldV is not None:
             deref(c_inst).fieldV = deref((<MyStruct?> fieldV)._cpp_obj)
@@ -3105,7 +3105,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).opt_fieldV = deref((<MyStruct?> opt_fieldV)._cpp_obj)
             deref(c_inst).__isset.opt_fieldV = True
         if fieldW is not None:
-            deref(c_inst).fieldW = <cset[cMyStruct]>deref(Set__MyStruct(fieldW)._cpp_obj)
+            deref(c_inst).fieldW = deref(Set__MyStruct(fieldW)._cpp_obj)
             deref(c_inst).__isset.fieldW = True
         if fieldX is not None:
             deref(c_inst).fieldX = deref((<ComplexUnion?> fieldX)._cpp_obj)
@@ -3116,16 +3116,16 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).opt_fieldX = deref((<ComplexUnion?> opt_fieldX)._cpp_obj)
             deref(c_inst).__isset.opt_fieldX = True
         if fieldY is not None:
-            deref(c_inst).fieldY = <vector[cComplexUnion]>deref(List__ComplexUnion(fieldY)._cpp_obj)
+            deref(c_inst).fieldY = deref(List__ComplexUnion(fieldY)._cpp_obj)
             deref(c_inst).__isset.fieldY = True
         if fieldZ is not None:
-            deref(c_inst).fieldZ = <cset[cSimpleUnion]>deref(Set__SimpleUnion(fieldZ)._cpp_obj)
+            deref(c_inst).fieldZ = deref(Set__SimpleUnion(fieldZ)._cpp_obj)
             deref(c_inst).__isset.fieldZ = True
         if fieldAA is not None:
-            deref(c_inst).fieldAA = <vector[cset[cSimpleUnion]]>deref(List__Set__SimpleUnion(fieldAA)._cpp_obj)
+            deref(c_inst).fieldAA = deref(List__Set__SimpleUnion(fieldAA)._cpp_obj)
             deref(c_inst).__isset.fieldAA = True
         if fieldAB is not None:
-            deref(c_inst).fieldAB = <cmap[Bar,Baz]>deref(Map__double_i32(fieldAB)._cpp_obj)
+            deref(c_inst).fieldAB = deref(Map__Bar__double_Baz__i32(fieldAB)._cpp_obj)
             deref(c_inst).__isset.fieldAB = True
         if fieldAC is not None:
             deref(c_inst).fieldAC = MyEnumB_to_cpp(fieldAC)
@@ -3134,7 +3134,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldAD = _includes_types.AnEnum_to_cpp(fieldAD)
             deref(c_inst).__isset.fieldAD = True
         if fieldAE is not None:
-            deref(c_inst).fieldAE = <cmap[string,int32_t]>deref(Map__string_i32(fieldAE)._cpp_obj)
+            deref(c_inst).fieldAE = deref(Map__string_i32(fieldAE)._cpp_obj)
             deref(c_inst).__isset.fieldAE = True
         if fieldSD is not None:
             deref(c_inst).fieldSD = fieldSD.encode('UTF-8')
@@ -3471,7 +3471,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldAB(self):
 
         if self.__fieldAB is None:
-            self.__fieldAB = Map__double_i32.create(make_shared[cmap[Bar,Baz]](deref(self._cpp_obj).fieldAB))
+            self.__fieldAB = Map__Bar__double_Baz__i32.create(make_shared[cmap[Bar,Baz]](deref(self._cpp_obj).fieldAB))
         return self.__fieldAB
 
     @property
@@ -4549,16 +4549,16 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).base_type = base_type
             deref(c_inst).__isset.base_type = True
         if list_type is not None:
-            deref(c_inst).list_type = <folly_small_vector_int64_t_8 >deref(List__i64(list_type)._cpp_obj)
+            deref(c_inst).list_type = deref(folly_small_vector_int64_t_8__List__i64(list_type)._cpp_obj)
             deref(c_inst).__isset.list_type = True
         if set_type is not None:
-            deref(c_inst).set_type = <folly_sorted_vector_set_std_string>deref(Set__string(set_type)._cpp_obj)
+            deref(c_inst).set_type = deref(folly_sorted_vector_set_std_string__Set__string(set_type)._cpp_obj)
             deref(c_inst).__isset.set_type = True
         if map_type is not None:
-            deref(c_inst).map_type = <FakeMap>deref(Map__i64_double(map_type)._cpp_obj)
+            deref(c_inst).map_type = deref(FakeMap__Map__i64_double(map_type)._cpp_obj)
             deref(c_inst).__isset.map_type = True
         if map_struct_type is not None:
-            deref(c_inst).map_struct_type = <std_unordered_map_std_string_containerStruct>deref(Map__string_containerStruct(map_struct_type)._cpp_obj)
+            deref(c_inst).map_struct_type = deref(std_unordered_map_std_string_containerStruct__Map__string_containerStruct(map_struct_type)._cpp_obj)
             deref(c_inst).__isset.map_struct_type = True
         if iobuf_type is not None:
             deref(c_inst).iobuf_type = iobuf_type
@@ -4567,37 +4567,37 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).iobuf_ptr = iobuf_ptr
             deref(c_inst).__isset.iobuf_ptr = True
         if list_i32_template is not None:
-            deref(c_inst).list_i32_template = <std_list[int32_t]>deref(std_list__List__i32(list_i32_template)._cpp_obj)
+            deref(c_inst).list_i32_template = deref(std_list__List__i32(list_i32_template)._cpp_obj)
             deref(c_inst).__isset.list_i32_template = True
         if list_string_template is not None:
-            deref(c_inst).list_string_template = <std_deque[string]>deref(std_deque__List__string(list_string_template)._cpp_obj)
+            deref(c_inst).list_string_template = deref(std_deque__List__string(list_string_template)._cpp_obj)
             deref(c_inst).__isset.list_string_template = True
         if set_template is not None:
-            deref(c_inst).set_template = <folly_sorted_vector_set[string]>deref(folly_sorted_vector_set__Set__string(set_template)._cpp_obj)
+            deref(c_inst).set_template = deref(folly_sorted_vector_set__Set__string(set_template)._cpp_obj)
             deref(c_inst).__isset.set_template = True
         if map_template is not None:
-            deref(c_inst).map_template = <folly_sorted_vector_map[int64_t,string]>deref(folly_sorted_vector_map__Map__i64_string(map_template)._cpp_obj)
+            deref(c_inst).map_template = deref(folly_sorted_vector_map__Map__i64_string(map_template)._cpp_obj)
             deref(c_inst).__isset.map_template = True
         if typedef_list_template is not None:
-            deref(c_inst).typedef_list_template = <std_list[int32_t]>deref(std_list__List__i32(typedef_list_template)._cpp_obj)
+            deref(c_inst).typedef_list_template = deref(std_list__List__i32(typedef_list_template)._cpp_obj)
             deref(c_inst).__isset.typedef_list_template = True
         if typedef_deque_template is not None:
-            deref(c_inst).typedef_deque_template = <std_deque[string]>deref(std_deque__List__string(typedef_deque_template)._cpp_obj)
+            deref(c_inst).typedef_deque_template = deref(std_deque__List__string(typedef_deque_template)._cpp_obj)
             deref(c_inst).__isset.typedef_deque_template = True
         if typedef_set_template is not None:
-            deref(c_inst).typedef_set_template = <folly_sorted_vector_set[string]>deref(folly_sorted_vector_set__Set__string(typedef_set_template)._cpp_obj)
+            deref(c_inst).typedef_set_template = deref(folly_sorted_vector_set__Set__string(typedef_set_template)._cpp_obj)
             deref(c_inst).__isset.typedef_set_template = True
         if typedef_map_template is not None:
-            deref(c_inst).typedef_map_template = <folly_sorted_vector_map[int64_t,string]>deref(folly_sorted_vector_map__Map__i64_string(typedef_map_template)._cpp_obj)
+            deref(c_inst).typedef_map_template = deref(folly_sorted_vector_map__Map__i64_string(typedef_map_template)._cpp_obj)
             deref(c_inst).__isset.typedef_map_template = True
         if indirection_a is not None:
             deref(c_inst).indirection_a = indirection_a
             deref(c_inst).__isset.indirection_a = True
         if indirection_b is not None:
-            deref(c_inst).indirection_b = <vector[Bar]>deref(List__double(indirection_b)._cpp_obj)
+            deref(c_inst).indirection_b = deref(List__Bar__double(indirection_b)._cpp_obj)
             deref(c_inst).__isset.indirection_b = True
         if indirection_c is not None:
-            deref(c_inst).indirection_c = <cset[Baz]>deref(Set__i32(indirection_c)._cpp_obj)
+            deref(c_inst).indirection_c = deref(Set__Baz__i32(indirection_c)._cpp_obj)
             deref(c_inst).__isset.indirection_c = True
         if iobuf_type_val is not None:
             deref(c_inst).iobuf_type_val = iobuf_type_val
@@ -4841,28 +4841,28 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def list_type(self):
 
         if self.__list_type is None:
-            self.__list_type = List__i64.create(make_shared[folly_small_vector_int64_t_8 ](deref(self._cpp_obj).list_type))
+            self.__list_type = folly_small_vector_int64_t_8__List__i64.create(make_shared[folly_small_vector_int64_t_8](deref(self._cpp_obj).list_type))
         return self.__list_type
 
     @property
     def set_type(self):
 
         if self.__set_type is None:
-            self.__set_type = Set__string.create(make_shared[folly_sorted_vector_set_std_string](deref(self._cpp_obj).set_type))
+            self.__set_type = folly_sorted_vector_set_std_string__Set__string.create(make_shared[folly_sorted_vector_set_std_string](deref(self._cpp_obj).set_type))
         return self.__set_type
 
     @property
     def map_type(self):
 
         if self.__map_type is None:
-            self.__map_type = Map__i64_double.create(make_shared[FakeMap](deref(self._cpp_obj).map_type))
+            self.__map_type = FakeMap__Map__i64_double.create(make_shared[FakeMap](deref(self._cpp_obj).map_type))
         return self.__map_type
 
     @property
     def map_struct_type(self):
 
         if self.__map_struct_type is None:
-            self.__map_struct_type = Map__string_containerStruct.create(make_shared[std_unordered_map_std_string_containerStruct](deref(self._cpp_obj).map_struct_type))
+            self.__map_struct_type = std_unordered_map_std_string_containerStruct__Map__string_containerStruct.create(make_shared[std_unordered_map_std_string_containerStruct](deref(self._cpp_obj).map_struct_type))
         return self.__map_struct_type
 
     @property
@@ -4940,14 +4940,14 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def indirection_b(self):
 
         if self.__indirection_b is None:
-            self.__indirection_b = List__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).indirection_b))
+            self.__indirection_b = List__Bar__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).indirection_b))
         return self.__indirection_b
 
     @property
     def indirection_c(self):
 
         if self.__indirection_c is None:
-            self.__indirection_c = Set__i32.create(make_shared[cset[Baz]](deref(self._cpp_obj).indirection_c))
+            self.__indirection_c = Set__Baz__i32.create(make_shared[cset[Baz]](deref(self._cpp_obj).indirection_c))
         return self.__indirection_c
 
     @property
@@ -11743,16 +11743,16 @@ cdef class Set__Set__Set__bool:
 
 Set.register(Set__Set__Set__bool)
 
-cdef class Map__double_i32:
+cdef class Map__Bar__double_Baz__i32:
     def __init__(self, items=None):
-        if isinstance(items, Map__double_i32):
-            self._cpp_obj = (<Map__double_i32> items)._cpp_obj
+        if isinstance(items, Map__Bar__double_Baz__i32):
+            self._cpp_obj = (<Map__Bar__double_Baz__i32> items)._cpp_obj
         else:
-            self._cpp_obj = move(Map__double_i32._make_instance(items))
+            self._cpp_obj = move(Map__Bar__double_Baz__i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[Bar,Baz]] c_items):
-        inst = <Map__double_i32>Map__double_i32.__new__(Map__double_i32)
+        inst = <Map__Bar__double_Baz__i32>Map__Bar__double_Baz__i32.__new__(Map__Bar__double_Baz__i32)
         inst._cpp_obj = c_items
         return inst
 
@@ -11868,24 +11868,24 @@ cdef class Map__double_i32:
 
 
 
-Mapping.register(Map__double_i32)
+Mapping.register(Map__Bar__double_Baz__i32)
 
-cdef class List__i64:
+cdef class folly_small_vector_int64_t_8__List__i64:
     def __init__(self, items=None):
-        if isinstance(items, List__i64):
-            self._cpp_obj = (<List__i64> items)._cpp_obj
+        if isinstance(items, folly_small_vector_int64_t_8__List__i64):
+            self._cpp_obj = (<folly_small_vector_int64_t_8__List__i64> items)._cpp_obj
         else:
-            self._cpp_obj = move(List__i64._make_instance(items))
+            self._cpp_obj = move(folly_small_vector_int64_t_8__List__i64._make_instance(items))
 
     @staticmethod
-    cdef create(shared_ptr[folly_small_vector_int64_t_8 ] c_items):
-        inst = <List__i64>List__i64.__new__(List__i64)
+    cdef create(shared_ptr[folly_small_vector_int64_t_8] c_items):
+        inst = <folly_small_vector_int64_t_8__List__i64>folly_small_vector_int64_t_8__List__i64.__new__(folly_small_vector_int64_t_8__List__i64)
         inst._cpp_obj = c_items
         return inst
 
     @staticmethod
-    cdef unique_ptr[folly_small_vector_int64_t_8 ] _make_instance(object items) except *:
-        cdef unique_ptr[folly_small_vector_int64_t_8 ] c_inst = make_unique[folly_small_vector_int64_t_8 ]()
+    cdef unique_ptr[folly_small_vector_int64_t_8] _make_instance(object items) except *:
+        cdef unique_ptr[folly_small_vector_int64_t_8] c_inst = make_unique[folly_small_vector_int64_t_8]()
         if items is not None:
             for item in items:
                 if not isinstance(item, int):
@@ -11898,15 +11898,15 @@ cdef class List__i64:
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
-        cdef shared_ptr[folly_small_vector_int64_t_8 ] c_inst
+        cdef shared_ptr[folly_small_vector_int64_t_8] c_inst
         cdef int64_t citem
         if isinstance(index_obj, slice):
-            c_inst = make_shared[folly_small_vector_int64_t_8 ]()
+            c_inst = make_shared[folly_small_vector_int64_t_8]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i64.create(c_inst)
+            return folly_small_vector_int64_t_8__List__i64.create(c_inst)
         else:
             index = <int?>index_obj
             size = len(self)
@@ -11947,7 +11947,7 @@ cdef class List__i64:
         if not isinstance(item, int):
             return False
         cdef int64_t citem = item
-        cdef folly_small_vector_int64_t_8  vec = deref(
+        cdef folly_small_vector_int64_t_8 vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
@@ -11967,9 +11967,9 @@ cdef class List__i64:
         if not self:
             raise StopIteration
         cdef int64_t citem
-        cdef folly_small_vector_int64_t_8  vec = deref(
+        cdef folly_small_vector_int64_t_8 vec = deref(
             self._cpp_obj.get())
-        cdef folly_small_vector_int64_t_8 .reverse_iterator loc = vec.rbegin()
+        cdef folly_small_vector_int64_t_8.reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
             yield citem
@@ -12001,9 +12001,9 @@ cdef class List__i64:
         if not isinstance(item, int):
             raise err
         cdef int64_t citem = item
-        cdef folly_small_vector_int64_t_8  vec = deref(self._cpp_obj.get())
-        cdef folly_small_vector_int64_t_8 .iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
-        cdef folly_small_vector_int64_t_8 .iterator loc = std_libcpp.find(
+        cdef folly_small_vector_int64_t_8 vec = deref(self._cpp_obj.get())
+        cdef folly_small_vector_int64_t_8.iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef folly_small_vector_int64_t_8.iterator loc = std_libcpp.find(
             std_libcpp.next(vec.begin(), <int64_t>offset_begin),
             end,
             citem
@@ -12018,22 +12018,212 @@ cdef class List__i64:
         if not isinstance(item, int):
             return 0
         cdef int64_t citem = item
-        cdef folly_small_vector_int64_t_8  vec = deref(self._cpp_obj.get())
+        cdef folly_small_vector_int64_t_8 vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
-Sequence.register(List__i64)
+Sequence.register(folly_small_vector_int64_t_8__List__i64)
 
-cdef class Map__i64_double:
+cdef class folly_sorted_vector_set_std_string__Set__string:
     def __init__(self, items=None):
-        if isinstance(items, Map__i64_double):
-            self._cpp_obj = (<Map__i64_double> items)._cpp_obj
+        if isinstance(items, folly_sorted_vector_set_std_string__Set__string):
+            self._cpp_obj = (<folly_sorted_vector_set_std_string__Set__string> items)._cpp_obj
         else:
-            self._cpp_obj = move(Map__i64_double._make_instance(items))
+            self._cpp_obj = move(folly_sorted_vector_set_std_string__Set__string._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_set_std_string] c_items):
+        inst = <folly_sorted_vector_set_std_string__Set__string>folly_sorted_vector_set_std_string__Set__string.__new__(folly_sorted_vector_set_std_string__Set__string)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_set_std_string] _make_instance(object items) except *:
+        cdef unique_ptr[folly_sorted_vector_set_std_string] c_inst = make_unique[folly_sorted_vector_set_std_string]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+                deref(c_inst).insert(item.encode('UTF-8'))
+        return move_unique(c_inst)
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, str):
+            return False
+        return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
+
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        for citem in deref(self._cpp_obj):
+            yield bytes(citem).decode('UTF-8')
+
+    def __repr__(self):
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        cdef folly_sorted_vector_set_std_string cself, cother
+        cdef cbool retval
+        if (isinstance(self, folly_sorted_vector_set_std_string__Set__string) and
+                isinstance(other, folly_sorted_vector_set_std_string__Set__string)):
+            cself = deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj)
+            cother = deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __and__(self, other):
+        if not isinstance(self, folly_sorted_vector_set_std_string__Set__string):
+            self = folly_sorted_vector_set_std_string__Set__string(self)
+        if not isinstance(other, folly_sorted_vector_set_std_string__Set__string):
+            other = folly_sorted_vector_set_std_string__Set__string(other)
+
+        cdef shared_ptr[folly_sorted_vector_set_std_string] shretval = \
+            make_shared[folly_sorted_vector_set_std_string]()
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return folly_sorted_vector_set_std_string__Set__string.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, folly_sorted_vector_set_std_string__Set__string):
+            self = folly_sorted_vector_set_std_string__Set__string(self)
+        if not isinstance(other, folly_sorted_vector_set_std_string__Set__string):
+            other = folly_sorted_vector_set_std_string__Set__string(other)
+
+        cdef shared_ptr[folly_sorted_vector_set_std_string] shretval = \
+            make_shared[folly_sorted_vector_set_std_string]()
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return folly_sorted_vector_set_std_string__Set__string.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, folly_sorted_vector_set_std_string__Set__string):
+            self = folly_sorted_vector_set_std_string__Set__string(self)
+        if not isinstance(other, folly_sorted_vector_set_std_string__Set__string):
+            other = folly_sorted_vector_set_std_string__Set__string(other)
+
+        cdef shared_ptr[folly_sorted_vector_set_std_string] shretval = \
+            make_shared[folly_sorted_vector_set_std_string]()
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj):
+                deref(shretval).insert(citem)
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj):
+                deref(shretval).insert(citem)
+        return folly_sorted_vector_set_std_string__Set__string.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, folly_sorted_vector_set_std_string__Set__string):
+            self = folly_sorted_vector_set_std_string__Set__string(self)
+        if not isinstance(other, folly_sorted_vector_set_std_string__Set__string):
+            other = folly_sorted_vector_set_std_string__Set__string(other)
+
+        cdef shared_ptr[folly_sorted_vector_set_std_string] shretval = \
+            make_shared[folly_sorted_vector_set_std_string]()
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj):
+            if deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj):
+            if deref((<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return folly_sorted_vector_set_std_string__Set__string.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
+Set.register(folly_sorted_vector_set_std_string__Set__string)
+
+cdef class FakeMap__Map__i64_double:
+    def __init__(self, items=None):
+        if isinstance(items, FakeMap__Map__i64_double):
+            self._cpp_obj = (<FakeMap__Map__i64_double> items)._cpp_obj
+        else:
+            self._cpp_obj = move(FakeMap__Map__i64_double._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[FakeMap] c_items):
-        inst = <Map__i64_double>Map__i64_double.__new__(Map__i64_double)
+        inst = <FakeMap__Map__i64_double>FakeMap__Map__i64_double.__new__(FakeMap__Map__i64_double)
         inst._cpp_obj = c_items
         return inst
 
@@ -12149,18 +12339,18 @@ cdef class Map__i64_double:
 
 
 
-Mapping.register(Map__i64_double)
+Mapping.register(FakeMap__Map__i64_double)
 
-cdef class Map__string_containerStruct:
+cdef class std_unordered_map_std_string_containerStruct__Map__string_containerStruct:
     def __init__(self, items=None):
-        if isinstance(items, Map__string_containerStruct):
-            self._cpp_obj = (<Map__string_containerStruct> items)._cpp_obj
+        if isinstance(items, std_unordered_map_std_string_containerStruct__Map__string_containerStruct):
+            self._cpp_obj = (<std_unordered_map_std_string_containerStruct__Map__string_containerStruct> items)._cpp_obj
         else:
-            self._cpp_obj = move(Map__string_containerStruct._make_instance(items))
+            self._cpp_obj = move(std_unordered_map_std_string_containerStruct__Map__string_containerStruct._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[std_unordered_map_std_string_containerStruct] c_items):
-        inst = <Map__string_containerStruct>Map__string_containerStruct.__new__(Map__string_containerStruct)
+        inst = <std_unordered_map_std_string_containerStruct__Map__string_containerStruct>std_unordered_map_std_string_containerStruct__Map__string_containerStruct.__new__(std_unordered_map_std_string_containerStruct__Map__string_containerStruct)
         inst._cpp_obj = c_items
         return inst
 
@@ -12275,7 +12465,7 @@ cdef class Map__string_containerStruct:
 
 
 
-Mapping.register(Map__string_containerStruct)
+Mapping.register(std_unordered_map_std_string_containerStruct__Map__string_containerStruct)
 
 cdef class std_list__List__i32:
     def __init__(self, items=None):
@@ -12901,16 +13091,16 @@ cdef class folly_sorted_vector_map__Map__i64_string:
 
 Mapping.register(folly_sorted_vector_map__Map__i64_string)
 
-cdef class List__double:
+cdef class List__Bar__double:
     def __init__(self, items=None):
-        if isinstance(items, List__double):
-            self._cpp_obj = (<List__double> items)._cpp_obj
+        if isinstance(items, List__Bar__double):
+            self._cpp_obj = (<List__Bar__double> items)._cpp_obj
         else:
-            self._cpp_obj = move(List__double._make_instance(items))
+            self._cpp_obj = move(List__Bar__double._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[vector[Bar]] c_items):
-        inst = <List__double>List__double.__new__(List__double)
+        inst = <List__Bar__double>List__Bar__double.__new__(List__Bar__double)
         inst._cpp_obj = c_items
         return inst
 
@@ -12936,7 +13126,7 @@ cdef class List__double:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__double.create(c_inst)
+            return List__Bar__double.create(c_inst)
         else:
             index = <int?>index_obj
             size = len(self)
@@ -13052,7 +13242,198 @@ cdef class List__double:
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
-Sequence.register(List__double)
+Sequence.register(List__Bar__double)
+
+cdef class Set__Baz__i32:
+    def __init__(self, items=None):
+        if isinstance(items, Set__Baz__i32):
+            self._cpp_obj = (<Set__Baz__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Set__Baz__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cset[Baz]] c_items):
+        inst = <Set__Baz__i32>Set__Baz__i32.__new__(Set__Baz__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[Baz]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[Baz]] c_inst = make_unique[cset[Baz]]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
+                deref(c_inst).insert(item)
+        return move_unique(c_inst)
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
+            return False
+        return pbool(deref(self._cpp_obj).count(item))
+
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        cdef cset[Baz] cself, cother
+        cdef cbool retval
+        if (isinstance(self, Set__Baz__i32) and
+                isinstance(other, Set__Baz__i32)):
+            cself = deref((<Set__Baz__i32> self)._cpp_obj)
+            cother = deref((<Set__Baz__i32> other)._cpp_obj)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __and__(self, other):
+        if not isinstance(self, Set__Baz__i32):
+            self = Set__Baz__i32(self)
+        if not isinstance(other, Set__Baz__i32):
+            other = Set__Baz__i32(other)
+
+        cdef shared_ptr[cset[Baz]] shretval = \
+            make_shared[cset[Baz]]()
+        for citem in deref((<Set__Baz__i32> self)._cpp_obj):
+            if deref((<Set__Baz__i32> other)._cpp_obj).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return Set__Baz__i32.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, Set__Baz__i32):
+            self = Set__Baz__i32(self)
+        if not isinstance(other, Set__Baz__i32):
+            other = Set__Baz__i32(other)
+
+        cdef shared_ptr[cset[Baz]] shretval = \
+            make_shared[cset[Baz]]()
+        for citem in deref((<Set__Baz__i32> self)._cpp_obj):
+            if deref((<Set__Baz__i32> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__Baz__i32.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, Set__Baz__i32):
+            self = Set__Baz__i32(self)
+        if not isinstance(other, Set__Baz__i32):
+            other = Set__Baz__i32(other)
+
+        cdef shared_ptr[cset[Baz]] shretval = \
+            make_shared[cset[Baz]]()
+        for citem in deref((<Set__Baz__i32> self)._cpp_obj):
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__Baz__i32> other)._cpp_obj):
+                deref(shretval).insert(citem)
+        return Set__Baz__i32.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, Set__Baz__i32):
+            self = Set__Baz__i32(self)
+        if not isinstance(other, Set__Baz__i32):
+            other = Set__Baz__i32(other)
+
+        cdef shared_ptr[cset[Baz]] shretval = \
+            make_shared[cset[Baz]]()
+        for citem in deref((<Set__Baz__i32> self)._cpp_obj):
+            if deref((<Set__Baz__i32> other)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__Baz__i32> other)._cpp_obj):
+            if deref((<Set__Baz__i32> self)._cpp_obj).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__Baz__i32.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
+Set.register(Set__Baz__i32)
 
 cdef class Map__i32_string:
     def __init__(self, items=None):
@@ -13840,10 +14221,10 @@ IndirectionB = float
 IndirectionD = str
 HashedTypedef = Map__MyEnumA_string
 CppFakeI32 = int
-FollySmallVectorI64 = List__i64
-SortedVectorSetString = Set__string
-FakeMap = Map__i64_double
-UnorderedMapStruct = Map__string_containerStruct
+FollySmallVectorI64 = folly_small_vector_int64_t_8__List__i64
+SortedVectorSetString = folly_sorted_vector_set_std_string__Set__string
+FakeMap = FakeMap__Map__i64_double
+UnorderedMapStruct = std_unordered_map_std_string_containerStruct__Map__string_containerStruct
 std_list = std_list__List__i32
 std_deque = std_deque__List__string
 folly_set = folly_sorted_vector_set__Set__string

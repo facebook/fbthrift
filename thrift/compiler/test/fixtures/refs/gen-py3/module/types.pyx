@@ -862,7 +862,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
                 mes = None
 
         if mes is not None:
-            deref(c_inst).mes = <vector[cRecursiveStruct]>deref(List__RecursiveStruct(mes)._cpp_obj)
+            deref(c_inst).mes = deref(List__RecursiveStruct(mes)._cpp_obj)
             deref(c_inst).__isset.mes = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

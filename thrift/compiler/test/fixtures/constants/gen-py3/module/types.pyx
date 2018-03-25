@@ -899,7 +899,7 @@ cdef class struct2(thrift.py3.types.Struct):
             deref(c_inst).c = deref((<struct1?> c)._cpp_obj)
             deref(c_inst).__isset.c = True
         if d is not None:
-            deref(c_inst).d = <vector[int32_t]>deref(List__i32(d)._cpp_obj)
+            deref(c_inst).d = deref(List__i32(d)._cpp_obj)
             deref(c_inst).__isset.d = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
