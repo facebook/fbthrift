@@ -30,7 +30,6 @@ class t_program;
  */
 class t_const : public t_doc {
  public:
-
   /**
    * Constructor for t_const
    *
@@ -54,13 +53,21 @@ class t_const : public t_doc {
   /**
    * t_const getters
    */
-  t_program* get_program() const { return program_; }
+  t_program* get_program() const {
+    return program_;
+  }
 
-  t_type* get_type() const { return type_; }
+  t_type* get_type() const {
+    return type_;
+  }
 
-  std::string get_name() const { return name_; }
+  std::string get_name() const {
+    return name_;
+  }
 
-  t_const_value* get_value() const { return value_; }
+  t_const_value* get_value() const {
+    return value_;
+  }
 
  private:
   t_program* program_;

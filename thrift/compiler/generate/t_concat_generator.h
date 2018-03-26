@@ -81,7 +81,7 @@ class t_concat_generator : public t_generator {
   virtual void generate_typedef(t_typedef* ttypedef) = 0;
   virtual void generate_enum(t_enum* tenum) = 0;
   virtual void generate_const(t_const* /*tconst*/) {}
-  virtual void generate_forward_declaration(t_struct* /*tstruct*/){}
+  virtual void generate_forward_declaration(t_struct* /*tstruct*/) {}
   virtual void generate_struct(t_struct* tstruct) = 0;
   virtual void generate_service(t_service* tservice) = 0;
   virtual void generate_xception(t_struct* txception) {
@@ -272,13 +272,13 @@ class t_concat_generator : public t_generator {
     return in;
   }
   /**
-    * Transforms a string with words separated by underscores to a camel case
-    * equivalent. By default, the first letter of the input string is not
-    * capitlized.
-    * e.g. a_multi_word -> aMultiWord
-    *      some_name    ->  someName
-    *      name         ->  name
-    */
+   * Transforms a string with words separated by underscores to a camel case
+   * equivalent. By default, the first letter of the input string is not
+   * capitlized.
+   * e.g. a_multi_word -> aMultiWord
+   *      some_name    ->  someName
+   *      name         ->  name
+   */
   std::string camelcase(std::string in, bool capitalize_first = false) {
     std::ostringstream out;
     bool underscore = false;

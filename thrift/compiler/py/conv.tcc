@@ -20,13 +20,15 @@
 #include <utility>
 #include <vector>
 
-namespace thrift { namespace compiler { namespace py { namespace conv {
+namespace thrift {
+namespace compiler {
+namespace py {
+namespace conv {
 
 template <class T>
 struct indexPtrVec {
   indexPtrVec(char const* name) {
-    class_<vector<T*>> (name)
-      .def(vector_indexing_suite<vector<T*>>());
+    class_<vector<T*>>(name).def(vector_indexing_suite<vector<T*>>());
     // This is a HACK as it tricks b::p into thinking that T* is a smart
     // pointer. At this point we don't care though because the objects we're
     // exposing are noncopyable/no_init and are going to live until the end of
@@ -38,11 +40,9 @@ struct indexPtrVec {
 template <class T>
 struct indexVec {
   indexVec(char const* name) {
-    class_<vector<T>> (name)
-      .def(vector_indexing_suite<vector<T>>());
+    class_<vector<T>>(name).def(vector_indexing_suite<vector<T>>());
   }
 };
-
 
 template <class T, class U>
 struct indexMap {
@@ -58,10 +58,9 @@ struct indexMap {
   };
 
   indexMap(char const* name) {
-    class_<Map> (name)
-      .def(map_indexing_suite<Map>())
-      .def("keys", &iteration_helper::keys)
-      ;
+    class_<Map>(name)
+        .def(map_indexing_suite<Map>())
+        .def("keys", &iteration_helper::keys);
   }
 };
 
@@ -71,17 +70,20 @@ const T& TO(const U& from) {
 }
 
 // Assumes Key and Val are pointers.
-template<class Key, class Val>
+template <class Key, class Val>
 struct map_item {
-  typedef std::vector<std::pair<Key,Val>> Map;
+  typedef std::vector<std::pair<Key, Val>> Map;
 
   static boost::python::list items(Map const& self) {
     boost::python::list t;
     for (const auto& v : self)
-      t.append( boost::python::make_tuple(boost::ref(v.first),
-                                          boost::ref(v.second)));
+      t.append(
+          boost::python::make_tuple(boost::ref(v.first), boost::ref(v.second)));
     return t;
   }
 };
 
-}}}} // thrift::compiler::py::conv
+} // namespace conv
+} // namespace py
+} // namespace compiler
+} // namespace thrift

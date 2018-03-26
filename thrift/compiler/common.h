@@ -136,8 +136,7 @@ void pwarning(int level, const char* fmt, ...);
  *
  * @param fmt C format string followed by additional arguments
  */
-[[noreturn]]
-void failure(const char* fmt, ...);
+[[noreturn]] void failure(const char* fmt, ...);
 
 /**
  * Gets the directory path of a filename
@@ -209,7 +208,8 @@ void parse(
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps = std::set<std::string>());
 
-void override_annotations(std::map<std::string, std::string>& where,
-                          const std::map<std::string, std::string>& from);
+void override_annotations(
+    std::map<std::string, std::string>& where,
+    const std::map<std::string, std::string>& from);
 
 #endif

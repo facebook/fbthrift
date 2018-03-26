@@ -19,9 +19,9 @@
 #include <memory>
 #include <string>
 
+#include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_function.h>
 #include <thrift/compiler/parse/t_service.h>
-#include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/test/parser_test_helpers-inl.h>
 
 /**
@@ -40,13 +40,8 @@ std::unique_ptr<t_function> create_fake_function(
     args->append(new t_field(arg.release(), "arg_" + std::to_string(index++)));
   }
 
-  return std::unique_ptr<t_function>(
-    new t_function(
-      signature::return_type().release(),
-      std::move(name),
-      args.release()
-    )
-  );
+  return std::unique_ptr<t_function>(new t_function(
+      signature::return_type().release(), std::move(name), args.release()));
 }
 
 /**

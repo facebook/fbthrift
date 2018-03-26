@@ -16,14 +16,14 @@
 
 #pragma once
 
-#include <cassert>
 #include <algorithm>
-#include <vector>
-#include <utility>
+#include <cassert>
 #include <string>
+#include <utility>
+#include <vector>
 
-#include <thrift/compiler/parse/t_type.h>
 #include <thrift/compiler/parse/t_field.h>
+#include <thrift/compiler/parse/t_type.h>
 
 // Forward declare that puppy
 class t_program;
@@ -51,7 +51,9 @@ class t_struct : public t_type {
         is_union_(false),
         view_parent_(nullptr) {}
 
-  void set_name(const std::string& name) override { name_ = name; }
+  void set_name(const std::string& name) override {
+    name_ = name;
+  }
 
   void set_xception(bool is_xception) {
     is_xception_ = is_xception;
@@ -94,8 +96,7 @@ class t_struct : public t_type {
         // Comparator to sort fields in ascending order by key.
         [](const t_field* a, const t_field* b) {
           return a->get_key() < b->get_key();
-        }
-    );
+        });
     if (bounds.first != bounds.second) {
       return false;
     }
@@ -109,9 +110,9 @@ class t_struct : public t_type {
 
   const t_field* get_member(const std::string& name) const {
     auto const result = std::find_if(
-      members_.begin(), members_.end(),
-      [&name](const t_field* m) { return m->get_name() == name; }
-    );
+        members_.begin(), members_.end(), [&name](const t_field* m) {
+          return m->get_name() == name;
+        });
     return result == members_.end() ? nullptr : *result;
   }
 
@@ -125,7 +126,7 @@ class t_struct : public t_type {
 
   const t_field* get_field_named(const char* name) const {
     assert(has_field_named(name));
-    for (auto& member: members_) {
+    for (auto& member : members_) {
       if (member->get_name() == name) {
         return member;
       }
@@ -135,9 +136,13 @@ class t_struct : public t_type {
     return nullptr;
   }
 
-  bool is_struct() const override { return !is_xception_; }
+  bool is_struct() const override {
+    return !is_xception_;
+  }
 
-  bool is_xception() const override { return is_xception_; }
+  bool is_xception() const override {
+    return is_xception_;
+  }
 
   void set_view_parent(const t_struct* p) {
     view_parent_ = p;
@@ -185,10 +190,11 @@ class t_struct : public t_type {
     return get_view_parent()->get_full_name();
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_STRUCT; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_STRUCT;
+  }
 
  private:
-
   members_type members_;
   members_type members_in_id_order_;
   // only if is_paramlist_

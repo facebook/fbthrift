@@ -21,18 +21,18 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/parse/t_doc.h>
-#include <thrift/compiler/parse/t_scope.h>
 #include <thrift/compiler/parse/t_base_type.h>
-#include <thrift/compiler/parse/t_typedef.h>
-#include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_struct.h>
-#include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_list.h>
 #include <thrift/compiler/parse/t_map.h>
+#include <thrift/compiler/parse/t_scope.h>
+#include <thrift/compiler/parse/t_service.h>
 #include <thrift/compiler/parse/t_set.h>
 #include <thrift/compiler/parse/t_stream.h>
+#include <thrift/compiler/parse/t_struct.h>
+#include <thrift/compiler/parse/t_typedef.h>
 
 /**
  * class t_program
@@ -51,7 +51,6 @@
  */
 class t_program : public t_doc {
  public:
-
   /**
    * Constructor for t_program
    *
@@ -62,25 +61,51 @@ class t_program : public t_doc {
   /**
    * Set program elements
    */
-  void add_typedef  (t_typedef* td) { typedefs_.push_back(td);  }
-  void add_enum     (t_enum*    te) { enums_.push_back(te);     }
-  void add_const    (t_const*   tc) { consts_.push_back(tc);    }
-  void add_struct   (t_struct*  ts) { objects_.push_back(ts);
-                                      structs_.push_back(ts);   }
-  void add_xception (t_struct*  tx) { objects_.push_back(tx);
-                                      xceptions_.push_back(tx); }
-  void add_service  (t_service* ts) { services_.push_back(ts);  }
+  void add_typedef(t_typedef* td) {
+    typedefs_.push_back(td);
+  }
+  void add_enum(t_enum* te) {
+    enums_.push_back(te);
+  }
+  void add_const(t_const* tc) {
+    consts_.push_back(tc);
+  }
+  void add_struct(t_struct* ts) {
+    objects_.push_back(ts);
+    structs_.push_back(ts);
+  }
+  void add_xception(t_struct* tx) {
+    objects_.push_back(tx);
+    xceptions_.push_back(tx);
+  }
+  void add_service(t_service* ts) {
+    services_.push_back(ts);
+  }
 
   /**
    * Get program elements
    */
-  const std::vector<t_typedef*>& get_typedefs()  const { return typedefs_;  }
-  const std::vector<t_enum*>&    get_enums()     const { return enums_;     }
-  const std::vector<t_const*>&   get_consts()    const { return consts_;    }
-  const std::vector<t_struct*>&  get_structs()   const { return structs_;   }
-  const std::vector<t_struct*>&  get_xceptions() const { return xceptions_; }
-  const std::vector<t_struct*>&  get_objects()   const { return objects_;   }
-  const std::vector<t_service*>& get_services()  const { return services_;  }
+  const std::vector<t_typedef*>& get_typedefs() const {
+    return typedefs_;
+  }
+  const std::vector<t_enum*>& get_enums() const {
+    return enums_;
+  }
+  const std::vector<t_const*>& get_consts() const {
+    return consts_;
+  }
+  const std::vector<t_struct*>& get_structs() const {
+    return structs_;
+  }
+  const std::vector<t_struct*>& get_xceptions() const {
+    return xceptions_;
+  }
+  const std::vector<t_struct*>& get_objects() const {
+    return objects_;
+  }
+  const std::vector<t_service*>& get_services() const {
+    return services_;
+  }
 
   /**
    * t_program setters
@@ -90,7 +115,9 @@ class t_program : public t_doc {
   }
 
   // Only used in py_frontend.tcc
-  void set_namespace(std::string name) { namespace_ = std::move(name); }
+  void set_namespace(std::string name) {
+    namespace_ = std::move(name);
+  }
 
   /**
    * Language neutral namespace/packaging
@@ -105,21 +132,37 @@ class t_program : public t_doc {
   /**
    * t_program getters
    */
-  bool is_out_path_absolute() const { return out_path_is_absolute_; }
+  bool is_out_path_absolute() const {
+    return out_path_is_absolute_;
+  }
 
-  const std::string& get_path() const { return path_; }
+  const std::string& get_path() const {
+    return path_;
+  }
 
-  const std::string& get_out_path() const { return out_path_; }
+  const std::string& get_out_path() const {
+    return out_path_;
+  }
 
-  const std::string& get_name() const { return name_; }
+  const std::string& get_name() const {
+    return name_;
+  }
 
-  const std::string& get_namespace() const { return namespace_; }
+  const std::string& get_namespace() const {
+    return namespace_;
+  }
 
-  const std::string& get_include_prefix() const { return include_prefix_; }
+  const std::string& get_include_prefix() const {
+    return include_prefix_;
+  }
 
-  const std::vector<t_program*>& get_includes() const { return includes_; }
+  const std::vector<t_program*>& get_includes() const {
+    return includes_;
+  }
 
-  t_scope* scope() const { return scope_.get(); }
+  t_scope* scope() const {
+    return scope_.get();
+  }
 
   // Only used in py_frontend.tcc
   const std::map<std::string, std::string>& get_namespaces() const {
@@ -177,16 +220,15 @@ class t_program : public t_doc {
   std::string compute_name_from_file_path(std::string path);
 
  private:
-
   /**
    * Components to generate code for
    */
   std::vector<t_typedef*> typedefs_;
-  std::vector<t_enum*>    enums_;
-  std::vector<t_const*>   consts_;
-  std::vector<t_struct*>  objects_;
-  std::vector<t_struct*>  structs_;
-  std::vector<t_struct*>  xceptions_;
+  std::vector<t_enum*> enums_;
+  std::vector<t_const*> consts_;
+  std::vector<t_struct*> objects_;
+  std::vector<t_struct*> structs_;
+  std::vector<t_struct*> xceptions_;
   std::vector<t_service*> services_;
 
   bool out_path_is_absolute_{false};

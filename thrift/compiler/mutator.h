@@ -69,6 +69,6 @@ class const_type_to_const_value : virtual public mutator {
   t_program* program_;
 };
 
-}
-}
-}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

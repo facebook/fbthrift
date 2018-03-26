@@ -28,14 +28,15 @@
  */
 class t_list : public t_container {
  public:
-  explicit t_list(t_type* elem_type) :
-    elem_type_(elem_type) {}
+  explicit t_list(t_type* elem_type) : elem_type_(elem_type) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
   }
 
-  bool is_list() const override { return true; }
+  bool is_list() const override {
+    return true;
+  }
 
   std::string get_full_name() const override {
     return "list<" + elem_type_->get_full_name() + ">";
@@ -45,7 +46,9 @@ class t_list : public t_container {
     return "list<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_LIST; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_LIST;
+  }
 
  private:
   t_type* elem_type_;

@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <cstring>
 #include <stdint.h>
+#include <cstring>
 #include <map>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <thrift/compiler/parse/t_annotated.h>
 
@@ -69,7 +69,6 @@ struct t_types {
  */
 class t_type : public t_annotated {
  public:
-
   /**
    * Simplify access to thrift's TypeValues
    */
@@ -87,31 +86,81 @@ class t_type : public t_annotated {
   /**
    * Default returns for every thrift type
    */
-  virtual bool is_void()           const { return false; }
-  virtual bool is_base_type()      const { return false; }
-  virtual bool is_string()         const { return false; }
-  virtual bool is_bool()           const { return false; }
-  virtual bool is_byte()           const { return false; }
-  virtual bool is_i16()            const { return false; }
-  virtual bool is_i32()            const { return false; }
-  virtual bool is_i64()            const { return false; }
-  virtual bool is_float()          const { return false; }
-  virtual bool is_double()         const { return false; }
-  virtual bool is_floating_point() const { return false; }
-  virtual bool is_typedef()        const { return false; }
-  virtual bool is_enum()           const { return false; }
-  virtual bool is_struct()         const { return false; }
-  virtual bool is_xception()       const { return false; }
-  virtual bool is_container()      const { return false; }
-  virtual bool is_list()           const { return false; }
-  virtual bool is_set()            const { return false; }
-  virtual bool is_map()            const { return false; }
-  virtual bool is_stream()         const { return false; }
-  virtual bool is_pubsub_stream()  const { return false; }
-  virtual bool is_streamresponse() const { return false; }
-  virtual bool has_extratype()     const { return false; }
-  virtual bool is_service()        const { return false; }
-  virtual bool is_binary()         const { return false; }
+  virtual bool is_void() const {
+    return false;
+  }
+  virtual bool is_base_type() const {
+    return false;
+  }
+  virtual bool is_string() const {
+    return false;
+  }
+  virtual bool is_bool() const {
+    return false;
+  }
+  virtual bool is_byte() const {
+    return false;
+  }
+  virtual bool is_i16() const {
+    return false;
+  }
+  virtual bool is_i32() const {
+    return false;
+  }
+  virtual bool is_i64() const {
+    return false;
+  }
+  virtual bool is_float() const {
+    return false;
+  }
+  virtual bool is_double() const {
+    return false;
+  }
+  virtual bool is_floating_point() const {
+    return false;
+  }
+  virtual bool is_typedef() const {
+    return false;
+  }
+  virtual bool is_enum() const {
+    return false;
+  }
+  virtual bool is_struct() const {
+    return false;
+  }
+  virtual bool is_xception() const {
+    return false;
+  }
+  virtual bool is_container() const {
+    return false;
+  }
+  virtual bool is_list() const {
+    return false;
+  }
+  virtual bool is_set() const {
+    return false;
+  }
+  virtual bool is_map() const {
+    return false;
+  }
+  virtual bool is_stream() const {
+    return false;
+  }
+  virtual bool is_pubsub_stream() const {
+    return false;
+  }
+  virtual bool is_streamresponse() const {
+    return false;
+  }
+  virtual bool has_extratype() const {
+    return false;
+  }
+  virtual bool is_service() const {
+    return false;
+  }
+  virtual bool is_binary() const {
+    return false;
+  }
 
   /**
    * Create a unique hash number based on t_type's properties.
@@ -121,16 +170,21 @@ class t_type : public t_annotated {
   /**
    * t_type setters
    */
-  virtual void set_name(const std::string& name) { name_ = name; }
+  virtual void set_name(const std::string& name) {
+    name_ = name;
+  }
 
   /**
    * t_type getters
    */
-  const t_program* get_program() const { return program_; }
-  const std::string& get_name() const { return name_; }
+  const t_program* get_program() const {
+    return program_;
+  }
+  const std::string& get_name() const {
+    return name_;
+  }
 
  protected:
-
   /**
    * Default constructor for t_type
    *
@@ -159,9 +213,8 @@ class t_type : public t_annotated {
    * @param program - An entire thrift program
    * @param name    - The symbolic name of the thrift type
    */
-  t_type(t_program* program, std::string name) :
-    program_(program),
-    name_(std::move(name)) {}
+  t_type(t_program* program, std::string name)
+      : program_(program), name_(std::move(name)) {}
 
   /**
    * Returns a string in the format "prefix program_name.type_name"

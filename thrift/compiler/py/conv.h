@@ -19,37 +19,48 @@
 #ifndef THRIFT_COMPILER_PY_CONV_H
 #define THRIFT_COMPILER_PY_CONV_H
 
-#include <vector>
 #include <map>
+#include <vector>
+
 #include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 #include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 namespace {
 using namespace boost::python;
 using namespace boost::python::api;
-}
+} // namespace
 
-namespace thrift { namespace compiler { namespace py { namespace conv {
+namespace thrift {
+namespace compiler {
+namespace py {
+namespace conv {
 
 /**
  * Boilerplate that enables automatic exposure of vector<T*> to python
  */
-template <class T> struct indexPtrVec;
+template <class T>
+struct indexPtrVec;
 
 /**
  * Boilerplate that enables automatic exposure of vector<T> to python
  */
-template <class T> struct indexVec;
+template <class T>
+struct indexVec;
 
-template <class T, class U> struct indexMap;
+template <class T, class U>
+struct indexMap;
 
 /**
  * Template that allows for shorter code to static_cast
  */
-template <class T, class U> const T& TO(const U& from);
+template <class T, class U>
+const T& TO(const U& from);
 
-}}}} // thrift::compiler::py::conv
+} // namespace conv
+} // namespace py
+} // namespace compiler
+} // namespace thrift
 
 #include "thrift/compiler/py/conv.tcc"
 

@@ -17,9 +17,9 @@
 
 #include <string>
 
-#include <thrift/compiler/parse/t_type.h>
-#include <thrift/compiler/parse/t_struct.h>
 #include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_struct.h>
+#include <thrift/compiler/parse/t_type.h>
 
 /**
  * class t_function
@@ -31,7 +31,6 @@
  */
 class t_function : public t_doc {
  public:
-
   /**
    * Constructor for t_function
    *
@@ -46,8 +45,8 @@ class t_function : public t_doc {
       std::string name,
       t_struct* arglist,
       t_type* annotations = nullptr,
-      bool oneway = false) :
-        returntype_(returntype),
+      bool oneway = false)
+      : returntype_(returntype),
         name_(name),
         arglist_(arglist),
         annotations_(annotations),
@@ -57,7 +56,7 @@ class t_function : public t_doc {
 
     if (oneway_) {
       if (returntype_ == nullptr || !returntype_->is_void()) {
-          throw std::string("Oneway methods must have void return type.");
+        throw std::string("Oneway methods must have void return type.");
       }
     }
   }
@@ -110,19 +109,33 @@ class t_function : public t_doc {
   /**
    * t_function getters
    */
-  t_type* get_returntype() const { return returntype_; }
+  t_type* get_returntype() const {
+    return returntype_;
+  }
 
-  const std::string& get_name() const { return name_; }
+  const std::string& get_name() const {
+    return name_;
+  }
 
-  t_struct* get_arglist() const { return arglist_; }
+  t_struct* get_arglist() const {
+    return arglist_;
+  }
 
-  t_struct* get_xceptions() const { return xceptions_; }
+  t_struct* get_xceptions() const {
+    return xceptions_;
+  }
 
-  t_struct* get_client_xceptions() const { return client_xceptions_; }
+  t_struct* get_client_xceptions() const {
+    return client_xceptions_;
+  }
 
-  t_type* get_annotations() const { return annotations_; }
+  t_type* get_annotations() const {
+    return annotations_;
+  }
 
-  bool is_oneway() const { return oneway_; }
+  bool is_oneway() const {
+    return oneway_;
+  }
 
   // are any of the {return type/argument types} a pubsub stream?
   bool any_streams() const {

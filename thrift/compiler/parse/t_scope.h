@@ -24,8 +24,8 @@
 #include <string>
 
 #include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_type.h>
 #include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/parse/t_type.h>
 
 /**
  * This represents a variable scope used for looking up predefined types and
@@ -65,14 +65,12 @@ class t_scope {
   void print() {
     std::map<std::string, t_type*>::iterator iter;
     for (iter = types_.begin(); iter != types_.end(); ++iter) {
-      printf("%s => %s\n",
-             iter->first.c_str(),
-             iter->second->get_name().c_str());
+      printf(
+          "%s => %s\n", iter->first.c_str(), iter->second->get_name().c_str());
     }
   }
 
  private:
-
   // Map of names to types
   std::map<std::string, t_type*> types_;
 
@@ -81,7 +79,6 @@ class t_scope {
 
   // Map of names to services
   std::map<std::string, t_service*> services_;
-
 };
 
 #endif

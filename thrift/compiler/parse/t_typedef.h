@@ -60,7 +60,9 @@ class t_typedef : public t_type {
     return symbolic_;
   }
 
-  bool is_typedef() const override { return true; }
+  bool is_typedef() const override {
+    return true;
+  }
 
   std::string get_full_name() const override {
     return get_type()->get_full_name();
@@ -74,7 +76,9 @@ class t_typedef : public t_type {
     return get_type()->get_type_value();
   }
 
-  uint64_t get_type_id() const override { return get_type()->get_type_id(); }
+  uint64_t get_type_id() const override {
+    return get_type()->get_type_id();
+  }
 
   bool is_defined() const {
     return defined_;

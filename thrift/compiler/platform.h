@@ -19,25 +19,28 @@
 /*
  * Platform independent mkdir function
  */
-int make_dir(const char *path);
+int make_dir(const char* path);
 
 /*
  * Platform independent chmod function
  */
-int chmod_to_755(const char *path);
+int chmod_to_755(const char* path);
 
-
-namespace apache { namespace thrift { namespace compiler {
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /*
  * Boolean to determine during runtime if we are running on a Windows platform
  */
 constexpr bool isWindows() {
-  #ifdef _WIN32
-    return true;
-  #else
-    return false;
-  #endif
+#ifdef _WIN32
+  return true;
+#else
+  return false;
+#endif
 }
 
-}}}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

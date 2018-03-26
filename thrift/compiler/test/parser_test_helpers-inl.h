@@ -18,7 +18,8 @@
 #include <string>
 #include <vector>
 
-template <typename> class func_signature_helper;
+template <typename>
+class func_signature_helper;
 
 template <typename ArgType>
 class func_signature_helper {
@@ -34,7 +35,8 @@ class func_signature_helper {
     return std::unique_ptr<t_base_type>(new t_base_type(std::move(name), type));
   }
 
-  template <typename> struct dummy {};
+  template <typename>
+  struct dummy {};
   static std::unique_ptr<t_type> get_type(dummy<void>) {
     return get_base_type("void", t_base_type::TYPE_VOID);
   }
@@ -46,7 +48,8 @@ class func_signature_helper {
   }
 };
 
-template <typename ...> class func_signature;
+template <typename...>
+class func_signature;
 
 template <>
 class func_signature<> {

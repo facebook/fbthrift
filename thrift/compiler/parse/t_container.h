@@ -24,9 +24,7 @@
 
 class t_container : public t_type {
  public:
-  t_container() :
-    cpp_name_(),
-    has_cpp_name_(false) {}
+  t_container() : cpp_name_(), has_cpp_name_(false) {}
 
   ~t_container() override {}
 
@@ -43,12 +41,13 @@ class t_container : public t_type {
     return cpp_name_;
   }
 
-  bool is_container() const override { return true; }
+  bool is_container() const override {
+    return true;
+  }
 
  private:
   std::string cpp_name_;
   bool has_cpp_name_;
-
 };
 
 #endif

@@ -22,6 +22,7 @@
 
 #include <cstdlib>
 #include <vector>
+
 #include <thrift/compiler/parse/t_type.h>
 
 /**
@@ -46,33 +47,48 @@ class t_base_type : public t_type {
     TYPE_FLOAT = int(TypeValue::TYPE_FLOAT),
   };
 
-  t_base_type(std::string name, t_base base) :
-    t_type(name),
-    base_(base),
-    string_list_(false),
-    binary_(false) {}
+  t_base_type(std::string name, t_base base)
+      : t_type(name), base_(base), string_list_(false), binary_(false) {}
 
   t_base get_base() const {
     return base_;
   }
 
-  bool is_void() const override { return base_ == TYPE_VOID; }
+  bool is_void() const override {
+    return base_ == TYPE_VOID;
+  }
 
-  bool is_string() const override { return base_ == TYPE_STRING; }
+  bool is_string() const override {
+    return base_ == TYPE_STRING;
+  }
 
-  bool is_bool() const override { return base_ == TYPE_BOOL; }
+  bool is_bool() const override {
+    return base_ == TYPE_BOOL;
+  }
 
-  bool is_byte() const override { return base_ == TYPE_BYTE; }
+  bool is_byte() const override {
+    return base_ == TYPE_BYTE;
+  }
 
-  bool is_i16() const override { return base_ == TYPE_I16; }
+  bool is_i16() const override {
+    return base_ == TYPE_I16;
+  }
 
-  bool is_i32() const override { return base_ == TYPE_I32; }
+  bool is_i32() const override {
+    return base_ == TYPE_I32;
+  }
 
-  bool is_i64() const override { return base_ == TYPE_I64; }
+  bool is_i64() const override {
+    return base_ == TYPE_I64;
+  }
 
-  bool is_float() const override { return base_ == TYPE_FLOAT; }
+  bool is_float() const override {
+    return base_ == TYPE_FLOAT;
+  }
 
-  bool is_double() const override { return base_ == TYPE_DOUBLE; }
+  bool is_double() const override {
+    return base_ == TYPE_DOUBLE;
+  }
 
   bool is_floating_point() const override {
     return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
@@ -94,32 +110,50 @@ class t_base_type : public t_type {
     return (base_ == TYPE_STRING) && binary_;
   }
 
-  bool is_base_type() const override { return true; }
+  bool is_base_type() const override {
+    return true;
+  }
 
   static std::string t_base_name(t_base tbase) {
     switch (tbase) {
-      case TYPE_VOID   : return      "void"; break;
-      case TYPE_STRING : return    "string"; break;
-      case TYPE_BOOL   : return      "bool"; break;
-      case TYPE_BYTE   : return      "byte"; break;
-      case TYPE_I16    : return       "i16"; break;
-      case TYPE_I32    : return       "i32"; break;
-      case TYPE_I64    : return       "i64"; break;
-      case TYPE_DOUBLE : return    "double"; break;
-      case TYPE_FLOAT  : return     "float"; break;
-      default          : return "(unknown)"; break;
+      case TYPE_VOID:
+        return "void";
+      case TYPE_STRING:
+        return "string";
+      case TYPE_BOOL:
+        return "bool";
+      case TYPE_BYTE:
+        return "byte";
+      case TYPE_I16:
+        return "i16";
+      case TYPE_I32:
+        return "i32";
+      case TYPE_I64:
+        return "i64";
+      case TYPE_DOUBLE:
+        return "double";
+      case TYPE_FLOAT:
+        return "float";
+      default:
+        return "(unknown)";
     }
   }
 
-  std::string get_full_name() const override { return t_base_name(base_); }
+  std::string get_full_name() const override {
+    return t_base_name(base_);
+  }
 
-  std::string get_impl_full_name() const override { return t_base_name(base_); }
+  std::string get_impl_full_name() const override {
+    return t_base_name(base_);
+  }
 
   TypeValue get_type_value() const override {
     return static_cast<TypeValue>(base_);
   }
 
-  uint64_t get_type_id() const override { return base_; }
+  uint64_t get_type_id() const override {
+    return base_;
+  }
 
  private:
   t_base base_;

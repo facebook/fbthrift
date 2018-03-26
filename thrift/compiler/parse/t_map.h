@@ -29,10 +29,8 @@
  */
 class t_map : public t_container {
  public:
-  t_map(t_type* key_type, t_type* val_type, bool unordered) :
-    key_type_(key_type),
-    val_type_(val_type),
-    is_unordered_(unordered) {}
+  t_map(t_type* key_type, t_type* val_type, bool unordered)
+      : key_type_(key_type), val_type_(val_type), is_unordered_(unordered) {}
 
   t_type* get_key_type() const {
     return key_type_;
@@ -42,23 +40,29 @@ class t_map : public t_container {
     return val_type_;
   }
 
-  bool is_map() const override { return true; }
+  bool is_map() const override {
+    return true;
+  }
 
   bool is_unordered() const {
     return is_unordered_;
   }
 
   std::string get_full_name() const override {
-    return ("map<" + key_type_->get_full_name() + ", " +
-            val_type_->get_full_name() + ">");
+    return (
+        "map<" + key_type_->get_full_name() + ", " +
+        val_type_->get_full_name() + ">");
   }
 
   std::string get_impl_full_name() const override {
-    return ("map<" + key_type_->get_impl_full_name() + ", " +
-            val_type_->get_impl_full_name() + ">");
+    return (
+        "map<" + key_type_->get_impl_full_name() + ", " +
+        val_type_->get_impl_full_name() + ">");
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_MAP; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_MAP;
+  }
 
  private:
   t_type* key_type_;

@@ -26,7 +26,9 @@
 #include <thrift/compiler/parse/t_service.h>
 #include <thrift/compiler/parse/t_struct.h>
 
-namespace apache { namespace thrift { namespace compiler {
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 class visitor {
  public:
@@ -111,4 +113,6 @@ class interleaved_visitor : public visitor {
   std::vector<bool> rec_mask_{std::vector<bool>(visitors_.size(), true)};
 };
 
-}}}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

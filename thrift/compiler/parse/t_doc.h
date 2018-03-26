@@ -25,7 +25,6 @@
  */
 class t_doc {
  public:
-
   /**
    * Default constructor for t_doc
    */
@@ -44,9 +43,13 @@ class t_doc {
   /**
    * t_doc getters
    */
-  const std::string& get_doc() const { return doc_; }
+  const std::string& get_doc() const {
+    return doc_;
+  }
 
-  bool has_doc() const { return has_doc_; }
+  bool has_doc() const {
+    return has_doc_;
+  }
 
   void set_lineno(int lineno) {
     lineno_ = lineno;

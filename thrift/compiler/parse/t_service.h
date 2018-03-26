@@ -20,9 +20,10 @@
 #ifndef T_SERVICE_H
 #define T_SERVICE_H
 
-#include <thrift/compiler/parse/t_function.h>
-#include <vector>
 #include <algorithm>
+#include <vector>
+
+#include <thrift/compiler/parse/t_function.h>
 
 class t_program;
 
@@ -32,11 +33,11 @@ class t_program;
  */
 class t_service : public t_type {
  public:
-  explicit t_service(t_program* program) :
-    t_type(program),
-    extends_(nullptr) {}
+  explicit t_service(t_program* program) : t_type(program), extends_(nullptr) {}
 
-  bool is_service() const override { return true; }
+  bool is_service() const override {
+    return true;
+  }
 
   void set_extends(t_service* extends) {
     extends_ = extends;
@@ -54,7 +55,9 @@ class t_service : public t_type {
     return extends_;
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_SERVICE; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_SERVICE;
+  }
 
   std::string get_full_name() const override {
     return make_full_name("service");

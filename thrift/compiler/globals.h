@@ -43,25 +43,22 @@ class t_base_type;
  * Parsing mode, two passes up in this gin rummy!
  */
 
-enum PARSE_MODE {
-  INCLUDES = 1,
-  PROGRAM = 2
-};
+enum PARSE_MODE { INCLUDES = 1, PROGRAM = 2 };
 
 /**
  * Expected to be defined by Flex/Bison
  */
 extern "C" {
-  int yylex(void);
-  int yyparse(void);
-  void yyerror(const char* fmt, ...);
+int yylex(void);
+int yyparse(void);
+void yyerror(const char* fmt, ...);
 }
 
 /**
  * Flex utilities
  */
-extern int   yylineno;
-extern char  yytext[];
+extern int yylineno;
+extern char yytext[];
 extern FILE* yyin;
 
 /**
@@ -140,7 +137,6 @@ extern int g_allow_neg_field_keys;
  * Whether or not negative enum values.
  */
 extern int g_allow_neg_enum_vals;
-
 
 /**
  * Whether or not 64-bit constants will generate a warning.

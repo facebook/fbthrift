@@ -29,7 +29,6 @@
  */
 class t_enum_value : public t_annotated {
  public:
-
   /**
    * Constructor for t_enum_value
    *
@@ -43,10 +42,8 @@ class t_enum_value : public t_annotated {
    * @param name  - The symbolic name of the enum constant
    * @param value - The value of the enum constant. Defaults to 0
    */
-  t_enum_value(std::string name, int32_t value) :
-    name_(std::move(name)),
-    value_(value),
-    has_value_(true) {}
+  t_enum_value(std::string name, int32_t value)
+      : name_(std::move(name)), value_(value), has_value_(true) {}
 
   virtual ~t_enum_value() {}
 
@@ -60,11 +57,17 @@ class t_enum_value : public t_annotated {
   /**
    * t_enum_value getters
    */
-  const std::string& get_name() const { return name_; }
+  const std::string& get_name() const {
+    return name_;
+  }
 
-  int32_t get_value() const { return value_; }
+  int32_t get_value() const {
+    return value_;
+  }
 
-  bool has_value() { return has_value_; }
+  bool has_value() {
+    return has_value_;
+  }
 
  private:
   std::string name_;

@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <thrift/compiler/parse/t_doc.h>
 
@@ -33,16 +33,13 @@ class t_struct;
  */
 class t_field : public t_doc {
  public:
-
   /**
    * Constructor for t_field
    *
    * @param type - A field based on thrift types
    * @param name - The symbolic name of the field
    */
-  t_field(t_type* type, std::string name) :
-    type_(type),
-    name_(name) {}
+  t_field(t_type* type, std::string name) : type_(type), name_(name) {}
 
   /**
    * Constructor for t_field
@@ -51,10 +48,8 @@ class t_field : public t_doc {
    * @param name - The symbolic name of the field
    * @param key  - The numeric identifier of the field
    */
-  t_field(t_type* type, std::string name, int32_t key) :
-    type_(type),
-    name_(name),
-    key_(key) {}
+  t_field(t_type* type, std::string name, int32_t key)
+      : type_(type), name_(name), key_(key) {}
 
   t_field(const t_field&) = default;
 
@@ -76,7 +71,9 @@ class t_field : public t_doc {
     value_ = value;
   }
 
-  void set_req(e_req req) { req_ = req; }
+  void set_req(e_req req) {
+    req_ = req;
+  }
 
   void set_next(t_field* field) {
     next_ = field;
@@ -85,21 +82,33 @@ class t_field : public t_doc {
   /**
    * t_field getters
    */
-  t_type* get_type() const { return type_; }
+  t_type* get_type() const {
+    return type_;
+  }
 
-  const std::string& get_name() const { return name_; }
+  const std::string& get_name() const {
+    return name_;
+  }
 
-  int32_t get_key() const { return key_; }
+  int32_t get_key() const {
+    return key_;
+  }
 
-  const t_const_value* get_value() const { return value_; }
+  const t_const_value* get_value() const {
+    return value_;
+  }
 
-  t_const_value* get_value() { return value_; }
+  t_const_value* get_value() {
+    return value_;
+  }
 
   t_field* get_next() const {
     return next_;
   }
 
-  e_req get_req() const { return req_; }
+  e_req get_req() const {
+    return req_;
+  }
 
   std::map<std::string, std::string> annotations_;
 

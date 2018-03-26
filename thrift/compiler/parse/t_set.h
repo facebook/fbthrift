@@ -28,15 +28,16 @@
  */
 class t_set : public t_container {
  public:
-  t_set(t_type* elem_type, bool unordered) :
-    elem_type_(elem_type),
-    is_unordered_(unordered) {}
+  t_set(t_type* elem_type, bool unordered)
+      : elem_type_(elem_type), is_unordered_(unordered) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
   }
 
-  bool is_set() const override { return true; }
+  bool is_set() const override {
+    return true;
+  }
 
   bool is_unordered() const {
     return is_unordered_;
@@ -50,7 +51,9 @@ class t_set : public t_container {
     return "set<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override { return TypeValue::TYPE_SET; }
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_SET;
+  }
 
  private:
   t_type* elem_type_;

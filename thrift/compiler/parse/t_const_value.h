@@ -32,7 +32,6 @@ class t_const;
  */
 class t_const_value {
  public:
-
   enum t_const_value_type {
     CV_BOOL,
     CV_INTEGER,
@@ -132,7 +131,7 @@ class t_const_value {
   }
 
   const std::vector<std::pair<t_const_value*, t_const_value*>>& get_map()
-    const {
+      const {
     return mapVal_;
   }
 
@@ -170,7 +169,9 @@ class t_const_value {
     owner_ = owner;
   }
 
-  t_const* get_owner() const { return owner_;}
+  t_const* get_owner() const {
+    return owner_;
+  }
 
   void set_ttype(t_type* type) {
     type_ = type;
