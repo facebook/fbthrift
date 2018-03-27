@@ -53,6 +53,7 @@ extern const std::string kServerQueueTimeoutErrorCode;
 extern const std::string kResponseTooBigErrorCode;
 extern const std::string kProxyAclCheckExceptionErrorCode;
 extern const std::string kProxyOverloadedErrorCode;
+extern const std::string kProxyLoopbackErrorCode;
 
 namespace apache { namespace thrift {
 
