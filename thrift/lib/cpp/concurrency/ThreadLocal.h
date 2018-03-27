@@ -165,7 +165,7 @@ class ThreadLocal {
 template <typename T>
 class DefaultThreadLocalManager {
  public:
-  FOLLY_DEPRECATED("") T* allocate() {
+  [[deprecated]] T* allocate() {
     return new T;
   }
 
@@ -183,7 +183,7 @@ class DefaultThreadLocalManager {
 template <typename T>
 class DestroyOnlyThreadLocalManager {
  public:
-  FOLLY_DEPRECATED("") T* allocate() {
+  [[deprecated]] T* allocate() {
     return nullptr;
   }
 

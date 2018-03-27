@@ -268,9 +268,9 @@ MappedFrozen<T> mapFrozen(std::string&& str, bool trim = true) {
 }
 
 template <class T>
-FOLLY_DEPRECATED(
+[[deprecated(
     "std::string values must be passed by move with std::move(str) or "
-    "passed through non-owning StringPiece")
+    "passed through non-owning StringPiece")]]
 MappedFrozen<T> mapFrozen(const std::string& str) = delete;
 
 template <class T>
