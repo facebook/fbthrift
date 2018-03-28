@@ -252,5 +252,11 @@ TEST_F(StreamingTest, ThrowsException) {
   });
 }
 
+TEST_F(StreamingTest, ThrowsWithResponse) {
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
+    EXPECT_THROW(client->sync_throwError(), Error);
+  });
+}
+
 } // namespace thrift
 } // namespace apache

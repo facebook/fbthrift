@@ -33,6 +33,7 @@ class TestServiceMock : public StreamServiceSvIf {
   apache::thrift::Stream<Message> returnNullptr() override;
   apache::thrift::Stream<Message> throwException(
       apache::thrift::SemiStream<Message> input) override;
+  apache::thrift::ResponseAndStream<int, Message> throwError() override;
 
  protected:
   folly::SerialExecutor executor_;

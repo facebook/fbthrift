@@ -51,6 +51,9 @@ Stream<Message> TestServiceMock::returnNullptr() {
 Stream<Message> TestServiceMock::throwException(SemiStream<Message>) {
   throw std::runtime_error("random error");
 }
+ResponseAndStream<int, Message> TestServiceMock::throwError() {
+  throw Error();
+}
 
 } // namespace testservice
 } // namespace testutil

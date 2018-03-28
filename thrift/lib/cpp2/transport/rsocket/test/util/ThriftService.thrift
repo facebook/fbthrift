@@ -5,6 +5,9 @@ struct Message {
   2: i64 timestamp
 }
 
+exception Error {
+}
+
 service StreamService {
   // Generate numbers between `from` to `to`.
   stream i32 range(1: i32 from, 2: i32 to);
@@ -35,4 +38,6 @@ service StreamService {
 
   stream Message returnNullptr();
   stream Message throwException(stream Message messages);
+
+  i32, stream Message throwError() throws (1: Error ex)
 }

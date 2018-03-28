@@ -209,8 +209,8 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
   <%/function:returns_stream?%>
   <%#function:returns_stream?%>
   <%#type:extratype?%>
-    result.get<<%field:index_plus_one%>>().ref() = e;
-    result.setIsSet(<%field:index_plus_one%>, true);
+    result.fields.get<<%field:index_plus_one%>>().ref() = e;
+    result.fields.setIsSet(<%field:index_plus_one%>, true);
   <%/type:extratype?%>
   <%^type:extratype?%>
     result.fields.get<<%field:index%>>().ref() = e;
