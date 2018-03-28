@@ -26,9 +26,9 @@ from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
 
-import asyncio
 import sys
 import types as _py_types
+from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
 cimport empty.types as _empty_types
 import empty.types as _empty_types
@@ -45,10 +45,9 @@ cdef class NullService(thrift.py3.client.Client):
     annotations = _NullService_annotations
 
     def __cinit__(NullService self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid(NullService self):
         return &typeid(cNullServiceAsyncClient)
@@ -63,43 +62,48 @@ cdef class NullService(thrift.py3.client.Client):
         self._empty_NullService_client.reset()
 
     def __dealloc__(NullService self):
-        if self._cRequestChannel or self._empty_NullService_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._empty_NullService_client:
+                deref(self._empty_NullService_client).disconnect().get()
+        self._empty_NullService_reset_client()
+
+    cdef bind_client(NullService self, cRequestChannel_ptr&& channel):
+        NullService._empty_NullService_set_client(
+            self,
+            makeClientWrapper[cNullServiceAsyncClient, cNullServiceClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__(NullService self):
-        await self._connect_future
-        if self._cRequestChannel:
-            NullService._empty_NullService_set_client(
-                self,
-                makeClientWrapper[cNullServiceAsyncClient, cNullServiceClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__(NullService self, *exc):
+    def __aexit__(NullService self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._empty_NullService_client).disconnect(),
             closed_NullService_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        await future
-        self._empty_NullService_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header(NullService self, str key, str value):
         if not self._empty_NullService_client:
@@ -114,7 +118,7 @@ cdef class NullService(thrift.py3.client.Client):
 
 cdef void closed_NullService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata 
     pyfuture.set_result(None)

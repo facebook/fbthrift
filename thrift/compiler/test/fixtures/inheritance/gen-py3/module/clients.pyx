@@ -26,9 +26,9 @@ from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
 
-import asyncio
 import sys
 import types as _py_types
+from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -40,9 +40,9 @@ from module.clients_wrapper cimport cMyLeafAsyncClient, cMyLeafClientWrapper
 
 cdef void MyRoot_do_root_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* future
+    PyObject* userdata
 ):
-    cdef object pyfuture = <object> future
+    client, pyfuture = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -53,9 +53,9 @@ cdef void MyRoot_do_root_callback(
 
 cdef void MyNode_do_mid_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* future
+    PyObject* userdata
 ):
-    cdef object pyfuture = <object> future
+    client, pyfuture = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -66,9 +66,9 @@ cdef void MyNode_do_mid_callback(
 
 cdef void MyLeaf_do_leaf_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* future
+    PyObject* userdata
 ):
-    cdef object pyfuture = <object> future
+    client, pyfuture = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -86,10 +86,9 @@ cdef class MyRoot(thrift.py3.client.Client):
     annotations = _MyRoot_annotations
 
     def __cinit__(MyRoot self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid(MyRoot self):
         return &typeid(cMyRootAsyncClient)
@@ -104,43 +103,48 @@ cdef class MyRoot(thrift.py3.client.Client):
         self._module_MyRoot_client.reset()
 
     def __dealloc__(MyRoot self):
-        if self._cRequestChannel or self._module_MyRoot_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyRoot_client:
+                deref(self._module_MyRoot_client).disconnect().get()
+        self._module_MyRoot_reset_client()
+
+    cdef bind_client(MyRoot self, cRequestChannel_ptr&& channel):
+        MyRoot._module_MyRoot_set_client(
+            self,
+            makeClientWrapper[cMyRootAsyncClient, cMyRootClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__(MyRoot self):
-        await self._connect_future
-        if self._cRequestChannel:
-            MyRoot._module_MyRoot_set_client(
-                self,
-                makeClientWrapper[cMyRootAsyncClient, cMyRootClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__(MyRoot self, *exc):
+    def __aexit__(MyRoot self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyRoot_client).disconnect(),
             closed_MyRoot_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        await future
-        self._module_MyRoot_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header(MyRoot self, str key, str value):
         if not self._module_MyRoot_client:
@@ -152,28 +156,29 @@ cdef class MyRoot(thrift.py3.client.Client):
         deref(self._module_MyRoot_client).setPersistentHeader(ckey, cvalue)
 
     @cython.always_allow_keywords(True)
-    async def do_root(
+    def do_root(
             MyRoot self
     ):
         self._check_connect_future()
-        __loop = asyncio.get_event_loop()
+        __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
+        __userdata = (self, __future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyRoot_client).do_root(
             ),
             MyRoot_do_root_callback,
-            <PyObject *> __future
+            <PyObject *> __userdata
         )
-        return await __future
+        return asyncio_shield(__future)
 
 
 
 cdef void closed_MyRoot_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata 
     pyfuture.set_result(None)
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
@@ -183,10 +188,9 @@ cdef class MyNode(MyRoot):
     annotations = _MyNode_annotations
 
     def __cinit__(MyNode self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid(MyNode self):
         return &typeid(cMyNodeAsyncClient)
@@ -203,43 +207,48 @@ cdef class MyNode(MyRoot):
         MyRoot._module_MyRoot_reset_client(self)
 
     def __dealloc__(MyNode self):
-        if self._cRequestChannel or self._module_MyNode_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyNode_client:
+                deref(self._module_MyNode_client).disconnect().get()
+        self._module_MyNode_reset_client()
+
+    cdef bind_client(MyNode self, cRequestChannel_ptr&& channel):
+        MyNode._module_MyNode_set_client(
+            self,
+            makeClientWrapper[cMyNodeAsyncClient, cMyNodeClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__(MyNode self):
-        await self._connect_future
-        if self._cRequestChannel:
-            MyNode._module_MyNode_set_client(
-                self,
-                makeClientWrapper[cMyNodeAsyncClient, cMyNodeClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__(MyNode self, *exc):
+    def __aexit__(MyNode self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyNode_client).disconnect(),
             closed_MyNode_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        await future
-        self._module_MyNode_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header(MyNode self, str key, str value):
         if not self._module_MyNode_client:
@@ -251,28 +260,29 @@ cdef class MyNode(MyRoot):
         deref(self._module_MyNode_client).setPersistentHeader(ckey, cvalue)
 
     @cython.always_allow_keywords(True)
-    async def do_mid(
+    def do_mid(
             MyNode self
     ):
         self._check_connect_future()
-        __loop = asyncio.get_event_loop()
+        __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
+        __userdata = (self, __future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyNode_client).do_mid(
             ),
             MyNode_do_mid_callback,
-            <PyObject *> __future
+            <PyObject *> __userdata
         )
-        return await __future
+        return asyncio_shield(__future)
 
 
 
 cdef void closed_MyNode_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata 
     pyfuture.set_result(None)
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
@@ -282,10 +292,9 @@ cdef class MyLeaf(MyNode):
     annotations = _MyLeaf_annotations
 
     def __cinit__(MyLeaf self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid(MyLeaf self):
         return &typeid(cMyLeafAsyncClient)
@@ -302,43 +311,48 @@ cdef class MyLeaf(MyNode):
         MyNode._module_MyNode_reset_client(self)
 
     def __dealloc__(MyLeaf self):
-        if self._cRequestChannel or self._module_MyLeaf_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._module_MyLeaf_client:
+                deref(self._module_MyLeaf_client).disconnect().get()
+        self._module_MyLeaf_reset_client()
+
+    cdef bind_client(MyLeaf self, cRequestChannel_ptr&& channel):
+        MyLeaf._module_MyLeaf_set_client(
+            self,
+            makeClientWrapper[cMyLeafAsyncClient, cMyLeafClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__(MyLeaf self):
-        await self._connect_future
-        if self._cRequestChannel:
-            MyLeaf._module_MyLeaf_set_client(
-                self,
-                makeClientWrapper[cMyLeafAsyncClient, cMyLeafClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__(MyLeaf self, *exc):
+    def __aexit__(MyLeaf self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyLeaf_client).disconnect(),
             closed_MyLeaf_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        await future
-        self._module_MyLeaf_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header(MyLeaf self, str key, str value):
         if not self._module_MyLeaf_client:
@@ -350,26 +364,27 @@ cdef class MyLeaf(MyNode):
         deref(self._module_MyLeaf_client).setPersistentHeader(ckey, cvalue)
 
     @cython.always_allow_keywords(True)
-    async def do_leaf(
+    def do_leaf(
             MyLeaf self
     ):
         self._check_connect_future()
-        __loop = asyncio.get_event_loop()
+        __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
+        __userdata = (self, __future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_MyLeaf_client).do_leaf(
             ),
             MyLeaf_do_leaf_callback,
-            <PyObject *> __future
+            <PyObject *> __userdata
         )
-        return await __future
+        return asyncio_shield(__future)
 
 
 
 cdef void closed_MyLeaf_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata 
     pyfuture.set_result(None)

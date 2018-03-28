@@ -30,8 +30,11 @@ class ClientTests(unittest.TestCase):
         # Create a broken client
         client = TestingService()
         # This should not raise an exception
-        client.complex_action(first='foo', second='bar', third=9, fourth='baz')
-        client.complex_action('foo', 'bar', 9, 'baz')
+        with self.assertRaises(asyncio.InvalidStateError):
+            client.complex_action(first='foo', second='bar', third=9, fourth='baz')
+
+        with self.assertRaises(asyncio.InvalidStateError):
+            client.complex_action('foo', 'bar', 9, 'baz')
 
     def test_none_arguments(self) -> None:
         client = TestingService()
@@ -69,7 +72,7 @@ class ClientTests(unittest.TestCase):
             self.assertEqual(ex.errno, 0)
             # The traceback should be short since it raises inside
             # the rpc call not down inside the guts of thrift-py3
-            self.assertEqual(len(traceback.extract_tb(sys.exc_info()[2])), 4)
+            self.assertEqual(len(traceback.extract_tb(sys.exc_info()[2])), 3)
 
     def test_set_persistent_header(self) -> None:
         """
@@ -85,8 +88,13 @@ class ClientTests(unittest.TestCase):
 
     def test_rpc_container_autoboxing(self) -> None:
         client = TestingService()
-        client.takes_a_list([1, 2, 3])
-        client.takes_a_list(I32List([1, 2, 3]))
+
+        with self.assertRaises(asyncio.InvalidStateError):
+            client.takes_a_list([1, 2, 3])
+
+        with self.assertRaises(asyncio.InvalidStateError):
+            client.takes_a_list(I32List([1, 2, 3]))
+
         loop = asyncio.get_event_loop()
         with self.assertRaises(TypeError):
             # This is safe because we do type checks before we touch

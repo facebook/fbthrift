@@ -29,9 +29,9 @@ executed in the asyncio loop.
 {{#service:functions}}
 cdef void {{service:name}}_{{function:name}}_callback(
     cFollyTry[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}]&& result,
-    PyObject* future
+    PyObject* userdata
 ):
-    cdef object pyfuture = <object> future
+    client, pyfuture = <object> userdata  {{! so client lives on until we exit }}
     if {{#function:exceptions}}{{!
     }}result.hasException[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}]():
         {{#field:type}}pyfuture.set_exception({{!

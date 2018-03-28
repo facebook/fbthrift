@@ -45,9 +45,9 @@ from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
 
-import asyncio
 import sys
 import types as _py_types
+from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
@@ -91,10 +91,9 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     annotations = _{{service:name}}_annotations
 
     def __cinit__({{service:name}} self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid({{service:name}} self):
         return &typeid(c{{service:name}}AsyncClient)
@@ -115,46 +114,51 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
 {{/service:extends}}
 
     def __dealloc__({{service:name}} self):
-        if self._cRequestChannel or self._{{program:name}}_{{service:name}}_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._{{program:name}}_{{service:name}}_client:
+                deref(self._{{program:name}}_{{service:name}}_client).disconnect().get()
+        self._{{program:name}}_{{service:name}}_reset_client()
+
+    cdef bind_client({{service:name}} self, cRequestChannel_ptr&& channel):
+        {{service:name}}._{{program:name}}_{{service:name}}_set_client(
+            self,
+            makeClientWrapper[c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__({{service:name}} self):
-        await self._connect_future
-        if self._cRequestChannel:
-            {{service:name}}._{{program:name}}_{{service:name}}_set_client(
-                self,
-                makeClientWrapper[c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         {{!Replay setting persistent_headers after the C++ client is ready}}
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__({{service:name}} self, *exc):
+    def __aexit__({{service:name}} self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._{{program:name}}_{{service:name}}_client).disconnect(),
             closed_{{service:name}}_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         {{! We do this to make sure this exception was recieved by someone}}
         badfuture.exception()
         {{! All calls to the client will now raise}}
         self._connect_future = badfuture
-        await future
-        self._{{program:name}}_{{service:name}}_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header({{service:name}} self, str key, str value):
         {{! If we are called before aenter then save the header for later}}
@@ -168,7 +172,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
 
     {{#service:functions}}
     @cython.always_allow_keywords(True)
-    async def {{function:name}}(
+    def {{function:name}}(
             {{service:name}} self{{#function:args}},
             {{#field:type}}{{!
                 }}{{#type:hasCythonType?}}{{^type:integer?}}{{> types/CythonPythonType}} {{/type:integer?}}{{/type:hasCythonType?}}{{!
@@ -195,25 +199,26 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         {{/field:type}}
         {{/function:args}}
         self._check_connect_future()
-        __loop = asyncio.get_event_loop()
+        __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
+        __userdata = (self, __future)
         bridgeFutureWith[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}](
             self._executor,
             deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             ),
             {{service:name}}_{{function:name}}_callback,
-            <PyObject *> __future
+            <PyObject *> __userdata
         )
-        return await __future
+        return asyncio_shield(__future)
 
     {{/service:functions}}
 
 
 cdef void closed_{{service:name}}_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata {{! we keep the client alive until we exit }}
     pyfuture.set_result(None)
 {{/program:services}}

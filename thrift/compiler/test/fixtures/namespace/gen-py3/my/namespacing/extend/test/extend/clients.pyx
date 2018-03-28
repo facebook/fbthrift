@@ -26,9 +26,9 @@ from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
 
-import asyncio
 import sys
 import types as _py_types
+from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 import my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
@@ -43,9 +43,9 @@ from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
 
 cdef void ExtendTestService_check_callback(
     cFollyTry[cbool]&& result,
-    PyObject* future
+    PyObject* userdata
 ):
-    cdef object pyfuture = <object> future
+    client, pyfuture = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -63,10 +63,9 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     annotations = _ExtendTestService_annotations
 
     def __cinit__(ExtendTestService self):
-        loop = asyncio.get_event_loop()
-        self._deferred_headers = {}
+        loop = asyncio_get_event_loop()
         self._connect_future = loop.create_future()
-        self._executor = get_executor()
+        self._deferred_headers = {}
 
     cdef const type_info* _typeid(ExtendTestService self):
         return &typeid(cExtendTestServiceAsyncClient)
@@ -83,43 +82,48 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         _hsmodule_clients.HsTestService._hsmodule_HsTestService_reset_client(self)
 
     def __dealloc__(ExtendTestService self):
-        if self._cRequestChannel or self._extend_ExtendTestService_client:
-            print('client was not cleaned up, use the context manager', file=sys.stderr)
+        if self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._extend_ExtendTestService_client:
+                deref(self._extend_ExtendTestService_client).disconnect().get()
+        self._extend_ExtendTestService_reset_client()
+
+    cdef bind_client(ExtendTestService self, cRequestChannel_ptr&& channel):
+        ExtendTestService._extend_ExtendTestService_set_client(
+            self,
+            makeClientWrapper[cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper](
+                thrift.py3.client.move(channel)
+            ),
+        )
 
     async def __aenter__(ExtendTestService self):
-        await self._connect_future
-        if self._cRequestChannel:
-            ExtendTestService._extend_ExtendTestService_set_client(
-                self,
-                makeClientWrapper[cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper](
-                    self._cRequestChannel
-                ),
-            )
-            self._cRequestChannel.reset()
-        else:
-            raise asyncio.InvalidStateError('Client context has been used already')
+        await asyncio_shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio_InvalidStateError('Client context has been used already')
+        self._context_entered = True
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
         return self
 
-    async def __aexit__(ExtendTestService self, *exc):
+    def __aexit__(ExtendTestService self, *exc):
         self._check_connect_future()
-        loop = asyncio.get_event_loop()
+        loop = asyncio_get_event_loop()
         future = loop.create_future()
+        userdata = (self, future)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._extend_ExtendTestService_client).disconnect(),
             closed_ExtendTestService_py3_client_callback,
-            <PyObject *>future
+            <PyObject *>userdata  # So we keep client alive until disconnect
         )
         # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
         badfuture = loop.create_future()
-        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.set_exception(asyncio_InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
-        await future
-        self._extend_ExtendTestService_reset_client()
+        return asyncio_shield(future)
 
     def set_persistent_header(ExtendTestService self, str key, str value):
         if not self._extend_ExtendTestService_client:
@@ -131,28 +135,29 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         deref(self._extend_ExtendTestService_client).setPersistentHeader(ckey, cvalue)
 
     @cython.always_allow_keywords(True)
-    async def check(
+    def check(
             ExtendTestService self,
             _hsmodule_types.HsFoo struct1 not None
     ):
         self._check_connect_future()
-        __loop = asyncio.get_event_loop()
+        __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
+        __userdata = (self, __future)
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._extend_ExtendTestService_client).check(
                 deref((<_hsmodule_types.HsFoo>struct1)._cpp_obj),
             ),
             ExtendTestService_check_callback,
-            <PyObject *> __future
+            <PyObject *> __userdata
         )
-        return await __future
+        return asyncio_shield(__future)
 
 
 
 cdef void closed_ExtendTestService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
-    PyObject* fut,
+    PyObject* userdata,
 ):
-    cdef object pyfuture = <object> fut
+    client, pyfuture = <object> userdata 
     pyfuture.set_result(None)

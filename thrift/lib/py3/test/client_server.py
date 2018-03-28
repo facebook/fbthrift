@@ -8,7 +8,7 @@ import unittest
 from testing.services import TestingServiceInterface
 from testing.types import easy, Color
 from testing.clients import TestingService
-from thrift.py3 import ThriftServer, get_client
+from thrift.py3 import ThriftServer, get_client, TransportError
 from typing import Sequence, Optional
 import thrift.py3.server
 
@@ -94,11 +94,64 @@ class ClientServerTests(unittest.TestCase):
         async def inner_test(dir: Path) -> None:
             async with TestServer(path=dir / 'tserver.sock') as sa:
                 assert sa.path
-                async with get_client(
-                    TestingService, path=sa.path
-                ) as client:
-                    self.assertTrue(await client.invert(False))
-                    self.assertFalse(await client.invert(True))
+                for r in range(2):
+                    try:
+                        async with get_client(
+                            TestingService, path=sa.path
+                        ) as client:
+                            self.assertTrue(await client.invert(False))
+                            self.assertFalse(await client.invert(True))
+                        break
+                    except TransportError:
+                        if r == 1:
+                            raise
 
         with tempfile.TemporaryDirectory() as tdir:
             loop.run_until_complete(inner_test(Path(tdir)))
+
+    def test_no_client_aexit(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer() as sa:
+                assert sa.port and sa.ip
+                client = get_client(TestingService, host=sa.ip, port=sa.port)
+                await client.__aenter__()
+                self.assertTrue(await client.invert(False))
+                self.assertFalse(await client.invert(True))
+                # If we do not abort here then good
+
+        loop.run_until_complete(inner_test())
+
+    def test_client_aexit_cancel(self) -> None:
+        """
+        This actually handles the case if __aexit__ is not awaited
+        """
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer() as sa:
+                assert sa.port and sa.ip
+                client = get_client(TestingService, host=sa.ip, port=sa.port)
+                await client.__aenter__()
+                self.assertTrue(await client.invert(False))
+                self.assertFalse(await client.invert(True))
+                fut = client.__aexit__(None, None, None)
+                fut.cancel()  # type: ignore
+                del client  # If we do not abort here then good
+
+        loop.run_until_complete(inner_test())
+
+    def test_no_client_no_aenter(self) -> None:
+        """
+        This covers if aenter was canceled since those two are the same really
+        """
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer() as sa:
+                assert sa.port and sa.ip
+                get_client(TestingService, host=sa.ip, port=sa.port)
+                # If we do not abort here then good
+
+        loop.run_until_complete(inner_test())

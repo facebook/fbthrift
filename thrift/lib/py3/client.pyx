@@ -9,6 +9,7 @@ from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
 from folly cimport cFollyTry, cFollyPromise
+from folly.executor cimport get_executor
 from folly.range cimport StringPiece
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
@@ -33,8 +34,14 @@ cdef class Client:
     """
     Base class for all thrift clients
     """
+    def __cinit__(Client self):
+        self._executor = get_executor()
+
     cdef const type_info* _typeid(self):
         return NULL
+
+    cdef bind_client(Client self, cRequestChannel_ptr&& channel):
+        destroyInEventBaseThread(move(channel))
 
 
 cdef extern from "<stdexcept>" namespace "std" nogil:
@@ -109,5 +116,5 @@ cdef void requestchannel_callback(
     if result.hasException():
         future.set_exception(create_py_exception(result.exception()))
     else:
-        client._cRequestChannel = result.value()
+        client.bind_client(move(result.value()))
         future.set_result(None)
