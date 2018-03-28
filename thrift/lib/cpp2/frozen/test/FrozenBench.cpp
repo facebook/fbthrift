@@ -99,23 +99,23 @@ void benchmarkSumSavedCols(int iters, const F& matrix) {
   folly::doNotOptimizeAway(s);
 }
 
-BENCHMARK_PARAM(benchmarkSum, vvi16);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi16);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi16);
-BENCHMARK_PARAM(benchmarkSum, vvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi32);
-BENCHMARK_PARAM(benchmarkSum, vvi64);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi64);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi64);
-BENCHMARK_PARAM(benchmarkSum, vvf32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvf32);
+BENCHMARK_PARAM(benchmarkSum, vvi16)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi16)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi16)
+BENCHMARK_PARAM(benchmarkSum, vvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi32)
+BENCHMARK_PARAM(benchmarkSum, vvi64)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi64)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi64)
+BENCHMARK_PARAM(benchmarkSum, vvf32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvf32)
 BENCHMARK_DRAW_LINE();
-BENCHMARK_PARAM(benchmarkSumCols, vvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fvvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fuvvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fvvi32);
-BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fuvvi32);
+BENCHMARK_PARAM(benchmarkSumCols, vvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fvvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fuvvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fvvi32)
+BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fuvvi32)
 
 const size_t entries = 100000;
 template <class Map>
@@ -191,25 +191,25 @@ void benchmarkLookup(int iters, const std::unordered_map<T, int>& hist) {
 
 BENCHMARK_DRAW_LINE();
 
-BENCHMARK_PARAM(benchmarkLookup, map_f32);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_f32);
-BENCHMARK_PARAM(benchmarkLookup, map_i16);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i16);
-BENCHMARK_PARAM(benchmarkLookup, map_i32);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i32);
-BENCHMARK_PARAM(benchmarkLookup, map_i64);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i64);
+BENCHMARK_PARAM(benchmarkLookup, map_f32)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_f32)
+BENCHMARK_PARAM(benchmarkLookup, map_i16)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i16)
+BENCHMARK_PARAM(benchmarkLookup, map_i32)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i32)
+BENCHMARK_PARAM(benchmarkLookup, map_i64)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenMap_i64)
 
 BENCHMARK_DRAW_LINE();
 
-BENCHMARK_PARAM(benchmarkLookup, hashMap_f32);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_f32);
-BENCHMARK_PARAM(benchmarkLookup, hashMap_i16);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i16);
-BENCHMARK_PARAM(benchmarkLookup, hashMap_i32);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i32);
-BENCHMARK_PARAM(benchmarkLookup, hashMap_i64);
-BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i64);
+BENCHMARK_PARAM(benchmarkLookup, hashMap_f32)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_f32)
+BENCHMARK_PARAM(benchmarkLookup, hashMap_i16)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i16)
+BENCHMARK_PARAM(benchmarkLookup, hashMap_i32)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i32)
+BENCHMARK_PARAM(benchmarkLookup, hashMap_i64)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i64)
 
 BENCHMARK_DRAW_LINE();
 
@@ -239,14 +239,14 @@ void benchmarkFreezeDataToString(int iters, const T& data) {
   folly::doNotOptimizeAway(s);
 }
 
-BENCHMARK_PARAM(benchmarkFreezeDataToString, vvf32);
-BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, vvf32);
-BENCHMARK_PARAM(benchmarkFreezeDataToString, tuple);
-BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, tuple);
-BENCHMARK_PARAM(benchmarkFreezeDataToString, strings);
-BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, strings);
-BENCHMARK_PARAM(benchmarkFreezeDataToString, hashMap_i32);
-BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, hashMap_i32);
+BENCHMARK_PARAM(benchmarkFreezeDataToString, vvf32)
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, vvf32)
+BENCHMARK_PARAM(benchmarkFreezeDataToString, tuple)
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, tuple)
+BENCHMARK_PARAM(benchmarkFreezeDataToString, strings)
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, strings)
+BENCHMARK_PARAM(benchmarkFreezeDataToString, hashMap_i32)
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, hashMap_i32)
 
 #if 0
 ============================================================================

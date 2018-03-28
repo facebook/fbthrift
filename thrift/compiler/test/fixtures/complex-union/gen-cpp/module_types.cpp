@@ -45,7 +45,7 @@ void ComplexUnion::translateFieldName(
     fid = 14;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -278,7 +278,7 @@ void VirtualComplexUnion::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t VirtualComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;

@@ -176,7 +176,7 @@ void union1::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t union1::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -340,7 +340,7 @@ void union2::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t union2::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -504,7 +504,7 @@ void union3::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t union3::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -656,7 +656,7 @@ void structA::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t structA::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -829,7 +829,7 @@ void unionA::translateFieldName(
     fid = 5;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t unionA::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -991,7 +991,7 @@ void structB::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_BOOL;
   }
-};
+}
 
 uint32_t structB::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1684,7 +1684,7 @@ void structC::translateFieldName(
     fid = 30;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3080,7 +3080,7 @@ void struct1::translateFieldName(
     fid = 6;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t struct1::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3378,7 +3378,7 @@ void struct2::translateFieldName(
     fid = 7;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t struct2::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3908,7 +3908,7 @@ void struct3::translateFieldName(
     fid = 18;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -4676,7 +4676,7 @@ void struct4::translateFieldName(
     fid = 6;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t struct4::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -4908,7 +4908,7 @@ void struct5::translateFieldName(
     fid = 5;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t struct5::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5103,7 +5103,7 @@ void struct_binary::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t struct_binary::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5226,7 +5226,7 @@ void annotated::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t annotated::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -5696,7 +5696,7 @@ void union_with_special_names::translateFieldName(
     fid = 26;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t union_with_special_names::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -6589,7 +6589,7 @@ void struct_with_special_names::translateFieldName(
     fid = 26;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t struct_with_special_names::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -7188,7 +7188,7 @@ void struct_with_indirections::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t struct_with_indirections::read(apache::thrift::protocol::TProtocol* iprot) {
 

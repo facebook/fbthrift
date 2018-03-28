@@ -58,7 +58,7 @@
     void print(std::ostream& os, int level) const final;                     \
     void clear() final;                                                      \
     __VA_ARGS__                                                              \
-  };
+  }
 
 #define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID, #NAME)

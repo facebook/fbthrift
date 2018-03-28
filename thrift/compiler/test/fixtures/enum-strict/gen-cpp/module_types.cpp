@@ -84,7 +84,7 @@ void MyStruct::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 

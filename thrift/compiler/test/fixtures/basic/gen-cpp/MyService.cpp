@@ -21,7 +21,7 @@ void MyService_ping_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_ping_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -79,7 +79,7 @@ void MyService_ping_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_ping_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -99,7 +99,7 @@ void MyService_ping_presult::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_ping_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -160,7 +160,7 @@ void MyService_getRandomData_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_getRandomData_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -218,7 +218,7 @@ void MyService_getRandomData_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_getRandomData_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -242,7 +242,7 @@ void MyService_getRandomData_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_getRandomData_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -320,7 +320,7 @@ void MyService_hasDataById_args::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t MyService_hasDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -393,7 +393,7 @@ void MyService_hasDataById_pargs::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t MyService_hasDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -420,7 +420,7 @@ void MyService_hasDataById_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_BOOL;
   }
-};
+}
 
 uint32_t MyService_hasDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -498,7 +498,7 @@ void MyService_getDataById_args::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t MyService_getDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -571,7 +571,7 @@ void MyService_getDataById_pargs::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t MyService_getDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -598,7 +598,7 @@ void MyService_getDataById_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_getDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -680,7 +680,7 @@ void MyService_putDataById_args::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_putDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -768,7 +768,7 @@ void MyService_putDataById_pargs::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_putDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -794,7 +794,7 @@ void MyService_putDataById_presult::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyService_putDataById_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -863,7 +863,7 @@ void MyService_lobDataById_args::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_lobDataById_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -951,7 +951,7 @@ void MyService_lobDataById_pargs::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyService_lobDataById_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;

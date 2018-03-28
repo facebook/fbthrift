@@ -3119,4 +3119,4 @@ THRIFT_REGISTER_GENERATOR(cocoa, "Cocoa",
 "    nullability:     Use annotations to ensure required fields are present.\n"
 "    validate_required:\n"
 "                     Throws exception if any required field is not set.\n"
-)
+);

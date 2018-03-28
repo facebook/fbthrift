@@ -795,4 +795,4 @@ class t_d_generator : public t_oop_generator {
   string package_dir_;
 };
 
-THRIFT_REGISTER_GENERATOR(d, "D", "")
+THRIFT_REGISTER_GENERATOR(d, "D", "");

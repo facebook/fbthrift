@@ -3426,7 +3426,7 @@ void t_cpp_generator::generate_struct_reader_translate_field_name(
   }
   indent_down();
   indent(out) <<
-    "};" << endl;
+    "}" << endl;
   indent(out) <<
     endl;
 }

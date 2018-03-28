@@ -56,7 +56,7 @@ void Included::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I16;
   }
-};
+}
 
 uint32_t Included::read(apache::thrift::protocol::TProtocol* iprot) {
 

@@ -72,13 +72,13 @@ static std::ostream& operator<<(
     EXPECT_EQ(example.nil, src); \
   } \
 
-TEST_GROUP(enumeration, kEnumExample);
-TEST_GROUP(structure, kBasicExample);
-TEST_GROUP(list, kBasicListExample);
-TEST_GROUP(set, kBasicSetExample);
-TEST_GROUP(map, kBasicMapExample);
-TEST_GROUP(nested_structure, kNestedExample);
-TEST_GROUP(nested_ref_unique, kNestedRefUniqueExample);
-TEST_GROUP(nested_ref_shared, kNestedRefSharedExample);
-TEST_GROUP(nested_ref_shared_const, kNestedRefSharedConstExample);
-TEST_GROUP(indirection, kIndirectionExample);
+TEST_GROUP(enumeration, kEnumExample)
+TEST_GROUP(structure, kBasicExample)
+TEST_GROUP(list, kBasicListExample)
+TEST_GROUP(set, kBasicSetExample)
+TEST_GROUP(map, kBasicMapExample)
+TEST_GROUP(nested_structure, kNestedExample)
+TEST_GROUP(nested_ref_unique, kNestedRefUniqueExample)
+TEST_GROUP(nested_ref_shared, kNestedRefSharedExample)
+TEST_GROUP(nested_ref_shared_const, kNestedRefSharedConstExample)
+TEST_GROUP(indirection, kIndirectionExample)

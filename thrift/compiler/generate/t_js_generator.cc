@@ -1803,4 +1803,4 @@ string t_js_generator ::type_to_enum(t_type* type) {
 
 THRIFT_REGISTER_GENERATOR(js, "Javascript",
 "    jquery:          Generate jQuery compatible code.\n"
-"    node:            Generate node.js compatible code.\n")
+"    node:            Generate node.js compatible code.\n");

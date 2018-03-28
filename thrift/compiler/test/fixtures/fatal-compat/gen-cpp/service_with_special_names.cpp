@@ -21,7 +21,7 @@ void service_with_special_names_get_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_get_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -79,7 +79,7 @@ void service_with_special_names_get_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_get_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -103,7 +103,7 @@ void service_with_special_names_get_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_get_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -177,7 +177,7 @@ void service_with_special_names_getter_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_getter_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -235,7 +235,7 @@ void service_with_special_names_getter_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_getter_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -259,7 +259,7 @@ void service_with_special_names_getter_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_getter_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -333,7 +333,7 @@ void service_with_special_names_lists_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_lists_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -391,7 +391,7 @@ void service_with_special_names_lists_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_lists_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -415,7 +415,7 @@ void service_with_special_names_lists_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_lists_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -489,7 +489,7 @@ void service_with_special_names_maps_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_maps_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -547,7 +547,7 @@ void service_with_special_names_maps_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_maps_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -571,7 +571,7 @@ void service_with_special_names_maps_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_maps_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -645,7 +645,7 @@ void service_with_special_names_name_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_name_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -703,7 +703,7 @@ void service_with_special_names_name_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_name_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -727,7 +727,7 @@ void service_with_special_names_name_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_name_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -801,7 +801,7 @@ void service_with_special_names_name_to_value_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_name_to_value_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -859,7 +859,7 @@ void service_with_special_names_name_to_value_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_name_to_value_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -883,7 +883,7 @@ void service_with_special_names_name_to_value_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_name_to_value_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -957,7 +957,7 @@ void service_with_special_names_names_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_names_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1015,7 +1015,7 @@ void service_with_special_names_names_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_names_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1039,7 +1039,7 @@ void service_with_special_names_names_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_names_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1113,7 +1113,7 @@ void service_with_special_names_prefix_tree_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_prefix_tree_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1171,7 +1171,7 @@ void service_with_special_names_prefix_tree_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_prefix_tree_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1195,7 +1195,7 @@ void service_with_special_names_prefix_tree_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_prefix_tree_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1269,7 +1269,7 @@ void service_with_special_names_sets_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_sets_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1327,7 +1327,7 @@ void service_with_special_names_sets_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_sets_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1351,7 +1351,7 @@ void service_with_special_names_sets_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_sets_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1425,7 +1425,7 @@ void service_with_special_names_setter_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_setter_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1483,7 +1483,7 @@ void service_with_special_names_setter_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_setter_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1507,7 +1507,7 @@ void service_with_special_names_setter_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_setter_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1581,7 +1581,7 @@ void service_with_special_names_str_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_str_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1639,7 +1639,7 @@ void service_with_special_names_str_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_str_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1663,7 +1663,7 @@ void service_with_special_names_str_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_str_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1737,7 +1737,7 @@ void service_with_special_names_strings_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_strings_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1795,7 +1795,7 @@ void service_with_special_names_strings_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_strings_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1819,7 +1819,7 @@ void service_with_special_names_strings_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_strings_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1893,7 +1893,7 @@ void service_with_special_names_type_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_type_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1951,7 +1951,7 @@ void service_with_special_names_type_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_type_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -1975,7 +1975,7 @@ void service_with_special_names_type_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_type_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2049,7 +2049,7 @@ void service_with_special_names_value_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_value_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2107,7 +2107,7 @@ void service_with_special_names_value_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_value_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2131,7 +2131,7 @@ void service_with_special_names_value_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_value_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2205,7 +2205,7 @@ void service_with_special_names_value_to_name_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_value_to_name_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2263,7 +2263,7 @@ void service_with_special_names_value_to_name_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_value_to_name_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2287,7 +2287,7 @@ void service_with_special_names_value_to_name_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_value_to_name_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2361,7 +2361,7 @@ void service_with_special_names_values_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_values_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2419,7 +2419,7 @@ void service_with_special_names_values_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_values_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2443,7 +2443,7 @@ void service_with_special_names_values_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_values_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2517,7 +2517,7 @@ void service_with_special_names_id_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_id_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2575,7 +2575,7 @@ void service_with_special_names_id_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_id_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2599,7 +2599,7 @@ void service_with_special_names_id_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_id_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2673,7 +2673,7 @@ void service_with_special_names_ids_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_ids_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2731,7 +2731,7 @@ void service_with_special_names_ids_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_ids_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2755,7 +2755,7 @@ void service_with_special_names_ids_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_ids_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2829,7 +2829,7 @@ void service_with_special_names_descriptor_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_descriptor_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2887,7 +2887,7 @@ void service_with_special_names_descriptor_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_descriptor_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -2911,7 +2911,7 @@ void service_with_special_names_descriptor_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_descriptor_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2985,7 +2985,7 @@ void service_with_special_names_descriptors_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_descriptors_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3043,7 +3043,7 @@ void service_with_special_names_descriptors_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_descriptors_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3067,7 +3067,7 @@ void service_with_special_names_descriptors_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_descriptors_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3141,7 +3141,7 @@ void service_with_special_names_key_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_key_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3199,7 +3199,7 @@ void service_with_special_names_key_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_key_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3223,7 +3223,7 @@ void service_with_special_names_key_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_key_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3297,7 +3297,7 @@ void service_with_special_names_keys_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_keys_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3355,7 +3355,7 @@ void service_with_special_names_keys_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_keys_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3379,7 +3379,7 @@ void service_with_special_names_keys_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_keys_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3453,7 +3453,7 @@ void service_with_special_names_annotation_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_annotation_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3511,7 +3511,7 @@ void service_with_special_names_annotation_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_annotation_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3535,7 +3535,7 @@ void service_with_special_names_annotation_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_annotation_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3609,7 +3609,7 @@ void service_with_special_names_annotations_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_annotations_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3667,7 +3667,7 @@ void service_with_special_names_annotations_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_annotations_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3691,7 +3691,7 @@ void service_with_special_names_annotations_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_annotations_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3765,7 +3765,7 @@ void service_with_special_names_member_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_member_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3823,7 +3823,7 @@ void service_with_special_names_member_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_member_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -3847,7 +3847,7 @@ void service_with_special_names_member_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_member_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3921,7 +3921,7 @@ void service_with_special_names_members_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_members_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -3979,7 +3979,7 @@ void service_with_special_names_members_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t service_with_special_names_members_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -4003,7 +4003,7 @@ void service_with_special_names_members_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t service_with_special_names_members_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 

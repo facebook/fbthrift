@@ -54,7 +54,7 @@ void StructUsingOtherNamespace::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* iprot) {
 

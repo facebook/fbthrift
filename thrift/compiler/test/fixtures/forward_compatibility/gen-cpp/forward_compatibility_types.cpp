@@ -36,7 +36,7 @@ void OldStructure::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t OldStructure::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -173,7 +173,7 @@ void NewStructure::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t NewStructure::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -312,7 +312,7 @@ void NewStructure2::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t NewStructure2::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -463,7 +463,7 @@ void NewStructureNested::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_SET;
   }
-};
+}
 
 uint32_t NewStructureNested::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -885,7 +885,7 @@ void NewStructureNestedField::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t NewStructureNestedField::read(apache::thrift::protocol::TProtocol* iprot) {
 

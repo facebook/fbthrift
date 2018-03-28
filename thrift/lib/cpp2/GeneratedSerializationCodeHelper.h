@@ -75,7 +75,7 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
   t->reserve(size + 1);
 }
 
-inline void reserve_if_possible(...){};
+inline void reserve_if_possible(...){}
 
 template <typename T>
 using presorted_constructible_from_vector_value_type = std::is_constructible<
@@ -318,7 +318,7 @@ REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
     serializedSize(Protocol& protocol, Type const& in) {         \
       return protocol.serializedSize##Method(in);                \
     }                                                            \
-  };
+  }
 
 #define REGISTER_BINARY(...) REGISTER_ZC(binary, __VA_ARGS__)
 REGISTER_BINARY(std::string, Binary, T_STRING);

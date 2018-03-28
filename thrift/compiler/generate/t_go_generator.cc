@@ -3926,4 +3926,4 @@ string t_go_generator::type_to_spec_args(t_type* ttype) {
 THRIFT_REGISTER_GENERATOR(go, "Go",
                           "    package_prefix=  Package prefix for generated files.\n" \
                           "    thrift_import=   Override thrift package import path (default:" + default_thrift_import + ")\n" \
-                          "    package=         Package name (default: inferred from thrift file name)\n")
+                          "    package=         Package name (default: inferred from thrift file name)\n");

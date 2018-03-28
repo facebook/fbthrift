@@ -847,84 +847,84 @@ static constexpr uint32_t kFdMaxOutstanding = 4096;
 static constexpr uint32_t kSocketMaxOutstanding = 4096;
 
 // TMemoryBuffer tests
-TEST_RW_4(CoupledMemoryBuffers, kConst1024K, 0, 0);
-TEST_RW_4(CoupledMemoryBuffers, kConst256K, rand4k, rand4k);
-TEST_RW_4(CoupledMemoryBuffers, kConst256K, 167, 163);
-TEST_RW_4(CoupledMemoryBuffers, kConst16K, 1, 1);
+TEST_RW_4(CoupledMemoryBuffers, kConst1024K, 0, 0)
+TEST_RW_4(CoupledMemoryBuffers, kConst256K, rand4k, rand4k)
+TEST_RW_4(CoupledMemoryBuffers, kConst256K, 167, 163)
+TEST_RW_4(CoupledMemoryBuffers, kConst16K, 1, 1)
 
-TEST_RW_6(CoupledMemoryBuffers, kConst256K, 0, 0, rand4k, rand4k);
-TEST_RW_6(CoupledMemoryBuffers, kConst256K, rand4k, rand4k, rand4k, rand4k);
-TEST_RW_6(CoupledMemoryBuffers, kConst256K, 167, 163, rand4k, rand4k);
-TEST_RW_6(CoupledMemoryBuffers, kConst16K, 1, 1, rand4k, rand4k);
+TEST_RW_6(CoupledMemoryBuffers, kConst256K, 0, 0, rand4k, rand4k)
+TEST_RW_6(CoupledMemoryBuffers, kConst256K, rand4k, rand4k, rand4k, rand4k)
+TEST_RW_6(CoupledMemoryBuffers, kConst256K, 167, 163, rand4k, rand4k)
+TEST_RW_6(CoupledMemoryBuffers, kConst16K, 1, 1, rand4k, rand4k)
 
-TEST_BLOCKING_BEHAVIOR(CoupledMemoryBuffers);
+TEST_BLOCKING_BEHAVIOR(CoupledMemoryBuffers)
 
 // TMemPagedTransport tests
-TEST_RW_4(CoupledMemPagedTransports, kConst1024K, 0, 0);
-TEST_RW_4(CoupledMemPagedTransports, kConst256K, rand4k, rand4k);
-TEST_RW_4(CoupledMemPagedTransports, kConst256K, 167, 163);
-TEST_RW_4(CoupledMemPagedTransports, kConst16K, 1, 1);
+TEST_RW_4(CoupledMemPagedTransports, kConst1024K, 0, 0)
+TEST_RW_4(CoupledMemPagedTransports, kConst256K, rand4k, rand4k)
+TEST_RW_4(CoupledMemPagedTransports, kConst256K, 167, 163)
+TEST_RW_4(CoupledMemPagedTransports, kConst16K, 1, 1)
 
-TEST_RW_6(CoupledMemPagedTransports, kConst256K, 0, 0, rand4k, rand4k);
+TEST_RW_6(CoupledMemPagedTransports, kConst256K, 0, 0, rand4k, rand4k)
 TEST_RW_6(CoupledMemPagedTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k);
-TEST_RW_6(CoupledMemPagedTransports, kConst256K, 167, 163, rand4k, rand4k);
-TEST_RW_6(CoupledMemPagedTransports, kConst16K, 1, 1, rand4k, rand4k);
+    kConst256K, rand4k, rand4k, rand4k, rand4k)
+TEST_RW_6(CoupledMemPagedTransports, kConst256K, 167, 163, rand4k, rand4k)
+TEST_RW_6(CoupledMemPagedTransports, kConst16K, 1, 1, rand4k, rand4k)
 
-TEST_BLOCKING_BEHAVIOR(CoupledMemPagedTransports);
+TEST_BLOCKING_BEHAVIOR(CoupledMemPagedTransports)
 
 // TFDTransport tests
 // Since CoupledFDTransports tests with a pipe, writes will block
 // if there is too much outstanding unread data in the pipe.
-TEST_RW_7(CoupledFDTransports, kConst1024K, 0, 0, 0, 0, kFdMaxOutstanding);
+TEST_RW_7(CoupledFDTransports, kConst1024K, 0, 0, 0, 0, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports,
-    kConst256K, rand4k, rand4k, 0, 0, kFdMaxOutstanding);
-TEST_RW_7(CoupledFDTransports, kConst256K, 167, 163, 0, 0, kFdMaxOutstanding);
-TEST_RW_7(CoupledFDTransports, kConst16K, 1, 1, 0, 0, kFdMaxOutstanding);
+    kConst256K, rand4k, rand4k, 0, 0, kFdMaxOutstanding)
+TEST_RW_7(CoupledFDTransports, kConst256K, 167, 163, 0, 0, kFdMaxOutstanding)
+TEST_RW_7(CoupledFDTransports, kConst16K, 1, 1, 0, 0, kFdMaxOutstanding)
 
 TEST_RW_7(CoupledFDTransports,
-    kConst256K, 0, 0, rand4k, rand4k, kFdMaxOutstanding);
+    kConst256K, 0, 0, rand4k, rand4k, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k, kFdMaxOutstanding);
+    kConst256K, rand4k, rand4k, rand4k, rand4k, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports,
-    kConst256K, 167, 163, rand4k, rand4k, kFdMaxOutstanding);
+    kConst256K, 167, 163, rand4k, rand4k, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports,
-    kConst16K, 1, 1, rand4k, rand4k, kFdMaxOutstanding);
+    kConst16K, 1, 1, rand4k, rand4k, kFdMaxOutstanding)
 
-TEST_BLOCKING_BEHAVIOR(CoupledFDTransports);
+TEST_BLOCKING_BEHAVIOR(CoupledFDTransports)
 
 // TSocket tests
 TEST_RW_7(CoupledSocketTransports,
-    kConst1024K, 0, 0, 0, 0, kSocketMaxOutstanding);
+    kConst1024K, 0, 0, 0, 0, kSocketMaxOutstanding)
 TEST_RW_7(CoupledSocketTransports,
-    kConst256K, rand4k, rand4k, 0, 0, kSocketMaxOutstanding);
+    kConst256K, rand4k, rand4k, 0, 0, kSocketMaxOutstanding)
 TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 167, 163, 0, 0, kSocketMaxOutstanding);
+    kConst256K, 167, 163, 0, 0, kSocketMaxOutstanding)
 // Doh.  Apparently writing to a socket has some additional overhead for
 // each send() call.  If we have more than ~100 outstanding 1-byte write
 // requests, additional send() calls start blocking.
-TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, 0, 0, 100);
+TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, 0, 0, 100)
 TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 0, 0, rand4k, rand4k, kSocketMaxOutstanding);
+    kConst256K, 0, 0, rand4k, rand4k, kSocketMaxOutstanding)
 TEST_RW_7(CoupledSocketTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k, kSocketMaxOutstanding);
+    kConst256K, rand4k, rand4k, rand4k, rand4k, kSocketMaxOutstanding)
 TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 167, 163, rand4k, rand4k, kSocketMaxOutstanding);
-TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, rand4k, rand4k, 100);
+    kConst256K, 167, 163, rand4k, rand4k, kSocketMaxOutstanding)
+TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, rand4k, rand4k, 100)
 
-TEST_BLOCKING_BEHAVIOR(CoupledSocketTransports);
+TEST_BLOCKING_BEHAVIOR(CoupledSocketTransports)
 
 // Add some tests that access TBufferedTransport and TFramedTransport
 // via TTransport pointers and TBufferBase pointers.
 TEST_RW_6_A(CoupledTTransports, CoupledBufferedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k);
+    kConst1024K, rand4k, rand4k, rand4k, rand4k)
 TEST_RW_6_A(CoupledBufferBases, CoupledBufferedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k);
+    kConst1024K, rand4k, rand4k, rand4k, rand4k)
 TEST_RW_6_A(CoupledTTransports, CoupledFramedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k);
+    kConst1024K, rand4k, rand4k, rand4k, rand4k)
 TEST_RW_6_A(CoupledBufferBases, CoupledFramedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k);
+    kConst1024K, rand4k, rand4k, rand4k, rand4k)
 
 // Test using TZlibTransport via a TTransport pointer
 TEST_RW_6_A(CoupledTTransports, CoupledZlibTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k);
+    kConst1024K, rand4k, rand4k, rand4k, rand4k)

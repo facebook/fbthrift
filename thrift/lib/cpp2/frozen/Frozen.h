@@ -430,12 +430,12 @@ class ViewBase {
 template <class Self, class Layout, class T>
 T thaw(const ViewBase<Self, Layout, T>& view) {
   return view.thaw();
-};
+}
 
 template <class T>
 T thaw(T value) {
   return value;
-};
+}
 
 /**
  * Internal utility for recursively maximizing child fields.
@@ -818,7 +818,7 @@ Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   ret.hold(std::move(layout));
   ret.hold(std::move(storage));
   return ret;
-};
+}
 
 
 /**

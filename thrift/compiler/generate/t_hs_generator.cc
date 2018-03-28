@@ -2369,4 +2369,4 @@ string t_hs_generator::type_to_constructor(t_type* type) {
 }
 
 
-THRIFT_REGISTER_GENERATOR(hs, "Haskell", "")
+THRIFT_REGISTER_GENERATOR(hs, "Haskell", "");

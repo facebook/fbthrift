@@ -25,7 +25,7 @@ void SomeService_bounce_map_args::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t SomeService_bounce_map_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -132,7 +132,7 @@ void SomeService_bounce_map_pargs::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t SomeService_bounce_map_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -167,7 +167,7 @@ void SomeService_bounce_map_presult::translateFieldName(
     fid = 0;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t SomeService_bounce_map_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 

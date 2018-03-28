@@ -45,10 +45,10 @@ class MemorySchema;
 
 }}}}
 
-THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryField);
-THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayoutBase);
-THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayout);
-THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemorySchema);
+THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryField)
+THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayoutBase)
+THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayout)
+THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemorySchema)
 
 namespace apache { namespace thrift { namespace frozen { namespace schema {
 

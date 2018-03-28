@@ -345,4 +345,4 @@ struct Layout<T, typename std::enable_if<IsList<T>::value>::type>
     : public detail::ArrayLayout<T, typename T::value_type> {};
 }}}
 
-THRIFT_DECLARE_TRAIT_TEMPLATE(IsList, std::vector);
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsList, std::vector)

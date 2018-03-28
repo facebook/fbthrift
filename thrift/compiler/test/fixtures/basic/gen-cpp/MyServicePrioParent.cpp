@@ -21,7 +21,7 @@ void MyServicePrioParent_ping_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_ping_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -79,7 +79,7 @@ void MyServicePrioParent_ping_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_ping_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -99,7 +99,7 @@ void MyServicePrioParent_ping_presult::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_ping_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -160,7 +160,7 @@ void MyServicePrioParent_pong_args::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_pong_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -218,7 +218,7 @@ void MyServicePrioParent_pong_pargs::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_pong_pargs::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
@@ -238,7 +238,7 @@ void MyServicePrioParent_pong_presult::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyServicePrioParent_pong_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 

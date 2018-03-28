@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 using namespace std;
-using namespace folly;;
+using namespace folly;
 using namespace apache::thrift;
 
 using apache::thrift::protocol::TCompactProtocolT;

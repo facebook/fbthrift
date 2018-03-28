@@ -49,4 +49,4 @@ TEST(Main, TestGetPortAndHost) {
     EXPECT_EQ(socketPool.getCurrentServerPort(), listeningPort);
     EXPECT_EQ(socketPool.getCurrentServerHost(), loopback);
 
-};
+}

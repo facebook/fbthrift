@@ -53,7 +53,7 @@ void MyUnion::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t MyUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
@@ -155,7 +155,7 @@ void MyField::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t MyField::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -325,7 +325,7 @@ void MyStruct::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -534,7 +534,7 @@ void StructWithUnion::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -690,7 +690,7 @@ void RecursiveStruct::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_LIST;
   }
-};
+}
 
 uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -882,7 +882,7 @@ void StructWithContainers::translateFieldName(
     fid = 6;
     _ftype = apache::thrift::protocol::T_LIST;
   }
-};
+}
 
 uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1323,7 +1323,7 @@ void StructWithSharedConst::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1505,7 +1505,7 @@ void Empty::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t Empty::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1619,7 +1619,7 @@ void StructWithRef::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1801,7 +1801,7 @@ void StructWithRefTypeUnique::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -1975,7 +1975,7 @@ void StructWithRefTypeShared::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -2149,7 +2149,7 @@ void StructWithRefTypeSharedConst::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol* iprot) {
 

@@ -42,7 +42,7 @@ void Struct::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t Struct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -168,7 +168,7 @@ void BigStruct::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t BigStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 

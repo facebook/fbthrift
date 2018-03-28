@@ -78,7 +78,7 @@ void Color::translateFieldName(
     fid = 4;
     _ftype = apache::thrift::protocol::T_DOUBLE;
   }
-};
+}
 
 uint32_t Color::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -264,7 +264,7 @@ void Vehicle::translateFieldName(
     fid = 5;
     _ftype = apache::thrift::protocol::T_BOOL;
   }
-};
+}
 
 uint32_t Vehicle::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -529,7 +529,7 @@ void Person::translateFieldName(
     fid = 10;
     _ftype = apache::thrift::protocol::T_LIST;
   }
-};
+}
 
 uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
 

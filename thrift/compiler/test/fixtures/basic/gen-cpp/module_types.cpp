@@ -112,7 +112,7 @@ void MyStruct::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-};
+}
 
 uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -269,7 +269,7 @@ void MyDataItem::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-};
+}
 
 uint32_t MyDataItem::read(apache::thrift::protocol::TProtocol* iprot) {
 

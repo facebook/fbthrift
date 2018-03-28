@@ -38,4 +38,4 @@ TEST_F(BinaryProtocolTest, readInvalidBool) {
   EXPECT_THROW(inprot.readBool(value), TProtocolException);
 }
 
-}; // namespace
+} // namespace

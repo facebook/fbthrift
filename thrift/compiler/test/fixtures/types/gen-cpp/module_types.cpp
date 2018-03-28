@@ -108,7 +108,7 @@ void decorated_struct::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-};
+}
 
 uint32_t decorated_struct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -253,7 +253,7 @@ void ContainerStruct::translateFieldName(
     fid = 8;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-};
+}
 
 uint32_t ContainerStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -722,7 +722,7 @@ void VirtualStruct::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-};
+}
 
 uint32_t VirtualStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
@@ -831,7 +831,7 @@ void MyStructWithForwardRefEnum::translateFieldName(
     fid = 2;
     _ftype = apache::thrift::protocol::T_I32;
   }
-};
+}
 
 uint32_t MyStructWithForwardRefEnum::read(apache::thrift::protocol::TProtocol* iprot) {
 

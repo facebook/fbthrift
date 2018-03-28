@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace std;
-using namespace folly;;
+using namespace folly;
 using namespace apache::thrift;
 using namespace ::cpp2;
 

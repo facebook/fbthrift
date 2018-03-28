@@ -206,6 +206,6 @@ class t_generator_registry {
               long_name,                                            \
               doc) {}                                               \
   };                                                                \
-  static t_##language##_generator_factory_impl _registerer;
+  static t_##language##_generator_factory_impl _registerer
 
 #endif // T_GENERATOR_H

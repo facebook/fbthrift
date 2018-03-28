@@ -179,7 +179,7 @@ void t_android_lite_generator::init_generator() {
   }
 
   package_dir_ = subdir;
-};
+}
 
 void t_android_lite_generator::write_logger_file() {
   string file_name;
