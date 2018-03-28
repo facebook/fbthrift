@@ -2496,7 +2496,7 @@ class CppGenerator(t_generator.Generator):
         def check_if_deprecated(typename, obj_name, annotations):
             deprecated = ''
             if 'deprecated' in annotations:
-                deprecated += 'FOLLY_DEPRECATED(\n  "'
+                deprecated += '[[deprecated(\n  "'
                 # For annotations that don't specify a value to the
                 # 'key: "value"' pair, Thrift assigns the string "1"
                 # as a default value.
@@ -2505,7 +2505,7 @@ class CppGenerator(t_generator.Generator):
                 else:
                     deprecated += \
                         '{0} {1} is deprecated'.format(typename, obj_name)
-                deprecated += '"\n) '
+                deprecated += '"\n)]] '
             return(deprecated)
 
         # generate explicit and extern template instantiations for
