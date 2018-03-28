@@ -7,6 +7,7 @@ from testing.types import easy, hard, Integers
 
 
 class SerializerTests(unittest.TestCase):
+
     def test_bad_deserialize(self) -> None:
         with self.assertRaises(Error):
             deserialize(easy, b'', protocol=Protocol.JSON)
@@ -42,13 +43,13 @@ class SerializerTests(unittest.TestCase):
 
     def test_serialize_hard_struct(self) -> None:
         control = hard(
-            val=0, val_list=[1, 2, 3, 4], name='foo', an_int=Integers(tiny=1),
+            val=0, val_list=[1, 2, 3, 4], name='foo', an_int=Integers(tiny=1)
         )
         self.thrift_serialization_round_robin(control)
 
     def test_pickle_hard_struct(self) -> None:
         control = hard(
-            val=0, val_list=[1, 2, 3, 4], name='foo', an_int=Integers(tiny=1),
+            val=0, val_list=[1, 2, 3, 4], name='foo', an_int=Integers(tiny=1)
         )
         self.pickle_round_robin(control)
 
@@ -57,5 +58,5 @@ class SerializerTests(unittest.TestCase):
         self.thrift_serialization_round_robin(control)
 
     def test_pickle_Integers_union(self) -> None:
-        control = Integers(large=2**32)
+        control = Integers(large=2 ** 32)
         self.pickle_round_robin(control)

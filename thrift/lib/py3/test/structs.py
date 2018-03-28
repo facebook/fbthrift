@@ -6,6 +6,7 @@ from testing.types import easy, hard, Integers, mixed, Runtime, numerical
 
 
 class StructTests(unittest.TestCase):
+
     def test_hashability(self) -> None:
         hash(easy())
 
@@ -21,8 +22,9 @@ class StructTests(unittest.TestCase):
     def test_required_fields(self) -> None:
         with self.assertRaises(TypeError):
             # None is not acceptable as a string
-            hard(val=1, val_list=[1, 2], name=None,  # type: ignore
-                 an_int=Integers(small=1))
+            hard(  # type: ignore
+                val=1, val_list=[1, 2], name=None, an_int=Integers(small=1)
+            )
 
         with self.assertRaises(TypeError):
             hard(val=1, val_list=[1, 2])  # type: ignore
@@ -44,8 +46,13 @@ class StructTests(unittest.TestCase):
         self.assertIsNotNone(x.an_int)
 
     def test_call_replace_required(self) -> None:
-        x = hard(val=5, val_list=[1, 2], name="something",
-                 an_int=Integers(small=1), other='non default')
+        x = hard(
+            val=5,
+            val_list=[1, 2],
+            name="something",
+            an_int=Integers(small=1),
+            other='non default',
+        )
         y = x(other=None)
         self.assertEqual(y.other, "some default")
         with self.assertRaises(TypeError):
@@ -107,23 +114,19 @@ class NumericalConversionsTests(unittest.TestCase):
             numerical(req_float_val=5, req_int_val=2, int_list=[5, 2 ** 32])
 
     def test_int_to_float(self) -> None:
-        x = numerical(req_int_val=5, req_float_val=5, float_val=5,
-                      float_list=[1, 5, 6])
+        x = numerical(req_int_val=5, req_float_val=5, float_val=5, float_list=[1, 5, 6])
         x(req_float_val=10)
         x(float_val=10)
         x(float_list=[6, 7, 8])
 
     def test_float_to_int_required_field(self) -> None:
         with self.assertRaises(TypeError):
-            numerical(req_int_val=math.pi,   # type: ignore
-                      req_float_val=math.pi)
+            numerical(req_int_val=math.pi, req_float_val=math.pi)  # type: ignore
 
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
             numerical(  # type: ignore
-                req_int_val=5,
-                req_float_val=math.pi,
-                int_val=math.pi
+                req_int_val=5, req_float_val=math.pi, int_val=math.pi
             )
 
     def test_float_to_int_list(self) -> None:
@@ -131,5 +134,5 @@ class NumericalConversionsTests(unittest.TestCase):
             numerical(
                 req_int_val=5,
                 req_float_val=math.pi,
-                int_list=[math.pi, math.e]  # type: ignore
+                int_list=[math.pi, math.e],  # type: ignore
             )

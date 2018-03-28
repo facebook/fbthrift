@@ -8,6 +8,7 @@ from typing import cast, Type
 
 
 class EnumTests(unittest.TestCase):
+
     def test_normal_enum(self) -> None:
         with self.assertRaises(TypeError):
             # Enums are not ints
@@ -35,11 +36,7 @@ class EnumTests(unittest.TestCase):
         self.assertIsInstance(x.permissions, Perm)
 
     def test_flag_enum_serialization_roundtrip(self) -> None:
-        x = File(
-            name='/dev/null',
-            type=Kind.CHAR,
-            permissions=Perm.read | Perm.write
-        )
+        x = File(name='/dev/null', type=Kind.CHAR, permissions=Perm.read | Perm.write)
 
         y = deserialize(File, serialize(x))
         self.assertEqual(x, y)

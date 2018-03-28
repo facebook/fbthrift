@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import (
-    Integers, ComplexUnion, easy, Color
-)
+from testing.types import (Integers, ComplexUnion, easy, Color)
 from thrift.py3.types import Union
 from thrift.py3 import deserialize, Protocol
 
 
 class UnionTests(unittest.TestCase):
+
     def test_hashability(self) -> None:
         hash(Integers())
 

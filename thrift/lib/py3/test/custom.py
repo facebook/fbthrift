@@ -5,7 +5,10 @@ from testing.types import customized
 
 
 # Tests for customized alternate implementations of the data structures:
+
+
 class CustomTests(unittest.TestCase):
+
     def test_list_template(self) -> None:
         c = customized(list_template=[1, 2, 3])
         res = []

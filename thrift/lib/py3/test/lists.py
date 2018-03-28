@@ -6,6 +6,7 @@ from testing.types import int_list, I32List, StrList2D, easy
 
 
 class ListTests(unittest.TestCase):
+
     def test_negative_indexes(self) -> None:
         length = len(int_list)
         for i in range(length):
@@ -59,6 +60,7 @@ class ListTests(unittest.TestCase):
         self.assertEqual(x.index(2, 0, 2), y.index(2, 0, 2))
         with self.assertRaises(ValueError):
             raise Exception(x.index(4, 0, 2))
+
         with self.assertRaises(ValueError):
             y.index(4, 0, 2)
         self.assertEqual(x.index(4, -20, -2), y.index(4, -20, -2))

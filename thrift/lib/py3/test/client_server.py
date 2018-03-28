@@ -14,6 +14,7 @@ import thrift.py3.server
 
 
 class Handler(TestingServiceInterface):
+
     async def invert(self, value: bool) -> bool:
         return not value
 
@@ -40,9 +41,7 @@ class TestServer:
     serve_task: asyncio.Task
 
     def __init__(
-        self,
-        ip: Optional[str]=None,
-        path: Optional['thrift.py3.server.Path']=None,
+        self, ip: Optional[str] = None, path: Optional['thrift.py3.server.Path'] = None
     ) -> None:
         self.server = ThriftServer(Handler(), ip=ip, path=path)
 
@@ -59,6 +58,7 @@ class ClientServerTests(unittest.TestCase):
     """
     These are tests where a client and server talk to each other
     """
+
     def test_client_resolve(self) -> None:
         loop = asyncio.get_event_loop()
         hostname = socket.gethostname()
@@ -96,12 +96,11 @@ class ClientServerTests(unittest.TestCase):
                 assert sa.path
                 for r in range(2):
                     try:
-                        async with get_client(
-                            TestingService, path=sa.path
-                        ) as client:
+                        async with get_client(TestingService, path=sa.path) as client:
                             self.assertTrue(await client.invert(False))
                             self.assertFalse(await client.invert(True))
                         break
+
                     except TransportError:
                         if r == 1:
                             raise
@@ -119,7 +118,8 @@ class ClientServerTests(unittest.TestCase):
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
                 self.assertFalse(await client.invert(True))
-                # If we do not abort here then good
+
+        # If we do not abort here then good
 
         loop.run_until_complete(inner_test())
 
@@ -152,6 +152,7 @@ class ClientServerTests(unittest.TestCase):
             async with TestServer() as sa:
                 assert sa.port and sa.ip
                 get_client(TestingService, host=sa.ip, port=sa.port)
-                # If we do not abort here then good
+
+        # If we do not abort here then good
 
         loop.run_until_complete(inner_test())

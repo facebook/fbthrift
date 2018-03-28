@@ -6,6 +6,7 @@ from typing import AbstractSet, Sequence
 
 
 class SetTests(unittest.TestCase):
+
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
             SetI32Lists({None})  # type: ignore

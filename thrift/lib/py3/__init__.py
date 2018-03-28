@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 __all__ = [
-    'get_client', 'Client', 'ThriftServer', 'Struct', 'BadEnum', 'Error',
-    'ApplicationError', 'TransportError', 'SSLPolicy', 'pass_context',
-    'Protocol', 'serialize', 'deserialize', 'RequestContext', 'Union',
+    'get_client',
+    'Client',
+    'ThriftServer',
+    'Struct',
+    'BadEnum',
+    'Error',
+    'ApplicationError',
+    'TransportError',
+    'SSLPolicy',
+    'pass_context',
+    'Protocol',
+    'serialize',
+    'deserialize',
+    'RequestContext',
+    'Union',
 ]
 
 try:

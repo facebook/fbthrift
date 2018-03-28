@@ -6,6 +6,7 @@ from .exception_helper import simulate_UnusedError, simulate_HardError
 
 
 class ExceptionTests(unittest.TestCase):
+
     def test_hashability(self) -> None:
         hash(UnusedError())
 

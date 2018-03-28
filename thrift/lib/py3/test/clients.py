@@ -16,6 +16,7 @@ async def bad_client_connect() -> None:
 
 
 class ClientTests(unittest.TestCase):
+
     def test_annotations(self) -> None:
         annotations = TestingService.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
@@ -100,7 +101,8 @@ class ClientTests(unittest.TestCase):
             # This is safe because we do type checks before we touch
             # state checks
             loop.run_until_complete(
-                client.takes_a_list([1, 'b', 'three']))  # type: ignore
+                client.takes_a_list([1, 'b', 'three'])  # type: ignore
+            )
 
     def test_rpc_non_container_types(self) -> None:
         client = TestingService()

@@ -11,6 +11,7 @@ from typing import Sequence
 
 
 class Handler(TestingServiceInterface):
+
     @TestingServiceInterface.pass_context_invert
     async def invert(self, ctx: RequestContext, value: bool) -> bool:
         return not value
@@ -34,6 +35,7 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
+
     def test_get_address(self) -> None:
         loop = asyncio.get_event_loop()
         coro = self.get_address(loop)

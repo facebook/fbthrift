@@ -7,6 +7,7 @@ from optional.types import NoDefaults, WithDefaults
 class OptionalTests(unittest.TestCase):
     # Note that this test assumes the thrift is compiled with
     # thrift_cpp2_options = "optionals", which changes behavior somewhat
+
     def test_get_set(self) -> None:
         n = NoDefaults(req_field=1)
         self.assertEquals(n.req_field, 1)

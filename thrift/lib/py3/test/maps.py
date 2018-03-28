@@ -6,6 +6,7 @@ from typing import List, Dict
 
 
 class MapTests(unittest.TestCase):
+
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
             StrIntMap({None: 5})  # type: ignore
