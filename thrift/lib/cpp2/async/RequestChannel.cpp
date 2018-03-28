@@ -59,38 +59,66 @@ uint32_t RequestChannel::sendRequestSync(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header) {
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
-  bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
+  apache::thrift::RpcKind kind =
+      static_cast<ClientSyncCallback&>(*cb).rpcKind();
   auto eb = getEventBase();
   CHECK(eb->isInEventBaseThread());
   auto scb = std::make_unique<ClientSyncEventBaseCallback>(std::move(cb), eb);
-  if (oneway) {
-    auto x = sendOnewayRequest(
-        options,
-        std::move(scb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header));
-    eb->loopForever();
-    return x;
-  } else {
-    auto x = sendRequest(
-        options,
-        std::move(scb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header));
-    eb->loopForever();
-    return x;
+  switch (kind) {
+    case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE: {
+      auto ret = sendOnewayRequest(
+          options,
+          std::move(scb),
+          std::move(ctx),
+          std::move(buf),
+          std::move(header));
+      eb->loopForever();
+      return ret;
+    }
+    case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE: {
+      auto ret = sendRequest(
+          options,
+          std::move(scb),
+          std::move(ctx),
+          std::move(buf),
+          std::move(header));
+      eb->loopForever();
+      return ret;
+    }
+    case apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE: {
+      auto ret = sendStreamRequest(
+          options,
+          std::move(scb),
+          std::move(ctx),
+          std::move(buf),
+          std::move(header));
+      eb->loopForever();
+      return ret;
+    }
+    default:
+      break;
   }
+  scb->requestError(ClientReceiveState(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "Unsupported RpcKind value"),
+      std::move(ctx),
+      false));
+  eb->loopForever();
+  return 0;
 }
 
 uint32_t RequestChannel::sendStreamRequest(
     RpcOptions&,
-    std::unique_ptr<RequestCallback>,
-    std::unique_ptr<apache::thrift::ContextStack>,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf>,
     std::shared_ptr<apache::thrift::transport::THeader>) {
-  throw std::logic_error("unimplemented");
+  cb->requestError(ClientReceiveState(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "Current channel doesn't support stream RPC"),
+      std::move(ctx),
+      false));
+  return 0;
 }
 } // namespace thrift
 } // namespace apache

@@ -53,7 +53,7 @@ void ServiceAAsyncClient::moduleAMethodT(Protocol_* prot, bool useSync, apache::
   args.get<0>().value = const_cast< ::some::ns::ModuleA*>(&modArg);
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleAMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleAMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -68,7 +68,7 @@ void ServiceAAsyncClient::moduleBMethodT(Protocol_* prot, bool useSync, apache::
   args.get<0>().value = const_cast< ::some::ns::ModuleB*>(&modArg);
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleBMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleBMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -85,7 +85,7 @@ void ServiceAAsyncClient::i32StrDoubleMethodT(Protocol_* prot, bool useSync, apa
   args.get<2>().value = &doubleArg;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "i32StrDoubleMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "i32StrDoubleMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -102,7 +102,7 @@ void ServiceAAsyncClient::versioningMethodT(Protocol_* prot, bool useSync, apach
   args.get<2>().value = &doubleArg;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "versioningMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "versioningMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -116,7 +116,7 @@ void ServiceAAsyncClient::retI32MethodT(Protocol_* prot, bool useSync, apache::t
   ServiceA_retI32Method_pargs args;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "retI32Method", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "retI32Method", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -130,7 +130,7 @@ void ServiceAAsyncClient::retModAMethodT(Protocol_* prot, bool useSync, apache::
   ServiceA_retModAMethod_pargs args;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "retModAMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "retModAMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -144,7 +144,7 @@ void ServiceAAsyncClient::throwMethodT(Protocol_* prot, bool useSync, apache::th
   ServiceA_throwMethod_pargs args;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throwMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throwMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -158,7 +158,7 @@ void ServiceAAsyncClient::multiThrowMethodT(Protocol_* prot, bool useSync, apach
   ServiceA_multiThrowMethod_pargs args;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "multiThrowMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "multiThrowMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -173,7 +173,7 @@ void ServiceAAsyncClient::i32ThrowMethodT(Protocol_* prot, bool useSync, apache:
   args.get<0>().value = &i32Arg;
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "i32ThrowMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "i32ThrowMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -188,7 +188,7 @@ void ServiceAAsyncClient::moduleAThrowMethodT(Protocol_* prot, bool useSync, apa
   args.get<0>().value = const_cast< ::some::ns::ModuleA*>(&modArg);
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleAThrowMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "moduleAThrowMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -205,7 +205,7 @@ void ServiceAAsyncClient::mixedMethodT(Protocol_* prot, bool useSync, apache::th
   args.get<2>().value = const_cast< ::some::ns::ModuleB*>(&modArg);
   auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "mixedMethod", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "mixedMethod", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 

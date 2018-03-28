@@ -42,7 +42,7 @@ void ExtraServiceAsyncClient::simple_functionT(Protocol_* prot, bool useSync, ap
   ExtraService_simple_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "simple_function", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "simple_function", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -56,7 +56,7 @@ void ExtraServiceAsyncClient::throws_functionT(Protocol_* prot, bool useSync, ap
   ExtraService_throws_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -71,7 +71,7 @@ void ExtraServiceAsyncClient::throws_function2T(Protocol_* prot, bool useSync, a
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function2", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function2", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -87,7 +87,7 @@ void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, bool useSync, a
   args.get<1>().value = const_cast<std::string*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function3", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function3", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -101,7 +101,7 @@ void ExtraServiceAsyncClient::oneway_void_retT(Protocol_* prot, bool useSync, ap
   ExtraService_oneway_void_ret_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret", writer, sizer, true, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -120,7 +120,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protoco
   args.get<4>().value = &param5;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_i32_i32_i32_i32_i32_param", writer, sizer, true, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_i32_i32_i32_i32_i32_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -136,7 +136,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramT(Protocol_* prot
   args.get<1>().value = const_cast<std::set<std::vector<std::string>>*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_map_setlist_param", writer, sizer, true, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_map_setlist_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -151,7 +151,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_struct_paramT(Protocol_* prot, boo
   args.get<0>().value = const_cast< ::some::valid::ns::MyStruct*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_struct_param", writer, sizer, true, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_struct_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -166,7 +166,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, 
   args.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_listunion_param", writer, sizer, true, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_listunion_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 

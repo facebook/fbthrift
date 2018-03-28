@@ -31,7 +31,7 @@ void MyNodeAsyncClient::do_midT(Protocol_* prot, bool useSync, apache::thrift::R
   MyNode_do_mid_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "do_mid", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "do_mid", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 

@@ -174,6 +174,22 @@ uint32_t ThriftClient::sendOnewayRequest(
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
+uint32_t ThriftClient::sendStreamRequest(
+    RpcOptions& rpcOptions,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<apache::thrift::transport::THeader> header) {
+  return sendRequestHelper(
+      rpcOptions,
+      RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+      std::move(cb),
+      std::move(ctx),
+      std::move(buf),
+      std::move(header),
+      callbackEvb_);
+}
+
 std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
     RpcOptions& rpcOptions,
     RpcKind kind,

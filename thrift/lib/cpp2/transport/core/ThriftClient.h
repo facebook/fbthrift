@@ -86,16 +86,23 @@ class ThriftClient : public ClientChannel {
   // begin RequestChannel methods
 
   uint32_t sendRequestSync(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      RpcOptions& rpcOptions,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) override;
 
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+
+  uint32_t sendStreamRequest(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) override;
 

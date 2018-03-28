@@ -544,7 +544,7 @@ void clientSendT(
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    bool oneway,
+    RpcKind kind,
     bool sync) {
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
@@ -576,61 +576,96 @@ void clientSendT(
 
   auto eb = channel->getEventBase();
   if (!eb || eb->isInEventBaseThread()) {
-    if (oneway) {
-      // Calling asyncComplete before sending because
-      // sendOnewayRequest moves from ctx and clears it.
-      ctx->asyncComplete();
-      channel->sendOnewayRequest(
-          rpcOptions,
-          std::move(callback),
-          std::move(ctx),
-          queue.move(),
-          header);
-    } else {
-      channel->sendRequest(
-          rpcOptions,
-          std::move(callback),
-          std::move(ctx),
-          queue.move(),
-          header);
+    switch (kind) {
+      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        // Calling asyncComplete before sending because
+        // sendOnewayRequest moves from ctx and clears it.
+        ctx->asyncComplete();
+        channel->sendOnewayRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            queue.move(),
+            header);
+        break;
+      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        channel->sendRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            queue.move(),
+            header);
+        break;
+      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+        channel->sendStreamRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            queue.move(),
+            header);
+        break;
+      default:
+        folly::assume_unreachable();
+        break;
     }
-  } else if (oneway) {
-    eb->runInEventBaseThread([
-      channel,
-      rpcOptions,
-      callback = std::move(callback),
-      ctx = std::move(ctx),
-      queue = queue.move(),
-      header
-    ]() mutable {
-      // Calling asyncComplete before sending because
-      // sendOnewayRequest moves from ctx and clears it.
-      ctx->asyncComplete();
-      channel->sendOnewayRequest(
-          rpcOptions,
-          std::move(callback),
-          std::move(ctx),
-          std::move(queue),
-          header);
-    });
+
   } else {
-    eb->runInEventBaseThread([
-      channel,
-      rpcOptions,
-      callback = std::move(callback),
-      ctx = std::move(ctx),
-      queue = queue.move(),
-      header
-    ]() mutable {
-      channel->sendRequest(
-          rpcOptions,
-          std::move(callback),
-          std::move(ctx),
-          std::move(queue),
-          header);
-    });
+    switch (kind) {
+      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        eb->runInEventBaseThread([channel,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  queue = queue.move(),
+                                  header]() mutable {
+          // Calling asyncComplete before sending because
+          // sendOnewayRequest moves from ctx and clears it.
+          ctx->asyncComplete();
+          channel->sendOnewayRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(queue),
+              header);
+        });
+        break;
+      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        eb->runInEventBaseThread([channel,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  queue = queue.move(),
+                                  header]() mutable {
+          channel->sendRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(queue),
+              header);
+        });
+        break;
+      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+        eb->runInEventBaseThread([channel,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  queue = queue.move(),
+                                  header]() mutable {
+          channel->sendStreamRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(queue),
+              header);
+        });
+        break;
+      default:
+        folly::assume_unreachable();
+        break;
+    }
   }
 }
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_

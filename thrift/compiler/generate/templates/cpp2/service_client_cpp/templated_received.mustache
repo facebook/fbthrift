@@ -52,10 +52,16 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
 <%/service:frozen2?%>
 <%#function:oneway?%>
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, true, useSync);
-<%/function:oneway?%>
-<%^function:oneway?%>
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, false, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
+<%/function:oneway?%><%!
+
+%><%^function:oneway?%>
+<%#function:returns_stream?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+<%/function:returns_stream?%>
+<%^function:returns_stream?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+<%/function:returns_stream?%>
 <%/function:oneway?%>
   connectionContext_->setRequestHeader(nullptr);
 }
