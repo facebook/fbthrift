@@ -20,6 +20,7 @@
 #include <string>
 
 #include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_type.h>
 
 class t_const_value;
 class t_struct;

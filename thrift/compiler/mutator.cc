@@ -61,12 +61,10 @@ void mutator::mutate(t_program* const program) {
  */
 
 static void fill_mutators(mutator_list& ms) {
-
   ms.add<field_type_to_const_value>();
   ms.add<const_type_to_const_value>();
 
   // add more mutators here ...
-
 }
 
 static t_type* resolve_type(t_type* type) {

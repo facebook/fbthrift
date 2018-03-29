@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/common.h>
-#include <thrift/compiler/generate/t_generator.h>
 
 #include <algorithm>
 #include <fstream>
@@ -25,6 +23,9 @@
 #include <string>
 
 #include <mstch/mstch.hpp>
+
+#include <thrift/compiler/common.h>
+#include <thrift/compiler/generate/t_generator.h>
 
 namespace {
 
@@ -202,7 +203,8 @@ mstch::map t_mstch_generator::dump(const t_enum& enm) {
 
 mstch::map t_mstch_generator::dump(const t_enum_value& val) {
   mstch::map result{
-      {"name", val.get_name()}, {"value", std::to_string(val.get_value())},
+      {"name", val.get_name()},
+      {"value", std::to_string(val.get_value())},
   };
 
   mstch::map extension = extend_enum_value(val);
@@ -277,7 +279,8 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
   auto const format_double_string = [](const double d) {
     std::string d_str = std::to_string(d);
     d_str.erase(d_str.find_last_not_of('0') + 1);
-    if (d_str.back() == '.') d_str.push_back('0');
+    if (d_str.back() == '.')
+      d_str.push_back('0');
     return d_str;
   };
 
@@ -325,7 +328,8 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
 mstch::map t_mstch_generator::dump(
     const std::map<t_const_value*, t_const_value*>::value_type& pair) {
   mstch::map result{
-      {"key", dump(*pair.first)}, {"value", dump(*pair.second)},
+      {"key", dump(*pair.first)},
+      {"value", dump(*pair.second)},
   };
   mstch::map extension = extend_const_value_map_elem(pair);
   result.insert(extension.begin(), extension.end());
@@ -334,7 +338,8 @@ mstch::map t_mstch_generator::dump(
 
 mstch::map t_mstch_generator::dump(const annotation& pair) {
   mstch::map result{
-      {"key", pair.first}, {"value", pair.second},
+      {"key", pair.first},
+      {"value", pair.second},
   };
   mstch::map extension = extend_annotation(pair);
   result.insert(extension.begin(), extension.end());
@@ -343,7 +348,8 @@ mstch::map t_mstch_generator::dump(const annotation& pair) {
 
 mstch::map t_mstch_generator::dump(const t_typedef& typdef) {
   mstch::map result{
-      {"type", dump(*typdef.get_type())}, {"symbolic", typdef.get_symbolic()},
+      {"type", dump(*typdef.get_type())},
+      {"symbolic", typdef.get_symbolic()},
   };
 
   mstch::map extension = extend_typedef(typdef);

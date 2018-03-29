@@ -19,25 +19,24 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #ifdef _WIN32
-#  include <direct.h>
-#  include <io.h>
+#include <direct.h>
+#include <io.h>
 #endif
 
-int make_dir(const char *path) {
-  #ifdef _WIN32
-    return _mkdir(path);
-  #else
-    return mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
-  #endif
+int make_dir(const char* path) {
+#ifdef _WIN32
+  return _mkdir(path);
+#else
+  return mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
+#endif
 }
 
-
-int chmod_to_755(const char *path) {
-  #ifdef _WIN32
-    return _chmod(path, _S_IREAD | _S_IWRITE);
-  #else
-    return chmod(
-      path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
-    );
-  #endif
+int chmod_to_755(const char* path) {
+#ifdef _WIN32
+  return _chmod(path, _S_IREAD | _S_IWRITE);
+#else
+  return chmod(
+      path,
+      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+#endif
 }

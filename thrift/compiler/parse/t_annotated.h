@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <thrift/compiler/parse/t_doc.h>
-
 #include <map>
 #include <string>
+
+#include <thrift/compiler/parse/t_doc.h>
 
 /**
  * class t_type

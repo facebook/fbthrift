@@ -20,15 +20,16 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <thrift/compiler/globals.h>
 #include <thrift/compiler/common.h>
+#include <thrift/compiler/globals.h>
 
-namespace apache { namespace thrift { namespace compiler {
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 class validator_list {
  public:
-  explicit validator_list(validator::errors_t& errors)
-      : errors_(errors) {}
+  explicit validator_list(validator::errors_t& errors) : errors_(errors) {}
 
   std::vector<visitor*> get_pointers() const {
     auto pointers = std::vector<visitor*>{};
@@ -101,8 +102,7 @@ void service_method_name_uniqueness_validator::add_error_service_method_names(
 }
 
 void service_method_name_uniqueness_validator::
-validate_service_method_names_unique(
-    t_service const* const service) {
+    validate_service_method_names_unique(t_service const* const service) {
   // Check for a redefinition of a function in a base service.
   std::unordered_map<std::string, t_service const*> base_function_names;
   for (auto e_s = service->get_extends(); e_s; e_s = e_s->get_extends()) {
@@ -113,14 +113,13 @@ validate_service_method_names_unique(
   for (auto const fnc : service->get_functions()) {
     auto const s_pos = base_function_names.find(fnc->get_name());
     auto const e_s =
-      s_pos != base_function_names.end() ? s_pos->second : nullptr;
+        s_pos != base_function_names.end() ? s_pos->second : nullptr;
     if (e_s) {
       add_error_service_method_names(
           fnc->get_lineno(),
           service->get_name(),
           e_s->get_full_name(),
-          fnc->get_name()
-      );
+          fnc->get_name());
     }
   }
 
@@ -132,8 +131,7 @@ validate_service_method_names_unique(
           fnc->get_lineno(),
           service->get_name(),
           service->get_name(),
-          fnc->get_name()
-      );
+          fnc->get_name());
     }
     function_names.insert(fnc->get_name());
   }
@@ -146,7 +144,6 @@ validate_service_method_names_unique(
  */
 
 static void fill_validators(validator_list& vs) {
-
   vs.add<service_method_name_uniqueness_validator>();
   vs.add<enum_value_names_uniqueness_validator>();
   vs.add<enum_values_uniqueness_validator>();
@@ -154,7 +151,6 @@ static void fill_validators(validator_list& vs) {
   vs.add<exception_list_is_all_exceptions_validator>();
 
   // add more validators here ...
-
 }
 
 void enum_value_names_uniqueness_validator::add_validation_error(
@@ -264,4 +260,6 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
 
   return true;
 }
-}}}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -18,11 +18,13 @@
 #define T_CONST_VALUE_H
 
 #include <stdint.h>
+
+#include <utility>
+#include <vector>
+
 #include <thrift/compiler/parse/t_const.h>
 #include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_enum_value.h>
-#include <utility>
-#include <vector>
 
 class t_const;
 /**

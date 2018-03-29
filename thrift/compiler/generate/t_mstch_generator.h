@@ -20,9 +20,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <mstch/mstch.hpp>
-
 #include <boost/filesystem.hpp>
+#include <mstch/mstch.hpp>
 
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>

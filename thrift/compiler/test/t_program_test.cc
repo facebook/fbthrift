@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "thrift/compiler/parse/t_program.h"
-
 #include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
+
+#include "thrift/compiler/parse/t_program.h"
 
 /**
  * t_program functions are protected so we need
@@ -27,9 +27,9 @@
  */
 class t_program_fake : public t_program {
  public:
-  using t_program::t_program;
-  using t_program::set_include_prefix;
   using t_program::compute_name_from_file_path;
+  using t_program::set_include_prefix;
+  using t_program::t_program;
 };
 
 TEST(TProgram, GetNamespace) {

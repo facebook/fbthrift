@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <string>
+
 #include <thrift/compiler/parse/t_scope.h>
 #include <thrift/compiler/parse/t_type.h>
-#include <string>
 
 /**
  * A typedef is a mapping from a symbolic name to another type. In dymanically

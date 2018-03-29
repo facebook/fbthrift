@@ -15,12 +15,12 @@
  */
 #pragma once
 
-#include <mstch/mstch.hpp>
+#include <iomanip>
 #include <unordered_map>
 
-#include <thrift/compiler/generate/t_generator.h>
+#include <mstch/mstch.hpp>
 
-#include <iomanip>
+#include <thrift/compiler/generate/t_generator.h>
 
 class mstch_base;
 class mstch_generators;

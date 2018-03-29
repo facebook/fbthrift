@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "thrift/compiler/parse/t_type.h"
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -23,6 +21,7 @@
 #include <gtest/gtest.h>
 
 #include "thrift/compiler/parse/t_program.h"
+#include "thrift/compiler/parse/t_type.h"
 
 /**
  * Inherit from t_type to access protected declarations
@@ -36,11 +35,17 @@ class t_type_fake : public t_type {
   /**
    * Override abstract functions with fake implementations
    */
-  std::string get_full_name() const override { return full_name_; }
+  std::string get_full_name() const override {
+    return full_name_;
+  }
 
-  std::string get_impl_full_name() const override { return {}; }
+  std::string get_impl_full_name() const override {
+    return {};
+  }
 
-  TypeValue get_type_value() const override { return {}; }
+  TypeValue get_type_value() const override {
+    return {};
+  }
 
   using t_type::make_full_name;
 
@@ -100,19 +105,14 @@ TEST(TType, MakeFullName) {
 
 TEST(TType, GetTypeId) {
   const std::vector<std::string> full_names{
-    " ",
-    " fake",
-    "prefix fake",
-    " filename.fake",
-    "prefix filename.fake"
-  };
+      " ", " fake", "prefix fake", " filename.fake", "prefix filename.fake"};
 
   const std::vector<uint64_t> expect{
-    719194018156337312u,
-    13248906732611438720u,
-    14547348474893505952u,
-    11756729886077015840u,
-    18229475703801871904u,
+      719194018156337312u,
+      13248906732611438720u,
+      14547348474893505952u,
+      11756729886077015840u,
+      18229475703801871904u,
   };
 
   std::vector<uint64_t> hashes;

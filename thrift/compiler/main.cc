@@ -29,7 +29,7 @@
  */
 
 #ifndef _WIN32
-#  include <unistd.h>
+#include <unistd.h>
 #endif
 #include <ctime>
 
@@ -72,10 +72,14 @@ bool record_genfiles = false;
 [[noreturn]] static void usage() {
   fprintf(stderr, "Usage: thrift [options] file\n");
   fprintf(stderr, "Options:\n");
-  fprintf(stderr, "  -o dir      Set the output directory for gen-* packages\n");
+  fprintf(
+      stderr, "  -o dir      Set the output directory for gen-* packages\n");
   fprintf(stderr, "               (default: current directory)\n");
-  fprintf(stderr, "  -out dir    Set the output location for generated files\n");
-  fprintf(stderr, "  --templates dir    Set the directory containing mstch templates\n");
+  fprintf(
+      stderr, "  -out dir    Set the output location for generated files\n");
+  fprintf(
+      stderr,
+      "  --templates dir    Set the directory containing mstch templates\n");
   fprintf(stderr, "               (no gen-* folder will be created)\n");
   fprintf(stderr, "  -I dir      Add a directory to the list of directories\n");
   fprintf(stderr, "                searched for include directives\n");
@@ -84,14 +88,24 @@ bool record_genfiles = false;
   fprintf(stderr, "  -v[erbose]  Verbose mode\n");
   fprintf(stderr, "  -r[ecurse]  Also generate included files\n");
   fprintf(stderr, "  -debug      Parse debug trace to stdout\n");
-  fprintf(stderr, "  --allow-neg-keys  Allow negative field keys (Used to "
-          "preserve protocol\n");
+  fprintf(
+      stderr,
+      "  --allow-neg-keys  Allow negative field keys (Used to "
+      "preserve protocol\n");
   fprintf(stderr, "                compatibility with older .thrift files)\n");
   fprintf(stderr, "  --allow-neg-enum-vals Allow negative enum vals\n");
-  fprintf(stderr, "  --allow-64bit-consts  Do not print warnings about using 64-bit constants\n");
-  fprintf(stderr, "  --gen STR   Generate code with a dynamically-registered generator.\n");
-  fprintf(stderr, "                STR has the form language[:key1=val1[,key2,[key3=val3]]].\n");
-  fprintf(stderr, "                Keys and values are options passed to the generator.\n");
+  fprintf(
+      stderr,
+      "  --allow-64bit-consts  Do not print warnings about using 64-bit constants\n");
+  fprintf(
+      stderr,
+      "  --gen STR   Generate code with a dynamically-registered generator.\n");
+  fprintf(
+      stderr,
+      "                STR has the form language[:key1=val1[,key2,[key3=val3]]].\n");
+  fprintf(
+      stderr,
+      "                Keys and values are options passed to the generator.\n");
   fprintf(stderr, "                Many options will not require values.\n");
   fprintf(stderr, "  --record-genfiles FILE\n");
   fprintf(stderr, "              Save the list of generated files to FILE\n");
@@ -102,10 +116,13 @@ bool record_genfiles = false;
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
-  t_generator_registry::gen_map_t gen_map = t_generator_registry::get_generator_map();
+  t_generator_registry::gen_map_t gen_map =
+      t_generator_registry::get_generator_map();
   t_generator_registry::gen_map_t::iterator iter;
   for (iter = gen_map.begin(); iter != gen_map.end(); ++iter) {
-    fprintf(stderr, "  %s (%s):\n",
+    fprintf(
+        stderr,
+        "  %s (%s):\n",
         iter->second->get_short_name().c_str(),
         iter->second->get_long_name().c_str());
     fprintf(stderr, "%s", iter->second->get_documentation().c_str());
@@ -139,43 +156,43 @@ static bool python_generator(
       pycompilers.push_back(user_python_compiler);
     }
     pycompilers.insert(
-      pycompilers.end(),
-      {
-        dirname + "py/thrift.lpar",
-        dirname + "../py/thrift.lpar",
-        dirname + "py/thrift.par",
-        dirname + "../py/thrift.par",
-        dirname + "py/thrift.xar",
-        dirname + "../py/thrift.xar",
-        dirname + "py/thrift.pex",
-        dirname + "../py/thrift.pex",
-      });
+        pycompilers.end(),
+        {
+            dirname + "py/thrift.lpar",
+            dirname + "../py/thrift.lpar",
+            dirname + "py/thrift.par",
+            dirname + "../py/thrift.par",
+            dirname + "py/thrift.xar",
+            dirname + "../py/thrift.xar",
+            dirname + "py/thrift.pex",
+            dirname + "../py/thrift.pex",
+        });
     for (const auto& comp : pycompilers) {
       pycompiler = comp;
       ifile.open(pycompiler.c_str());
-      if (ifile) break;
+      if (ifile)
+        break;
     }
     int ret = 0;
     if (ifile) {
       // Convert arguments to argv
       std::vector<char*> argv(arguments.size() + 1);
       for (size_t i = 0; i < arguments.size(); ++i) {
-        if (arguments[i][0] == '-' &&
-            arguments[i] != "-I" &&
+        if (arguments[i][0] == '-' && arguments[i] != "-I" &&
             arguments[i] != "-o") {
           arguments[i].insert(0, "-");
         }
-        argv[i] = const_cast<char *>(arguments[i].c_str());
+        argv[i] = const_cast<char*>(arguments[i].c_str());
       }
       argv[arguments.size()] = nullptr;
       ret = execv(pycompiler.c_str(), argv.data());
     }
     if (!ifile || ret < 0) {
       pwarning(
-        1,
-        "Unable to get a generator for \"%s\" ret: %d.\n",
-        options.c_str(),
-        ret);
+          1,
+          "Unable to get a generator for \"%s\" ret: %d.\n",
+          options.c_str(),
+          ret);
     }
   }
   return true;
@@ -189,8 +206,8 @@ static void search_and_replace_args(
     if (arguments[i] == "-gen") {
       auto pos = arguments[i + 1].find(search);
       if (pos != std::string::npos) {
-        arguments[i + 1] = arguments[i + 1].replace(
-            pos, search.size(), replace);
+        arguments[i + 1] =
+            arguments[i + 1].replace(pos, search.size(), replace);
       }
       break;
     }
@@ -332,7 +349,6 @@ int main(int argc, char** argv) {
   // Hacky parameter handling... I didn't feel like using a library sorry!
   size_t i;
   for (i = 1; i < arguments.size() - 1; ++i) {
-
     // Treat double dashes as single dashes
     if (arguments[i][0] == '-' && arguments[i][1] == '-') {
       arguments[i] = arguments[i].replace(0, 1, "");
@@ -345,9 +361,9 @@ int main(int argc, char** argv) {
     } else if (arguments[i] == "-strict") {
       g_strict = 255;
       g_warn = 2;
-    } else if (arguments[i] == "-v" || arguments[i] == "-verbose" ) {
+    } else if (arguments[i] == "-v" || arguments[i] == "-verbose") {
       g_verbose = 1;
-    } else if (arguments[i] == "-r" || arguments[i] == "-recurse" ) {
+    } else if (arguments[i] == "-r" || arguments[i] == "-recurse") {
       gen_recurse = true;
     } else if (arguments[i] == "-allow-neg-keys") {
       g_allow_neg_field_keys = true;
@@ -470,9 +486,8 @@ int main(int argc, char** argv) {
         // Invoker specified `-out blah`. We are supposed to output directly
         // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
         // just like how for `-o blah` we make `o/gen-java`
-        if (stat(out_path.c_str(), &sb) < 0
-            && errno == ENOENT
-            && make_dir(out_path.c_str()) < 0) {
+        if (stat(out_path.c_str(), &sb) < 0 && errno == ENOENT &&
+            make_dir(out_path.c_str()) < 0) {
           fprintf(
               stderr,
               "Output directory %s is unusable: mkdir: %s\n",
@@ -489,7 +504,7 @@ int main(int argc, char** argv) {
             strerror(errno));
         return -1;
       }
-#       ifndef _WIN32
+#ifndef _WIN32
       if (!S_ISDIR(sb.st_mode)) {
         fprintf(
             stderr,
@@ -497,7 +512,7 @@ int main(int argc, char** argv) {
             out_path.c_str());
         return -1;
       }
-#       endif
+#endif
       continue;
     } else if (arguments[i] == "-python-compiler") {
       if (i + 1 == arguments.size() - 1) {
@@ -558,13 +573,13 @@ int main(int argc, char** argv) {
     string gen_string = "php:";
     if (gen_phpi) {
       gen_string.append("inlined,");
-    } else if(gen_phps) {
+    } else if (gen_phps) {
       gen_string.append("server,");
-    } else if(gen_phpa) {
+    } else if (gen_phpa) {
       gen_string.append("autoload,");
-    } else if(gen_phpo) {
+    } else if (gen_phpo) {
       gen_string.append("oop,");
-    } else if(gen_rest) {
+    } else if (gen_rest) {
       gen_string.append("rest,");
     }
     generator_strings.push_back(gen_string);
@@ -623,19 +638,19 @@ int main(int argc, char** argv) {
   program->set_include_prefix(include_prefix);
 
   // Initialize global types
-  g_type_void   = new t_base_type("void",   t_base_type::TYPE_VOID);
+  g_type_void = new t_base_type("void", t_base_type::TYPE_VOID);
   g_type_string = new t_base_type("string", t_base_type::TYPE_STRING);
   g_type_binary = new t_base_type("string", t_base_type::TYPE_STRING);
   ((t_base_type*)g_type_binary)->set_binary(true);
-  g_type_slist  = new t_base_type("string", t_base_type::TYPE_STRING);
+  g_type_slist = new t_base_type("string", t_base_type::TYPE_STRING);
   ((t_base_type*)g_type_slist)->set_string_list(true);
-  g_type_bool   = new t_base_type("bool",   t_base_type::TYPE_BOOL);
-  g_type_byte   = new t_base_type("byte",   t_base_type::TYPE_BYTE);
-  g_type_i16    = new t_base_type("i16",    t_base_type::TYPE_I16);
-  g_type_i32    = new t_base_type("i32",    t_base_type::TYPE_I32);
-  g_type_i64    = new t_base_type("i64",    t_base_type::TYPE_I64);
+  g_type_bool = new t_base_type("bool", t_base_type::TYPE_BOOL);
+  g_type_byte = new t_base_type("byte", t_base_type::TYPE_BYTE);
+  g_type_i16 = new t_base_type("i16", t_base_type::TYPE_I16);
+  g_type_i32 = new t_base_type("i32", t_base_type::TYPE_I32);
+  g_type_i64 = new t_base_type("i64", t_base_type::TYPE_I64);
   g_type_double = new t_base_type("double", t_base_type::TYPE_DOUBLE);
-  g_type_float  = new t_base_type("float",  t_base_type::TYPE_FLOAT);
+  g_type_float = new t_base_type("float", t_base_type::TYPE_FLOAT);
 
   // Parse it!
   g_scope_cache = program->scope();
@@ -671,7 +686,7 @@ int main(int argc, char** argv) {
         already_generated,
         user_python_compiler,
         arguments);
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;
     return 1;
   }

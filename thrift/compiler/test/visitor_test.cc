@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/visitor.h>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <thrift/compiler/visitor.h>
 
 using namespace apache::thrift::compiler;
 
@@ -25,7 +25,7 @@ namespace {
 
 class InterleavedVisitorTest : public testing::Test {};
 
-}
+} // namespace
 
 TEST_F(InterleavedVisitorTest, mixed) {
   struct tracking_visitor : visitor {

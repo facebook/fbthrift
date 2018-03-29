@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/common.h>
-
 #include <string>
 #include <vector>
 
 #include <gtest/gtest.h>
 
+#include <thrift/compiler/generate/common.h>
+
 TEST(GenerateCommon, SplitNamespace) {
   const std::vector<std::string> namespaces{
-    "",
-    "this",
-    "this.is",
-    "this.is.valid",
+      "",
+      "this",
+      "this.is",
+      "this.is.valid",
   };
 
   const std::vector<std::vector<std::string>> expected{
-    {},
-    {"this"},
-    {"this", "is"},
-    {"this", "is", "valid"},
+      {},
+      {"this"},
+      {"this", "is"},
+      {"this", "is", "valid"},
   };
 
   std::vector<std::vector<std::string>> splits;
@@ -46,15 +46,15 @@ TEST(GenerateCommon, SplitNamespace) {
 
 TEST(GenerateCommon, EscapeQuotes) {
   std::vector<std::string> quotedstrings{
-    R"(no quotes)",
-    R"("quotes")",
-    R"({"a": 1, "b": -2, "c": -3})",
+      R"(no quotes)",
+      R"("quotes")",
+      R"({"a": 1, "b": -2, "c": -3})",
   };
 
   const std::vector<std::string> expected{
-    R"(no quotes)",
-    R"(\"quotes\")",
-    R"({\"a\": 1, \"b\": -2, \"c\": -3})",
+      R"(no quotes)",
+      R"(\"quotes\")",
+      R"({\"a\": 1, \"b\": -2, \"c\": -3})",
   };
 
   std::vector<std::string> escaped;
@@ -68,17 +68,17 @@ TEST(GenerateCommon, EscapeQuotes) {
 
 TEST(GenerateCommon, TrimWhitespace) {
   std::vector<std::string> whitespaces{
-    "    ",
-    "   left",
-    "right ",
-    "   both spaces ",
+      "    ",
+      "   left",
+      "right ",
+      "   both spaces ",
   };
 
   const std::vector<std::string> expected{
-    "",
-    "left",
-    "right",
-    "both spaces",
+      "",
+      "left",
+      "right",
+      "both spaces",
   };
 
   std::vector<std::string> trimmed;

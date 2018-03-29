@@ -19,6 +19,7 @@
 #include <memory>
 #include <string>
 
+#include <thrift/compiler/parse/t_base_type.h>
 #include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_function.h>
 #include <thrift/compiler/parse/t_service.h>

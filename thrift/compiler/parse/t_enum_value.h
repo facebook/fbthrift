@@ -15,9 +15,9 @@
  */
 #pragma once
 
-#include <thrift/compiler/parse/t_annotated.h>
-
 #include <string>
+
+#include <thrift/compiler/parse/t_annotated.h>
 
 /**
  * class t_enum_value

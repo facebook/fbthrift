@@ -15,9 +15,10 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/compiler/parse/t_enum_value.h>
 #include <thrift/compiler/parse/t_type.h>
-#include <vector>
 
 /**
  * An enumerated type. A list of constant objects with a name for the type.

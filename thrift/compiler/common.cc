@@ -21,7 +21,7 @@
 #include <thrift/compiler/common.h>
 
 #ifdef _WIN32
-# include <windows.h> /* for GetFullPathName */
+#include <windows.h> /* for GetFullPathName */
 #endif
 
 #include <boost/filesystem.hpp>
@@ -147,11 +147,12 @@ std::string compute_absolute_path(const std::string& path) {
 
 void yyerror(const char* fmt, ...) {
   va_list args;
-  fprintf(stderr,
-          "[ERROR:%s:%d] (last token was '%s')\n",
-          g_curpath.c_str(),
-          yylineno,
-          yytext);
+  fprintf(
+      stderr,
+      "[ERROR:%s:%d] (last token was '%s')\n",
+      g_curpath.c_str(),
+      yylineno,
+      yytext);
 
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
@@ -194,8 +195,7 @@ void pwarning(int level, const char* fmt, ...) {
   fprintf(stderr, "\n");
 }
 
-[[noreturn]]
-void failure(const char* fmt, ...) {
+[[noreturn]] void failure(const char* fmt, ...) {
   va_list args;
   fprintf(stderr, "[FAILURE:%s:%d] ", g_curpath.c_str(), yylineno);
   va_start(args, fmt);
@@ -237,7 +237,6 @@ string include_file(string filename) {
     // File was not found
     failure("Could not find include file %s", filename.c_str());
   }
-
 }
 
 void clear_doctext() {
@@ -252,15 +251,14 @@ char* clean_up_doctext(char* doctext) {
   // Convert to C++ string, and remove Windows's carriage returns.
   string docstring = doctext;
   docstring.erase(
-      remove(docstring.begin(), docstring.end(), '\r'),
-      docstring.end());
+      remove(docstring.begin(), docstring.end(), '\r'), docstring.end());
 
   // Separate into lines.
   vector<string> lines;
   string::size_type pos = string::npos;
   string::size_type last;
   while (true) {
-    last = (pos == string::npos) ? 0 : pos+1;
+    last = (pos == string::npos) ? 0 : pos + 1;
     pos = docstring.find('\n', last);
     if (pos == string::npos) {
       // First bit of cleaning.  If the last line is only whitespace, drop it.
@@ -270,7 +268,7 @@ char* clean_up_doctext(char* doctext) {
       }
       break;
     }
-    lines.push_back(docstring.substr(last, pos-last));
+    lines.push_back(docstring.substr(last, pos - last));
   }
 
   // A very profound docstring.
@@ -288,7 +286,7 @@ char* clean_up_doctext(char* doctext) {
   bool found_prefix = false;
   string::size_type prefix_len = 0;
   vector<string>::iterator l_iter;
-  for (l_iter = lines.begin()+1; l_iter != lines.end(); ++l_iter) {
+  for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
     if (l_iter->empty()) {
       continue;
     }
@@ -307,9 +305,8 @@ char* clean_up_doctext(char* doctext) {
         // Whitespace-only line.  Truncate it.
         l_iter->clear();
       }
-    } else if (l_iter->size() > pos
-        && l_iter->at(pos) == '*'
-        && pos == prefix_len) {
+    } else if (
+        l_iter->size() > pos && l_iter->at(pos) == '*' && pos == prefix_len) {
       // Business as usual.
     } else if (pos == string::npos) {
       // Whitespace-only line.  Let's truncate it for them.
@@ -325,27 +322,27 @@ char* clean_up_doctext(char* doctext) {
   if (have_prefix) {
     // Get the star too.
     prefix_len++;
-    for (l_iter = lines.begin()+1; l_iter != lines.end(); ++l_iter) {
+    for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
       l_iter->erase(0, prefix_len);
     }
   }
 
   // Now delete the minimum amount of leading whitespace from each line.
   prefix_len = string::npos;
-  for (l_iter = lines.begin()+1; l_iter != lines.end(); ++l_iter) {
+  for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
     if (l_iter->empty()) {
       continue;
     }
     pos = l_iter->find_first_not_of(" \t");
-    if (pos != string::npos
-        && (prefix_len == string::npos || pos < prefix_len)) {
+    if (pos != string::npos &&
+        (prefix_len == string::npos || pos < prefix_len)) {
       prefix_len = pos;
     }
   }
 
   // If our prefix survived, delete it from every line.
   if (prefix_len != string::npos) {
-    for (l_iter = lines.begin()+1; l_iter != lines.end(); ++l_iter) {
+    for (l_iter = lines.begin() + 1; l_iter != lines.end(); ++l_iter) {
       l_iter->erase(0, prefix_len);
     }
   }
@@ -353,8 +350,8 @@ char* clean_up_doctext(char* doctext) {
   // Remove trailing whitespace from every line.
   for (l_iter = lines.begin(); l_iter != lines.end(); ++l_iter) {
     pos = l_iter->find_last_not_of(" \t");
-    if (pos != string::npos && pos != l_iter->length()-1) {
-      l_iter->erase(pos+1);
+    if (pos != string::npos && pos != l_iter->length() - 1) {
+      l_iter->erase(pos + 1);
     }
   }
 
@@ -386,8 +383,8 @@ void dump_docstrings(t_program* program) {
   for (t_iter = typedefs.begin(); t_iter != typedefs.end(); ++t_iter) {
     t_typedef* td = *t_iter;
     if (td->has_doc()) {
-      printf("typedef %s:\n%s\n", td->get_name().c_str(),
-             td->get_doc().c_str());
+      printf(
+          "typedef %s:\n%s\n", td->get_name().c_str(), td->get_doc().c_str());
     }
   }
   const vector<t_enum*>& enums = program->get_enums();
@@ -419,8 +416,8 @@ void dump_docstrings(t_program* program) {
   for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
     t_struct* xn = *x_iter;
     if (xn->has_doc()) {
-      printf("xception %s:\n%s\n", xn->get_name().c_str(),
-             xn->get_doc().c_str());
+      printf(
+          "xception %s:\n%s\n", xn->get_name().c_str(), xn->get_doc().c_str());
     }
   }
   const vector<t_service*>& services = program->get_services();
@@ -428,8 +425,8 @@ void dump_docstrings(t_program* program) {
   for (v_iter = services.begin(); v_iter != services.end(); ++v_iter) {
     t_service* sv = *v_iter;
     if (sv->has_doc()) {
-      printf("service %s:\n%s\n", sv->get_name().c_str(),
-             sv->get_doc().c_str());
+      printf(
+          "service %s:\n%s\n", sv->get_name().c_str(), sv->get_doc().c_str());
     }
   }
 }
@@ -439,54 +436,60 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
     throw string("type error: cannot declare a void const: " + name);
   }
 
-  auto as_struct = dynamic_cast<t_struct *>(type);
+  auto as_struct = dynamic_cast<t_struct*>(type);
   assert((as_struct != nullptr) == type->is_struct());
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_STRING:
-      if (value->get_type() != t_const_value::CV_STRING) {
-        throw string("type error: const \"" + name +
-                     "\" was declared as string");
-      }
-      break;
-    case t_base_type::TYPE_BOOL:
-      if (value->get_type() != t_const_value::CV_BOOL
-          && value->get_type() != t_const_value::CV_INTEGER) {
-        throw string("type error: const \"" + name + "\" was declared as bool");
-      }
-      break;
-    case t_base_type::TYPE_BYTE:
-      if (value->get_type() != t_const_value::CV_INTEGER) {
-        throw string("type error: const \"" + name + "\" was declared as byte");
-      }
-      break;
-    case t_base_type::TYPE_I16:
-      if (value->get_type() != t_const_value::CV_INTEGER) {
-        throw string("type error: const \"" + name + "\" was declared as i16");
-      }
-      break;
-    case t_base_type::TYPE_I32:
-      if (value->get_type() != t_const_value::CV_INTEGER) {
-        throw string("type error: const \"" + name + "\" was declared as i32");
-      }
-      break;
-    case t_base_type::TYPE_I64:
-      if (value->get_type() != t_const_value::CV_INTEGER) {
-        throw string("type error: const \"" + name + "\" was declared as i64");
-      }
-      break;
-    case t_base_type::TYPE_DOUBLE:
-    case t_base_type::TYPE_FLOAT:
-      if (value->get_type() != t_const_value::CV_INTEGER &&
-          value->get_type() != t_const_value::CV_DOUBLE) {
-        throw string("type error: const \"" + name +
-                     "\" was declared as double");
-      }
-      break;
-    default:
-      throw string("compiler error: no const of base type " +
-                   t_base_type::t_base_name(tbase) + name);
+      case t_base_type::TYPE_STRING:
+        if (value->get_type() != t_const_value::CV_STRING) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as string");
+        }
+        break;
+      case t_base_type::TYPE_BOOL:
+        if (value->get_type() != t_const_value::CV_BOOL &&
+            value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as bool");
+        }
+        break;
+      case t_base_type::TYPE_BYTE:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as byte");
+        }
+        break;
+      case t_base_type::TYPE_I16:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i16");
+        }
+        break;
+      case t_base_type::TYPE_I32:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i32");
+        }
+        break;
+      case t_base_type::TYPE_I64:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i64");
+        }
+        break;
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
+        if (value->get_type() != t_const_value::CV_INTEGER &&
+            value->get_type() != t_const_value::CV_DOUBLE) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as double");
+        }
+        break;
+      default:
+        throw string(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase) + name);
     }
   } else if (type->is_enum()) {
     if (value->get_type() != t_const_value::CV_INTEGER) {
@@ -507,27 +510,35 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
     if (value->get_type() != t_const_value::CV_MAP) {
       throw string("type error: const \"" + name + "\" was declared as union");
     }
-    auto const &map = value->get_map();
+    auto const& map = value->get_map();
     if (map.size() > 1) {
-      throw string("type error: const \"" + name + "\" is a union and can't "
-        "have more than one field set");
+      throw string(
+          "type error: const \"" + name +
+          "\" is a union and can't "
+          "have more than one field set");
     }
     if (!map.empty()) {
       if (map.front().first->get_type() != t_const_value::CV_STRING) {
-        throw string("type error: const \"" + name + "\" is a union and member "
-          "names must be a string");
+        throw string(
+            "type error: const \"" + name +
+            "\" is a union and member "
+            "names must be a string");
       }
-      auto const &member_name = map.front().first->get_string();
-      auto const &member = as_struct->get_member(member_name);
+      auto const& member_name = map.front().first->get_string();
+      auto const& member = as_struct->get_member(member_name);
       if (!member) {
-        throw string("type error: no member named \"" + member_name + "\" for "
-          "union const \"" + name + "\"");
+        throw string(
+            "type error: no member named \"" + member_name +
+            "\" for "
+            "union const \"" +
+            name + "\"");
       }
     }
   } else if (type->is_struct() || type->is_xception()) {
     if (value->get_type() != t_const_value::CV_MAP) {
-      throw string("type error: const \"" + name + "\" was declared as " +
-        "struct/exception");
+      throw string(
+          "type error: const \"" + name + "\" was declared as " +
+          "struct/exception");
     }
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
@@ -545,12 +556,13 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
         }
       }
       if (field_type == nullptr) {
-        throw string("type error: " + type->get_name() + " has no field " +
-          v_iter->first->get_string());
+        throw string(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
 
-      validate_const_rec(name + "." + v_iter->first->get_string(), field_type,
-                         v_iter->second);
+      validate_const_rec(
+          name + "." + v_iter->first->get_string(), field_type, v_iter->second);
     }
   } else if (type->is_map()) {
     t_type* k_type = ((t_map*)type)->get_key_type();
@@ -617,7 +629,7 @@ void parse(
     if (yyparse() != 0) {
       failure("Parser error during include pass.");
     }
-  } catch (const string &x) {
+  } catch (const string& x) {
     failure(x.c_str());
   }
   fclose(yyin);
@@ -651,7 +663,7 @@ void parse(
     if (yyparse() != 0) {
       failure("Parser error during types pass.");
     }
-  } catch (const string &x) {
+  } catch (const string& x) {
     failure(x.c_str());
   }
   fclose(yyin);
@@ -698,8 +710,9 @@ bool validate_throws(t_struct* throws) {
 }
 
 // TODO: Add a description of the function
-void override_annotations(std::map<std::string, std::string>& where,
-                          const std::map<std::string, std::string>& from) {
+void override_annotations(
+    std::map<std::string, std::string>& where,
+    const std::map<std::string, std::string>& from) {
   for (const auto& kvp : from) {
     where[kvp.first] = kvp.second;
   }

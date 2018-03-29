@@ -16,8 +16,8 @@
 
 #include <thrift/compiler/parse/t_type.h>
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <openssl/sha.h>
 
@@ -37,7 +37,7 @@ uint64_t t_type::get_type_id() const {
   std::string name = get_full_name();
   SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
   const auto hash =
-    apache::thrift::compiler::bswap_host_to_little_endian(u.val);
+      apache::thrift::compiler::bswap_host_to_little_endian(u.val);
   TypeValue tv = get_type_value();
 
   return (hash & ~t_types::kTypeMask) | int(tv);

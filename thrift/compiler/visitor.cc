@@ -16,7 +16,9 @@
 
 #include <thrift/compiler/visitor.h>
 
-namespace apache { namespace thrift { namespace compiler {
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 void visitor::traverse(t_program* const program) {
   visit_and_recurse(program);
@@ -164,4 +166,6 @@ void interleaved_visitor::visit_and_recurse_gen(Visitee* const visitee) {
   }
 }
 
-}}}
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

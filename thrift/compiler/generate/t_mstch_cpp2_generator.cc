@@ -943,14 +943,14 @@ class mstch_cpp2_program : public mstch_program {
         program_->get_structs().end(),
         [](const auto* strct) {
           return strct->annotations_.count("cpp.declare_hash") ||
-            strct->annotations_.count("cpp2.declare_hash");
+              strct->annotations_.count("cpp2.declare_hash");
         });
     bool cpp_declare_in_typedefs = std::any_of(
         program_->get_typedefs().begin(),
         program_->get_typedefs().end(),
         [](const auto* typedf) {
           return typedf->get_type()->annotations_.count("cpp.declare_hash") ||
-            typedf->get_type()->annotations_.count("cpp2.declare_hash");
+              typedf->get_type()->annotations_.count("cpp2.declare_hash");
         });
     return cpp_declare_in_structs || cpp_declare_in_typedefs;
   }
@@ -1319,6 +1319,6 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
   }
   return prefix + "gen-cpp2/";
 }
-}
+} // namespace
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

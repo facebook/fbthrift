@@ -17,8 +17,8 @@
 
 #include <map>
 #include <memory>
-#include <utility>
 #include <string>
+#include <utility>
 #include <vector>
 
 const std::string& t_program::get_namespace(const std::string& language) const {
@@ -30,7 +30,7 @@ const std::string& t_program::get_namespace(const std::string& language) const {
 void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
   out_path_ = std::move(out_path);
   out_path_is_absolute_ = out_path_is_absolute;
-  if(!out_path_.empty()) {
+  if (!out_path_.empty()) {
     if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
       out_path_.push_back('/');
     }
@@ -63,7 +63,7 @@ void t_program::set_include_prefix(std::string include_prefix) {
 std::string t_program::compute_name_from_file_path(std::string path) {
   std::string::size_type slash = path.rfind("/");
   if (slash != std::string::npos) {
-    path = path.substr(slash+1);
+    path = path.substr(slash + 1);
   }
   std::string::size_type dot = path.rfind(".");
   if (dot != std::string::npos) {

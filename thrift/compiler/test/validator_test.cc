@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/validator.h>
-
 #include <memory>
 #include <string>
 #include <vector>
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include <thrift/compiler/parse/t_function.h>
 #include <thrift/compiler/parse/t_service.h>
 #include <thrift/compiler/test/parser_test_helpers.h>
+#include <thrift/compiler/validator.h>
 
 using namespace apache::thrift::compiler;
 
 namespace {
 
-class ValidatorTest : public testing::Test{};
+class ValidatorTest : public testing::Test {};
 
-}
+} // namespace
 
 TEST_F(ValidatorTest, run_validator) {
   class fake_validator : public validator {
@@ -48,8 +47,9 @@ TEST_F(ValidatorTest, run_validator) {
 
   t_program program("/path/to/file.thrift");
   auto errors = run_validator<fake_validator>(&program);
-  EXPECT_THAT(errors, testing::ElementsAre(
-        "[FAILURE:/path/to/file.thrift:50] sadface"));
+  EXPECT_THAT(
+      errors,
+      testing::ElementsAre("[FAILURE:/path/to/file.thrift:50] sadface"));
 }
 
 TEST_F(ValidatorTest, ServiceNamesUniqueNoError) {
@@ -65,7 +65,7 @@ TEST_F(ValidatorTest, ServiceNamesUniqueNoError) {
 
   // No errors will be found
   auto errors =
-    run_validator<service_method_name_uniqueness_validator>(&program);
+      run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 }
 
@@ -82,10 +82,11 @@ TEST_F(ValidatorTest, ReapeatedNamesInService) {
   program.add_service(service.get());
 
   // An error will be found
-  const std::string expected = "[FAILURE:/path/to/file.thrift:1] "
-    "Function bar.foo redefines bar.foo";
+  const std::string expected =
+      "[FAILURE:/path/to/file.thrift:1] "
+      "Function bar.foo redefines bar.foo";
   auto errors =
-    run_validator<service_method_name_uniqueness_validator>(&program);
+      run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
 }
@@ -110,7 +111,7 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
 
   // No errors will be found
   auto errors =
-    run_validator<service_method_name_uniqueness_validator>(&program);
+      run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 
   // Add an overlapping function in the second service
@@ -119,8 +120,9 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   service_2->add_function(fn4.get());
 
   // An error will be found
-  const std::string expected = "[FAILURE:/path/to/file.thrift:1] "
-    "Function qux.foo redefines service bar.foo";
+  const std::string expected =
+      "[FAILURE:/path/to/file.thrift:1] "
+      "Function qux.foo redefines service bar.foo";
   errors = run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
@@ -138,8 +140,7 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   tenum->append(&enum_value_2);
 
   // No errors will be found
-  auto errors =
-    run_validator<enum_value_names_uniqueness_validator>(&program);
+  auto errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 
   // Add enum with repeated value
@@ -148,10 +149,10 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   tenum->append(&enum_value_3);
 
   // An error will be found
-  const std::string expected = "[FAILURE:/path/to/file.thrift:1] "
-    "Redefinition of value bar in enum foo";
-  errors =
-    run_validator<enum_value_names_uniqueness_validator>(&program);
+  const std::string expected =
+      "[FAILURE:/path/to/file.thrift:1] "
+      "Redefinition of value bar in enum foo";
+  errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
 }
