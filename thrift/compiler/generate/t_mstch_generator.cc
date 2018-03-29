@@ -76,8 +76,8 @@ mstch::map t_mstch_generator::dump(const t_program& program) {
   };
 
   mstch::map extension = extend_program(program);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("program", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("program", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) {
@@ -94,8 +94,8 @@ mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) {
   };
 
   mstch::map extension = extend_struct(strct);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("struct", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("struct", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
@@ -117,8 +117,8 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
   }
 
   mstch::map extension = extend_field(field);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("field", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("field", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_type& orig_type) {
@@ -185,8 +185,8 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
   }
 
   mstch::map extension = extend_type(type);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("type", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("type", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_enum& enm) {
@@ -197,8 +197,8 @@ mstch::map t_mstch_generator::dump(const t_enum& enm) {
   };
 
   mstch::map extension = extend_enum(enm);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("enum", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("enum", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_enum_value& val) {
@@ -208,8 +208,8 @@ mstch::map t_mstch_generator::dump(const t_enum_value& val) {
   };
 
   mstch::map extension = extend_enum_value(val);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("enumValue", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("enumValue", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_service& service) {
@@ -224,8 +224,8 @@ mstch::map t_mstch_generator::dump(const t_service& service) {
   };
 
   mstch::map extension = extend_service(service);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("service", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("service", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_function& function) {
@@ -243,8 +243,8 @@ mstch::map t_mstch_generator::dump(const t_function& function) {
   };
 
   mstch::map extension = extend_function(function);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("function", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("function", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_const& cnst) {
@@ -255,8 +255,8 @@ mstch::map t_mstch_generator::dump(const t_const& cnst) {
   };
 
   mstch::map extension = extend_const(cnst);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("constant", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("constant", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_const_value& value) {
@@ -321,8 +321,8 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
   }
 
   mstch::map extension = extend_const_value(value);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("value", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("value", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(
@@ -332,8 +332,8 @@ mstch::map t_mstch_generator::dump(
       {"value", dump(*pair.second)},
   };
   mstch::map extension = extend_const_value_map_elem(pair);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("element", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("element", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const annotation& pair) {
@@ -342,8 +342,8 @@ mstch::map t_mstch_generator::dump(const annotation& pair) {
       {"value", pair.second},
   };
   mstch::map extension = extend_annotation(pair);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("annotation", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("annotation", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_typedef& typdef) {
@@ -353,8 +353,8 @@ mstch::map t_mstch_generator::dump(const t_typedef& typdef) {
   };
 
   mstch::map extension = extend_typedef(typdef);
-  result.insert(extension.begin(), extension.end());
-  return prepend_prefix("typedef", std::move(result));
+  extension.insert(result.begin(), result.end());
+  return prepend_prefix("typedef", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const string& value) {
