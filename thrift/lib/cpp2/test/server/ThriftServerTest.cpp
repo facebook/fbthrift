@@ -90,7 +90,7 @@ TEST(ThriftServer, H2ClientAddressTest) {
 
   ScopedServerInterfaceThread runner(
       std::make_shared<EchoClientAddrTestInterface>());
-  auto& thriftServer = runner.getThriftServer();
+  auto& thriftServer = dynamic_cast<ThriftServer&>(runner.getThriftServer());
   thriftServer.addRoutingHandler(createHTTP2RoutingHandler(thriftServer));
 
   folly::EventBase base;

@@ -108,7 +108,7 @@ TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
 TEST(ScopedServerInterfaceThread, configureCbCalled) {
   std::atomic<bool> configCalled{false};
   ScopedServerInterfaceThread ssit(
-      make_shared<SimpleServiceImpl>(), "::1", 0, [&](ThriftServer&) {
+      make_shared<SimpleServiceImpl>(), "::1", 0, [&](BaseThriftServer&) {
         configCalled = true;
       });
   EXPECT_TRUE(configCalled);
