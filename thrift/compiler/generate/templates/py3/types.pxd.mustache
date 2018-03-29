@@ -87,7 +87,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{^struct:union?}}
     cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
-        bint {{field:name}}
+        bint {{field:name}}{{#field:hasModifiedName?}} "{{field:origName}}"{{/field:hasModifiedName?}}
     {{/struct:fields}}
     {{^struct:fields}}
         pass
@@ -97,7 +97,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     cdef enum c{{struct:name}}__type "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
         c{{struct:name}}__type___EMPTY__ "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
     {{#struct:fields}}
-        c{{struct:name}}__type_{{field:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:name}}",
+        c{{struct:name}}__type_{{field:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:origName}}",
     {{/struct:fields}}
     {{/struct:union?}}
 
@@ -107,17 +107,17 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
         bint operator==(c{{struct:name}}&)
     {{^struct:union?}}
     {{#struct:fields}}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}{{#field:hasModifiedName?}} "{{field:origName}}"{{/field:hasModifiedName?}}
     {{/struct:fields}}
         c{{struct:name}}__isset __isset
     {{/struct:union?}}
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
     {{#struct:fields}}
-        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:name}}() const{{/field:type}}
+        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:name}}{{#field:hasModifiedName?}} "get_{{field:origName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:name}}(const {{> types/CythonCppType}}&){{/field:type}}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:name}}{{#field:hasModifiedName?}} "set_{{field:origName}}"{{/field:hasModifiedName?}}(const {{> types/CythonCppType}}&){{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
 
 {{/program:structs}}{{!

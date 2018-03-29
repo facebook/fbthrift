@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import (Integers, ComplexUnion, easy, Color)
+from testing.types import (
+    Integers, ComplexUnion, easy, Color, ReservedUnion
+)
 from thrift.py3.types import Union
 from thrift.py3 import deserialize, Protocol
 
@@ -79,3 +81,22 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(union.type, ComplexUnion.Type.raw)
         union = ComplexUnion.fromValue(True)
         self.assertEqual(union.type, ComplexUnion.Type.truthy)
+
+    def test_reserved_union(self) -> None:
+        x = ReservedUnion(from_="foo")
+        self.assertIsInstance(x, Union)
+        self.assertEqual(x.type, ReservedUnion.Type.from_)
+        self.assertEqual(x.value, "foo")
+        self.assertEqual(x.from_, "foo")
+
+        x = ReservedUnion(nonlocal_=3)
+        self.assertIsInstance(x, Union)
+        self.assertEqual(x.type, ReservedUnion.Type.nonlocal_)
+        self.assertEqual(x.value, 3)
+        self.assertEqual(x.nonlocal_, 3)
+
+        x = ReservedUnion(ok="bar")
+        self.assertIsInstance(x, Union)
+        self.assertEqual(x.type, ReservedUnion.Type.ok)
+        self.assertEqual(x.value, "bar")
+        self.assertEqual(x.ok, "bar")

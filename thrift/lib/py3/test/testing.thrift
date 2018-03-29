@@ -135,6 +135,18 @@ struct customized {
   7: string_typedef string_type,
 }
 
+struct Reserved {
+  1: string from,  // named with a python keyword (which is not a C++ keyword)
+  2: i32 nonlocal, // ditto
+  3: string ok,    // not a keyword
+}
+
+union ReservedUnion {
+  1: string from,
+  2: i32 nonlocal,
+  3: string ok,
+}
+
 service TestingService {
     bool invert(1: bool value)
     i32 complex_action(

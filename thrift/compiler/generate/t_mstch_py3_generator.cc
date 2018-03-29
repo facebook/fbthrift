@@ -24,6 +24,20 @@
 
 namespace {
 
+// I can't find a list of cython keywords, but this is the python list of
+// keywords, plus NULL, which I see cython docs saying is reserved. Note that
+// this list is almost entirely redundant with the keyword checking the thrift
+// compiler already does, but there are a few cases where thrift lets some
+// keywords through that cython can't handle, so better safe than sorry:
+static const std::unordered_set<string> KEYWORDS = {
+    "False",  "None",     "True",  "and",    "as",       "assert",
+    "async",  "await",    "break", "class",  "continue", "def",
+    "del",    "elif",     "else",  "except", "finally",  "for",
+    "from",   "global",   "if",    "import", "in",       "is",
+    "lambda", "nonlocal", "not",   "or",     "pass",     "raise",
+    "return", "try",      "while", "with",   "yield",    "NULL",
+};
+
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
   enum class ModuleType {
@@ -171,6 +185,10 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);
+  const bool hasModifiedName =
+      (KEYWORDS.find(field.get_name()) != KEYWORDS.end());
+  const auto nameToUse =
+      hasModifiedName ? field.get_name() + "_" : field.get_name();
 
   mstch::map result{
       {"reference?", reference},
@@ -183,6 +201,11 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"follyOptional?", follyOptional},
       {"PEP484Optional?", isPEP484Optional},
       {"isset?", isset},
+      // We replace the previously-set name on the field with the modified
+      // name, and put the raw value in origName
+      {"name", nameToUse},
+      {"origName", field.get_name()},
+      {"hasModifiedName?", hasModifiedName},
   };
   return result;
 }

@@ -2,7 +2,9 @@
 import unittest
 import math
 
-from testing.types import easy, hard, Integers, mixed, Runtime, numerical
+from testing.types import (
+    easy, hard, Integers, mixed, Reserved, Runtime, numerical
+)
 
 
 class StructTests(unittest.TestCase):
@@ -102,6 +104,12 @@ class StructTests(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             Runtime(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
+
+    def test_reserved(self) -> None:
+        x = Reserved(from_="hello", nonlocal_=3, ok="bye")
+        self.assertEqual(x.from_, "hello")
+        self.assertEqual(x.nonlocal_, 3)
+        self.assertEqual(x.ok, "bye")
 
 
 class NumericalConversionsTests(unittest.TestCase):
