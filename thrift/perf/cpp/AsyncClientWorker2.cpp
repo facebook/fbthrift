@@ -159,18 +159,6 @@ class LoadCallback : public RequestCallback {
 LoadTestClientPtr AsyncClientWorker2::createConnection() {
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
       getConfig();
-  if (config->useHTTP1Protocol()) {
-    TAsyncTransport::UniquePtr socket(
-        new TAsyncSocket(&eb_, *config->getAddress(), kTimeout));
-    std::unique_ptr<
-        apache::thrift::HTTPClientChannel,
-        folly::DelayedDestruction::Destructor>
-        channel(HTTPClientChannel::newHTTP1xChannel(
-            std::move(socket), "localhost", "/"));
-
-    return std::make_shared<LoadTestAsyncClient>(std::move(channel));
-  }
-
   std::shared_ptr<TAsyncSocket> socket;
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
