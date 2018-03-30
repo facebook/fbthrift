@@ -22,6 +22,7 @@ from folly.optional cimport cOptional
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cAnEnum "py3::simple::AnEnum":
         bint operator==(cAnEnum&)
+    cAnEnum AnEnum__NOTSET "py3::simple::AnEnum::None"
     cAnEnum AnEnum__ONE "py3::simple::AnEnum::ONE"
     cAnEnum AnEnum__TWO "py3::simple::AnEnum::TWO"
     cAnEnum AnEnum__THREE "py3::simple::AnEnum::THREE"

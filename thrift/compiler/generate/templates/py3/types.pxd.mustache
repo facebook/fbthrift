@@ -62,7 +62,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     cdef cppclass c{{enum:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
         bint operator==(c{{enum:name}}&)
     {{#enum:values}}
-    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:name}}"
+    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:origName}}"
     {{/enum:values}}
 {{/program:enums}}
 

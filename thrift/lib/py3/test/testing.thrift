@@ -39,6 +39,7 @@ enum Perm {
 } (py3.flags)
 
 enum Kind {
+    None = 0,
     REGULAR = 8,
     LINK = 10,
     DIR = 4,

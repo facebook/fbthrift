@@ -1,6 +1,7 @@
 namespace cpp2 py3.simple
 
 enum AnEnum {
+  None = 0 (py3.rename = "NOTSET"),
   ONE = 1,
   TWO = 2,
   THREE = 3,

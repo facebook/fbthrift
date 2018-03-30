@@ -33,6 +33,7 @@ import builtins as _builtins
 
 
 class AnEnum(__enum.Enum):
+    NOTSET = 0
     ONE = 1
     TWO = 2
     THREE = 3
@@ -51,7 +52,9 @@ class AnEnum(__enum.Enum):
 
 cdef inline cAnEnum AnEnum_to_cpp(value):
     cdef int cvalue = value.value
-    if cvalue == 1:
+    if cvalue == 0:
+        return AnEnum__NOTSET
+    elif cvalue == 1:
         return AnEnum__ONE
     elif cvalue == 2:
         return AnEnum__TWO

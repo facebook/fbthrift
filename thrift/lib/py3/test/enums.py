@@ -22,6 +22,11 @@ class EnumTests(unittest.TestCase):
         self.assertIn(x.type, Kind)
         self.assertEqual(int(x.type), 4)
 
+    def test_enum_value_rename(self) -> None:
+        """The value name is None but we auto rename it to None_"""
+        x = deserialize(File, b'{"name":"blah", "type":0}', Protocol.JSON)
+        self.assertEqual(x.type, Kind.None_)
+
     def test_flag_enum(self) -> None:
         with self.assertRaises(TypeError):
             # flags are not ints
