@@ -107,10 +107,11 @@ class OldStructure:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.features, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    features=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.features is not None:
+      value = pprint.pformat(self.features, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    features=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -203,10 +204,11 @@ class NewStructure:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.features, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    features=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.features is not None:
+      value = pprint.pformat(self.features, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    features=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -299,10 +301,11 @@ class NewStructure2:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.features, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    features=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.features is not None:
+      value = pprint.pformat(self.features, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    features=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -535,16 +538,19 @@ class NewStructureNested:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.lst, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    lst=%s' % (value))
-    value = pprint.pformat(self.mp, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    mp=%s' % (value))
-    value = pprint.pformat(self.s, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    s=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.lst is not None:
+      value = pprint.pformat(self.lst, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    lst=%s' % (value))
+    if self.mp is not None:
+      value = pprint.pformat(self.mp, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    mp=%s' % (value))
+    if self.s is not None:
+      value = pprint.pformat(self.s, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    s=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -620,10 +626,11 @@ class NewStructureNestedField:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.f, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    f=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.f is not None:
+      value = pprint.pformat(self.f, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    f=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

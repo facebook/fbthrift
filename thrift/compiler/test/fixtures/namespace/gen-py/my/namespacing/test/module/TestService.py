@@ -113,10 +113,11 @@ class init_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.int1, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int1=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.int1 is not None:
+      value = pprint.pformat(self.int1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int1=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -214,10 +215,11 @@ class init_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.success, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    success=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.success is not None:
+      value = pprint.pformat(self.success, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    success=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

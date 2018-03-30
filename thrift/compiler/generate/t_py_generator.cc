@@ -1653,11 +1653,14 @@ void t_py_generator::generate_py_struct_definition(
         << indent() << "  padding = ' ' * 4" << endl;
     for (auto const& member : members) {
       auto key = rename_reserved_keywords(member->get_name());
+      out << indent() << "  if self." << key << " is not None:" << endl;
+      indent_up();
       out << indent() << "  value = pprint.pformat(self." << key
           << ", indent=0)" << endl
           << indent() << "  value = padding.join(value.splitlines(True))"
           << endl
           << indent() << "  L.append('    " << key << "=%s' % (value))" << endl;
+      indent_down();
     }
 
     // For exceptions only, force message attribute to be included in
@@ -1672,8 +1675,8 @@ void t_py_generator::generate_py_struct_definition(
           << indent() << "      L.append('message=%r' % message)" << endl;
     }
 
-    out << indent() << "  return \"%s(\\n%s)\" % (self.__class__.__name__, "
-        << "\",\\n\".join(L))" << endl
+    out << indent() << "  return \"%s(%s)\" % (self.__class__.__name__, "
+        << "\"\\n\" + \",\\n\".join(L) if L else '')" << endl
         << endl;
 
     // Equality and inequality methods that compare by value
@@ -1708,14 +1711,17 @@ void t_py_generator::generate_py_struct_definition(
     // __eq__, __repr__, __ne__
     out << indent() << "def __repr__(self):" << endl
         << indent() << "  L = []" << endl
+        << indent() << "  padding = ' ' * 4" << endl
         << indent() << "  for key in self.__slots__:" << endl
-        << indent() << "    padding = ' ' * 4" << endl
-        << indent() << "    value = pprint.pformat(getattr(self, key))" << endl
+        << indent() << "    value = getattr(self, key)" << endl
+        << indent() << "    if value is None:" << endl
+        << indent() << "        continue" << endl
+        << indent() << "    value = pprint.pformat(value)" << endl
         << indent() << "    value = padding.join(value.splitlines(True))"
         << endl
         << indent() << "    L.append('    %s=%s' % (key, value))" << endl
         << indent() << "  return \"%s(\\n%s)\" % (self.__class__.__name__, "
-        << "\",\\n\".join(L))" << endl
+        << "\"\\n\" + \",\\n\".join(L) if L else '')" << endl
         << endl;
 
     // Equality method that compares each attribute by value and type,

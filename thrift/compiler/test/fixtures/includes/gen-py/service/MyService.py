@@ -156,13 +156,15 @@ class query_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.s, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    s=%s' % (value))
-    value = pprint.pformat(self.i, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    i=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.s is not None:
+      value = pprint.pformat(self.s, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    s=%s' % (value))
+    if self.i is not None:
+      value = pprint.pformat(self.i, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    i=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -249,7 +251,7 @@ class query_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -345,13 +347,15 @@ class has_arg_docs_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.s, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    s=%s' % (value))
-    value = pprint.pformat(self.i, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    i=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.s is not None:
+      value = pprint.pformat(self.s, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    s=%s' % (value))
+    if self.i is not None:
+      value = pprint.pformat(self.i, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    i=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -438,7 +442,7 @@ class has_arg_docs_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

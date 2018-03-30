@@ -132,13 +132,15 @@ class Foo:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.mymap, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    mymap=%s' % (value))
-    value = pprint.pformat(self.myset, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    myset=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.mymap is not None:
+      value = pprint.pformat(self.mymap, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    mymap=%s' % (value))
+    if self.myset is not None:
+      value = pprint.pformat(self.myset, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    myset=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

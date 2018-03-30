@@ -104,13 +104,15 @@ class Included:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.MyIntField, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    MyIntField=%s' % (value))
-    value = pprint.pformat(self.MyTransitiveField, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    MyTransitiveField=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.MyIntField is not None:
+      value = pprint.pformat(self.MyIntField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    MyIntField=%s' % (value))
+    if self.MyTransitiveField is not None:
+      value = pprint.pformat(self.MyTransitiveField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    MyTransitiveField=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

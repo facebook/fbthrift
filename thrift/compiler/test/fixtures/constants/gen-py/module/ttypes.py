@@ -162,16 +162,19 @@ class Internship:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.weeks, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    weeks=%s' % (value))
-    value = pprint.pformat(self.title, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    title=%s' % (value))
-    value = pprint.pformat(self.employer, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    employer=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.weeks is not None:
+      value = pprint.pformat(self.weeks, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    weeks=%s' % (value))
+    if self.title is not None:
+      value = pprint.pformat(self.title, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    title=%s' % (value))
+    if self.employer is not None:
+      value = pprint.pformat(self.employer, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    employer=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -246,10 +249,11 @@ class UnEnumStruct:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.city, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    city=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.city is not None:
+      value = pprint.pformat(self.city, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    city=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -340,13 +344,15 @@ class Range:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.min, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    min=%s' % (value))
-    value = pprint.pformat(self.max, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    max=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.min is not None:
+      value = pprint.pformat(self.min, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    min=%s' % (value))
+    if self.max is not None:
+      value = pprint.pformat(self.max, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    max=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -431,13 +437,15 @@ class struct1:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.a, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    a=%s' % (value))
-    value = pprint.pformat(self.b, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    b=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.a is not None:
+      value = pprint.pformat(self.a, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    a=%s' % (value))
+    if self.b is not None:
+      value = pprint.pformat(self.b, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    b=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -556,19 +564,23 @@ class struct2:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.a, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    a=%s' % (value))
-    value = pprint.pformat(self.b, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    b=%s' % (value))
-    value = pprint.pformat(self.c, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    c=%s' % (value))
-    value = pprint.pformat(self.d, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    d=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.a is not None:
+      value = pprint.pformat(self.a, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    a=%s' % (value))
+    if self.b is not None:
+      value = pprint.pformat(self.b, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    b=%s' % (value))
+    if self.c is not None:
+      value = pprint.pformat(self.c, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    c=%s' % (value))
+    if self.d is not None:
+      value = pprint.pformat(self.d, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    d=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -664,16 +676,19 @@ class struct3:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.a, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    a=%s' % (value))
-    value = pprint.pformat(self.b, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    b=%s' % (value))
-    value = pprint.pformat(self.c, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    c=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.a is not None:
+      value = pprint.pformat(self.a, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    a=%s' % (value))
+    if self.b is not None:
+      value = pprint.pformat(self.b, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    b=%s' % (value))
+    if self.c is not None:
+      value = pprint.pformat(self.c, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    c=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

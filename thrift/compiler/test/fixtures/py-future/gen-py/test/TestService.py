@@ -125,7 +125,7 @@ class sleep_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -195,7 +195,7 @@ class sleep_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -279,10 +279,11 @@ class isPrime_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.num, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    num=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.num is not None:
+      value = pprint.pformat(self.num, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    num=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -379,10 +380,11 @@ class isPrime_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.success, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    success=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.success is not None:
+      value = pprint.pformat(self.success, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    success=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -465,7 +467,7 @@ class getResult_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -550,10 +552,11 @@ class getResult_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.success, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    success=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.success is not None:
+      value = pprint.pformat(self.success, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    success=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

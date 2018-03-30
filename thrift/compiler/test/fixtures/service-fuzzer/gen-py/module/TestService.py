@@ -293,55 +293,71 @@ class init_args:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.int1, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int1=%s' % (value))
-    value = pprint.pformat(self.int2, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int2=%s' % (value))
-    value = pprint.pformat(self.int3, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int3=%s' % (value))
-    value = pprint.pformat(self.int4, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int4=%s' % (value))
-    value = pprint.pformat(self.int5, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int5=%s' % (value))
-    value = pprint.pformat(self.int6, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int6=%s' % (value))
-    value = pprint.pformat(self.int7, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int7=%s' % (value))
-    value = pprint.pformat(self.int8, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int8=%s' % (value))
-    value = pprint.pformat(self.int9, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int9=%s' % (value))
-    value = pprint.pformat(self.int10, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int10=%s' % (value))
-    value = pprint.pformat(self.int11, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int11=%s' % (value))
-    value = pprint.pformat(self.int12, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int12=%s' % (value))
-    value = pprint.pformat(self.int13, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int13=%s' % (value))
-    value = pprint.pformat(self.int14, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int14=%s' % (value))
-    value = pprint.pformat(self.int15, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int15=%s' % (value))
-    value = pprint.pformat(self.int16, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    int16=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.int1 is not None:
+      value = pprint.pformat(self.int1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int1=%s' % (value))
+    if self.int2 is not None:
+      value = pprint.pformat(self.int2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int2=%s' % (value))
+    if self.int3 is not None:
+      value = pprint.pformat(self.int3, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int3=%s' % (value))
+    if self.int4 is not None:
+      value = pprint.pformat(self.int4, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int4=%s' % (value))
+    if self.int5 is not None:
+      value = pprint.pformat(self.int5, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int5=%s' % (value))
+    if self.int6 is not None:
+      value = pprint.pformat(self.int6, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int6=%s' % (value))
+    if self.int7 is not None:
+      value = pprint.pformat(self.int7, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int7=%s' % (value))
+    if self.int8 is not None:
+      value = pprint.pformat(self.int8, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int8=%s' % (value))
+    if self.int9 is not None:
+      value = pprint.pformat(self.int9, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int9=%s' % (value))
+    if self.int10 is not None:
+      value = pprint.pformat(self.int10, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int10=%s' % (value))
+    if self.int11 is not None:
+      value = pprint.pformat(self.int11, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int11=%s' % (value))
+    if self.int12 is not None:
+      value = pprint.pformat(self.int12, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int12=%s' % (value))
+    if self.int13 is not None:
+      value = pprint.pformat(self.int13, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int13=%s' % (value))
+    if self.int14 is not None:
+      value = pprint.pformat(self.int14, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int14=%s' % (value))
+    if self.int15 is not None:
+      value = pprint.pformat(self.int15, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int15=%s' % (value))
+    if self.int16 is not None:
+      value = pprint.pformat(self.int16, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    int16=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -484,10 +500,11 @@ class init_result:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.success, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    success=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.success is not None:
+      value = pprint.pformat(self.success, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    success=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

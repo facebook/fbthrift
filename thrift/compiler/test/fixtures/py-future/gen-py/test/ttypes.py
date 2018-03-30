@@ -101,13 +101,15 @@ class TestStruct:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.aLong, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    aLong=%s' % (value))
-    value = pprint.pformat(self.aString, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    aString=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.aLong is not None:
+      value = pprint.pformat(self.aLong, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    aLong=%s' % (value))
+    if self.aString is not None:
+      value = pprint.pformat(self.aString, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    aString=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

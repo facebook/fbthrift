@@ -115,16 +115,19 @@ class MyStruct:
   def __repr__(self):
     L = []
     padding = ' ' * 4
-    value = pprint.pformat(self.MyIncludedField, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    MyIncludedField=%s' % (value))
-    value = pprint.pformat(self.MyOtherIncludedField, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    MyOtherIncludedField=%s' % (value))
-    value = pprint.pformat(self.MyIncludedInt, indent=0)
-    value = padding.join(value.splitlines(True))
-    L.append('    MyIncludedInt=%s' % (value))
-    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+    if self.MyIncludedField is not None:
+      value = pprint.pformat(self.MyIncludedField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    MyIncludedField=%s' % (value))
+    if self.MyOtherIncludedField is not None:
+      value = pprint.pformat(self.MyOtherIncludedField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    MyOtherIncludedField=%s' % (value))
+    if self.MyIncludedInt is not None:
+      value = pprint.pformat(self.MyIncludedInt, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    MyIncludedInt=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):

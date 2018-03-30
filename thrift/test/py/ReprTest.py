@@ -26,7 +26,8 @@ import unittest
 from thrift.test.UnionTest.ttypes import \
     RandomStuff, \
     StructWithUnionAndOther, \
-    TestUnion
+    TestUnion, \
+    OneOfEach
 
 
 class TestRepr(unittest.TestCase):
@@ -47,16 +48,25 @@ class TestRepr(unittest.TestCase):
 
     def test_content(self):
         """ Ensure that the content of repr() is what we wanted. We should
-        print the member in the same order as it is appeared in Thrift file.
+        print the members in the same order as it is appeared in Thrift file,
+        skipping unset members.
         """
         obj = RandomStuff(bigint=123)
         output = """\
             RandomStuff(
-                a=None,
-                b=None,
-                c=None,
-                d=None,
-                myintlist=None,
-                bigint=123,
-                triple=None)"""
+                bigint=123)"""
+        self.assertEquals(repr(obj), textwrap.dedent(output))
+
+    def test_defaults(self):
+        """ Ensure repr() includes fields which have default values.
+        """
+        obj = OneOfEach()
+        output = """\
+            OneOfEach(
+                a_bite=100,
+                integer16=23000,
+                integer64=10000000000,
+                byte_list=[1, 2, 3],
+                i16_list=[1, 2, 3],
+                i64_list=[1, 2, 3])"""
         self.assertEquals(repr(obj), textwrap.dedent(output))
