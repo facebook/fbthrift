@@ -17,18 +17,18 @@
 #ifndef THRIFT_SASLCLIENT_H_
 #define THRIFT_SASLCLIENT_H_ 1
 
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/SaslEndpoint.h>
-#include <thrift/lib/cpp2/security/SecurityLogger.h>
-#include <folly/io/async/HHWheelTimer.h>
-#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
-#include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
-
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/HHWheelTimer.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp2/async/SaslEndpoint.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
+#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class SaslClient : public SaslEndpoint {
  public:
@@ -62,14 +62,14 @@ class SaslClient : public SaslEndpoint {
   explicit SaslClient(
       folly::EventBase* evb = nullptr,
       const std::shared_ptr<SecurityLogger>& logger = nullptr)
-    : SaslEndpoint(evb)
-    , saslLogger_(logger)
-    , securityMech_(std::make_shared<SecurityMech>(SecurityMech::KRB5_GSS)) {}
+      : SaslEndpoint(evb),
+        saslLogger_(logger),
+        securityMech_(std::make_shared<SecurityMech>(SecurityMech::KRB5_GSS)) {}
 
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
   virtual void setRequiredServicePrincipalFetcher(
-    std::function<std::tuple<std::string, std::string, std::string>()>
+      std::function<std::tuple<std::string, std::string, std::string>()>
       /*function*/) {}
   virtual void setSecurityMech(const SecurityMech& mech) {
     securityMech_ = std::make_shared<SecurityMech>(mech);
@@ -89,17 +89,19 @@ class SaslClient : public SaslEndpoint {
   // will be invoked.  If there is an error, cb->saslError() will be
   // invoked.
   virtual void consumeFromServer(
-    Callback*, std::unique_ptr<folly::IOBuf>&&) = 0;
+      Callback*,
+      std::unique_ptr<folly::IOBuf>&&) = 0;
 
   virtual const std::string* getErrorString() const = 0;
 
   virtual void setErrorString(const std::string& str) = 0;
 
   virtual void setSaslThreadManager(
-    const std::shared_ptr<SaslThreadManager>& /*thread_manager*/) {}
+      const std::shared_ptr<SaslThreadManager>& /*thread_manager*/) {}
 
   virtual void setCredentialsCacheManager(
-    const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& /*cc_manager*/) {}
+      const std::shared_ptr<
+          krb5::Krb5CredentialsCacheManager>& /*cc_manager*/) {}
 
   std::shared_ptr<SecurityLogger> getSaslLogger() {
     return saslLogger_;
@@ -110,6 +112,7 @@ class SaslClient : public SaslEndpoint {
   std::shared_ptr<SecurityMech> securityMech_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_SASLCLIENT_H_

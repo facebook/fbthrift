@@ -17,12 +17,13 @@
 #ifndef THRIFT_SASLCLIENTSTUB_H_
 #define THRIFT_SASLCLIENTSTUB_H_ 1
 
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
-#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // The GSSAPI version of this is going to need a captive thread to
 // avoid blocking the main thread on Kerberos operations, so we'll
@@ -30,16 +31,18 @@ namespace apache { namespace thrift {
 // could be written asynchronously.
 
 class StubSaslClient : public SaslClient {
-public:
-  explicit StubSaslClient(folly::EventBase*,
-    const std::shared_ptr<SecurityLogger>& logger = nullptr,
-    int forceMsSpentPerRTT = 0);
+ public:
+  explicit StubSaslClient(
+      folly::EventBase*,
+      const std::shared_ptr<SecurityLogger>& logger = nullptr,
+      int forceMsSpentPerRTT = 0);
   void start(Callback* cb) override;
-  void consumeFromServer(Callback* cb,
-                         std::unique_ptr<folly::IOBuf>&& message) override;
+  void consumeFromServer(Callback* cb, std::unique_ptr<folly::IOBuf>&& message)
+      override;
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
   virtual std::unique_ptr<folly::IOBuf> unwrap(
-    folly::IOBufQueue* q, size_t* remaining);
+      folly::IOBufQueue* q,
+      size_t* remaining);
   void setClientIdentity(const std::string& /* identity */) override {}
   void setServiceIdentity(const std::string& /* identity */) override {}
   std::string getClientIdentity() const override;
@@ -54,11 +57,19 @@ public:
   }
 
   // This is for testing.
-  void setForceFallback() { forceFallback_ = true; }
-  void setForceTimeout() { forceTimeout_ = true; }
-  void setForceMsSpentPerRTT(int t) { forceMsSpentPerRTT_ = t; }
+  void setForceFallback() {
+    forceFallback_ = true;
+  }
+  void setForceTimeout() {
+    forceTimeout_ = true;
+  }
+  void setForceMsSpentPerRTT(int t) {
+    forceMsSpentPerRTT_ = t;
+  }
 
-  const std::string* getErrorString() const override { return nullptr; }
+  const std::string* getErrorString() const override {
+    return nullptr;
+  }
 
   void setErrorString(const std::string& /* str */) override {}
 
@@ -67,9 +78,10 @@ public:
   int phase_;
   bool forceFallback_;
   bool forceTimeout_;
-  int forceMsSpentPerRTT_;  // milliseconds
+  int forceMsSpentPerRTT_; // milliseconds
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_SASLCLIENTSTUB_H_

@@ -22,13 +22,14 @@
 #ifndef THRIFT_ASYNC_RESPONSECHANNEL_H_
 #define THRIFT_ASYNC_RESPONSECHANNEL_H_ 1
 
+#include <chrono>
+#include <limits>
+#include <memory>
+
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
-#include <chrono>
-#include <limits>
-#include <memory>
 
 namespace folly {
 class IOBuf;
@@ -55,21 +56,25 @@ extern const std::string kProxyAclCheckExceptionErrorCode;
 extern const std::string kProxyOverloadedErrorCode;
 extern const std::string kProxyLoopbackErrorCode;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * ResponseChannel defines an asynchronous API for servers.
  */
 class ResponseChannel : virtual public folly::DelayedDestruction {
  public:
-
   static const uint32_t ONEWAY_REQUEST_ID =
-    std::numeric_limits<uint32_t>::max();
+      std::numeric_limits<uint32_t>::max();
 
   class Request {
    public:
-    folly::IOBuf* getBuf() { return buf_.get(); }
-    std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
+    folly::IOBuf* getBuf() {
+      return buf_.get();
+    }
+    std::unique_ptr<folly::IOBuf> extractBuf() {
+      return std::move(buf_);
+    }
 
     SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
       return std::move(stream_);
@@ -81,8 +86,9 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
     virtual bool isOneway() = 0;
 
-    virtual void sendReply(std::unique_ptr<folly::IOBuf>&&,
-                           MessageChannel::SendCallback* cb = nullptr) = 0;
+    virtual void sendReply(
+        std::unique_ptr<folly::IOBuf>&&,
+        MessageChannel::SendCallback* cb = nullptr) = 0;
 
     virtual void sendStreamReply(
         ResponseAndSemiStream<
@@ -105,6 +111,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
     }
 
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
+
    protected:
     std::unique_ptr<folly::IOBuf> buf_;
     SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
@@ -134,6 +141,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
   ~ResponseChannel() override {}
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_RESPONSECHANNEL_H_

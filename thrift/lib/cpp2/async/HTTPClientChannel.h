@@ -46,8 +46,8 @@ class HTTPClientChannel : public ClientChannel,
   static const std::chrono::milliseconds kDefaultTransactionTimeout;
 
  public:
-  using Ptr = std::unique_ptr<HTTPClientChannel,
-                              folly::DelayedDestruction::Destructor>;
+  using Ptr =
+      std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor>;
 
   static HTTPClientChannel::Ptr newHTTP1xChannel(
       async::TAsyncTransport::UniquePtr transport,
@@ -57,15 +57,21 @@ class HTTPClientChannel : public ClientChannel,
   static HTTPClientChannel::Ptr newHTTP2Channel(
       async::TAsyncTransport::UniquePtr transport);
 
-  void setHTTPHost(const std::string& host) { httpHost_ = host; }
-  void setHTTPUrl(const std::string& url) { httpUrl_ = url; }
+  void setHTTPHost(const std::string& host) {
+    httpHost_ = host;
+  }
+  void setHTTPUrl(const std::string& url) {
+    httpUrl_ = url;
+  }
 
   // Sets the maximum pending outgoing requests allowed on this channel.
   // Subject to negotiation with the server, which may dictate a smaller
   // maximum.
   void setMaxPendingRequests(uint32_t num);
 
-  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
+  void setProtocolId(uint16_t protocolId) {
+    protocolId_ = protocolId;
+  }
 
   // apache::thrift::ClientChannel methods
 
@@ -79,16 +85,22 @@ class HTTPClientChannel : public ClientChannel,
   void detachEventBase() override;
   bool isDetachable() override;
 
-  bool isSecurityActive() override { return false; }
+  bool isSecurityActive() override {
+    return false;
+  }
 
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
   void setTimeout(uint32_t ms) override {
-      timeout_ = std::chrono::milliseconds(ms);
+    timeout_ = std::chrono::milliseconds(ms);
   }
-  uint32_t getTimeout() override { return timeout_.count(); }
+  uint32_t getTimeout() override {
+    return timeout_.count();
+  }
 
-  CLIENT_TYPE getClientType() override { return THRIFT_HTTP_CLIENT_TYPE; }
+  CLIENT_TYPE getClientType() override {
+    return THRIFT_HTTP_CLIENT_TYPE;
+  }
 
   // end apache::thrift::ClientChannel methods
 
@@ -100,7 +112,9 @@ class HTTPClientChannel : public ClientChannel,
 
   // apache::thrift::RequestChannel methods
 
-  folly::EventBase* getEventBase() const override { return evb_; }
+  folly::EventBase* getEventBase() const override {
+    return evb_;
+  }
 
   uint32_t sendRequest(
       RpcOptions&,
@@ -116,9 +130,13 @@ class HTTPClientChannel : public ClientChannel,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) override;
 
-  void setCloseCallback(CloseCallback* cb) override { closeCallback_ = cb; }
+  void setCloseCallback(CloseCallback* cb) override {
+    closeCallback_ = cb;
+  }
 
-  uint16_t getProtocolId() override { return protocolId_; }
+  uint16_t getProtocolId() override {
+    return protocolId_;
+  }
 
   async::TAsyncTransport* getTransport() override {
     if (httpSession_) {
@@ -131,18 +149,19 @@ class HTTPClientChannel : public ClientChannel,
 
   // end apache::thrift::RequestChannel methods
 
-  void setFlowControl(size_t initialReceiveWindow,
-                      size_t receiveStreamWindowSize,
-                      size_t receiveSessionWindowSize);
+  void setFlowControl(
+      size_t initialReceiveWindow,
+      size_t receiveStreamWindowSize,
+      size_t receiveSessionWindowSize);
 
  protected:
-   uint32_t sendRequest_(
-       RpcOptions&,
-       bool oneway,
-       std::unique_ptr<RequestCallback>,
-       std::unique_ptr<apache::thrift::ContextStack>,
-       std::unique_ptr<folly::IOBuf>,
-       std::shared_ptr<apache::thrift::transport::THeader>);
+  uint32_t sendRequest_(
+      RpcOptions&,
+      bool oneway,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>);
 
  private:
   HTTPClientChannel(
@@ -167,7 +186,7 @@ class HTTPClientChannel : public ClientChannel,
 
     // MessageChannel::SendCallback methods
 
-    void sendQueued() override { }
+    void sendQueued() override {}
 
     void messageSent() override;
 
@@ -247,7 +266,9 @@ class HTTPClientChannel : public ClientChannel,
 
     void requestError(folly::exception_wrapper ex);
 
-    proxygen::HTTPTransaction* getTransaction() noexcept { return txn_; }
+    proxygen::HTTPTransaction* getTransaction() noexcept {
+      return txn_;
+    }
 
    private:
     bool oneway_;
@@ -286,4 +307,5 @@ class HTTPClientChannel : public ClientChannel,
   CloseCallback* closeCallback_{nullptr};
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

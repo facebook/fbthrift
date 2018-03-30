@@ -16,13 +16,14 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/async/ProtectionHandler.h>
-#include <thrift/lib/cpp/transport/THeader.h>
-#include <wangle/channel/Handler.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ProtectionHandler.h>
+#include <wangle/channel/Handler.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using BufAndHeader = std::pair<
     std::unique_ptr<folly::IOBuf>,
@@ -32,7 +33,7 @@ class SaslNegotiationHandler : public wangle::InboundHandler<BufAndHeader> {
  public:
   ~SaslNegotiationHandler() override {}
 
-  void read(Context* ctx,  BufAndHeader bufAndHeader) override;
+  void read(Context* ctx, BufAndHeader bufAndHeader) override;
 
   void setProtectionHandler(ProtectionHandler* h) {
     protectionHandler_ = h;
@@ -59,4 +60,5 @@ class DummySaslNegotiationHandler : public SaslNegotiationHandler {
   }
 };
 
-}}
+} // namespace thrift
+} // namespace apache

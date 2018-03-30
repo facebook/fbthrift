@@ -17,11 +17,12 @@
 #ifndef THRIFT_SASLSERVERSTUB_H_
 #define THRIFT_SASLSERVERSTUB_H_ 1
 
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
-#include <folly/io/async/EventBase.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // The GSSAPI version of this is going to need a captive thread to
 // avoid blocking the main thread on Kerberos operations, so we'll
@@ -29,13 +30,14 @@ namespace apache { namespace thrift {
 // could be written asynchronously.
 
 class StubSaslServer : public SaslServer {
-public:
+ public:
   explicit StubSaslServer(folly::EventBase*);
-  void consumeFromClient(Callback* cb,
-                         std::unique_ptr<folly::IOBuf>&& message) override;
+  void consumeFromClient(Callback* cb, std::unique_ptr<folly::IOBuf>&& message)
+      override;
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
   virtual std::unique_ptr<folly::IOBuf> unwrap(
-      folly::IOBufQueue* q, size_t* remaining);
+      folly::IOBufQueue* q,
+      size_t* remaining);
   void setServiceIdentity(const std::string& /* identity */) override {}
   std::string getClientIdentity() const override;
   std::string getServerIdentity() const override;
@@ -48,16 +50,21 @@ public:
     return std::move(buf);
   }
   // This is for testing.
-  void setForceFallback() { forceFallback_ = true; }
-  void setForceSendGarbage() { forceSendGarbage_ = true; }
+  void setForceFallback() {
+    forceFallback_ = true;
+  }
+  void setForceSendGarbage() {
+    forceSendGarbage_ = true;
+  }
 
-private:
+ private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   int phase_;
   bool forceFallback_;
   bool forceSendGarbage_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_SASLSERVERSTUB_H_

@@ -44,10 +44,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
         : type(SaturationType::REQUEST), usedCapacity(usedCap), capacity(cap) {}
   };
 
-  typedef
-    std::unique_ptr<ClientChannel,
-                    folly::DelayedDestruction::Destructor>
-    Ptr;
+  typedef std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor>
+      Ptr;
 
   virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
 
@@ -66,5 +64,5 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   virtual void closeNow() = 0;
   virtual CLIENT_TYPE getClientType() = 0;
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

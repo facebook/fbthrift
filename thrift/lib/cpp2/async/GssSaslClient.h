@@ -18,28 +18,31 @@
 #define THRIFT_GSSSASLCLIENT_H_ 1
 
 #include <chrono>
+
+#include <folly/Memory.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <folly/Memory.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Client responsible for the GSS SASL handshake.
  */
 class GssSaslClient : public SaslClient {
-public:
-  explicit GssSaslClient(folly::EventBase*,
-    const std::shared_ptr<SecurityLogger>& logger =
-      std::make_shared<SecurityLogger>());
+ public:
+  explicit GssSaslClient(
+      folly::EventBase*,
+      const std::shared_ptr<SecurityLogger>& logger =
+          std::make_shared<SecurityLogger>());
   void start(Callback* cb) override;
-  void consumeFromServer(Callback* cb,
-                         std::unique_ptr<folly::IOBuf>&& message) override;
+  void consumeFromServer(Callback* cb, std::unique_ptr<folly::IOBuf>&& message)
+      override;
   std::unique_ptr<folly::IOBuf> encrypt(
       std::unique_ptr<folly::IOBuf>&&) override;
   std::unique_ptr<folly::IOBuf> decrypt(
@@ -50,10 +53,10 @@ public:
   void setServiceIdentity(const std::string& identity) override {
     clientHandshake_->setRequiredServicePrincipal(identity);
   }
-  void setRequiredServicePrincipalFetcher(std::function<
-      std::tuple<std::string, std::string, std::string>()> function) override {
-    clientHandshake_->setRequiredServicePrincipalFetcher(
-        std::move(function));
+  void setRequiredServicePrincipalFetcher(
+      std::function<std::tuple<std::string, std::string, std::string>()>
+          function) override {
+    clientHandshake_->setRequiredServicePrincipalFetcher(std::move(function));
   }
 
   std::string getClientIdentity() const override;
@@ -65,10 +68,8 @@ public:
 
   // Set error string, prepend phase at which this error happened.
   void setErrorString(const std::string& str) override {
-    std::string err =
-      std::string("Phase: ") +
-      std::to_string((int)clientHandshake_->getPhase()) +
-      " " + str;
+    std::string err = std::string("Phase: ") +
+        std::to_string((int)clientHandshake_->getPhase()) + " " + str;
     errorString_ = std::make_unique<std::string>(err);
   }
 
@@ -98,7 +99,7 @@ public:
 
   static std::chrono::milliseconds getCurTime();
 
-private:
+ private:
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;
   std::unique_ptr<std::string> errorString_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
@@ -108,6 +109,7 @@ private:
   std::shared_ptr<bool> inProgress_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_GSSSASLCLIENT_H_

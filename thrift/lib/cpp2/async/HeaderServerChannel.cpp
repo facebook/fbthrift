@@ -15,51 +15,51 @@
  */
 
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
+
+#include <exception>
+#include <utility>
+
+#include <folly/String.h>
+#include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <folly/io/Cursor.h>
-#include <folly/String.h>
 
-#include <utility>
-#include <exception>
-
-using std::unique_ptr;
-using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
 using std::make_unique;
+using std::pair;
+using std::unique_ptr;
 using namespace apache::thrift::transport;
 using namespace apache::thrift;
-using folly::EventBase;
+using apache::thrift::TApplicationException;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
-using apache::thrift::TApplicationException;
-using apache::thrift::server::TServerObserver;
 using apache::thrift::protocol::PROTOCOL_TYPES;
+using apache::thrift::server::TServerObserver;
+using folly::EventBase;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
-  const std::shared_ptr<TAsyncTransport>& transport)
-    : HeaderServerChannel(
-        std::shared_ptr<Cpp2Channel>(
-            Cpp2Channel::newChannel(transport,
-                make_unique<ServerFramingHandler>(*this),
-                make_unique<ServerSaslNegotiationHandler>(*this))))
-{}
+    const std::shared_ptr<TAsyncTransport>& transport)
+    : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
+          transport,
+          make_unique<ServerFramingHandler>(*this),
+          make_unique<ServerSaslNegotiationHandler>(*this)))) {}
 
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
-    : callback_(nullptr)
-    , arrivalSeqId_(1)
-    , lastWrittenSeqId_(0)
-    , sampleRate_(0)
-    , timeoutSASL_(5000)
-    , saslServerCallback_(*this)
-    , cpp2Channel_(cpp2Channel) {}
+    : callback_(nullptr),
+      arrivalSeqId_(1),
+      lastWrittenSeqId_(0),
+      sampleRate_(0),
+      timeoutSASL_(5000),
+      saslServerCallback_(*this),
+      cpp2Channel_(cpp2Channel) {}
 
 void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);
@@ -70,8 +70,8 @@ void HeaderServerChannel::destroy() {
   }
 
   if (callback_) {
-    auto error = folly::make_exception_wrapper<TTransportException>(
-        "Channel destroyed");
+    auto error =
+        folly::make_exception_wrapper<TTransportException>("Channel destroyed");
     callback_->channelClosed(std::move(error));
   }
 
@@ -81,18 +81,18 @@ void HeaderServerChannel::destroy() {
 }
 
 // Header framing
-unique_ptr<IOBuf>
-HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf,
-                                                    THeader* header) {
+unique_ptr<IOBuf> HeaderServerChannel::ServerFramingHandler::addFrame(
+    unique_ptr<IOBuf> buf,
+    THeader* header) {
   channel_.updateClientType(header->getClientType());
 
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
   return header->addHeader(
-    std::move(buf),
-    channel_.getPersistentWriteHeaders(),
-    false /* Data already transformed in AsyncProcessor.h */);
+      std::move(buf),
+      channel_.getPersistentWriteHeaders(),
+      false /* Data already transformed in AsyncProcessor.h */);
 }
 
 std::tuple<unique_ptr<IOBuf>, size_t, unique_ptr<THeader>>
@@ -108,8 +108,8 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf = header->removeHeader(q, remaining,
-                               channel_.getPersistentReadHeaders());
+    buf =
+        header->removeHeader(q, remaining, channel_.getPersistentReadHeaders());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "
@@ -121,8 +121,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   CLIENT_TYPE ct = header->getClientType();
-  if (!channel_.isSupportedClient(ct) &&
-      ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (!channel_.isSupportedClient(ct) && ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     LOG(ERROR) << "Server rejecting unsupported client type " << ct;
     channel_.checkSupportedClient(ct);
   }
@@ -148,7 +147,6 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << "clientType: " << folly::to<std::string>(ct) << ". "
                << "First few bytes of payload: "
                << getTHeaderPayloadString(buf.get());
-
   }
 
   if (protInBuf != PROTOCOL_TYPES::T_DEBUG_PROTOCOL &&
@@ -178,8 +176,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   return make_tuple(std::move(buf), 0, std::move(header));
 }
 
-bool
-HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
+bool HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
     std::unique_ptr<folly::IOBuf>&& buf,
     std::unique_ptr<apache::thrift::transport::THeader>&& header) {
   auto ct = header->getClientType();
@@ -187,19 +184,17 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
   bool fallThrough = false;
   if (ct == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     if (!channel_.isSupportedClient(ct) ||
-        (!channel_.getSaslServer() &&
-         !protectionHandler_->getSaslEndpoint())) {
+        (!channel_.getSaslServer() && !protectionHandler_->getSaslEndpoint())) {
       if (protectionState == ProtectionState::UNKNOWN) {
         // The client tried to use SASL, but it's not supported by
         // policy.  Tell the client to fall back.
         try {
           auto trans = header->getWriteTransforms();
-          channel_.sendMessage(nullptr,
-                               THeader::transform(
-                                   IOBuf::create(0),
-                                   trans,
-                                   channel_.getMinCompressBytes()),
-                               header.get());
+          channel_.sendMessage(
+              nullptr,
+              THeader::transform(
+                  IOBuf::create(0), trans, channel_.getMinCompressBytes()),
+              header.get());
         } catch (const std::exception& e) {
           LOG(ERROR) << "Failed to send message: " << e.what();
         }
@@ -212,9 +207,10 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
             "Inconsistent SASL support");
         channel_.messageReceiveErrorWrapped(std::move(ex));
       }
-    } else if (protectionState == ProtectionState::UNKNOWN ||
-               protectionState == ProtectionState::INPROGRESS ||
-               protectionState == ProtectionState::WAITING) {
+    } else if (
+        protectionState == ProtectionState::UNKNOWN ||
+        protectionState == ProtectionState::INPROGRESS ||
+        protectionState == ProtectionState::WAITING) {
       // Technically we shouldn't get any new messages while in the INPROGRESS
       // state, but we'll allow it to fall through here and let the saslServer_
       // state machine throw an error.
@@ -227,10 +223,11 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
       // else, fall through to application message processing
       fallThrough = true;
     }
-  } else if ((protectionState == ProtectionState::VALID ||
-              protectionState == ProtectionState::INPROGRESS ||
-              protectionState == ProtectionState::WAITING) &&
-              !channel_.isSupportedClient(ct)) {
+  } else if (
+      (protectionState == ProtectionState::VALID ||
+       protectionState == ProtectionState::INPROGRESS ||
+       protectionState == ProtectionState::WAITING) &&
+      !channel_.isSupportedClient(ct)) {
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
     // We should fail hard in this case.
@@ -245,10 +242,11 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
     VLOG(5) << "non-SASL client connection received";
     channel_.setProtectionState(ProtectionState::NONE);
     fallThrough = true;
-  } else if ((protectionState == ProtectionState::VALID ||
-              protectionState == ProtectionState::INPROGRESS ||
-              protectionState == ProtectionState::WAITING) &&
-              channel_.isSupportedClient(ct)) {
+  } else if (
+      (protectionState == ProtectionState::VALID ||
+       protectionState == ProtectionState::INPROGRESS ||
+       protectionState == ProtectionState::WAITING) &&
+      channel_.isSupportedClient(ct)) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress, or SASL handshake has been
     // completed. The reason for latter is that we should allow a fallback if
@@ -264,7 +262,7 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
       channel_.getSaslServer()->detachEventBase();
     }
     const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-      channel_.getEventBase()->getObserver());
+        channel_.getEventBase()->getObserver());
     if (observer) {
       observer->saslFallBack();
     }
@@ -273,28 +271,26 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
   return fallThrough;
 }
 
-std::string
-HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
+std::string HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
   auto len = std::min<size_t>(buf->length(), 20);
   return folly::cEscape<std::string>(
       folly::StringPiece((const char*)buf->data(), len));
 }
 
-std::string
-HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
+std::string HeaderServerChannel::getTransportDebugString(
+    TAsyncTransport* transport) {
   if (!transport) {
     return std::string();
   }
 
-  auto ret = folly::to<std::string>("(transport ",
-                                    folly::demangle(typeid(*transport)));
+  auto ret = folly::to<std::string>(
+      "(transport ", folly::demangle(typeid(*transport)));
 
   try {
     folly::SocketAddress addr;
     transport->getPeerAddress(&addr);
-    folly::toAppend(", address ", addr.getAddressStr(),
-                    ", port ", addr.getPort(),
-                    &ret);
+    folly::toAppend(
+        ", address ", addr.getAddressStr(), ", port ", addr.getPort(), &ret);
   } catch (const std::exception& e) {
   }
 
@@ -305,14 +301,11 @@ HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
 // Client Interface
 
 HeaderServerChannel::HeaderRequest::HeaderRequest(
-      HeaderServerChannel* channel,
-      unique_ptr<IOBuf>&& buf,
-      unique_ptr<THeader>&& header,
-      unique_ptr<sample> sample)
-  : channel_(channel)
-  , header_(std::move(header))
-  , active_(true) {
-
+    HeaderServerChannel* channel,
+    unique_ptr<IOBuf>&& buf,
+    unique_ptr<THeader>&& header,
+    unique_ptr<sample> sample)
+    : channel_(channel), header_(std::move(header)), active_(true) {
   this->buf_ = std::move(buf);
   if (sample) {
     timestamps_.readBegin = sample->readBegin;
@@ -341,7 +334,7 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-        std::make_tuple(cb, std::move(buf), std::move(header));
+          std::make_tuple(cb, std::move(buf), std::move(header));
     } else {
       // Send it now, and send any subsequent requests in order.
       channel_->sendCatchupRequests(std::move(buf), cb, header.get());
@@ -385,9 +378,10 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
     channel_->closeNow();
     return;
   }
-  exbuf = THeader::transform(std::move(exbuf),
-                             header.getWriteTransforms(),
-                             header.getMinCompressBytes());
+  exbuf = THeader::transform(
+      std::move(exbuf),
+      header.getWriteTransforms(),
+      header.getMinCompressBytes());
   sendReply(std::move(exbuf), cb);
 }
 
@@ -400,43 +394,41 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode,
     MessageChannel::SendCallback* cb) {
-
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
   header_->setHeader("ex", exCode);
   ew.with_exception([&](TApplicationException& tae) {
-      std::unique_ptr<folly::IOBuf> exbuf;
-      uint16_t proto = header_->getProtocolId();
-      auto transforms = header_->getWriteTransforms();
-      try {
-        exbuf = serializeError(proto, tae, getBuf());
-      } catch (const TProtocolException& pe) {
-        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
-            << " what()=" << pe.what();
-        channel_->closeNow();
-        return;
-      }
-      exbuf = THeader::transform(std::move(exbuf),
-                                 transforms,
-                                 header_->getMinCompressBytes());
-      sendReply(std::move(exbuf), cb);
-    });
+    std::unique_ptr<folly::IOBuf> exbuf;
+    uint16_t proto = header_->getProtocolId();
+    auto transforms = header_->getWriteTransforms();
+    try {
+      exbuf = serializeError(proto, tae, getBuf());
+    } catch (const TProtocolException& pe) {
+      LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+                 << " what()=" << pe.what();
+      channel_->closeNow();
+      return;
+    }
+    exbuf = THeader::transform(
+        std::move(exbuf), transforms, header_->getMinCompressBytes());
+    sendReply(std::move(exbuf), cb);
+  });
 }
 
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
-  folly::exception_wrapper ew,
-  std::string exCode,
-  const std::string& methodName,
-  int32_t protoSeqId,
-  MessageChannel::SendCallback* cb) {
+    folly::exception_wrapper ew,
+    std::string exCode,
+    const std::string& methodName,
+    int32_t protoSeqId,
+    MessageChannel::SendCallback* cb) {
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
   header_->setHeader("ex", exCode);
   ew.with_exception([&](TApplicationException& tae) {
-      serializeAndSendError(*header_, tae, methodName, protoSeqId, cb);
-    });
+    serializeAndSendError(*header_, tae, methodName, protoSeqId, cb);
+  });
 }
 
 void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
@@ -451,18 +443,18 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
   // and only reads certain fields from header_. To avoid race condition,
   // DO NOT read any header from the per-request THeader.
   timeoutHeader_ = header_->clone();
-  auto errorCode = responseType == TimeoutResponseType::QUEUE ?
-    kServerQueueTimeoutErrorCode : kTaskExpiredErrorCode;
+  auto errorCode = responseType == TimeoutResponseType::QUEUE
+      ? kServerQueueTimeoutErrorCode
+      : kTaskExpiredErrorCode;
   timeoutHeader_->setHeader("ex", errorCode);
-  auto errorMsg = responseType == TimeoutResponseType::QUEUE ?
-    "Queue Timeout" : "Task expired";
+  auto errorMsg = responseType == TimeoutResponseType::QUEUE ? "Queue Timeout"
+                                                             : "Task expired";
   for (const auto& it : headers) {
     timeoutHeader_->setHeader(it.first, it.second);
   }
 
   TApplicationException tae(
-      TApplicationException::TApplicationExceptionType::TIMEOUT,
-      errorMsg);
+      TApplicationException::TApplicationExceptionType::TIMEOUT, errorMsg);
   serializeAndSendError(*timeoutHeader_, tae, methodName, protoSeqId, cb);
 }
 
@@ -470,7 +462,6 @@ void HeaderServerChannel::sendCatchupRequests(
     std::unique_ptr<folly::IOBuf> next_req,
     MessageChannel::SendCallback* cb,
     THeader* header) {
-
   DestructorGuard dg(this);
 
   std::unique_ptr<THeader> header_ptr;
@@ -503,13 +494,13 @@ void HeaderServerChannel::sendCatchupRequests(
 
 // Interface from MessageChannel::RecvCallback
 bool HeaderServerChannel::shouldSample() {
-  return (sampleRate_ > 0) &&
-    ((sample_++ % sampleRate_) == 0);
+  return (sampleRate_ > 0) && ((sample_++ % sampleRate_) == 0);
 }
 
-void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
-                                          unique_ptr<THeader>&& header,
-                                          unique_ptr<sample> sample) {
+void HeaderServerChannel::messageReceived(
+    unique_ptr<IOBuf>&& buf,
+    unique_ptr<THeader>&& header,
+    unique_ptr<sample> sample) {
   DestructorGuard dg(this);
 
   uint32_t recvSeqId = header->getSequenceNumber();
@@ -533,11 +524,8 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
   }
 
   if (callback_) {
-    unique_ptr<HeaderRequest> request(
-        new HeaderRequest(this,
-                          std::move(buf),
-                          std::move(header),
-                          std::move(sample)));
+    unique_ptr<HeaderRequest> request(new HeaderRequest(
+        this, std::move(buf), std::move(header), std::move(sample)));
 
     if (!outOfOrder) {
       if (inOrderRequests_.size() > MAX_REQUEST_SIZE) {
@@ -551,23 +539,21 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
       request->setInOrderRecvSequenceId(recvSeqId);
     }
 
-    auto ew = folly::try_and_catch<std::exception>([&]() {
-        callback_->requestReceived(std::move(request));
-      });
+    auto ew = folly::try_and_catch<std::exception>(
+        [&]() { callback_->requestReceived(std::move(request)); });
     if (ew) {
       LOG(WARNING) << "Could not parse request: " << ew.what();
       messageReceiveErrorWrapped(std::move(ew));
       return;
     }
-
   }
 }
 
 void HeaderServerChannel::messageChannelEOF() {
   DestructorGuard dg(this);
 
-  auto ew = folly::make_exception_wrapper<TTransportException>(
-      "Channel Closed");
+  auto ew =
+      folly::make_exception_wrapper<TTransportException>("Channel Closed");
   if (callback_) {
     callback_->channelClosed(std::move(ew));
   }
@@ -587,18 +573,17 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
 void HeaderServerChannel::SaslServerCallback::saslSendClient(
     std::unique_ptr<folly::IOBuf>&& response) {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.getEventBase()->timer().scheduleTimeout(this,
-        std::chrono::milliseconds(channel_.timeoutSASL_));
+    channel_.getEventBase()->timer().scheduleTimeout(
+        this, std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   try {
     auto trans = header_->getWriteTransforms();
     channel_.setProtectionState(ProtectionState::WAITING);
-    channel_.sendMessage(nullptr,
-                         THeader::transform(
-                           std::move(response),
-                           trans,
-                           channel_.getMinCompressBytes()),
-                         header_.get());
+    channel_.sendMessage(
+        nullptr,
+        THeader::transform(
+            std::move(response), trans, channel_.getMinCompressBytes()),
+        header_.get());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
   }
@@ -608,7 +593,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     folly::exception_wrapper&& ex) {
   folly::HHWheelTimer::Callback::cancelTimeout();
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-    channel_.getEventBase()->getObserver());
+      channel_.getEventBase()->getObserver());
 
   try {
     // Fall back to insecure.  This will throw an exception if the
@@ -635,12 +620,11 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
   try {
     auto trans = header_->getWriteTransforms();
-    channel_.sendMessage(nullptr,
-                         THeader::transform(
-                           IOBuf::create(0),
-                           trans,
-                           channel_.getMinCompressBytes()),
-                         header_.get());
+    channel_.sendMessage(
+        nullptr,
+        THeader::transform(
+            IOBuf::create(0), trans, channel_.getMinCompressBytes()),
+        header_.get());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
   }
@@ -657,7 +641,7 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
   DestructorGuard dg(&channel_);
 
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-    channel_.getEventBase()->getObserver());
+      channel_.getEventBase()->getObserver());
 
   if (observer) {
     observer->saslComplete();
@@ -666,10 +650,11 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
   folly::HHWheelTimer::Callback::cancelTimeout();
   auto& saslServer = channel_.saslServer_;
   VLOG(5) << "SASL server negotiation complete: "
-             << saslServer->getServerIdentity() << " <= "
-             << saslServer->getClientIdentity();
+          << saslServer->getServerIdentity()
+          << " <= " << saslServer->getClientIdentity();
   channel_.setProtectionState(ProtectionState::VALID);
   channel_.setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

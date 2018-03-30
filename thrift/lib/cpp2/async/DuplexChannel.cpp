@@ -15,37 +15,43 @@
  */
 
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
+
 #include <folly/io/Cursor.h>
 
-using std::shared_ptr;
-using std::unique_ptr;
-using std::make_shared;
-using std::make_unique;
-using folly::io::RWPrivateCursor;
-using folly::io::Cursor;
-using folly::IOBuf;
-using folly::IOBufQueue;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
+using folly::IOBuf;
+using folly::IOBufQueue;
+using folly::io::Cursor;
+using folly::io::RWPrivateCursor;
+using std::make_shared;
+using std::make_unique;
+using std::shared_ptr;
+using std::unique_ptr;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-DuplexChannel::DuplexChannel(Who::WhoEnum who,
-                             const shared_ptr<TAsyncTransport>& transport)
-  : cpp2Channel_(new DuplexCpp2Channel(
-                     who, transport,
-                     make_unique<DuplexFramingHandler>(*this),
-                     make_unique<DuplexProtectionHandler>(*this),
-                     make_unique<DuplexSaslNegotiationHandler>(*this)),
-                 folly::DelayedDestruction::Destructor())
-  , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
-                   folly::DelayedDestruction::Destructor())
-  , clientFramingHandler_(*clientChannel_.get())
-  , serverChannel_(new DuplexServerChannel(*this, cpp2Channel_),
-                   folly::DelayedDestruction::Destructor())
-  , serverFramingHandler_(*serverChannel_.get())
-  , mainChannel_(who)
-{
+DuplexChannel::DuplexChannel(
+    Who::WhoEnum who,
+    const shared_ptr<TAsyncTransport>& transport)
+    : cpp2Channel_(
+          new DuplexCpp2Channel(
+              who,
+              transport,
+              make_unique<DuplexFramingHandler>(*this),
+              make_unique<DuplexProtectionHandler>(*this),
+              make_unique<DuplexSaslNegotiationHandler>(*this)),
+          folly::DelayedDestruction::Destructor()),
+      clientChannel_(
+          new DuplexClientChannel(*this, cpp2Channel_),
+          folly::DelayedDestruction::Destructor()),
+      clientFramingHandler_(*clientChannel_.get()),
+      serverChannel_(
+          new DuplexServerChannel(*this, cpp2Channel_),
+          folly::DelayedDestruction::Destructor()),
+      serverFramingHandler_(*serverChannel_.get()),
+      mainChannel_(who) {
   mainChannel_.get(); // check that it's not UNKNOWN
   // Tell the cpp2 channel which callback is the client and which is the server
   // so it can do its magic
@@ -55,12 +61,12 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
 FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
     Who::WhoEnum who) {
   switch (who) {
-  case Who::CLIENT:
-    return duplex_.clientFramingHandler_;
-  case Who::SERVER:
-    return duplex_.serverFramingHandler_;
-  default:
-    throw std::runtime_error("bad who value");
+    case Who::CLIENT:
+      return duplex_.clientFramingHandler_;
+    case Who::SERVER:
+      return duplex_.serverFramingHandler_;
+    default:
+      throw std::runtime_error("bad who value");
   }
 }
 
@@ -102,8 +108,8 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
 
   // Header, check if reverse
   bool reverse = c.readBE<uint16_t>() & HEADER_FLAG_DUPLEX_REVERSE;
-  Who::WhoEnum msgWho = reverse ? duplex_.mainChannel_.getOther() :
-                                  duplex_.mainChannel_.get();
+  Who::WhoEnum msgWho =
+      reverse ? duplex_.mainChannel_.getOther() : duplex_.mainChannel_.get();
   duplex_.cpp2Channel_->useCallback(msgWho);
 
   // Next message in queue_ might have a different reverse bit, so split
@@ -115,24 +121,22 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
   return getHandler(msgWho).removeFrame(&thisMessageQueue);
 }
 
-std::unique_ptr<folly::IOBuf>
-DuplexChannel::DuplexFramingHandler::addFrame(
+std::unique_ptr<folly::IOBuf> DuplexChannel::DuplexFramingHandler::addFrame(
     std::unique_ptr<folly::IOBuf> buf,
     THeader* header) {
-  buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf),
-                                                       header);
+  buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf), header);
 
   if (duplex_.lastSender_.get() != duplex_.mainChannel_.get()) {
     // Add reverse bit to header
     // Header starts with LEN(4bytes) | MAGIC(2bytes) | FLAGS(2bytes)
     Cursor c(buf.get());
-    if (c.length() >= 8 &&    // long enough to possible be header protocol
-        c.readBE<uint32_t>() <= THeader::MAX_FRAME_SIZE &&  // is framed
+    if (c.length() >= 8 && // long enough to possible be header protocol
+        c.readBE<uint32_t>() <= THeader::MAX_FRAME_SIZE && // is framed
         c.readBE<uint16_t>() == THeader::HEADER_MAGIC >> 16) {
       uint16_t flags = c.readBE<uint16_t>();
       flags |= HEADER_FLAG_DUPLEX_REVERSE;
       RWPrivateCursor wc(buf.get());
-      wc.skip(6);   // position at start of flags
+      wc.skip(6); // position at start of flags
       wc.writeBE(flags);
     }
   }
@@ -140,4 +144,5 @@ DuplexChannel::DuplexFramingHandler::addFrame(
   return buf;
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

@@ -17,15 +17,15 @@
 #ifndef THRIFT_ASYNC_CHANNELCALLBACKS_H_
 #define THRIFT_ASYNC_CHANNELCALLBACKS_H_ 1
 
+#include <deque>
+#include <memory>
+#include <unordered_map>
+
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <memory>
-
-#include <unordered_map>
-#include <deque>
 
 namespace apache {
 namespace thrift {
@@ -58,14 +58,15 @@ class ChannelCallbacks {
     // We then try to send and either get messageSendError() or sendQueued().
     // If we get sendQueued(), we know to wait for either messageSendError()
     // or messageSent() before deleting.
-    TwowayCallback(Channel* channel,
-                   uint32_t sendSeqId,
-                   uint16_t protoId,
-                   std::unique_ptr<RequestCallback> cb,
-                   std::unique_ptr<apache::thrift::ContextStack> ctx,
-                   folly::HHWheelTimer* timer,
-                   std::chrono::milliseconds timeout,
-                   std::chrono::milliseconds chunkTimeout)
+    TwowayCallback(
+        Channel* channel,
+        uint32_t sendSeqId,
+        uint16_t protoId,
+        std::unique_ptr<RequestCallback> cb,
+        std::unique_ptr<apache::thrift::ContextStack> ctx,
+        folly::HHWheelTimer* timer,
+        std::chrono::milliseconds timeout,
+        std::chrono::milliseconds chunkTimeout)
         : channel_(channel),
           sendSeqId_(sendSeqId),
           protoId_(protoId),
@@ -127,12 +128,13 @@ class ChannelCallbacks {
       cbCalled_ = true;
 
       folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->replyReceived(ClientReceiveState(protoId_,
-                                            std::move(buf),
-                                            std::move(header),
-                                            std::move(ctx_),
-                                            channel_->isSecurityActive(),
-                                            true));
+      cb_->replyReceived(ClientReceiveState(
+          protoId_,
+          std::move(buf),
+          std::move(header),
+          std::move(ctx_),
+          channel_->isSecurityActive(),
+          true));
       cb_.reset();
 
       maybeDeleteThis();
@@ -148,11 +150,12 @@ class ChannelCallbacks {
       CHECK(cb_);
 
       folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->replyReceived(ClientReceiveState(protoId_,
-                                            std::move(buf),
-                                            std::move(header),
-                                            ctx_,
-                                            channel_->isSecurityActive()));
+      cb_->replyReceived(ClientReceiveState(
+          protoId_,
+          std::move(buf),
+          std::move(header),
+          ctx_,
+          channel_->isSecurityActive()));
     }
     void requestError(folly::exception_wrapper ex) {
       DestructorGuard dg(this);
@@ -224,13 +227,16 @@ class ChannelCallbacks {
     bool cbCalled_; // invariant: (cb_ == nullptr) == cbCalled_
     class TimerCallback : public folly::HHWheelTimer::Callback {
      public:
-      TimerCallback(TwowayCallback* cb,
-                    folly::HHWheelTimer* timer,
-                    std::chrono::milliseconds chunkTimeout)
+      TimerCallback(
+          TwowayCallback* cb,
+          folly::HHWheelTimer* timer,
+          std::chrono::milliseconds chunkTimeout)
           : cb_(cb), timer_(timer), chunkTimeout_(chunkTimeout) {
         resetTimeout();
       }
-      void timeoutExpired() noexcept override { cb_->timeoutExpired(); }
+      void timeoutExpired() noexcept override {
+        cb_->timeoutExpired();
+      }
       void resetTimeout() {
         cancelTimeout();
         if (chunkTimeout_.count() > 0) {
@@ -250,9 +256,10 @@ class ChannelCallbacks {
   class OnewayCallback : public MessageChannel::SendCallback,
                          public folly::DelayedDestruction {
    public:
-    OnewayCallback(std::unique_ptr<RequestCallback> cb,
-                   std::unique_ptr<apache::thrift::ContextStack> ctx,
-                   bool isSecurityActive)
+    OnewayCallback(
+        std::unique_ptr<RequestCallback> cb,
+        std::unique_ptr<apache::thrift::ContextStack> ctx,
+        bool isSecurityActive)
         : cb_(std::move(cb)),
           ctx_(std::move(ctx)),
           isSecurityActive_(isSecurityActive) {}
@@ -279,7 +286,7 @@ class ChannelCallbacks {
     bool isSecurityActive_;
   };
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_CHANNELCALLBACKS_H_

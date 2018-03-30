@@ -18,10 +18,12 @@
  */
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 thread_local Cpp2RequestContext* ServerInterface::reqCtx_;
 thread_local concurrency::ThreadManager* ServerInterface::tm_;
 thread_local folly::EventBase* ServerInterface::eb_;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

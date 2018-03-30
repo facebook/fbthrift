@@ -15,17 +15,18 @@
  */
 #pragma once
 
-#include <wangle/channel/Handler.h>
-#include <wangle/channel/StaticPipeline.h>
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
+#include <wangle/channel/Handler.h>
+#include <wangle/channel/StaticPipeline.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class PcapLoggingHandler : public wangle::BytesToBytesHandler {
  public:
-  enum Peer {CLIENT, SERVER};
-  enum class EncryptionType : uint8_t {NONE = 0, KRB = 1, SSL = 2};
+  enum Peer { CLIENT, SERVER };
+  enum class EncryptionType : uint8_t { NONE = 0, KRB = 1, SSL = 2 };
 
   explicit PcapLoggingHandler(std::function<bool()> isKrbEncrypted);
 
@@ -34,11 +35,13 @@ class PcapLoggingHandler : public wangle::BytesToBytesHandler {
   folly::Future<folly::Unit> close(Context* ctx) override;
 
   void read(Context* ctx, folly::IOBufQueue& q) override;
-  folly::Future<folly::Unit> write(Context* ctx,
+  folly::Future<folly::Unit> write(
+      Context* ctx,
       std::unique_ptr<folly::IOBuf> buf) override;
 
   void readException(Context* ctx, folly::exception_wrapper e) override;
-  folly::Future<folly::Unit> writeException(Context* ctx,
+  folly::Future<folly::Unit> writeException(
+      Context* ctx,
       folly::exception_wrapper e) override;
 
  private:
@@ -63,9 +66,7 @@ class PcapLoggingConfig {
   }
 
   // Disables logging
-  PcapLoggingConfig()
-    : enabled_(false)
-  {}
+  PcapLoggingConfig() : enabled_(false) {}
 
   // Enables logging
   PcapLoggingConfig(
@@ -75,16 +76,17 @@ class PcapLoggingConfig {
       int numMessagesConnEnd,
       int sampleConnectionPct,
       int rotateAfterMB)
-    : enabled_(true)
-    , prefix_(prefix)
-    , snaplen_(snaplen > 0 && snaplen <= 65000 ? snaplen : 65000)
-    , numMessagesConnStart_(numMessagesConnStart)
-    , numMessagesConnEnd_(numMessagesConnEnd)
-    , sampleConnectionPct_(sampleConnectionPct)
-    , rotateAfterMB_(rotateAfterMB)
-  {}
+      : enabled_(true),
+        prefix_(prefix),
+        snaplen_(snaplen > 0 && snaplen <= 65000 ? snaplen : 65000),
+        numMessagesConnStart_(numMessagesConnStart),
+        numMessagesConnEnd_(numMessagesConnEnd),
+        sampleConnectionPct_(sampleConnectionPct),
+        rotateAfterMB_(rotateAfterMB) {}
 
-  bool enabled() const { return enabled_; }
+  bool enabled() const {
+    return enabled_;
+  }
   std::string getPrefix() const {
     return prefix_;
   }
@@ -116,4 +118,5 @@ class PcapLoggingConfig {
   int rotateAfterMB_;
 };
 
-}} // namespace
+} // namespace thrift
+} // namespace apache

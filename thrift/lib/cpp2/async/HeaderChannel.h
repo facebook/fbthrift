@@ -28,8 +28,9 @@ class HeaderChannel {
  public:
   HeaderChannel() {}
 
-  void addRpcOptionHeaders(apache::thrift::transport::THeader* header,
-                           RpcOptions& rpcOptions);
+  void addRpcOptionHeaders(
+      apache::thrift::transport::THeader* header,
+      RpcOptions& rpcOptions);
 
   void setPersistentHeader(const std::string& key, const std::string& value) {
     persistentWriteHeaders_[key] = value;
@@ -46,12 +47,14 @@ class HeaderChannel {
  protected:
   virtual ~HeaderChannel() {}
 
-  virtual bool clientSupportHeader() { return true; }
+  virtual bool clientSupportHeader() {
+    return true;
+  }
 
  private:
   // Map to use for persistent headers
   transport::THeader::StringToStringMap persistentReadHeaders_;
   transport::THeader::StringToStringMap persistentWriteHeaders_;
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

@@ -15,21 +15,24 @@
  */
 #pragma once
 
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/StaticPipeline.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class FramingHandler
-  : public wangle::Handler<
-      folly::IOBufQueue&,
-      std::pair<std::unique_ptr<folly::IOBuf>,
-                std::unique_ptr<apache::thrift::transport::THeader>>,
-      std::pair<std::unique_ptr<folly::IOBuf>,
-                apache::thrift::transport::THeader*>,
-      std::unique_ptr<folly::IOBuf>> {
+    : public wangle::Handler<
+          folly::IOBufQueue&,
+          std::pair<
+              std::unique_ptr<folly::IOBuf>,
+              std::unique_ptr<apache::thrift::transport::THeader>>,
+          std::pair<
+              std::unique_ptr<folly::IOBuf>,
+              apache::thrift::transport::THeader*>,
+          std::unique_ptr<folly::IOBuf>> {
  public:
   ~FramingHandler() override {}
 
@@ -44,21 +47,23 @@ class FramingHandler
   void read(Context* ctx, folly::IOBufQueue& q) override;
 
   folly::Future<folly::Unit> write(
-    Context* ctx,
-    std::pair<std::unique_ptr<folly::IOBuf>,
-              apache::thrift::transport::THeader*> bufAndHeader) override;
+      Context* ctx,
+      std::pair<
+          std::unique_ptr<folly::IOBuf>,
+          apache::thrift::transport::THeader*> bufAndHeader) override;
 
-  virtual std::tuple<std::unique_ptr<folly::IOBuf>,
-                     size_t,
-                     std::unique_ptr<apache::thrift::transport::THeader>>
+  virtual std::tuple<
+      std::unique_ptr<folly::IOBuf>,
+      size_t,
+      std::unique_ptr<apache::thrift::transport::THeader>>
   removeFrame(folly::IOBufQueue* q) = 0;
 
   /**
    * Wrap an IOBuf in any headers/footers
    */
-  virtual std::unique_ptr<folly::IOBuf>
-  addFrame(std::unique_ptr<folly::IOBuf> buf,
-           apache::thrift::transport::THeader* header) = 0;
+  virtual std::unique_ptr<folly::IOBuf> addFrame(
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::transport::THeader* header) = 0;
 
   void setProtectionHandler(ProtectionHandler* h) {
     protectionHandler_ = h;
@@ -80,7 +85,9 @@ class FramingHandler
   folly::Future<folly::Unit> close(Context* ctx) override;
 
  private:
-  enum BUFFER_SIZE { DEFAULT_BUFFER_SIZE = 2048, };
+  enum BUFFER_SIZE {
+    DEFAULT_BUFFER_SIZE = 2048,
+  };
 
   ProtectionHandler* protectionHandler_{nullptr};
 
@@ -89,4 +96,5 @@ class FramingHandler
   bool closing_{false};
 };
 
-}} // namespace
+} // namespace thrift
+} // namespace apache

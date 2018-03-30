@@ -29,5 +29,5 @@ class ServerChannel : public ResponseChannel, public HeaderChannel {
  public:
   ServerChannel() {}
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

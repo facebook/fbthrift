@@ -17,18 +17,17 @@
 #ifndef THRIFT_SASLSERVER_H_
 #define THRIFT_SASLSERVER_H_ 1
 
-#include <thrift/lib/cpp2/async/SaslEndpoint.h>
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/SaslEndpoint.h>
 
-#include <folly/ExceptionWrapper.h>
-
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class SaslServer : public SaslEndpoint {
  public:
-  explicit SaslServer(folly::EventBase* evb = nullptr)
-    : SaslEndpoint(evb) {}
+  explicit SaslServer(folly::EventBase* evb = nullptr) : SaslEndpoint(evb) {}
 
   class Callback : public folly::HHWheelTimer::Callback {
    public:
@@ -50,8 +49,7 @@ class SaslServer : public SaslEndpoint {
     void timeoutExpired() noexcept override {
       using apache::thrift::transport::TTransportException;
       auto ex = folly::make_exception_wrapper<TTransportException>(
-          TTransportException::TIMED_OUT,
-          "SASL handshake timed out");
+          TTransportException::TIMED_OUT, "SASL handshake timed out");
       saslError(std::move(ex));
     }
   };
@@ -65,9 +63,11 @@ class SaslServer : public SaslEndpoint {
   // will also be invoked.  If there is an error, cb->saslError() will
   // be invoked.
   virtual void consumeFromClient(
-    Callback *cb, std::unique_ptr<folly::IOBuf>&& message) = 0;
+      Callback* cb,
+      std::unique_ptr<folly::IOBuf>&& message) = 0;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_SASLSERVER_H_

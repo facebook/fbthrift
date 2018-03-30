@@ -34,7 +34,9 @@ namespace thrift {
  */
 class HeaderChannelTrait {
  public:
-  HeaderChannelTrait() { setSupportedClients(nullptr); }
+  HeaderChannelTrait() {
+    setSupportedClients(nullptr);
+  }
   virtual ~HeaderChannelTrait() {}
 
   // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
@@ -45,20 +47,36 @@ class HeaderChannelTrait {
 
   void setClientType(CLIENT_TYPE ct);
   // Force using specified client type when using legacy client types
-  void forceClientType(bool enable) { forceClientType_ = enable; }
-  bool getForceClientType() { return forceClientType_; }
-  CLIENT_TYPE getClientType() { return clientType_; }
+  void forceClientType(bool enable) {
+    forceClientType_ = enable;
+  }
+  bool getForceClientType() {
+    return forceClientType_;
+  }
+  CLIENT_TYPE getClientType() {
+    return clientType_;
+  }
   void updateClientType(CLIENT_TYPE ct);
 
   void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
-  THRIFT_SECURITY_POLICY getSecurityPolicy() { return securityPolicy_; }
+  THRIFT_SECURITY_POLICY getSecurityPolicy() {
+    return securityPolicy_;
+  }
 
-  void setMinCompressBytes(uint32_t bytes) { minCompressBytes_ = bytes; }
+  void setMinCompressBytes(uint32_t bytes) {
+    minCompressBytes_ = bytes;
+  }
 
-  uint32_t getMinCompressBytes() { return minCompressBytes_; }
+  uint32_t getMinCompressBytes() {
+    return minCompressBytes_;
+  }
 
-  uint16_t getFlags() const { return flags_; }
-  void setFlags(uint16_t flags) { flags_ = flags; }
+  uint16_t getFlags() const {
+    return flags_;
+  }
+  void setFlags(uint16_t flags) {
+    flags_ = flags;
+  }
 
   void setTransform(uint16_t transId) {
     for (auto& trans : writeTrans_) {
@@ -92,5 +110,5 @@ class HeaderChannelTrait {
 
   std::vector<uint16_t> writeTrans_;
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

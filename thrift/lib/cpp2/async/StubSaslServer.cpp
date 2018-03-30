@@ -16,27 +16,28 @@
 
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
+#include <memory>
+
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
-#include <memory>
-
-using folly::IOBuf;
-using folly::IOBufQueue;
 using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
-using apache::thrift::sasl::SaslRequest;
 using apache::thrift::sasl::SaslReply;
+using apache::thrift::sasl::SaslRequest;
 using apache::thrift::sasl::SaslStart;
+using folly::IOBuf;
+using folly::IOBufQueue;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 static const char MECH[] = "stub-v1";
 static const char RESPONSE0[] = "response0";
@@ -45,16 +46,17 @@ static const char RESPONSE1[] = "response1";
 static const char CHALLENGE2[] = "challenge2";
 
 StubSaslServer::StubSaslServer(folly::EventBase* evb)
-    : SaslServer(evb)
-    , threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
-    , phase_(0)
-    , forceFallback_(false)
-    , forceSendGarbage_(false) {
+    : SaslServer(evb),
+      threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */)),
+      phase_(0),
+      forceFallback_(false),
+      forceSendGarbage_(false) {
   threadManager_->threadFactory(std::make_shared<PosixThreadFactory>());
 }
 
 void StubSaslServer::consumeFromClient(
-  Callback *cb, std::unique_ptr<IOBuf>&& message) {
+    Callback* cb,
+    std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
   threadManager_->start();
 
@@ -62,114 +64,102 @@ void StubSaslServer::consumeFromClient(
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
-        IOBufQueue reply_data;
-        folly::exception_wrapper ex;
-        bool complete = false;
+    IOBufQueue reply_data;
+    folly::exception_wrapper ex;
+    bool complete = false;
 
-        if (phase_ == 0) {
-          SaslStart start;
-          Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
-          ex = folly::try_and_catch<std::exception>([&]() {
-            deserializer.deserialize(smessage.get(), start);
-          });
-          if (!ex) {
-            if (start.mechanism == MECH &&
-                start.__isset.request &&
-                start.request.__isset.response &&
-                start.request.response == RESPONSE0) {
-
-              Serializer<CompactProtocolReader, CompactProtocolWriter>
-                serializer;
-              SaslReply reply;
-              reply.challenge = CHALLENGE1;
-              reply.__isset.challenge = true;
-              serializer.serialize(reply, &reply_data);
-              phase_ = 1;
-            } else {
-              ex = folly::make_exception_wrapper<
-                thrift::protocol::TProtocolException>(
-                  "expected response 0");
-            }
-          }
-        } else if (phase_ == 1) {
-          if (forceFallback_) {
-            ex = folly::make_exception_wrapper<
-              thrift::protocol::TProtocolException>(
-                "expected response 1 force failed");
-          } else {
-            SaslRequest req;
-            Serializer<CompactProtocolReader, CompactProtocolWriter>
-              deserializer;
-            ex = folly::try_and_catch<std::exception>([&]() {
-              deserializer.deserialize(smessage.get(), req);
-            });
-            if (!ex) {
-              if (req.__isset.response &&
-                  req.response == RESPONSE1) {
-                Serializer<CompactProtocolReader, CompactProtocolWriter>
-                  serializer;
-                SaslReply reply;
-                reply.challenge = CHALLENGE2;
-                reply.__isset.challenge = true;
-                reply.outcome.success = true;
-                reply.__isset.outcome = true;
-                reply.outcome.__isset.success = true;
-                serializer.serialize(reply, &reply_data);
-                complete = true;
-                phase_ = -1;
-              } else {
-                ex = folly::make_exception_wrapper<
-                  thrift::protocol::TProtocolException>(
-                    "expected response 1");
-              }
-            }
-          }
-        } else if (phase_ == -1) {
-          ex = folly::make_exception_wrapper<
-            thrift::protocol::TProtocolException>(
-              "unexpected message after complete");
-        } else {
-          ex = folly::make_exception_wrapper<
-            thrift::protocol::TProtocolException>(
-              "unexpected message after error");
-        }
-
-        if (!ex && !complete && reply_data.empty()) {
+    if (phase_ == 0) {
+      SaslStart start;
+      Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
+      ex = folly::try_and_catch<std::exception>(
+          [&]() { deserializer.deserialize(smessage.get(), start); });
+      if (!ex) {
+        if (start.mechanism == MECH && start.__isset.request &&
+            start.request.__isset.response &&
+            start.request.response == RESPONSE0) {
           Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
           SaslReply reply;
-          reply.outcome.success = false;
-          reply.__isset.outcome = true;
-          reply.outcome.__isset.success = true;
+          reply.challenge = CHALLENGE1;
+          reply.__isset.challenge = true;
           serializer.serialize(reply, &reply_data);
+          phase_ = 1;
+        } else {
+          ex = folly::make_exception_wrapper<
+              thrift::protocol::TProtocolException>("expected response 0");
         }
-
-        CHECK(reply_data.empty() == !!ex);
-        CHECK(!(complete && !!ex));
-
-        if (ex) {
-          phase_ = -2;
+      }
+    } else if (phase_ == 1) {
+      if (forceFallback_) {
+        ex =
+            folly::make_exception_wrapper<thrift::protocol::TProtocolException>(
+                "expected response 1 force failed");
+      } else {
+        SaslRequest req;
+        Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
+        ex = folly::try_and_catch<std::exception>(
+            [&]() { deserializer.deserialize(smessage.get(), req); });
+        if (!ex) {
+          if (req.__isset.response && req.response == RESPONSE1) {
+            Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
+            SaslReply reply;
+            reply.challenge = CHALLENGE2;
+            reply.__isset.challenge = true;
+            reply.outcome.success = true;
+            reply.__isset.outcome = true;
+            reply.outcome.__isset.success = true;
+            serializer.serialize(reply, &reply_data);
+            complete = true;
+            phase_ = -1;
+          } else {
+            ex = folly::make_exception_wrapper<
+                thrift::protocol::TProtocolException>("expected response 1");
+          }
         }
+      }
+    } else if (phase_ == -1) {
+      ex = folly::make_exception_wrapper<thrift::protocol::TProtocolException>(
+          "unexpected message after complete");
+    } else {
+      ex = folly::make_exception_wrapper<thrift::protocol::TProtocolException>(
+          "unexpected message after error");
+    }
 
-        (*evb_)->runInEventBaseThread(
-          [=, reply_data = std::move(reply_data)] () mutable {
-            if (!reply_data.empty()) {
-              cb->saslSendClient(reply_data.move());
-              // Send some extra garbage on this channel
-              if (forceSendGarbage) {
-                auto str = IOBuf::copyBuffer("garbage", 7);
-                cb->saslSendClient(std::move(str));
-              }
+    if (!ex && !complete && reply_data.empty()) {
+      Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
+      SaslReply reply;
+      reply.outcome.success = false;
+      reply.__isset.outcome = true;
+      reply.outcome.__isset.success = true;
+      serializer.serialize(reply, &reply_data);
+    }
+
+    CHECK(reply_data.empty() == !!ex);
+    CHECK(!(complete && !!ex));
+
+    if (ex) {
+      phase_ = -2;
+    }
+
+    (*evb_)->runInEventBaseThread(
+        [=, reply_data = std::move(reply_data)]() mutable {
+          if (!reply_data.empty()) {
+            cb->saslSendClient(reply_data.move());
+            // Send some extra garbage on this channel
+            if (forceSendGarbage) {
+              auto str = IOBuf::copyBuffer("garbage", 7);
+              cb->saslSendClient(std::move(str));
             }
-            if (ex) {
-              threadManager_->stop();
-              cb->saslError(std::move(ex));
-            }
-            if (complete) {
-              threadManager_->stop();
-              cb->saslComplete();
-            }
-          });
-      }));
+          }
+          if (ex) {
+            threadManager_->stop();
+            cb->saslError(std::move(ex));
+          }
+          if (complete) {
+            threadManager_->stop();
+            cb->saslComplete();
+          }
+        });
+  }));
 }
 
 std::unique_ptr<IOBuf> StubSaslServer::wrap(std::unique_ptr<IOBuf>&& buf) {
@@ -187,8 +177,9 @@ std::unique_ptr<IOBuf> StubSaslServer::wrap(std::unique_ptr<IOBuf>&& buf) {
   return output;
 }
 
-std::unique_ptr<IOBuf> StubSaslServer::unwrap(IOBufQueue* q,
-                                              size_t* remaining) {
+std::unique_ptr<IOBuf> StubSaslServer::unwrap(
+    IOBufQueue* q,
+    size_t* remaining) {
   folly::io::Cursor c(q->front());
   size_t chainSize = q->front()->computeChainDataLength();
   uint32_t outlen = 0;
@@ -234,4 +225,5 @@ std::string StubSaslServer::getServerIdentity() const {
   }
 }
 
-}}
+} // namespace thrift
+} // namespace apache

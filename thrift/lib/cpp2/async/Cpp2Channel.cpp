@@ -15,27 +15,28 @@
  */
 
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
-
-#include <folly/io/IOBufQueue.h>
-#include <folly/io/Cursor.h>
-#include <folly/String.h>
 
 #include <glog/logging.h>
 
-using std::unique_ptr;
-using std::pair;
+#include <folly/String.h>
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
+
 using folly::IOBuf;
 using folly::IOBufQueue;
+using std::pair;
+using std::unique_ptr;
 using namespace folly::io;
 using namespace apache::thrift::transport;
 using folly::EventBase;
 using namespace apache::thrift::concurrency;
 using apache::thrift::async::TAsyncTransport;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
     const std::shared_ptr<TAsyncTransport>& transport,
@@ -59,9 +60,9 @@ Cpp2Channel::Cpp2Channel(
     saslNegotiationHandler_ = std::make_unique<DummySaslNegotiationHandler>();
   }
   saslNegotiationHandler_->setProtectionHandler(protectionHandler_.get());
-  auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>([this]{
-      return protectionHandler_->getProtectionState() ==
-          ProtectionHandler::ProtectionState::VALID;
+  auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>([this] {
+    return protectionHandler_->getProtectionState() ==
+        ProtectionHandler::ProtectionState::VALID;
   });
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
@@ -110,8 +111,7 @@ void Cpp2Channel::destroy() {
   MessageChannel::destroy();
 }
 
-void Cpp2Channel::attachEventBase(
-  EventBase* eventBase) {
+void Cpp2Channel::attachEventBase(EventBase* eventBase) {
   transportHandler_->attachEventBase(eventBase);
 }
 
@@ -145,9 +145,10 @@ void Cpp2Channel::read(
     sample_->readEnd = Util::currentTimeUsec();
   }
 
-  recvCallback_->messageReceived(std::move(bufAndHeader.first),
-                                 std::move(bufAndHeader.second),
-                                 std::move(sample_));
+  recvCallback_->messageReceived(
+      std::move(bufAndHeader.first),
+      std::move(bufAndHeader.second),
+      std::move(sample_));
 }
 
 void Cpp2Channel::readEOF(Context*) {
@@ -202,9 +203,10 @@ void Cpp2Channel::processReadEOF() noexcept {
 }
 
 // Low level interface
-void Cpp2Channel::sendMessage(SendCallback* callback,
-                              std::unique_ptr<folly::IOBuf>&& buf,
-                              apache::thrift::transport::THeader* header) {
+void Cpp2Channel::sendMessage(
+    SendCallback* callback,
+    std::unique_ptr<folly::IOBuf>&& buf,
+    apache::thrift::transport::THeader* header) {
   // Callback may be null.
   assert(buf);
 
@@ -214,7 +216,7 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
     if (callback) {
       callback->messageSendError(
           folly::make_exception_wrapper<TTransportException>(
-            "Channel is !good()"));
+              "Channel is !good()"));
     }
     return;
   }
@@ -227,15 +229,12 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
   DestructorGuard dg(this);
 
   auto future = pipeline_->write(std::make_pair(std::move(buf), header));
-  future.then([this,dg](folly::Try<folly::Unit>&& t) {
+  future.then([this, dg](folly::Try<folly::Unit>&& t) {
     if (t.withException<TTransportException>(
-          [&](const TTransportException& ex) {
-            writeError(0, ex);
-          }) ||
-        t.withException<std::exception>(
-          [&](const std::exception& ex) {
-            writeError(0, TTransportException(ex.what()));
-          })) {
+            [&](const TTransportException& ex) { writeError(0, ex); }) ||
+        t.withException<std::exception>([&](const std::exception& ex) {
+          writeError(0, TTransportException(ex.what()));
+        })) {
       return;
     } else {
       writeSuccess();
@@ -263,4 +262,5 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   }
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

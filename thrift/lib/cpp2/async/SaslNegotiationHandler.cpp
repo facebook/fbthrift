@@ -15,7 +15,8 @@
  */
 #include <thrift/lib/cpp2/async/SaslNegotiationHandler.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using ProtectionState = apache::thrift::ProtectionHandler::ProtectionState;
 
@@ -26,11 +27,12 @@ void SaslNegotiationHandler::read(Context* ctx, BufAndHeader bufAndHeader) {
     // do nothing.
     ctx->fireRead(std::move(bufAndHeader));
   } else {
-    if (handleSecurityMessage(std::move(bufAndHeader.first),
-                              std::move(bufAndHeader.second))) {
+    if (handleSecurityMessage(
+            std::move(bufAndHeader.first), std::move(bufAndHeader.second))) {
       ctx->fireRead(std::move(bufAndHeader));
     }
   }
 }
 
-}} // namespace
+} // namespace thrift
+} // namespace apache

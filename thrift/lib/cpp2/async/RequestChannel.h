@@ -16,6 +16,12 @@
 #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_
 #define THRIFT_ASYNC_REQUESTCHANNEL_H_ 1
 
+#include <chrono>
+#include <functional>
+#include <memory>
+
+#include <glog/logging.h>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/String.h>
@@ -32,40 +38,32 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
-#include <functional>
-#include <memory>
-
-#include <glog/logging.h>
-
-#include <chrono>
 
 namespace folly {
 class IOBuf;
 }
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class ClientReceiveState {
  public:
   ClientReceiveState()
-      : protocolId_(-1),
-        isSecurityActive_(false),
-        isStreamEnd_(false) {
-  }
+      : protocolId_(-1), isSecurityActive_(false), isStreamEnd_(false) {}
 
-  ClientReceiveState(uint16_t _protocolId,
-                    std::unique_ptr<folly::IOBuf> _buf,
-                    std::unique_ptr<apache::thrift::transport::THeader> _header,
-                    std::shared_ptr<apache::thrift::ContextStack> _ctx,
-                    bool _isSecurityActive,
-                    bool _isStreamEnd = false)
-    : protocolId_(_protocolId),
-      ctx_(std::move(_ctx)),
-      buf_(std::move(_buf)),
-      header_(std::move(_header)),
-      isSecurityActive_(_isSecurityActive),
-      isStreamEnd_(_isStreamEnd) {
-  }
+  ClientReceiveState(
+      uint16_t _protocolId,
+      std::unique_ptr<folly::IOBuf> _buf,
+      std::unique_ptr<apache::thrift::transport::THeader> _header,
+      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      bool _isSecurityActive,
+      bool _isStreamEnd = false)
+      : protocolId_(_protocolId),
+        ctx_(std::move(_ctx)),
+        buf_(std::move(_buf)),
+        header_(std::move(_header)),
+        isSecurityActive_(_isSecurityActive),
+        isStreamEnd_(_isStreamEnd) {}
   ClientReceiveState(
       uint16_t _protocolId,
       ResponseAndSemiStream<
@@ -82,16 +80,16 @@ class ClientReceiveState {
         isSecurityActive_(_isSecurityActive),
         isStreamEnd_(_isStreamEnd),
         stream_(std::move(bufAndStream.stream)) {}
-  ClientReceiveState(folly::exception_wrapper _excw,
-                     std::shared_ptr<apache::thrift::ContextStack> _ctx,
-                     bool _isSecurityActive)
-    : protocolId_(-1),
-      ctx_(std::move(_ctx)),
-      header_(std::make_unique<apache::thrift::transport::THeader>()),
-      excw_(std::move(_excw)),
-      isSecurityActive_(_isSecurityActive),
-      isStreamEnd_(false) {
-  }
+  ClientReceiveState(
+      folly::exception_wrapper _excw,
+      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      bool _isSecurityActive)
+      : protocolId_(-1),
+        ctx_(std::move(_ctx)),
+        header_(std::make_unique<apache::thrift::transport::THeader>()),
+        excw_(std::move(_excw)),
+        isSecurityActive_(_isSecurityActive),
+        isStreamEnd_(false) {}
 
   bool isException() const {
     return excw_ ? true : false;
@@ -234,10 +232,15 @@ class FunctionSendRecvRequestCallback final : public SendRecvRequestCallback {
  public:
   using Send = folly::Function<void(folly::exception_wrapper&&)>;
   using Recv = folly::Function<void(ClientReceiveState&&)>;
-  FunctionSendRecvRequestCallback(Send sendf, Recv recvf) :
-      sendf_(std::move(sendf)), recvf_(std::move(recvf)) {}
-  void send(folly::exception_wrapper&& ew) override { sendf_(std::move(ew)); }
-  void recv(ClientReceiveState&& state) override { recvf_(std::move(state)); }
+  FunctionSendRecvRequestCallback(Send sendf, Recv recvf)
+      : sendf_(std::move(sendf)), recvf_(std::move(recvf)) {}
+  void send(folly::exception_wrapper&& ew) override {
+    sendf_(std::move(ew));
+  }
+  void recv(ClientReceiveState&& state) override {
+    recvf_(std::move(state));
+  }
+
  private:
   Send sendf_;
   Recv recvf_;
@@ -254,7 +257,7 @@ class FunctionSendRecvRequestCallback final : public SendRecvRequestCallback {
 class FunctionReplyCallback : public RequestCallback {
  public:
   explicit FunctionReplyCallback(
-    folly::Function<void (ClientReceiveState&&)> callback)
+      folly::Function<void(ClientReceiveState&&)> callback)
       : callback_(std::move(callback)) {}
   void replyReceived(ClientReceiveState&& state) override {
     callback_(std::move(state));
@@ -266,15 +269,15 @@ class FunctionReplyCallback : public RequestCallback {
   }
   void requestSent() override {}
 
-private:
-  folly::Function<void (ClientReceiveState&&)> callback_;
+ private:
+  folly::Function<void(ClientReceiveState&&)> callback_;
 };
 
 /* Useful for oneway methods. */
 class FunctionSendCallback : public RequestCallback {
  public:
   explicit FunctionSendCallback(
-    folly::Function<void (ClientReceiveState&&)>&& callback)
+      folly::Function<void(ClientReceiveState&&)>&& callback)
       : callback_(std::move(callback)) {}
   void requestSent() override {
     auto cb = std::move(callback_);
@@ -285,8 +288,9 @@ class FunctionSendCallback : public RequestCallback {
     cb(std::move(state));
   }
   void replyReceived(ClientReceiveState&& /*state*/) override {}
+
  private:
-  folly::Function<void (ClientReceiveState&&)> callback_;
+  folly::Function<void(ClientReceiveState&&)> callback_;
 };
 
 class CloseCallback {
@@ -307,11 +311,10 @@ class RpcOptions {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
   RpcOptions()
-   : timeout_(0),
-     priority_(apache::thrift::concurrency::N_PRIORITIES),
-     chunkTimeout_(0),
-     queueTimeout_(0)
-  { }
+      : timeout_(0),
+        priority_(apache::thrift::concurrency::N_PRIORITIES),
+        chunkTimeout_(0),
+        queueTimeout_(0) {}
 
   /**
    * NOTE: This only sets the receive timeout, and not the send timeout on
@@ -344,7 +347,6 @@ class RpcOptions {
     return chunkTimeout_;
   }
 
-
   RpcOptions& setQueueTimeout(std::chrono::milliseconds queueTimeout) {
     queueTimeout_ = queueTimeout;
     return *this;
@@ -375,6 +377,7 @@ class RpcOptions {
     writeHeaders_.swap(headers);
     return headers;
   }
+
  private:
   std::chrono::milliseconds timeout_;
   PRIORITY priority_;
@@ -430,11 +433,12 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) {
     RpcOptions options;
-    return sendRequest(options,
-                       std::move(cb),
-                       std::move(ctx),
-                       std::move(buf),
-                       std::move(header));
+    return sendRequest(
+        options,
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header));
   }
 
   /* Similar to sendRequest, although replyReceived will never be called
@@ -454,11 +458,12 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) {
     RpcOptions options;
-    return sendOnewayRequest(options,
-                             std::move(cb),
-                             std::move(ctx),
-                             std::move(buf),
-                             std::move(header));
+    return sendOnewayRequest(
+        options,
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header));
   }
 
   /**
@@ -561,8 +566,7 @@ void clientSendT(
     smsg.buffer = queue.front();
     ctx->onWriteData(smsg);
     ctx->postWrite(queue.chainLength());
-  }
-  catch (const apache::thrift::TException &ex) {
+  } catch (const apache::thrift::TException& ex) {
     ctx->handlerErrorWrapped(
         folly::exception_wrapper(std::current_exception(), ex));
     throw;

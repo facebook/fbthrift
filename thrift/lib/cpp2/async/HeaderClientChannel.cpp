@@ -15,50 +15,50 @@
  */
 
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/async/GssSaslClient.h>
-#include <thrift/lib/cpp/EventHandlerBase.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <folly/io/Cursor.h>
 
 #include <utility>
 
-using std::unique_ptr;
-using std::pair;
+#include <folly/io/Cursor.h>
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/GssSaslClient.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
+
 using folly::IOBuf;
 using folly::IOBufQueue;
 using std::make_unique;
+using std::pair;
+using std::unique_ptr;
 using namespace apache::thrift::transport;
-using folly::EventBase;
 using apache::thrift::async::TAsyncTransport;
+using folly::EventBase;
 using folly::RequestContext;
 using HResClock = std::chrono::high_resolution_clock;
 using Us = std::chrono::microseconds;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
 HeaderClientChannel::HeaderClientChannel(
-  const std::shared_ptr<TAsyncTransport>& transport)
-    : HeaderClientChannel(
-        std::shared_ptr<Cpp2Channel>(
-            Cpp2Channel::newChannel(transport,
-                make_unique<ClientFramingHandler>(*this))))
-{}
+    const std::shared_ptr<TAsyncTransport>& transport)
+    : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
+          transport,
+          make_unique<ClientFramingHandler>(*this)))) {}
 
 HeaderClientChannel::HeaderClientChannel(
-  const std::shared_ptr<Cpp2Channel>& cpp2Channel)
-    : sendSeqId_(0)
-    , sendSecurityPendingSeqId_(0)
-    , closeCallback_(nullptr)
-    , timeout_(0)
-    , timeoutSASL_(500)
-    , handshakeMessagesSent_(0)
-    , keepRegisteredForClose_(true)
-    , saslClientCallback_(*this)
-    , cpp2Channel_(cpp2Channel)
-    , protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
+    const std::shared_ptr<Cpp2Channel>& cpp2Channel)
+    : sendSeqId_(0),
+      sendSecurityPendingSeqId_(0),
+      closeCallback_(nullptr),
+      timeout_(0),
+      timeoutSASL_(500),
+      handshakeMessagesSent_(0),
+      keepRegisteredForClose_(true),
+      saslClientCallback_(*this),
+      cpp2Channel_(cpp2Channel),
+      protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
   getTransport()->setSendTimeout(ms);
@@ -82,8 +82,9 @@ void HeaderClientChannel::destroy() {
   folly::DelayedDestruction::destroy();
 }
 
-void HeaderClientChannel::useAsHttpClient(const std::string& host,
-                                          const std::string& uri) {
+void HeaderClientChannel::useAsHttpClient(
+    const std::string& host,
+    const std::string& uri) {
   setClientType(THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
 }
@@ -93,8 +94,7 @@ bool HeaderClientChannel::good() {
   return transport && transport->good();
 }
 
-void HeaderClientChannel::attachEventBase(
-    EventBase* eventBase) {
+void HeaderClientChannel::attachEventBase(EventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
   if (saslClient_ && getProtectionState() == ProtectionState::UNKNOWN) {
     // Note that we only want to attach the event base here if
@@ -151,7 +151,8 @@ void HeaderClientChannel::startSecurity() {
 }
 
 unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
-    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
+    unique_ptr<IOBuf>&& buf,
+    unique_ptr<THeader>&& header) {
   if (header->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     if (getProtectionState() == ProtectionState::INPROGRESS ||
         getProtectionState() == ProtectionState::WAITING) {
@@ -161,9 +162,10 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
       return nullptr;
     }
     // else, fall through to application message processing
-  } else if (getProtectionState() == ProtectionState::INPROGRESS ||
-             getProtectionState() == ProtectionState::WAITING ||
-             getProtectionState() == ProtectionState::VALID) {
+  } else if (
+      getProtectionState() == ProtectionState::INPROGRESS ||
+      getProtectionState() == ProtectionState::WAITING ||
+      getProtectionState() == ProtectionState::VALID) {
     setProtectionState(ProtectionState::INVALID);
     // If the security negotiation has completed successfully, or is
     // in progress, we expect SASL to continue to be used.  If
@@ -172,7 +174,7 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
     LOG(WARNING) << "non-SASL message received on SASL channel";
     saslClientCallback_.saslError(
         folly::make_exception_wrapper<TTransportException>(
-          "non-SASL message received on SASL channel"));
+            "non-SASL message received on SASL channel"));
     return nullptr;
   }
 
@@ -182,15 +184,15 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
 void HeaderClientChannel::SaslClientCallback::saslStarted() {
   if (channel_.timeoutSASL_ > 0) {
     channel_.getEventBase()->timer().scheduleTimeout(
-      this, std::chrono::milliseconds(channel_.timeoutSASL_));
+        this, std::chrono::milliseconds(channel_.timeoutSASL_));
   }
 }
 
 void HeaderClientChannel::SaslClientCallback::saslSendServer(
     std::unique_ptr<folly::IOBuf>&& message) {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.getEventBase()->timer().scheduleTimeout(this,
-        std::chrono::milliseconds(channel_.timeoutSASL_));
+    channel_.getEventBase()->timer().scheduleTimeout(
+        this, std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   if (sendServerHook_) {
     sendServerHook_();
@@ -216,22 +218,22 @@ void HeaderClientChannel::SaslClientCallback::saslError(
 
   bool ex_eof = false;
   ex.with_exception([&](TTransportException& tex) {
-      if (tex.getType() == TTransportException::END_OF_FILE) {
-        ex_eof = true;
-      }
-    });
+    if (tex.getType() == TTransportException::END_OF_FILE) {
+      ex_eof = true;
+    }
+  });
   if (ex_eof) {
     ex = folly::make_exception_wrapper<TTransportException>(
-      folly::to<std::string>(
-          ex.what(),
-          " during SASL handshake (likely keytab entry error on server)"));
+        folly::to<std::string>(
+            ex.what(),
+            " during SASL handshake (likely keytab entry error on server)"));
   }
 
   // Record error string
   std::string errorMessage =
-    "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
+      "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
   channel_.saslClient_->setErrorString(
-    folly::to<std::string>(errorMessage, " ", ex.what()));
+      folly::to<std::string>(errorMessage, " ", ex.what()));
 
   if (logger) {
     logger->log("sasl_error", ex.what().toStdString());
@@ -272,12 +274,9 @@ void HeaderClientChannel::SaslClientCallback::saslComplete() {
   auto logger = channel_.saslClient_->getSaslLogger();
   if (logger) {
     logger->log(
-      "sasl_complete",
-      {
-        channel_.saslClient_->getClientIdentity(),
-        channel_.saslClient_->getServerIdentity()
-      }
-    );
+        "sasl_complete",
+        {channel_.saslClient_->getClientIdentity(),
+         channel_.saslClient_->getServerIdentity()});
   }
 
   channel_.setSecurityComplete(ProtectionState::VALID);
@@ -311,8 +310,7 @@ bool HeaderClientChannel::isSecurityPending() {
 }
 
 void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
-  assert(state == ProtectionState::NONE ||
-         state == ProtectionState::VALID);
+  assert(state == ProtectionState::NONE || state == ProtectionState::VALID);
 
   setProtectionState(state);
   setBaseReceivedCallback();
@@ -325,20 +323,22 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
     auto& cb = std::get<2>(funcarg);
     folly::RequestContextScopeGuard rctx(cb->context_);
 
-    cb->securityEnd_ = std::chrono::duration_cast<Us>(
-        HResClock::now().time_since_epoch()).count();
-    (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
-                                    std::move(std::get<2>(funcarg)),
-                                    std::move(std::get<3>(funcarg)),
-                                    std::move(std::get<4>(funcarg)),
-                                    std::move(std::get<5>(funcarg)));
+    cb->securityEnd_ =
+        std::chrono::duration_cast<Us>(HResClock::now().time_since_epoch())
+            .count();
+    (this->*(std::get<0>(funcarg)))(
+        std::get<1>(funcarg),
+        std::move(std::get<2>(funcarg)),
+        std::move(std::get<3>(funcarg)),
+        std::move(std::get<4>(funcarg)),
+        std::move(std::get<5>(funcarg)));
   }
   afterSecurity_.clear();
 }
 
 bool HeaderClientChannel::clientSupportHeader() {
   return getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
-         getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE;
+      getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE;
 }
 
 // Client Interface
@@ -351,16 +351,17 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
   cb->context_ = RequestContext::saveContext();
 
   if (isSecurityPending()) {
-    cb->securityStart_ = std::chrono::duration_cast<Us>(
-        HResClock::now().time_since_epoch()).count();
-    afterSecurity_.push_back(
-      std::make_tuple(static_cast<AfterSecurityMethod>(
-                        &HeaderClientChannel::sendOnewayRequest),
-                      RpcOptions(rpcOptions),
-                      std::move(cb),
-                      std::move(ctx),
-                      std::move(buf),
-                      std::move(header)));
+    cb->securityStart_ =
+        std::chrono::duration_cast<Us>(HResClock::now().time_since_epoch())
+            .count();
+    afterSecurity_.push_back(std::make_tuple(
+        static_cast<AfterSecurityMethod>(
+            &HeaderClientChannel::sendOnewayRequest),
+        RpcOptions(rpcOptions),
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header)));
     return ResponseChannel::ONEWAY_REQUEST_ID;
   }
 
@@ -372,9 +373,10 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
   sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
 
   if (cb) {
-    sendMessage(new OnewayCallback(std::move(cb), std::move(ctx),
-                                   isSecurityActive()),
-                std::move(buf), header.get());
+    sendMessage(
+        new OnewayCallback(std::move(cb), std::move(ctx), isSecurityActive()),
+        std::move(buf),
+        header.get());
   } else {
     sendMessage(nullptr, std::move(buf), header.get());
   }
@@ -421,16 +423,16 @@ uint32_t HeaderClientChannel::sendRequest(
   cb->context_ = RequestContext::saveContext();
 
   if (isSecurityPending()) {
-    cb->securityStart_ = std::chrono::duration_cast<Us>(
-        HResClock::now().time_since_epoch()).count();
-    afterSecurity_.push_back(
-      std::make_tuple(static_cast<AfterSecurityMethod>(
-                        &HeaderClientChannel::sendRequest),
-                      RpcOptions(rpcOptions),
-                      std::move(cb),
-                      std::move(ctx),
-                      std::move(buf),
-                      std::move(header)));
+    cb->securityStart_ =
+        std::chrono::duration_cast<Us>(HResClock::now().time_since_epoch())
+            .count();
+    afterSecurity_.push_back(std::make_tuple(
+        static_cast<AfterSecurityMethod>(&HeaderClientChannel::sendRequest),
+        RpcOptions(rpcOptions),
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header)));
 
     // Security always happens at the beginning of the channel, with seq id 0.
     // Return sequence id expected to be generated when security is done.
@@ -454,14 +456,15 @@ uint32_t HeaderClientChannel::sendRequest(
     timeout = rpcOptions.getTimeout();
   }
 
-  auto twcb = new TwowayCallback<HeaderClientChannel>(this,
-                                 sendSeqId_,
-                                 getProtocolId(),
-                                 std::move(cb),
-                                 std::move(ctx),
-                                 &getEventBase()->timer(),
-                                 timeout,
-                                 rpcOptions.getChunkTimeout());
+  auto twcb = new TwowayCallback<HeaderClientChannel>(
+      this,
+      sendSeqId_,
+      getProtocolId(),
+      std::move(cb),
+      std::move(ctx),
+      &getEventBase()->timer(),
+      timeout,
+      rpcOptions.getChunkTimeout());
 
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
@@ -479,12 +482,13 @@ uint32_t HeaderClientChannel::sendRequest(
 
 // Header framing
 std::unique_ptr<folly::IOBuf>
-HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf,
-                                                    THeader* header) {
+HeaderClientChannel::ClientFramingHandler::addFrame(
+    unique_ptr<IOBuf> buf,
+    THeader* header) {
   channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
-  return header->addHeader(std::move(buf),
-                           channel_.getPersistentWriteHeaders());
+  return header->addHeader(
+      std::move(buf), channel_.getPersistentWriteHeaders());
 }
 
 std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
@@ -495,8 +499,8 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   size_t remaining = 0;
-  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining,
-      channel_.getPersistentReadHeaders());
+  std::unique_ptr<folly::IOBuf> buf =
+      header->removeHeader(q, remaining, channel_.getPersistentReadHeaders());
   if (!buf) {
     return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
   }
@@ -598,8 +602,9 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     afterSecurity_.pop_front();
     if (cb) {
       folly::RequestContextScopeGuard rctx(cb->context_);
-      cb->securityEnd_ = std::chrono::duration_cast<Us>(
-        HResClock::now().time_since_epoch()).count();
+      cb->securityEnd_ =
+          std::chrono::duration_cast<Us>(HResClock::now().time_since_epoch())
+              .count();
       cb->requestError(
           ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
     }
@@ -617,7 +622,7 @@ void HeaderClientChannel::eraseCallback(
   CHECK(it->second == cb);
   recvCallbacks_.erase(it);
 
-  setBaseReceivedCallback();   // was this the last callback?
+  setBaseReceivedCallback(); // was this the last callback?
 }
 
 bool HeaderClientChannel::expireCallback(uint32_t seqId) {
@@ -643,4 +648,5 @@ void HeaderClientChannel::setBaseReceivedCallback() {
   }
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

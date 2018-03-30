@@ -19,21 +19,22 @@
 #ifndef THRIFT_ASYNC_THEADERSERVERCHANNEL_H_
 #define THRIFT_ASYNC_THEADERSERVERCHANNEL_H_ 1
 
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/ServerChannel.h>
-#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
-#include <thrift/lib/cpp2/async/SaslServer.h>
-#include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <folly/io/async/DelayedDestruction.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 #include <memory>
-
 #include <unordered_map>
 
-namespace apache { namespace thrift {
+#include <folly/io/async/DelayedDestruction.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/Cpp2Channel.h>
+#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/SaslServer.h>
+#include <thrift/lib/cpp2/async/ServerChannel.h>
+
+namespace apache {
+namespace thrift {
 
 /**
  * HeaderServerChannel
@@ -46,24 +47,23 @@ class HeaderServerChannel : public ServerChannel,
                             public MessageChannel::RecvCallback,
                             virtual public folly::DelayedDestruction {
   typedef ProtectionHandler::ProtectionState ProtectionState;
-protected:
- ~HeaderServerChannel() override {}
+
+ protected:
+  ~HeaderServerChannel() override {}
 
  public:
   explicit HeaderServerChannel(
-    const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
+      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
 
-  explicit HeaderServerChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel);
+  explicit HeaderServerChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
-  static std::unique_ptr<HeaderServerChannel,
-                         folly::DelayedDestruction::Destructor>
-  newChannel(
-    const std::shared_ptr<
-    apache::thrift::async::TAsyncTransport>& transport) {
-    return std::unique_ptr<HeaderServerChannel,
-      folly::DelayedDestruction::Destructor>(
-      new HeaderServerChannel(transport));
+  static std::
+      unique_ptr<HeaderServerChannel, folly::DelayedDestruction::Destructor>
+      newChannel(const std::shared_ptr<apache::thrift::async::TAsyncTransport>&
+                     transport) {
+    return std::
+        unique_ptr<HeaderServerChannel, folly::DelayedDestruction::Destructor>(
+            new HeaderServerChannel(transport));
   }
 
   // DelayedDestruction methods
@@ -74,7 +74,7 @@ protected:
   }
 
   void setTransport(
-    std::shared_ptr<apache::thrift::async::TAsyncTransport> transport) {
+      std::shared_ptr<apache::thrift::async::TAsyncTransport> transport) {
     cpp2Channel_->setTransport(transport);
   }
 
@@ -89,66 +89,80 @@ protected:
     }
   }
 
-  virtual void sendMessage(Cpp2Channel::SendCallback* callback,
-                           std::unique_ptr<folly::IOBuf> buf,
-                           apache::thrift::transport::THeader* header) {
+  virtual void sendMessage(
+      Cpp2Channel::SendCallback* callback,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::transport::THeader* header) {
     cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
 
   // Interface from MessageChannel::RecvCallback
   bool shouldSample() override;
-  void messageReceived(std::unique_ptr<folly::IOBuf>&&,
-                       std::unique_ptr<apache::thrift::transport::THeader>&&,
-                       std::unique_ptr<sample>) override;
+  void messageReceived(
+      std::unique_ptr<folly::IOBuf>&&,
+      std::unique_ptr<apache::thrift::transport::THeader>&&,
+      std::unique_ptr<sample>) override;
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
   folly::EventBase* getEventBase() {
-      return cpp2Channel_->getEventBase();
+    return cpp2Channel_->getEventBase();
   }
 
   void sendCatchupRequests(
-    std::unique_ptr<folly::IOBuf> next_req,
-    MessageChannel::SendCallback* cb,
-    apache::thrift::transport::THeader* header);
+      std::unique_ptr<folly::IOBuf> next_req,
+      MessageChannel::SendCallback* cb,
+      apache::thrift::transport::THeader* header);
 
   class HeaderRequest : public Request {
    public:
-    HeaderRequest(HeaderServerChannel* channel,
-                  std::unique_ptr<folly::IOBuf>&& buf,
-                  std::unique_ptr<apache::thrift::transport::THeader>&& header,
-                  std::unique_ptr<sample> sample);
+    HeaderRequest(
+        HeaderServerChannel* channel,
+        std::unique_ptr<folly::IOBuf>&& buf,
+        std::unique_ptr<apache::thrift::transport::THeader>&& header,
+        std::unique_ptr<sample> sample);
 
-    bool isActive() override { return active_; }
-    void cancel() override { active_ = false; }
+    bool isActive() override {
+      return active_;
+    }
+    void cancel() override {
+      active_ = false;
+    }
 
     bool isOneway() override {
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
 
-    void setInOrderRecvSequenceId(uint32_t seqId) { InOrderRecvSeqId_ = seqId; }
+    void setInOrderRecvSequenceId(uint32_t seqId) {
+      InOrderRecvSeqId_ = seqId;
+    }
 
-    apache::thrift::transport::THeader* getHeader() {return header_.get(); }
+    apache::thrift::transport::THeader* getHeader() {
+      return header_.get();
+    }
 
-    void sendReply(std::unique_ptr<folly::IOBuf>&&,
-                   MessageChannel::SendCallback* cb = nullptr) override;
+    void sendReply(
+        std::unique_ptr<folly::IOBuf>&&,
+        MessageChannel::SendCallback* cb = nullptr) override;
 
     void serializeAndSendError(
-      apache::thrift::transport::THeader& header,
-      TApplicationException& tae,
-      const std::string& methodName,
-      int32_t protoSeqId,
-      MessageChannel::SendCallback* cb);
+        apache::thrift::transport::THeader& header,
+        TApplicationException& tae,
+        const std::string& methodName,
+        int32_t protoSeqId,
+        MessageChannel::SendCallback* cb);
 
-    void sendErrorWrapped(folly::exception_wrapper ex,
-                          std::string exCode,
-                          MessageChannel::SendCallback* cb = nullptr) override;
+    void sendErrorWrapped(
+        folly::exception_wrapper ex,
+        std::string exCode,
+        MessageChannel::SendCallback* cb = nullptr) override;
 
-    void sendErrorWrapped(folly::exception_wrapper ex,
-                          std::string exCode,
-                          const std::string& methodName,
-                          int32_t protoSeqId,
-                          MessageChannel::SendCallback* cb = nullptr);
+    void sendErrorWrapped(
+        folly::exception_wrapper ex,
+        std::string exCode,
+        const std::string& methodName,
+        int32_t protoSeqId,
+        MessageChannel::SendCallback* cb = nullptr);
 
     /* We differentiate between two types of timeouts:
        1) Task timeouts refer to timeouts that fire while the request is
@@ -156,16 +170,14 @@ protected:
        2) Queue timeouts refer to timeouts that fire before processing
        of the request has begun
     */
-    enum TimeoutResponseType {
-      TASK,
-      QUEUE
-    };
+    enum TimeoutResponseType { TASK, QUEUE };
 
-    void sendTimeoutResponse(const std::string& methodName,
-                             int32_t protoSeqId,
-                             MessageChannel::SendCallback* cb,
-                             const std::map<std::string, std::string>& headers,
-                             TimeoutResponseType responseType);
+    void sendTimeoutResponse(
+        const std::string& methodName,
+        int32_t protoSeqId,
+        MessageChannel::SendCallback* cb,
+        const std::map<std::string, std::string>& headers,
+        TimeoutResponseType responseType);
 
    private:
     HeaderServerChannel* channel_;
@@ -208,33 +220,37 @@ protected:
     writeTrans_ = writeTrans;
   }
 
-  std::vector<uint16_t>& getDefaultWriteTransforms() { return writeTrans_; }
+  std::vector<uint16_t>& getDefaultWriteTransforms() {
+    return writeTrans_;
+  }
 
   void closeNow() {
     cpp2Channel_->closeNow();
   }
 
   class ServerFramingHandler : public FramingHandler {
-  public:
+   public:
     explicit ServerFramingHandler(HeaderServerChannel& channel)
-      : channel_(channel) {}
+        : channel_(channel) {}
 
-    std::tuple<std::unique_ptr<folly::IOBuf>,
-               size_t,
-               std::unique_ptr<apache::thrift::transport::THeader>>
+    std::tuple<
+        std::unique_ptr<folly::IOBuf>,
+        size_t,
+        std::unique_ptr<apache::thrift::transport::THeader>>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf> addFrame(
         std::unique_ptr<folly::IOBuf> buf,
         apache::thrift::transport::THeader* header) override;
-  private:
+
+   private:
     HeaderServerChannel& channel_;
   };
 
   class ServerSaslNegotiationHandler : public SaslNegotiationHandler {
-  public:
+   public:
     explicit ServerSaslNegotiationHandler(HeaderServerChannel& channel)
-      : channel_(channel) {}
+        : channel_(channel) {}
 
     bool handleSecurityMessage(
         std::unique_ptr<folly::IOBuf>&& buf,
@@ -247,7 +263,7 @@ protected:
   class SaslServerCallback : public SaslServer::Callback {
    public:
     explicit SaslServerCallback(HeaderServerChannel& channel)
-      : channel_(channel), header_(nullptr) {}
+        : channel_(channel), header_(nullptr) {}
     void saslSendClient(std::unique_ptr<folly::IOBuf>&&) override;
     void saslError(folly::exception_wrapper&&) override;
     void saslComplete() override;
@@ -256,6 +272,7 @@ protected:
         std::unique_ptr<apache::thrift::transport::THeader>&& header) {
       header_ = std::move(header);
     }
+
    private:
     HeaderServerChannel& channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
@@ -265,36 +282,36 @@ protected:
     return &saslServerCallback_;
   }
 
-
-protected:
+ protected:
   void setPersistentAuthHeader(bool auth) override {
     setPersistentHeader("thrift_auth", auth ? "1" : "0");
   }
 
-private:
+ private:
   ProtectionState getProtectionState() {
     return cpp2Channel_->getProtectionHandler()->getProtectionState();
   }
 
   void setProtectionState(ProtectionState newState) {
-    cpp2Channel_->getProtectionHandler()->setProtectionState(newState,
-                                                             saslServer_.get());
+    cpp2Channel_->getProtectionHandler()->setProtectionState(
+        newState, saslServer_.get());
   }
 
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
-      apache::thrift::async::TAsyncTransport *transport);
+      apache::thrift::async::TAsyncTransport* transport);
 
   ResponseChannel::Callback* callback_;
   std::unique_ptr<SaslServer> saslServer_;
 
   // For backwards-compatible in-order responses support
   std::unordered_map<
-    uint32_t,
-    std::tuple<
-      MessageChannel::SendCallback*,
-      std::unique_ptr<folly::IOBuf>,
-      std::unique_ptr<apache::thrift::transport::THeader>>> inOrderRequests_;
+      uint32_t,
+      std::tuple<
+          MessageChannel::SendCallback*,
+          std::unique_ptr<folly::IOBuf>,
+          std::unique_ptr<apache::thrift::transport::THeader>>>
+      inOrderRequests_;
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
@@ -314,6 +331,7 @@ private:
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_THEADERSERVERCHANNEL_H_

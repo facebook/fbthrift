@@ -16,24 +16,24 @@
 
 #pragma once
 
-#include <wangle/channel/Handler.h>
-#include <folly/io/async/EventBase.h>
-#include <folly/io/async/EventBaseManager.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <wangle/channel/Handler.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // This Handler may only be used in a single Pipeline
-class TAsyncTransportHandler
-  : public wangle::BytesToBytesHandler,
-    public async::TAsyncTransport::ReadCallback {
+class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
+                               public async::TAsyncTransport::ReadCallback {
  public:
   explicit TAsyncTransportHandler(
       std::shared_ptr<async::TAsyncTransport> transport)
-    : transport_(std::move(transport)) {}
+      : transport_(std::move(transport)) {}
 
   TAsyncTransportHandler(TAsyncTransportHandler&&) = default;
 
@@ -93,8 +93,8 @@ class TAsyncTransportHandler
     return future;
   }
 
-  folly::Future<folly::Unit> writeException(Context*,
-                                            folly::exception_wrapper) override {
+  folly::Future<folly::Unit> writeException(Context*, folly::exception_wrapper)
+      override {
     return shutdown(true);
   }
 
@@ -111,8 +111,7 @@ class TAsyncTransportHandler
   void getReadBuffer(void** bufReturn, size_t* lenReturn) override {
     const auto readBufferSettings = getContext()->getReadBufferSettings();
     const auto ret = bufQueue_.preallocate(
-        readBufferSettings.first,
-        readBufferSettings.second);
+        readBufferSettings.first, readBufferSettings.second);
     *bufReturn = ret.first;
     *lenReturn = ret.second;
   }
@@ -122,7 +121,9 @@ class TAsyncTransportHandler
     getContext()->fireRead(bufQueue_);
   }
 
-  bool isBufferMovable() noexcept override { return true; }
+  bool isBufferMovable() noexcept override {
+    return true;
+  }
 
   void readBufferAvailable(
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
@@ -134,8 +135,7 @@ class TAsyncTransportHandler
     getContext()->fireReadEOF();
   }
 
-  void readError(const transport::TTransportException& ex)
-    noexcept override {
+  void readError(const transport::TTransportException& ex) noexcept override {
     getContext()->fireReadException(
         folly::make_exception_wrapper<transport::TTransportException>(
             std::move(ex)));
@@ -160,9 +160,9 @@ class TAsyncTransportHandler
       delete this;
     }
 
-    void writeError(size_t /*bytesWritten*/,
-                    const transport::TTransportException& ex)
-      noexcept override {
+    void writeError(
+        size_t /*bytesWritten*/,
+        const transport::TTransportException& ex) noexcept override {
       promise_.setException(ex);
       delete this;
     }
@@ -176,4 +176,5 @@ class TAsyncTransportHandler
   std::shared_ptr<async::TAsyncTransport> transport_;
 };
 
-}}
+} // namespace thrift
+} // namespace apache

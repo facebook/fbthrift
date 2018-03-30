@@ -16,7 +16,8 @@
 
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
   // Remaining for this packet.  Will update the class member
@@ -38,10 +39,9 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
     std::unique_ptr<folly::IOBuf> unframed;
     std::unique_ptr<apache::thrift::transport::THeader> header;
     auto ex = folly::try_and_catch<std::exception>([&]() {
-
-        // got a decrypted message
-        std::tie(unframed, remaining, header) = removeFrame(&q);
-      });
+      // got a decrypted message
+      std::tie(unframed, remaining, header) = removeFrame(&q);
+    });
 
     if (ex) {
       VLOG(5) << "Failed to read a message header";
@@ -52,7 +52,7 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
 
     if (!unframed) {
       ctx->setReadBufferSettings(
-        readBufferSize_, remaining ? remaining : readBufferSize_);
+          readBufferSize_, remaining ? remaining : readBufferSize_);
       return;
     } else {
       ctx->fireRead(std::make_pair(std::move(unframed), std::move(header)));
@@ -61,12 +61,12 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
 }
 
 folly::Future<folly::Unit> FramingHandler::write(
-  Context* ctx,
-  std::pair<std::unique_ptr<folly::IOBuf>,
-            apache::thrift::transport::THeader*> bufAndHeader) {
-  return ctx->fireWrite(addFrame(
-        std::move(bufAndHeader.first),
-        bufAndHeader.second));
+    Context* ctx,
+    std::pair<
+        std::unique_ptr<folly::IOBuf>,
+        apache::thrift::transport::THeader*> bufAndHeader) {
+  return ctx->fireWrite(
+      addFrame(std::move(bufAndHeader.first), bufAndHeader.second));
 }
 
 folly::Future<folly::Unit> FramingHandler::close(Context* ctx) {
@@ -74,5 +74,5 @@ folly::Future<folly::Unit> FramingHandler::close(Context* ctx) {
   return ctx->fireClose();
 }
 
-
-}} // namespace
+} // namespace thrift
+} // namespace apache

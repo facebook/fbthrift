@@ -16,18 +16,19 @@
 
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 
+#include <memory>
+
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-
-#include <memory>
 
 using folly::IOBuf;
 using folly::IOBufQueue;
 
 using namespace std;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 std::unique_ptr<IOBuf> SaslEndpoint::wrap(std::unique_ptr<IOBuf>&& buf) {
   // Note that this forced copy is necessary because we need to make sure
@@ -52,10 +53,7 @@ std::unique_ptr<IOBuf> SaslEndpoint::wrap(std::unique_ptr<IOBuf>&& buf) {
   return framing;
 }
 
-std::unique_ptr<IOBuf> SaslEndpoint::unwrap(
-  IOBufQueue* q,
-  size_t* remaining) {
-
+std::unique_ptr<IOBuf> SaslEndpoint::unwrap(IOBufQueue* q, size_t* remaining) {
   folly::io::Cursor c(q->front());
   size_t chainSize = q->chainLength();
   uint32_t wraplen = 0;
@@ -80,4 +78,5 @@ std::unique_ptr<IOBuf> SaslEndpoint::unwrap(
   return output;
 }
 
-}}
+} // namespace thrift
+} // namespace apache

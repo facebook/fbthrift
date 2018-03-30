@@ -15,12 +15,13 @@
  */
 #pragma once
 
-#include <wangle/channel/Handler.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
+#include <wangle/channel/Handler.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // This handler may only be used in a single Pipeline
 class ProtectionHandler : public wangle::BytesToBytesHandler {
@@ -36,8 +37,9 @@ class ProtectionHandler : public wangle::BytesToBytesHandler {
 
   ProtectionHandler() {}
 
-  void setProtectionState(ProtectionState protectionState,
-                          SaslEndpoint* saslEndpoint = nullptr) {
+  void setProtectionState(
+      ProtectionState protectionState,
+      SaslEndpoint* saslEndpoint = nullptr) {
     protectionState_ = protectionState;
     saslEndpoint_ = saslEndpoint;
     protectionStateChanged();
@@ -69,9 +71,8 @@ class ProtectionHandler : public wangle::BytesToBytesHandler {
    * Encrypt an IOBuf
    */
   folly::Future<folly::Unit> write(
-    Context* ctx,
-    std::unique_ptr<folly::IOBuf> buf) override;
-
+      Context* ctx,
+      std::unique_ptr<folly::IOBuf> buf) override;
 
   folly::Future<folly::Unit> close(Context* ctx) override;
 
@@ -87,4 +88,5 @@ class ProtectionHandler : public wangle::BytesToBytesHandler {
   folly::IOBufQueue inputQueue_{folly::IOBufQueue::cacheChainLength()};
 };
 
-}} // namespace
+} // namespace thrift
+} // namespace apache

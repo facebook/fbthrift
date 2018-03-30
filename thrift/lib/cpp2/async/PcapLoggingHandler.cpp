@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
+
+#include <fcntl.h>
+#include <net/ethernet.h>
+#include <netinet/ip.h>
+#include <netinet/ip6.h>
+#include <netinet/tcp.h>
+#include <stdlib.h>
+#include <time.h>
+
+#include <gflags/gflags.h>
+
 #include <folly/FBVector.h>
 #include <folly/FileUtil.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Random.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-
-#include <net/ethernet.h>
-#include <netinet/ip.h>
-#include <netinet/ip6.h>
-#include <netinet/tcp.h>
-
-#include <time.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <gflags/gflags.h>
 
 // For reallllly old systems, sigh
 #ifndef O_CLOEXEC
@@ -39,14 +40,17 @@
 #define ETHERTYPE_IPV6 0x86dd
 #endif
 
-DEFINE_bool(thrift_pcap_logging_prohibit, false,
+DEFINE_bool(
+    thrift_pcap_logging_prohibit,
+    false,
     "Don't allow pcap logging to be enabled");
 
 #ifndef __APPLE__
 #define THRIFT_PCAP_LOGGING_SUPPORTED 1
 #endif
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using clock = std::chrono::system_clock;
 using TAsyncSocket = async::TAsyncSocket;
@@ -55,41 +59,44 @@ using TAsyncSSLSocket = async::TAsyncSSLSocket;
 namespace {
 
 struct PcapFileHeader {
-  uint32_t magic_number;   /* magic number */
-  uint16_t version_major;  /* major version number */
-  uint16_t version_minor;  /* minor version number */
-  int32_t  thiszone;       /* GMT to local correction */
-  uint32_t sigfigs;        /* accuracy of timestamps */
-  uint32_t snaplen;        /* max length of captured packets, in octets */
-  uint32_t network;        /* data link type */
+  uint32_t magic_number; /* magic number */
+  uint16_t version_major; /* major version number */
+  uint16_t version_minor; /* minor version number */
+  int32_t thiszone; /* GMT to local correction */
+  uint32_t sigfigs; /* accuracy of timestamps */
+  uint32_t snaplen; /* max length of captured packets, in octets */
+  uint32_t network; /* data link type */
 };
 
 struct PcapRecordHeader {
-  uint32_t ts_sec;         /* timestamp seconds */
-  uint32_t ts_usec;        /* timestamp microseconds */
-  uint32_t incl_len;       /* number of octets of packet saved in file */
-  uint32_t orig_len;       /* actual length of packet */
+  uint32_t ts_sec; /* timestamp seconds */
+  uint32_t ts_usec; /* timestamp microseconds */
+  uint32_t incl_len; /* number of octets of packet saved in file */
+  uint32_t orig_len; /* actual length of packet */
 };
 
-enum class Direction {READ, WRITE};
+enum class Direction { READ, WRITE };
 
-PcapRecordHeader generateRecordHeader(clock::time_point time,
-    uint32_t wireLen, uint32_t capturedLen) {
+PcapRecordHeader generateRecordHeader(
+    clock::time_point time,
+    uint32_t wireLen,
+    uint32_t capturedLen) {
   uint64_t us = std::chrono::duration_cast<std::chrono::microseconds>(
-      time.time_since_epoch()).count();
-  PcapRecordHeader recHeader = {
-    static_cast<uint32_t>(us / 1000000),
-    static_cast<uint32_t>(us % 1000000),
-    static_cast<uint32_t>(capturedLen),
-    static_cast<uint32_t>(wireLen)};
+                    time.time_since_epoch())
+                    .count();
+  PcapRecordHeader recHeader = {static_cast<uint32_t>(us / 1000000),
+                                static_cast<uint32_t>(us % 1000000),
+                                static_cast<uint32_t>(capturedLen),
+                                static_cast<uint32_t>(wireLen)};
 
   return recHeader;
 }
 
 class Headers {
  public:
-  enum TcpFlags {SYN, SYN_ACK, ACK, FIN, RST};
-  Headers(const folly::SocketAddress& local,
+  enum TcpFlags { SYN, SYN_ACK, ACK, FIN, RST };
+  Headers(
+      const folly::SocketAddress& local,
       const folly::SocketAddress& remote,
       PcapLoggingHandler::Peer peer);
   void setTcpFlags(TcpFlags flags);
@@ -101,6 +108,7 @@ class Headers {
       uint16_t capturedLen = 0,
       PcapLoggingHandler::EncryptionType encryptionType =
           PcapLoggingHandler::EncryptionType::NONE);
+
  private:
   bool is6_;
   struct HeaderStruct {
@@ -122,12 +130,14 @@ class Headers {
   void setTcpFlagsImpl(tcphdr* tcp, TcpFlags flags);
 };
 
-Headers::Headers(const folly::SocketAddress& local,
+Headers::Headers(
+    const folly::SocketAddress& local,
     const folly::SocketAddress& remote,
     PcapLoggingHandler::Peer peer) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   using std::swap;
-  DCHECK(local.getFamily() == remote.getFamily() &&
+  DCHECK(
+      local.getFamily() == remote.getFamily() &&
       (local.getFamily() == AF_INET || local.getFamily() == AF_INET6));
 
   bool client = peer == PcapLoggingHandler::CLIENT;
@@ -159,9 +169,8 @@ Headers::Headers(const folly::SocketAddress& local,
     // HBO = host byte order
     uint32_t srcHBO = htonl(write_.ip4.saddr);
     uint32_t destHBO = htonl(write_.ip4.daddr);
-    uint32_t checksum = 0x5506
-      + (srcHBO >> 16) + (srcHBO & 0xffff)
-      + (destHBO >> 16) + (destHBO & 0xffff);
+    uint32_t checksum = 0x5506 + (srcHBO >> 16) + (srcHBO & 0xffff) +
+        (destHBO >> 16) + (destHBO & 0xffff);
     while ((checksum >> 16) != 0) {
       checksum = (checksum >> 16) + (checksum & 0xffff);
     }
@@ -197,11 +206,21 @@ void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   tcp->syn = tcp->ack = tcp->fin = tcp->rst = 0;
   switch (flags) {
-  case SYN: tcp->syn = 1; break;
-  case ACK: tcp->ack = 1; break;
-  case SYN_ACK: tcp->syn = tcp->ack = 1; break;
-  case FIN: tcp->fin = tcp->ack = 1; break;
-  case RST: tcp->rst = tcp->ack = 1; break;
+    case SYN:
+      tcp->syn = 1;
+      break;
+    case ACK:
+      tcp->ack = 1;
+      break;
+    case SYN_ACK:
+      tcp->syn = tcp->ack = 1;
+      break;
+    case FIN:
+      tcp->fin = tcp->ack = 1;
+      break;
+    case RST:
+      tcp->rst = tcp->ack = 1;
+      break;
   }
 #endif
 }
@@ -223,7 +242,8 @@ void Headers::appendToIov(
   uint32_t ipsize = (is6_ ? sizeof(ip6_hdr) : sizeof(iphdr));
   uint32_t len = ipsize + sizeof(tcphdr) + dataLen;
 
-  pcapHeader_ = generateRecordHeader(time,
+  pcapHeader_ = generateRecordHeader(
+      time,
       len + sizeof(ether_header),
       ipsize + sizeof(tcphdr) + capturedLen + sizeof(ether_header));
   iov->push_back({&pcapHeader_, sizeof(PcapRecordHeader)});
@@ -265,9 +285,7 @@ void Headers::appendToIov(
 class RotatingFile {
  public:
   explicit RotatingFile(const char* prefix, int rotateAfterMB)
-    : prefix_(prefix)
-    , rotateAfterMB_(rotateAfterMB)
-  {}
+      : prefix_(prefix), rotateAfterMB_(rotateAfterMB) {}
 
   ~RotatingFile() {
     if (fd_ != -1) {
@@ -290,6 +308,7 @@ class RotatingFile {
       total_ += r;
     }
   }
+
  private:
   std::string prefix_;
   int rotateAfterMB_;
@@ -297,7 +316,7 @@ class RotatingFile {
   size_t total_ = 0;
 
   void maybeRotate() {
-    if (rotateAfterMB_ > 0 && total_ / (1<<20) >= (size_t)rotateAfterMB_) {
+    if (rotateAfterMB_ > 0 && total_ / (1 << 20) >= (size_t)rotateAfterMB_) {
       close(fd_);
       fd_ = -1;
     }
@@ -312,15 +331,15 @@ class RotatingFile {
         time_t now = time(nullptr);
         tm tmbuf;
         localtime_r(&now, &tmbuf);
-        int len = strftime(&filename[prefix_.size()], extra,
-            "_%Y%m%d-%H%M%S.XXXXXX", &tmbuf);
+        int len = strftime(
+            &filename[prefix_.size()], extra, "_%Y%m%d-%H%M%S.XXXXXX", &tmbuf);
         filename.resize(prefix_.size() + len);
       }
       fd_ = Mkostemp(&filename[0], O_CLOEXEC);
       if (fd_ == -1) {
         // fd_ is -1 so all subsequent write operations will silently fail
-        PLOG_EVERY_N(ERROR, 10000) <<
-            "Can't create pcap file '" << filename << "'";
+        PLOG_EVERY_N(ERROR, 10000)
+            << "Can't create pcap file '" << filename << "'";
       }
 
       total_ = 0;
@@ -345,51 +364,45 @@ class RotatingFile {
 
 class Message {
  public:
-  enum class Type {CONN_OPEN, CONN_CLOSE, CONN_ERROR, DATA, SHUTDOWN, CONFIG};
+  enum class Type { CONN_OPEN, CONN_CLOSE, CONN_ERROR, DATA, SHUTDOWN, CONFIG };
 
-  Message() noexcept
-    : type(Type::SHUTDOWN)
-  {}
+  Message() noexcept : type(Type::SHUTDOWN) {}
 
   explicit Message(std::shared_ptr<const PcapLoggingConfig> config)
-    : type(Type::CONFIG)
-    , config(std::move(config))
-  {}
+      : type(Type::CONFIG), config(std::move(config)) {}
 
   Message(
-    clock::time_point time,
-    Direction dir,
-    const folly::SocketAddress& local,
-    const folly::SocketAddress& remote,
-    PcapLoggingHandler::Peer peer,
-    folly::IOBufQueue&& buf,
-    size_t origLength,
-    PcapLoggingHandler::EncryptionType encryptionType)
-    : type(Type::DATA)
-    , time(time)
-    , dir(dir)
-    , local(local)
-    , remote(remote)
-    , peer(peer)
-    , buf(std::move(buf))
-    , origLength(origLength > 65000 ? 65000 : origLength)
-    , encryptionType(encryptionType)
-  {}
+      clock::time_point time,
+      Direction dir,
+      const folly::SocketAddress& local,
+      const folly::SocketAddress& remote,
+      PcapLoggingHandler::Peer peer,
+      folly::IOBufQueue&& buf,
+      size_t origLength,
+      PcapLoggingHandler::EncryptionType encryptionType)
+      : type(Type::DATA),
+        time(time),
+        dir(dir),
+        local(local),
+        remote(remote),
+        peer(peer),
+        buf(std::move(buf)),
+        origLength(origLength > 65000 ? 65000 : origLength),
+        encryptionType(encryptionType) {}
 
   Message(
-    Type type,
-    clock::time_point time,
-    Direction dir,
-    const folly::SocketAddress& local,
-    const folly::SocketAddress& remote,
-    PcapLoggingHandler::Peer peer)
-    : type(type)
-    , time(time)
-    , dir(dir)
-    , local(local)
-    , remote(remote)
-  , peer(peer)
-  {}
+      Type type,
+      clock::time_point time,
+      Direction dir,
+      const folly::SocketAddress& local,
+      const folly::SocketAddress& remote,
+      PcapLoggingHandler::Peer peer)
+      : type(type),
+        time(time),
+        dir(dir),
+        local(local),
+        remote(remote),
+        peer(peer) {}
 
   Type type;
   clock::time_point time;
@@ -406,8 +419,8 @@ class Message {
 class LoggingThread {
  public:
   static LoggingThread& get() {
-   static LoggingThread t;
-   return t;
+    static LoggingThread t;
+    return t;
   }
 
   // Does not block. Returns true if enqueued successfully.
@@ -418,12 +431,13 @@ class LoggingThread {
   void setConfig(std::shared_ptr<const PcapLoggingConfig> config) {
     globalQueue_.blockingWrite(Message(std::move(config)));
   }
+
  private:
   folly::MPMCQueue<Message> globalQueue_{4096};
 
   using ConnKey = std::pair<folly::SocketAddress, folly::SocketAddress>;
   struct PacketData {
-    enum Type {START, DATA, END, ERROR};
+    enum Type { START, DATA, END, ERROR };
     Type type;
     clock::time_point time;
     Direction dir;
@@ -432,21 +446,21 @@ class LoggingThread {
     PcapLoggingHandler::EncryptionType encryptionType;
 
     PacketData(Type type, clock::time_point time, Direction dir)
-      : type(type)
-      , time(time)
-      , dir(dir)
-    {}
+        : type(type), time(time), dir(dir) {}
 
-    PacketData(Type type, clock::time_point time, Direction dir,
-        folly::IOBufQueue&& buf, size_t origLength,
+    PacketData(
+        Type type,
+        clock::time_point time,
+        Direction dir,
+        folly::IOBufQueue&& buf,
+        size_t origLength,
         PcapLoggingHandler::EncryptionType encryptionType)
-    : type(type)
-    , time(time)
-    , dir(dir)
-    , buf(std::move(buf))
-    , origLength(origLength)
-    , encryptionType(encryptionType)
-  {}
+        : type(type),
+          time(time),
+          dir(dir),
+          buf(std::move(buf)),
+          origLength(origLength),
+          encryptionType(encryptionType) {}
   };
   struct ConnData {
     int initialPackets = 0;
@@ -469,9 +483,7 @@ class LoggingThread {
   // before use by the thread
   std::thread thread_;
 
-  LoggingThread()
-    : thread_(std::thread([this](){ this->threadFunc(); }))
-  {}
+  LoggingThread() : thread_(std::thread([this]() { this->threadFunc(); })) {}
 
   ~LoggingThread() {
     globalQueue_.blockingWrite();
@@ -484,69 +496,74 @@ class LoggingThread {
       globalQueue_.blockingRead(msg);
 
       switch (msg.type) {
-      case Message::Type::CONN_OPEN:
-        if (enabled_) {
-          ConnKey key = std::make_pair(msg.local, msg.remote);
-          ConnData connData;
-          connData.peer = msg.peer;
-          if (numMessagesConnStart_ != 0) {
-            if (numMessagesConnStart_ != -1) {
-              connData.initialPackets++;
+        case Message::Type::CONN_OPEN:
+          if (enabled_) {
+            ConnKey key = std::make_pair(msg.local, msg.remote);
+            ConnData connData;
+            connData.peer = msg.peer;
+            if (numMessagesConnStart_ != 0) {
+              if (numMessagesConnStart_ != -1) {
+                connData.initialPackets++;
+              }
+              PacketData packet(PacketData::START, msg.time, Direction::WRITE);
+              dumpPacket(key, connData, packet);
             }
-            PacketData packet(PacketData::START, msg.time, Direction::WRITE);
-            dumpPacket(key, connData, packet);
+            localQueues_[key] = std::move(connData);
           }
-          localQueues_[key] = std::move(connData);
-        }
-        break;
-      case Message::Type::CONN_CLOSE:
-        if (enabled_) {
-          ConnKey key = std::make_pair(msg.local, msg.remote);
-          auto iter = localQueues_.find(key);
-          // close might be called multiple times, guard against that
-          if (iter != localQueues_.end()) {
-            ConnData& connData = iter->second;
-            PacketData packet(PacketData::END, msg.time, msg.dir);
-            dumpOrQueuePacket(key, connData, std::move(packet));
-            if (msg.dir == Direction::WRITE) {
-              dumpPackets(key, connData);
-              localQueues_.erase(key);
-            } else {
-              connData.remoteClosed = true;
+          break;
+        case Message::Type::CONN_CLOSE:
+          if (enabled_) {
+            ConnKey key = std::make_pair(msg.local, msg.remote);
+            auto iter = localQueues_.find(key);
+            // close might be called multiple times, guard against that
+            if (iter != localQueues_.end()) {
+              ConnData& connData = iter->second;
+              PacketData packet(PacketData::END, msg.time, msg.dir);
+              dumpOrQueuePacket(key, connData, std::move(packet));
+              if (msg.dir == Direction::WRITE) {
+                dumpPackets(key, connData);
+                localQueues_.erase(key);
+              } else {
+                connData.remoteClosed = true;
+              }
             }
           }
-        }
-        break;
-      case Message::Type::CONN_ERROR:
-        if (enabled_) {
-          ConnKey key = std::make_pair(msg.local, msg.remote);
-          auto iter = localQueues_.find(key);
-          if (iter != localQueues_.end()) {
-            ConnData& connData = iter->second;
-            PacketData packet(PacketData::ERROR, msg.time, msg.dir);
-            dumpOrQueuePacket(key, connData, std::move(packet));
+          break;
+        case Message::Type::CONN_ERROR:
+          if (enabled_) {
+            ConnKey key = std::make_pair(msg.local, msg.remote);
+            auto iter = localQueues_.find(key);
+            if (iter != localQueues_.end()) {
+              ConnData& connData = iter->second;
+              PacketData packet(PacketData::ERROR, msg.time, msg.dir);
+              dumpOrQueuePacket(key, connData, std::move(packet));
+            }
           }
-        }
-        break;
-      case Message::Type::DATA:
-        if (enabled_) {
-          ConnKey key = std::make_pair(msg.local, msg.remote);
-          auto iter = localQueues_.find(key);
-          if (iter != localQueues_.end()) {
-            ConnData& connData = iter->second;
-            PacketData packet(PacketData::DATA, msg.time, msg.dir,
-              std::move(msg.buf), msg.origLength, msg.encryptionType);
-            dumpOrQueuePacket(key, connData, std::move(packet));
+          break;
+        case Message::Type::DATA:
+          if (enabled_) {
+            ConnKey key = std::make_pair(msg.local, msg.remote);
+            auto iter = localQueues_.find(key);
+            if (iter != localQueues_.end()) {
+              ConnData& connData = iter->second;
+              PacketData packet(
+                  PacketData::DATA,
+                  msg.time,
+                  msg.dir,
+                  std::move(msg.buf),
+                  msg.origLength,
+                  msg.encryptionType);
+              dumpOrQueuePacket(key, connData, std::move(packet));
+            }
           }
-        }
-        break;
-      case Message::Type::SHUTDOWN:
-        return;
-      case Message::Type::CONFIG:
-        setConfigPrivate(*msg.config);
-        break;
-      default:
-        CHECK(false);
+          break;
+        case Message::Type::SHUTDOWN:
+          return;
+        case Message::Type::CONFIG:
+          setConfigPrivate(*msg.config);
+          break;
+        default:
+          CHECK(false);
       }
     }
   }
@@ -564,75 +581,67 @@ class LoggingThread {
     }
   }
 
-  void dumpPacket(const ConnKey& key,
-      ConnData& connData,
-      const PacketData& packet) {
+  void
+  dumpPacket(const ConnKey& key, ConnData& connData, const PacketData& packet) {
     iov_.clear(); // preserves capacity so no reallocations on push_back
     if (!connData.headers.hasValue()) {
       connData.headers.emplace(key.first, key.second, connData.peer);
     }
     switch (packet.type) {
-    case PacketData::DATA:
-      connData.headers->appendToIov(&iov_,
-          packet.dir,
-          packet.time,
-          packet.buf.chainLength(),
-          packet.origLength,
-          packet.encryptionType);
-      packet.buf.front()->appendToIov(&iov_);
-      file_->writev(iov_.data(), iov_.size());
-      break;
-    case PacketData::START: {
-      bool client = connData.peer == PcapLoggingHandler::CLIENT;
-      connData.headers->setTcpFlags(Headers::SYN);
-      connData.headers->appendToIov(&iov_,
-          client ? Direction::WRITE : Direction::READ,
-          packet.time);
-      file_->writev(iov_.data(), iov_.size());
-      iov_.clear();
-      connData.headers->setTcpFlags(Headers::SYN_ACK);
-      connData.headers->appendToIov(&iov_,
-          client? Direction::READ : Direction::WRITE,
-          packet.time);
-      file_->writev(iov_.data(), iov_.size());
-      iov_.clear();
-      connData.headers->setTcpFlags(Headers::ACK);
-      connData.headers->appendToIov(&iov_,
-          client ? Direction::WRITE : Direction::READ,
-          packet.time);
-      file_->writev(iov_.data(), iov_.size());
-      break;
-    }
-    case PacketData::END:
-      connData.headers->setTcpFlags(Headers::FIN);
-      connData.headers->appendToIov(&iov_,
-          packet.dir,
-          packet.time);
-      file_->writev(iov_.data(), iov_.size());
-      if (packet.dir == Direction::WRITE && !connData.remoteClosed) {
-        iov_.clear();
-        connData.headers->appendToIov(&iov_,
-            Direction::READ,
-            packet.time);
+      case PacketData::DATA:
+        connData.headers->appendToIov(
+            &iov_,
+            packet.dir,
+            packet.time,
+            packet.buf.chainLength(),
+            packet.origLength,
+            packet.encryptionType);
+        packet.buf.front()->appendToIov(&iov_);
         file_->writev(iov_.data(), iov_.size());
-      } else {
-        // Set flags back to ACK in case the remote end closed but we're going
-        // to send more data.
+        break;
+      case PacketData::START: {
+        bool client = connData.peer == PcapLoggingHandler::CLIENT;
+        connData.headers->setTcpFlags(Headers::SYN);
+        connData.headers->appendToIov(
+            &iov_, client ? Direction::WRITE : Direction::READ, packet.time);
+        file_->writev(iov_.data(), iov_.size());
+        iov_.clear();
+        connData.headers->setTcpFlags(Headers::SYN_ACK);
+        connData.headers->appendToIov(
+            &iov_, client ? Direction::READ : Direction::WRITE, packet.time);
+        file_->writev(iov_.data(), iov_.size());
+        iov_.clear();
         connData.headers->setTcpFlags(Headers::ACK);
+        connData.headers->appendToIov(
+            &iov_, client ? Direction::WRITE : Direction::READ, packet.time);
+        file_->writev(iov_.data(), iov_.size());
+        break;
       }
-      break;
-    case PacketData::ERROR:
-      connData.headers->setTcpFlags(Headers::RST);
-      connData.headers->appendToIov(&iov_,
-          packet.dir,
-          packet.time);
-      file_->writev(iov_.data(), iov_.size());
-      connData.headers->setTcpFlags(Headers::ACK);
-      break;
+      case PacketData::END:
+        connData.headers->setTcpFlags(Headers::FIN);
+        connData.headers->appendToIov(&iov_, packet.dir, packet.time);
+        file_->writev(iov_.data(), iov_.size());
+        if (packet.dir == Direction::WRITE && !connData.remoteClosed) {
+          iov_.clear();
+          connData.headers->appendToIov(&iov_, Direction::READ, packet.time);
+          file_->writev(iov_.data(), iov_.size());
+        } else {
+          // Set flags back to ACK in case the remote end closed but we're going
+          // to send more data.
+          connData.headers->setTcpFlags(Headers::ACK);
+        }
+        break;
+      case PacketData::ERROR:
+        connData.headers->setTcpFlags(Headers::RST);
+        connData.headers->appendToIov(&iov_, packet.dir, packet.time);
+        file_->writev(iov_.data(), iov_.size());
+        connData.headers->setTcpFlags(Headers::ACK);
+        break;
     }
   }
 
-  void dumpOrQueuePacket(const ConnKey& key,
+  void dumpOrQueuePacket(
+      const ConnKey& key,
       ConnData& connData,
       PacketData&& packet) {
     if (numMessagesConnStart_ == -1 ||
@@ -666,8 +675,7 @@ class LoggingThread {
 } // namespace
 
 PcapLoggingHandler::PcapLoggingHandler(std::function<bool()> isKrbEncrypted)
-  : isKrbEncrypted_(std::move(isKrbEncrypted))
-{}
+    : isKrbEncrypted_(std::move(isKrbEncrypted)) {}
 
 PcapLoggingHandler::EncryptionType PcapLoggingHandler::getEncryptionType() {
   if (ssl_.hasValue() && ssl_.value()) {
@@ -705,8 +713,13 @@ void PcapLoggingHandler::transportActive(Context* ctx) {
     }
   }
 
-  Message msg(Message::Type::CONN_OPEN, clock::now(), Direction::READ,
-      local_, remote_, peer_);
+  Message msg(
+      Message::Type::CONN_OPEN,
+      clock::now(),
+      Direction::READ,
+      local_,
+      remote_,
+      peer_);
   LoggingThread::get().addMessage(std::move(msg));
 #endif
 }
@@ -732,8 +745,15 @@ folly::Future<folly::Unit> PcapLoggingHandler::write(
     if (origLength > static_cast<size_t>(snaplen_)) {
       q.trimEnd(origLength - snaplen_);
     }
-    Message msg(clock::now(), Direction::WRITE, local_, remote_, peer_,
-        std::move(q), origLength, getEncryptionType());
+    Message msg(
+        clock::now(),
+        Direction::WRITE,
+        local_,
+        remote_,
+        peer_,
+        std::move(q),
+        origLength,
+        getEncryptionType());
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -751,8 +771,15 @@ void PcapLoggingHandler::read(Context* ctx, folly::IOBufQueue& q) {
     if (origLength > static_cast<size_t>(snaplen_)) {
       copy.trimEnd(origLength - snaplen_);
     }
-    Message msg(clock::now(), Direction::READ, local_, remote_, peer_,
-       std::move(copy), origLength, getEncryptionType());
+    Message msg(
+        clock::now(),
+        Direction::READ,
+        local_,
+        remote_,
+        peer_,
+        std::move(copy),
+        origLength,
+        getEncryptionType());
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -763,8 +790,13 @@ void PcapLoggingHandler::read(Context* ctx, folly::IOBufQueue& q) {
 folly::Future<folly::Unit> PcapLoggingHandler::close(Context* ctx) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   if (enabled_) {
-    Message msg(Message::Type::CONN_CLOSE, clock::now(), Direction::WRITE,
-        local_, remote_, peer_);
+    Message msg(
+        Message::Type::CONN_CLOSE,
+        clock::now(),
+        Direction::WRITE,
+        local_,
+        remote_,
+        peer_);
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -775,8 +807,13 @@ folly::Future<folly::Unit> PcapLoggingHandler::close(Context* ctx) {
 void PcapLoggingHandler::readEOF(Context* ctx) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   if (enabled_) {
-    Message msg(Message::Type::CONN_CLOSE, clock::now(), Direction::READ,
-        local_, remote_, peer_);
+    Message msg(
+        Message::Type::CONN_CLOSE,
+        clock::now(),
+        Direction::READ,
+        local_,
+        remote_,
+        peer_);
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -784,12 +821,18 @@ void PcapLoggingHandler::readEOF(Context* ctx) {
   return ctx->fireReadEOF();
 }
 
-void PcapLoggingHandler::readException(Context* ctx,
+void PcapLoggingHandler::readException(
+    Context* ctx,
     folly::exception_wrapper e) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   if (enabled_) {
-    Message msg(Message::Type::CONN_ERROR, clock::now(), Direction::READ,
-        local_, remote_, peer_);
+    Message msg(
+        Message::Type::CONN_ERROR,
+        clock::now(),
+        Direction::READ,
+        local_,
+        remote_,
+        peer_);
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -797,12 +840,18 @@ void PcapLoggingHandler::readException(Context* ctx,
   return ctx->fireReadException(std::move(e));
 }
 
-folly::Future<folly::Unit> PcapLoggingHandler::writeException(Context* ctx,
+folly::Future<folly::Unit> PcapLoggingHandler::writeException(
+    Context* ctx,
     folly::exception_wrapper e) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   if (enabled_) {
-    Message msg(Message::Type::CONN_ERROR, clock::now(), Direction::WRITE,
-        local_, remote_, peer_);
+    Message msg(
+        Message::Type::CONN_ERROR,
+        clock::now(),
+        Direction::WRITE,
+        local_,
+        remote_,
+        peer_);
     LoggingThread::get().addMessage(std::move(msg));
   }
 #endif
@@ -826,4 +875,5 @@ void PcapLoggingConfig::set(std::shared_ptr<const PcapLoggingConfig> config) {
 
 folly::Singleton<PcapLoggingConfig> PcapLoggingConfig::config_;
 
-}} // namespace
+} // namespace thrift
+} // namespace apache

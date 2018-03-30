@@ -21,26 +21,31 @@
 #define THRIFT_ASYNC_MESSAGECHANNEL_H_ 1
 
 #include <memory>
+
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <folly/ExceptionWrapper.h>
 
 namespace folly {
 class IOBuf;
 }
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 class TAsyncTransport;
-}}}
+}
+} // namespace thrift
+} // namespace apache
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * MessageChannel defines an asynchronous API for message-based I/O.
  */
-class MessageChannel :
-      virtual public folly::DelayedDestruction {
+class MessageChannel : virtual public folly::DelayedDestruction {
  protected:
   ~MessageChannel() override {}
 
@@ -72,9 +77,10 @@ class MessageChannel :
     virtual void messageReceiveErrorWrapped(folly::exception_wrapper&&) = 0;
   };
 
-  virtual void sendMessage(SendCallback*,
-                           std::unique_ptr<folly::IOBuf>&&,
-                           apache::thrift::transport::THeader*) = 0;
+  virtual void sendMessage(
+      SendCallback*,
+      std::unique_ptr<folly::IOBuf>&&,
+      apache::thrift::transport::THeader*) = 0;
 
   /**
    * RecvCallback will be invoked whenever a message is received.
@@ -84,9 +90,12 @@ class MessageChannel :
    */
   virtual void setReceiveCallback(RecvCallback*) = 0;
 
-  apache::thrift::async::TAsyncTransport* getTransport() { return nullptr;}
+  apache::thrift::async::TAsyncTransport* getTransport() {
+    return nullptr;
+  }
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_MESSAGECHANNEL_H_

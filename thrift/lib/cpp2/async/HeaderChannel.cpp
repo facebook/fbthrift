@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
+
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {
@@ -21,28 +22,30 @@ namespace thrift {
 
 using apache::thrift::transport::THeader;
 
-void HeaderChannel::addRpcOptionHeaders(THeader* header,
-                                        RpcOptions& rpcOptions) {
+void HeaderChannel::addRpcOptionHeaders(
+    THeader* header,
+    RpcOptions& rpcOptions) {
   if (!clientSupportHeader()) {
     return;
   }
 
   if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
-    header->setHeader(transport::THeader::PRIORITY_HEADER,
-                      folly::to<std::string>(rpcOptions.getPriority()));
+    header->setHeader(
+        transport::THeader::PRIORITY_HEADER,
+        folly::to<std::string>(rpcOptions.getPriority()));
   }
 
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(transport::THeader::CLIENT_TIMEOUT_HEADER,
-                      folly::to<std::string>(rpcOptions.getTimeout().count()));
+    header->setHeader(
+        transport::THeader::CLIENT_TIMEOUT_HEADER,
+        folly::to<std::string>(rpcOptions.getTimeout().count()));
   }
 
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
     header->setHeader(
-      transport::THeader::QUEUE_TIMEOUT_HEADER,
-      folly::to<std::string>(rpcOptions.getQueueTimeout().count())
-    );
+        transport::THeader::QUEUE_TIMEOUT_HEADER,
+        folly::to<std::string>(rpcOptions.getQueueTimeout().count()));
   }
 }
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

@@ -17,25 +17,26 @@
 #ifndef THRIFT_GSSSASLSERVER_H_
 #define THRIFT_GSSSASLSERVER_H_ 1
 
-#include <thrift/lib/cpp2/async/SaslServer.h>
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp2/async/SaslServer.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Server responsible for the GSS SASL handshake.
  */
 class GssSaslServer : public SaslServer {
-public:
+ public:
   explicit GssSaslServer(
-    folly::EventBase*,
-    std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager
-  );
-  void consumeFromClient(Callback* cb,
-                         std::unique_ptr<folly::IOBuf>&& message) override;
+      folly::EventBase*,
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+          thread_manager);
+  void consumeFromClient(Callback* cb, std::unique_ptr<folly::IOBuf>&& message)
+      override;
   std::unique_ptr<folly::IOBuf> encrypt(
       std::unique_ptr<folly::IOBuf>&&) override;
   std::unique_ptr<folly::IOBuf> decrypt(
@@ -57,13 +58,14 @@ public:
     protocol_ = protocol;
   }
 
-private:
+ private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   std::shared_ptr<KerberosSASLHandshakeServer> serverHandshake_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
   uint16_t protocol_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_GSSSASLSERVER_H_

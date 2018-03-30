@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 
 namespace apache {
@@ -65,8 +66,9 @@ bool HeaderChannelTrait::isSupportedClient(CLIENT_TYPE ct) {
 
 void HeaderChannelTrait::checkSupportedClient(CLIENT_TYPE ct) {
   if (!isSupportedClient(ct)) {
-    throw TApplicationException(TApplicationException::UNSUPPORTED_CLIENT_TYPE,
-                                "Transport does not support this client type");
+    throw TApplicationException(
+        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+        "Transport does not support this client type");
   }
 }
 
@@ -104,5 +106,5 @@ void HeaderChannelTrait::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
   setSupportedClients(&clients);
   securityPolicy_ = policy;
 }
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

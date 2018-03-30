@@ -24,14 +24,15 @@
 namespace folly {
 class IOBuf;
 class IOBufQueue;
-}
+} // namespace folly
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class SaslEndpoint {
-public:
-  explicit SaslEndpoint(folly::EventBase* evb = nullptr) :
-    evb_(std::make_shared<folly::EventBase*>(evb)) {}
+ public:
+  explicit SaslEndpoint(folly::EventBase* evb = nullptr)
+      : evb_(std::make_shared<folly::EventBase*>(evb)) {}
   virtual ~SaslEndpoint() {}
 
   // The following methods must not be called until after
@@ -46,8 +47,7 @@ public:
   // the plaintext is returned, and remaining is set to zero.
   // Otherwise, an empty buffer is returned and remaining is set to
   // the number of bytes required to construct a valid token.
-  std::unique_ptr<folly::IOBuf> unwrap(
-    folly::IOBufQueue* q, size_t* remaining);
+  std::unique_ptr<folly::IOBuf> unwrap(folly::IOBufQueue* q, size_t* remaining);
 
   // Returns the identity of the client.  TODO mhorowitz: the return
   // type may change.
@@ -70,16 +70,17 @@ public:
   // to use for serialization/deserialization of auth messages
   virtual void setProtocolId(uint16_t /*protocol*/) {}
 
-protected:
+ protected:
   virtual std::unique_ptr<folly::IOBuf> encrypt(
-    std::unique_ptr<folly::IOBuf>&&) = 0;
+      std::unique_ptr<folly::IOBuf>&&) = 0;
 
   virtual std::unique_ptr<folly::IOBuf> decrypt(
-    std::unique_ptr<folly::IOBuf>&&) = 0;
+      std::unique_ptr<folly::IOBuf>&&) = 0;
 
   std::shared_ptr<folly::EventBase*> evb_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_SASLENDPOINT_H_

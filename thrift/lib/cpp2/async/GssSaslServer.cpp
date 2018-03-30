@@ -16,38 +16,39 @@
 
 #include <thrift/lib/cpp2/async/GssSaslServer.h>
 
+#include <memory>
+
+#include <folly/Conv.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/Conv.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
-#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.tcc>
+#include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
+#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.tcc>
 
-#include <memory>
-
-using folly::IOBuf;
-using folly::IOBufQueue;
 using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::Guard;
 using apache::thrift::concurrency::Mutex;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
+using folly::IOBuf;
+using folly::IOBufQueue;
 using namespace std;
-using apache::thrift::sasl::SaslStart;
-using apache::thrift::sasl::SaslRequest;
-using apache::thrift::sasl::SaslReply;
 using apache::thrift::sasl::SaslAuthService_authFirstRequest_pargs;
 using apache::thrift::sasl::SaslAuthService_authFirstRequest_presult;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_pargs;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_presult;
+using apache::thrift::sasl::SaslReply;
+using apache::thrift::sasl::SaslRequest;
+using apache::thrift::sasl::SaslStart;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 static const char KRB5_SASL[] = "krb5";
 static const char KRB5_GSS[] = "gss";
@@ -56,15 +57,15 @@ static const char KRB5_GSS_NO_MUTUAL[] = "gssnm";
 GssSaslServer::GssSaslServer(
     folly::EventBase* evb,
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager)
-    : SaslServer(evb)
-    , threadManager_(thread_manager)
-    , serverHandshake_(new KerberosSASLHandshakeServer)
-    , mutex_(new Mutex)
-    , protocol_(0xFFFF) {
-}
+    : SaslServer(evb),
+      threadManager_(thread_manager),
+      serverHandshake_(new KerberosSASLHandshakeServer),
+      mutex_(new Mutex),
+      protocol_(0xFFFF) {}
 
 void GssSaslServer::consumeFromClient(
-  Callback *cb, std::unique_ptr<IOBuf>&& message) {
+    Callback* cb,
+    std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
 
   auto evb = evb_;
@@ -97,10 +98,7 @@ void GssSaslServer::consumeFromClient(
           string methodName;
           try {
             std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
-                proto,
-                pargs,
-                smessage.get(),
-                T_CALL);
+                proto, pargs, smessage.get(), T_CALL);
           } catch (const TProtocolException& e) {
             if (proto == protocol::T_BINARY_PROTOCOL &&
                 e.getType() == TProtocolException::BAD_VERSION) {
@@ -108,10 +106,7 @@ void GssSaslServer::consumeFromClient(
               // the header said they should be binary. If we end up in this if,
               // we're talking to an old version remote end, so try compact too.
               std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
-                  protocol::T_COMPACT_PROTOCOL,
-                  pargs,
-                  smessage.get(),
-                  T_CALL);
+                  protocol::T_COMPACT_PROTOCOL, pargs, smessage.get(), T_CALL);
               replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {
               throw;
@@ -138,7 +133,7 @@ void GssSaslServer::consumeFromClient(
             } else if (mech == KRB5_GSS_NO_MUTUAL) {
               selectedMech = KRB5_GSS_NO_MUTUAL;
               serverHandshake->setSecurityMech(
-                SecurityMech::KRB5_GSS_NO_MUTUAL);
+                  SecurityMech::KRB5_GSS_NO_MUTUAL);
               break;
             }
           }
@@ -161,10 +156,7 @@ void GssSaslServer::consumeFromClient(
           string methodName;
           try {
             std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
-                    proto,
-                    pargs,
-                    smessage.get(),
-                    T_CALL);
+                proto, pargs, smessage.get(), T_CALL);
           } catch (const TProtocolException& e) {
             if (proto == protocol::T_BINARY_PROTOCOL &&
                 e.getType() == TProtocolException::BAD_VERSION) {
@@ -172,16 +164,12 @@ void GssSaslServer::consumeFromClient(
               // the header said they should be binary. If we end up in this if,
               // we're talking to an old version remote end, so try compact too.
               std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
-                  protocol::T_COMPACT_PROTOCOL,
-                  pargs,
-                  smessage.get(),
-                  T_CALL);
+                  protocol::T_COMPACT_PROTOCOL, pargs, smessage.get(), T_CALL);
               replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {
               throw;
             }
-          }
-          catch (std::exception& e) {
+          } catch (std::exception& e) {
             LOG(ERROR) << e.what();
             throw;
           }
@@ -224,20 +212,22 @@ void GssSaslServer::consumeFromClient(
               SaslAuthService_authFirstRequest_presult resultp;
               resultp.get<0>().value = &reply;
               resultp.setIsSet(0);
-              outbuf = PargsPresultProtoSerialize(replyWithProto,
-                                                  resultp,
-                                                  "authFirstRequest",
-                                                  T_REPLY,
-                                                  requestSeqId);
+              outbuf = PargsPresultProtoSerialize(
+                  replyWithProto,
+                  resultp,
+                  "authFirstRequest",
+                  T_REPLY,
+                  requestSeqId);
             } else {
               SaslAuthService_authNextRequest_presult resultp;
               resultp.get<0>().value = &reply;
               resultp.setIsSet(0);
-              outbuf = PargsPresultProtoSerialize(replyWithProto,
-                                                  resultp,
-                                                  "authNextRequest",
-                                                  T_REPLY,
-                                                  requestSeqId);
+              outbuf = PargsPresultProtoSerialize(
+                  replyWithProto,
+                  resultp,
+                  "authNextRequest",
+                  T_REPLY,
+                  requestSeqId);
             }
           }
         });
@@ -249,23 +239,23 @@ void GssSaslServer::consumeFromClient(
         return;
       }
 
-      (*evb)->runInEventBaseThread([=, outbuf=std::move(outbuf)]() mutable {
-          // If the callback has already been destroyed, the request must
-          // have terminated, so we don't need to do anything.
-          if (!*evb) {
-            return;
-          }
-          if (ex) {
-            cb->saslError(std::move(ex));
-            return;
-          }
-          if (outbuf && !(outbuf)->empty()) {
-            cb->saslSendClient(std::move(outbuf));
-          }
-          if (serverHandshake->isContextEstablished()) {
-            cb->saslComplete();
-          }
-        });
+      (*evb)->runInEventBaseThread([=, outbuf = std::move(outbuf)]() mutable {
+        // If the callback has already been destroyed, the request must
+        // have terminated, so we don't need to do anything.
+        if (!*evb) {
+          return;
+        }
+        if (ex) {
+          cb->saslError(std::move(ex));
+          return;
+        }
+        if (outbuf && !(outbuf)->empty()) {
+          cb->saslSendClient(std::move(outbuf));
+        }
+        if (serverHandshake->isContextEstablished()) {
+          cb->saslComplete();
+        }
+      });
     }));
   });
   if (exw) {
@@ -274,13 +264,11 @@ void GssSaslServer::consumeFromClient(
   }
 }
 
-std::unique_ptr<IOBuf> GssSaslServer::encrypt(
-    std::unique_ptr<IOBuf>&& buf) {
+std::unique_ptr<IOBuf> GssSaslServer::encrypt(std::unique_ptr<IOBuf>&& buf) {
   return serverHandshake_->wrapMessage(std::move(buf));
 }
 
-std::unique_ptr<IOBuf> GssSaslServer::decrypt(
-    std::unique_ptr<IOBuf>&& buf) {
+std::unique_ptr<IOBuf> GssSaslServer::decrypt(std::unique_ptr<IOBuf>&& buf) {
   return serverHandshake_->unwrapMessage(std::move(buf));
 }
 
@@ -300,4 +288,5 @@ std::string GssSaslServer::getServerIdentity() const {
   }
 }
 
-}}
+} // namespace thrift
+} // namespace apache
