@@ -58,7 +58,7 @@ Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
   using U = folly::invoke_result_t<F, T&&>;
   auto impl = std::move(impl_);
   return Stream<U>(
-      impl->map(
+      std::move(*impl).map(
           [f = std::forward<F>(f)](
               std::unique_ptr<detail::ValueIf> value) mutable
           -> std::unique_ptr<detail::ValueIf> {
@@ -73,9 +73,9 @@ Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
 template <typename T>
 void Stream<T>::subscribe(std::unique_ptr<SubscriberIf<T>> subscriber) && {
   impl_->subscribeVia(executor_);
-  impl_->subscribe(
+  auto impl = std::move(impl_);
+  std::move(*impl).subscribe(
       std::make_unique<detail::SubscriberAdaptor<T>>(std::move(subscriber)));
-  impl_.reset();
 }
 } // namespace thrift
 } // namespace apache

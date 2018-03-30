@@ -29,12 +29,12 @@ class YarplStreamImpl : public StreamImplIf {
       std::shared_ptr<yarpl::flowable::Flowable<Value>> flowable)
       : flowable_(std::move(flowable)) {}
 
-  std::unique_ptr<StreamImplIf> map(
-      folly::Function<Value(Value)> mapFunc) override {
+  std::unique_ptr<StreamImplIf> map(folly::Function<Value(Value)> mapFunc) &&
+      override {
     return std::make_unique<YarplStreamImpl>(
         flowable_->map(std::move(mapFunc)));
   }
-  void subscribe(std::unique_ptr<SubscriberIf<Value>> subscriber) override {
+  void subscribe(std::unique_ptr<SubscriberIf<Value>> subscriber) && override {
     class SubscriberAdaptor
         : public yarpl::flowable::Subscriber<std::unique_ptr<ValueIf>> {
      public:

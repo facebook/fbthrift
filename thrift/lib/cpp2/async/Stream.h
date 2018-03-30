@@ -60,8 +60,9 @@ class StreamImplIf {
 
   virtual ~StreamImplIf() = default;
 
-  virtual std::unique_ptr<StreamImplIf> map(folly::Function<Value(Value)>) = 0;
-  virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) = 0;
+  virtual std::unique_ptr<StreamImplIf> map(
+      folly::Function<Value(Value)>) && = 0;
+  virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) && = 0;
   virtual void subscribeVia(folly::SequencedExecutor*) = 0;
   virtual void observeVia(folly::SequencedExecutor*) = 0;
 };

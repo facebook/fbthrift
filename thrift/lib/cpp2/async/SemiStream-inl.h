@@ -45,7 +45,7 @@ Stream<T> SemiStream<T>::via(folly::SequencedExecutor* executor) && {
   auto impl = std::move(impl_);
   impl->observeVia(executor);
   for (auto& mapFunc : mapFuncs_) {
-    impl = impl->map(std::move(mapFunc));
+    impl = std::move(*impl).map(std::move(mapFunc));
   }
   return Stream<T>(std::move(impl), executor);
 }
