@@ -18,9 +18,11 @@
 
 #include <folly/portability/Constexpr.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-namespace detail { namespace json {
+namespace detail {
+namespace json {
 
 static constexpr folly::StringPiece kTypeNameBool("tf");
 static constexpr folly::StringPiece kTypeNameByte("i8");
@@ -42,32 +44,32 @@ static constexpr folly::StringPiece kTypeNameSet("set");
 static folly::StringPiece getTypeNameForTypeID(TType typeID) {
   using namespace apache::thrift::protocol;
   switch (typeID) {
-  case TType::T_BOOL:
-    return kTypeNameBool;
-  case TType::T_BYTE:
-    return kTypeNameByte;
-  case TType::T_I16:
-    return kTypeNameI16;
-  case TType::T_I32:
-    return kTypeNameI32;
-  case TType::T_I64:
-    return kTypeNameI64;
-  case TType::T_DOUBLE:
-    return kTypeNameDouble;
-  case TType::T_FLOAT:
-    return kTypeNameFloat;
-  case TType::T_STRING:
-    return kTypeNameString;
-  case TType::T_STRUCT:
-    return kTypeNameStruct;
-  case TType::T_MAP:
-    return kTypeNameMap;
-  case TType::T_SET:
-    return kTypeNameSet;
-  case TType::T_LIST:
-    return kTypeNameList;
-  default:
-    throwUnrecognizedType();
+    case TType::T_BOOL:
+      return kTypeNameBool;
+    case TType::T_BYTE:
+      return kTypeNameByte;
+    case TType::T_I16:
+      return kTypeNameI16;
+    case TType::T_I32:
+      return kTypeNameI32;
+    case TType::T_I64:
+      return kTypeNameI64;
+    case TType::T_DOUBLE:
+      return kTypeNameDouble;
+    case TType::T_FLOAT:
+      return kTypeNameFloat;
+    case TType::T_STRING:
+      return kTypeNameString;
+    case TType::T_STRUCT:
+      return kTypeNameStruct;
+    case TType::T_MAP:
+      return kTypeNameMap;
+    case TType::T_SET:
+      return kTypeNameSet;
+    case TType::T_LIST:
+      return kTypeNameList;
+    default:
+      throwUnrecognizedType();
   }
 }
 
@@ -81,27 +83,42 @@ static protocol::TType getTypeIDForTypeName(folly::StringPiece name) {
     return fail();
   }
   switch (name[0]) {
-  case 'd': return TType::T_DOUBLE;
-  case 'f': return TType::T_FLOAT;
-  case 'i':
-    switch (name[1]) {
-    case '8': return TType::T_BYTE;
-    case '1': return TType::T_I16;
-    case '3': return TType::T_I32;
-    case '6': return TType::T_I64;
-    default: return fail();
-    }
-  case 'l': return TType::T_LIST;
-  case 'm': return TType::T_MAP;
-  case 'r': return TType::T_STRUCT;
-  case 's':
-    switch (name[1]) {
-    case 't': return TType::T_STRING;
-    case 'e': return TType::T_SET;
-    default: return fail();
-    }
-  case 't': return TType::T_BOOL;
-  default: return fail();
+    case 'd':
+      return TType::T_DOUBLE;
+    case 'f':
+      return TType::T_FLOAT;
+    case 'i':
+      switch (name[1]) {
+        case '8':
+          return TType::T_BYTE;
+        case '1':
+          return TType::T_I16;
+        case '3':
+          return TType::T_I32;
+        case '6':
+          return TType::T_I64;
+        default:
+          return fail();
+      }
+    case 'l':
+      return TType::T_LIST;
+    case 'm':
+      return TType::T_MAP;
+    case 'r':
+      return TType::T_STRUCT;
+    case 's':
+      switch (name[1]) {
+        case 't':
+          return TType::T_STRING;
+        case 'e':
+          return TType::T_SET;
+        default:
+          return fail();
+      }
+    case 't':
+      return TType::T_BOOL;
+    default:
+      return fail();
   }
 }
 
@@ -116,7 +133,8 @@ static uint32_t clampSize(int64_t size) {
   return uint32_t(size);
 }
 
-}}
+} // namespace json
+} // namespace detail
 
 /*
  * Public writing methods
@@ -132,9 +150,10 @@ uint32_t JSONProtocolWriter::writeStructEnd() {
   return endContext();
 }
 
-uint32_t JSONProtocolWriter::writeFieldBegin(const char* /*name*/,
-                                             TType fieldType,
-                                             int16_t fieldId) {
+uint32_t JSONProtocolWriter::writeFieldBegin(
+    const char* /*name*/,
+    TType fieldType,
+    int16_t fieldId) {
   uint32_t ret = 0;
   ret += writeString(folly::to<std::string>(fieldId));
   ret += writeContext();
@@ -151,9 +170,8 @@ uint32_t JSONProtocolWriter::writeFieldStop() {
   return 0;
 }
 
-uint32_t JSONProtocolWriter::writeMapBegin(TType keyType,
-                                           TType valType,
-                                           uint32_t size) {
+uint32_t
+JSONProtocolWriter::writeMapBegin(TType keyType, TType valType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(detail::json::getTypeNameForTypeID(keyType).str());
@@ -170,8 +188,7 @@ uint32_t JSONProtocolWriter::writeMapEnd() {
   return ret;
 }
 
-uint32_t JSONProtocolWriter::writeListBegin(TType elemType,
-                                            uint32_t size) {
+uint32_t JSONProtocolWriter::writeListBegin(TType elemType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(detail::json::getTypeNameForTypeID(elemType).str());
@@ -183,8 +200,7 @@ uint32_t JSONProtocolWriter::writeListEnd() {
   return endContext();
 }
 
-uint32_t JSONProtocolWriter::writeSetBegin(TType elemType,
-                                           uint32_t size) {
+uint32_t JSONProtocolWriter::writeSetBegin(TType elemType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
   ret += writeString(detail::json::getTypeNameForTypeID(elemType).str());
@@ -208,8 +224,7 @@ uint32_t JSONProtocolWriter::writeBool(bool value) {
 uint32_t JSONProtocolWriter::serializedMessageSize(
     const std::string& name) const {
   return 2 // list begin and end
-    + serializedSizeI32() * 3
-    + serializedSizeString(name);
+      + serializedSizeI32() * 3 + serializedSizeString(name);
 }
 
 uint32_t JSONProtocolWriter::serializedFieldSize(
@@ -224,9 +239,10 @@ uint32_t JSONProtocolWriter::serializedStructSize(const char* /*name*/) const {
   return folly::constexpr_strlen(R"({})");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
-                                                    TType /*valType*/,
-                                                    uint32_t /*size*/) const {
+uint32_t JSONProtocolWriter::serializedSizeMapBegin(
+    TType /*keyType*/,
+    TType /*valType*/,
+    uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ","typ",4294967295,{)");
 }
 
@@ -234,8 +250,9 @@ uint32_t JSONProtocolWriter::serializedSizeMapEnd() const {
   return folly::constexpr_strlen(R"(}])");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
-                                                     uint32_t /*size*/) const {
+uint32_t JSONProtocolWriter::serializedSizeListBegin(
+    TType /*elemType*/,
+    uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ",4294967295)");
 }
 
@@ -243,8 +260,9 @@ uint32_t JSONProtocolWriter::serializedSizeListEnd() const {
   return folly::constexpr_strlen(R"(])");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
-                                                    uint32_t /*size*/) const {
+uint32_t JSONProtocolWriter::serializedSizeSetBegin(
+    TType /*elemType*/,
+    uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ",4294967295)");
 }
 
@@ -306,9 +324,10 @@ uint32_t JSONProtocolReader::readFieldEnd() {
   return ret;
 }
 
-uint32_t JSONProtocolReader::readMapBegin(TType& keyType,
-                                          TType& valType,
-                                          uint32_t& size) {
+uint32_t JSONProtocolReader::readMapBegin(
+    TType& keyType,
+    TType& valType,
+    uint32_t& size) {
   uint32_t ret = 0;
   ret += ensureAndBeginContext(ContextType::ARRAY);
   std::string keyTypeS;
@@ -331,8 +350,7 @@ uint32_t JSONProtocolReader::readMapEnd() {
   return ret;
 }
 
-uint32_t JSONProtocolReader::readListBegin(TType& elemType,
-                                           uint32_t& size) {
+uint32_t JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   uint32_t ret = 0;
   ret += ensureAndBeginContext(ContextType::ARRAY);
   std::string elemTypeS;
@@ -350,8 +368,7 @@ uint32_t JSONProtocolReader::readListEnd() {
   return ret;
 }
 
-uint32_t JSONProtocolReader::readSetBegin(TType& elemType,
-                                          uint32_t& size) {
+uint32_t JSONProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
   return readListBegin(elemType, size);
 }
 
@@ -369,8 +386,7 @@ uint32_t JSONProtocolReader::readBool(bool& value) {
   return ret;
 }
 
-uint32_t JSONProtocolReader::readBool(
-    std::vector<bool>::reference value) {
+uint32_t JSONProtocolReader::readBool(std::vector<bool>::reference value) {
   bool tmp = false;
   auto ret = readBool(tmp);
   value = tmp;
@@ -389,4 +405,5 @@ bool JSONProtocolReader::peekList() {
   return false;
 }
 
-}}
+} // namespace thrift
+} // namespace apache

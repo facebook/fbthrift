@@ -26,14 +26,13 @@
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class CompactV1ProtocolReader;
 
 class CompactV1ProtocolWriter : protected CompactProtocolWriter {
-
  public:
-
   using ProtocolReader = CompactV1ProtocolReader;
 
   using CompactProtocolWriter::CompactProtocolWriter;
@@ -44,101 +43,98 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
       const std::string& name,
       MessageType messageType,
       int32_t seqid);
-  using CompactProtocolWriter::writeMessageEnd;
-  using CompactProtocolWriter::writeStructBegin;
-  using CompactProtocolWriter::writeStructEnd;
+  using CompactProtocolWriter::writeBool;
+  using CompactProtocolWriter::writeByte;
+  using CompactProtocolWriter::writeCollectionBegin;
   using CompactProtocolWriter::writeFieldBegin;
   using CompactProtocolWriter::writeFieldEnd;
   using CompactProtocolWriter::writeFieldStop;
-  using CompactProtocolWriter::writeMapBegin;
-  using CompactProtocolWriter::writeMapEnd;
-  using CompactProtocolWriter::writeCollectionBegin;
-  using CompactProtocolWriter::writeListBegin;
-  using CompactProtocolWriter::writeListEnd;
-  using CompactProtocolWriter::writeSetBegin;
-  using CompactProtocolWriter::writeSetEnd;
-  using CompactProtocolWriter::writeBool;
-  using CompactProtocolWriter::writeByte;
   using CompactProtocolWriter::writeI16;
   using CompactProtocolWriter::writeI32;
   using CompactProtocolWriter::writeI64;
+  using CompactProtocolWriter::writeListBegin;
+  using CompactProtocolWriter::writeListEnd;
+  using CompactProtocolWriter::writeMapBegin;
+  using CompactProtocolWriter::writeMapEnd;
+  using CompactProtocolWriter::writeMessageEnd;
+  using CompactProtocolWriter::writeSetBegin;
+  using CompactProtocolWriter::writeSetEnd;
+  using CompactProtocolWriter::writeStructBegin;
+  using CompactProtocolWriter::writeStructEnd;
   inline uint32_t writeDouble(double dub);
-  using CompactProtocolWriter::writeFloat;
-  using CompactProtocolWriter::writeString;
   using CompactProtocolWriter::writeBinary;
+  using CompactProtocolWriter::writeFloat;
   using CompactProtocolWriter::writeSerializedData;
+  using CompactProtocolWriter::writeString;
 
-  using CompactProtocolWriter::serializedMessageSize;
   using CompactProtocolWriter::serializedFieldSize;
-  using CompactProtocolWriter::serializedStructSize;
-  using CompactProtocolWriter::serializedSizeMapBegin;
-  using CompactProtocolWriter::serializedSizeMapEnd;
-  using CompactProtocolWriter::serializedSizeListBegin;
-  using CompactProtocolWriter::serializedSizeListEnd;
-  using CompactProtocolWriter::serializedSizeSetBegin;
-  using CompactProtocolWriter::serializedSizeSetEnd;
-  using CompactProtocolWriter::serializedSizeStop;
+  using CompactProtocolWriter::serializedMessageSize;
+  using CompactProtocolWriter::serializedSizeBinary;
   using CompactProtocolWriter::serializedSizeBool;
   using CompactProtocolWriter::serializedSizeByte;
+  using CompactProtocolWriter::serializedSizeDouble;
+  using CompactProtocolWriter::serializedSizeFloat;
   using CompactProtocolWriter::serializedSizeI16;
   using CompactProtocolWriter::serializedSizeI32;
   using CompactProtocolWriter::serializedSizeI64;
-  using CompactProtocolWriter::serializedSizeDouble;
-  using CompactProtocolWriter::serializedSizeFloat;
-  using CompactProtocolWriter::serializedSizeString;
-  using CompactProtocolWriter::serializedSizeBinary;
-  using CompactProtocolWriter::serializedSizeZCBinary;
+  using CompactProtocolWriter::serializedSizeListBegin;
+  using CompactProtocolWriter::serializedSizeListEnd;
+  using CompactProtocolWriter::serializedSizeMapBegin;
+  using CompactProtocolWriter::serializedSizeMapEnd;
   using CompactProtocolWriter::serializedSizeSerializedData;
-
+  using CompactProtocolWriter::serializedSizeSetBegin;
+  using CompactProtocolWriter::serializedSizeSetEnd;
+  using CompactProtocolWriter::serializedSizeStop;
+  using CompactProtocolWriter::serializedSizeString;
+  using CompactProtocolWriter::serializedSizeZCBinary;
+  using CompactProtocolWriter::serializedStructSize;
 };
 
 class CompactV1ProtocolReader : protected CompactProtocolReader {
-
  public:
-
   using ProtocolWriter = CompactV1ProtocolWriter;
 
   using CompactProtocolReader::CompactProtocolReader;
-  using CompactProtocolReader::protocolType;
-  using CompactProtocolReader::kUsesFieldNames;
   using CompactProtocolReader::kOmitsContainerSizes;
+  using CompactProtocolReader::kUsesFieldNames;
+  using CompactProtocolReader::protocolType;
 
-  using CompactProtocolReader::setStringSizeLimit;
   using CompactProtocolReader::setContainerSizeLimit;
   using CompactProtocolReader::setInput;
+  using CompactProtocolReader::setStringSizeLimit;
 
   inline void
   readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
-  using CompactProtocolReader::readMessageEnd;
-  using CompactProtocolReader::readStructBegin;
-  using CompactProtocolReader::readStructEnd;
-  using CompactProtocolReader::readFieldBegin;
-  using CompactProtocolReader::readFieldEnd;
-  using CompactProtocolReader::readMapBegin;
-  using CompactProtocolReader::readMapEnd;
-  using CompactProtocolReader::readListBegin;
-  using CompactProtocolReader::readListEnd;
-  using CompactProtocolReader::readSetBegin;
-  using CompactProtocolReader::readSetEnd;
   using CompactProtocolReader::readBool;
   using CompactProtocolReader::readByte;
+  using CompactProtocolReader::readFieldBegin;
+  using CompactProtocolReader::readFieldEnd;
   using CompactProtocolReader::readI16;
   using CompactProtocolReader::readI32;
   using CompactProtocolReader::readI64;
+  using CompactProtocolReader::readListBegin;
+  using CompactProtocolReader::readListEnd;
+  using CompactProtocolReader::readMapBegin;
+  using CompactProtocolReader::readMapEnd;
+  using CompactProtocolReader::readMessageEnd;
+  using CompactProtocolReader::readSetBegin;
+  using CompactProtocolReader::readSetEnd;
+  using CompactProtocolReader::readStructBegin;
+  using CompactProtocolReader::readStructEnd;
   inline void readDouble(double& dub);
-  using CompactProtocolReader::readFloat;
-  using CompactProtocolReader::readString;
-  using CompactProtocolReader::readBinary;
-  using CompactProtocolReader::skip;
+  using CompactProtocolReader::peekList;
   using CompactProtocolReader::peekMap;
   using CompactProtocolReader::peekSet;
-  using CompactProtocolReader::peekList;
+  using CompactProtocolReader::readBinary;
+  using CompactProtocolReader::readFloat;
+  using CompactProtocolReader::readString;
+  using CompactProtocolReader::skip;
 
   using CompactProtocolReader::getCurrentPosition;
   using CompactProtocolReader::readFromPositionAndAppend;
-
 };
 
-}}
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/protocol/CompactV1Protocol.tcc>

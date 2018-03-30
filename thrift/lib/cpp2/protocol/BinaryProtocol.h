@@ -17,18 +17,18 @@
 #ifndef CPP2_PROTOCOL_TBINARYPROTOCOL_H_
 #define CPP2_PROTOCOL_TBINARYPROTOCOL_H_ 1
 
+#include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/io/Cursor.h>
 #include <folly/portability/GFlags.h>
-
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using folly::IOBuf;
 using folly::IOBufQueue;
@@ -45,7 +45,6 @@ class BinaryProtocolReader;
  *
  */
 class BinaryProtocolWriter {
-
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
@@ -53,8 +52,7 @@ class BinaryProtocolWriter {
 
   explicit BinaryProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
-    : out_(nullptr, 0)
-    , sharing_(sharing) {}
+      : out_(nullptr, 0), sharing_(sharing) {}
 
   static constexpr ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
@@ -75,20 +73,18 @@ class BinaryProtocolWriter {
     out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 
-  inline uint32_t writeMessageBegin(const std::string& name,
-                                    MessageType messageType,
-                                    int32_t seqid);
+  inline uint32_t writeMessageBegin(
+      const std::string& name,
+      MessageType messageType,
+      int32_t seqid);
   inline uint32_t writeMessageEnd();
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
-  inline uint32_t writeFieldBegin(const char* name,
-                                  TType fieldType,
-                                  int16_t fieldId);
+  inline uint32_t
+  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
-  inline uint32_t writeMapBegin(TType keyType,
-                                TType valType,
-                                uint32_t size);
+  inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
   inline uint32_t writeMapEnd();
   inline uint32_t writeListBegin(TType elemType, uint32_t size);
   inline uint32_t writeListEnd();
@@ -114,19 +110,15 @@ class BinaryProtocolWriter {
    */
 
   inline uint32_t serializedMessageSize(const std::string& name) const;
-  inline uint32_t serializedFieldSize(const char* name,
-                                      TType fieldType,
-                                      int16_t fieldId) const;
+  inline uint32_t
+  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t serializedSizeMapBegin(TType keyType,
-                                         TType valType,
-                                         uint32_t size) const;
+  inline uint32_t
+  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) const;
   inline uint32_t serializedSizeMapEnd() const;
-  inline uint32_t serializedSizeListBegin(TType elemType,
-                                            uint32_t size) const;
+  inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeListEnd() const;
-  inline uint32_t serializedSizeSetBegin(TType elemType,
-                                           uint32_t size) const;
+  inline uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeSetEnd() const;
   inline uint32_t serializedSizeStop() const;
   inline uint32_t serializedSizeBool(bool = false) const;
@@ -140,12 +132,12 @@ class BinaryProtocolWriter {
   inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
   inline uint32_t serializedSizeBinary(folly::ByteRange) const;
   inline uint32_t serializedSizeBinary(
-    std::unique_ptr<folly::IOBuf> const& v) const;
+      std::unique_ptr<folly::IOBuf> const& v) const;
   inline uint32_t serializedSizeBinary(folly::IOBuf const& v) const;
   inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
   inline uint32_t serializedSizeZCBinary(
-    std::unique_ptr<folly::IOBuf> const&) const;
+      std::unique_ptr<folly::IOBuf> const&) const;
   inline uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
   inline uint32_t serializedSizeSerializedData(
       std::unique_ptr<folly::IOBuf> const& data) const;
@@ -159,7 +151,6 @@ class BinaryProtocolWriter {
 };
 
 class BinaryProtocolReader {
-
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
@@ -168,20 +159,21 @@ class BinaryProtocolReader {
 
   explicit BinaryProtocolReader(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
-    : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit)
-    , container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit)
-    , sharing_(sharing)
-    , strict_read_(true)
-    , in_(nullptr) {}
+      : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit),
+        container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit),
+        sharing_(sharing),
+        strict_read_(true),
+        in_(nullptr) {}
 
-  BinaryProtocolReader(int32_t string_limit,
-                       int32_t container_limit,
-                       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
-    : string_limit_(string_limit)
-    , container_limit_(container_limit)
-    , sharing_(sharing)
-    , strict_read_(true)
-    , in_(nullptr) {}
+  BinaryProtocolReader(
+      int32_t string_limit,
+      int32_t container_limit,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+      : string_limit_(string_limit),
+        container_limit_(container_limit),
+        sharing_(sharing),
+        strict_read_(true),
+        in_(nullptr) {}
 
   static constexpr ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
@@ -213,7 +205,9 @@ class BinaryProtocolReader {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  void setInput(const Cursor& cursor) { in_ = cursor; }
+  void setInput(const Cursor& cursor) {
+    in_ = cursor;
+  }
   void setInput(const IOBuf* buf) {
     in_.reset(buf);
   }
@@ -249,9 +243,15 @@ class BinaryProtocolReader {
   inline void readBinary(StrType& str);
   inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
   inline void readBinary(folly::IOBuf& str);
-  bool peekMap() { return false; }
-  bool peekSet() { return false; }
-  bool peekList() { return false; }
+  bool peekMap() {
+    return false;
+  }
+  bool peekSet() {
+    return false;
+  }
+  bool peekList() {
+    return false;
+  }
 
   void skip(TType type) {
     apache::thrift::skip(*this, type);
@@ -261,8 +261,9 @@ class BinaryProtocolReader {
     return in_;
   }
 
-  inline uint32_t readFromPositionAndAppend(Cursor& cursor,
-                                            std::unique_ptr<folly::IOBuf>& ser);
+  inline uint32_t readFromPositionAndAppend(
+      Cursor& cursor,
+      std::unique_ptr<folly::IOBuf>& ser);
 
   struct StructReadState {
     int16_t fieldId;
@@ -325,7 +326,8 @@ class BinaryProtocolReader {
    */
   Cursor in_;
 
-  template<typename T> friend class ProtocolReaderWithRefill;
+  template <typename T>
+  friend class ProtocolReaderWithRefill;
   friend class BinaryProtocolReaderWithRefill;
 
  private:
@@ -342,7 +344,8 @@ struct ProtocolReaderStructReadState<BinaryProtocolReader>
     : BinaryProtocolReader::StructReadState {};
 
 } // namespace detail
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.tcc>
 

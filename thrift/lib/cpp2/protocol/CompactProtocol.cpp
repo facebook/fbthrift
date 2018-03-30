@@ -29,7 +29,7 @@ namespace thrift {
       TProtocolException::BAD_VERSION, "Bad protocol identifier");
 }
 
-[[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
+    [[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
   throw TProtocolException(
       TProtocolException::BAD_VERSION, "Bad protocol version");
 }
@@ -46,5 +46,5 @@ void CompactProtocolReader::readFieldBeginWithStateMediumSlow(
 
   readFieldBeginWithStateImpl(state, prevFieldId, byte);
 }
-}
+} // namespace thrift
 } // namespace apache

@@ -29,9 +29,9 @@ namespace json {
       TProtocolException::NEGATIVE_SIZE, folly::to<std::string>(size, " < 0"));
 }
 
-[[noreturn]] void throwExceededSizeLimit(
-    int64_t const size,
-    int64_t const sizeMax) {
+    [[noreturn]] void throwExceededSizeLimit(
+        int64_t const size,
+        int64_t const sizeMax) {
   throw TProtocolException(
       TProtocolException::SIZE_LIMIT,
       folly::to<std::string>(size, " is too large (", sizeMax, ")"));
@@ -41,8 +41,8 @@ namespace json {
   throw TProtocolException(
       TProtocolException::NOT_IMPLEMENTED, "Unrecognized type");
 }
-}
-}
+} // namespace json
+} // namespace detail
 
 [[noreturn]] void JSONProtocolReader::throwUnrecognizableAsBoolean(
     int8_t const byte) {
@@ -50,5 +50,5 @@ namespace json {
       TProtocolException::INVALID_DATA,
       folly::to<std::string>(byte, " is not a valid bool"));
 }
-}
-}
+} // namespace thrift
+} // namespace apache

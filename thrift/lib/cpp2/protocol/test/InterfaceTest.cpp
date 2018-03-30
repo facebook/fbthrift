@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactV1Protocol.h>
@@ -36,32 +37,51 @@ const IOBuf iobuf(IOBuf::WRAP_BUFFER, strvalue);
 using UniquePtrIOBuf = unique_ptr<IOBuf>;
 using ConstIOBufPtr = const IOBuf*;
 
-template <typename R> struct maker {
+template <typename R>
+struct maker {
   static R make();
 };
 
-template <> struct maker<StringPiece> {
-  static StringPiece make() { return strvalue; }
+template <>
+struct maker<StringPiece> {
+  static StringPiece make() {
+    return strvalue;
+  }
 };
 
-template <> struct maker<ByteRange> {
-  static ByteRange make() { return ByteRange(strvalue); }
+template <>
+struct maker<ByteRange> {
+  static ByteRange make() {
+    return ByteRange(strvalue);
+  }
 };
 
-template <> struct maker<IOBuf> {
-  static IOBuf make() { return IOBuf(IOBuf::COPY_BUFFER, strvalue); }
+template <>
+struct maker<IOBuf> {
+  static IOBuf make() {
+    return IOBuf(IOBuf::COPY_BUFFER, strvalue);
+  }
 };
 
-template <> struct maker<UniquePtrIOBuf> {
-  static UniquePtrIOBuf make() { return IOBuf::copyBuffer(strvalue); }
+template <>
+struct maker<UniquePtrIOBuf> {
+  static UniquePtrIOBuf make() {
+    return IOBuf::copyBuffer(strvalue);
+  }
 };
 
-template <> struct maker<ConstIOBufPtr> {
-  static ConstIOBufPtr make() { return &iobuf; }
+template <>
+struct maker<ConstIOBufPtr> {
+  static ConstIOBufPtr make() {
+    return &iobuf;
+  }
 };
 
-template <> struct maker<Cursor> {
-  static Cursor make() { return Cursor(&iobuf); }
+template <>
+struct maker<Cursor> {
+  static Cursor make() {
+    return Cursor(&iobuf);
+  }
 };
 
 using Writers = testing::Types<
@@ -114,14 +134,18 @@ class ReaderInterfaceTest : public testing::Test {
   }
 };
 
-}
+} // namespace
 
 TYPED_TEST_CASE_P(WriterInterfaceTest);
 
 template <typename Reader>
-struct WriterOfReader { using type = typename Reader::ProtocolWriter; };
+struct WriterOfReader {
+  using type = typename Reader::ProtocolWriter;
+};
 template <>
-struct WriterOfReader<void> { using type = void; };
+struct WriterOfReader<void> {
+  using type = void;
+};
 
 TYPED_TEST_P(WriterInterfaceTest, reader_writer_cycle) {
   using W = decltype(this->writer);
@@ -129,9 +153,9 @@ TYPED_TEST_P(WriterInterfaceTest, reader_writer_cycle) {
   EXPECT_TRUE((std::is_same<W, W2>::value || std::is_same<void, W2>::value));
 }
 
-#define WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype) \
-  TYPED_TEST_P(WriterInterfaceTest, method_sig_ ## method ## _ ## argtype) { \
-    this->writer.method(maker<argtype>::make()); \
+#define WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype)      \
+  TYPED_TEST_P(WriterInterfaceTest, method_sig_##method##_##argtype) { \
+    this->writer.method(maker<argtype>::make());                       \
   }
 
 WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeString, StringPiece)
@@ -182,9 +206,9 @@ TYPED_TEST_P(ReaderInterfaceTest, readString_fbstring) {
   EXPECT_EQ("hello", out);
 }
 
-#define READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype) \
-  TYPED_TEST_P(ReaderInterfaceTest, method_sig_ ## method ## _ ## argtype) { \
-    this->reader().method(maker<argtype>::make()); \
+#define READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype)      \
+  TYPED_TEST_P(ReaderInterfaceTest, method_sig_##method##_##argtype) { \
+    this->reader().method(maker<argtype>::make());                     \
   }
 
 READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(setInput, ConstIOBufPtr)

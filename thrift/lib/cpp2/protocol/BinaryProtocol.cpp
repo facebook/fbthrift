@@ -24,12 +24,17 @@
 #include <folly/Conv.h>
 #include <folly/portability/GFlags.h>
 
-DEFINE_int32(thrift_cpp2_protocol_reader_string_limit, 0,
+DEFINE_int32(
+    thrift_cpp2_protocol_reader_string_limit,
+    0,
     "Limit on string size when deserializing thrift, 0 is no limit");
-DEFINE_int32(thrift_cpp2_protocol_reader_container_limit, 0,
+DEFINE_int32(
+    thrift_cpp2_protocol_reader_container_limit,
+    0,
     "Limit on container size when deserializing thrift, 0 is no limit");
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 [[noreturn]] void BinaryProtocolReader::throwBadVersionIdentifier(int32_t sz) {
   throw TProtocolException(
@@ -37,13 +42,14 @@ namespace apache { namespace thrift {
       folly::to<std::string>("Bad version identifier, sz=", sz));
 }
 
-[[noreturn]]
-void BinaryProtocolReader::throwMissingVersionIdentifier(int32_t sz) {
-  throw TProtocolException (
+    [[noreturn]] void BinaryProtocolReader::throwMissingVersionIdentifier(
+        int32_t sz) {
+  throw TProtocolException(
       TProtocolException::BAD_VERSION,
       folly::to<std::string>(
-        "No version identifier... old protocol client in strict mode? sz=",
-        sz));
+          "No version identifier... old protocol client in strict mode? sz=",
+          sz));
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

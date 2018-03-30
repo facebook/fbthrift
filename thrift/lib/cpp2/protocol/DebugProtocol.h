@@ -26,14 +26,14 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <class T>
 std::string debugString(const T& obj);
 
 class DebugProtocolWriter {
  public:
-
   using ProtocolReader = void;
 
   explicit DebugProtocolWriter(
@@ -43,12 +43,14 @@ class DebugProtocolWriter {
     return ProtocolType::T_DEBUG_PROTOCOL;
   }
 
-  void setOutput(folly::IOBufQueue* queue,
-                 size_t maxGrowth = std::numeric_limits<size_t>::max());
+  void setOutput(
+      folly::IOBufQueue* queue,
+      size_t maxGrowth = std::numeric_limits<size_t>::max());
 
-  uint32_t writeMessageBegin(const std::string& name,
-                             MessageType messageType,
-                             int32_t seqid);
+  uint32_t writeMessageBegin(
+      const std::string& name,
+      MessageType messageType,
+      int32_t seqid);
   uint32_t writeMessageEnd();
   uint32_t writeStructBegin(const char* name);
   uint32_t writeStructEnd();
@@ -74,7 +76,7 @@ class DebugProtocolWriter {
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   uint32_t writeBinary(const folly::IOBuf& str);
   uint32_t writeSerializedData(const std::unique_ptr<folly::IOBuf>& /*data*/) {
-    //TODO
+    // TODO
     return 0;
   }
 
@@ -82,13 +84,10 @@ class DebugProtocolWriter {
    * Functions that return the serialized size
    */
   uint32_t serializedMessageSize(const std::string& name);
-  uint32_t serializedFieldSize(const char* name,
-                               TType fieldName,
-                               int16_t fieldId);
+  uint32_t
+  serializedFieldSize(const char* name, TType fieldName, int16_t fieldId);
   uint32_t serializedStructSize(const char* name);
-  uint32_t serializedSizeMapBegin(TType keyType,
-                                  TType valType,
-                                  uint32_t size);
+  uint32_t serializedSizeMapBegin(TType keyType, TType valType, uint32_t size);
   uint32_t serializedSizeMapEnd();
   uint32_t serializedSizeListBegin(TType elemType, uint32_t size);
   uint32_t serializedSizeListEnd();
@@ -127,11 +126,13 @@ class DebugProtocolWriter {
   template <class... Args>
   void writePlain(Args&&... args) {
     const auto& fmt = folly::format(std::forward<Args>(args)...);
-    auto cb = [this] (folly::StringPiece sp) { this->writeRaw(sp); };
+    auto cb = [this](folly::StringPiece sp) { this->writeRaw(sp); };
     fmt(cb);
   }
 
-  void writeIndent() { writeRaw(indent_); }
+  void writeIndent() {
+    writeRaw(indent_);
+  }
 
   template <class... Args>
   void writeIndented(Args&&... args) {
@@ -146,16 +147,10 @@ class DebugProtocolWriter {
     endItem();
   }
 
-  enum ItemType {
-    STRUCT,
-    SET,
-    MAP_KEY,
-    MAP_VALUE,
-    LIST
-  };
+  enum ItemType { STRUCT, SET, MAP_KEY, MAP_VALUE, LIST };
 
   struct WriteState {
-    /* implicit */ WriteState(ItemType t) : type(t), index(0) { }
+    /* implicit */ WriteState(ItemType t) : type(t), index(0) {}
 
     ItemType type;
     int index;
@@ -180,6 +175,7 @@ std::string debugString(const T& obj) {
   return std::string(reinterpret_cast<const char*>(br.data()), br.size());
 }
 
-}}  // namespace thrift
+} // namespace thrift
+} // namespace apache
 
 #endif /* CPP2_PROTOCOL_DEBUGPROTOCOL_H_ */

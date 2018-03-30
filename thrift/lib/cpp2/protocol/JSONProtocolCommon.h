@@ -31,7 +31,8 @@
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace detail {
 template <typename Str>
@@ -64,9 +65,7 @@ constexpr folly::StringPiece kThriftNegativeInfinity("-Infinity");
 } // namespace detail
 
 class JSONProtocolWriterCommon {
-
  public:
-
   explicit JSONProtocolWriterCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
 
@@ -85,9 +84,10 @@ class JSONProtocolWriterCommon {
   }
 
   //  These writers are common to both json and simple-json protocols.
-  inline uint32_t writeMessageBegin(const std::string& name,
-                                    MessageType messageType,
-                                    int32_t seqid);
+  inline uint32_t writeMessageBegin(
+      const std::string& name,
+      MessageType messageType,
+      int32_t seqid);
   inline uint32_t writeMessageEnd();
   inline uint32_t writeByte(int8_t byte);
   inline uint32_t writeI16(int16_t i16);
@@ -114,7 +114,7 @@ class JSONProtocolWriterCommon {
   inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
   inline uint32_t serializedSizeBinary(folly::ByteRange v) const;
   inline uint32_t serializedSizeBinary(
-    const std::unique_ptr<folly::IOBuf>& v) const;
+      const std::unique_ptr<folly::IOBuf>& v) const;
   inline uint32_t serializedSizeBinary(const folly::IOBuf& v) const;
   inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
   inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
@@ -125,7 +125,6 @@ class JSONProtocolWriterCommon {
       const std::unique_ptr<folly::IOBuf>& data) const;
 
  protected:
-
   enum class ContextType { MAP, ARRAY };
   inline uint32_t beginContext(ContextType);
   inline uint32_t endContext();
@@ -136,13 +135,13 @@ class JSONProtocolWriterCommon {
   inline uint32_t writeJSONBase64(folly::ByteRange);
   inline uint32_t writeJSONBool(bool val);
   inline uint32_t writeJSONInt(int64_t num);
-  template<typename T>
+  template <typename T>
   uint32_t writeJSONDouble(T dbl);
 
   static const uint8_t kJSONCharTable[0x30];
   static inline uint8_t hexChar(uint8_t val);
 
-  void base64_encode(const uint8_t *in, uint32_t len, uint8_t *buf) {
+  void base64_encode(const uint8_t* in, uint32_t len, uint8_t* buf) {
     protocol::base64_encode(in, len, buf);
   }
 
@@ -164,9 +163,7 @@ class JSONProtocolWriterCommon {
 };
 
 class JSONProtocolReaderCommon {
-
  public:
-
   explicit JSONProtocolReaderCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
 
@@ -180,14 +177,15 @@ class JSONProtocolReaderCommon {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
+  void setInput(const folly::io::Cursor& cursor) {
+    in_ = cursor;
+  }
   void setInput(const folly::IOBuf* buf) {
     in_.reset(buf);
   }
 
-  inline uint32_t readMessageBegin(std::string& name,
-                                   MessageType& messageType,
-                                   int32_t& seqid);
+  inline uint32_t
+  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
   inline uint32_t readMessageEnd();
   inline uint32_t readByte(int8_t& byte);
   inline uint32_t readI16(int16_t& i16);
@@ -195,7 +193,7 @@ class JSONProtocolReaderCommon {
   inline uint32_t readI64(int64_t& i64);
   inline uint32_t readDouble(double& dub);
   inline uint32_t readFloat(float& flt);
-  template<typename StrType>
+  template <typename StrType>
   inline uint32_t readString(StrType& str);
   template <typename StrType>
   inline uint32_t readBinary(StrType& str);
@@ -208,11 +206,11 @@ class JSONProtocolReaderCommon {
     return in_;
   }
 
-  inline uint32_t readFromPositionAndAppend(folly::io::Cursor& cursor,
-                                            std::unique_ptr<folly::IOBuf>& ser);
+  inline uint32_t readFromPositionAndAppend(
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf>& ser);
 
  protected:
-
   enum class ContextType { MAP, ARRAY };
 
   template <typename Str>
@@ -274,7 +272,7 @@ class JSONProtocolReaderCommon {
   static const uint8_t kEscapeCharVals[8];
   static inline uint8_t hexVal(uint8_t ch);
 
-  void base64_decode(uint8_t *buf, uint32_t len) {
+  void base64_decode(uint8_t* buf, uint32_t len) {
     protocol::base64_decode(buf, len);
   }
 
@@ -323,9 +321,9 @@ class JSONProtocolReaderCommon {
   uint32_t skippedChars_{0};
   bool skippedIsUnread_{false};
   bool allowDecodeUTF8_{true};
-
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon.tcc>

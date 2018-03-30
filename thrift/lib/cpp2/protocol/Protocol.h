@@ -22,20 +22,21 @@
 #ifndef CPP2_PROTOCOL_PROTOCOL_H_
 #define CPP2_PROTOCOL_PROTOCOL_H_ 1
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/protocol/TProtocolException.h>
-#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <thrift/lib/cpp/util/BitwiseCast.h>
-#include <thrift/lib/cpp2/CloneableIOBuf.h>
+#include <sys/types.h>
 
 #include <map>
 #include <memory>
-#include <sys/types.h>
 #include <string>
 #include <vector>
+
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/util/BitwiseCast.h>
+#include <thrift/lib/cpp2/CloneableIOBuf.h>
 
 /**
  * Protocol Readers and Writers are ducktyped in cpp2.
@@ -47,7 +48,8 @@
  * use the VirtualReader / VitualWriter in VirtualProtocol.h
  */
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Certain serialization / deserialization operations allow sharing
@@ -68,20 +70,15 @@ enum ExternalBufferSharing {
   SHARE_EXTERNAL_BUFFER,
 };
 
-using apache::thrift::protocol::TType;
 using apache::thrift::protocol::TProtocolException;
+using apache::thrift::protocol::TType;
 typedef apache::thrift::protocol::PROTOCOL_TYPES ProtocolType;
 
 /*
  * Enumerated definition of the message types that the Thrift protocol
  * supports.
  */
-enum MessageType {
-  T_CALL       = 1,
-  T_REPLY      = 2,
-  T_EXCEPTION  = 3,
-  T_ONEWAY     = 4
-};
+enum MessageType { T_CALL = 1, T_REPLY = 2, T_EXCEPTION = 3, T_ONEWAY = 4 };
 
 /**
  * Helper template for implementing Protocol::skip().
@@ -91,56 +88,47 @@ enum MessageType {
 template <class Protocol_>
 void skip(Protocol_& prot, TType arg_type) {
   switch (arg_type) {
-    case TType::T_BOOL:
-    {
+    case TType::T_BOOL: {
       bool boolv;
       prot.readBool(boolv);
       return;
     }
-    case TType::T_BYTE:
-    {
+    case TType::T_BYTE: {
       int8_t bytev;
       prot.readByte(bytev);
       return;
     }
-    case TType::T_I16:
-    {
+    case TType::T_I16: {
       int16_t i16;
       prot.readI16(i16);
       return;
     }
-    case TType::T_I32:
-    {
+    case TType::T_I32: {
       int32_t i32;
       prot.readI32(i32);
       return;
     }
-    case TType::T_I64:
-    {
+    case TType::T_I64: {
       int64_t i64;
       prot.readI64(i64);
       return;
     }
-    case TType::T_DOUBLE:
-    {
+    case TType::T_DOUBLE: {
       double dub;
       prot.readDouble(dub);
       return;
     }
-    case TType::T_FLOAT:
-    {
+    case TType::T_FLOAT: {
       float flt;
       prot.readFloat(flt);
       return;
     }
-    case TType::T_STRING:
-    {
+    case TType::T_STRING: {
       std::string str;
       prot.readBinary(str);
       return;
     }
-    case TType::T_STRUCT:
-    {
+    case TType::T_STRUCT: {
       std::string name;
       int16_t fid;
       TType ftype;
@@ -156,8 +144,7 @@ void skip(Protocol_& prot, TType arg_type) {
       prot.readStructEnd();
       return;
     }
-    case TType::T_MAP:
-    {
+    case TType::T_MAP: {
       TType keyType;
       TType valType;
       uint32_t i, size;
@@ -169,8 +156,7 @@ void skip(Protocol_& prot, TType arg_type) {
       prot.readMapEnd();
       return;
     }
-    case TType::T_SET:
-    {
+    case TType::T_SET: {
       TType elemType;
       uint32_t i, size;
       prot.readSetBegin(elemType, size);
@@ -180,8 +166,7 @@ void skip(Protocol_& prot, TType arg_type) {
       prot.readSetEnd();
       return;
     }
-    case TType::T_LIST:
-    {
+    case TType::T_LIST: {
       TType elemType;
       uint32_t i, size;
       prot.readListBegin(elemType, size);
@@ -225,10 +210,9 @@ struct StringTraits<folly::IOBuf> {
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     auto llink = &lhs;
     auto rlink = &rhs;
-    while (llink != nullptr &&
-           rlink != nullptr) {
+    while (llink != nullptr && rlink != nullptr) {
       if (rlink->length() != llink->length() ||
-        0 != memcmp(llink->data(), rlink->data(), llink->length())) {
+          0 != memcmp(llink->data(), rlink->data(), llink->length())) {
         return false;
       }
 
@@ -248,21 +232,22 @@ template <>
 struct StringTraits<std::unique_ptr<folly::IOBuf>> {
   // Use with string literals only!
   static std::unique_ptr<folly::IOBuf> fromStringLiteral(const char* str) {
-    return (str[0] != '\0' ?
-            folly::IOBuf::wrapBuffer(str, strlen(str)) :
-            nullptr);
+    return (
+        str[0] != '\0' ? folly::IOBuf::wrapBuffer(str, strlen(str)) : nullptr);
   }
 
   static bool isEmpty(const std::unique_ptr<folly::IOBuf>& str) {
     return !str || str->empty();
   }
 
-  static bool isEqual(const std::unique_ptr<folly::IOBuf>& lhs,
-                         const std::unique_ptr<folly::IOBuf>& rhs) {
+  static bool isEqual(
+      const std::unique_ptr<folly::IOBuf>& lhs,
+      const std::unique_ptr<folly::IOBuf>& rhs) {
     return StringTraits<folly::IOBuf>::isEqual(*lhs, *rhs);
   }
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif

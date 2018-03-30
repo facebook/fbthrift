@@ -171,5 +171,5 @@ uint32_t Frozen2ProtocolReader::readStringBody(std::string& str, int32_t size) {
   }
   return static_cast<uint32_t>(size);
 }
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

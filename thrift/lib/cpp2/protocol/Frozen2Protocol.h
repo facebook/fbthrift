@@ -19,7 +19,6 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -33,7 +32,7 @@ constexpr int8_t FROZEN_PROTOCOL_ID = 0x83;
 constexpr int32_t FROZEN_PROTOCOL_VERSION = 0x02;
 constexpr int32_t VERSION_MASK = 0xffff0000;
 
-} // apache::thrift::detail
+} // namespace detail
 
 class Frozen2ProtocolReader;
 
@@ -134,7 +133,7 @@ class Frozen2ProtocolReader {
   inline uint32_t readStringBody(std::string&, int32_t);
   folly::io::Cursor in_;
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.tcc>

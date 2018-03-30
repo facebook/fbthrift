@@ -17,15 +17,17 @@
 #ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_
 #define CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1
 
+#include <list>
+
+#include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/io/Cursor.h>
-#include <list>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using folly::IOBuf;
 using folly::IOBufQueue;
@@ -37,7 +39,6 @@ using folly::io::QueueAppender;
 class SimpleJSONProtocolReader;
 
 class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
-
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
@@ -51,14 +52,11 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
 
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
-  inline uint32_t writeFieldBegin(const char* name,
-                                  TType fieldType,
-                                  int16_t fieldId);
+  inline uint32_t
+  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
-  inline uint32_t writeMapBegin(TType keyType,
-                                TType valType,
-                                uint32_t size);
+  inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
   inline uint32_t writeMapEnd();
   inline uint32_t writeListBegin(TType elemType, uint32_t size);
   inline uint32_t writeListEnd();
@@ -71,26 +69,21 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
    */
 
   inline uint32_t serializedMessageSize(const std::string& name) const;
-  inline uint32_t serializedFieldSize(const char* name,
-                                      TType fieldType,
-                                      int16_t fieldId) const;
+  inline uint32_t
+  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t serializedSizeMapBegin(TType keyType,
-                                         TType valType,
-                                         uint32_t size) const;
+  inline uint32_t
+  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) const;
   inline uint32_t serializedSizeMapEnd() const;
-  inline uint32_t serializedSizeListBegin(TType elemType,
-                                            uint32_t size) const;
+  inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeListEnd() const;
-  inline uint32_t serializedSizeSetBegin(TType elemType,
-                                           uint32_t size) const;
+  inline uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeSetEnd() const;
   inline uint32_t serializedSizeStop() const;
   inline uint32_t serializedSizeBool(bool = false) const;
 };
 
 class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
-
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
@@ -116,13 +109,10 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
    */
   inline uint32_t readStructBegin(std::string& name);
   inline uint32_t readStructEnd();
-  inline uint32_t readFieldBegin(std::string& name,
-                                 TType& fieldType,
-                                 int16_t& fieldId);
+  inline uint32_t
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
   inline uint32_t readFieldEnd();
-  inline uint32_t readMapBegin(TType& keyType,
-                               TType& valType,
-                               uint32_t& size);
+  inline uint32_t readMapBegin(TType& keyType, TType& valType, uint32_t& size);
   inline uint32_t readMapEnd();
   inline uint32_t readListBegin(TType& elemType, uint32_t& size);
   inline uint32_t readListEnd();
@@ -135,7 +125,8 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
   inline bool peekSet();
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.tcc>
 

@@ -25,10 +25,11 @@ namespace thrift {
       folly::to<std::string>("Bad protocol id, sz= ", sz));
 }
 
-[[noreturn]] void Frozen2ProtocolReader::throwBadProtocolVersion(int32_t sz) {
+    [[noreturn]] void Frozen2ProtocolReader::throwBadProtocolVersion(
+        int32_t sz) {
   throw TProtocolException(
       TProtocolException::BAD_VERSION,
       folly::to<std::string>("Bad protocol version, sz= ", sz));
 }
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

@@ -19,13 +19,12 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
-
 #include <map>
 #include <vector>
 
 #include <gtest/gtest.h>
 
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/frozen2_protocol_test_layouts.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/frozen2_protocol_test_types.h>
 

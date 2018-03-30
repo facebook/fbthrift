@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
@@ -34,9 +35,13 @@ namespace {
 template <typename T>
 struct action_traits_impl;
 template <typename C, typename A>
-struct action_traits_impl<void(C::*)(A&) const> { using arg_type = A; };
+struct action_traits_impl<void (C::*)(A&) const> {
+  using arg_type = A;
+};
 template <typename C, typename A>
-struct action_traits_impl<void(C::*)(A&)> { using arg_type = A; };
+struct action_traits_impl<void (C::*)(A&)> {
+  using arg_type = A;
+};
 template <typename F>
 using action_traits = action_traits_impl<decltype(&F::operator())>;
 template <typename F>
@@ -54,14 +59,13 @@ using CompactV1Serializer =
 
 class CompactV1ProtocolTest : public testing::Test {};
 
-}
+} // namespace
 
 TEST_F(CompactV1ProtocolTest, double_write_cpp1_read_cpp2) {
   util::ThriftSerializerCompactDeprecated<> cpp1_serializer;
   const auto orig = cpp1::OneOfEach{};
-  const auto serialized = returning([&](string& _) {
-    cpp1_serializer.serialize(orig, &_);
-  });
+  const auto serialized =
+      returning([&](string& _) { cpp1_serializer.serialize(orig, &_); });
   const auto deserialized_size =
       returning([&](tuple<cpp2::OneOfEach, uint32_t>& _) {
         get<1>(_) = CompactV1Serializer::deserialize(serialized, get<0>(_));

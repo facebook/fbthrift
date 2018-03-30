@@ -24,40 +24,60 @@
 #include <folly/Conv.h>
 #include <folly/String.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-DebugProtocolWriter::DebugProtocolWriter(
-    ExternalBufferSharing /*sharing*/) : out_(nullptr) { }
+DebugProtocolWriter::DebugProtocolWriter(ExternalBufferSharing /*sharing*/)
+    : out_(nullptr) {}
 
 namespace {
 
 std::string fieldTypeName(TType type) {
   switch (type) {
-    case TType::T_STOP   : return "stop"   ;
-    case TType::T_VOID   : return "void"   ;
-    case TType::T_BOOL   : return "bool"   ;
-    case TType::T_BYTE   : return "byte"   ;
-    case TType::T_I16    : return "i16"    ;
-    case TType::T_I32    : return "i32"    ;
-    case TType::T_U64    : return "u64"    ;
-    case TType::T_I64    : return "i64"    ;
-    case TType::T_DOUBLE : return "double" ;
-    case TType::T_FLOAT  : return "float"  ;
-    case TType::T_STRING : return "string" ;
-    case TType::T_STRUCT : return "struct" ;
-    case TType::T_MAP    : return "map"    ;
-    case TType::T_SET    : return "set"    ;
-    case TType::T_LIST   : return "list"   ;
-    case TType::T_UTF8   : return "utf8"   ;
-    case TType::T_UTF16  : return "utf16"  ;
-    case TType::T_STREAM : return "stream" ;
-    default: return folly::format("unknown({})", int(type)).str();
+    case TType::T_STOP:
+      return "stop";
+    case TType::T_VOID:
+      return "void";
+    case TType::T_BOOL:
+      return "bool";
+    case TType::T_BYTE:
+      return "byte";
+    case TType::T_I16:
+      return "i16";
+    case TType::T_I32:
+      return "i32";
+    case TType::T_U64:
+      return "u64";
+    case TType::T_I64:
+      return "i64";
+    case TType::T_DOUBLE:
+      return "double";
+    case TType::T_FLOAT:
+      return "float";
+    case TType::T_STRING:
+      return "string";
+    case TType::T_STRUCT:
+      return "struct";
+    case TType::T_MAP:
+      return "map";
+    case TType::T_SET:
+      return "set";
+    case TType::T_LIST:
+      return "list";
+    case TType::T_UTF8:
+      return "utf8";
+    case TType::T_UTF16:
+      return "utf16";
+    case TType::T_STREAM:
+      return "stream";
+    default:
+      return folly::format("unknown({})", int(type)).str();
   }
 }
 
 const int kIndent = 2;
 
-}  // namespace
+} // namespace
 
 void DebugProtocolWriter::indentUp() {
   indent_.append(kIndent, ' ');
@@ -80,61 +100,71 @@ void DebugProtocolWriter::popState() {
 }
 
 void DebugProtocolWriter::startItem() {
-  if (writeState_.empty()) {  // top level
+  if (writeState_.empty()) { // top level
     return;
   }
   auto& ws = writeState_.back();
   switch (ws.type) {
-  case STRUCT:
-    break;
-  case SET:
-  case MAP_KEY:
-    writeIndent();
-    break;
-  case MAP_VALUE:
-    writePlain(" -> ");
-    break;
-  case LIST:
-    writeIndented("[{}] = ", ws.index);
-    break;
+    case STRUCT:
+      break;
+    case SET:
+    case MAP_KEY:
+      writeIndent();
+      break;
+    case MAP_VALUE:
+      writePlain(" -> ");
+      break;
+    case LIST:
+      writeIndented("[{}] = ", ws.index);
+      break;
   }
 }
 
 void DebugProtocolWriter::endItem() {
-  if (writeState_.empty()) {  // top level
+  if (writeState_.empty()) { // top level
     return;
   }
   auto& ws = writeState_.back();
   ++ws.index;
   switch (ws.type) {
-  case LIST:
-  case STRUCT:
-  case SET:
-    writePlain(",\n");
-    break;
-  case MAP_KEY:
-    ws.type = MAP_VALUE;
-    break;
-  case MAP_VALUE:
-    ws.type = MAP_KEY;
-    writePlain(",\n");
+    case LIST:
+    case STRUCT:
+    case SET:
+      writePlain(",\n");
+      break;
+    case MAP_KEY:
+      ws.type = MAP_VALUE;
+      break;
+    case MAP_VALUE:
+      ws.type = MAP_KEY;
+      writePlain(",\n");
   }
 }
 
-void DebugProtocolWriter::setOutput(folly::IOBufQueue* out,
-                                    size_t /*maxGrowth*/) {
+void DebugProtocolWriter::setOutput(
+    folly::IOBufQueue* out,
+    size_t /*maxGrowth*/) {
   out_ = out;
 }
 
-uint32_t DebugProtocolWriter::writeMessageBegin(const std::string& name,
-                                                MessageType messageType,
-                                                int32_t /*seqid*/) {
+uint32_t DebugProtocolWriter::writeMessageBegin(
+    const std::string& name,
+    MessageType messageType,
+    int32_t /*seqid*/) {
   std::string mtype;
   switch (messageType) {
-  case T_CALL:      mtype = "call";   break;
-  case T_REPLY:     mtype = "reply";  break;
-  case T_EXCEPTION: mtype = "exn";    break;
-  case T_ONEWAY:    mtype = "oneway"; break;
+    case T_CALL:
+      mtype = "call";
+      break;
+    case T_REPLY:
+      mtype = "reply";
+      break;
+    case T_EXCEPTION:
+      mtype = "exn";
+      break;
+    case T_ONEWAY:
+      mtype = "oneway";
+      break;
   }
 
   writeIndented("({}) {}(", mtype, name);
@@ -162,24 +192,31 @@ uint32_t DebugProtocolWriter::writeStructEnd() {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::writeFieldBegin(const char* name,
-                                              TType fieldType,
-                                              int16_t fieldId) {
+uint32_t DebugProtocolWriter::writeFieldBegin(
+    const char* name,
+    TType fieldType,
+    int16_t fieldId) {
   writeIndented("{:0d}: {} ({}) = ", fieldId, name, fieldTypeName(fieldType));
   return 0;
 }
 
-uint32_t DebugProtocolWriter::writeFieldEnd() { return 0; }
-uint32_t DebugProtocolWriter::writeFieldStop() { return 0; }
+uint32_t DebugProtocolWriter::writeFieldEnd() {
+  return 0;
+}
+uint32_t DebugProtocolWriter::writeFieldStop() {
+  return 0;
+}
 
-uint32_t DebugProtocolWriter::writeMapBegin(TType keyType,
-                                            TType valueType,
-                                            uint32_t size) {
+uint32_t DebugProtocolWriter::writeMapBegin(
+    TType keyType,
+    TType valueType,
+    uint32_t size) {
   startItem();
-  writePlain("map<{},{}>[{}] {{\n",
-             fieldTypeName(keyType),
-             fieldTypeName(valueType),
-             size);
+  writePlain(
+      "map<{},{}>[{}] {{\n",
+      fieldTypeName(keyType),
+      fieldTypeName(valueType),
+      size);
   pushState(MAP_KEY);
   return 0;
 }
@@ -273,8 +310,7 @@ uint32_t DebugProtocolWriter::writeBinary(
   return 0;
 }
 
-uint32_t DebugProtocolWriter::writeBinary(
-    const folly::IOBuf& str) {
+uint32_t DebugProtocolWriter::writeBinary(const folly::IOBuf& str) {
   writeByteRange(folly::ByteRange(str.clone()->coalesce()));
   return 0;
 }
@@ -410,4 +446,5 @@ void DebugProtocolWriter::writeByteRange(folly::ByteRange v) {
   writeItem("\"{}\"", folly::cEscape<std::string>(toShow));
 }
 
-}}  // namespaces
+} // namespace thrift
+} // namespace apache

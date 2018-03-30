@@ -15,13 +15,15 @@
  */
 #pragma once
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-namespace detail { namespace compact_v1 {
+namespace detail {
+namespace compact_v1 {
 
 constexpr uint8_t kCompactV1ProtocolVersion = 0x01;
-
-}}
+}
+} // namespace detail
 
 inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
     const std::string& name,
@@ -29,9 +31,10 @@ inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
     int32_t seqid) {
   uint32_t wsize = 0;
   wsize += writeByte(detail::compact::PROTOCOL_ID);
-  wsize += writeByte(detail::compact_v1::kCompactV1ProtocolVersion |
-                     ((messageType << detail::compact::TYPE_SHIFT_AMOUNT) &
-                      detail::compact::TYPE_MASK ));
+  wsize += writeByte(
+      detail::compact_v1::kCompactV1ProtocolVersion |
+      ((messageType << detail::compact::TYPE_SHIFT_AMOUNT) &
+       detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);
   return wsize;
@@ -55,20 +58,20 @@ inline void CompactV1ProtocolReader::readMessageBegin(
 
   readByte(protocolId);
   if (protocolId != detail::compact::PROTOCOL_ID) {
-    throw TProtocolException(TProtocolException::BAD_VERSION,
-                             "Bad protocol identifier");
+    throw TProtocolException(
+        TProtocolException::BAD_VERSION, "Bad protocol identifier");
   }
 
   readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
       detail::compact_v1::kCompactV1ProtocolVersion) {
-    throw TProtocolException(TProtocolException::BAD_VERSION,
-                             "Bad protocol version");
+    throw TProtocolException(
+        TProtocolException::BAD_VERSION, "Bad protocol version");
   }
 
-  messageType = (MessageType)
-    ((versionAndType & detail::compact::TYPE_MASK) >>
-     detail::compact::TYPE_SHIFT_AMOUNT);
+  messageType = (MessageType)(
+      (versionAndType & detail::compact::TYPE_MASK) >>
+      detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }
@@ -81,4 +84,5 @@ inline void CompactV1ProtocolReader::readDouble(double& dub) {
   dub = bitwise_cast<double>(bits);
 }
 
-}}
+} // namespace thrift
+} // namespace apache

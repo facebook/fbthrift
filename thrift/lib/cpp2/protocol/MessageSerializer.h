@@ -16,17 +16,19 @@
 
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
+
+#include <folly/Conv.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/Conv.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Serialize and Deserialize functions for <ThriftType>_(p)args and
@@ -36,7 +38,10 @@ namespace apache { namespace thrift {
 
 template <typename ProtocolWriter, typename T>
 std::unique_ptr<folly::IOBuf> PargsPresultSerialize(
-    const T& value, const char *methodName, MessageType messageType, int seqId) {
+    const T& value,
+    const char* methodName,
+    MessageType messageType,
+    int seqId) {
   IOBufQueue q;
   ProtocolWriter writer;
   writer.setOutput(&q, value.serializedSizeZC(&writer));
@@ -48,7 +53,9 @@ std::unique_ptr<folly::IOBuf> PargsPresultSerialize(
 
 template <typename ProtocolReader, typename T>
 std::pair<std::string, int> PargsPresultDeserialize(
-    T& valuep, const folly::IOBuf* iobuf, MessageType messageType) {
+    T& valuep,
+    const folly::IOBuf* iobuf,
+    MessageType messageType) {
   ProtocolReader reader;
   reader.setInput(iobuf);
   std::string methodName;
@@ -57,15 +64,14 @@ std::pair<std::string, int> PargsPresultDeserialize(
   try {
     reader.readMessageBegin(methodName, msgType, privSeqId);
     if (msgType != messageType) {
-      throw TApplicationException(
-        folly::to<std::string>("Bad message type ", msgType,
-                               ". Expecting ", messageType));
+      throw TApplicationException(folly::to<std::string>(
+          "Bad message type ", msgType, ". Expecting ", messageType));
     }
     valuep.read(&reader);
     reader.readMessageEnd();
   } catch (const std::out_of_range& e) {
     throw transport::TTransportException(
-      transport::TTransportException::END_OF_FILE);
+        transport::TTransportException::END_OF_FILE);
   }
   return std::make_pair(methodName, privSeqId);
 }
@@ -74,21 +80,21 @@ template <typename T>
 std::unique_ptr<folly::IOBuf> PargsPresultProtoSerialize(
     uint16_t protocol,
     const T& value,
-    const char *methodName,
+    const char* methodName,
     MessageType messageType,
     int seqId) {
-
   switch (protocol) {
-  case protocol::T_BINARY_PROTOCOL:
-    return PargsPresultSerialize<BinaryProtocolWriter>(
-        value, methodName, messageType, seqId);
-  case protocol::T_COMPACT_PROTOCOL:
-    return PargsPresultSerialize<CompactProtocolWriter>(
-        value, methodName, messageType, seqId);
-  default:
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-        "PargsPresultProtoSerialize doesn't implement this protocol: " +
-        std::to_string(protocol));
+    case protocol::T_BINARY_PROTOCOL:
+      return PargsPresultSerialize<BinaryProtocolWriter>(
+          value, methodName, messageType, seqId);
+    case protocol::T_COMPACT_PROTOCOL:
+      return PargsPresultSerialize<CompactProtocolWriter>(
+          value, methodName, messageType, seqId);
+    default:
+      throw TProtocolException(
+          TProtocolException::NOT_IMPLEMENTED,
+          "PargsPresultProtoSerialize doesn't implement this protocol: " +
+              std::to_string(protocol));
   }
 }
 
@@ -98,19 +104,20 @@ std::pair<std::string, int> PargsPresultProtoDeserialize(
     T& value,
     const folly::IOBuf* iobuf,
     MessageType messageType) {
-
   switch (protocol) {
-  case protocol::T_BINARY_PROTOCOL:
-    return PargsPresultDeserialize<BinaryProtocolReader>(
-        value, iobuf, messageType);
-  case protocol::T_COMPACT_PROTOCOL:
-    return PargsPresultDeserialize<CompactProtocolReader>(
-        value, iobuf, messageType);
-  default:
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-        "PargsPresultProtoDeserialize doesn't implement this protocol: " +
-        std::to_string(protocol));
+    case protocol::T_BINARY_PROTOCOL:
+      return PargsPresultDeserialize<BinaryProtocolReader>(
+          value, iobuf, messageType);
+    case protocol::T_COMPACT_PROTOCOL:
+      return PargsPresultDeserialize<CompactProtocolReader>(
+          value, iobuf, messageType);
+    default:
+      throw TProtocolException(
+          TProtocolException::NOT_IMPLEMENTED,
+          "PargsPresultProtoDeserialize doesn't implement this protocol: " +
+              std::to_string(protocol));
   }
 }
 
-}}
+} // namespace thrift
+} // namespace apache

@@ -16,6 +16,6 @@
 
 #include <thrift/lib/cpp2/protocol/CompactV1Protocol.h>
 
-namespace apache { namespace thrift {
-
-}}
+namespace apache {
+namespace thrift {}
+} // namespace apache

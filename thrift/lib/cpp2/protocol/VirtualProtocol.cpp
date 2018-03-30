@@ -17,27 +17,26 @@
  * under the License.
  */
 
-
 #include <thrift/lib/cpp2/protocol/VirtualProtocol.h>
 
 #include <stdexcept>
 
 #include <folly/Conv.h>
 #include <folly/Memory.h>
-
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type) {
   switch (type) {
-  case ProtocolType::T_BINARY_PROTOCOL:
-    return std::make_unique<VirtualReader<BinaryProtocolReader>>();
-  case ProtocolType::T_COMPACT_PROTOCOL:
-    return std::make_unique<VirtualReader<CompactProtocolReader>>();
-  default:
-    break;
+    case ProtocolType::T_BINARY_PROTOCOL:
+      return std::make_unique<VirtualReader<BinaryProtocolReader>>();
+    case ProtocolType::T_COMPACT_PROTOCOL:
+      return std::make_unique<VirtualReader<CompactProtocolReader>>();
+    default:
+      break;
   }
   throw std::invalid_argument(
       folly::to<std::string>("Invalid protocol type ", type));
@@ -45,15 +44,16 @@ std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type) {
 
 std::unique_ptr<VirtualWriterBase> makeVirtualWriter(ProtocolType type) {
   switch (type) {
-  case ProtocolType::T_BINARY_PROTOCOL:
-    return std::make_unique<VirtualWriter<BinaryProtocolWriter>>();
-  case ProtocolType::T_COMPACT_PROTOCOL:
-    return std::make_unique<VirtualWriter<CompactProtocolWriter>>();
-  default:
-    break;
+    case ProtocolType::T_BINARY_PROTOCOL:
+      return std::make_unique<VirtualWriter<BinaryProtocolWriter>>();
+    case ProtocolType::T_COMPACT_PROTOCOL:
+      return std::make_unique<VirtualWriter<CompactProtocolWriter>>();
+    default:
+      break;
   }
   throw std::invalid_argument(
       folly::to<std::string>("Invalid protocol type ", type));
 }
 
-}}  // namespaces
+} // namespace thrift
+} // namespace apache
