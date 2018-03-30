@@ -35,6 +35,8 @@ struct ComplexStruct {
   4: string name
   5: AnEnum an_enum
   6: binary some_bytes
+  7: string from (py3.rename = "sender")
+  8: string cdef
 }
 
 const bool A_BOOL = true

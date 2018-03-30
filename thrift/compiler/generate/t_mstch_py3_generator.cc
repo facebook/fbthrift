@@ -24,18 +24,25 @@
 
 namespace {
 
-// I can't find a list of cython keywords, but this is the python list of
-// keywords, plus NULL, which I see cython docs saying is reserved. Note that
-// this list is almost entirely redundant with the keyword checking the thrift
-// compiler already does, but there are a few cases where thrift lets some
-// keywords through that cython can't handle, so better safe than sorry:
+// Reserved Cython / Python keywords that are not blocked by thrift grammer
 static const std::unordered_set<string> KEYWORDS = {
-    "False",  "None",     "True",  "and",    "as",       "assert",
-    "async",  "await",    "break", "class",  "continue", "def",
-    "del",    "elif",     "else",  "except", "finally",  "for",
-    "from",   "global",   "if",    "import", "in",       "is",
-    "lambda", "nonlocal", "not",   "or",     "pass",     "raise",
-    "return", "try",      "while", "with",   "yield",    "NULL",
+    "async",
+    "await",
+    "cdef",
+    "cimport",
+    "cpdef",
+    "cppclass",
+    "ctypedef",
+    "from",
+    "nonlocal",
+    "DEF",
+    "ELIF",
+    "ELSE",
+    "False",
+    "IF",
+    "None",
+    "NULL",
+    "True",
 };
 
 class t_mstch_py3_generator : public t_mstch_generator {
@@ -82,6 +89,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
       std::initializer_list<string> tails = {});
   std::string flatten_type_name(const t_type&);
   std::string get_module_name(ModuleType module);
+  template <class T>
+  std::string get_rename(const T&);
   void generate_module(const t_program&, ModuleType moduleType);
 
  private:
@@ -168,6 +177,19 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   return result;
 }
 
+template <class T>
+std::string t_mstch_py3_generator::get_rename(const T& elem) {
+  auto& annotation = elem.annotations_;
+  auto it = annotation.find("py3.rename");
+  if (KEYWORDS.find(elem.get_name()) != KEYWORDS.end()) {
+    if (it != annotation.end()) {
+      return it->second;
+    }
+    return elem.get_name() + "_";
+  }
+  return elem.get_name();
+}
+
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   string ref_type = this->ref_type(field);
   auto req = field.get_req();
@@ -185,10 +207,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);
-  const bool hasModifiedName =
-      (KEYWORDS.find(field.get_name()) != KEYWORDS.end());
-  const auto nameToUse =
-      hasModifiedName ? field.get_name() + "_" : field.get_name();
+  const auto nameToUse = get_rename(field);
 
   mstch::map result{
       {"reference?", reference},
@@ -205,7 +224,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       // name, and put the raw value in origName
       {"name", nameToUse},
       {"origName", field.get_name()},
-      {"hasModifiedName?", hasModifiedName},
+      {"hasModifiedName?", (field.get_name() != nameToUse)},
   };
   return result;
 }

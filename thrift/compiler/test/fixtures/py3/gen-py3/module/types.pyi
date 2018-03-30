@@ -104,7 +104,9 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
         an_integer: _typing.Optional[int]=None,
         name: _typing.Optional[str]=None,
         an_enum: _typing.Optional[AnEnum]=None,
-        some_bytes: _typing.Optional[bytes]=None
+        some_bytes: _typing.Optional[bytes]=None,
+        sender: _typing.Optional[str]=None,
+        cdef_: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -114,7 +116,9 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
         an_integer: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         name: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         an_enum: _typing.Union[AnEnum, NOTSETTYPE, None]=NOTSET,
-        some_bytes: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET
+        some_bytes: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
+        sender: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        cdef_: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> ComplexStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ComplexStruct'], bytes]]: ...
@@ -136,6 +140,10 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
     def an_enum(self) -> AnEnum: ...
     @property
     def some_bytes(self) -> bytes: ...
+    @property
+    def sender(self) -> str: ...
+    @property
+    def cdef_(self) -> str: ...
 
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])

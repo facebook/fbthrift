@@ -84,6 +84,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         bint name
         bint an_enum
         bint some_bytes
+        bint sender "from"
+        bint cdef_ "cdef"
 
     cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
         cComplexStruct() except +
@@ -95,6 +97,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         string name
         cAnEnum an_enum
         string some_bytes
+        string sender "from"
+        string cdef_ "cdef"
         cComplexStruct__isset __isset
 
 
@@ -172,7 +176,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         object an_integer,
         object name,
         object an_enum,
-        object some_bytes
+        object some_bytes,
+        object sender,
+        object cdef_
     ) except *
 
     @staticmethod

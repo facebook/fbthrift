@@ -139,6 +139,7 @@ struct Reserved {
   1: string from,  // named with a python keyword (which is not a C++ keyword)
   2: i32 nonlocal, // ditto
   3: string ok,    // not a keyword
+  4: bool cpdef (py3.rename = 'is_cpdef'),
 }
 
 union ReservedUnion {

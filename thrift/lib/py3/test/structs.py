@@ -106,10 +106,11 @@ class StructTests(unittest.TestCase):
             Runtime(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
 
     def test_reserved(self) -> None:
-        x = Reserved(from_="hello", nonlocal_=3, ok="bye")
+        x = Reserved(from_="hello", nonlocal_=3, ok="bye", is_cpdef=True)
         self.assertEqual(x.from_, "hello")
         self.assertEqual(x.nonlocal_, 3)
         self.assertEqual(x.ok, "bye")
+        self.assertEqual(x.is_cpdef, True)
 
 
 class NumericalConversionsTests(unittest.TestCase):

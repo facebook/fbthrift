@@ -505,7 +505,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         an_integer=None,
         str name=None,
         an_enum=None,
-        bytes some_bytes=None
+        bytes some_bytes=None,
+        str sender=None,
+        str cdef_=None
     ):
         if an_integer is not None:
             if not isinstance(an_integer, int):
@@ -524,6 +526,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
           name,
           an_enum,
           some_bytes,
+          sender,
+          cdef_,
         ))
 
     def __call__(
@@ -533,7 +537,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         an_integer=__NOTSET,
         name=__NOTSET,
         an_enum=__NOTSET,
-        some_bytes=__NOTSET
+        some_bytes=__NOTSET,
+        sender=__NOTSET,
+        cdef_=__NOTSET
     ):
         changes = any((
             structOne is not __NOTSET,
@@ -547,6 +553,10 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             an_enum is not __NOTSET,
 
             some_bytes is not __NOTSET,
+
+            sender is not __NOTSET,
+
+            cdef_ is not __NOTSET,
         ))
 
         if not changes:
@@ -577,6 +587,14 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             if not isinstance(some_bytes, bytes):
                 raise TypeError(f'some_bytes is not a { bytes !r}.')
 
+        if None is not sender is not __NOTSET:
+            if not isinstance(sender, str):
+                raise TypeError(f'sender is not a { str !r}.')
+
+        if None is not cdef_ is not __NOTSET:
+            if not isinstance(cdef_, str):
+                raise TypeError(f'cdef_ is not a { str !r}.')
+
         inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
         inst._cpp_obj = move(ComplexStruct._make_instance(
           self._cpp_obj.get(),
@@ -586,6 +604,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
           name,
           an_enum,
           some_bytes,
+          sender,
+          cdef_,
         ))
         return inst
 
@@ -597,7 +617,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         object an_integer,
         object name,
         object an_enum,
-        object some_bytes
+        object some_bytes,
+        object sender,
+        object cdef_
     ) except *:
         cdef unique_ptr[cComplexStruct] c_inst
         if base_instance:
@@ -649,6 +671,20 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             elif some_bytes is __NOTSET:
                 some_bytes = None
 
+            if sender is None:
+                deref(c_inst).sender = _ComplexStruct_defaults.sender
+                deref(c_inst).__isset.sender = False
+                pass
+            elif sender is __NOTSET:
+                sender = None
+
+            if cdef_ is None:
+                deref(c_inst).cdef_ = _ComplexStruct_defaults.cdef_
+                deref(c_inst).__isset.cdef_ = False
+                pass
+            elif cdef_ is __NOTSET:
+                cdef_ = None
+
         if structOne is not None:
             deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
             deref(c_inst).__isset.structOne = True
@@ -667,6 +703,12 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if some_bytes is not None:
             deref(c_inst).some_bytes = some_bytes
             deref(c_inst).__isset.some_bytes = True
+        if sender is not None:
+            deref(c_inst).sender = sender.encode('UTF-8')
+            deref(c_inst).__isset.sender = True
+        if cdef_ is not None:
+            deref(c_inst).cdef_ = cdef_.encode('UTF-8')
+            deref(c_inst).__isset.cdef_ = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -678,9 +720,11 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         yield 'name', self.name
         yield 'an_enum', self.an_enum
         yield 'some_bytes', self.some_bytes
+        yield 'sender', self.sender
+        yield 'cdef_', self.cdef_
 
     def __bool__(self):
-        return True or True or True or True or True or True
+        return True or True or True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] cpp_obj):
@@ -722,6 +766,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
         return self._cpp_obj.get().some_bytes
 
+    @property
+    def sender(self):
+
+        return (<bytes>self._cpp_obj.get().sender).decode('UTF-8')
+
+    @property
+    def cdef_(self):
+
+        return (<bytes>self._cpp_obj.get().cdef_).decode('UTF-8')
+
 
     def __hash__(ComplexStruct self):
         if not self.__hash:
@@ -732,11 +786,13 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             self.name,
             self.an_enum,
             self.some_bytes,
+            self.sender,
+            self.cdef_,
             ))
         return self.__hash
 
     def __repr__(ComplexStruct self):
-        return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)})'
+        return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)}, sender={repr(self.sender)}, cdef_={repr(self.cdef_)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
