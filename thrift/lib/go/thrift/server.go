@@ -21,19 +21,20 @@ package thrift
 
 import "context"
 
+// Server is a thrift server
 type Server interface {
 	ProcessorFactory() ProcessorFactory
 	ServerTransport() ServerTransport
 	InputTransportFactory() TransportFactory
 	OutputTransportFactory() TransportFactory
-	InpuprotocolFactory() ProtocolFactory
-	OutpuprotocolFactory() ProtocolFactory
+	InputProtocolFactory() ProtocolFactory
+	OutputProtocolFactory() ProtocolFactory
 
-	// Starts the server
+	// Serve starts the server
 	Serve() error
-	// Starts the server, and stops it when the context is cancelled
+	// ServeContext starts the server, and stops it when the context is cancelled
 	ServeContext(ctx context.Context) error
-	// Stops the server. This is optional on a per-implementation basis. Not
+	// Stop stops the server. This is optional on a per-implementation basis. Not
 	// all servers are required to be cleanly stoppable.
 	Stop() error
 }
