@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/io/Cursor.h>
-
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <wangle/acceptor/Acceptor.h>
@@ -190,5 +189,5 @@ class PeekingManager : public wangle::ManagedConnection,
   ThriftServer* server_;
   bool checkTLS_;
 };
-}
-}
+} // namespace thrift
+} // namespace apache

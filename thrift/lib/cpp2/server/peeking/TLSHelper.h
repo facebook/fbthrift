@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include <folly/io/IOBuf.h>
 #include <vector>
+
+#include <folly/io/IOBuf.h>
 
 namespace apache {
 namespace thrift {
@@ -45,5 +46,5 @@ class TLSHelper {
   static std::unique_ptr<folly::IOBuf>
   getPlaintextAlert(uint8_t major, uint8_t minor, Alert alert);
 };
-}
-}
+} // namespace thrift
+} // namespace apache

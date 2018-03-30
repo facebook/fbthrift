@@ -40,10 +40,13 @@ namespace thrift {
 typedef std::function<void(
     folly::EventBase*,
     std::shared_ptr<apache::thrift::async::TAsyncTransport>,
-    std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
+    std::unique_ptr<folly::IOBuf>)>
+    getHandlerFunc;
 
-typedef std::function<void(const apache::thrift::transport::THeader*,
-                           const folly::SocketAddress*)> GetHeaderHandlerFunc;
+typedef std::function<void(
+    const apache::thrift::transport::THeader*,
+    const folly::SocketAddress*)>
+    GetHeaderHandlerFunc;
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
@@ -221,15 +224,18 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @return true if the configuration can be modified, false otherwise
    */
-  bool configMutable() { return configMutable_; }
-
+  bool configMutable() {
+    return configMutable_;
+  }
 
   /**
    * Get the prefix for naming the CPU (pool) threads.
    *
    * @return current setting.
    */
-  const std::string& getCPUWorkerThreadName() const { return poolThreadName_; }
+  const std::string& getCPUWorkerThreadName() const {
+    return poolThreadName_;
+  }
 
   /**
    * DEPRECATED: Get the prefix for naming the CPU (pool) threads.
@@ -270,8 +276,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @param threadManager a shared pointer to the thread manager
    */
-  void setThreadManager(std::shared_ptr<
-      apache::thrift::concurrency::ThreadManager> threadManager) {
+  void setThreadManager(
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+          threadManager) {
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     threadManager_ = threadManager;
@@ -293,7 +300,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @return current setting.
    */
-  uint32_t getMaxConnections() const { return maxConnections_; }
+  uint32_t getMaxConnections() const {
+    return maxConnections_;
+  }
 
   /**
    * Set the maximum # of connections allowed before overload.
@@ -318,13 +327,17 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    * @param maxRequests new setting for maximum # of active requests.
    */
-  void setMaxRequests(uint32_t maxRequests) { maxRequests_ = maxRequests; }
+  void setMaxRequests(uint32_t maxRequests) {
+    maxRequests_ = maxRequests;
+  }
 
   uint64_t getMaxResponseSize() const override {
     return maxResponseSize_;
   }
 
-  void setMaxResponseSize(uint64_t size) { maxResponseSize_ = size; }
+  void setMaxResponseSize(uint64_t size) {
+    maxResponseSize_ = size;
+  }
 
   /**
    * NOTE: low hanging perf fruit. In a test this was roughly a 10%
@@ -333,31 +346,36 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    * no current thrift server does even close to this QPS.
    */
   void incActiveRequests(int32_t numRequests = 1) {
-     activeRequests_ += numRequests;
+    activeRequests_ += numRequests;
   }
 
   void decActiveRequests(int32_t numRequests = 1) {
     activeRequests_ -= numRequests;
   }
 
-  int32_t getActiveRequests() const { return activeRequests_; }
+  int32_t getActiveRequests() const {
+    return activeRequests_;
+  }
 
-  bool getUseClientTimeout() const { return useClientTimeout_; }
+  bool getUseClientTimeout() const {
+    return useClientTimeout_;
+  }
 
   void setUseClientTimeout(bool useClientTimeout) {
     useClientTimeout_ = useClientTimeout;
   }
 
   virtual bool isOverloaded(
-    const apache::thrift::transport::THeader* header = nullptr) = 0;
+      const apache::thrift::transport::THeader* header = nullptr) = 0;
 
   // Get load of the server.
   int64_t getLoad(const std::string& counter = "", bool check_custom = true);
   virtual int64_t getRequestLoad();
   virtual std::string getLoadInfo(int64_t load);
 
-  void setObserver(const std::shared_ptr<
-      apache::thrift::server::TServerObserver>& observer) {
+  void setObserver(
+      const std::shared_ptr<apache::thrift::server::TServerObserver>&
+          observer) {
     observer_ = observer;
   }
 
@@ -406,7 +424,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    * for providing their own synchronization to ensure that setup() is not
    * modifying the address while they are using it.)
    */
-  const folly::SocketAddress& getAddress() const { return address_; }
+  const folly::SocketAddress& getAddress() const {
+    return address_;
+  }
 
   /**
    * Set the port to listen on.
@@ -443,7 +463,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    *
    *  @return number of milliseconds, or 0 if no timeout set.
    */
-  std::chrono::milliseconds getIdleTimeout() const { return timeout_; }
+  std::chrono::milliseconds getIdleTimeout() const {
+    return timeout_;
+  }
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
@@ -556,9 +578,13 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    * Codel queuing timeout - limit queueing time before overload
    * http://en.wikipedia.org/wiki/CoDel
    */
-  void setEnableCodel(bool enableCodel) { enableCodel_ = enableCodel; }
+  void setEnableCodel(bool enableCodel) {
+    enableCodel_ = enableCodel;
+  }
 
-  bool getEnableCodel() { return enableCodel_; }
+  bool getEnableCodel() {
+    return enableCodel_;
+  }
 
   /**
    * Set the processor factory as the one built into the
@@ -599,7 +625,6 @@ class BaseThriftServer : public apache::thrift::server::TServer,
   std::chrono::milliseconds getTaskExpireTime() const {
     return taskExpireTime_;
   }
-
 
   /**
    * Set the time requests are allowed to stay on the queue.
@@ -657,14 +682,18 @@ class BaseThriftServer : public apache::thrift::server::TServer,
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for
    * details.
    */
-  void setListenBacklog(int listenBacklog) { listenBacklog_ = listenBacklog; }
+  void setListenBacklog(int listenBacklog) {
+    listenBacklog_ = listenBacklog;
+  }
 
   /**
    * Get the listen backlog.
    *
    * @return listen backlog.
    */
-  int getListenBacklog() const { return listenBacklog_; }
+  int getListenBacklog() const {
+    return listenBacklog_;
+  }
 
   void setOverloadedErrorCode(const std::string& errorCode) {
     overloadedErrorCode_ = errorCode;
@@ -674,8 +703,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
     return overloadedErrorCode_;
   }
 
-  void setIsOverloaded(folly::Function<
-      bool(const apache::thrift::transport::THeader*)> isOverloaded) {
+  void setIsOverloaded(
+      folly::Function<bool(const apache::thrift::transport::THeader*)>
+          isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
   }
 
@@ -683,7 +713,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
     getLoad_ = getLoad;
   }
 
-  std::function<int64_t(const std::string&)> getGetLoad() { return getLoad_; }
+  std::function<int64_t(const std::string&)> getGetLoad() {
+    return getLoad_;
+  }
 
   /**
    * Set failure injection parameters.
@@ -692,15 +724,21 @@ class BaseThriftServer : public apache::thrift::server::TServer,
     failureInjection_.set(fi);
   }
 
-  void setGetHandler(getHandlerFunc func) { getHandler_ = func; }
+  void setGetHandler(getHandlerFunc func) {
+    getHandler_ = func;
+  }
 
-  getHandlerFunc getGetHandler() { return getHandler_; }
+  getHandlerFunc getGetHandler() {
+    return getHandler_;
+  }
 
   void setGetHeaderHandler(GetHeaderHandlerFunc func) {
     getHeaderHandler_ = func;
   }
 
-  GetHeaderHandlerFunc getGetHeaderHandler() { return getHeaderHandler_; }
+  GetHeaderHandlerFunc getGetHeaderHandler() {
+    return getHeaderHandler_;
+  }
 
   /**
    * Set the client identity hook for the server, which will be called in
@@ -711,7 +749,9 @@ class BaseThriftServer : public apache::thrift::server::TServer,
     clientIdentityHook_ = func;
   }
 
-  ClientIdentityHook getClientIdentityHook() { return clientIdentityHook_; }
+  ClientIdentityHook getClientIdentityHook() {
+    return clientIdentityHook_;
+  }
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

@@ -23,8 +23,6 @@
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/HHWheelTimer.h>
-#include <wangle/acceptor/ManagedConnection.h>
-
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
@@ -33,19 +31,20 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <wangle/acceptor/ManagedConnection.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 /**
  * Represents a connection that is handled via libevent. This connection
  * essentially encapsulates a socket that has some associated libevent state.
  */
-class Cpp2Connection
-    : public ResponseChannel::Callback
-    , public wangle::ManagedConnection {
+class Cpp2Connection : public ResponseChannel::Callback,
+                       public wangle::ManagedConnection {
  public:
-
-  static bool isClientLocal(const folly::SocketAddress& clientAddr,
-                            const folly::SocketAddress& serverAddr);
+  static bool isClientLocal(
+      const folly::SocketAddress& clientAddr,
+      const folly::SocketAddress& serverAddr);
 
   static const std::string loadHeader;
   /**
@@ -120,19 +119,16 @@ class Cpp2Connection
    * a) To have task timeouts for all requests,
    * b) To ensure the channel is not destroyed before callback is called
    */
-  class Cpp2Request
-      : public ResponseChannel::Request {
+  class Cpp2Request : public ResponseChannel::Request {
    public:
     friend class Cpp2Connection;
 
-    class QueueTimeout
-      : public folly::HHWheelTimer::Callback {
+    class QueueTimeout : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
-    class TaskTimeout
-      : public folly::HHWheelTimer::Callback {
+    class TaskTimeout : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;
@@ -140,24 +136,32 @@ class Cpp2Connection
     friend class QueueTimeout;
     friend class TaskTimeout;
 
-    Cpp2Request(std::unique_ptr<ResponseChannel::Request> req,
-                   std::shared_ptr<Cpp2Connection> con);
+    Cpp2Request(
+        std::unique_ptr<ResponseChannel::Request> req,
+        std::shared_ptr<Cpp2Connection> con);
 
     // Delegates to wrapped request.
-    bool isActive() override { return req_->isActive(); }
-    void cancel() override { req_->cancel(); }
+    bool isActive() override {
+      return req_->isActive();
+    }
+    void cancel() override {
+      req_->cancel();
+    }
 
-    bool isOneway() override { return req_->isOneway(); }
+    bool isOneway() override {
+      return req_->isOneway();
+    }
 
-    void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
-                   MessageChannel::SendCallback* notUsed = nullptr) override;
+    void sendReply(
+        std::unique_ptr<folly::IOBuf>&& buf,
+        MessageChannel::SendCallback* notUsed = nullptr) override;
     void sendErrorWrapped(
         folly::exception_wrapper ew,
         std::string exCode,
         MessageChannel::SendCallback* notUsed = nullptr) override;
     void sendTimeoutResponse(
-      apache::thrift::HeaderServerChannel::HeaderRequest::TimeoutResponseType
-      responseType);
+        apache::thrift::HeaderServerChannel::HeaderRequest::TimeoutResponseType
+            responseType);
 
     ~Cpp2Request() override;
 
@@ -192,13 +196,12 @@ class Cpp2Connection
     }
   };
 
-  class Cpp2Sample
-      : public MessageChannel::SendCallback {
+  class Cpp2Sample : public MessageChannel::SendCallback {
    public:
     Cpp2Sample(
-      apache::thrift::server::TServerObserver::CallTimestamps&& timestamps,
-      apache::thrift::server::TServerObserver* observer,
-      MessageChannel::SendCallback* chainedCallback = nullptr);
+        apache::thrift::server::TServerObserver::CallTimestamps&& timestamps,
+        apache::thrift::server::TServerObserver* observer,
+        MessageChannel::SendCallback* chainedCallback = nullptr);
 
     void sendQueued() override;
     void messageSent() override;
@@ -214,10 +217,11 @@ class Cpp2Connection
   std::unordered_set<Cpp2Request*> activeRequests_;
 
   void removeRequest(Cpp2Request* req);
-  void killRequest(ResponseChannel::Request& req,
-                   TApplicationException::TApplicationExceptionType reason,
-                   const std::string& errorCode,
-                   const char* comment);
+  void killRequest(
+      ResponseChannel::Request& req,
+      TApplicationException::TApplicationExceptionType reason,
+      const std::string& errorCode,
+      const char* comment);
   void disconnect(const char* comment) noexcept;
 
   void setServerHeaders(HeaderServerChannel::HeaderRequest& request);
@@ -227,6 +231,7 @@ class Cpp2Connection
   std::shared_ptr<Cpp2Connection> this_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_CPP2CONNECTION_H_

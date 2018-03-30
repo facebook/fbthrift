@@ -16,20 +16,20 @@
 #ifndef THRIFT_ASYNC_CPP2CONNCONTEXT_H_
 #define THRIFT_ASYNC_CPP2CONNCONTEXT_H_ 1
 
+#include <memory>
+
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
-
-#include <folly/SocketAddress.h>
 #include <wangle/ssl/SSLUtil.h>
-
-#include <memory>
 
 using apache::thrift::concurrency::PriorityThreadManager;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
     const folly::AsyncTransportWrapper* transport,
@@ -156,7 +156,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
         startedProcessing_(false) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
-    ctx_= ctx;
+    ctx_ = ctx;
   }
 
   // Forward all connection-specific information
@@ -177,7 +177,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   apache::thrift::transport::THeader* getHeader() const override {
-      return header_;
+    return header_;
   }
 
   virtual const apache::thrift::SaslServer* getSaslServer() const {
@@ -210,8 +210,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   // Returns the old request data context so the caller can clean up
   RequestDataPtr setRequestData(
-      void* data, void_ptr_destructor destructor = no_op_destructor) {
-
+      void* data,
+      void_ptr_destructor destructor = no_op_destructor) {
     RequestDataPtr oldData(data, destructor);
     requestData_.swap(oldData);
     return oldData;
@@ -290,6 +290,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   uint32_t messageBeginSize_{0};
 };
 
-} }
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_CPP2CONNCONTEXT_H_

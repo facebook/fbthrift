@@ -16,11 +16,11 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
+#include <glog/logging.h>
+
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/portability/Sockets.h>
-#include <glog/logging.h>
-
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/concurrency/Util.h>

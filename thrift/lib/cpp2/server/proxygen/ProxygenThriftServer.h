@@ -15,8 +15,6 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/server/BaseThriftServer.h>
-
 #include <memory>
 
 #include <folly/executors/IOThreadPoolExecutor.h>
@@ -26,6 +24,7 @@
 #include <proxygen/httpserver/RequestHandlerFactory.h>
 #include <proxygen/lib/http/HTTPMessage.h>
 #include <proxygen/lib/http/session/HTTPSession.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
 namespace apache {
 namespace thrift {
@@ -63,12 +62,15 @@ class ProxygenThriftServer : public BaseThriftServer,
     }
 
     proxygen::RequestHandler* onRequest(
-        proxygen::RequestHandler*, proxygen::HTTPMessage*) noexcept override {
+        proxygen::RequestHandler*,
+        proxygen::HTTPMessage*) noexcept override {
       return new ThriftRequestHandler(
           this, timer_.get(), server_->threadManager_.get());
     }
 
-    apache::thrift::AsyncProcessor* getProcessor() { return processor_.get(); }
+    apache::thrift::AsyncProcessor* getProcessor() {
+      return processor_.get();
+    }
 
    private:
     ProxygenThriftServer* server_;
@@ -113,9 +115,15 @@ class ProxygenThriftServer : public BaseThriftServer,
     void onError(proxygen::ProxygenError err) noexcept override;
 
     // apache::thrift::ResponseChannel::Request
-    bool isActive() override { return active_; }
-    void cancel() override { active_ = false; }
-    bool isOneway() override { return false; }
+    bool isActive() override {
+      return active_;
+    }
+    void cancel() override {
+      active_ = false;
+    }
+    bool isOneway() override {
+      return false;
+    }
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&&, // && from ResponseChannel.h
@@ -183,7 +191,9 @@ class ProxygenThriftServer : public BaseThriftServer,
         }
       }
 
-      void clearHandler() { handler_ = nullptr; }
+      void clearHandler() {
+        handler_ = nullptr;
+      }
 
      private:
       ThriftRequestHandler* handler_;
@@ -236,7 +246,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   };
 
   bool isOverloaded(
-    const apache::thrift::transport::THeader* header = nullptr) override;
+      const apache::thrift::transport::THeader* header = nullptr) override;
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket
@@ -274,7 +284,9 @@ class ProxygenThriftServer : public BaseThriftServer,
     initialReceiveWindow_ = window;
   }
 
-  size_t getInitialReceiveWindow() { return initialReceiveWindow_; }
+  size_t getInitialReceiveWindow() {
+    return initialReceiveWindow_;
+  }
 
   void serve() override;
 
@@ -286,5 +298,5 @@ class ProxygenThriftServer : public BaseThriftServer,
   // processed on the server.
   void stopListening() override;
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

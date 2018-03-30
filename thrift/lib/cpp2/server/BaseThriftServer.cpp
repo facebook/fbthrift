@@ -15,17 +15,18 @@
  */
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
-#include <folly/Conv.h>
-#include <folly/Memory.h>
-#include <folly/Random.h>
-#include <folly/Logging.h>
-#include <folly/ScopeGuard.h>
-#include <folly/portability/Sockets.h>
-
 #include <fcntl.h>
+
 #include <iostream>
 #include <random>
 #include <thread>
+
+#include <folly/Conv.h>
+#include <folly/Logging.h>
+#include <folly/Memory.h>
+#include <folly/Random.h>
+#include <folly/ScopeGuard.h>
+#include <folly/portability/Sockets.h>
 
 namespace apache {
 namespace thrift {
@@ -126,8 +127,9 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
   return queueTimeout != taskTimeout;
 }
 
-int64_t BaseThriftServer::getLoad(const std::string& counter,
-                                  bool check_custom) {
+int64_t BaseThriftServer::getLoad(
+    const std::string& counter,
+    bool check_custom) {
   if (check_custom && getLoad_) {
     return getLoad_(counter);
   }
@@ -135,8 +137,7 @@ int64_t BaseThriftServer::getLoad(const std::string& counter,
   auto reqload = getRequestLoad();
 
   if (VLOG_IS_ON(1)) {
-    FB_LOG_EVERY_MS(INFO, 1000 * 10)
-        << getLoadInfo(reqload);
+    FB_LOG_EVERY_MS(INFO, 1000 * 10) << getLoadInfo(reqload);
   }
 
   return reqload;
@@ -151,5 +152,5 @@ std::string BaseThriftServer::getLoadInfo(int64_t load) {
   stream << "Load is: " << load << "% requests";
   return stream.str();
 }
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

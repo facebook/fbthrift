@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <unordered_set>
+
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
@@ -24,13 +26,12 @@
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
-#include <unordered_set>
-
-#include <wangle/acceptor/ConnectionManager.h>
 #include <wangle/acceptor/Acceptor.h>
+#include <wangle/acceptor/ConnectionManager.h>
 #include <wangle/acceptor/PeekingAcceptorHandshakeHelper.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // Forward declaration of classes
 class Cpp2Connection;
@@ -43,13 +44,13 @@ class ThriftServer;
  * connection to a Cpp2Worker running in another thread.  There should
  * typically be around one Cpp2Worker thread per core.
  */
-class Cpp2Worker
-    : public wangle::Acceptor,
-      private wangle::PeekingAcceptorHandshakeHelper::PeekCallback,
-      public std::enable_shared_from_this<Cpp2Worker> {
+class Cpp2Worker : public wangle::Acceptor,
+                   private wangle::PeekingAcceptorHandshakeHelper::PeekCallback,
+                   public std::enable_shared_from_this<Cpp2Worker> {
  protected:
   enum { kPeekCount = 9 };
   struct DoNotUse {};
+
  public:
   /**
    * Cpp2Worker is the actual server object for existing connections.
@@ -59,10 +60,10 @@ class Cpp2Worker
    * @param server the ThriftServer which created us.
    * @param serverChannel existing server channel to use, only for duplex server
    */
-  static std::shared_ptr<Cpp2Worker>
-  create(ThriftServer* server,
-         const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr,
-         folly::EventBase* eventBase = nullptr) {
+  static std::shared_ptr<Cpp2Worker> create(
+      ThriftServer* server,
+      const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr,
+      folly::EventBase* eventBase = nullptr) {
     std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
     worker->construct(server, serverChannel, eventBase);
     return worker;
@@ -87,7 +88,7 @@ class Cpp2Worker
    *
    * @returns pointer to ThriftServer
    */
-   ThriftServer* getServer() const {
+  ThriftServer* getServer() const {
     return server_;
   }
 
@@ -115,22 +116,21 @@ class Cpp2Worker
       const folly::SocketAddress* addr);
 
  protected:
-  Cpp2Worker(ThriftServer* server,
-             DoNotUse /* ignored, never call constructor directly */) :
-    Acceptor(server->getServerSocketConfig()),
-    wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
-    server_(server),
-    activeRequests_(0),
-    pendingCount_(0),
-    pendingTime_(std::chrono::steady_clock::now()) {
-  }
+  Cpp2Worker(
+      ThriftServer* server,
+      DoNotUse /* ignored, never call constructor directly */)
+      : Acceptor(server->getServerSocketConfig()),
+        wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
+        server_(server),
+        activeRequests_(0),
+        pendingCount_(0),
+        pendingTime_(std::chrono::steady_clock::now()) {}
 
   void construct(
       ThriftServer*,
       const std::shared_ptr<HeaderServerChannel>& serverChannel,
       folly::EventBase* eventBase) {
-    auto observer =
-      std::dynamic_pointer_cast<folly::EventBaseObserver>(
+    auto observer = std::dynamic_pointer_cast<folly::EventBaseObserver>(
         server_->getObserver());
     if (serverChannel) {
       eventBase = serverChannel->getEventBase();
@@ -149,11 +149,12 @@ class Cpp2Worker
     }
   }
 
-  void onNewConnection(folly::AsyncTransportWrapper::UniquePtr,
-                       const folly::SocketAddress*,
-                       const std::string&,
-                       wangle::SecureTransportType,
-                       const wangle::TransportInfo&) override;
+  void onNewConnection(
+      folly::AsyncTransportWrapper::UniquePtr,
+      const folly::SocketAddress*,
+      const std::string&,
+      wangle::SecureTransportType,
+      const wangle::TransportInfo&) override;
 
   virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(
       folly::AsyncTransportWrapper::UniquePtr);
@@ -190,8 +191,9 @@ class Cpp2Worker
   // Connections which are kept alive by in-flight requests
   std::shared_ptr<ThriftServer> duplexServer_;
 
-  folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
-                                                   int fd) override {
+  folly::AsyncSocket::UniquePtr makeNewAsyncSocket(
+      folly::EventBase* base,
+      int fd) override {
     return folly::AsyncSocket::UniquePtr(
         new apache::thrift::async::TAsyncSocket(base, fd));
   }
@@ -202,11 +204,11 @@ class Cpp2Worker
       int fd) override {
     return folly::AsyncSSLSocket::UniquePtr(
         new apache::thrift::async::TAsyncSSLSocket(
-          ctx,
-          base,
-          fd,
-          true, /* set server */
-          true /* defer the security negotiation until sslAccept. */));
+            ctx,
+            base,
+            fd,
+            true, /* set server */
+            true /* defer the security negotiation until sslAccept. */));
   }
 
   /**
@@ -232,4 +234,5 @@ class Cpp2Worker
   friend class ThriftServer;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

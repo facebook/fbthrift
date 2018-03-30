@@ -79,5 +79,5 @@ TLSHelper::getPlaintextAlert(uint8_t major, uint8_t minor, Alert alert) {
   appender.write<uint8_t>(static_cast<uint8_t>(alert));
   return alertBuf;
 }
-}
-}
+} // namespace thrift
+} // namespace apache

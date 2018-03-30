@@ -51,26 +51,25 @@
 #include <wangle/ssl/SSLContextConfig.h>
 #include <wangle/ssl/TLSCredProcessor.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // Forward declaration of classes
 class Cpp2Connection;
 class Cpp2Worker;
 
-enum class SSLPolicy {
-  DISABLED, PERMITTED, REQUIRED
-};
+enum class SSLPolicy { DISABLED, PERMITTED, REQUIRED };
 
-typedef wangle::Pipeline<
-  folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
+typedef wangle::Pipeline<folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>>
+    Pipeline;
 
 /**
  *   This is yet another thrift server.
  *   Uses cpp2 style generated code.
  */
 
-class ThriftServer : public apache::thrift::BaseThriftServer
-                   , public wangle::ServerBootstrap<Pipeline> {
+class ThriftServer : public apache::thrift::BaseThriftServer,
+                     public wangle::ServerBootstrap<Pipeline> {
  private:
   //! SSL context
   std::shared_ptr<wangle::SSLContextConfig> sslContext_;
@@ -89,10 +88,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
   const bool allowInsecureLoopback_;
-  std::function<std::unique_ptr<SaslServer> (
-    folly::EventBase*)> saslServerFactory_;
+  std::function<std::unique_ptr<SaslServer>(folly::EventBase*)>
+      saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    saslThreadManager_;
+      saslThreadManager_;
   size_t nSaslPoolThreads_ = 0;
   std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
@@ -101,19 +100,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;
 
-  struct IdleServerAction:
-    public folly::HHWheelTimer::Callback
-  {
+  struct IdleServerAction : public folly::HHWheelTimer::Callback {
     IdleServerAction(
-      ThriftServer &server,
-      folly::HHWheelTimer &timer,
-      std::chrono::milliseconds timeout
-    );
+        ThriftServer& server,
+        folly::HHWheelTimer& timer,
+        std::chrono::milliseconds timeout);
 
     void timeoutExpired() noexcept override;
 
-    ThriftServer &server_;
-    folly::HHWheelTimer &timer_;
+    ThriftServer& server_;
+    folly::HHWheelTimer& timer_;
     std::chrono::milliseconds timeout_;
   };
 
@@ -194,7 +190,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<HeaderServerChannel> serverChannel_;
   std::shared_ptr<Cpp2Worker> duplexWorker_;
 
-  bool isDuplex_ = false;   // is server in duplex mode? (used by server)
+  bool isDuplex_ = false; // is server in duplex mode? (used by server)
 
   mutable std::mutex ioGroupMutex_;
 
@@ -218,9 +214,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   ThriftServer();
 
   // If sasl_policy is set. FLAGS_sasl_policy will be ignored for this server
-  ThriftServer(const std::string& sasl_policy,
-               bool allow_insecure_loopback);
-
+  ThriftServer(const std::string& sasl_policy, bool allow_insecure_loopback);
 
   // NOTE: Don't use this constructor to create a regular Thrift server. This
   // constructor is used by the client to create a duplex server on an existing
@@ -357,8 +351,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   /**
    *
    */
-  void setSSLConfig(
-    std::shared_ptr<wangle::SSLContextConfig> context) {
+  void setSSLConfig(std::shared_ptr<wangle::SSLContextConfig> context) {
     CHECK(configMutable());
     if (context) {
       context->isDefault = true;
@@ -425,13 +418,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     return reusePort_;
   }
 
-  std::shared_ptr<wangle::SSLContextConfig>
-  getSSLConfig() const {
+  std::shared_ptr<wangle::SSLContextConfig> getSSLConfig() const {
     return sslContext_;
   }
 
-  folly::Optional<wangle::TLSTicketKeySeeds>
-  getTicketSeeds() const {
+  folly::Optional<wangle::TLSTicketKeySeeds> getTicketSeeds() const {
     return ticketSeeds_;
   }
 
@@ -478,8 +469,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   void useExistingSocket(int socket);
   void useExistingSockets(const std::vector<int>& sockets);
-  void useExistingSocket(
-    folly::AsyncServerSocket::UniquePtr socket);
+  void useExistingSocket(folly::AsyncServerSocket::UniquePtr socket);
 
   /**
    * Return the file descriptor(s) associated with the listening socket
@@ -548,13 +538,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
-  void setSaslServerFactory(std::function<std::unique_ptr<SaslServer> (
-      folly::EventBase*)> func) {
+  void setSaslServerFactory(
+      std::function<std::unique_ptr<SaslServer>(folly::EventBase*)> func) {
     saslServerFactory_ = func;
   }
 
-  std::function<std::unique_ptr<SaslServer> (
-      folly::EventBase*)> getSaslServerFactory() {
+  std::function<std::unique_ptr<SaslServer>(folly::EventBase*)>
+  getSaslServerFactory() {
     return saslServerFactory_;
   }
 
@@ -723,7 +713,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   /**
    * Returns default write transforms to be used on replies.
    */
-  std::vector<uint16_t>& getDefaultWriteTransforms() { return writeTrans_; }
+  std::vector<uint16_t>& getDefaultWriteTransforms() {
+    return writeTrans_;
+  }
 
   /**
    * Clears our default write transforms
@@ -901,6 +893,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
       const std::shared_ptr<folly::ShutdownSocketSet>& newSSS);
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_SERVER_H_

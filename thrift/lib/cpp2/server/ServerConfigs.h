@@ -17,8 +17,9 @@
 #ifndef SERVER_CONFIGS_H_
 #define SERVER_CONFIGS_H_ 1
 
-#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <chrono>
+
+#include <thrift/lib/cpp/server/TServerObserver.h>
 
 namespace apache {
 namespace thrift {

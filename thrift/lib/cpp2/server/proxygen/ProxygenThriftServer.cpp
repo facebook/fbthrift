@@ -16,37 +16,38 @@
 
 #include <thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h>
 
-#include <folly/Conv.h>
-#include <folly/Memory.h>
-#include <folly/Logging.h>
-#include <folly/ScopeGuard.h>
-#include <folly/portability/Sockets.h>
-#include <thrift/lib/cpp2/server/Cpp2Connection.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <proxygen/httpserver/ResponseBuilder.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
-#include <folly/SocketAddress.h>
-#include <folly/io/async/AsyncServerSocket.h>
+#include <fcntl.h>
+#include <signal.h>
 
 #include <iostream>
 #include <random>
-#include <fcntl.h>
-#include <signal.h>
+
+#include <folly/Conv.h>
+#include <folly/Logging.h>
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
+#include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncServerSocket.h>
+#include <folly/portability/Sockets.h>
+#include <proxygen/httpserver/ResponseBuilder.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
 namespace apache {
 namespace thrift {
 
 using folly::SocketAddress;
 using proxygen::HTTPMessage;
-using proxygen::UpgradeProtocol;
-using proxygen::ProxygenError;
-using proxygen::ResponseHandler;
 using proxygen::HTTPServer;
 using proxygen::HTTPServerOptions;
+using proxygen::ProxygenError;
 using proxygen::RequestHandlerChain;
 using proxygen::ResponseBuilder;
+using proxygen::ResponseHandler;
+using proxygen::UpgradeProtocol;
 
 void ProxygenThriftServer::ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> msg) noexcept {
@@ -128,20 +129,16 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
 
   worker_->server_->incActiveRequests();
 
-  reqCtx_ = std::make_shared<apache::thrift::Cpp2RequestContext>(connCtx_.get(),
-                                                                 header_.get());
+  reqCtx_ = std::make_shared<apache::thrift::Cpp2RequestContext>(
+      connCtx_.get(), header_.get());
 
   request_ = new ProxygenRequest(this, header_, connCtx_, reqCtx_);
-  auto req = std::unique_ptr<apache::thrift::ResponseChannel::Request>(
-      request_);
+  auto req =
+      std::unique_ptr<apache::thrift::ResponseChannel::Request>(request_);
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       header_->getProtocolId());
   if (!apache::thrift::detail::ap::deserializeMessageBegin(
-        protoId,
-        req,
-        body_.get(),
-        reqCtx_.get(),
-        worker_->evb_)) {
+          protoId, req, body_.get(), reqCtx_.get(), worker_->evb_)) {
     return;
   }
 
@@ -178,7 +175,6 @@ void ProxygenThriftServer::ThriftRequestHandler::onError(
 void ProxygenThriftServer::ThriftRequestHandler::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
     apache::thrift::MessageChannel::SendCallback* cb) {
-
   queueTimeout_.cancelTimeout();
   taskTimeout_.cancelTimeout();
 
@@ -197,25 +193,27 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
     response.header(itr.first, itr.second);
   }
 
-  response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
-                  "application/x-thrift");
+  response.header(
+      proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
+      "application/x-thrift");
 
   switch (header_->getProtocolId()) {
     case protocol::T_BINARY_PROTOCOL:
-      response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                      "binary");
+      response.header(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "binary");
       break;
     case protocol::T_COMPACT_PROTOCOL:
-      response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                      "compact");
+      response.header(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "compact");
       break;
     case protocol::T_JSON_PROTOCOL:
-      response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                      "json");
+      response.header(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL, "json");
       break;
     case protocol::T_SIMPLE_JSON_PROTOCOL:
-      response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
-                      "simplejson");
+      response.header(
+          proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+          "simplejson");
       break;
     default:
       // Do nothing
@@ -242,7 +240,6 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode,
     apache::thrift::MessageChannel::MessageChannel::SendCallback* cb) {
-
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<apache::thrift::TApplicationException>());
 
@@ -350,8 +347,8 @@ void ProxygenThriftServer::serve() {
 
   std::vector<HTTPServer::IPConfig> IPs;
   if (port_ != -1) {
-    IPs.emplace_back(SocketAddress("::", port_, true),
-                     HTTPServer::Protocol::HTTP2);
+    IPs.emplace_back(
+        SocketAddress("::", port_, true), HTTPServer::Protocol::HTTP2);
   } else {
     IPs.emplace_back(address_, HTTPServer::Protocol::HTTP2);
   }
@@ -384,8 +381,12 @@ void ProxygenThriftServer::serve() {
   server_.reset();
 }
 
-void ProxygenThriftServer::stop() { server_->stop(); }
-
-void ProxygenThriftServer::stopListening() { server_->stop(); }
+void ProxygenThriftServer::stop() {
+  server_->stop();
 }
-} // apache::thrift
+
+void ProxygenThriftServer::stopListening() {
+  server_->stop();
+}
+} // namespace thrift
+} // namespace apache
