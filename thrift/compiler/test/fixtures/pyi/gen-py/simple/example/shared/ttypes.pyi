@@ -45,6 +45,29 @@ class SimpleException(Thrift.TException):
     def __ne__(self, other: t.Any) -> bool: ...
 
 
+class MessageException(Thrift.TException):
+    thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
+    thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
+    thrift_struct_annotations: t.Dict[str, str]
+
+    message: t.Optional[str]
+    err_code: t.Optional[int]
+
+    def __init__(
+        self,
+        message: t.Optional[str] = ...,
+        err_code: t.Optional[int] = ...
+    ) -> None:
+        ...
+
+    def isUnion(self) -> bool: ...
+    def checkRequired(self) -> None: ...
+    def read(self, iprot: TProtocolBase) -> None: ...
+    def write(self, oprot: TProtocolBase) -> None: ...
+    def __eq__(self, other: t.Any) -> bool: ...
+    def __ne__(self, other: t.Any) -> bool: ...
+
+
 class SimpleStruct:
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]

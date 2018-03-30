@@ -21,6 +21,11 @@ exception SimpleException {
   1: i16 err_code
 }
 
+exception MessageException {
+  1: string message
+  2: i16 err_code
+} (message = 'message')
+
 typedef list<SimpleStruct> ListOfSimpleStructs
 
 struct SimpleStruct {
