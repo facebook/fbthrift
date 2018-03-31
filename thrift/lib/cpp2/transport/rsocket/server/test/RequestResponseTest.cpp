@@ -19,8 +19,8 @@
 #include <folly/io/async/EventBase.h>
 #include <gtest/gtest.h>
 
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSClientThriftChannel.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
 
@@ -38,7 +38,7 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
     auto metadata = std::make_unique<RequestRpcMetadata>();
     CoreTestFixture::serializeSumTwoNumbers(
         5, 10, false, &request, metadata.get());
-    auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
+    auto metaBuf = RSocketClientChannel::serializeMetadata(*metadata);
 
     auto response = responder_->handleRequestResponse(
         rsocket::Payload(request.move(), std::move(metaBuf)), 0);
@@ -61,7 +61,7 @@ TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
     auto metadata = std::make_unique<RequestRpcMetadata>();
     CoreTestFixture::serializeSumTwoNumbers(
         5, 10, true, &request, metadata.get());
-    auto metaBuf = RSClientThriftChannel::serializeMetadata(*metadata);
+    auto metaBuf = RSocketClientChannel::serializeMetadata(*metadata);
 
     auto response = responder_->handleRequestResponse(
         rsocket::Payload(request.move(), std::move(metaBuf)), 0);

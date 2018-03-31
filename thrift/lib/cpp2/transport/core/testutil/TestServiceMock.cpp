@@ -15,16 +15,21 @@
  */
 
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
 #include <chrono>
 #include <thread>
 
+DECLARE_string(transport);
+
 namespace testutil {
 namespace testservice {
 
 using namespace apache::thrift;
+using namespace apache::thrift::async;
 
 int32_t TestServiceMock::sumTwoNumbers(int32_t x, int32_t y) {
   sumTwoNumbers_(x, y); // just inform that this function is called
@@ -98,14 +103,23 @@ void TestServiceMock::hello(
   result = "Hello, " + *name;
 }
 
-IntermHeaderService::IntermHeaderService(std::string const& host, int16_t port)
-    : clientWorkerThread_{"CompatIntermServerWorker"} {
-  auto mgr = ConnectionManager::getInstance();
-  auto connection = mgr->getConnection(host, port);
-  auto channel = ThriftClient::Ptr(
-      new ThriftClient(connection, clientWorkerThread_.getEventBase()));
-  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-  client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+IntermHeaderService::IntermHeaderService(
+    std::string const& host,
+    int16_t port) {
+  if (FLAGS_transport == "rsocket") {
+    RSocketClientChannel::Ptr channel;
+    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
+          new TAsyncSocket(evbThread_.getEventBase(), host, port)));
+    });
+    client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+  } else {
+    auto mgr = ConnectionManager::getInstance();
+    auto connection = mgr->getConnection(host, port);
+    auto channel = ThriftClient::Ptr(new ThriftClient(connection));
+    channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+    client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+  }
 }
 
 int32_t IntermHeaderService::callAdd(int32_t x) {

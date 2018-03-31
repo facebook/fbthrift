@@ -57,10 +57,11 @@ class SampleServer {
   std::shared_ptr<Service> handler_;
   std::unique_ptr<ThriftServer> server_;
   uint16_t port_;
-  folly::ScopedEventBaseThread workerThread_;
 
   int numIOThreads_{10};
   int numWorkerThreads_{10};
+
+  folly::ScopedEventBaseThread evbThread_;
 
   friend class TransportCompatibilityTest;
 };
@@ -76,6 +77,11 @@ class TransportCompatibilityTest {
   void addRoutingHandler(
       std::unique_ptr<TransportRoutingHandler> routingHandler);
   ThriftServer* getServer();
+
+  void connectToServer(
+      folly::Function<
+          void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
+          callMe);
 
   void TestRequestResponse_Simple();
   void TestRequestResponse_Sync();
@@ -109,10 +115,6 @@ class TransportCompatibilityTest {
 
  protected:
   void connectToServer(
-      folly::Function<
-          void(std::unique_ptr<testutil::testservice::TestServiceAsyncClient>)>
-          callMe);
-  void connectToServer(
       folly::Function<void(
           std::unique_ptr<testutil::testservice::TestServiceAsyncClient>,
           std::shared_ptr<ClientConnectionIf>)> callMe);
@@ -122,7 +124,10 @@ class TransportCompatibilityTest {
       int32_t timeoutMs,
       int32_t sleepMs);
 
+ public:
   std::shared_ptr<testutil::testservice::TestServiceMock> handler_;
+
+ protected:
   std::unique_ptr<SampleServer<testutil::testservice::TestServiceMock>> server_;
 };
 

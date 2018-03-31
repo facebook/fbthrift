@@ -17,6 +17,7 @@
 
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -26,6 +27,7 @@
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
@@ -54,8 +56,7 @@ TransportCompatibilityTest::TransportCompatibilityTest()
 
 template <typename Service>
 SampleServer<Service>::SampleServer(std::shared_ptr<Service> handler)
-    : handler_(std::move(handler)),
-      workerThread_("TransportCompatibilityTest_WorkerThread") {
+    : handler_(std::move(handler)) {
   setupServer();
 }
 
@@ -187,7 +188,14 @@ void SampleServer<Service>::connectToServer(
         new TAsyncSocket(folly::EventBaseManager::get()->getEventBase(), addr));
     auto chan = HeaderClientChannel::newChannel(std::move(sock));
     chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-    callMe(std::move(chan), std::unique_ptr<ClientConnectionIf>());
+    callMe(std::move(chan), nullptr);
+  } else if (transport == "rsocket") {
+    RSocketClientChannel::Ptr channel;
+    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
+          new TAsyncSocket(evbThread_.getEventBase(), FLAGS_host, port_)));
+    });
+    callMe(std::move(channel), nullptr);
   } else if (transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.
@@ -202,12 +210,11 @@ void SampleServer<Service>::connectToServer(
       socket.reset(sslSocket);
     }
     auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
-    callMe(std::move(channel), std::unique_ptr<ClientConnectionIf>());
+    callMe(std::move(channel), nullptr);
   } else {
     auto mgr = ConnectionManager::getInstance();
     auto connection = mgr->getConnection(FLAGS_host, port_);
-    auto channel = ThriftClient::Ptr(
-        new ThriftClient(connection, workerThread_.getEventBase()));
+    auto channel = ThriftClient::Ptr(new ThriftClient(connection));
     channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     callMe(std::move(channel), std::move(connection));
   }
@@ -563,11 +570,10 @@ void TransportCompatibilityTest::
 }
 
 void TransportCompatibilityTest::TestRequestResponse_Saturation() {
-  connectToServer([this](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([this](auto client, auto connection) {
     EXPECT_CALL(*handler_.get(), add_(3)).Times(2);
     // note that no EXPECT_CALL for add_(5)
+
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
     EXPECT_THROW(client->sync_add(5), TTransportException);
@@ -580,13 +586,13 @@ void TransportCompatibilityTest::TestRequestResponse_Saturation() {
 }
 
 void TransportCompatibilityTest::TestRequestResponse_Connection_CloseNow() {
-  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
-                     std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     // It should not reach to server: no EXPECT_CALL for add_(3)
 
     // Observe the behavior if the connection is closed already
-    connection->getEventBase()->runInEventBaseThreadAndWait(
-        [&]() { connection->closeNow(); });
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->closeNow(); });
 
     try {
       client->sync_add(3);
@@ -706,33 +712,17 @@ void TransportCompatibilityTest::TestOneway_WithDelay() {
 }
 
 void TransportCompatibilityTest::TestOneway_Saturation() {
-  connectToServer([this](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([this](auto client, auto connection) {
     EXPECT_CALL(*handler_.get(), add_(3));
     // note that no EXPECT_CALL for addAfterDelay_(0, 5)
-    if (FLAGS_transport == "rsocket") {
-      EXPECT_CALL(*handler_.get(), addAfterDelay_(100, 5));
-      EXPECT_CALL(*handler_.get(), addAfterDelay_(50, 5));
-    }
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
     client->sync_addAfterDelay(0, 5);
 
-    // the first call is not completed as the connection was saturated
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(1u); });
     EXPECT_EQ(3, client->sync_add(3));
-
-    // Client should be able to issue both of these functions as
-    // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
-    if (FLAGS_transport == "rsocket") {
-      // http2 will fail this because the underlying stream is still twoway.
-      // So we don't test this for http2.
-      client->sync_addAfterDelay(100, 5);
-      client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
-    }
   });
 }
 
@@ -747,13 +737,13 @@ void TransportCompatibilityTest::TestOneway_UnexpectedException() {
 }
 
 void TransportCompatibilityTest::TestOneway_Connection_CloseNow() {
-  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
-                     std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     // It should not reach server - no EXPECT_CALL for addAfterDelay_(0, 5)
 
     // Observe the behavior if the connection is closed already
-    connection->getEventBase()->runInEventBaseThreadAndWait(
-        [&]() { connection->closeNow(); });
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->closeNow(); });
 
     EXPECT_NO_THROW(client->sync_addAfterDelay(0, 5));
   });
@@ -803,9 +793,7 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
   server.startServer();
 
   server.connectToServer(
-      "header",
-      [](ClientChannel::Ptr channel,
-         std::shared_ptr<ClientConnectionIf>) mutable {
+      "header", [](ClientChannel::Ptr channel, auto) mutable {
         auto client = std::make_unique<IntermHeaderServiceAsyncClient>(
             std::move(channel));
         EXPECT_EQ(5, client->sync_callAdd(5));
@@ -815,67 +803,62 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
 }
 
 void TransportCompatibilityTest::TestBadPayload() {
-  connectToServer([](std::unique_ptr<TestServiceAsyncClient>,
-                     std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     auto cb = std::make_unique<MockCallback>(true, false);
-    connection->getEventBase()->runInEventBaseThreadAndWait([&]() {
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
       auto metadata = std::make_unique<RequestRpcMetadata>();
       metadata->set_clientTimeoutMs(10000);
       metadata->set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
       metadata->set_name("name");
       metadata->set_seqId(0);
       metadata->set_protocol(ProtocolId::BINARY);
-      auto channel = connection->getChannel(metadata.get());
-
-      auto evb = folly::EventBaseManager::get()->getEventBase();
-      auto callback = std::make_unique<ThriftClientCallback>(
-          evb,
-          std::move(cb),
-          nullptr,
-          false,
-          (uint16_t)ProtocolId::BINARY,
-          std::chrono::milliseconds(0));
 
       // Put a bad payload!
       auto payload = std::make_unique<folly::IOBuf>();
 
-      channel->sendThriftRequest(
-          std::move(metadata), std::move(payload), std::move(callback));
+      RpcOptions rpcOptions;
+      auto ctx = std::make_unique<ContextStack>("temp");
+      auto header = std::make_shared<THeader>();
+      channel->sendRequest(
+          rpcOptions,
+          std::move(cb),
+          std::move(ctx),
+          std::move(payload),
+          std::move(header));
     });
   });
 }
 
 void TransportCompatibilityTest::TestEvbSwitch() {
-  connectToServer([this](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(3);
 
     folly::ScopedEventBaseThread sevbt;
 
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
 
-    auto evb = connection->getEventBase();
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    auto evb = channel->getEventBase();
     evb->runInEventBaseThreadAndWait([&]() {
-      EXPECT_TRUE(connection->isDetachable());
+      EXPECT_TRUE(channel->isDetachable());
 
-      connection->detachEventBase();
+      channel->detachEventBase();
     });
 
     sevbt.getEventBase()->runInEventBaseThreadAndWait(
-        [&]() { connection->attachEventBase(sevbt.getEventBase()); });
+        [&]() { channel->attachEventBase(sevbt.getEventBase()); });
 
     // Execution happens on the new event base
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
 
     // Attach the old one back
     sevbt.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      EXPECT_TRUE(connection->isDetachable());
-      connection->detachEventBase();
+      EXPECT_TRUE(channel->isDetachable());
+      channel->detachEventBase();
     });
 
-    evb->runInEventBaseThreadAndWait(
-        [&]() { connection->attachEventBase(evb); });
+    evb->runInEventBaseThreadAndWait([&]() { channel->attachEventBase(evb); });
 
     // Execution happens on the old event base, along with the destruction
     EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
@@ -883,10 +866,9 @@ void TransportCompatibilityTest::TestEvbSwitch() {
 }
 
 void TransportCompatibilityTest::TestEvbSwitch_Failure() {
-  connectToServer([this](
-                      std::unique_ptr<TestServiceAsyncClient> client,
-                      std::shared_ptr<ClientConnectionIf> connection) {
-    auto evb = connection->getEventBase();
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    auto evb = channel->getEventBase();
     // If isDetachable() is called when a function is executing, it should
     // not be detachable
     callSleep(client.get(), 5000, 1000);
@@ -894,7 +876,7 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     evb->runInEventBaseThreadAndWait([&]() {
       // As we have an active request, it should not be detachable!
-      EXPECT_FALSE(connection->isDetachable());
+      EXPECT_FALSE(channel->isDetachable());
     });
 
     // Once the request finishes, it should be detachable again
@@ -902,7 +884,7 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     evb->runInEventBaseThreadAndWait([&]() {
       // As we have an active request, it should not be detachable!
-      EXPECT_TRUE(connection->isDetachable());
+      EXPECT_TRUE(channel->isDetachable());
     });
 
     // If the latest request is sent while previous ones are still finishing
@@ -914,7 +896,7 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
     client->sync_sumTwoNumbers(1, 2);
     evb->runInEventBaseThreadAndWait([&]() {
       // As we have an active request, it should not be detachable!
-      EXPECT_FALSE(connection->isDetachable());
+      EXPECT_FALSE(channel->isDetachable());
     });
 
     /* sleep override - make sure request is finished */
@@ -922,9 +904,9 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
 
     evb->runInEventBaseThreadAndWait([&]() {
       // Should be detachable now
-      EXPECT_TRUE(connection->isDetachable());
+      EXPECT_TRUE(channel->isDetachable());
       // Detach to prove that we can destroy the object even if evb is detached
-      connection->detachEventBase();
+      channel->detachEventBase();
     });
   });
 }
@@ -944,15 +926,14 @@ class CloseCallbackTest : public CloseCallback {
 };
 
 void TransportCompatibilityTest::TestCloseCallback() {
-  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client,
-                     std::shared_ptr<ClientConnectionIf> connection) {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     auto closeCb = std::make_unique<CloseCallbackTest>();
-    auto channel = client->getChannel();
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
     channel->setCloseCallback(closeCb.get());
 
     EXPECT_FALSE(closeCb->isClosed());
-    auto evb = connection->getEventBase();
-    evb->runInEventBaseThreadAndWait([&]() { connection->closeNow(); });
+    auto evb = channel->getEventBase();
+    evb->runInEventBaseThreadAndWait([&]() { channel->closeNow(); });
     EXPECT_TRUE(closeCb->isClosed());
   });
 }

@@ -18,6 +18,8 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <gflags/gflags.h>
 #include <gmock/gmock.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
@@ -35,6 +37,7 @@ namespace apache {
 namespace thrift {
 
 using namespace apache::thrift;
+using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using namespace testing;
 using namespace testutil::testservice;
@@ -66,8 +69,7 @@ class StreamingTest : public testing::Test {
   };
 
  public:
-  StreamingTest()
-      : workerThread_("TransportCompatibilityTest_WorkerThread"), executor_() {
+  StreamingTest() : executor_() {
     // override the default
     FLAGS_transport = "rsocket"; // client's transport
 
@@ -107,23 +109,13 @@ class StreamingTest : public testing::Test {
       folly::Function<void(
           std::unique_ptr<testutil::testservice::StreamServiceAsyncClient>)>
           callMe) {
-    connectToServer([callMe = std::move(callMe)](
-                        std::unique_ptr<StreamServiceAsyncClient> client,
-                        auto) mutable { callMe(std::move(client)); });
-  }
-  void connectToServer(
-      folly::Function<void(
-          std::unique_ptr<testutil::testservice::StreamServiceAsyncClient>,
-          std::shared_ptr<ClientConnectionIf>)> callMe) {
     CHECK_GT(port_, 0) << "Check if the server has started already";
-    auto mgr = ConnectionManager::getInstance();
-    auto connection = mgr->getConnection("::1", port_);
-    auto channel = ThriftClient::Ptr(
-        new ThriftClient(connection, workerThread_.getEventBase()));
-    channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-    auto client =
-        std::make_unique<StreamServiceAsyncClient>(std::move(channel));
-    callMe(std::move(client), std::move(connection));
+    RSocketClientChannel::Ptr channel;
+    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
+          new TAsyncSocket(evbThread_.getEventBase(), "::1", port_)));
+    });
+    callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
  public:
@@ -132,11 +124,11 @@ class StreamingTest : public testing::Test {
       handler_;
   std::unique_ptr<ThriftServer> server_;
   uint16_t port_;
-  folly::ScopedEventBaseThread workerThread_;
 
   int numIOThreads_{10};
   int numWorkerThreads_{10};
 
+  folly::ScopedEventBaseThread evbThread_;
   folly::SerialExecutor executor_;
 };
 
@@ -176,6 +168,7 @@ TEST_F(StreamingTest, CallbackSimpleStream) {
     int j = 0;
     auto callback = [&done, &j, this](
                         ::apache::thrift::ClientReceiveState&& receiveState) {
+      ASSERT_FALSE(receiveState.isException());
       auto stream = receiveState.extractStream();
       auto result = toFlowable(std::move(stream).via(&executor_));
       result->subscribe(

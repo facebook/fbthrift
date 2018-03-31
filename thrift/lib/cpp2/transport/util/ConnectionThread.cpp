@@ -23,16 +23,15 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSClientConnection.h>
 
-DEFINE_string(transport, "http2", "The transport to use (http2, rsocket)");
+DEFINE_string(transport, "http2", "The transport to use (http2)");
 DEFINE_bool(use_ssl, false, "Create an encrypted client connection");
 
 namespace apache {
 namespace thrift {
 
-using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TAsyncSocket;
+using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TAsyncTransport;
 
 ConnectionThread::~ConnectionThread() {
@@ -54,6 +53,9 @@ void ConnectionThread::maybeCreateConnection(
     const std::string& serverKey,
     const std::string& addr,
     uint16_t port) {
+  LOG_IF(FATAL, FLAGS_transport == "rsocket")
+      << "Use RSocketClientChannel::newChannel()";
+
   connections_.withWLock([&](auto& connections) {
     std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];
     if (connection == nullptr || !connection->good()) {
@@ -61,26 +63,17 @@ void ConnectionThread::maybeCreateConnection(
           new TAsyncSocket(getEventBase(), addr, port));
       if (FLAGS_use_ssl) {
         auto sslContext = std::make_shared<folly::SSLContext>();
-        if (FLAGS_transport == "rsocket") {
-          sslContext->setAdvertisedNextProtocols({"rs"});
-        } else {
-          sslContext->setAdvertisedNextProtocols({"h2", "http"});
-        }
+        sslContext->setAdvertisedNextProtocols({"h2", "http"});
         auto sslSocket = new TAsyncSSLSocket(
             sslContext, getEventBase(), socket->detachFd(), false);
         sslSocket->sslConn(nullptr);
         socket.reset(sslSocket);
       }
-      if (FLAGS_transport == "rsocket") {
-        connection = std::make_shared<RSClientConnection>(
-            std::move(socket), FLAGS_use_ssl);
-      } else {
-        if (FLAGS_transport != "http2") {
-          LOG(ERROR) << "Unknown transport " << FLAGS_transport
-                     << ".  Will use http2.";
-        }
-        connection = H2ClientConnection::newHTTP2Connection(std::move(socket));
+      if (FLAGS_transport != "http2") {
+        LOG(ERROR) << "Unknown transport " << FLAGS_transport
+                   << ".  Will use http2.";
       }
+      connection = H2ClientConnection::newHTTP2Connection(std::move(socket));
     }
   });
 }

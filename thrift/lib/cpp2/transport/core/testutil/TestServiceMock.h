@@ -66,7 +66,7 @@ class IntermHeaderService : public IntermHeaderServiceSvIf {
 
  private:
   std::unique_ptr<TestServiceAsyncClient> client_;
-  folly::ScopedEventBaseThread clientWorkerThread_;
+  folly::ScopedEventBaseThread evbThread_;
 };
 
 } // namespace testservice

@@ -15,6 +15,7 @@
  */
 
 #include <gflags/gflags.h>
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
@@ -26,6 +27,7 @@ namespace thrift {
 
 using namespace rsocket;
 using namespace testutil::testservice;
+using namespace apache::thrift::transport;
 
 class RSCompatibilityTest : public testing::Test {
  public:
@@ -83,7 +85,20 @@ TEST_F(RSCompatibilityTest, RequestResponse_Header_UnexpectedException) {
 }
 
 TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
-  compatibilityTest_->TestRequestResponse_Saturation();
+  compatibilityTest_->connectToServer([this](auto client) {
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), add_(3)).Times(2);
+    // note that no EXPECT_CALL for add_(5)
+
+    auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(0u); });
+    EXPECT_THROW(client->sync_add(5), TTransportException);
+
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(1u); });
+    EXPECT_EQ(3, client->sync_add(3));
+    EXPECT_EQ(6, client->sync_add(3));
+  });
 }
 
 TEST_F(RSCompatibilityTest, RequestResponse_Connection_CloseNow) {
@@ -107,7 +122,24 @@ TEST_F(RSCompatibilityTest, Oneway_WithDelay) {
 }
 
 TEST_F(RSCompatibilityTest, Oneway_Saturation) {
-  compatibilityTest_->TestOneway_Saturation();
+  compatibilityTest_->connectToServer([this](auto client) {
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), addAfterDelay_(100, 5));
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), addAfterDelay_(50, 5));
+
+    auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(0u); });
+    client->sync_addAfterDelay(0, 5);
+
+    // the first call is not completed as the connection was saturated
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(1u); });
+
+    // Client should be able to issue both of these functions as
+    // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
+    client->sync_addAfterDelay(100, 5);
+    client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
+  });
 }
 
 TEST_F(RSCompatibilityTest, Oneway_UnexpectedException) {

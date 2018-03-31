@@ -18,7 +18,6 @@
 #include <rsocket/framing/FramedDuplexConnection.h>
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
-#include <thrift/lib/cpp2/async/ClientChannel.h>
 
 namespace apache {
 namespace thrift {
