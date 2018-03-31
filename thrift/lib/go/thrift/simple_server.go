@@ -23,6 +23,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"os"
 	"runtime/debug"
 )
 
@@ -135,7 +136,7 @@ func NewSimpleServerFactory(processorFactory ProcessorFactory, serverTransport S
 		inputProtocolFactory:   NewBinaryProtocolFactoryDefault(),
 		outputProtocolFactory:  NewBinaryProtocolFactoryDefault(),
 		quit: make(chan struct{}, 1),
-		log:  &log.Logger{},
+		log:  log.New(os.Stderr, "", log.LstdFlags),
 	}
 
 	for _, option := range options {
