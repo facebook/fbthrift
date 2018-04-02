@@ -53,6 +53,12 @@ struct ComplexStruct {
   10: dependent.Item item
 }
 
+union UnionStruct {
+  1: bool is_a_bool
+  2: string some_string_goes_here
+  3: i64 perhaps_a_big_int
+}
+
 const bool A_BOOL = true
 const byte A_BYTE = 8
 const i16 THE_ANSWER = 42
@@ -123,6 +129,7 @@ service SharedService {
   string make_sentence(1: list<list<string>> word_chars)
   set<i32> get_union(1: list<set<i32>> sets)
   set<string> get_keys(1: list<map<string, string>> string_map)
+  void get_union_value(1: UnionStruct input)
 }
 
 service EmptyService {}

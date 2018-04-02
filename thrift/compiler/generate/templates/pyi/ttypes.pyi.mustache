@@ -62,6 +62,16 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
         {{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{/struct:fields}}
     ) -> None:
         ...
+    {{#struct:union?}}
+
+    def getType(self) -> int: ...
+
+    {{#struct:fields}}
+    {{#field:type}}
+    def get_{{field:name}}(self) -> {{> common/OptionalFieldType}}: ...
+    {{/field:type}}
+    {{/struct:fields}}
+    {{/struct:union?}}
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...
