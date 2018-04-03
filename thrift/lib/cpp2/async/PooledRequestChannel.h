@@ -36,12 +36,23 @@ class PooledRequestChannel : public RequestChannel {
 
   static std::
       unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
-      newChannel(
+      newSyncChannel(
           std::shared_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
-    return {
-        new PooledRequestChannel(std::move(executor), std::move(implCreator)),
-        {}};
+    return {new PooledRequestChannel(
+                nullptr, std::move(executor), std::move(implCreator)),
+            {}};
+  }
+
+  static std::
+      unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
+      newChannel(
+          folly::Executor* callbackExecutor,
+          std::shared_ptr<folly::IOExecutor> executor,
+          ImplCreator implCreator) {
+    return {new PooledRequestChannel(
+                callbackExecutor, std::move(executor), std::move(implCreator)),
+            {}};
   }
 
   uint32_t sendRequest(
@@ -52,13 +63,25 @@ class PooledRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader> header) override;
 
   uint32_t sendOnewayRequest(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<transport::THeader>) override {
-    LOG(FATAL) << "Not supported";
-  }
+      RpcOptions& options,
+      std::unique_ptr<RequestCallback> cob,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header) override;
+
+  uint32_t sendStreamRequest(
+      RpcOptions& options,
+      std::unique_ptr<RequestCallback> cob,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header) override;
+
+  uint32_t sendRequestSync(
+      RpcOptions& options,
+      std::unique_ptr<RequestCallback> cob,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header) override;
 
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
@@ -73,16 +96,28 @@ class PooledRequestChannel : public RequestChannel {
  protected:
   ~PooledRequestChannel() override = default;
 
+  uint32_t sendRequestImpl(
+      RpcKind rpcKind,
+      RpcOptions& options,
+      std::unique_ptr<RequestCallback> cob,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header);
+
  private:
   std::shared_ptr<folly::EventBase> getNextEventBase();
 
   PooledRequestChannel(
+      folly::Executor* callbackExecutor,
       std::weak_ptr<folly::IOExecutor> executor,
       ImplCreator implCreator)
-      : executor_(std::move(executor)), implCreator_(std::move(implCreator)) {}
+      : callbackExecutor_(callbackExecutor),
+        executor_(std::move(executor)),
+        implCreator_(std::move(implCreator)) {}
 
   Impl& impl(folly::EventBase& evb);
 
+  folly::Executor* callbackExecutor_{nullptr};
   std::shared_ptr<folly::IOExecutor> executor_;
   std::atomic<size_t> nextEvbId_{0};
 
