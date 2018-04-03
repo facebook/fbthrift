@@ -173,11 +173,25 @@ TEST(FlowableTest, TakeFirstNoResponse) {
   folly::Baton<> baton;
   auto takeFirst =
       std::make_shared<TakeFirst<int64_t>>(Flowable<int64_t>::never());
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](auto&&) {
-    baton.post();
-  });
+  bool timedOut = false;
+  takeFirst->get()
+      .via(evbThread.getEventBase())
+      .then([&baton](std::pair<int64_t, std::shared_ptr<Flowable<int64_t>>>&&) {
+        baton.post();
+      })
+      .onError([&timedOut, &baton](folly::exception_wrapper) {
+        timedOut = true;
+        baton.post();
+      });
 
   ASSERT_FALSE(baton.timed_wait(std::chrono::seconds(1)));
+
+  // Timed out, so cancel the TakeFirst
+  baton.reset();
+  takeFirst->cancel();
+
+  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+  EXPECT_TRUE(timedOut);
 }
 
 TEST(FlowableTest, TakeFirstErrorResponse) {
@@ -278,11 +292,8 @@ TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
 
             // Second subscribe
             auto subscriber = std::make_shared<TestSubscriber<int64_t>>(10);
-            result.second->subscribe(subscriber);
-
-            EXPECT_TRUE(subscriber->isError());
-            EXPECT_EQ(subscriber->getErrorMsg(), "already subscribed");
-            EXPECT_EQ(subscriber->values(), std::vector<int64_t>({}));
+            EXPECT_THROW(
+                result.second->subscribe(subscriber), std::logic_error);
 
             baton.post();
           });
@@ -313,12 +324,7 @@ TEST(FlowableTest, TakeFirstMultiGet) {
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
 
   // Second `get` call
-  try {
-    takeFirst->get();
-    ASSERT(false);
-  } catch (std::logic_error& e) {
-    EXPECT_STREQ(e.what(), "Future already retrieved");
-  }
+  EXPECT_THROW(takeFirst->get(), std::logic_error);
 }
 
 } // namespace thrift
