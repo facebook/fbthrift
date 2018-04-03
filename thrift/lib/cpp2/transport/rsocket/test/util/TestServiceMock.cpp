@@ -24,10 +24,59 @@ namespace testservice {
 using namespace apache::thrift;
 using namespace yarpl::flowable;
 
+class LeakDetector {
+ public:
+  class InternalClass {};
+
+  LeakDetector()
+      : internal_(std::make_shared<testing::StrictMock<InternalClass>>()) {
+    ++instanceCount();
+  }
+
+  LeakDetector(const LeakDetector& oth) : internal_(oth.internal_) {
+    ++instanceCount();
+  }
+
+  LeakDetector& operator=(const LeakDetector& oth) {
+    internal_ = oth.internal_;
+    return *this;
+  }
+
+  virtual ~LeakDetector() {
+    --instanceCount();
+  }
+
+  std::shared_ptr<testing::StrictMock<InternalClass>> internal_;
+
+  static int32_t getInstanceCount() {
+    return instanceCount();
+  }
+
+ protected:
+  static std::atomic_int& instanceCount() {
+    static std::atomic_int instanceCount{0};
+    return instanceCount;
+  }
+};
+
 Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   return toStream(
       Flowable<>::range(from, to)->map([](auto i) { return (int32_t)i; }),
       &executor_);
+}
+
+ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(
+    int32_t from,
+    int32_t to) {
+  return {LeakDetector::getInstanceCount(),
+          toStream(
+              Flowable<>::range(from, to)->map(
+                  [detector = LeakDetector()](auto i) { return (int32_t)i; }),
+              &executor_)};
+}
+
+int32_t TestServiceMock::instanceCount() {
+  return LeakDetector::getInstanceCount();
 }
 
 Stream<int32_t> TestServiceMock::prefixSumIOThread(SemiStream<int32_t> input) {

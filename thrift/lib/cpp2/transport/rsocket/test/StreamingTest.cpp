@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
+#include <yarpl/flowable/TestSubscriber.h>
 
 DECLARE_int32(num_client_connections);
 DECLARE_string(transport); // ConnectionManager depends on this flag.
@@ -42,6 +43,7 @@ using namespace apache::thrift::transport;
 using namespace testing;
 using namespace testutil::testservice;
 using testutil::testservice::Message;
+using yarpl::flowable::TestSubscriber;
 
 // Testing transport layers for their support to Streaming
 class StreamingTest : public testing::Test {
@@ -248,6 +250,76 @@ TEST_F(StreamingTest, ThrowsException) {
 TEST_F(StreamingTest, ThrowsWithResponse) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(client->sync_throwError(), Error);
+  });
+}
+
+TEST_F(StreamingTest, LifeTimeTesting) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
+    // Make sure that the requests are also completed at the client side
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(2u); });
+
+    CHECK_EQ(0, client->sync_instanceCount());
+
+    { // Never subscribe
+      auto result = client->sync_leakCheck(0, 100);
+      CHECK_EQ(1, client->sync_instanceCount());
+    }
+    CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+
+    { // Never subscribe to the flowable
+      auto result =
+          toFlowable((client->sync_leakCheck(0, 100).stream).via(&executor_));
+      CHECK_EQ(1, client->sync_instanceCount());
+    }
+    CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+
+    { // Drop the result stream
+      client->sync_leakCheck(0, 100);
+      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+    }
+
+    { // Regular usage
+      auto subscriber = std::make_shared<TestSubscriber<int32_t>>(0);
+      {
+        auto result = toFlowable(
+            std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
+        result->subscribe(subscriber);
+        CHECK_EQ(1, client->sync_instanceCount());
+      }
+      subscriber->request(100);
+      subscriber->awaitTerminalEvent();
+      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+    }
+
+    { // Early cancel
+      auto subscriber = std::make_shared<TestSubscriber<int32_t>>(0);
+      {
+        auto result = toFlowable(
+            std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
+        result->subscribe(subscriber);
+        CHECK_EQ(1, client->sync_instanceCount());
+      }
+      CHECK_EQ(1, client->sync_instanceCount());
+      subscriber->cancel();
+      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+    }
+
+    { // Always alive
+      {
+        auto subscriber = std::make_shared<TestSubscriber<int32_t>>(0);
+        {
+          auto result = toFlowable(
+              std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
+          result->subscribe(subscriber);
+          CHECK_EQ(1, client->sync_instanceCount());
+        }
+        CHECK_EQ(1, client->sync_instanceCount());
+      }
+      // Subscriber is still alive!
+      CHECK_EQ(1, client->sync_instanceCount());
+    }
   });
 }
 

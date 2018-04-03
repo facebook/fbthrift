@@ -35,6 +35,11 @@ class TestServiceMock : public StreamServiceSvIf {
       apache::thrift::SemiStream<Message> input) override;
   apache::thrift::ResponseAndStream<int, Message> throwError() override;
 
+  apache::thrift::ResponseAndStream<int32_t, int32_t> leakCheck(
+      int32_t from,
+      int32_t to) override;
+  int32_t instanceCount() override;
+
  protected:
   folly::SerialExecutor executor_;
 };
