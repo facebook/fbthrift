@@ -105,6 +105,27 @@ cdef class ThriftServer:
     async def get_address(self):
         return await self.address_future
 
+    def get_active_requests(self):
+        return self.server.get().getActiveRequests()
+
+    def get_max_requests(self):
+        return self.server.get().getMaxRequests()
+
+    def set_max_requests(self, max_requests):
+        self.server.get().setMaxRequests(max_requests)
+
+    def get_max_connections(self):
+        return self.server.get().getMaxConnections()
+
+    def set_max_connections(self, max_connections):
+        self.server.get().setMaxConnections(max_connections)
+
+    def get_listen_backlog(self):
+        return self.server.get().getListenBacklog()
+
+    def set_listen_backlog(self, listen_backlog):
+        self.server.get().setListenBacklog(listen_backlog)
+
     def set_ssl_policy(self, policy):
         cdef cSSLPolicy cPolicy
         if policy == SSLPolicy.DISABLED:

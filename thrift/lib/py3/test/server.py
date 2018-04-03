@@ -73,3 +73,24 @@ class ServicesTests(unittest.TestCase):
         call = 5
         ret = loop.run_until_complete(h.complex_action('', '', call, ''))
         self.assertEqual(call, ret)
+
+    def test_server_manipulate_config(self) -> None:
+        MAX_REQUESTS = 142
+        MAX_CONNECTIONS = 132
+        LISTEN_BACKLOG = 167
+
+        server = ThriftServer(Handler(), port=0)
+
+        server.set_max_requests(MAX_REQUESTS)
+        server.set_max_connections(MAX_CONNECTIONS)
+        server.set_listen_backlog(LISTEN_BACKLOG)
+        self.assertEqual(server.get_max_requests(), MAX_REQUESTS)
+        self.assertEqual(server.get_max_connections(), MAX_CONNECTIONS)
+        self.assertEqual(server.get_listen_backlog(), LISTEN_BACKLOG)
+
+    def test_server_get_stats(self) -> None:
+        server = ThriftServer(Handler(), port=0)
+
+        active_requests = server.get_active_requests()
+        self.assertGreaterEqual(active_requests, 0)
+        self.assertLess(active_requests, 10)

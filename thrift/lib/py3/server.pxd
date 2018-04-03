@@ -1,4 +1,4 @@
-from libc.stdint cimport uint16_t
+from libc.stdint cimport uint16_t, int32_t, uint32_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport IOBuf
@@ -53,6 +53,13 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void stop() nogil except +
         void setSSLPolicy(cSSLPolicy policy) nogil
         void setServerEventHandler(shared_ptr[Py3ServerEventHandler] handler) nogil
+        int32_t getActiveRequests()
+        uint32_t getMaxRequests()
+        void setMaxRequests(uint32_t maxRequests)
+        uint32_t getMaxConnections()
+        void setMaxConnections(uint32_t maxConnections)
+        int getListenBacklog()
+        void setListenBacklog(int listenBacklog)
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
