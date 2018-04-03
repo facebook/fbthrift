@@ -27,12 +27,8 @@ class TestServiceMock : public StreamServiceSvIf {
   TestServiceMock() {}
 
   apache::thrift::Stream<int32_t> range(int32_t from, int32_t to) override;
-  apache::thrift::Stream<int32_t> prefixSumIOThread(
-      apache::thrift::SemiStream<int32_t> input) override;
 
   apache::thrift::Stream<Message> returnNullptr() override;
-  apache::thrift::Stream<Message> throwException(
-      apache::thrift::SemiStream<Message> input) override;
   apache::thrift::ResponseAndStream<int, Message> throwError() override;
 
   apache::thrift::ResponseAndStream<int32_t, int32_t> leakCheck(

@@ -156,10 +156,9 @@ class Upload {
 };
 
 template <typename AsyncClient>
-class StreamUploadDownload {
+class StreamDownload {
  public:
-  StreamUploadDownload(QPSStats* stats, uint32_t chunkSize) : stats_(stats) {
-    stats_->registerCounter(upload_);
+  StreamDownload(QPSStats* stats, uint32_t chunkSize) : stats_(stats) {
     stats_->registerCounter(download_);
     stats_->registerCounter(error_);
     stats_->registerCounter(fatal_);
@@ -171,7 +170,7 @@ class StreamUploadDownload {
     }
     chunk_.data.append(chunkSize);
   }
-  ~StreamUploadDownload() = default;
+  ~StreamDownload() = default;
 
   void async(
       AsyncClient* client,
@@ -202,35 +201,7 @@ class StreamUploadDownload {
       QPSStats* stats_;
     };
 
-    auto input = yarpl::flowable::Flowable<Chunk2>::fromPublisher(
-        [this](auto subscriber) mutable {
-          auto subscription = std::make_shared<Subscription>(stats_);
-          subscriber->onSubscribe(subscription);
-
-          if (chunk_.data.length() > 0) {
-            std::thread([subscriber, subscription, this]() {
-              int32_t requested = 0;
-              while ((requested = subscription->requested_) != -1) {
-                if (requested == 0) {
-                  std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                } else {
-                  subscriber->onNext(chunk_);
-                  --subscription->requested_;
-                  stats_->add(upload_);
-                }
-              }
-              subscriber->onComplete();
-            })
-                .detach();
-          } else {
-            subscriber->onComplete();
-          }
-        });
-
-    auto output = client->sync_streamUploadDownload(
-        rpcOptions,
-        apache::thrift::toStream(
-            input, folly::EventBaseManager::get()->getEventBase()));
+    auto output = client->sync_streamDownload(rpcOptions);
     apache::thrift::toFlowable(
         std::move(output).via(folly::EventBaseManager::get()->getEventBase()))
         ->subscribe(
@@ -257,7 +228,6 @@ class StreamUploadDownload {
 
  private:
   QPSStats* stats_;
-  std::string upload_ = "s_upload";
   std::string download_ = "s_download";
   std::string error_ = "error";
   std::string fatal_ = "fatal";

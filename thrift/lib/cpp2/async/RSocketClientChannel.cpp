@@ -90,11 +90,6 @@ class WaitableRequestCallback final : public RequestCallback {
     baton_.post();
   }
 
-  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>> extractStream()
-      override {
-    return cb_->extractStream();
-  }
-
  private:
   std::unique_ptr<RequestCallback> cb_;
   folly::Baton<>& baton_;
@@ -548,12 +543,9 @@ void RSocketClientChannel::sendThriftRequest(
       sendSingleRequestStreamResponse(
           std::move(metadata), std::move(buf), std::move(callback));
       break;
-    case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-      sendStreamRequestStreamResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
     default: {
-      LOG(ERROR) << "Unknown RpcKind value in the Metadata";
+      LOG(ERROR) << "Unknown RpcKind value in the Metadata: "
+                 << (int)metadata->kind;
       auto evb = callback->getEventBase();
       evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
         cb->onError(folly::exception_wrapper(
@@ -614,53 +606,6 @@ void RSocketClientChannel::sendSingleRequestResponse(
   rsRequester_
       ->requestResponse(Payload(std::move(buf), serializeMetadata(*metadata)))
       ->subscribe(std::move(singleObserver));
-}
-
-void RSocketClientChannel::sendStreamRequestStreamResponse(
-    std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  bool canExecute = channelCounters_->incPendingRequests();
-
-  if (!canExecute) {
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([callback = std::move(callback)]() mutable {
-      TTransportException ex(
-          TTransportException::NETWORK_ERROR,
-          "Too many active requests on connection");
-      // Might be able to create another transaction soon
-      ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-
-      callback->onError(folly::exception_wrapper(std::move(ex)));
-    });
-    return;
-  }
-
-  auto countedStream = std::make_shared<CountedStream>(
-      std::move(callback), channelCounters_.get(), evb_);
-
-  auto input = internal::flowableFromSubscriber<Payload>(
-      [countedStream](std::shared_ptr<Subscriber<Payload>> subscriber) mutable {
-        auto& scb = countedStream->callback();
-        auto callback = scb.inner();
-        auto inputStream = callback->extractStream();
-        DCHECK(inputStream) << "callback's inputStream_ is missing";
-        auto mappedStream = std::move(inputStream).map([](auto&& buf) mutable {
-          return Payload(std::move(buf));
-        });
-        toFlowable(std::move(mappedStream))->subscribe(std::move(subscriber));
-
-        // no need any more
-        countedStream.reset();
-      });
-
-  // Perform the rpc call
-  auto result = rsRequester_->requestChannel(
-      Payload(std::move(buf), serializeMetadata(*metadata)), input);
-
-  // Whenever first response arrives, provide the first response and
-  // itself, as stream, to the callback
-  countedStream->setResult(result);
 }
 
 void RSocketClientChannel::sendSingleRequestStreamResponse(

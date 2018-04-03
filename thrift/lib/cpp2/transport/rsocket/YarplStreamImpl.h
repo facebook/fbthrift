@@ -78,7 +78,8 @@ class YarplStreamImpl : public StreamImplIf {
       std::unique_ptr<SubscriberIf<std::unique_ptr<ValueIf>>> impl_;
     };
 
-    flowable_->subscribe(
+    auto flowable = std::move(flowable_);
+    flowable->subscribe(
         std::make_shared<SubscriberAdaptor>(std::move(subscriber)));
   }
   void observeVia(folly::SequencedExecutor* executor) {
@@ -125,7 +126,9 @@ std::shared_ptr<yarpl::flowable::Flowable<T>> toFlowable(Stream<T> stream) {
                 impl_->request(n);
               }
               void cancel() override {
-                impl_->cancel();
+                if (auto impl = std::move(impl_)) {
+                  impl->cancel();
+                }
               }
 
              private:

@@ -46,11 +46,6 @@ class InMemoryChannel : public ThriftChannelIf {
     LOG(FATAL) << "Inmemory transport layer doesn't support streaming yet";
   }
 
-  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
-  extractStream() noexcept override {
-    return {};
-  }
-
   folly::EventBase* getEventBase() noexcept override;
 
  private:

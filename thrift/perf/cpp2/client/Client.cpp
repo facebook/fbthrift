@@ -46,7 +46,7 @@ DEFINE_int32(sum_weight, 0, "Test with a sum operation");
 DEFINE_int32(timeout_weight, 0, "Test for timeout functionality");
 DEFINE_int32(download_weight, 0, "Test for download functionality");
 DEFINE_int32(upload_weight, 0, "Test for upload functionality");
-DEFINE_int32(stream_weight, 0, "Test stream upload/download functionality");
+DEFINE_int32(stream_weight, 0, "Test stream download functionality");
 
 DEFINE_uint32(chunk_size, 1024, "Number of bytes per chunk");
 DEFINE_uint32(batch_size, 16, "Flow control batch size");

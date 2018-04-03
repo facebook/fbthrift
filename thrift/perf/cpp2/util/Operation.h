@@ -54,7 +54,7 @@ class Operation {
         ,
         download_(std::make_unique<Download<AsyncClient>>(stats)),
         upload_(std::make_unique<Upload<AsyncClient>>(stats, FLAGS_chunk_size)),
-        stream_(std::make_unique<StreamUploadDownload<AsyncClient>>(
+        stream_(std::make_unique<StreamDownload<AsyncClient>>(
             stats,
             FLAGS_chunk_size))
 #endif
@@ -174,7 +174,7 @@ class Operation {
 #ifdef STREAM_PERF_TEST
   std::unique_ptr<Download<AsyncClient>> download_;
   std::unique_ptr<Upload<AsyncClient>> upload_;
-  std::unique_ptr<StreamUploadDownload<AsyncClient>> stream_;
+  std::unique_ptr<StreamDownload<AsyncClient>> stream_;
 #endif
 
   int32_t outstanding_ops_{0};

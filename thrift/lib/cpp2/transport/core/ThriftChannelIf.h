@@ -71,10 +71,6 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
 
-  // Extract the inputStream
-  virtual apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
-  extractStream() noexcept = 0;
-
   // Called from the client to initiate an RPC with a server.
   // "callback" is used to call back with the response for single
   // response RPCs.  "callback" is not used for streaming response and

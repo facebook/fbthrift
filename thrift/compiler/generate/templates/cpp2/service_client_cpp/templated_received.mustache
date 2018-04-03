@@ -39,7 +39,7 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
 
 %><%#function:args%><%#field:type%><%#first?%>
 <%#type:resolves_to_stream?%>
-  callback->setInputStream<<%service:name%>_<%function:name%>_pargs::StreamPResultType, Protocol_>(std::move(<%field:name%>));
+  #error Service functions don't allow stream input yet
 <%/type:resolves_to_stream?%>
 <%/first?%><%/field:type%><%/function:args%><%!
 

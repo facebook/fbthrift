@@ -53,11 +53,6 @@ class RSResponder : public rsocket::RSocketResponder {
       rsocket::Payload request,
       rsocket::StreamId streamId) override;
 
-  FlowableRef handleRequestChannel(
-      rsocket::Payload request,
-      FlowableRef requestStream,
-      rsocket::StreamId streamId) override;
-
  protected:
   ThriftProcessor* processor_;
   folly::EventBase* evb_;

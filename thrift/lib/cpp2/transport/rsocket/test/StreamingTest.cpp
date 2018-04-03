@@ -186,44 +186,10 @@ TEST_F(StreamingTest, CallbackSimpleStream) {
   });
 }
 
-TEST_F(StreamingTest, SimpleChannel) {
-  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowable<>::range(0, 10)->map(
-        [](auto i) { return (int32_t)i; });
-    auto result =
-        toFlowable(client->sync_prefixSumIOThread(toStream(input, &executor_))
-                       .via(&executor_));
-    int j = 0, k = 1;
-    folly::Baton<> done;
-    result->subscribe(
-        [&j, k](auto i) mutable {
-          EXPECT_EQ(j, i);
-          j = j + k;
-          ++k;
-        },
-        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
-        [&done]() { done.post(); });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
-    EXPECT_EQ(55, j);
-  });
-}
-
 TEST_F(StreamingTest, DefaultStreamImplementation) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(
         toFlowable(client->sync_nonImplementedStream("test").via(&executor_)),
-        apache::thrift::TApplicationException);
-  });
-}
-
-TEST_F(StreamingTest, DefaultChannelImplementation) {
-  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowable<>::just(Message());
-    EXPECT_THROW(
-        toFlowable(client
-                       ->sync_nonImplementedChannel(
-                           toStream(input, &executor_), "test")
-                       .via(&executor_)),
         apache::thrift::TApplicationException);
   });
 }
@@ -233,17 +199,6 @@ TEST_F(StreamingTest, ReturnsNullptr) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(
         client->sync_returnNullptr(), apache::thrift::TApplicationException);
-  });
-}
-
-TEST_F(StreamingTest, ThrowsException) {
-  // User function throws an exception.
-  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto input = yarpl::flowable::Flowable<>::just(Message());
-    EXPECT_THROW(
-        toFlowable(client->sync_throwException(toStream(input, &executor_))
-                       .via(&executor_)),
-        apache::thrift::TApplicationException);
   });
 }
 

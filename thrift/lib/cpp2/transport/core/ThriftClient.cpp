@@ -71,11 +71,6 @@ class WaitableRequestCallback final : public RequestCallback {
     baton_.post();
   }
 
-  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>> extractStream()
-      override {
-    return cb_->extractStream();
-  }
-
  private:
   std::unique_ptr<RequestCallback> cb_;
   folly::Baton<>& baton_;

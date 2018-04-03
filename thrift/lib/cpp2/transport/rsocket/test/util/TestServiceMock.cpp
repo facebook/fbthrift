@@ -79,27 +79,10 @@ int32_t TestServiceMock::instanceCount() {
   return LeakDetector::getInstanceCount();
 }
 
-Stream<int32_t> TestServiceMock::prefixSumIOThread(SemiStream<int32_t> input) {
-  // TODO: Flow control
-
-  // As we just return the input as output and as the input is part of the IO
-  // thread, the map operation will be performed also in the IO thread.
-  return toStream(
-      toFlowable(std::move(input).via(&executor_))
-          ->map([j = (int)0](auto i) mutable {
-            j = j + i;
-            return j;
-          }),
-      &executor_);
-}
-
 Stream<Message> TestServiceMock::returnNullptr() {
   return {};
 }
 
-Stream<Message> TestServiceMock::throwException(SemiStream<Message>) {
-  throw std::runtime_error("random error");
-}
 ResponseAndStream<int, Message> TestServiceMock::throwError() {
   throw Error();
 }

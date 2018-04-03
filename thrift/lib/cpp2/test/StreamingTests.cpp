@@ -24,19 +24,16 @@ using namespace apache::thrift;
 class DiffTypesStreamingService
     : public streaming_tests::DiffTypesStreamingServiceSvIf {
  public:
-  apache::thrift::Stream<int32_t> uploadObject(
-      apache::thrift::SemiStream<std::string> chunks,
-      int64_t) override {
-    return std::move(chunks)
-        .map([](auto chunk) { return static_cast<int32_t>(chunk.size()); })
-        .via(&evb_);
+  apache::thrift::Stream<int32_t> downloadObject(int64_t) override {
+    return toStream(
+        yarpl::flowable::Flowable<int32_t>::create([](auto&, auto) {}),
+        folly::EventBaseManager::get()->getEventBase());
   }
 
-  apache::thrift::SemiStream<int32_t> clientUploadObject(
-      apache::thrift::Stream<std::string> chunks,
-      int64_t) {
-    return std::move(chunks).map(
-        [](auto chunk) { return static_cast<int32_t>(chunk.size()); });
+  apache::thrift::SemiStream<int32_t> clientDownloadObject(int64_t) {
+    return toStream(
+        yarpl::flowable::Flowable<int32_t>::create([](auto&, auto) {}),
+        folly::EventBaseManager::get()->getEventBase());
   }
 
  protected:
@@ -51,21 +48,11 @@ TEST(StreamingTest, DifferentStreamClientCompiles) {
       client = nullptr;
 
   DiffTypesStreamingService service;
-  auto flowable =
-      yarpl::flowable::internal::flowableFromSubscriber<std::string>(
-          [](auto subscriber) {
-            subscriber->onSubscribe(yarpl::flowable::Subscription::create());
-            subscriber->onNext(std::string("foobar"));
-            subscriber->onComplete();
-          });
-
   apache::thrift::SemiStream<int32_t> result;
   if (client) { // just to also test compilation of the client side.
-    result =
-        client->sync_uploadObject(toStream(std::move(flowable), &evb_), 123L);
+    result = client->sync_downloadObject(123L);
   } else {
-    result =
-        service.clientUploadObject(toStream(std::move(flowable), &evb_), 123L);
+    result = service.clientDownloadObject(123L);
   }
   toFlowable(std::move(result).via(&evb_))->subscribe([](int32_t) {});
 }

@@ -26,7 +26,5 @@ service StreamBenchmark extends Api.Benchmark {
 
   void upload(1: ApiBase.Chunk2 chunk);
 
-  // Service will provide data as long as client asks for more
-  stream ApiBase.Chunk2 streamUploadDownload(
-      stream ApiBase.Chunk2 chunk);
+  stream ApiBase.Chunk2 streamDownload();
 }

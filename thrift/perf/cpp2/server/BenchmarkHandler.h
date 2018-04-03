@@ -93,13 +93,7 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->add(kDownload_);
   }
 
-  Stream<Chunk2> streamUploadDownload(SemiStream<Chunk2> input) override {
-    toFlowable(
-        std::move(input).via(folly::EventBaseManager::get()->getEventBase()))
-        ->subscribe( // next
-            [this](const Chunk2&) { stats_->add(ks_Download_); },
-            FLAGS_batch_size);
-
+  Stream<Chunk2> streamDownload() override {
     class Subscription : public yarpl::flowable::Subscription {
      public:
       Subscription(QPSStats* stats) : stats_(stats) {
@@ -122,7 +116,7 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
 
     return toStream(
         yarpl::flowable::Flowable<Chunk2>::fromPublisher(
-            [this, input = std::move(input)](auto subscriber) mutable {
+            [this](auto subscriber) mutable {
               if (FLAGS_chunk_size > 0) {
                 auto subscription = std::make_shared<Subscription>(stats_);
                 subscriber->onSubscribe(subscription);

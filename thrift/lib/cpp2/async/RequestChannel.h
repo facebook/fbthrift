@@ -169,29 +169,6 @@ class RequestCallback {
   // To log latency incurred for doing thrift security
   int64_t securityStart_ = 0;
   int64_t securityEnd_ = 0;
-
-  template <typename PResult, typename Protocol, typename ItemType>
-  void setInputStream(apache::thrift::Stream<ItemType> inputStream) {
-    inputStream_ =
-        std::move(inputStream)
-            .template map([prot = Protocol{}](ItemType&& item) mutable {
-              PResult res;
-              res.template get<0>().value = &item;
-              res.setIsSet(0);
-
-              folly::IOBufQueue queue;
-              prot.setOutput(&queue);
-              res.write(&prot);
-              return queue.move();
-            });
-  }
-
-  virtual Stream<std::unique_ptr<folly::IOBuf>> extractStream() {
-    return std::move(inputStream_);
-  }
-
- protected:
-  Stream<std::unique_ptr<folly::IOBuf>> inputStream_;
 };
 
 /***

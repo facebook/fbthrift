@@ -61,8 +61,6 @@ class ThriftRequest : public ResponseChannel::Request {
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
-    stream_ = channel->extractStream();
-
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {

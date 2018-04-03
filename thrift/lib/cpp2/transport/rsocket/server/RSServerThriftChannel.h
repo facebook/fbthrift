@@ -71,12 +71,6 @@ class RSServerThriftChannel : public ThriftChannelIf {
     LOG(FATAL) << "Unexpected call of sendStreamThriftResponse";
   }
 
-  apache::thrift::Stream<std::unique_ptr<folly::IOBuf>>
-  extractStream() noexcept override {
-    // No input stream to extract..
-    return {};
-  }
-
  protected:
   folly::EventBase* evb_;
 };

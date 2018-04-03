@@ -16,9 +16,7 @@
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/Channel.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/StreamInput.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/StreamOutput.h>
 
 #include <rsocket/internal/ScheduledSubscriber.h>
@@ -86,42 +84,5 @@ RSResponder::FlowableRef RSResponder::handleRequestStream(
       });
 }
 
-RSResponder::FlowableRef RSResponder::handleRequestChannel(
-    rsocket::Payload request,
-    FlowableRef requestStream,
-    rsocket::StreamId streamId) {
-  // TODO We might not need the ScheduledSubscriber/Subscription anymore!
-
-  auto requestStreamFlowable =
-      yarpl::flowable::internal::flowableFromSubscriber<rsocket::Payload>(
-          [requestStream = std::move(requestStream), evb = evb_](
-              std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
-                  subscriber) {
-            requestStream->subscribe(
-                std::make_shared<
-                    rsocket::ScheduledSubscriptionSubscriber<rsocket::Payload>>(
-                    std::move(subscriber), *evb));
-          });
-
-  return yarpl::flowable::internal::flowableFromSubscriber<rsocket::Payload>(
-      [this,
-       request = std::move(request),
-       requestStream = std::move(requestStreamFlowable),
-       streamId](auto subscriber) mutable {
-        auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
-        DCHECK(metadata->__isset.kind);
-        DCHECK(metadata->__isset.seqId);
-
-        // TODO - STREAMING_REQUEST_NO_RESPONSE?
-        // TODO - STREAMING_REQUEST_SINGLE_RESPONSE?
-        CHECK(metadata->kind != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
-        CHECK(metadata->kind != RpcKind::STREAMING_REQUEST_NO_RESPONSE);
-
-        auto channel = std::make_shared<Channel>(
-            evb_, std::move(requestStream), streamId, subscriber);
-        processor_->onThriftRequest(
-            std::move(metadata), std::move(request.data), std::move(channel));
-      });
-}
 } // namespace thrift
 } // namespace apache
