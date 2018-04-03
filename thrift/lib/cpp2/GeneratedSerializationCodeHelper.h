@@ -118,16 +118,10 @@ deserialize_known_length_map(
     sorted = sorted && map.key_comp()(tmp[i - 1].first, tmp[i].first);
   }
 
-  if (LIKELY(map.empty())) {
-    if (!sorted) {
-      std::sort(tmp.begin(), tmp.end(), map.value_comp());
-    }
-    map = Map(folly::presorted, std::move(tmp));
-  } else {
-    map.insert(
-        std::make_move_iterator(tmp.begin()),
-        std::make_move_iterator(tmp.end()));
+  if (!sorted) {
+    std::sort(tmp.begin(), tmp.end(), map.value_comp());
   }
+  map = Map(folly::presorted, std::move(tmp));
 }
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
@@ -187,16 +181,10 @@ deserialize_known_length_set(
     sorted = sorted && set.key_comp()(tmp[i - 1], tmp[i]);
   }
 
-  if (LIKELY(set.empty())) {
-    if (!sorted) {
-      std::sort(tmp.begin(), tmp.end(), set.value_comp());
-    }
-    set = Set(folly::presorted, std::move(tmp));
-  } else {
-    set.insert(
-        std::make_move_iterator(tmp.begin()),
-        std::make_move_iterator(tmp.end()));
+  if (!sorted) {
+    std::sort(tmp.begin(), tmp.end(), set.value_comp());
   }
+  set = Set(folly::presorted, std::move(tmp));
 }
 
 template <typename Set, typename ValDeserializer>
