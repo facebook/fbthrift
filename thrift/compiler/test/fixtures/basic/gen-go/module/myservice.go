@@ -1029,7 +1029,7 @@ func (p *myServiceProcessorGetRandomData) Process(seqId int32, iprot, oprot thri
 
   iprot.ReadMessageEnd()
   result := MyServiceGetRandomDataResult{}
-var retval string
+  var retval string
   var err2 error
   if retval, err2 = p.handler.GetRandomData(); err2 != nil {
     x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err2.Error())
@@ -1040,7 +1040,7 @@ var retval string
     return true, err2
   } else {
     result.Success = &retval
-}
+  }
   if err2 = oprot.WriteMessageBegin("getRandomData", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -1077,7 +1077,7 @@ func (p *myServiceProcessorHasDataById) Process(seqId int32, iprot, oprot thrift
 
   iprot.ReadMessageEnd()
   result := MyServiceHasDataByIdResult{}
-var retval bool
+  var retval bool
   var err2 error
   if retval, err2 = p.handler.HasDataById(args.Id); err2 != nil {
     x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err2.Error())
@@ -1088,7 +1088,7 @@ var retval bool
     return true, err2
   } else {
     result.Success = &retval
-}
+  }
   if err2 = oprot.WriteMessageBegin("hasDataById", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -1125,7 +1125,7 @@ func (p *myServiceProcessorGetDataById) Process(seqId int32, iprot, oprot thrift
 
   iprot.ReadMessageEnd()
   result := MyServiceGetDataByIdResult{}
-var retval string
+  var retval string
   var err2 error
   if retval, err2 = p.handler.GetDataById(args.Id); err2 != nil {
     x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err2.Error())
@@ -1136,7 +1136,7 @@ var retval string
     return true, err2
   } else {
     result.Success = &retval
-}
+  }
   if err2 = oprot.WriteMessageBegin("getDataById", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }

@@ -861,7 +861,7 @@ func (p *raiserProcessorGet200) Process(seqId int32, iprot, oprot thrift.Protoco
 
   iprot.ReadMessageEnd()
   result := RaiserGet200Result{}
-var retval string
+  var retval string
   var err2 error
   if retval, err2 = p.handler.Get200(); err2 != nil {
     x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err2.Error())
@@ -872,7 +872,7 @@ var retval string
     return true, err2
   } else {
     result.Success = &retval
-}
+  }
   if err2 = oprot.WriteMessageBegin("get200", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -909,7 +909,7 @@ func (p *raiserProcessorGet500) Process(seqId int32, iprot, oprot thrift.Protoco
 
   iprot.ReadMessageEnd()
   result := RaiserGet500Result{}
-var retval string
+  var retval string
   var err2 error
   if retval, err2 = p.handler.Get500(); err2 != nil {
   switch v := err2.(type) {
@@ -927,7 +927,7 @@ var retval string
   }
   } else {
     result.Success = &retval
-}
+  }
   if err2 = oprot.WriteMessageBegin("get500", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }

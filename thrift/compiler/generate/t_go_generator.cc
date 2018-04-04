@@ -1416,8 +1416,12 @@ void t_go_generator::generate_go_struct_reader(ofstream& out,
   // Read beginning field marker
   out << indent() << "_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()" << endl;
   out << indent() << "if err != nil {" << endl;
-  out << indent() << "  return thrift.PrependError(fmt.Sprintf("
-                     "\"%T field %d read error: \", p, fieldId), err)" << endl;
+  indent_up();
+  out << indent()
+      << "return thrift.PrependError(fmt.Sprintf("
+         "\"%T field %d read error: \", p, fieldId), err)"
+      << endl;
+  indent_down();
   out << indent() << "}" << endl;
   // Check for field STOP marker and break
   out << indent() << "if fieldTypeId == thrift.STOP { break; }" << endl;
