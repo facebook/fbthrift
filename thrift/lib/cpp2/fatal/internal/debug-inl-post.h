@@ -301,12 +301,73 @@ struct debug_equals_impl<type_class::structure> {
       auto guard =
           scoped_path::member(path, fatal::z_data<typename member::name>());
 
-      result = debug_equals_impl<typename member::type_class>::equals(
-                   path, getter::ref(lhs), getter::ref(rhs), callback) &&
+      result =
+          recurse_into<typename member::type_class>(
+              path, getter::ref(lhs), getter::ref(rhs), callback, lhs, rhs) &&
           result;
     });
 
     return result;
+  }
+
+ private:
+  template <typename TypeClass, typename T, typename U, typename Callback>
+  static bool recurse_into(
+      std::string& path,
+      T const& lMember,
+      T const& rMember,
+      Callback&& callback,
+      U const&,
+      U const&) {
+    return debug_equals_impl<TypeClass>::equals(
+        path, lMember, rMember, callback);
+  }
+
+  template <typename TypeClass, typename T, typename U, typename Callback>
+  static bool recurse_into_ptr(
+      std::string& path,
+      T const* lMember,
+      T const* rMember,
+      Callback&& callback,
+      U const& lObject,
+      U const& rObject) {
+    if (!lMember && !rMember) {
+      return true;
+    }
+    if (!rMember) {
+      callback(lObject, rObject, path, "missing");
+      return false;
+    }
+    if (!lMember) {
+      callback(lObject, rObject, path, "extra");
+      return false;
+    }
+    return recurse_into<TypeClass>(
+        path, *lMember, *rMember, callback, lObject, rObject);
+  }
+
+  template <typename TypeClass, typename Callback, typename U, typename T>
+  static bool recurse_into(
+      std::string& path,
+      std::shared_ptr<T> const& lMember,
+      std::shared_ptr<T> const& rMember,
+      Callback&& callback,
+      U const& lObject,
+      U const& rObject) {
+    return recurse_into_ptr<TypeClass>(
+        path, lMember.get(), rMember.get(), callback, lObject, rObject);
+  }
+
+  template <typename TypeClass, typename Callback, typename U, typename T>
+  static bool recurse_into(
+      std::string& path,
+      std::unique_ptr<T> const& lMember,
+      std::unique_ptr<T> const& rMember,
+      Callback&& callback,
+      U const& lObject,
+      U const& rObject) {
+    return recurse_into_ptr<TypeClass>(
+        path, lMember.get(), rMember.get(), callback, lObject, rObject);
   }
 };
 

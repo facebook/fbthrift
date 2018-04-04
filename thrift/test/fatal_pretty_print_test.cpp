@@ -599,63 +599,119 @@ TEST(fatal_pretty_print, pretty_print) {
   );
 }
 
-TEST(fatal_pretty_print, ref_unique) {
-  hasRefUnique v;
+namespace {
+struct UniqueHelper {
+  template <typename T, typename... Args>
+  static std::unique_ptr<T> build(Args&&... args) {
+    return std::make_unique<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T> build(Args&&... args) {
+    return std::make_shared<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedConstHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T const> build(Args&&... args) {
+    return std::make_shared<T const>(std::forward<Args>(args)...);
+  }
+};
+} // namespace
+
+template <typename Structure, typename Helper>
+void ref_test() {
+  Structure v;
   const char* expectedStr1 = R"(
     <struct>{
-      a: null
+      aStruct: null,
+      aList: null,
+      aSet: null,
+      aMap: null,
+      aUnion: null,
+      anOptionalStruct: null,
+      anOptionalList: null,
+      anOptionalSet: null,
+      anOptionalMap: null,
+      anOptionalUnion: null
     })";
-
+  v.aStruct = nullptr;
+  v.aList = nullptr;
+  v.aSet = nullptr;
+  v.aMap = nullptr;
+  v.aUnion = nullptr;
+  v.anOptionalStruct = nullptr;
+  v.anOptionalList = nullptr;
+  v.anOptionalSet = nullptr;
+  v.anOptionalMap = nullptr;
+  v.anOptionalUnion = nullptr;
   TEST_IMPL(adjust(expectedStr1), v);
 
-  v.a = std::make_unique<structA>();
+  using namespace std::string_literals;
+  std::initializer_list<std::string> hello = {"Hello"s};
+  std::unordered_map<std::string, std::string> helloWorld{{"Hello"s, "World"s}};
+  v.aStruct = Helper::template build<structA>();
+  v.anOptionalStruct = Helper::template build<structA>();
+  v.aList = Helper::template build<std::deque<std::string>>(hello);
+  v.anOptionalList = Helper::template build<std::deque<std::string>>(hello);
+  v.aSet = Helper::template build<std::unordered_set<std::string>>(hello);
+  v.anOptionalSet =
+      Helper::template build<std::unordered_set<std::string>>(hello);
+  v.aMap = Helper::template build<std::unordered_map<std::string, std::string>>(
+      helloWorld);
+  v.anOptionalMap =
+      Helper::template build<std::unordered_map<std::string, std::string>>(
+          helloWorld);
+  v.aUnion = Helper::template build<unionA>();
+  v.anOptionalUnion = Helper::template build<unionA>();
   const char* expectedStr2 = R"(
     <struct>{
-      a: <struct>{
+      aStruct: <struct>{
         a: 0,
         b: ""
-      }
+      },
+      aList: <list>[
+        0: "Hello"
+      ],
+      aSet: <set>{
+        "Hello"
+      },
+      aMap: <map>{
+        "Hello": "World"
+      },
+      aUnion: <variant>{},
+      anOptionalStruct: <struct>{
+        a: 0,
+        b: ""
+      },
+      anOptionalList: <list>[
+        0: "Hello"
+      ],
+      anOptionalSet: <set>{
+        "Hello"
+      },
+      anOptionalMap: <map>{
+        "Hello": "World"
+      },
+      anOptionalUnion: <variant>{}
     })";
   TEST_IMPL(adjust(expectedStr2), v);
+}
+
+TEST(fatal_pretty_print, ref_unique) {
+  ref_test<hasRefUnique, UniqueHelper>();
 }
 
 TEST(fatal_pretty_print, ref_shared) {
-  hasRefShared v;
-  const char* expectedStr1 = R"(
-    <struct>{
-      a: null
-    })";
-  TEST_IMPL(adjust(expectedStr1), v);
-
-  v.a = std::make_shared<structA>();
-  const char* expectedStr2 = R"(
-    <struct>{
-      a: <struct>{
-        a: 0,
-        b: ""
-      }
-    })";
-  TEST_IMPL(adjust(expectedStr2), v);
+  ref_test<hasRefShared, SharedHelper>();
 }
 
 TEST(fatal_pretty_print, ref_shared_const) {
-  hasRefSharedConst v;
-  const char* expectedStr1 = R"(
-    <struct>{
-      a: null
-    })";
-  TEST_IMPL(adjust(expectedStr1), v);
-
-  v.a = std::make_shared<structA const>();
-  const char* expectedStr2 = R"(
-    <struct>{
-      a: <struct>{
-        a: 0,
-        b: ""
-      }
-    })";
-  TEST_IMPL(adjust(expectedStr2), v);
+  ref_test<hasRefSharedConst, SharedConstHelper>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

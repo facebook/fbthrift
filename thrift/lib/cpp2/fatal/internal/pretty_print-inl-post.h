@@ -166,7 +166,7 @@ struct pretty_print_impl<type_class::structure> {
       auto const index = fatal::tag_index(indexed);
       auto scope = out.start_scope();
       scope << fatal::z_data<typename member::name>() << ": ";
-      pretty_print_impl<typename member::type_class>::print(
+      recurse_into<typename member::type_class>(
           scope, member::getter::ref(what));
       if (index + 1 < size) {
         scope << ',';
@@ -176,31 +176,33 @@ struct pretty_print_impl<type_class::structure> {
     out << '}';
   }
 
-  template <typename OutputStream, typename T>
-  static void print(OutputStream& out, std::unique_ptr<T> const& what) {
-    if (!what) {
-      out << "null";
-      return;
-    }
-    print(out, *what);
+ private:
+  template <typename TypeClass, typename OutputStream, typename T>
+  static void recurse_into(OutputStream& out, T const& member) {
+    pretty_print_impl<TypeClass>::print(out, member);
   }
 
-  template <typename OutputStream, typename T>
-  static void print(OutputStream& out, std::shared_ptr<T> const& what) {
-    if (!what) {
+  template <typename TypeClass, typename OutputStream, typename T>
+  static void recurse_into_ptr(OutputStream& out, T const* pMember) {
+    if (!pMember) {
       out << "null";
       return;
     }
-    print(out, *what);
+    recurse_into<TypeClass>(out, *pMember);
   }
 
-  template <typename OutputStream, typename T>
-  static void print(OutputStream& out, std::shared_ptr<T const> const& what) {
-    if (!what) {
-      out << "null";
-      return;
-    }
-    print(out, *what);
+  template <typename TypeClass, typename OutputStream, typename... Args>
+  static void recurse_into(
+      OutputStream& out,
+      std::shared_ptr<Args...> const& pMember) {
+    return recurse_into_ptr<TypeClass>(out, pMember.get());
+  }
+
+  template <typename TypeClass, typename OutputStream, typename... Args>
+  static void recurse_into(
+      OutputStream& out,
+      std::unique_ptr<Args...> const& pMember) {
+    return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 };
 

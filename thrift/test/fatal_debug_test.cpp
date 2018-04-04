@@ -323,7 +323,89 @@ TEST(fatal_debug, struct_binary) {
   TEST_IMPL(lhs, rhs, "$.bi");
 }
 
+namespace {
+struct UniqueHelper {
+  template <typename T, typename... Args>
+  static std::unique_ptr<T> build(Args&&... args) {
+    return std::make_unique<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T> build(Args&&... args) {
+    return std::make_shared<T>(std::forward<Args>(args)...);
+  }
+};
+
+struct SharedConstHelper {
+  template <typename T, typename... Args>
+  static std::shared_ptr<T const> build(Args&&... args) {
+    return std::make_shared<T const>(std::forward<Args>(args)...);
+  }
+};
+} // namespace
+
+template <typename Structure, typename Helper>
+void ref_test() {
+  Structure allNull;
+  allNull.aStruct = Helper::template build<structA>();
+  allNull.aList = Helper::template build<std::deque<std::string>>();
+  allNull.aSet = Helper::template build<std::unordered_set<std::string>>();
+  allNull.aMap =
+      Helper::template build<std::unordered_map<std::string, std::string>>();
+  allNull.aUnion = Helper::template build<unionA>();
+  allNull.anOptionalStruct = nullptr;
+  allNull.anOptionalList = nullptr;
+  allNull.anOptionalSet = nullptr;
+  allNull.anOptionalMap = nullptr;
+  allNull.anOptionalUnion = nullptr;
+
+  Structure allDefault;
+  allDefault.aStruct = Helper::template build<structA>();
+  allDefault.anOptionalStruct = Helper::template build<structA>();
+  allDefault.aList = Helper::template build<std::deque<std::string>>();
+  allDefault.anOptionalList = Helper::template build<std::deque<std::string>>();
+  allDefault.aSet = Helper::template build<std::unordered_set<std::string>>();
+  allDefault.anOptionalSet =
+      Helper::template build<std::unordered_set<std::string>>();
+  allDefault.aMap =
+      Helper::template build<std::unordered_map<std::string, std::string>>();
+  allDefault.anOptionalMap =
+      Helper::template build<std::unordered_map<std::string, std::string>>();
+  allDefault.aUnion = Helper::template build<unionA>();
+  allDefault.anOptionalUnion = Helper::template build<unionA>();
+  TEST_IMPL(
+      allNull,
+      allDefault,
+      "$.anOptionalStruct" /* extra */,
+      "$.anOptionalList" /* extra */,
+      "$.anOptionalSet" /* extra */,
+      "$.anOptionalMap" /* extra */,
+      "$.anOptionalUnion" /* extra */);
+  TEST_IMPL(
+      allDefault,
+      allNull,
+      "$.anOptionalStruct" /* missing */,
+      "$.anOptionalList" /* missing */,
+      "$.anOptionalSet" /* missing */,
+      "$.anOptionalMap" /* missing */,
+      "$.anOptionalUnion" /* missing */);
+}
+
+TEST(fatal_debug, ref_unique) {
+  ref_test<hasRefUnique, UniqueHelper>();
+}
+
+TEST(fatal_debug, ref_shared) {
+  ref_test<hasRefShared, SharedHelper>();
+}
+
+TEST(fatal_debug, ref_shared_const) {
+  ref_test<hasRefSharedConst, SharedConstHelper>();
+}
+
 #undef TEST_IMPL
 
-} // namespace cpp_compat {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2
