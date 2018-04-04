@@ -921,6 +921,7 @@ func (p *MyServiceFastThreadsafeClient) sendLobDataById(id int64, data string)(e
 
 type MyServiceFastProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  concurrentProcessorMap map[string]thrift.ConcurrentProcessorFunction
   handler MyServiceFast
 }
 
@@ -928,8 +929,17 @@ func (p *MyServiceFastProcessor) AddToProcessorMap(key string, processor thrift.
   p.processorMap[key] = processor
 }
 
+func (p *MyServiceFastProcessor) AddToConcurrentProcessorMap(key string, processor thrift.ConcurrentProcessorFunction) {
+  p.concurrentProcessorMap[key] = processor
+}
+
 func (p *MyServiceFastProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
+  return processor, ok
+}
+
+func (p *MyServiceFastProcessor) GetConcurrentProcessorFunction(key string) (processor thrift.ConcurrentProcessorFunction, ok bool) {
+  processor, ok = p.concurrentProcessorMap[key]
   return processor, ok
 }
 
@@ -939,13 +949,19 @@ func (p *MyServiceFastProcessor) ProcessorMap() map[string]thrift.ProcessorFunct
 
 func NewMyServiceFastProcessor(handler MyServiceFast) *MyServiceFastProcessor {
 
-  self48 := &MyServiceFastProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self48 := &MyServiceFastProcessor{handler:handler, concurrentProcessorMap:make(map[string]thrift.ConcurrentProcessorFunction),processorMap:make(map[string]thrift.ProcessorFunction)}
   self48.processorMap["ping"] = &myServiceFastProcessorPing{handler:handler}
+  self48.concurrentProcessorMap["ping"] = &myServiceFastProcessorPing{handler:handler}
   self48.processorMap["getRandomData"] = &myServiceFastProcessorGetRandomData{handler:handler}
+  self48.concurrentProcessorMap["getRandomData"] = &myServiceFastProcessorGetRandomData{handler:handler}
   self48.processorMap["hasDataById"] = &myServiceFastProcessorHasDataById{handler:handler}
+  self48.concurrentProcessorMap["hasDataById"] = &myServiceFastProcessorHasDataById{handler:handler}
   self48.processorMap["getDataById"] = &myServiceFastProcessorGetDataById{handler:handler}
+  self48.concurrentProcessorMap["getDataById"] = &myServiceFastProcessorGetDataById{handler:handler}
   self48.processorMap["putDataById"] = &myServiceFastProcessorPutDataById{handler:handler}
+  self48.concurrentProcessorMap["putDataById"] = &myServiceFastProcessorPutDataById{handler:handler}
   self48.processorMap["lobDataById"] = &myServiceFastProcessorLobDataById{handler:handler}
+  self48.concurrentProcessorMap["lobDataById"] = &myServiceFastProcessorLobDataById{handler:handler}
 return self48
 }
 
@@ -954,6 +970,23 @@ func (p *MyServiceFastProcessor) Process(iprot, oprot thrift.Protocol) (success 
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
     return processor.Process(seqId, iprot, oprot)
+  }
+  iprot.Skip(thrift.STRUCT)
+  iprot.ReadMessageEnd()
+  x49 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
+  x49.Write(oprot)
+  oprot.WriteMessageEnd()
+  oprot.Flush()
+  return false, x49
+
+}
+
+func (p *MyServiceFastProcessor) ProcessConcurrent(iprot, oprot thrift.Protocol, locker sync.Locker) (success bool, err thrift.Exception) {
+  name, _, seqId, err := iprot.ReadMessageBegin()
+  if err != nil { return false, err }
+  if processor, ok := p.GetConcurrentProcessorFunction(name); ok {
+    return processor.ProcessConcurrent(seqId, iprot, oprot, locker)
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
@@ -993,6 +1026,56 @@ func (p *myServiceFastProcessorPing) Process(seqId int32, iprot, oprot thrift.Pr
     oprot.Flush()
     return true, err2
   }
+  if err2 = oprot.WriteMessageBegin("ping", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *myServiceFastProcessorPing) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastPingArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorPing) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastPingArgs) (success bool, err thrift.Exception) {
+  result := MyServiceFastPingResult{}
+  var err2 error
+  if err2 = p.handler.Ping(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("ping", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -1059,6 +1142,59 @@ func (p *myServiceFastProcessorGetRandomData) Process(seqId int32, iprot, oprot 
   return true, err
 }
 
+func (p *myServiceFastProcessorGetRandomData) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastGetRandomDataArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("getRandomData", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorGetRandomData) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastGetRandomDataArgs) (success bool, err thrift.Exception) {
+  result := MyServiceFastGetRandomDataResult{}
+var retval string
+  var err2 error
+  if retval, err2 = p.handler.GetRandomData(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getRandomData: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("getRandomData", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  locker.Lock()
+  defer locker.Unlock()
+  if err2 = oprot.WriteMessageBegin("getRandomData", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 type myServiceFastProcessorHasDataById struct {
   handler MyServiceFast
 }
@@ -1089,6 +1225,59 @@ func (p *myServiceFastProcessorHasDataById) Process(seqId int32, iprot, oprot th
   } else {
     result.Success = &retval
   }
+  if err2 = oprot.WriteMessageBegin("hasDataById", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *myServiceFastProcessorHasDataById) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastHasDataByIdArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("hasDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorHasDataById) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastHasDataByIdArgs) (success bool, err thrift.Exception) {
+  result := MyServiceFastHasDataByIdResult{}
+var retval bool
+  var err2 error
+  if retval, err2 = p.handler.HasDataById(args.Id); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing hasDataById: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("hasDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("hasDataById", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -1155,6 +1344,59 @@ func (p *myServiceFastProcessorGetDataById) Process(seqId int32, iprot, oprot th
   return true, err
 }
 
+func (p *myServiceFastProcessorGetDataById) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastGetDataByIdArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("getDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorGetDataById) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastGetDataByIdArgs) (success bool, err thrift.Exception) {
+  result := MyServiceFastGetDataByIdResult{}
+var retval string
+  var err2 error
+  if retval, err2 = p.handler.GetDataById(args.Id); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getDataById: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("getDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  locker.Lock()
+  defer locker.Unlock()
+  if err2 = oprot.WriteMessageBegin("getDataById", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 type myServiceFastProcessorPutDataById struct {
   handler MyServiceFast
 }
@@ -1200,6 +1442,56 @@ func (p *myServiceFastProcessorPutDataById) Process(seqId int32, iprot, oprot th
   return true, err
 }
 
+func (p *myServiceFastProcessorPutDataById) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastPutDataByIdArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("putDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorPutDataById) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastPutDataByIdArgs) (success bool, err thrift.Exception) {
+  result := MyServiceFastPutDataByIdResult{}
+  var err2 error
+  if err2 = p.handler.PutDataById(args.Id, args.Data); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing putDataById: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("putDataById", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  locker.Lock()
+  defer locker.Unlock()
+  if err2 = oprot.WriteMessageBegin("putDataById", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 type myServiceFastProcessorLobDataById struct {
   handler MyServiceFast
 }
@@ -1212,6 +1504,26 @@ func (p *myServiceFastProcessorLobDataById) Process(seqId int32, iprot, oprot th
   }
 
   iprot.ReadMessageEnd()
+  var err2 error
+  if err2 = p.handler.LobDataById(args.Id, args.Data); err2 != nil {
+    return true, err2
+  }
+  return true, nil
+}
+
+func (p *myServiceFastProcessorLobDataById) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServiceFastLobDataByIdArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServiceFastProcessorLobDataById) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServiceFastLobDataByIdArgs) (success bool, err thrift.Exception) {
   var err2 error
   if err2 = p.handler.LobDataById(args.Id, args.Data); err2 != nil {
     return true, err2

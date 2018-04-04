@@ -56,3 +56,40 @@ func NewProcessorFunctionFactory(p ProcessorFunction) ProcessorFunctionFactory {
 func (p *processorFunctionFactory) GetProcessorFunction(trans Transport) ProcessorFunction {
 	return p.processor
 }
+
+// ConcurrentProcessorFactory is the concurrent counterpart of ProcessorFactory
+type ConcurrentProcessorFactory interface {
+	Geprocessor(trans Transport) ConcurrentProcessor
+}
+
+type concurrentProcessorFactory struct {
+	processor ConcurrentProcessor
+}
+
+// NewConcurrentProcessorFactory returns a factory wrapping a ConcurrentProcessor
+func NewConcurrentProcessorFactory(p ConcurrentProcessor) ConcurrentProcessorFactory {
+	return &concurrentProcessorFactory{processor: p}
+}
+
+func (p *concurrentProcessorFactory) Geprocessor(trans Transport) ConcurrentProcessor {
+	return p.processor
+}
+
+// ConcurrentProcessorFunctionFactory is the concurrent counterpat of ProcessorFunctionFactory
+type ConcurrentProcessorFunctionFactory interface {
+	GetConcurrentProcessorFunction(trans Transport) ConcurrentProcessorFunction
+}
+
+type concurrentProcessorFunctionFactory struct {
+	processor ConcurrentProcessorFunction
+}
+
+// NewConcurrentProcessorFunctionFactory creates a new factory wrapping a
+// ConcurrentProcessorFunction
+func NewConcurrentProcessorFunctionFactory(p ConcurrentProcessorFunction) ConcurrentProcessorFunctionFactory {
+	return &concurrentProcessorFunctionFactory{processor: p}
+}
+
+func (p *concurrentProcessorFunctionFactory) GetConcurrentProcessorFunction(trans Transport) ConcurrentProcessorFunction {
+	return p.processor
+}

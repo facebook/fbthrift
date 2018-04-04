@@ -206,6 +206,7 @@ type MyServicePrioChildProcessor struct {
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
   self72 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
   self72.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  self72.AddToConcurrentProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
   return self72
 }
 
@@ -236,6 +237,56 @@ func (p *myServicePrioChildProcessorPang) Process(seqId int32, iprot, oprot thri
     oprot.Flush()
     return true, err2
   }
+  if err2 = oprot.WriteMessageBegin("pang", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *myServicePrioChildProcessorPang) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyServicePrioChildPangArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("pang", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myServicePrioChildProcessorPang) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServicePrioChildPangArgs) (success bool, err thrift.Exception) {
+  result := MyServicePrioChildPangResult{}
+  var err2 error
+  if err2 = p.handler.Pang(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pang: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("pang", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("pang", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }

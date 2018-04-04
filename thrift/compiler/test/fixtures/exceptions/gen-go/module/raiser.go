@@ -703,6 +703,7 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
 
 type RaiserProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  concurrentProcessorMap map[string]thrift.ConcurrentProcessorFunction
   handler Raiser
 }
 
@@ -710,8 +711,17 @@ func (p *RaiserProcessor) AddToProcessorMap(key string, processor thrift.Process
   p.processorMap[key] = processor
 }
 
+func (p *RaiserProcessor) AddToConcurrentProcessorMap(key string, processor thrift.ConcurrentProcessorFunction) {
+  p.concurrentProcessorMap[key] = processor
+}
+
 func (p *RaiserProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
   processor, ok = p.processorMap[key]
+  return processor, ok
+}
+
+func (p *RaiserProcessor) GetConcurrentProcessorFunction(key string) (processor thrift.ConcurrentProcessorFunction, ok bool) {
+  processor, ok = p.concurrentProcessorMap[key]
   return processor, ok
 }
 
@@ -721,11 +731,15 @@ func (p *RaiserProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 
 func NewRaiserProcessor(handler Raiser) *RaiserProcessor {
 
-  self16 := &RaiserProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self16 := &RaiserProcessor{handler:handler, concurrentProcessorMap:make(map[string]thrift.ConcurrentProcessorFunction),processorMap:make(map[string]thrift.ProcessorFunction)}
   self16.processorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
+  self16.concurrentProcessorMap["doBland"] = &raiserProcessorDoBland{handler:handler}
   self16.processorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
+  self16.concurrentProcessorMap["doRaise"] = &raiserProcessorDoRaise{handler:handler}
   self16.processorMap["get200"] = &raiserProcessorGet200{handler:handler}
+  self16.concurrentProcessorMap["get200"] = &raiserProcessorGet200{handler:handler}
   self16.processorMap["get500"] = &raiserProcessorGet500{handler:handler}
+  self16.concurrentProcessorMap["get500"] = &raiserProcessorGet500{handler:handler}
 return self16
 }
 
@@ -734,6 +748,23 @@ func (p *RaiserProcessor) Process(iprot, oprot thrift.Protocol) (success bool, e
   if err != nil { return false, err }
   if processor, ok := p.GetProcessorFunction(name); ok {
     return processor.Process(seqId, iprot, oprot)
+  }
+  iprot.Skip(thrift.STRUCT)
+  iprot.ReadMessageEnd()
+  x17 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
+  x17.Write(oprot)
+  oprot.WriteMessageEnd()
+  oprot.Flush()
+  return false, x17
+
+}
+
+func (p *RaiserProcessor) ProcessConcurrent(iprot, oprot thrift.Protocol, locker sync.Locker) (success bool, err thrift.Exception) {
+  name, _, seqId, err := iprot.ReadMessageBegin()
+  if err != nil { return false, err }
+  if processor, ok := p.GetConcurrentProcessorFunction(name); ok {
+    return processor.ProcessConcurrent(seqId, iprot, oprot, locker)
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
@@ -773,6 +804,56 @@ func (p *raiserProcessorDoBland) Process(seqId int32, iprot, oprot thrift.Protoc
     oprot.Flush()
     return true, err2
   }
+  if err2 = oprot.WriteMessageBegin("doBland", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *raiserProcessorDoBland) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := RaiserDoBlandArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("doBland", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *raiserProcessorDoBland) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *RaiserDoBlandArgs) (success bool, err thrift.Exception) {
+  result := RaiserDoBlandResult{}
+  var err2 error
+  if err2 = p.handler.DoBland(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doBland: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("doBland", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("doBland", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -843,6 +924,63 @@ func (p *raiserProcessorDoRaise) Process(seqId int32, iprot, oprot thrift.Protoc
   return true, err
 }
 
+func (p *raiserProcessorDoRaise) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := RaiserDoRaiseArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("doRaise", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *raiserProcessorDoRaise) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *RaiserDoRaiseArgs) (success bool, err thrift.Exception) {
+  result := RaiserDoRaiseResult{}
+  var err2 error
+  if err2 = p.handler.DoRaise(); err2 != nil {
+  switch v := err2.(type) {
+    case *Banal:
+  result.B = v
+    case *Fiery:
+  result.F = v
+    default:
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("doRaise", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  }
+  locker.Lock()
+  defer locker.Unlock()
+  if err2 = oprot.WriteMessageBegin("doRaise", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 type raiserProcessorGet200 struct {
   handler Raiser
 }
@@ -873,6 +1011,59 @@ func (p *raiserProcessorGet200) Process(seqId int32, iprot, oprot thrift.Protoco
   } else {
     result.Success = &retval
   }
+  if err2 = oprot.WriteMessageBegin("get200", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *raiserProcessorGet200) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := RaiserGet200Args{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("get200", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *raiserProcessorGet200) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *RaiserGet200Args) (success bool, err thrift.Exception) {
+  result := RaiserGet200Result{}
+var retval string
+  var err2 error
+  if retval, err2 = p.handler.Get200(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get200: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("get200", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("get200", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -928,6 +1119,66 @@ func (p *raiserProcessorGet500) Process(seqId int32, iprot, oprot thrift.Protoco
   } else {
     result.Success = &retval
   }
+  if err2 = oprot.WriteMessageBegin("get500", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *raiserProcessorGet500) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := RaiserGet500Args{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("get500", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *raiserProcessorGet500) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *RaiserGet500Args) (success bool, err thrift.Exception) {
+  result := RaiserGet500Result{}
+var retval string
+  var err2 error
+  if retval, err2 = p.handler.Get500(); err2 != nil {
+  switch v := err2.(type) {
+    case *Fiery:
+  result.F = v
+    case *Banal:
+  result.B = v
+    default:
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("get500", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  } else {
+    result.Success = &retval
+}
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("get500", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }

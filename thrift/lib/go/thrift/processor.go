@@ -19,12 +19,29 @@
 
 package thrift
 
+import (
+	"sync"
+)
+
 // A processor is a generic object which operates upon an input stream and
 // writes to some output stream.
 type Processor interface {
 	Process(in, out Protocol) (bool, Exception)
 }
 
+// ProcessorFunction is a generic object that processes part of the input
+// handed to it by a Processor before writing to the outputstream
 type ProcessorFunction interface {
 	Process(seqId int32, in, out Protocol) (bool, Exception)
+}
+
+// ConcurrentProcessor is the concurrent counterpart of Processor
+// Carries a locker for synchronization
+type ConcurrentProcessor interface {
+	ProcessConcurrent(in, out Protocol, locker sync.Locker) (bool, Exception)
+}
+
+// ConcurrentProcessorFunction is the concurrent counterpart of ProcessorFunction
+type ConcurrentProcessorFunction interface {
+	ProcessConcurrent(seqID int32, in, out Protocol, locker sync.Locker) (bool, Exception)
 }

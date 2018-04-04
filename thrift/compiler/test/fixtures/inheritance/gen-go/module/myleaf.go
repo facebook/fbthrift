@@ -206,6 +206,7 @@ type MyLeafProcessor struct {
 func NewMyLeafProcessor(handler MyLeaf) *MyLeafProcessor {
   self15 := &MyLeafProcessor{NewMyNodeProcessor(handler)}
   self15.AddToProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
+  self15.AddToConcurrentProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
   return self15
 }
 
@@ -236,6 +237,56 @@ func (p *myLeafProcessorDoLeaf) Process(seqId int32, iprot, oprot thrift.Protoco
     oprot.Flush()
     return true, err2
   }
+  if err2 = oprot.WriteMessageBegin("do_leaf", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+func (p *myLeafProcessorDoLeaf) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
+  args := MyLeafDoLeafArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("do_leaf", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  go p.Handle(seqId, oprot, locker, &args);
+  return true, nil
+  }
+
+  func (p *myLeafProcessorDoLeaf) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyLeafDoLeafArgs) (success bool, err thrift.Exception) {
+  result := MyLeafDoLeafResult{}
+  var err2 error
+  if err2 = p.handler.DoLeaf(); err2 != nil {
+    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_leaf: " + err2.Error())
+    locker.Lock()
+    defer locker.Unlock()
+    oprot.WriteMessageBegin("do_leaf", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  locker.Lock()
+  defer locker.Unlock()
   if err2 = oprot.WriteMessageBegin("do_leaf", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
