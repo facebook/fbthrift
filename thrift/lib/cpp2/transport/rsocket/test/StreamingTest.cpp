@@ -19,6 +19,7 @@
 #include <gflags/gflags.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
@@ -112,11 +113,13 @@ class StreamingTest : public testing::Test {
           std::unique_ptr<testutil::testservice::StreamServiceAsyncClient>)>
           callMe) {
     CHECK_GT(port_, 0) << "Check if the server has started already";
-    RSocketClientChannel::Ptr channel;
-    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocket(evbThread_.getEventBase(), "::1", port_)));
-    });
+    auto channel = PooledRequestChannel::newChannel(
+        evbThread_.getEventBase(),
+        std::make_shared<folly::ScopedEventBaseThread>(),
+        [port = port_](folly::EventBase& evb) {
+          return RSocketClientChannel::newChannel(
+              TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port)));
+        });
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -210,11 +213,6 @@ TEST_F(StreamingTest, ThrowsWithResponse) {
 
 TEST_F(StreamingTest, LifeTimeTesting) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
-    // Make sure that the requests are also completed at the client side
-    channel->getEventBase()->runInEventBaseThreadAndWait(
-        [&]() { channel->setMaxPendingRequests(2u); });
-
     CHECK_EQ(0, client->sync_instanceCount());
 
     { // Never subscribe

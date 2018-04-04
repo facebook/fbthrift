@@ -58,44 +58,6 @@ void RSConnectionStatus::closed() {
 } // namespace detail
 
 namespace {
-/**
- * Used as the callback for sendRequestSync.  It delegates to the
- * wrapped callback and posts on the baton object to allow the
- * synchronous call to continue.
- */
-class WaitableRequestCallback final : public RequestCallback {
- public:
-  WaitableRequestCallback(
-      std::unique_ptr<RequestCallback> cb,
-      folly::Baton<>& baton,
-      bool oneway)
-      : cb_(std::move(cb)), baton_(baton), oneway_(oneway) {}
-
-  void requestSent() override {
-    cb_->requestSent();
-    if (oneway_) {
-      baton_.post();
-    }
-  }
-
-  void replyReceived(ClientReceiveState&& rs) override {
-    DCHECK(!oneway_);
-    cb_->replyReceived(std::move(rs));
-    baton_.post();
-  }
-
-  void requestError(ClientReceiveState&& rs) override {
-    DCHECK(rs.isException());
-    cb_->requestError(std::move(rs));
-    baton_.post();
-  }
-
- private:
-  std::unique_ptr<RequestCallback> cb_;
-  folly::Baton<>& baton_;
-  bool oneway_;
-};
-
 class CountedSingleObserver : public SingleObserver<Payload> {
  public:
   CountedSingleObserver(
@@ -333,35 +295,6 @@ void RSocketClientChannel::setHTTPHost(const std::string& host) {
 
 void RSocketClientChannel::setHTTPUrl(const std::string& url) {
   httpUrl_ = url;
-}
-
-uint32_t RSocketClientChannel::sendRequestSync(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<THeader> header) {
-  // Synchronous calls may be made from any thread except the one used
-  // by the underlying connection.  That thread is used to handle the
-  // callback and to release this thread that will be waiting on
-  // "baton".
-  folly::EventBase* connectionEvb = getEventBase();
-  DCHECK(!connectionEvb->inRunningEventBaseThread());
-  folly::Baton<> baton;
-  DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
-  auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
-  bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  auto scb =
-      std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
-  int result = sendRequestHelper(
-      rpcOptions,
-      kind,
-      std::move(scb),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header));
-  baton.wait();
-  return result;
 }
 
 uint32_t RSocketClientChannel::sendRequest(

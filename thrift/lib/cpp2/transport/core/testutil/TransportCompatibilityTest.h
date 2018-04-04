@@ -42,9 +42,9 @@ class SampleServer {
 
   void connectToServer(
       std::string transport,
-      folly::Function<
-          void(ClientChannel::Ptr, std::shared_ptr<ClientConnectionIf>)>
-          callMe);
+      folly::Function<void(
+          std::shared_ptr<RequestChannel>,
+          std::shared_ptr<ClientConnectionIf>)> callMe);
 
  protected:
   void setupServer();

@@ -111,18 +111,19 @@ class PooledRequestChannel : public RequestChannel {
       folly::Executor* callbackExecutor,
       std::weak_ptr<folly::IOExecutor> executor,
       ImplCreator implCreator)
-      : callbackExecutor_(callbackExecutor),
-        executor_(std::move(executor)),
-        implCreator_(std::move(implCreator)) {}
+      : implCreator_(std::move(implCreator)),
+        callbackExecutor_(callbackExecutor),
+        executor_(std::move(executor)) {}
 
   Impl& impl(folly::EventBase& evb);
+
+  ImplCreator implCreator_;
 
   folly::Executor* callbackExecutor_{nullptr};
   std::shared_ptr<folly::IOExecutor> executor_;
   std::atomic<size_t> nextEvbId_{0};
 
   folly::EventBaseLocal<Impl> impl_;
-  ImplCreator implCreator_;
 
   folly::once_flag protocolIdInitFlag_;
   uint16_t protocolId_;

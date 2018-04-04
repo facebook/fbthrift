@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
@@ -168,7 +169,7 @@ void TransportCompatibilityTest::connectToServer(
   server_->connectToServer(
       FLAGS_transport,
       [callMe = std::move(callMe)](
-          ClientChannel::Ptr channel,
+          std::shared_ptr<RequestChannel> channel,
           std::shared_ptr<ClientConnectionIf> connection) mutable {
         auto client =
             std::make_unique<TestServiceAsyncClient>(std::move(channel));
@@ -179,8 +180,9 @@ void TransportCompatibilityTest::connectToServer(
 template <typename Service>
 void SampleServer<Service>::connectToServer(
     std::string transport,
-    folly::Function<
-        void(ClientChannel::Ptr, std::shared_ptr<ClientConnectionIf>)> callMe) {
+    folly::Function<void(
+        std::shared_ptr<RequestChannel>,
+        std::shared_ptr<ClientConnectionIf>)> callMe) {
   CHECK_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
     auto addr = folly::SocketAddress(FLAGS_host, port_);
@@ -199,17 +201,24 @@ void SampleServer<Service>::connectToServer(
   } else if (transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.
-    folly::EventBase evb;
-    TAsyncSocket::UniquePtr socket(new TAsyncSocket(&evb, FLAGS_host, port_));
-    if (FLAGS_use_ssl) {
-      auto sslContext = std::make_shared<folly::SSLContext>();
-      sslContext->setAdvertisedNextProtocols({"h2", "http"});
-      auto sslSocket =
-          new TAsyncSSLSocket(sslContext, &evb, socket->detachFd(), false);
-      sslSocket->sslConn(nullptr);
-      socket.reset(sslSocket);
-    }
-    auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
+    auto executor = std::make_shared<folly::ScopedEventBaseThread>();
+    auto executorPtr = executor.get();
+    auto channel = PooledRequestChannel::newChannel(
+        executorPtr,
+        std::move(executor),
+        [port = std::move(port_)](folly::EventBase& evb) {
+          TAsyncSocket::UniquePtr socket(
+              new TAsyncSocket(&evb, FLAGS_host, port));
+          if (FLAGS_use_ssl) {
+            auto sslContext = std::make_shared<folly::SSLContext>();
+            sslContext->setAdvertisedNextProtocols({"h2", "http"});
+            auto sslSocket = new TAsyncSSLSocket(
+                sslContext, &evb, socket->detachFd(), false);
+            sslSocket->sslConn(nullptr);
+            socket.reset(sslSocket);
+          }
+          return HTTPClientChannel::newHTTP2Channel(std::move(socket));
+        });
     callMe(std::move(channel), nullptr);
   } else {
     auto mgr = ConnectionManager::getInstance();
@@ -279,7 +288,7 @@ void TransportCompatibilityTest::TestConnectionStats() {
     EXPECT_EQ(0, server_->observer_->activeConns_);
 
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
 
     EXPECT_EQ(1, server_->observer_->connAccepted_);
     EXPECT_EQ(server_->numIOThreads_, server_->observer_->activeConns_);
@@ -294,14 +303,14 @@ void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
     EXPECT_CALL(*handler_.get(), add_(5));
 
     // Send a message
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(1, client->sync_add(1));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
     EXPECT_EQ(3, future.get());
 
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(8, client->sync_add(5));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(8, client->future_add(5).get());
 
     // Now check the stats
     EXPECT_EQ(5, server_->observer_->sentReply_);
@@ -317,14 +326,14 @@ void TransportCompatibilityTest::TestRequestResponse_Simple() {
     EXPECT_CALL(*handler_.get(), add_(5));
 
     // Send a message
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(1, client->sync_add(1));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
     EXPECT_EQ(3, future.get());
 
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(8, client->sync_add(5));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(8, client->future_add(5).get());
   });
 }
 
@@ -336,11 +345,11 @@ void TransportCompatibilityTest::TestRequestResponse_Sync() {
     EXPECT_CALL(*handler_.get(), add_(5));
 
     // Send a message
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(1, client->sync_add(1));
-    EXPECT_EQ(3, client->sync_add(2));
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_EQ(8, client->sync_add(5));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(1, client->future_add(1).get());
+    EXPECT_EQ(3, client->future_add(2).get());
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_EQ(8, client->future_add(5).get());
   });
 }
 
@@ -353,14 +362,14 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
 
   auto lambda = [](std::unique_ptr<TestServiceAsyncClient> client) {
     // Send a message
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_LE(1, client->sync_add(1));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_LE(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
     EXPECT_LE(3, future.get());
 
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
-    EXPECT_LE(8, client->sync_add(5));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_LE(8, client->future_add(5).get());
   };
 
   std::vector<folly::ScopedEventBaseThread> threads(clientCount);
@@ -381,7 +390,7 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
 void TransportCompatibilityTest::TestRequestResponse_ExpectedException() {
   EXPECT_THROW(
       connectToServer(
-          [&](auto client) { client->sync_throwExpectedException(1); }),
+          [&](auto client) { client->future_throwExpectedException(1).get(); }),
       TestServiceException);
 
   EXPECT_THROW(
@@ -392,8 +401,9 @@ void TransportCompatibilityTest::TestRequestResponse_ExpectedException() {
 
 void TransportCompatibilityTest::TestRequestResponse_UnexpectedException() {
   EXPECT_THROW(
-      connectToServer(
-          [&](auto client) { client->sync_throwUnexpectedException(2); }),
+      connectToServer([&](auto client) {
+        client->future_throwUnexpectedException(2).get();
+      }),
       apache::thrift::TApplicationException);
 
   EXPECT_THROW(
@@ -429,15 +439,6 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
 
 void TransportCompatibilityTest::TestRequestResponse_Header() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
-    { // Sync
-      apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("header_from_client", "2");
-      client->sync_headers(rpcOptions);
-      auto keyValue = rpcOptions.getReadHeaders();
-      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
-      EXPECT_STREQ("1", keyValue.find("header_from_server")->second.c_str());
-    }
-
     { // Future
       apache::thrift::RpcOptions rpcOptions;
       rpcOptions.setWriteHeader("header_from_client", "2");
@@ -475,21 +476,6 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
 void TransportCompatibilityTest::
     TestRequestResponse_Header_ExpectedException() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
-    { // Sync
-      apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("header_from_client", "2");
-      rpcOptions.setWriteHeader("expected_exception", "1");
-      bool thrown = false;
-      try {
-        client->sync_headers(rpcOptions);
-      } catch (const std::exception& ex) {
-        thrown = true;
-      }
-      EXPECT_TRUE(thrown);
-      auto keyValue = rpcOptions.getReadHeaders();
-      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
-    }
-
     { // Future
       apache::thrift::RpcOptions rpcOptions;
       rpcOptions.setWriteHeader("header_from_client", "2");
@@ -528,17 +514,6 @@ void TransportCompatibilityTest::
 void TransportCompatibilityTest::
     TestRequestResponse_Header_UnexpectedException() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
-    { // Sync
-      apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setWriteHeader("header_from_client", "2");
-      rpcOptions.setWriteHeader("unexpected_exception", "1");
-      EXPECT_THROW(
-          client->sync_headers(rpcOptions),
-          apache::thrift::TApplicationException);
-      auto keyValue = rpcOptions.getReadHeaders();
-      EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
-    }
-
     { // Future
       apache::thrift::RpcOptions rpcOptions;
       rpcOptions.setWriteHeader("header_from_client", "2");
@@ -595,8 +570,8 @@ void TransportCompatibilityTest::TestRequestResponse_Connection_CloseNow() {
         [&]() { channel->closeNow(); });
 
     try {
-      client->sync_add(3);
-      EXPECT_TRUE(false) << "sync_add should have thrown";
+      client->future_add(3).get();
+      EXPECT_TRUE(false) << "future_add should have thrown";
     } catch (TTransportException& ex) {
       EXPECT_EQ(TTransportException::NOT_OPEN, ex.getType());
     }
@@ -671,9 +646,8 @@ void TransportCompatibilityTest::TestRequestResponse_ResponseSizeTooBig() {
     server_->getServer()->setMaxResponseSize(1);
     try {
       std::string longName(1, 'f');
-      std::string result;
-      client->sync_hello(result, longName);
-      EXPECT_TRUE(false) << "sync_hello should have thrown";
+      auto result = client->future_hello(longName).get();
+      EXPECT_TRUE(false) << "future_hello should have thrown";
     } catch (TApplicationException& ex) {
       EXPECT_EQ(TApplicationException::INTERNAL_ERROR, ex.getType());
     }
@@ -685,11 +659,11 @@ void TransportCompatibilityTest::TestOneway_Simple() {
     EXPECT_CALL(*handler_.get(), add_(0));
     EXPECT_CALL(*handler_.get(), addAfterDelay_(0, 5));
 
-    client->sync_addAfterDelay(0, 5);
+    client->future_addAfterDelay(0, 5).get();
     // Sleep a bit for oneway call to complete on server
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    EXPECT_EQ(5, client->sync_add(0));
+    EXPECT_EQ(5, client->future_add(0).get());
   });
 }
 
@@ -699,15 +673,15 @@ void TransportCompatibilityTest::TestOneway_WithDelay() {
     EXPECT_CALL(*handler_.get(), addAfterDelay_(800, 5));
 
     // Perform an add on the server after a delay
-    client->sync_addAfterDelay(800, 5);
+    client->future_addAfterDelay(800, 5).get();
     // Call add to get result before the previous addAfterDelay takes
     // place - this verifies that the addAfterDelay call is really
     // oneway.
-    EXPECT_EQ(0, client->sync_add(0));
+    EXPECT_EQ(0, client->future_add(0).get());
     // Sleep to wait for oneway call to complete on server
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    EXPECT_EQ(5, client->sync_add(0));
+    EXPECT_EQ(5, client->future_add(0).get());
   });
 }
 
@@ -730,8 +704,8 @@ void TransportCompatibilityTest::TestOneway_UnexpectedException() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), onewayThrowsUnexpectedException_(100));
     EXPECT_CALL(*handler_.get(), onewayThrowsUnexpectedException_(0));
-    client->sync_onewayThrowsUnexpectedException(100);
-    client->sync_onewayThrowsUnexpectedException(0);
+    client->future_onewayThrowsUnexpectedException(100).get();
+    client->future_onewayThrowsUnexpectedException(0).get();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
   });
 }
@@ -745,7 +719,9 @@ void TransportCompatibilityTest::TestOneway_Connection_CloseNow() {
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->closeNow(); });
 
-    EXPECT_NO_THROW(client->sync_addAfterDelay(0, 5));
+    EXPECT_THROW(
+        client->future_addAfterDelay(0, 5).get(),
+        apache::thrift::TTransportException);
   });
 }
 
@@ -764,14 +740,14 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
 
         server_->getServer()->setQueueTimeout(std::chrono::milliseconds(1));
         for (int i = 0; i < callCount; ++i) {
-          EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
+          EXPECT_NO_THROW(client->future_addAfterDelay(100, 5).get());
         }
 
         server_->getServer()->setQueueTimeout(std::chrono::milliseconds(1000));
         server_->getServer()->setUseClientTimeout(false);
         server_->getServer()->setTaskExpireTime(std::chrono::milliseconds(1));
         for (int i = 0; i < callCount; ++i) {
-          EXPECT_NO_THROW(client->sync_addAfterDelay(100, 5));
+          EXPECT_NO_THROW(client->future_addAfterDelay(100, 5).get());
         }
       });
 }
@@ -793,7 +769,7 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
   server.startServer();
 
   server.connectToServer(
-      "header", [](ClientChannel::Ptr channel, auto) mutable {
+      "header", [](std::shared_ptr<RequestChannel> channel, auto) mutable {
         auto client = std::make_unique<IntermHeaderServiceAsyncClient>(
             std::move(channel));
         EXPECT_EQ(5, client->sync_callAdd(5));
@@ -836,7 +812,7 @@ void TransportCompatibilityTest::TestEvbSwitch() {
 
     folly::ScopedEventBaseThread sevbt;
 
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
 
     auto channel = static_cast<ClientChannel*>(client->getChannel());
     auto evb = channel->getEventBase();
@@ -850,7 +826,7 @@ void TransportCompatibilityTest::TestEvbSwitch() {
         [&]() { channel->attachEventBase(sevbt.getEventBase()); });
 
     // Execution happens on the new event base
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
 
     // Attach the old one back
     sevbt.getEventBase()->runInEventBaseThreadAndWait([&]() {
@@ -861,7 +837,7 @@ void TransportCompatibilityTest::TestEvbSwitch() {
     evb->runInEventBaseThreadAndWait([&]() { channel->attachEventBase(evb); });
 
     // Execution happens on the old event base, along with the destruction
-    EXPECT_EQ(3, client->sync_sumTwoNumbers(1, 2));
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
   });
 }
 
@@ -893,7 +869,7 @@ void TransportCompatibilityTest::TestEvbSwitch_Failure() {
     callSleep(client.get(), 5000, 1000);
     /* sleep override - make sure request is started */
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    client->sync_sumTwoNumbers(1, 2);
+    client->future_sumTwoNumbers(1, 2).get();
     evb->runInEventBaseThreadAndWait([&]() {
       // As we have an active request, it should not be detachable!
       EXPECT_FALSE(channel->isDetachable());

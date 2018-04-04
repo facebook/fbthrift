@@ -124,7 +124,7 @@ IntermHeaderService::IntermHeaderService(
 
 int32_t IntermHeaderService::callAdd(int32_t x) {
   auto rq = folly::RequestContext::get();
-  auto ret = client_->sync_add(x);
+  auto ret = client_->future_add(x).get();
   EXPECT_EQ(rq, folly::RequestContext::get());
   return ret;
 }

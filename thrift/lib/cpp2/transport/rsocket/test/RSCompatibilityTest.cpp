@@ -92,12 +92,12 @@ TEST_F(RSCompatibilityTest, RequestResponse_Saturation) {
     auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->setMaxPendingRequests(0u); });
-    EXPECT_THROW(client->sync_add(5), TTransportException);
+    EXPECT_THROW(client->future_add(5).get(), TTransportException);
 
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->setMaxPendingRequests(1u); });
-    EXPECT_EQ(3, client->sync_add(3));
-    EXPECT_EQ(6, client->sync_add(3));
+    EXPECT_EQ(3, client->future_add(3).get());
+    EXPECT_EQ(6, client->future_add(3).get());
   });
 }
 
@@ -129,7 +129,7 @@ TEST_F(RSCompatibilityTest, Oneway_Saturation) {
     auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->setMaxPendingRequests(0u); });
-    client->sync_addAfterDelay(0, 5);
+    client->future_addAfterDelay(0, 5).get();
 
     // the first call is not completed as the connection was saturated
     channel->getEventBase()->runInEventBaseThreadAndWait(
@@ -137,8 +137,8 @@ TEST_F(RSCompatibilityTest, Oneway_Saturation) {
 
     // Client should be able to issue both of these functions as
     // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
-    client->sync_addAfterDelay(100, 5);
-    client->sync_addAfterDelay(50, 5); // TODO: H2 fails in this call.
+    client->future_addAfterDelay(100, 5).get();
+    client->future_addAfterDelay(50, 5).get(); // TODO: H2 fails in this call.
   });
 }
 

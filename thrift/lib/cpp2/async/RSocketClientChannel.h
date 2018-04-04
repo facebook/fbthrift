@@ -76,13 +76,6 @@ class RSocketClientChannel : public ClientChannel,
   void setHTTPHost(const std::string& host);
   void setHTTPUrl(const std::string& url);
 
-  uint32_t sendRequestSync(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
-
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
       std::unique_ptr<RequestCallback> cb,
