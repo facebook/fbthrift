@@ -62,7 +62,7 @@ const MULTIPLEXED_SEPARATOR = ":"
 
 func NewMultiplexedProtocol(protocol Protocol, serviceName string) *MultiplexedProtocol {
 	return &MultiplexedProtocol{
-		Protocol:   protocol,
+		Protocol:    protocol,
 		serviceName: serviceName,
 	}
 }
@@ -101,13 +101,13 @@ serverTransport, err := thrift.NewServerSocketTimeout(addr, TIMEOUT)
 if err != nil {
   t.Fatal("Unable to create server socket", err)
 }
-server := thrift.NewSimpleServer2(processor, serverTransport)
+server := thrift.NewSimpleServer(processor, serverTransport)
 server.Serve();
 */
 
 type MultiplexedProcessor struct {
 	serviceProcessorMap map[string]Processor
-	Defaulprocessor    Processor
+	Defaulprocessor     Processor
 }
 
 func NewMultiplexedProcessor() *MultiplexedProcessor {
