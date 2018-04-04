@@ -67,7 +67,7 @@ void PubSubStreamingServiceAsyncClient::clientT(Protocol_* prot, bool useSync, a
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.client", connectionContext_.get());
   PubSubStreamingService_client_pargs::FieldsType args;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "client", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -82,7 +82,7 @@ void PubSubStreamingServiceAsyncClient::serverT(Protocol_* prot, bool useSync, a
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.server", connectionContext_.get());
   PubSubStreamingService_server_pargs::FieldsType args;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "server", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -97,7 +97,7 @@ void PubSubStreamingServiceAsyncClient::bothT(Protocol_* prot, bool useSync, apa
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.both", connectionContext_.get());
   PubSubStreamingService_both_pargs::FieldsType args;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "both", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -129,7 +129,7 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", connectionContext_.get());
   PubSubStreamingService_takesstream_pargs::FieldsType args;
   args.get<0>().value = &other_param;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "takesstream", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -144,7 +144,7 @@ void PubSubStreamingServiceAsyncClient::clientthrowsT(Protocol_* prot, bool useS
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.clientthrows", connectionContext_.get());
   PubSubStreamingService_clientthrows_pargs::FieldsType args;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "clientthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -160,7 +160,7 @@ void PubSubStreamingServiceAsyncClient::differentT(Protocol_* prot, bool useSync
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", connectionContext_.get());
   PubSubStreamingService_different_pargs::FieldsType args;
   args.get<0>().value = &firstparam;
-  #error Stream inputs are not allowed
+  #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "different", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
