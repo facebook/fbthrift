@@ -29,74 +29,76 @@ import (
 // ConcurrentServer is the concurrent counterpart of SimpleServer
 // It is able to process out-of-order requests on the same transport
 type ConcurrentServer struct {
-	quit chan struct{}
-
-	processorFactory       ConcurrentProcessorFactory
-	serverTransport        ServerTransport
-	inputTransportFactory  TransportFactory
-	outputTransportFactory TransportFactory
-	inpuprotocolFactory    ProtocolFactory
-	outpuprotocolFactory   ProtocolFactory
+	processorFactory ConcurrentProcessorFactory
+	*ServerOptions
 }
 
-// NewConcurrentServer2 creates a new ConcurrentServer
+// NewConcurrentServer create a new NewConcurrentServer
+func NewConcurrentServer(processor ConcurrentProcessor, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor), serverTransport, options...)
+}
+
+// NewConcurrentServer2 is deprecated, use NewConcurrentServer
 func NewConcurrentServer2(processor ConcurrentProcessor, serverTransport ServerTransport) *ConcurrentServer {
-	return NewConcurrentServerFactory2(NewConcurrentProcessorFactory(processor), serverTransport)
+	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor), serverTransport)
 }
 
-// NewConcurrentServer4 creates a new ConcurrentServer
+// NewConcurrentServer4 is deprecated, use NewConcurrentServer
 func NewConcurrentServer4(processor ConcurrentProcessor, serverTransport ServerTransport, transportFactory TransportFactory, protocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory4(NewConcurrentProcessorFactory(processor),
+	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor),
 		serverTransport,
-		transportFactory,
-		protocolFactory,
+		TransportFactories(transportFactory),
+		ProtocolFactories(protocolFactory),
 	)
 }
 
-// NewConcurrentServer6 creates a new ConcurrentServer
-func NewConcurrentServer6(processor ConcurrentProcessor, serverTransport ServerTransport, inputTransportFactory TransportFactory, outputTransportFactory TransportFactory, inpuprotocolFactory ProtocolFactory, outpuprotocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory6(NewConcurrentProcessorFactory(processor),
+// NewConcurrentServer6 is deprecated, use NewConcurrentServer
+func NewConcurrentServer6(processor ConcurrentProcessor, serverTransport ServerTransport,
+	inputTransportFactory TransportFactory, outputTransportFactory TransportFactory,
+	inputProtocolFactory ProtocolFactory, outputProtocolFactory ProtocolFactory) *ConcurrentServer {
+	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor),
 		serverTransport,
-		inputTransportFactory,
-		outputTransportFactory,
-		inpuprotocolFactory,
-		outpuprotocolFactory,
+		InputTransportFactory(inputTransportFactory),
+		OutputTransportFactory(outputTransportFactory),
+		InputProtocolFactory(inputProtocolFactory),
+		OutputProtocolFactory(outputProtocolFactory),
 	)
 }
 
-// NewConcurrentServerFactory2 creates a new ConcurrentServer
-func NewConcurrentServerFactory2(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport) *ConcurrentServer {
-	return NewConcurrentServerFactory6(processorFactory,
-		serverTransport,
-		NewTransportFactory(),
-		NewTransportFactory(),
-		NewBinaryProtocolFactoryDefault(),
-		NewBinaryProtocolFactoryDefault(),
-	)
-}
+// NewConcurrentServerFactory create a new server factory
+func NewConcurrentServerFactory(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+	serverOptions := defaultServerOptions(serverTransport)
 
-// NewConcurrentServerFactory4 creates a new ConcurrentServer
-func NewConcurrentServerFactory4(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport, transportFactory TransportFactory, protocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory6(processorFactory,
-		serverTransport,
-		transportFactory,
-		transportFactory,
-		protocolFactory,
-		protocolFactory,
-	)
-}
-
-// NewConcurrentServerFactory6 creates a new ConcurrentServer
-func NewConcurrentServerFactory6(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport, inputTransportFactory TransportFactory, outputTransportFactory TransportFactory, inpuprotocolFactory ProtocolFactory, outpuprotocolFactory ProtocolFactory) *ConcurrentServer {
-	return &ConcurrentServer{
-		processorFactory:       processorFactory,
-		serverTransport:        serverTransport,
-		inputTransportFactory:  inputTransportFactory,
-		outputTransportFactory: outputTransportFactory,
-		inpuprotocolFactory:    inpuprotocolFactory,
-		outpuprotocolFactory:   outpuprotocolFactory,
-		quit:                   make(chan struct{}, 1),
+	for _, option := range options {
+		option(serverOptions)
 	}
+
+	return &ConcurrentServer{processorFactory, serverOptions}
+}
+
+// NewConcurrentServerFactory2 is deprecated, use NewConcurrentServerFactory
+func NewConcurrentServerFactory2(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport) *ConcurrentServer {
+	return NewConcurrentServerFactory(processorFactory, serverTransport)
+}
+
+// NewConcurrentServerFactory4 is deprecated, use NewConcurrentServerFactory
+func NewConcurrentServerFactory4(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport,
+	transportFactory TransportFactory, protocolFactory ProtocolFactory) *ConcurrentServer {
+	return NewConcurrentServerFactory(processorFactory, serverTransport, TransportFactories(transportFactory), ProtocolFactories(protocolFactory))
+}
+
+// NewConcurrentServerFactory6 is deprecated, use NewConcurrentServerFactory
+func NewConcurrentServerFactory6(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport,
+	inputTransportFactory TransportFactory, outputTransportFactory TransportFactory,
+	inputProtocolFactory ProtocolFactory, outputProtocolFactory ProtocolFactory) *ConcurrentServer {
+	return NewConcurrentServerFactory(
+		processorFactory,
+		serverTransport,
+		InputTransportFactory(inputTransportFactory),
+		OutputTransportFactory(outputTransportFactory),
+		InputProtocolFactory(inputProtocolFactory),
+		OutputProtocolFactory(outputProtocolFactory),
+	)
 }
 
 // ConcurrentProcessorFactory returns the processor factory of the server
@@ -119,14 +121,14 @@ func (p *ConcurrentServer) OutputTransportFactory() TransportFactory {
 	return p.outputTransportFactory
 }
 
-// InpuprotocolFactory returns the input protocol factory of the server
-func (p *ConcurrentServer) InpuprotocolFactory() ProtocolFactory {
-	return p.inpuprotocolFactory
+// InputProtocolFactory returns the input protocol factory of the server
+func (p *ConcurrentServer) InputProtocolFactory() ProtocolFactory {
+	return p.inputProtocolFactory
 }
 
-// OutpuprotocolFactory returns the output protocol factory of the server
-func (p *ConcurrentServer) OutpuprotocolFactory() ProtocolFactory {
-	return p.outpuprotocolFactory
+// OutputProtocolFactory returns the output protocol factory of the server
+func (p *ConcurrentServer) OutputProtocolFactory() ProtocolFactory {
+	return p.outputProtocolFactory
 }
 
 // Listen starts listening on the transport
@@ -192,7 +194,7 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 	processor := p.processorFactory.Geprocessor(client)
 	var (
 		inputTransport, outputTransport Transport
-		inpuprotocol, outpuprotocol     Protocol
+		inputProtocol, outputProtocol   Protocol
 	)
 
 	inputTransport = p.inputTransportFactory.GetTransport(client)
@@ -201,14 +203,16 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 	// input/output is the same object (to track session state).
 	if _, ok := inputTransport.(*HeaderTransport); ok {
 		outputTransport = nil
-		inpuprotocol = p.inpuprotocolFactory.GetProtocol(inputTransport)
-		outpuprotocol = inpuprotocol
+		inputProtocol = p.inputProtocolFactory.GetProtocol(inputTransport)
+		outputProtocol = inputProtocol
 	} else {
 		outputTransport = p.outputTransportFactory.GetTransport(client)
-		inpuprotocol = p.inpuprotocolFactory.GetProtocol(inputTransport)
-		outpuprotocol = p.outpuprotocolFactory.GetProtocol(outputTransport)
+		inputProtocol = p.inputProtocolFactory.GetProtocol(inputTransport)
+		outputProtocol = p.outputProtocolFactory.GetProtocol(outputTransport)
 	}
 
+	// recover from any panic in the processor, so it doesn't crash the
+	// thrift server
 	defer func() {
 		if e := recover(); e != nil {
 			log.Printf("panic in processor: %s: %s", e, debug.Stack())
@@ -220,9 +224,10 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 	if outputTransport != nil {
 		defer outputTransport.Close()
 	}
+
 	mut := sync.Mutex{}
 	for {
-		ok, err := processor.ProcessConcurrent(inpuprotocol, outpuprotocol, &mut)
+		ok, err := processor.ProcessConcurrent(inputProtocol, outputProtocol, &mut)
 		if err, ok := err.(TransportException); ok && err.TypeId() == END_OF_FILE {
 			return nil
 		} else if err != nil {

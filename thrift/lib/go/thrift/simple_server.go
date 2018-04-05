@@ -22,8 +22,6 @@ package thrift
 import (
 	"context"
 	"errors"
-	"log"
-	"os"
 	"runtime/debug"
 )
 
@@ -32,70 +30,12 @@ var ErrServerClosed = errors.New("thrift: Server closed")
 
 // SimpleServer is a simple, non-concurrent server for testing.
 type SimpleServer struct {
-	quit chan struct{}
-	log  *log.Logger
-
-	processorFactory       ProcessorFactory
-	serverTransport        ServerTransport
-	inputTransportFactory  TransportFactory
-	outputTransportFactory TransportFactory
-	inputProtocolFactory   ProtocolFactory
-	outputProtocolFactory  ProtocolFactory
-}
-
-// TransportFactories sets both input and output transport factories
-func TransportFactories(factory TransportFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.inputTransportFactory = factory
-		server.outputTransportFactory = factory
-	}
-}
-
-// InputTransportFactory sets the input transport factory
-func InputTransportFactory(factory TransportFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.inputTransportFactory = factory
-	}
-}
-
-// OutputTransportFactory sets the output transport factory
-func OutputTransportFactory(factory TransportFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.outputTransportFactory = factory
-	}
-}
-
-// ProtocolFactories sets both input and output protocol factories
-func ProtocolFactories(factory ProtocolFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.inputProtocolFactory = factory
-		server.outputProtocolFactory = factory
-	}
-}
-
-// InputProtocolFactory sets the input protocol factory
-func InputProtocolFactory(factory ProtocolFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.inputProtocolFactory = factory
-	}
-}
-
-// OutputProtocolFactory sets the output protocol factory
-func OutputProtocolFactory(factory ProtocolFactory) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.outputProtocolFactory = factory
-	}
-}
-
-// Logger sets the logger used for the server
-func Logger(log *log.Logger) func(*SimpleServer) {
-	return func(server *SimpleServer) {
-		server.log = log
-	}
+	processorFactory ProcessorFactory
+	*ServerOptions
 }
 
 // NewSimpleServer create a new server
-func NewSimpleServer(processor Processor, serverTransport ServerTransport, options ...func(*SimpleServer)) *SimpleServer {
+func NewSimpleServer(processor Processor, serverTransport ServerTransport, options ...func(*ServerOptions)) *SimpleServer {
 	return NewSimpleServerFactory(NewProcessorFactory(processor), serverTransport, options...)
 }
 
@@ -127,23 +67,14 @@ func NewSimpleServer6(processor Processor, serverTransport ServerTransport, inpu
 }
 
 // NewSimpleServerFactory create a new server factory
-func NewSimpleServerFactory(processorFactory ProcessorFactory, serverTransport ServerTransport, options ...func(*SimpleServer)) *SimpleServer {
-	server := &SimpleServer{
-		processorFactory:       processorFactory,
-		serverTransport:        serverTransport,
-		inputTransportFactory:  NewTransportFactory(),
-		outputTransportFactory: NewTransportFactory(),
-		inputProtocolFactory:   NewBinaryProtocolFactoryDefault(),
-		outputProtocolFactory:  NewBinaryProtocolFactoryDefault(),
-		quit: make(chan struct{}, 1),
-		log:  log.New(os.Stderr, "", log.LstdFlags),
-	}
+func NewSimpleServerFactory(processorFactory ProcessorFactory, serverTransport ServerTransport, options ...func(*ServerOptions)) *SimpleServer {
+	serverOptions := defaultServerOptions(serverTransport)
 
 	for _, option := range options {
-		option(server)
+		option(serverOptions)
 	}
 
-	return server
+	return &SimpleServer{processorFactory, serverOptions}
 }
 
 // NewSimpleServerFactory2 is deprecated, used NewSimpleServerFactory instead
@@ -188,12 +119,12 @@ func (p *SimpleServer) InputTransportFactory() TransportFactory {
 	return p.inputTransportFactory
 }
 
-// OutputTransportFactory retunrs the output transport factory
+// OutputTransportFactory returns the output transport factory
 func (p *SimpleServer) OutputTransportFactory() TransportFactory {
 	return p.outputTransportFactory
 }
 
-// InputProtocolFactory retuns the input protocolfactory
+// InputProtocolFactory returns the input protocolfactory
 func (p *SimpleServer) InputProtocolFactory() ProtocolFactory {
 	return p.inputProtocolFactory
 }
