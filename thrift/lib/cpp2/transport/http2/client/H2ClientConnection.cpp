@@ -266,8 +266,8 @@ void H2ClientConnection::onSettings(
       negotiatedChannelVersion_ = std::min(
           setting.value,
           std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version));
-      VLOG(2) << "Peer channel version is " << setting.value;
-      VLOG(2) << "Negotiated channel version is " << negotiatedChannelVersion_;
+      VLOG(3) << "Peer channel version is " << setting.value << "; "
+              << "Negotiated channel version is " << negotiatedChannelVersion_;
     }
   }
   if (negotiatedChannelVersion_ == 0) {

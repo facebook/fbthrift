@@ -114,8 +114,8 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
       if (setting.id == kChannelSettingId) {
         negotiatedChannelVersion_ =
             std::min(setting.value, kMaxSupportedChannelVersion);
-        VLOG(2) << "Peer channel version is " << setting.value;
-        VLOG(2) << "Negotiated channel version is "
+        VLOG(3) << "Peer channel version is " << setting.value << "; "
+                << "Negotiated channel version is "
                 << negotiatedChannelVersion_;
       }
     }

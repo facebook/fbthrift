@@ -90,7 +90,7 @@ void SingleRpcChannel::sendThriftResponse(
     std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
-  VLOG(2) << "sendThriftResponse:" << std::endl
+  VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (responseHandler_) {
     HTTPMessage msg;
@@ -126,7 +126,7 @@ void SingleRpcChannel::sendThriftRequest(
       metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   DCHECK(payload);
   DCHECK(callback);
-  VLOG(2) << "sendThriftRequest:" << std::endl
+  VLOG(4) << "sendThriftRequest:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   auto callbackEvb = callback->getEventBase();
   try {
@@ -220,15 +220,15 @@ EventBase* SingleRpcChannel::getEventBase() noexcept {
 
 void SingleRpcChannel::onH2StreamBegin(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  VLOG(2) << "onH2StreamBegin";
-  VLOG_IF(2, headers->isResponse())
+  VLOG(4) << "onH2StreamBegin";
+  VLOG_IF(4, headers->isResponse())
       << "onH2StreamBegin: " << headers->getStatusCode() << " "
       << headers->getStatusMessage();
   headers_ = std::move(headers);
 }
 
 void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
-  VLOG(2) << "onH2BodyFrame: " << std::endl
+  VLOG(4) << "onH2BodyFrame: " << std::endl
           << IOBufPrinter::printHexFolly(contents.get(), true);
   if (contents_) {
     contents_->prependChain(std::move(contents));
@@ -238,7 +238,7 @@ void SingleRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
 }
 
 void SingleRpcChannel::onH2StreamEnd() noexcept {
-  VLOG(2) << "onH2StreamEnd";
+  VLOG(4) << "onH2StreamEnd";
   receivedH2Stream_ = true;
   if (processor_) {
     // Server side
@@ -250,7 +250,7 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
 }
 
 void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
-  VLOG(2) << "onH2StreamClosed";
+  VLOG(4) << "onH2StreamClosed";
   if (callback_) {
     std::unique_ptr<TTransportException> ex;
     if (error == ProxygenError::kErrorTimeout) {
@@ -258,7 +258,7 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
           std::make_unique<TTransportException>(TTransportException::TIMED_OUT);
     } else {
       // Some unknown error.
-      VLOG(2) << "Network error before call completion";
+      LOG(ERROR) << "Network error before call completion";
       ex = std::make_unique<TTransportException>(
           TTransportException::NETWORK_ERROR);
     }

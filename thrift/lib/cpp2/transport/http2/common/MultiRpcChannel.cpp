@@ -78,7 +78,7 @@ MultiRpcChannel::~MultiRpcChannel() {
   if (rpcsCompleted_ != rpcsInitiated_) {
     LOG(ERROR) << "Some RPCs have not completed";
   } else if (!isClosed_) {
-    VLOG(2) << "Channel is not closed";
+    VLOG(4) << "Channel is not closed";
   }
 }
 
@@ -100,7 +100,7 @@ void MultiRpcChannel::sendThriftResponse(
   DCHECK(metadata);
   DCHECK(metadata->__isset.seqId);
   DCHECK(evb_->isInEventBaseThread());
-  VLOG(2) << "sendThriftResponse:" << std::endl
+  VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (responseHandler_) {
     auto metadataBuf = std::make_unique<IOBufQueue>();
@@ -113,7 +113,7 @@ void MultiRpcChannel::sendThriftResponse(
   }
   ++rpcsCompleted_;
   if (isClosed_ && rpcsCompleted_ == rpcsInitiated_ && responseHandler_) {
-    VLOG(2) << "closing outgoing stream";
+    VLOG(4) << "closing outgoing stream";
     responseHandler_->sendEOM();
   }
 }
@@ -130,7 +130,7 @@ void MultiRpcChannel::sendThriftRequest(
       metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   DCHECK(payload);
   DCHECK(callback);
-  VLOG(2) << "sendThriftRequest:" << std::endl
+  VLOG(4) << "sendThriftRequest:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
     LOG(ERROR) << "Unexpected problem stripping envelope";
@@ -197,7 +197,7 @@ bool MultiRpcChannel::canDoRpcs() noexcept {
 }
 
 void MultiRpcChannel::closeClientSide(bool forceClose) noexcept {
-  VLOG(2) << "closing outgoing stream on client";
+  VLOG(4) << "closing outgoing stream on client";
   if (forceClose) {
     httpTransaction_ = nullptr;
   }
@@ -208,7 +208,7 @@ void MultiRpcChannel::closeClientSide(bool forceClose) noexcept {
 }
 
 void MultiRpcChannel::onH2StreamBegin(std::unique_ptr<HTTPMessage>) noexcept {
-  VLOG(2) << "onH2StreamBegin";
+  VLOG(4) << "onH2StreamBegin";
 }
 
 bool MultiRpcChannel::hasOutstandingRPCs() {
@@ -216,7 +216,7 @@ bool MultiRpcChannel::hasOutstandingRPCs() {
 }
 
 void MultiRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
-  VLOG(2) << "onH2BodyFrame: " << std::endl
+  VLOG(4) << "onH2BodyFrame: " << std::endl
           << IOBufPrinter::printHexFolly(contents.get(), true);
   std::unique_ptr<IOBuf> clone;
   IOBuf* bufptr = contents.get();
@@ -247,7 +247,7 @@ void MultiRpcChannel::onH2BodyFrame(std::unique_ptr<IOBuf> contents) noexcept {
         length -= payloadBytesRemaining_;
         clone->trimEnd(length);
         addToPayload(std::move(clone));
-        VLOG(2) << "Received complete RPC payload: " << std::endl
+        VLOG(4) << "Received complete RPC payload: " << std::endl
                 << IOBufPrinter::printHexFolly(payload_.get(), true);
         if (processor_) {
           // Server side
@@ -280,7 +280,7 @@ void MultiRpcChannel::addToPayload(std::unique_ptr<IOBuf> buf) noexcept {
 }
 
 void MultiRpcChannel::onH2StreamEnd() noexcept {
-  VLOG(2) << "onH2StreamEnd";
+  VLOG(4) << "onH2StreamEnd";
   if (sizeBytesRemaining_ != 4) {
     LOG(ERROR) << "Received incomplete stream from peer";
   }
@@ -306,11 +306,11 @@ void MultiRpcChannel::onH2StreamEnd() noexcept {
 }
 
 void MultiRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
-  VLOG(2) << "onH2StreamClosed: " << error;
+  VLOG(4) << "onH2StreamClosed: " << error;
   if (httpTransaction_) {
     // Client side.  Terminate all RPCs.
     if (rpcsCompleted_ != rpcsInitiated_) {
-      VLOG(2) << "Did not receive responses for all RPCs";
+      VLOG(4) << "Did not receive responses for all RPCs";
       performErrorCallbacks(error);
     }
   }
@@ -327,7 +327,7 @@ void MultiRpcChannel::performErrorCallbacks(ProxygenError error) noexcept {
             TTransportException::TIMED_OUT);
       } else {
         // Some unknown error.
-        VLOG(2) << "Network error before call completion";
+        LOG(ERROR) << "Network error before call completion";
         ex = std::make_unique<TTransportException>(
             TTransportException::NETWORK_ERROR);
       }
