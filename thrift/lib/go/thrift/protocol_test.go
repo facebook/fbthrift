@@ -33,30 +33,25 @@ const PROTOCOL_BINARY_DATA_SIZE = 155
 var (
 	data           string // test data for writing
 	protocol_bdata []byte // test data for writing; same as data
-	BOOL_VALUES    []bool
-	BYTE_VALUES    []byte
-	INT16_VALUES   []int16
-	INT32_VALUES   []int32
-	INT64_VALUES   []int64
-	DOUBLE_VALUES  []float64
-	FLOAT_VALUES   []float32
-	STRING_VALUES  []string
+	boolValues     = []bool{false, true, false, false, true}
+	byteValues     = []byte{117, 0, 1, 32, 127, 128, 255}
+	int16Values    = []int16{459, 0, 1, -1, -128, 127, 32767, -32768}
+	int32Values    = []int32{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535}
+	int64Values    = []int64{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535, 34359738481, -35184372088719, -9223372036854775808, 9223372036854775807}
+	doubleValues   = []float64{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float64(), NEGATIVE_INFINITY.Float64(), NAN.Float64()}
+	floatValues    = []float32{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float32(), NEGATIVE_INFINITY.Float32(), NAN.Float32()}
+	stringValues   = []string{"", "a", "st[uf]f", "st,u:ff with spaces", "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>"}
 )
 
+// var floatValues   []float32 = []float32{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float32(), NEGATIVE_INFINITY.Float32(), NAN.Float32()}
+
+// func floatValues() []
 func init() {
 	protocol_bdata = make([]byte, PROTOCOL_BINARY_DATA_SIZE)
 	for i := 0; i < PROTOCOL_BINARY_DATA_SIZE; i++ {
 		protocol_bdata[i] = byte((i + 'a') % 255)
 	}
 	data = string(protocol_bdata)
-	BOOL_VALUES = []bool{false, true, false, false, true}
-	BYTE_VALUES = []byte{117, 0, 1, 32, 127, 128, 255}
-	INT16_VALUES = []int16{459, 0, 1, -1, -128, 127, 32767, -32768}
-	INT32_VALUES = []int32{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535}
-	INT64_VALUES = []int64{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535, 34359738481, -35184372088719, -9223372036854775808, 9223372036854775807}
-	DOUBLE_VALUES = []float64{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float64(), NEGATIVE_INFINITY.Float64(), NAN.Float64()}
-	FLOAT_VALUES = []float32{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float32(), NEGATIVE_INFINITY.Float32(), NAN.Float32()}
-	STRING_VALUES = []string{"", "a", "st[uf]f", "st,u:ff with spaces", "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>"}
 }
 
 type HTTPEchoServer struct{}
@@ -182,12 +177,12 @@ func ReadWriteProtocolTest(t *testing.T, protocolFactory ProtocolFactory) {
 
 func ReadWriteBool(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(BOOL)
-	thelen := len(BOOL_VALUES)
+	thelen := len(boolValues)
 	err := p.WriteListBegin(thetype, thelen)
 	if err != nil {
 		t.Errorf("%s: %T %T %q Error writing list begin: %q", "ReadWriteBool", p, trans, err, thetype)
 	}
-	for k, v := range BOOL_VALUES {
+	for k, v := range boolValues {
 		err = p.WriteBool(v)
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error writing bool in list at index %d: %t", "ReadWriteBool", p, trans, err, k, v)
@@ -195,12 +190,12 @@ func ReadWriteBool(t testing.TB, p Protocol, trans Transport) {
 	}
 	p.WriteListEnd()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error writing list end: %v", "ReadWriteBool", p, trans, err, BOOL_VALUES)
+		t.Errorf("%s: %T %T %q Error writing list end: %v", "ReadWriteBool", p, trans, err, boolValues)
 	}
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteBool", p, trans, err, BOOL_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteBool", p, trans, err, boolValues)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -211,7 +206,7 @@ func ReadWriteBool(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteBool", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range BOOL_VALUES {
+	for k, v := range boolValues {
 		value, err := p.ReadBool()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading bool at index %d: %t", "ReadWriteBool", p, trans, err, k, v)
@@ -228,12 +223,12 @@ func ReadWriteBool(t testing.TB, p Protocol, trans Transport) {
 
 func ReadWriteByte(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(BYTE)
-	thelen := len(BYTE_VALUES)
+	thelen := len(byteValues)
 	err := p.WriteListBegin(thetype, thelen)
 	if err != nil {
 		t.Errorf("%s: %T %T %q Error writing list begin: %q", "ReadWriteByte", p, trans, err, thetype)
 	}
-	for k, v := range BYTE_VALUES {
+	for k, v := range byteValues {
 		err = p.WriteByte(v)
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error writing byte in list at index %d: %q", "ReadWriteByte", p, trans, err, k, v)
@@ -241,15 +236,15 @@ func ReadWriteByte(t testing.TB, p Protocol, trans Transport) {
 	}
 	err = p.WriteListEnd()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error writing list end: %q", "ReadWriteByte", p, trans, err, BYTE_VALUES)
+		t.Errorf("%s: %T %T %q Error writing list end: %q", "ReadWriteByte", p, trans, err, byteValues)
 	}
 	err = p.Flush()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error flushing list of bytes: %q", "ReadWriteByte", p, trans, err, BYTE_VALUES)
+		t.Errorf("%s: %T %T %q Error flushing list of bytes: %q", "ReadWriteByte", p, trans, err, byteValues)
 	}
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteByte", p, trans, err, BYTE_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteByte", p, trans, err, byteValues)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -260,7 +255,7 @@ func ReadWriteByte(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteByte", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range BYTE_VALUES {
+	for k, v := range byteValues {
 		value, err := p.ReadByte()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading byte at index %d: %q", "ReadWriteByte", p, trans, err, k, v)
@@ -277,16 +272,16 @@ func ReadWriteByte(t testing.TB, p Protocol, trans Transport) {
 
 func ReadWriteI16(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(I16)
-	thelen := len(INT16_VALUES)
+	thelen := len(int16Values)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range INT16_VALUES {
+	for _, v := range int16Values {
 		p.WriteI16(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI16", p, trans, err, INT16_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI16", p, trans, err, int16Values)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -297,7 +292,7 @@ func ReadWriteI16(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteI16", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range INT16_VALUES {
+	for k, v := range int16Values {
 		value, err := p.ReadI16()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading int16 at index %d: %q", "ReadWriteI16", p, trans, err, k, v)
@@ -314,16 +309,16 @@ func ReadWriteI16(t testing.TB, p Protocol, trans Transport) {
 
 func ReadWriteI32(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(I32)
-	thelen := len(INT32_VALUES)
+	thelen := len(int32Values)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range INT32_VALUES {
+	for _, v := range int32Values {
 		p.WriteI32(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI32", p, trans, err, INT32_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI32", p, trans, err, int32Values)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -334,7 +329,7 @@ func ReadWriteI32(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteI32", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range INT32_VALUES {
+	for k, v := range int32Values {
 		value, err := p.ReadI32()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading int32 at index %d: %q", "ReadWriteI32", p, trans, err, k, v)
@@ -350,16 +345,16 @@ func ReadWriteI32(t testing.TB, p Protocol, trans Transport) {
 
 func ReadWriteI64(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(I64)
-	thelen := len(INT64_VALUES)
+	thelen := len(int64Values)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range INT64_VALUES {
+	for _, v := range int64Values {
 		p.WriteI64(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI64", p, trans, err, INT64_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteI64", p, trans, err, int64Values)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -370,7 +365,7 @@ func ReadWriteI64(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteI64", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range INT64_VALUES {
+	for k, v := range int64Values {
 		value, err := p.ReadI64()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading int64 at index %d: %q", "ReadWriteI64", p, trans, err, k, v)
@@ -385,17 +380,19 @@ func ReadWriteI64(t testing.TB, p Protocol, trans Transport) {
 }
 
 func ReadWriteDouble(t testing.TB, p Protocol, trans Transport) {
+	doubleValues = []float64{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float64(), NEGATIVE_INFINITY.Float64(), NAN.Float64()}
+
 	thetype := Type(DOUBLE)
-	thelen := len(DOUBLE_VALUES)
+	thelen := len(doubleValues)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range DOUBLE_VALUES {
+	for _, v := range doubleValues {
 		p.WriteDouble(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteDouble", p, trans, err, DOUBLE_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteDouble", p, trans, err, doubleValues)
 	}
 	if thetype != thetype2 {
 		t.Errorf("%s: %T %T type %s != type %s", "ReadWriteDouble", p, trans, thetype, thetype2)
@@ -403,7 +400,7 @@ func ReadWriteDouble(t testing.TB, p Protocol, trans Transport) {
 	if thelen != thelen2 {
 		t.Errorf("%s: %T %T len %d != len %d", "ReadWriteDouble", p, trans, thelen, thelen2)
 	}
-	for k, v := range DOUBLE_VALUES {
+	for k, v := range doubleValues {
 		value, err := p.ReadDouble()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading double at index %d: %f", "ReadWriteDouble", p, trans, err, k, v)
@@ -423,17 +420,19 @@ func ReadWriteDouble(t testing.TB, p Protocol, trans Transport) {
 }
 
 func ReadWriteFloat(t testing.TB, p Protocol, trans Transport) {
+	floatValues = []float32{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float32(), NEGATIVE_INFINITY.Float32(), NAN.Float32()}
+
 	thetype := Type(FLOAT)
-	thelen := len(FLOAT_VALUES)
+	thelen := len(floatValues)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range FLOAT_VALUES {
+	for _, v := range floatValues {
 		p.WriteFloat(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteFloat", p, trans, err, FLOAT_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %v", "ReadWriteFloat", p, trans, err, floatValues)
 	}
 	if thetype != thetype2 {
 		t.Errorf("%s: %T %T type %s != type %s", "ReadWriteFloat", p, trans, thetype, thetype2)
@@ -441,7 +440,7 @@ func ReadWriteFloat(t testing.TB, p Protocol, trans Transport) {
 	if thelen != thelen2 {
 		t.Errorf("%s: %T %T len %d != len %d", "ReadWriteFloat", p, trans, thelen, thelen2)
 	}
-	for k, v := range FLOAT_VALUES {
+	for k, v := range floatValues {
 		value, err := p.ReadFloat()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading double at index %d: %f", "ReadWriteFloat", p, trans, err, k, v)
@@ -462,16 +461,16 @@ func ReadWriteFloat(t testing.TB, p Protocol, trans Transport) {
 
 func ReadWriteString(t testing.TB, p Protocol, trans Transport) {
 	thetype := Type(STRING)
-	thelen := len(STRING_VALUES)
+	thelen := len(stringValues)
 	p.WriteListBegin(thetype, thelen)
-	for _, v := range STRING_VALUES {
+	for _, v := range stringValues {
 		p.WriteString(v)
 	}
 	p.WriteListEnd()
 	p.Flush()
 	thetype2, thelen2, err := p.ReadListBegin()
 	if err != nil {
-		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteString", p, trans, err, STRING_VALUES)
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteString", p, trans, err, stringValues)
 	}
 	_, ok := p.(*SimpleJSONProtocol)
 	if !ok {
@@ -482,7 +481,7 @@ func ReadWriteString(t testing.TB, p Protocol, trans Transport) {
 			t.Errorf("%s: %T %T len %d != len %d", "ReadWriteString", p, trans, thelen, thelen2)
 		}
 	}
-	for k, v := range STRING_VALUES {
+	for k, v := range stringValues {
 		value, err := p.ReadString()
 		if err != nil {
 			t.Errorf("%s: %T %T %q Error reading string at index %d: %q", "ReadWriteString", p, trans, err, k, v)

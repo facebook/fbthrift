@@ -44,11 +44,11 @@ type numeric struct {
 }
 
 var (
-	INFINITY          Numeric
-	NEGATIVE_INFINITY Numeric
-	NAN               Numeric
-	ZERO              Numeric
-	NUMERIC_NULL      Numeric
+	INFINITY          Numeric = &numeric{iValue: 0, dValue: math.Inf(1), sValue: "Infinity", isNil: false}
+	NEGATIVE_INFINITY Numeric = &numeric{iValue: 0, dValue: math.Inf(-1), sValue: "-Infinity", isNil: false}
+	NAN               Numeric = &numeric{iValue: 0, dValue: math.NaN(), sValue: "NaN", isNil: false}
+	ZERO              Numeric = &numeric{iValue: 0, dValue: 0, sValue: "0", isNil: false}
+	NUMERIC_NULL      Numeric = &numeric{iValue: 0, dValue: 0, sValue: "0", isNil: true}
 )
 
 func NewNumericFromDouble(dValue float64) Numeric {
@@ -169,12 +169,4 @@ func (p *numeric) String() string {
 
 func (p *numeric) isNull() bool {
 	return p.isNil
-}
-
-func init() {
-	INFINITY = &numeric{iValue: 0, dValue: math.Inf(1), sValue: "Infinity", isNil: false}
-	NEGATIVE_INFINITY = &numeric{iValue: 0, dValue: math.Inf(-1), sValue: "-Infinity", isNil: false}
-	NAN = &numeric{iValue: 0, dValue: math.NaN(), sValue: "NaN", isNil: false}
-	ZERO = &numeric{iValue: 0, dValue: 0, sValue: "0", isNil: false}
-	NUMERIC_NULL = &numeric{iValue: 0, dValue: 0, sValue: "0", isNil: true}
 }
