@@ -26,16 +26,17 @@ import (
 
 var errTransportInterrupted = errors.New("Transport Interrupted")
 
+// Flusher is the interface that wraps the basic Flush method
 type Flusher interface {
 	Flush() (err error)
 }
 
+// ReadSizeProvider is the interface that wraps the basic RemainingBytes method
 type ReadSizeProvider interface {
-	RemainingBytes() (num_bytes uint64)
+	RemainingBytes() (numBytes uint64)
 }
 
-
-// Encapsulates the I/O layer
+// Transport is an encapsulation of the I/O layer
 type Transport interface {
 	io.ReadWriteCloser
 	Flusher
@@ -52,9 +53,8 @@ type stringWriter interface {
 	WriteString(s string) (n int, err error)
 }
 
-
-// This is "enchanced" transport with extra capabilities. You need to use one of these
-// to construct protocol.
+// RichTransport is an "enhanced" transport with extra capabilities.
+// You need to use one of these to construct protocol.
 // Notably, Socket does not implement this interface, and it is always a mistake to use
 // Socket directly in protocol.
 type RichTransport interface {
@@ -65,4 +65,3 @@ type RichTransport interface {
 	Flusher
 	ReadSizeProvider
 }
-
