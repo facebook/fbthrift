@@ -38,8 +38,9 @@ namespace thrift {
 //
 // Both the client and the server send the maximum version it can
 // handle in its SETTINGS frame to the other side
-// (kMaxSupportedChannelVersion).  kChannelSettingId is used as the
-// SETTINGS id to send this version number.
+// (kMaxSupportedChannelVersion).
+// proxygen::SettingsId::THRIFT_CHANNEL_ID is used as the SETTINGS id to
+// send this version number.
 //
 // When the SETTINGS frame is received, the lesser of the maximum
 // version values of the client and server is chosen as the negotiated
@@ -71,7 +72,6 @@ namespace thrift {
 // set/inspected.
 
 constexpr auto kChannelVersionKey = folly::makeFixedString("cv");
-constexpr auto kChannelSettingId = static_cast<proxygen::SettingsId>(100);
 
 // The maximum channel version supported.
 //

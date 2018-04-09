@@ -111,7 +111,8 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
       return;
     }
     for (auto& setting : settings) {
-      if (setting.id == kChannelSettingId) {
+      if (setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED ||
+          setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID) {
         negotiatedChannelVersion_ =
             std::min(setting.value, kMaxSupportedChannelVersion);
         VLOG(3) << "Peer channel version is " << setting.value << "; "
@@ -264,7 +265,9 @@ void HTTP2RoutingHandler::handleConnection(
     session->setWriteBufferLimit(acceptorConfig.writeBufferLimit);
   }
   session->setEgressSettings(
-      {{kChannelSettingId, kMaxSupportedChannelVersion}});
+      {{proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED,
+        kMaxSupportedChannelVersion},
+       {proxygen::SettingsId::THRIFT_CHANNEL_ID, kMaxSupportedChannelVersion}});
 
   // Route the connection.
   connectionManager->addConnection(session);

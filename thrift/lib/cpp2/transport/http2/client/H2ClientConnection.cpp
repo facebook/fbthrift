@@ -83,7 +83,9 @@ H2ClientConnection::H2ClientConnection(
   // TODO: Improve the way max outging streams is set
   setMaxPendingRequests(100000);
   httpSession_->setEgressSettings(
-      {{kChannelSettingId,
+      {{proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED,
+        std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)},
+       {proxygen::SettingsId::THRIFT_CHANNEL_ID,
         std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)}});
 }
 
@@ -262,7 +264,8 @@ void H2ClientConnection::onSettings(
     return;
   }
   for (auto& setting : settings) {
-    if (setting.id == kChannelSettingId) {
+    if (setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED ||
+        setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID) {
       negotiatedChannelVersion_ = std::min(
           setting.value,
           std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version));
