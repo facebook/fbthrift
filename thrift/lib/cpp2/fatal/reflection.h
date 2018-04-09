@@ -16,11 +16,9 @@
 #ifndef THRIFT_FATAL_REFLECTION_H_
 #define THRIFT_FATAL_REFLECTION_H_ 1
 
-#include <folly/Traits.h>
-
-#include <thrift/lib/cpp2/TypeClass.h>
-
-#include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
+#include <cstdint>
+#include <type_traits>
+#include <utility>
 
 #include <fatal/type/conditional.h>
 #include <fatal/type/convert.h>
@@ -36,11 +34,10 @@
 #include <fatal/type/traits.h>
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
+#include <folly/Traits.h>
+#include <thrift/lib/cpp2/TypeClass.h>
 
-#include <type_traits>
-#include <utility>
-
-#include <cstdint>
+#include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
 
 namespace apache {
 namespace thrift {

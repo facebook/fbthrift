@@ -16,14 +16,12 @@
 #ifndef THRIFT_FATAL_FOLLY_DYNAMIC_H_
 #define THRIFT_FATAL_FOLLY_DYNAMIC_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <folly/dynamic.h>
-
-#include <fatal/type/transform.h>
-
 #include <type_traits>
 #include <utility>
+
+#include <fatal/type/transform.h>
+#include <folly/dynamic.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl-pre.h>
 

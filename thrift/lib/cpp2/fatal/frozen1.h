@@ -16,8 +16,7 @@
 #ifndef THRIFT_FATAL_FROZEN1_H_
 #define THRIFT_FATAL_FROZEN1_H_ 1
 
-#include <thrift/lib/cpp/Frozen.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
+#include <cstdint>
 
 #include <fatal/type/accumulate.h>
 #include <fatal/type/conditional.h>
@@ -25,8 +24,8 @@
 #include <fatal/type/push.h>
 #include <fatal/type/sequence.h>
 #include <fatal/type/sort.h>
-
-#include <cstdint>
+#include <thrift/lib/cpp/Frozen.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
 namespace thrift {

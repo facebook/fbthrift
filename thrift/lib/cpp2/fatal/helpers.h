@@ -16,11 +16,10 @@
 #ifndef THRIFT_FATAL_HELPERS_H_
 #define THRIFT_FATAL_HELPERS_H_ 1
 
+#include <fatal/type/get_type.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <thrift/lib/cpp2/fatal/internal/helpers-inl-pre.h>
-
-#include <fatal/type/get_type.h>
 
 namespace apache {
 namespace thrift {

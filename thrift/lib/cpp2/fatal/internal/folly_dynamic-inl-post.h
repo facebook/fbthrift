@@ -16,13 +16,12 @@
 #ifndef THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_
 #define THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_ 1
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <stdexcept>
 
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
-
-#include <stdexcept>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
 
 namespace apache {
 namespace thrift {

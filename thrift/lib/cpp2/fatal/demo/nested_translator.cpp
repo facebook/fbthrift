@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/flatten_getters.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <thrift/lib/cpp2/fatal/demo/json_print.h>
+#include <iostream>
 
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_constants.h>
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_types.h>
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/nested_config_constants.h>
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/nested_config_fatal_types.h>
-
-#include <iostream>
+#include <thrift/lib/cpp2/fatal/demo/json_print.h>
+#include <thrift/lib/cpp2/fatal/flatten_getters.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 using namespace apache::thrift;
 using namespace static_reflection::demo;

@@ -22,7 +22,6 @@
 #include <fatal/type/call_traits.h>
 #include <fatal/type/conditional.h>
 #include <fatal/type/transform.h>
-
 #include <folly/Memory.h>
 #include <folly/Range.h>
 #include <thrift/lib/cpp/Thrift.h>

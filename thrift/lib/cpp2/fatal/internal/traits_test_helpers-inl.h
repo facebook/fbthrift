@@ -17,17 +17,16 @@
 #ifndef THRIFT_FATAL_TRAITS_TEST_HELPERS_INL_H
 #define THRIFT_FATAL_TRAITS_TEST_HELPERS_INL_H
 
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
-
-#include <folly/Range.h>
-
-#include <gtest/gtest.h>
-
 #include <algorithm>
 #include <array>
 #include <iterator>
 #include <unordered_set>
 #include <utility>
+
+#include <gtest/gtest.h>
+
+#include <folly/Range.h>
+#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
 namespace apache {
 namespace thrift {

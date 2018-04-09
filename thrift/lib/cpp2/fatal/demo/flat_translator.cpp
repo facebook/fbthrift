@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <thrift/lib/cpp2/fatal/demo/json_print.h>
-
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_constants.h>
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_types.h>
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/legacy_config_constants.h>
+#include <iostream>
+#include <string>
 
 #include <folly/Conv.h>
 #include <folly/init/Init.h>
-
-#include <iostream>
-#include <string>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_constants.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_types.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/legacy_config_constants.h>
+#include <thrift/lib/cpp2/fatal/demo/json_print.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 using namespace apache::thrift;
 using namespace static_reflection::demo;

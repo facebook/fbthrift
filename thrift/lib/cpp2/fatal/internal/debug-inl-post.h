@@ -16,23 +16,19 @@
 #ifndef THRIFT_FATAL_DEBUG_POST_INL_H_
 #define THRIFT_FATAL_DEBUG_POST_INL_H_ 1
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
-
-#include <thrift/lib/cpp/protocol/TBase64Utils.h>
-
-#include <folly/Conv.h>
+#include <cassert>
+#include <stdexcept>
+#include <type_traits>
+#include <utility>
 
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
 #include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
-
-#include <stdexcept>
-#include <type_traits>
-#include <utility>
-
-#include <cassert>
+#include <folly/Conv.h>
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
 
 namespace apache {
 namespace thrift {

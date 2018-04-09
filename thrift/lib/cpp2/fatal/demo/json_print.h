@@ -16,14 +16,13 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <fatal/type/search.h>
-
 #include <iostream>
 #include <string>
 #include <type_traits>
 #include <utility>
+
+#include <fatal/type/search.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 template <typename TypeClass>
 struct printer {

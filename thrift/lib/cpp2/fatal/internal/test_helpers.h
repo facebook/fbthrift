@@ -17,13 +17,13 @@
 #ifndef THRIFT_FATAL_INTERNAL_TEST_HELPERS_H
 #define THRIFT_FATAL_INTERNAL_TEST_HELPERS_H
 
-#include <folly/Demangle.h>
-
-#include <gtest/gtest.h>
-
 #include <string>
 #include <tuple>
 #include <typeinfo>
+
+#include <gtest/gtest.h>
+
+#include <folly/Demangle.h>
 
 namespace apache {
 namespace thrift {

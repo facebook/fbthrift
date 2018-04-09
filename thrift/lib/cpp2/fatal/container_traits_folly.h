@@ -16,13 +16,12 @@
 #ifndef THRIFT_FATAL_CONTAINER_TRAITS_FOLLY_H_
 #define THRIFT_FATAL_CONTAINER_TRAITS_FOLLY_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
 #include <folly/FBString.h>
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/small_vector.h>
 #include <folly/sorted_vector_types.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
 namespace thrift {

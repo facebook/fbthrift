@@ -16,12 +16,11 @@
 #ifndef THRIFT_FATAL_INDENTER_H_
 #define THRIFT_FATAL_INDENTER_H_ 1
 
+#include <cassert>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include <cassert>
 
 namespace apache {
 namespace thrift {

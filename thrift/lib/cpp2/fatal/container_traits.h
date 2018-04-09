@@ -16,8 +16,6 @@
 #ifndef THRIFT_FATAL_CONTAINER_TRAITS_H_
 #define THRIFT_FATAL_CONTAINER_TRAITS_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
 #include <deque>
 #include <map>
 #include <set>
@@ -25,6 +23,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
 namespace thrift {

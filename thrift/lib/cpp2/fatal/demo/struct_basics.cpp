@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
+#include <iostream>
 
 #include <folly/init/Init.h>
-
-#include <iostream>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 using namespace apache::thrift;
 using namespace static_reflection::demo;

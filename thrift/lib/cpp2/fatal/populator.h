@@ -16,10 +16,6 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
-#include <thrift/lib/cpp2/fatal/serializer.h>
-
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -28,11 +24,13 @@
 #include <type_traits>
 #include <vector>
 
-#include <folly/io/Cursor.h>
-
 #include <fatal/type/array.h>
 #include <fatal/type/conditional.h>
 #include <fatal/type/convert.h>
+#include <folly/io/Cursor.h>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
+#include <thrift/lib/cpp2/fatal/serializer.h>
 
 namespace apache {
 namespace thrift {

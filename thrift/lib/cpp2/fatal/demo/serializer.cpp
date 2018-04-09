@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_constants.h>
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
-
-#include <fatal/type/search.h>
-
 #include <algorithm>
+#include <cassert>
+#include <cstring>
 #include <iostream>
 #include <iterator>
 #include <memory>
@@ -30,8 +25,10 @@
 #include <type_traits>
 #include <vector>
 
-#include <cassert>
-#include <cstring>
+#include <fatal/type/search.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_constants.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 struct memory_buffer {
   void write(char const* begin, char const* end) {

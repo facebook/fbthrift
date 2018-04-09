@@ -16,9 +16,9 @@
 #ifndef THRIFT_FATAL_DEBUG_H_
 #define THRIFT_FATAL_DEBUG_H_ 1
 
-#include <folly/Range.h>
-
 #include <string>
+
+#include <folly/Range.h>
 
 /**
  * READ ME FIRST: this header enhances Thrift with debugging utilities.

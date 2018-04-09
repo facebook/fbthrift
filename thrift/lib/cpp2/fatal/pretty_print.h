@@ -16,13 +16,13 @@
 #ifndef THRIFT_FATAL_PRETTY_PRINT_H_
 #define THRIFT_FATAL_PRETTY_PRINT_H_ 1
 
-#include <thrift/lib/cpp2/fatal/indenter.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
 #include <sstream>
 #include <string>
 #include <type_traits>
 #include <utility>
+
+#include <thrift/lib/cpp2/fatal/indenter.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 /**
  * READ ME FIRST: this header provides pretty printers for Thrift types.

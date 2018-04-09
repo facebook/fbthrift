@@ -16,17 +16,15 @@
 #ifndef THRIFT_FATAL_VARIANT_H_
 #define THRIFT_FATAL_VARIANT_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <fatal/type/search.h>
-#include <fatal/type/transform.h>
-
+#include <cassert>
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
 
-#include <cassert>
+#include <fatal/type/search.h>
+#include <fatal/type/transform.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
 namespace thrift {

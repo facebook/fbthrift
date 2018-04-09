@@ -15,19 +15,18 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
-#include <thrift/lib/cpp2/fatal/container_traits.h>
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
-#include <fatal/type/call_traits.h>
-#include <fatal/type/trie.h>
-
 #include <bitset>
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <type_traits>
 #include <vector>
+
+#include <fatal/type/call_traits.h>
+#include <fatal/type/trie.h>
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
 namespace thrift {

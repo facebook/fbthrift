@@ -16,12 +16,11 @@
 #ifndef THRIFT_FATAL_FLATTEN_GETTERS_H_
 #define THRIFT_FATAL_FLATTEN_GETTERS_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
-
 #include <fatal/type/data_member_getter.h>
 #include <fatal/type/get_type.h>
 #include <fatal/type/push.h>
 #include <fatal/type/transform.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <thrift/lib/cpp2/fatal/internal/flatten_getters-inl-pre.h>
 
