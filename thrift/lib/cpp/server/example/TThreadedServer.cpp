@@ -247,7 +247,7 @@ TConnectionContext* TThreadedServer::getConnectionContext() const {
 
 void TThreadedServer::setCurrentTask(Task* task) {
   assert(currentTask_.get() == nullptr);
-  currentTask_.set(task);
+  currentTask_.reset(task);
 }
 
 }}} // apache::thrift::server

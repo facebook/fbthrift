@@ -21,11 +21,11 @@
 #ifndef THRIFT_SERVER_TTHREADEDSERVER_H
 #define THRIFT_SERVER_TTHREADEDSERVER_H 1
 
-#include <thrift/lib/cpp/server/TServer.h>
-#include <thrift/lib/cpp/transport/TServerTransport.h>
+#include <folly/ThreadLocal.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/concurrency/ThreadLocal.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
 
 #include <memory>
 
@@ -109,10 +109,6 @@ class TThreadedServer : public TServer {
   TConnectionContext* getConnectionContext() const override;
 
  protected:
-  typedef concurrency::ThreadLocal<Task,
-                                   concurrency::NoopThreadLocalManager<Task> >
-    ThreadLocalTask;
-
   void init();
   void setCurrentTask(Task* task);
 
@@ -125,7 +121,7 @@ class TThreadedServer : public TServer {
   /**
    * Thread-local data storage to track the current connection being processed.
    */
-  ThreadLocalTask currentTask_;
+  folly::ThreadLocal<Task> currentTask_{[] { return nullptr; }};
 };
 
 template<typename ProcessorFactory>
