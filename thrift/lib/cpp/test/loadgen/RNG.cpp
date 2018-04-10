@@ -18,14 +18,12 @@
  */
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 
-#include "common/concurrency/ThreadLocal.h"
-
 #include <boost/random/lognormal_distribution.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
 
-using facebook::concurrency::ThreadLocal;
+#include <folly/ThreadLocal.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 
@@ -59,7 +57,7 @@ struct RNGImpl {
   RNG rngWrapper;
 };
 
-ThreadLocal<RNGImpl> threadLocalRNG;
+folly::ThreadLocal<RNGImpl> threadLocalRNG;
 
 } // unnamed namespace
 
