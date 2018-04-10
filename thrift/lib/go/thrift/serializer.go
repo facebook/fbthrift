@@ -19,57 +19,60 @@
 
 package thrift
 
+// A Serializer is used to turn a Struct in to a byte stream
 type Serializer struct {
 	Transport *MemoryBuffer
 	Protocol  Protocol
 }
 
+// Struct is the interface used to encapsulate a message that can be read and written to a protocol
 type Struct interface {
 	Write(p Protocol) error
 	Read(p Protocol) error
 }
 
+// NewSerializer create a new serializer using the binary protocol
 func NewSerializer() *Serializer {
 	transport := NewMemoryBufferLen(1024)
 	protocol := NewBinaryProtocolFactoryDefault().GetProtocol(transport)
 
-	return &Serializer{
-		transport,
-		protocol}
+	return &Serializer{transport, protocol}
 }
 
-func (t *Serializer) WriteString(msg Struct) (s string, err error) {
-	t.Transport.Reset()
+// WriteString writes msg to the serializer and returns it as a string
+func (s *Serializer) WriteString(msg Struct) (str string, err error) {
+	s.Transport.Reset()
 
-	if err = msg.Write(t.Protocol); err != nil {
+	if err = msg.Write(s.Protocol); err != nil {
 		return
 	}
 
-	if err = t.Protocol.Flush(); err != nil {
+	if err = s.Protocol.Flush(); err != nil {
 		return
 	}
-	if err = t.Transport.Flush(); err != nil {
+	if err = s.Transport.Flush(); err != nil {
 		return
 	}
 
-	return t.Transport.String(), nil
+	return s.Transport.String(), nil
 }
 
-func (t *Serializer) Write(msg Struct) (b []byte, err error) {
-	t.Transport.Reset()
+// Write writes msg to the serializer and returns it as a byte array
+func (s *Serializer) Write(msg Struct) (b []byte, err error) {
+	s.Transport.Reset()
 
-	if err = msg.Write(t.Protocol); err != nil {
+	if err = msg.Write(s.Protocol); err != nil {
 		return
 	}
 
-	if err = t.Protocol.Flush(); err != nil {
+	if err = s.Protocol.Flush(); err != nil {
 		return
 	}
 
-	if err = t.Transport.Flush(); err != nil {
+	if err = s.Transport.Flush(); err != nil {
 		return
 	}
 
-	b = append(b, t.Transport.Bytes()...)
+	b = append(b, s.Transport.Bytes()...)
 	return
 }
