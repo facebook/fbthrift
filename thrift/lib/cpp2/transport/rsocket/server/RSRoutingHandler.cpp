@@ -97,6 +97,7 @@ void RSRoutingHandler::handleConnection(
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress const*,
     wangle::TransportInfo const&) {
+  auto server = rsocketServer_; // Destruction guard
   if (!listening_) {
     return;
   }
@@ -112,14 +113,14 @@ void RSRoutingHandler::handleConnection(
     // receives the SETUP frame from the client. So we assume that the number of
     // connected clients to the RSocket server to be 1 more than the count that
     // RSocket server informs for the moment.
-    auto numConnections = rsocketServer_->getNumConnections() + 1;
+    auto numConnections = server->getNumConnections() + 1;
     observer->activeConnections(
         numConnections * serverConfigs_.getNumIOWorkerThreads());
   }
 
   // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
   // as input, but it does not use it at all. We should get rid of it.
-  rsocketServer_->acceptConnection(
+  server->acceptConnection(
       std::move(connection), dummyEventBase_, serviceHandler_);
 }
 } // namespace thrift

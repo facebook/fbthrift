@@ -52,9 +52,9 @@ class RSRoutingHandler : public TransportRoutingHandler {
   folly::EventBase dummyEventBase_;
 
   std::shared_ptr<rsocket::RSocketServiceHandler> serviceHandler_;
-  std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
+  std::shared_ptr<rsocket::RSocketServer> rsocketServer_;
 
-  bool listening_{true};
+  std::atomic<bool> listening_{true};
 };
 } // namespace thrift
 } // namespace apache
