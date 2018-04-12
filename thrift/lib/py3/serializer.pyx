@@ -16,14 +16,14 @@ class Protocol(Enum):
 
 
 def serialize(tstruct, protocol=Protocol.COMPACT):
-    assert isinstance(tstruct, Struct), "Must by a py3 thrift struct instance"
+    assert isinstance(tstruct, Struct), "Must be a py3 thrift struct instance"
     assert isinstance(protocol, Protocol), "protocol must of type Protocol"
     cdef Struct cy_struct = <Struct> tstruct
     return cy_struct._serialize(protocol)
 
 
 def deserialize(structKlass, bytes buf, protocol=Protocol.COMPACT):
-    assert issubclass(structKlass, Struct), "Must by a py3 thrift struct class"
+    assert issubclass(structKlass, Struct), "Must be a py3 thrift struct class"
     assert isinstance(protocol, Protocol), "protocol must of type Protocol"
     cdef const_uchar* c_str = buf
     cdef uint64_t capacity = len(buf)
