@@ -162,6 +162,10 @@ struct pretty_print_impl<type_class::structure> {
     fatal::foreach<typename info::members>([&](auto indexed) {
       constexpr auto size = fatal::size<typename info::members>::value;
       using member = decltype(fatal::tag_type(indexed));
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(what)) {
+        return;
+      }
       auto const index = fatal::tag_index(indexed);
       auto scope = out.start_scope();
       scope << fatal::z_data<typename member::name>() << ": ";
@@ -190,17 +194,17 @@ struct pretty_print_impl<type_class::structure> {
     recurse_into<TypeClass>(out, *pMember);
   }
 
-  template <typename TypeClass, typename OutputStream, typename... Args>
+  template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
       OutputStream& out,
-      std::shared_ptr<Args...> const& pMember) {
+      std::shared_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 
-  template <typename TypeClass, typename OutputStream, typename... Args>
+  template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
       OutputStream& out,
-      std::unique_ptr<Args...> const& pMember) {
+      std::unique_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 };

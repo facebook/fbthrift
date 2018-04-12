@@ -713,5 +713,21 @@ TEST(fatal_pretty_print, ref_shared_const) {
   ref_test<hasRefSharedConst, SharedConstHelper>();
 }
 
+TEST(fatal_pretty_print, optional_member) {
+  struct1 v;
+  v.set_field1(4);
+
+  const char* expectedStr = R"(
+    <struct>{
+      field0: 0,
+      field1: ")"
+                            "\x4"
+                            R"(",
+      field2: field0,
+      field3: field0_2,
+      field5: <variant>{}
+    })";
+  TEST_IMPL(adjust(expectedStr), v);
+}
 } // namespace cpp_reflection
 } // namespace test_cpp2

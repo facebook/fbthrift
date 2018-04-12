@@ -71,6 +71,7 @@ struct3 test_data() {
   pod.fieldF.set_us_2("this is a variant");
   pod.fieldG.field0 = 98;
   pod.fieldG.field1 = "hello, world";
+  pod.fieldG.__isset.field1 = true;
   pod.fieldG.field2 = enum1::field2;
   pod.fieldG.field3 = enum2::field0_2;
   pod.fieldG.field4.set_ui(19937);
@@ -403,6 +404,28 @@ TEST(fatal_debug, ref_shared) {
 
 TEST(fatal_debug, ref_shared_const) {
   ref_test<hasRefSharedConst, SharedConstHelper>();
+}
+
+TEST(fatal_debug, optional_members) {
+  struct1 field1Set;
+  field1Set.set_field1(2);
+  struct1 field1Unset;
+  struct1 field1SetButNotIsset;
+  field1SetButNotIsset.field1 = "2";
+  struct1 field1SetDefault;
+  field1SetDefault.__isset.field1 = true;
+  TEST_IMPL(field1Set, field1Unset, "$.field1" /* missing */);
+  TEST_IMPL(field1Unset, field1Set, "$.field1" /* extra */);
+  TEST_IMPL(field1Set, field1SetButNotIsset, "$.field1" /* missing */);
+  TEST_IMPL(field1SetButNotIsset, field1Set, "$.field1" /* extra */);
+  TEST_IMPL(field1Unset, field1SetButNotIsset);
+  TEST_IMPL(field1SetButNotIsset, field1Unset);
+  TEST_IMPL(field1Set, field1SetDefault, "$.field1" /* different */);
+  TEST_IMPL(field1SetDefault, field1Set, "$.field1" /* different */);
+  TEST_IMPL(field1SetDefault, field1SetButNotIsset, "$.field1" /* missing */);
+  TEST_IMPL(field1SetButNotIsset, field1SetDefault, "$.field1" /* extra */);
+  TEST_IMPL(field1Unset, field1SetDefault, "$.field1" /* extra */);
+  TEST_IMPL(field1SetDefault, field1Unset, "$.field1" /* missing */);
 }
 
 #undef TEST_IMPL

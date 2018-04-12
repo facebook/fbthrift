@@ -294,8 +294,27 @@ struct debug_equals_impl<type_class::structure> {
       using member = decltype(fatal::tag_type(indexed));
       using getter = typename member::getter;
 
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(lhs) && !member::is_set(rhs)) {
+        return;
+      }
+
       auto guard =
           scoped_path::member(path, fatal::z_data<typename member::name>());
+
+      if (member::optional::value == optionality::optional) {
+        if (!member::is_set(rhs)) {
+          callback(lhs, rhs, path, "missing");
+          result = false;
+          return;
+        }
+
+        if (!member::is_set(lhs)) {
+          callback(lhs, rhs, path, "extra");
+          result = false;
+          return;
+        }
+      }
 
       result =
           recurse_into<typename member::type_class>(
