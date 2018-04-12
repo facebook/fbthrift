@@ -62,9 +62,12 @@ class StreamImplIf {
 
   virtual std::unique_ptr<StreamImplIf> map(
       folly::Function<Value(Value)>) && = 0;
+  virtual std::unique_ptr<StreamImplIf> subscribeVia(
+      folly::SequencedExecutor*) && = 0;
+  virtual std::unique_ptr<StreamImplIf> observeVia(
+      folly::SequencedExecutor*) && = 0;
+
   virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) && = 0;
-  virtual void subscribeVia(folly::SequencedExecutor*) = 0;
-  virtual void observeVia(folly::SequencedExecutor*) = 0;
 };
 } // namespace detail
 
@@ -79,8 +82,7 @@ class Stream {
   static Stream create(
       std::unique_ptr<detail::StreamImplIf> impl,
       folly::SequencedExecutor* executor) {
-    Stream stream(std::move(impl), executor);
-    stream.impl_->observeVia(executor);
+    Stream stream(std::move(*impl).observeVia(executor), executor);
     return stream;
   }
 

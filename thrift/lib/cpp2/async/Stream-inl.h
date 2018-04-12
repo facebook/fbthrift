@@ -72,7 +72,7 @@ Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
 
 template <typename T>
 void Stream<T>::subscribe(std::unique_ptr<SubscriberIf<T>> subscriber) && {
-  impl_->subscribeVia(executor_);
+  impl_ = std::move(*impl_).subscribeVia(executor_);
   auto impl = std::move(impl_);
   std::move(*impl).subscribe(
       std::make_unique<detail::SubscriberAdaptor<T>>(std::move(subscriber)));

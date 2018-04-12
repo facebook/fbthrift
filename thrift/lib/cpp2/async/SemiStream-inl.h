@@ -43,7 +43,7 @@ SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(F&& f) && {
 template <typename T>
 Stream<T> SemiStream<T>::via(folly::SequencedExecutor* executor) && {
   auto impl = std::move(impl_);
-  impl->observeVia(executor);
+  impl = std::move(*impl).observeVia(executor);
   for (auto& mapFunc : mapFuncs_) {
     impl = std::move(*impl).map(std::move(mapFunc));
   }

@@ -34,6 +34,15 @@ class YarplStreamImpl : public StreamImplIf {
     return std::make_unique<YarplStreamImpl>(
         flowable_->map(std::move(mapFunc)));
   }
+  std::unique_ptr<StreamImplIf>
+      observeVia(folly::SequencedExecutor* executor) && override {
+    return std::make_unique<YarplStreamImpl>(flowable_->observeOn(*executor));
+  }
+  std::unique_ptr<StreamImplIf>
+      subscribeVia(folly::SequencedExecutor* executor) && override {
+    return std::make_unique<YarplStreamImpl>(flowable_->subscribeOn(*executor));
+  }
+
   void subscribe(std::unique_ptr<SubscriberIf<Value>> subscriber) && override {
     class SubscriberAdaptor
         : public yarpl::flowable::Subscriber<std::unique_ptr<ValueIf>> {
@@ -81,12 +90,6 @@ class YarplStreamImpl : public StreamImplIf {
     auto flowable = std::move(flowable_);
     flowable->subscribe(
         std::make_shared<SubscriberAdaptor>(std::move(subscriber)));
-  }
-  void observeVia(folly::SequencedExecutor* executor) {
-    flowable_ = flowable_->observeOn(*executor);
-  }
-  void subscribeVia(folly::SequencedExecutor* executor) {
-    flowable_ = flowable_->subscribeOn(*executor);
   }
 
  private:
