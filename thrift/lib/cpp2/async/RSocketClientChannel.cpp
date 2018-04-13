@@ -262,7 +262,7 @@ RSocketClientChannel::RSocketClientChannel(
     : evb_(socket->getEventBase()),
       isSecure_(isSecure),
       connectionStatus_(std::make_shared<detail::RSConnectionStatus>()),
-      channelCounters_(std::make_unique<ChannelCounters>()) {
+      channelCounters_(std::make_unique<detail::ChannelCounters>(this)) {
   rsRequester_ =
       std::make_shared<RSRequester>(std::move(socket), evb_, connectionStatus_);
 }
@@ -271,6 +271,8 @@ RSocketClientChannel::~RSocketClientChannel() {
   connectionStatus_->setCloseCallback(nullptr);
   if (rsRequester_) {
     if (evb_ && !evb_->isInEventBaseThread()) {
+      evb_->runInEventBaseThreadAndWait(
+          [&] { channelCounters_->unsetChannel(); });
       evb_->runInEventBaseThread([rsRequester = std::move(rsRequester_),
                                   counters = std::move(channelCounters_)]() {
         // moved the counters_ in, as it can still be referenced by active
@@ -692,7 +694,9 @@ namespace detail {
 
 static constexpr uint32_t kMaxPendingRequests =
     std::numeric_limits<uint32_t>::max();
-ChannelCounters::ChannelCounters() : maxPendingRequests_(kMaxPendingRequests) {}
+ChannelCounters::ChannelCounters(RSocketClientChannel* rsocketChannel)
+    : maxPendingRequests_(kMaxPendingRequests),
+      rsocketChannel_(rsocketChannel) {}
 
 void ChannelCounters::setMaxPendingRequests(uint32_t count) {
   maxPendingRequests_ = count;
@@ -716,6 +720,11 @@ bool ChannelCounters::incPendingRequests() {
 
 void ChannelCounters::decPendingRequests() {
   --pendingRequests_;
+  if (pendingRequests_ == 0 && rsocketChannel_) {
+    if (rsocketChannel_->isDetachable()) {
+      rsocketChannel_->notifyDetachable();
+    }
+  }
 }
 } // namespace detail
 
