@@ -29,8 +29,6 @@
 namespace apache {
 namespace thrift {
 
-class RSocketClientChannel;
-
 namespace detail {
 class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
  public:
@@ -51,24 +49,21 @@ class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
 
 class ChannelCounters {
  public:
-  explicit ChannelCounters(RSocketClientChannel* rsocketChannel);
+  ChannelCounters();
   void setMaxPendingRequests(uint32_t);
   uint32_t getMaxPendingRequests();
   uint32_t getPendingRequests();
   bool incPendingRequests();
   void decPendingRequests();
-  void unsetChannel() {
-    rsocketChannel_ = nullptr;
-  }
 
  private:
   uint32_t maxPendingRequests_;
   uint32_t pendingRequests_{0u};
-  RSocketClientChannel* rsocketChannel_;
 };
 } // namespace detail
 
-class RSocketClientChannel : public ClientChannel {
+class RSocketClientChannel : public ClientChannel,
+                             public detail::ChannelCounters {
  public:
   using Ptr = std::
       unique_ptr<RSocketClientChannel, folly::DelayedDestruction::Destructor>;
@@ -194,7 +189,6 @@ class RSocketClientChannel : public ClientChannel {
   std::shared_ptr<RSRequester> rsRequester_;
   std::chrono::milliseconds timeout_{ThriftClientCallback::kDefaultTimeout};
 
-  friend class detail::ChannelCounters;
   std::unique_ptr<apache::thrift::detail::ChannelCounters> channelCounters_;
 };
 

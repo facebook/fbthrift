@@ -63,29 +63,6 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
 
   virtual void closeNow() = 0;
   virtual CLIENT_TYPE getClientType() = 0;
-
-  void setOnDetachable(folly::Function<void()> onDetachable) {
-    onDetachable_ = std::move(onDetachable);
-  }
-
-  void unsetOnDetachable() {
-    onDetachable_ = nullptr;
-  }
-
- protected:
-  // This should be called by the implementation to notify observer (if any)
-  // that the channel became detachable.
-  void notifyDetachable() {
-    DCHECK(getEventBase()->isInEventBaseThread());
-    DCHECK(isDetachable());
-    if (!onDetachable_) {
-      return;
-    }
-    onDetachable_();
-  }
-
- private:
-  folly::Function<void()> onDetachable_;
 };
 } // namespace thrift
 } // namespace apache
