@@ -123,7 +123,7 @@ private:
 
 void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
-  factory.useStubSaslServer(false);
+  factory.useStubSaslServer(false).enableSasl(true);
   ScopedServerThread sst(factory.create());
 
   EventBase base;
@@ -372,7 +372,7 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
 void duplexTest(const apache::thrift::SecurityMech mech) {
   enum {START=1, COUNT=3, INTERVAL=1};
   apache::thrift::TestThriftServerFactory<DuplexServiceInterface> factory;
-  factory.useStubSaslServer(false).duplex(true);
+  factory.useStubSaslServer(false).duplex(true).enableSasl(true);
   ScopedServerThread duplexsst(factory.create());
   EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
@@ -424,7 +424,7 @@ TEST(Security, DuplexGSSNoMutual) {
 // then we flow RequestContext correctly with each request.
 void runRequestContextTest(bool failSecurity) {
   apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
-  factory.useStubSaslServer(false);
+  factory.useStubSaslServer(false).enableSasl(true);
   ScopedServerThread sst(factory.create());
   EventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress(), failSecurity);

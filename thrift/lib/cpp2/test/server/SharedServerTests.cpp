@@ -84,6 +84,7 @@ class SharedServerTests
         auto f = std::make_unique<TestThriftServerFactory<TestInterface>>();
         if (securityPolicy != THRIFT_SECURITY_DISABLED) {
           f->useStubSaslServer(true);
+          f->enableSasl(true);
         }
         serverFactory = std::move(f);
         break;

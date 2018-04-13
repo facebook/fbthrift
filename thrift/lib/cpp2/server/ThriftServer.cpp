@@ -36,7 +36,7 @@
 
 DEFINE_string(
     sasl_policy,
-    "permitted",
+    "disabled",
     "SASL handshake required / permitted / disabled");
 
 DEFINE_string(
@@ -291,7 +291,7 @@ void ThriftServer::setup() {
               threadStackSizeMB_));
     }
 
-    if (saslPolicy_ == "required" || saslPolicy_ == "permitted") {
+    if (saslEnabled_) {
       if (!saslThreadManager_) {
         auto numThreads = getNumSaslThreadsToRun();
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(

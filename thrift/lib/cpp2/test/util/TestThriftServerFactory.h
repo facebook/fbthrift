@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,8 @@ template<typename Interface>
 struct TestThriftServerFactory : public TestServerFactory {
   public:
    std::shared_ptr<BaseThriftServer> create() override {
-     auto server = std::make_shared<apache::thrift::ThriftServer>();
+     auto server =
+         std::make_shared<apache::thrift::ThriftServer>(saslPolicy_, false);
      server->setNumIOWorkerThreads(1);
      if (useSimpleThreadManager_) {
        auto threadFactory =
@@ -44,7 +45,7 @@ struct TestThriftServerFactory : public TestServerFactory {
      }
 
      server->setPort(0);
-     server->setSaslEnabled(true);
+     server->setSaslEnabled(enableSasl_);
      if (useStubSaslServer_) {
        server->setSaslServerFactory([](folly::EventBase* evb) {
          return std::unique_ptr<apache::thrift::SaslServer>(
@@ -110,14 +111,22 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  private:
-    bool useSimpleThreadManager_{true};
-    std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
-    bool useStubSaslServer_{true};
-    uint32_t idleTimeoutMs_{0};
-    bool duplex_{false};
-    uint32_t minCompressBytes_{0};
-    uint16_t transId_{0};
+  TestThriftServerFactory& enableSasl(bool enabled) {
+    enableSasl_ = enabled;
+    saslPolicy_ = enabled ? "permitted" : "";
+    return *this;
+  }
+
+ private:
+  bool useSimpleThreadManager_{true};
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
+  bool useStubSaslServer_{true};
+  bool enableSasl_{false};
+  std::string saslPolicy_;
+  uint32_t idleTimeoutMs_{0};
+  bool duplex_{false};
+  uint32_t minCompressBytes_{0};
+  uint16_t transId_{0};
 };
 
 }} // apache::thrift
