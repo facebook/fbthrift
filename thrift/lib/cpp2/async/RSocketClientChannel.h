@@ -21,6 +21,7 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ChannelCallbacks.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
@@ -63,10 +64,13 @@ class ChannelCounters {
 } // namespace detail
 
 class RSocketClientChannel : public ClientChannel,
+                             public ChannelCallbacks,
                              public detail::ChannelCounters {
  public:
   using Ptr = std::
       unique_ptr<RSocketClientChannel, folly::DelayedDestruction::Destructor>;
+
+  using ChannelCallbacks::OnewayCallback;
 
   static Ptr newChannel(
       apache::thrift::async::TAsyncTransport::UniquePtr socket,
@@ -139,6 +143,7 @@ class RSocketClientChannel : public ClientChannel,
       apache::thrift::ProtocolId protocolId,
       transport::THeader* header);
 
+  template <typename Callback>
   uint32_t sendRequestHelper(
       RpcOptions& rpcOptions,
       RpcKind kind,
@@ -150,12 +155,23 @@ class RSocketClientChannel : public ClientChannel,
   void sendThriftRequest(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf,
+      OnewayCallback* callback) noexcept;
+
+  void sendThriftRequest(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<ThriftClientCallback> callback) noexcept;
+
+  template <typename Callback>
+  Callback createCallback(
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<ContextStack> ctx,
+      std::chrono::milliseconds clientTimeoutMs);
 
   void sendSingleRequestNoResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ThriftClientCallback> callback) noexcept;
+      OnewayCallback* callback) noexcept;
 
   void sendSingleRequestResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,

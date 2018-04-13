@@ -32,6 +32,19 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
+
+void onError(
+    std::unique_ptr<ThriftClientCallback> callback,
+    folly::exception_wrapper ew) noexcept {
+  callback->onError(std::move(ew));
+}
+
+void onError(
+    RSocketClientChannel::OnewayCallback* callback,
+    folly::exception_wrapper ew) noexcept {
+  callback->messageSendError(std::move(ew));
+}
+
 void RSConnectionStatus::setCloseCallback(CloseCallback* ccb) {
   closeCallback_ = ccb;
 }
@@ -89,7 +102,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
   void onError(folly::exception_wrapper ew) override {
     if (auto callback = std::move(callback_)) {
-      callback->onError(std::move(ew));
+      detail::onError(std::move(callback), std::move(ew));
       // TODO: Inspect the cases where might we end up in this function.
       // 1- server closes the stream before all the messages are
       // delievered.
@@ -271,7 +284,7 @@ uint32_t RSocketClientChannel::sendRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<THeader> header) {
-  return sendRequestHelper(
+  return sendRequestHelper<std::unique_ptr<ThriftClientCallback>>(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       std::move(cb),
@@ -286,7 +299,7 @@ uint32_t RSocketClientChannel::sendOnewayRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<THeader> header) {
-  sendRequestHelper(
+  sendRequestHelper<OnewayCallback*>(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       std::move(cb),
@@ -302,7 +315,7 @@ uint32_t RSocketClientChannel::sendStreamRequest(
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header) {
-  return sendRequestHelper(
+  return sendRequestHelper<std::unique_ptr<ThriftClientCallback>>(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       std::move(cb),
@@ -357,6 +370,60 @@ RSocketClientChannel::createRequestRpcMetadata(
   return metadata;
 }
 
+void RSocketClientChannel::sendThriftRequest(
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  DCHECK(
+      metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      metadata->kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+
+  switch (metadata->kind) {
+    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+      sendSingleRequestResponse(
+          std::move(metadata), std::move(buf), std::move(callback));
+      break;
+    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      sendSingleRequestStreamResponse(
+          std::move(metadata), std::move(buf), std::move(callback));
+      break;
+    default:
+      folly::assume_unreachable();
+  }
+}
+
+void RSocketClientChannel::sendThriftRequest(
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<folly::IOBuf> buf,
+    OnewayCallback* callback) noexcept {
+  DCHECK(metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  sendSingleRequestNoResponse(
+      std::move(metadata), std::move(buf), std::move(callback));
+}
+
+template <>
+std::unique_ptr<ThriftClientCallback> RSocketClientChannel::createCallback(
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<ContextStack> ctx,
+    std::chrono::milliseconds clientTimeoutMs) {
+  return std::make_unique<ThriftClientCallback>(
+      evb_,
+      std::move(cb),
+      std::move(ctx),
+      isSecurityActive(),
+      protocolId_,
+      clientTimeoutMs);
+}
+
+template <>
+RSocketClientChannel::OnewayCallback* RSocketClientChannel::createCallback(
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<ContextStack> ctx,
+    std::chrono::milliseconds) {
+  return new OnewayCallback(std::move(cb), std::move(ctx), isSecurityActive());
+}
+
+template <typename Callback>
 uint32_t RSocketClientChannel::sendRequestHelper(
     RpcOptions& rpcOptions,
     RpcKind kind,
@@ -373,13 +440,30 @@ uint32_t RSocketClientChannel::sendRequestHelper(
       static_cast<apache::thrift::ProtocolId>(protocolId_),
       header.get());
 
-  auto callback = std::make_unique<ThriftClientCallback>(
-      evb_,
+  auto callback = createCallback<Callback>(
       std::move(cb),
       std::move(ctx),
-      isSecurityActive(),
-      protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
+
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf)) {
+    detail::onError(
+        std::move(callback),
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::CORRUPTED_DATA,
+            "Unexpected problem stripping envelope"));
+    return 0;
+  }
+  metadata->seqId = 0;
+  metadata->__isset.seqId = true;
+  DCHECK(metadata->__isset.kind);
+
+  if (!connectionStatus_->isConnected()) {
+    detail::onError(
+        std::move(callback),
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NOT_OPEN, "Connection is not open"));
+    return 0;
+  }
 
   sendThriftRequest(std::move(metadata), std::move(buf), std::move(callback));
   return 0;
@@ -389,67 +473,30 @@ uint16_t RSocketClientChannel::getProtocolId() {
   return protocolId_;
 }
 
-void RSocketClientChannel::sendThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  if (!connectionStatus_->isConnected()) {
-    callback->onError(folly::make_exception_wrapper<TTransportException>(
-        TTransportException::NOT_OPEN, "Connection is not open"));
-    return;
-  }
-
-  evb_->dcheckIsInEventBaseThread();
-
-  if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf)) {
-    LOG(ERROR) << "Unexpected problem stripping envelope";
-    callback->onError(folly::exception_wrapper(
-        TTransportException("Unexpected problem stripping envelope")));
-    return;
-  }
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
-  DCHECK(metadata->__isset.kind);
-  switch (metadata->kind) {
-    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-      sendSingleRequestResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
-    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-      sendSingleRequestNoResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
-    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      sendSingleRequestStreamResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
-    default: {
-      LOG(ERROR) << "Unknown RpcKind value in the Metadata: "
-                 << (int)metadata->kind;
-      callback->onError(folly::exception_wrapper(
-          TTransportException("Unknown RpcKind value in the Metadata")));
-    }
-  }
-}
-
 void RSocketClientChannel::sendSingleRequestNoResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
+    OnewayCallback* callback) noexcept {
   DCHECK(metadata);
 
   if (channelCounters_->incPendingRequests()) {
     auto guard =
         folly::makeGuard([&] { channelCounters_->decPendingRequests(); });
+
     rsRequester_
         ->fireAndForget(Payload(std::move(buf), serializeMetadata(*metadata)))
         ->subscribe([] {});
+
+    callback->messageSent();
   } else {
     LOG_EVERY_N(ERROR, 100)
         << "max number of pending requests is exceeded x100";
+    detail::onError(
+        std::move(callback),
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NETWORK_ERROR,
+            "Too many active requests on connection"));
   }
-
-  callback->onThriftRequestSent();
 }
 
 void RSocketClientChannel::sendSingleRequestResponse(
@@ -494,7 +541,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
         "Too many active requests on connection");
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    callback->onError(folly::exception_wrapper(std::move(ex)));
+    detail::onError(std::move(callback), std::move(ex));
     return;
   }
 

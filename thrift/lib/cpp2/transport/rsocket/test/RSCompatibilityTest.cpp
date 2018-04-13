@@ -129,7 +129,7 @@ TEST_F(RSCompatibilityTest, Oneway_Saturation) {
     auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->setMaxPendingRequests(0u); });
-    client->future_addAfterDelay(0, 5).get();
+    EXPECT_THROW(client->future_addAfterDelay(0, 5).get(), TTransportException);
 
     // the first call is not completed as the connection was saturated
     channel->getEventBase()->runInEventBaseThreadAndWait(
