@@ -122,6 +122,13 @@ IntermHeaderService::IntermHeaderService(
   }
 }
 
+IntermHeaderService::~IntermHeaderService() {
+  // destroy the client in the eventbase thread, otherwise use
+  // PooledRequestChannel
+  evbThread_.getEventBase()->runInEventBaseThread(
+      [client = std::move(client_)]() {});
+}
+
 int32_t IntermHeaderService::callAdd(int32_t x) {
   auto rq = folly::RequestContext::get();
   auto ret = client_->future_add(x).get();

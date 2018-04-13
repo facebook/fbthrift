@@ -192,12 +192,16 @@ void SampleServer<Service>::connectToServer(
     chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     callMe(std::move(chan), nullptr);
   } else if (transport == "rsocket") {
-    RSocketClientChannel::Ptr channel;
+    std::shared_ptr<RSocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
       channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
           new TAsyncSocket(evbThread_.getEventBase(), FLAGS_host, port_)));
     });
-    callMe(std::move(channel), nullptr);
+    SCOPE_EXIT {
+      evbThread_.getEventBase()->runInEventBaseThreadAndWait(
+          [channel = std::move(channel)]() { channel->closeNow(); });
+    };
+    callMe(channel, nullptr);
   } else if (transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.

@@ -74,40 +74,26 @@ class CountedSingleObserver : public SingleObserver<Payload> {
  protected:
   void onSubscribe(std::shared_ptr<SingleSubscription>) override {
     // Note that we don't need the Subscription object.
-    auto ref = this->ref_from_this(this);
-    auto evb = callback_->getEventBase();
-    evb->runInEventBaseThread([ref]() {
-      if (ref->callback_) {
-        ref->callback_->onThriftRequestSent();
-      }
-    });
+    callback_->onThriftRequestSent();
   }
 
   void onSuccess(Payload payload) override {
     if (auto callback = std::move(callback_)) {
-      auto evb = callback->getEventBase();
-      evb->runInEventBaseThread([callback = std::move(callback),
-                                 payload = std::move(payload)]() mutable {
-        callback->onThriftResponse(
-            payload.metadata
-                ? RSocketClientChannel::deserializeMetadata(*payload.metadata)
-                : std::make_unique<ResponseRpcMetadata>(),
-            std::move(payload.data));
-      });
+      callback->onThriftResponse(
+          payload.metadata
+              ? RSocketClientChannel::deserializeMetadata(*payload.metadata)
+              : std::make_unique<ResponseRpcMetadata>(),
+          std::move(payload.data));
     }
   }
 
   void onError(folly::exception_wrapper ew) override {
     if (auto callback = std::move(callback_)) {
-      auto evb = callback->getEventBase();
-      evb->runInEventBaseThread(
-          [callback = std::move(callback), ew = std::move(ew)]() mutable {
-            callback->onError(std::move(ew));
-            // TODO: Inspect the cases where might we end up in this function.
-            // 1- server closes the stream before all the messages are
-            // delievered.
-            // 2- time outs
-          });
+      callback->onError(std::move(ew));
+      // TODO: Inspect the cases where might we end up in this function.
+      // 1- server closes the stream before all the messages are
+      // delievered.
+      // 2- time outs
     }
   }
 
@@ -142,30 +128,23 @@ class CountedStream
         .then(
             [ref = this->ref_from_this(this)](
                 std::pair<Payload, std::shared_ptr<Flowable<Payload>>> result) {
-              auto evb = ref->callback_->getEventBase();
-              auto lambda = [ref, result = std::move(result)]() mutable {
-                ref->setUpstream(std::move(result.second));
-                auto callback = std::move(ref->callback_);
-                callback->onThriftResponse(
-                    result.first.metadata
-                        ? RSocketClientChannel::deserializeMetadata(
-                              *result.first.metadata)
-                        : std::make_unique<ResponseRpcMetadata>(),
-                    std::move(result.first.data),
-                    toStream(
-                        std::static_pointer_cast<
-                            Flowable<std::unique_ptr<folly::IOBuf>>>(ref),
-                        ref->ioEvb_));
-              };
-              evb->runInEventBaseThread(std::move(lambda));
+              ref->setUpstream(std::move(result.second));
+              auto callback = std::move(ref->callback_);
+              callback->onThriftResponse(
+                  result.first.metadata
+                      ? RSocketClientChannel::deserializeMetadata(
+                            *result.first.metadata)
+                      : std::make_unique<ResponseRpcMetadata>(),
+                  std::move(result.first.data),
+                  toStream(
+                      std::static_pointer_cast<
+                          Flowable<std::unique_ptr<folly::IOBuf>>>(ref),
+                      ref->ioEvb_));
             })
         .onError(
             [ref = this->ref_from_this(this)](folly::exception_wrapper ew) {
-              auto evb = ref->callback().getEventBase();
-              evb->runInEventBaseThread([callback = std::move(ref->callback_),
-                                         ew = std::move(ew)]() mutable {
-                callback->onError(std::move(ew));
-              });
+              auto callback = std::move(ref->callback_);
+              callback->onError(std::move(ew));
             });
   }
 
@@ -270,18 +249,7 @@ RSocketClientChannel::RSocketClientChannel(
 RSocketClientChannel::~RSocketClientChannel() {
   connectionStatus_->setCloseCallback(nullptr);
   if (rsRequester_) {
-    if (evb_ && !evb_->isInEventBaseThread()) {
-      evb_->runInEventBaseThread([rsRequester = std::move(rsRequester_),
-                                  counters = std::move(channelCounters_)]() {
-        // moved the counters_ in, as it can still be referenced by active
-        // requests.
-        rsRequester->closeNow();
-      });
-    } else {
-      // If evb_ is missing, this function will attach the current event
-      // base instead of the missing one
-      closeNow();
-    }
+    closeNow();
   }
 }
 
@@ -413,24 +381,9 @@ uint32_t RSocketClientChannel::sendRequestHelper(
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
-  if (!connectionStatus_->isConnected()) {
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([callback = std::move(callback)]() mutable {
-      callback->onError(folly::make_exception_wrapper<TTransportException>(
-          TTransportException::NOT_OPEN, "Connection is not open"));
-    });
-    return 0;
-  }
-
-  getEventBase()->runInEventBaseThread([this,
-                                        metadata = std::move(metadata),
-                                        buf = std::move(buf),
-                                        callback =
-                                            std::move(callback)]() mutable {
-    sendThriftRequest(std::move(metadata), std::move(buf), std::move(callback));
-  });
+  sendThriftRequest(std::move(metadata), std::move(buf), std::move(callback));
   return 0;
-} // namespace thrift
+}
 
 uint16_t RSocketClientChannel::getProtocolId() {
   return protocolId_;
@@ -441,11 +394,8 @@ void RSocketClientChannel::sendThriftRequest(
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   if (!connectionStatus_->isConnected()) {
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([callback = std::move(callback)]() mutable {
-      callback->onError(folly::make_exception_wrapper<TTransportException>(
-          TTransportException::NOT_OPEN, "Connection is not open"));
-    });
+    callback->onError(folly::make_exception_wrapper<TTransportException>(
+        TTransportException::NOT_OPEN, "Connection is not open"));
     return;
   }
 
@@ -453,11 +403,8 @@ void RSocketClientChannel::sendThriftRequest(
 
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf)) {
     LOG(ERROR) << "Unexpected problem stripping envelope";
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
-      cb->onError(folly::exception_wrapper(
-          TTransportException("Unexpected problem stripping envelope")));
-    });
+    callback->onError(folly::exception_wrapper(
+        TTransportException("Unexpected problem stripping envelope")));
     return;
   }
   metadata->seqId = 0;
@@ -479,11 +426,8 @@ void RSocketClientChannel::sendThriftRequest(
     default: {
       LOG(ERROR) << "Unknown RpcKind value in the Metadata: "
                  << (int)metadata->kind;
-      auto evb = callback->getEventBase();
-      evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
-        cb->onError(folly::exception_wrapper(
-            TTransportException("Unknown RpcKind value in the Metadata")));
-      });
+      callback->onError(folly::exception_wrapper(
+          TTransportException("Unknown RpcKind value in the Metadata")));
     }
   }
 }
@@ -505,9 +449,7 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
         << "max number of pending requests is exceeded x100";
   }
 
-  auto cbEvb = callback->getEventBase();
-  cbEvb->runInEventBaseThread(
-      [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
+  callback->onThriftRequestSent();
 }
 
 void RSocketClientChannel::sendSingleRequestResponse(
@@ -547,16 +489,12 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   bool canExecute = channelCounters_->incPendingRequests();
   if (!canExecute) {
-    auto evb = callback->getEventBase();
-    evb->runInEventBaseThread([callback = std::move(callback)]() mutable {
-      TTransportException ex(
-          TTransportException::NETWORK_ERROR,
-          "Too many active requests on connection");
-      // Might be able to create another transaction soon
-      ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-
-      callback->onError(folly::exception_wrapper(std::move(ex)));
-    });
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    callback->onError(folly::exception_wrapper(std::move(ex)));
     return;
   }
 
@@ -683,7 +621,6 @@ CLIENT_TYPE RSocketClientChannel::getClientType() {
 }
 
 void RSocketClientChannel::setCloseCallback(CloseCallback* cb) {
-  LOG(ERROR) << "setCloseCallback: " << (bool)cb;
   connectionStatus_->setCloseCallback(cb);
 }
 

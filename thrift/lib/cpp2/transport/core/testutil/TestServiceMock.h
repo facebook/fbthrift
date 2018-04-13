@@ -61,6 +61,7 @@ class TestServiceMock : public TestServiceSvIf {
 class IntermHeaderService : public IntermHeaderServiceSvIf {
  public:
   IntermHeaderService(std::string const& host, int16_t port);
+  virtual ~IntermHeaderService();
 
   int32_t callAdd(int32_t) override;
 
