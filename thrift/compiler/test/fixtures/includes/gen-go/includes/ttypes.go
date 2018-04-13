@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	transitive0 "transitive"
 
 )

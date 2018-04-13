@@ -51,7 +51,8 @@ using std::vector;
 
 //static const string endl = "\n"; // avoid ostream << std::endl flushes
 
-const string default_thrift_import = "git.apache.org/thrift.git/lib/go/thrift";
+const string default_thrift_import =
+    "github.com/facebook/fbthrift/thrift/lib/go/thrift";
 static std::string package_flag;
 
 /**

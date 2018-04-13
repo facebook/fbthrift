@@ -13,7 +13,7 @@ import (
         "os"
         "strconv"
         "strings"
-        "git.apache.org/thrift.git/lib/go/thrift"
+        "github.com/facebook/fbthrift/thrift/lib/go/thrift"
         "module"
 )
 
