@@ -224,10 +224,10 @@ add_custom_target(
 )
 install(
   DIRECTORY gen-${language}
-  DESTINATION include/${output_path}
+  DESTINATION include/${include_prefix}
   FILES_MATCHING PATTERN "*.h")
 install(
   DIRECTORY gen-${language}
-  DESTINATION include/${output_path}
+  DESTINATION include/${include_prefix}
   FILES_MATCHING PATTERN "*.tcc")
 endmacro()
