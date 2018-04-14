@@ -1,0 +1,28 @@
+#
+# CMake package configuration file for fbthrift
+#
+# Defines the target "FBThrift::thriftcpp2"
+# Add this to your target_link_libraries() call to depend on thrift.
+#
+# Note that fbthrift depends on the wangle::wangle target.  This should
+# be found by calling find_package(wangle CONFIG) before finding fbthrift.
+#
+# This also defines the following variables
+# FBTHRIFT_COMPILER - The path to the thrift compiler
+# FBTHRIFT_TEMPLATES_DIR - The path to the thrift compiler templates directory
+#
+
+@PACKAGE_INIT@
+
+set_and_check(FBTHRIFT_CMAKE_DIR "@PACKAGE_CMAKE_INSTALL_DIR@")
+set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(FBTHRIFT_COMPILER "@PACKAGE_BIN_INSTALL_DIR@/thrift1")
+set_and_check(FBTHRIFT_TEMPLATES_DIR "@PACKAGE_TEMPLATES_INSTALL_DIR@")
+
+if (NOT TARGET FBThrift::thriftcpp2)
+  include("${FBTHRIFT_CMAKE_DIR}/FBThriftTargets.cmake")
+endif()
+
+if (NOT FBThrift_FIND_QUIETLY)
+  message(STATUS "Found FBThrift: ${PACKAGE_PREFIX_DIR}")
+endif()

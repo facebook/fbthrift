@@ -27,13 +27,12 @@ add_library(
 add_dependencies(thriftfrozen2 frozen-cpp2-target)
 target_link_libraries(
   thriftfrozen2
-
-  ${DOUBLE_CONVERSION_LIBRARY}
-  ${FOLLY_LIBRARY}
-  ${GLOG_LIBRARIES}
-  ${GFLAGS_LIBRARIES}
+  PUBLIC
+    ${DOUBLE_CONVERSION_LIBRARY}
+    ${FOLLY_LIBRARY}
+    ${GLOG_LIBRARIES}
+    ${GFLAGS_LIBRARIES}
 )
-install(TARGETS thriftfrozen2 DESTINATION lib)
 
 add_library(
   thriftprotocol
@@ -50,13 +49,12 @@ add_library(
 )
 target_link_libraries(
   thriftprotocol
-
-  thrift
-  ${FOLLY_LIBRARY}
-  ${WANGLE_LIBRARIES}
-  ${DOUBLE_CONVERSION_LIBRARY}
+  PUBLIC
+    thrift
+    ${FOLLY_LIBRARY}
+    ${WANGLE_LIBRARIES}
+    ${DOUBLE_CONVERSION_LIBRARY}
 )
-install(TARGETS thriftprotocol DESTINATION lib)
 
 thrift_generate(
   "Sasl" #file_name
@@ -111,13 +109,12 @@ add_library(
 add_dependencies(thriftcpp2 Sasl-cpp2-target)
 target_link_libraries(
   thriftcpp2
-
-  security
-  thrift
-  thriftfrozen2
-  thriftprotocol
+  PUBLIC
+    security
+    thrift
+    thriftfrozen2
+    thriftprotocol
 )
-install(TARGETS thriftcpp2 DESTINATION lib)
 
 # Install includes
 set(THRIFT2_HEADER_DIRS
@@ -131,8 +128,17 @@ set(THRIFT2_HEADER_DIRS
   util
 )
 foreach(dir ${THRIFT2_HEADER_DIRS})
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp2
+  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
           FILES_MATCHING PATTERN "*.h")
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp2
+  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
           FILES_MATCHING PATTERN "*.tcc")
 endforeach()
+
+install(
+  TARGETS
+    thriftfrozen2
+    thriftprotocol
+    thriftcpp2
+  EXPORT fbthrift-exports
+  DESTINATION ${LIB_INSTALL_DIR}
+)

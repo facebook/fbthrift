@@ -23,7 +23,6 @@ add_library(
   parse/t_typedef.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
-install(TARGETS compiler_ast DESTINATION lib)
 
 # build the base libraries
 add_library(
@@ -44,7 +43,6 @@ target_link_libraries(
   compiler_ast
   ${Boost_LIBRARIES}
 )
-install(TARGETS compiler_base DESTINATION lib)
 
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
@@ -71,7 +69,6 @@ elseif(APPLE)
 else()
   set(GENERATE_LINKED -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
 endif(MSVC)
-install(TARGETS compiler_generators DESTINATION lib)
 
 set(TEMPLATE_DIRS
   generate/templates/cpp2
@@ -87,7 +84,7 @@ set(TEMPLATE_DIRS
   generate/templates/cpp2/types
 )
 foreach(dir ${TEMPLATE_DIRS})
-  install(DIRECTORY ${dir} DESTINATION include/thrift/templates
+  install(DIRECTORY ${dir} DESTINATION ${TEMPLATES_INSTALL_DIR}
           FILES_MATCHING PATTERN "*.mustache")
 endforeach()
 
@@ -114,4 +111,15 @@ if(MSVC)
     PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:compiler_generators"
   )
 endif(MSVC)
-install(TARGETS thrift1 DESTINATION bin)
+
+install(
+  TARGETS
+    thrift1
+    compiler_ast
+    compiler_base
+    compiler_generators
+  EXPORT fbthrift-exports
+  RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+  LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+  ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+)

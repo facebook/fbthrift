@@ -5,12 +5,16 @@ add_library(
 
   Thrift.cpp
 )
+target_include_directories(
+  thrift-core
+  INTERFACE
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)
 target_link_libraries(
   thrift-core
-
-  ${FOLLY_LIBRARY}
+  PUBLIC
+    ${FOLLY_LIBRARY}
 )
-install(TARGETS thrift-core DESTINATION lib)
 
 add_library(
   concurrency
@@ -24,12 +28,11 @@ add_library(
 )
 target_link_libraries(
   concurrency
-
-  ${FOLLY_LIBRARY}
-  ${GFLAGS_LIBRARIES}
-  ${GLOG_LIBRARIES}
+  PUBLIC
+    ${FOLLY_LIBRARY}
+    ${GFLAGS_LIBRARIES}
+    ${GLOG_LIBRARIES}
 )
-install(TARGETS concurrency DESTINATION lib)
 
 bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
@@ -45,12 +48,11 @@ add_library(
 add_dependencies(protocol reflection-cpp2-target)
 target_link_libraries(
   protocol
-
-  ${DOUBLE_CONVERSION_LIBRARY}
-  ${FOLLY_LIBRARY}
-  ${GLOG_LIBRARIES}
+  PUBLIC
+    ${DOUBLE_CONVERSION_LIBRARY}
+    ${FOLLY_LIBRARY}
+    ${GLOG_LIBRARIES}
 )
-install(TARGETS protocol DESTINATION lib)
 
 add_library(
   transport
@@ -80,15 +82,14 @@ add_library(
 )
 target_link_libraries(
   transport
-
-  concurrency
-  thrift-core
-  ${FOLLY_LIBRARY}
-  ${OPENSSL_LIBRARIES}
-  ${ZLIB_LIBRARIES}
-  ${ZSTD_LIBRARIES}
+  PUBLIC
+    concurrency
+    thrift-core
+    ${FOLLY_LIBRARY}
+    ${OPENSSL_LIBRARIES}
+    ${ZLIB_LIBRARIES}
+    ${ZSTD_LIBRARIES}
 )
-install(TARGETS transport DESTINATION lib)
 
 add_library(
   async
@@ -105,15 +106,14 @@ add_library(
 )
 target_link_libraries(
   async
-
-  concurrency
-  transport
-  ${Boost_LIBRARIES}
-  ${FOLLY_LIBRARY}
-  ${GLOG_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
+  PUBLIC
+    concurrency
+    transport
+    ${Boost_LIBRARIES}
+    ${FOLLY_LIBRARY}
+    ${GLOG_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
 )
-install(TARGETS async DESTINATION lib)
 
 add_library(
   security
@@ -125,16 +125,20 @@ add_library(
   util/kerberos/Krb5Tgts.cpp
   util/kerberos/FBKrb5GetCreds.cpp
 )
+target_include_directories(
+  security
+  PUBLIC
+    ${KRB5_INCLUDE_DIRS}
+)
 target_link_libraries(
   security
-
-  ${KRB5_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${FOLLY_LIBRARY}
-  ${GFLAGS_LIBRARIES}
-  ${GLOG_LIBRARIES}
+  PUBLIC
+    ${KRB5_LIBRARIES}
+    ${Boost_LIBRARIES}
+    ${FOLLY_LIBRARY}
+    ${GFLAGS_LIBRARIES}
+    ${GLOG_LIBRARIES}
 )
-install(TARGETS security DESTINATION lib)
 
 add_library(
   server
@@ -143,10 +147,9 @@ add_library(
 )
 target_link_libraries(
   server
-
-  ${FOLLY_LIBRARY}
+  PUBLIC
+    ${FOLLY_LIBRARY}
 )
-install(TARGETS server DESTINATION lib)
 
 add_library(
   thrift
@@ -155,15 +158,14 @@ add_library(
 )
 target_link_libraries(
   thrift
-
-  async
-  concurrency
-  protocol
-  transport
-  ${FOLLY_LIBRARY}
-  ${GLOG_LIBRARIES}
+  PUBLIC
+    async
+    concurrency
+    protocol
+    transport
+    ${FOLLY_LIBRARY}
+    ${GLOG_LIBRARIES}
 )
-install(TARGETS thrift DESTINATION lib)
 
 set(THRIFT1_HEADER_DIRS
   async
@@ -173,8 +175,22 @@ set(THRIFT1_HEADER_DIRS
   transport
 )
 foreach(dir ${THRIFT1_HEADER_DIRS})
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp
+  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp
           FILES_MATCHING PATTERN "*.h")
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib/cpp
+  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp
           FILES_MATCHING PATTERN "*.tcc")
 endforeach()
+
+install(
+  TARGETS
+    thrift-core
+    concurrency
+    protocol
+    transport
+    async
+    security
+    server
+    thrift
+  EXPORT fbthrift-exports
+  DESTINATION ${LIB_INSTALL_DIR}
+)
