@@ -20,6 +20,7 @@
 package thrift
 
 import (
+	"errors"
 	"net"
 	"time"
 )
@@ -30,36 +31,59 @@ type Socket struct {
 	timeout time.Duration
 }
 
-// NewSocket creates a net.Conn-backed Transport, given a host and port
-//
-// Example:
-// 	trans, err := thrift.NewSocket("localhost:9090")
-func NewSocket(hostPort string) (*Socket, error) {
-	return NewSocketTimeout(hostPort, 0)
+// SocketOption is the type used to set options on the socket
+type SocketOption func(*Socket) error
+
+// SocketTimeout sets the timeout
+func SocketTimeout(timeout time.Duration) SocketOption {
+	return func(socket *Socket) error {
+		socket.timeout = timeout
+		return nil
+	}
 }
 
-// NewSocketTimeout creates a net.Conn-backed Transport, given a host and port
-// it also accepts a timeout as a time.Duration
-func NewSocketTimeout(hostPort string, timeout time.Duration) (*Socket, error) {
-	//conn, err := net.DialTimeout(network, address, timeout)
-	addr, err := net.ResolveTCPAddr("tcp6", hostPort)
-	if err != nil {
-		addr, err = net.ResolveTCPAddr("tcp", hostPort)
+// SocketAddr sets the socket address
+func SocketAddr(hostPort string) SocketOption {
+	return func(socket *Socket) error {
+		addr, err := net.ResolveTCPAddr("tcp6", hostPort)
+		if err != nil {
+			addr, err = net.ResolveTCPAddr("tcp", hostPort)
+			if err != nil {
+				return err
+			}
+		}
+		socket.addr = addr
+		return nil
+	}
+}
+
+// SocketConn sets the socket connection
+func SocketConn(conn net.Conn) SocketOption {
+	return func(socket *Socket) error {
+		socket.conn = conn
+		socket.addr = conn.RemoteAddr()
+		return nil
+	}
+}
+
+// NewSocket creates a net.Conn-backed Transport, given a host and port,
+// or an existing connection.
+// 	trans, err := thrift.NewSocket(thrift.SocketAddr("localhost:9090"))
+func NewSocket(options ...SocketOption) (*Socket, error) {
+	socket := &Socket{}
+
+	for _, option := range options {
+		err := option(socket)
 		if err != nil {
 			return nil, err
 		}
 	}
-	return NewSocketFromAddrTimeout(addr, timeout), nil
-}
 
-// Creates a Socket from a net.Addr
-func NewSocketFromAddrTimeout(addr net.Addr, timeout time.Duration) *Socket {
-	return &Socket{addr: addr, timeout: timeout}
-}
+	if socket.addr.String() == "" && socket.conn.RemoteAddr().String() == "" {
+		return nil, errors.New("must supply either an address or a connection")
+	}
 
-// Creates a Socket from an existing net.Conn
-func NewSocketFromConnTimeout(conn net.Conn, timeout time.Duration) *Socket {
-	return &Socket{conn: conn, addr: conn.RemoteAddr(), timeout: timeout}
+	return socket, nil
 }
 
 // Sets the socket timeout

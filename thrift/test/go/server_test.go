@@ -76,8 +76,13 @@ func connectTestHeaderServer(
 	transportFactory thrift.TransportFactory,
 	protocolFactory thrift.ProtocolFactory,
 ) (*thrifttest.ThriftTestClient, error) {
-	var trans thrift.Transport = thrift.NewSocketFromAddrTimeout(addr, localConnTimeout)
-	err := trans.Open()
+	var trans thrift.Transport
+	trans, err := thrift.NewSocket(thrift.SocketAddr(addr.String()), thrift.SocketTimeout(localConnTimeout))
+	if err != nil {
+		return nil, err
+	}
+
+	err = trans.Open()
 
 	if err != nil {
 		return nil, err

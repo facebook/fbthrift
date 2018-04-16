@@ -74,7 +74,7 @@ func (p *ServerSocket) Accept() (Transport, error) {
 	if err != nil {
 		return nil, NewTransportExceptionFromError(err)
 	}
-	return NewSocketFromConnTimeout(conn, p.clientTimeout), nil
+	return NewSocket(SocketConn(conn), SocketTimeout(p.clientTimeout))
 }
 
 // Checks whether the socket is listening.
