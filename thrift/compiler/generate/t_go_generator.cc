@@ -298,6 +298,7 @@ private:
   unordered_map<std::string, std::string> package_identifiers;
 
   std::set<std::string> commonInitialisms;
+  std::unordered_set<std::string> protectedMethods;
 
   std::string camelcase(const std::string& value) const;
   std::string publicize(const std::string& value, bool is_args_or_result = false) const;
@@ -460,9 +461,13 @@ std::string t_go_generator::publicize(const std::string& value, bool is_args_or_
   // final length before further checks, the string may become longer
   size_t len_before = value2.length();
 
-  // IDL identifiers may start with "New" which interferes with the CTOR pattern
-  // Adding an extra underscore to all those identifiers solves this
-  if ((len_before >= 3) && (value2.substr(0, 3) == "New")) {
+  if (
+      // IDL identifiers may start with "New" which interferes with the CTOR
+      // pattern Adding an extra underscore to all those identifiers solves this
+      ((len_before >= 3) && (value2.substr(0, 3) == "New")) ||
+      // We define certain methods on many structures (such as String, or
+      // Error), which can cause certain fields to conflict. Prevent these here
+      (protectedMethods.find(value2) != protectedMethods.end())) {
     value2 += '_';
   }
 
@@ -682,6 +687,10 @@ void t_go_generator::init_generator() {
   commonInitialisms.insert("XML");
   commonInitialisms.insert("XSRF");
   commonInitialisms.insert("XSS");
+
+  // Methods that we define on some structures
+  protectedMethods.insert("Error");
+  protectedMethods.insert("String");
 
   while (true) {
     // TODO: Do better error checking here.
