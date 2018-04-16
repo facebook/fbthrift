@@ -7,7 +7,7 @@
 import typing as t
 
 import simple.dependent.ttypes
-from simple.example.shared.ttypes import *
+from simple.example.ttypes import *
 
 A_BOOL: bool
 A_BYTE: int

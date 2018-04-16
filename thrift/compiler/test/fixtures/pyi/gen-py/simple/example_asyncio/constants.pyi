@@ -6,8 +6,8 @@
 #
 import typing as t
 
-import simple.dependent_asyncio.dependent.ttypes
-from simple.example_asyncio.shared.ttypes import *
+import simple.dependent_asyncio.ttypes
+from simple.example_asyncio.ttypes import *
 
 A_BOOL: bool
 A_BYTE: int

@@ -302,7 +302,7 @@ vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
 
   const auto name = program.get_name();
   vector<string> ns = split_namespace(_namespace);
-  if (ns.empty() || ns.back() != name) {
+  if (ns.empty()) {
     ns.push_back(name);
   }
   if (tail != "") {

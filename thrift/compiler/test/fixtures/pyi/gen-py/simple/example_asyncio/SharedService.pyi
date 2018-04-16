@@ -10,8 +10,8 @@ import asyncio
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
-import simple.dependent_asyncio.dependent.ttypes
-from simple.example_asyncio.shared.ttypes import *
+import simple.dependent_asyncio.ttypes
+from simple.example_asyncio.ttypes import *
 
 
 class Iface:  # SharedService

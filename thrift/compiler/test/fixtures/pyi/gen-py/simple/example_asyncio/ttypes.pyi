@@ -9,7 +9,7 @@ import typing as t
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
-import simple.dependent_asyncio.dependent.ttypes
+import simple.dependent_asyncio.ttypes
 
 UTF8STRINGS: bool
 
@@ -119,7 +119,7 @@ class ComplexStruct:
     structs: t.Optional[t.List[SimpleStruct]]
     amap: t.Optional[t.Dict[str, str]]
     aset: t.Optional[t.Set[str]]
-    item: t.Optional[simple.dependent_asyncio.dependent.ttypes.Item]
+    item: t.Optional[simple.dependent_asyncio.ttypes.Item]
 
     def __init__(
         self,
@@ -132,7 +132,7 @@ class ComplexStruct:
         structs: t.Optional[t.List[SimpleStruct]] = ...,
         amap: t.Optional[t.Dict[str, str]] = ...,
         aset: t.Optional[t.Set[str]] = ...,
-        item: t.Optional[simple.dependent_asyncio.dependent.ttypes.Item] = ...
+        item: t.Optional[simple.dependent_asyncio.ttypes.Item] = ...
     ) -> None:
         ...
 
