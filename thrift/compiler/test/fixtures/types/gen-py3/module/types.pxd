@@ -226,6 +226,35 @@ cdef extern from * nogil:
         void clear()
         bint empty()
 
+cdef extern from * nogil:
+    cdef cppclass std_list_int32_t "std::list<int32_t>":
+        ctypedef int32_t value_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            int32_t& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            int32_t& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        std_list_int32_t() except +
+        std_list_int32_t(std_list_int32_t&) except +
+
+        int32_t& operator[](size_type)
+        void push_back(int32_t&) except +
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass chas_bitwise_ops "apache::thrift::fixtures::types::has_bitwise_ops":
@@ -253,6 +282,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cdecorated_struct "apache::thrift::fixtures::types::decorated_struct"
     # Forward Declaration
     cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct"
+    # Forward Declaration
+    cdef cppclass cCppTypeStruct "apache::thrift::fixtures::types::CppTypeStruct"
     # Forward Declaration
     cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct"
     # Forward Declaration
@@ -293,6 +324,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         std_unordered_map[int32_t,string] fieldH
         cContainerStruct__isset __isset
 
+    cdef cppclass cCppTypeStruct__isset "apache::thrift::fixtures::types::CppTypeStruct::__isset":
+        bint fieldA
+
+    cdef cppclass cCppTypeStruct "apache::thrift::fixtures::types::CppTypeStruct":
+        cCppTypeStruct() except +
+        cCppTypeStruct(const cCppTypeStruct&) except +
+        bint operator==(cCppTypeStruct&)
+        std_list_int32_t fieldA
+        cCppTypeStruct__isset __isset
+
     cdef cppclass cVirtualStruct__isset "apache::thrift::fixtures::types::VirtualStruct::__isset":
         bint MyIntField
 
@@ -323,6 +364,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cContainerStruct] move(unique_ptr[cContainerStruct])
     cdef shared_ptr[cContainerStruct] move_shared "std::move"(shared_ptr[cContainerStruct])
     cdef unique_ptr[cContainerStruct] move_unique "std::move"(unique_ptr[cContainerStruct])
+    cdef shared_ptr[cCppTypeStruct] move(unique_ptr[cCppTypeStruct])
+    cdef shared_ptr[cCppTypeStruct] move_shared "std::move"(shared_ptr[cCppTypeStruct])
+    cdef unique_ptr[cCppTypeStruct] move_unique "std::move"(unique_ptr[cCppTypeStruct])
     cdef shared_ptr[cVirtualStruct] move(unique_ptr[cVirtualStruct])
     cdef shared_ptr[cVirtualStruct] move_shared "std::move"(shared_ptr[cVirtualStruct])
     cdef unique_ptr[cVirtualStruct] move_unique "std::move"(unique_ptr[cVirtualStruct])
@@ -333,6 +377,7 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
     cdef shared_ptr[const cContainerStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ContainerStruct>"(shared_ptr[cContainerStruct])
+    cdef shared_ptr[const cCppTypeStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::CppTypeStruct>"(shared_ptr[cCppTypeStruct])
     cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
     cdef shared_ptr[const cMyStructWithForwardRefEnum] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStructWithForwardRefEnum>"(shared_ptr[cMyStructWithForwardRefEnum])
 
@@ -384,6 +429,24 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct])
+
+# Forward Definition of the cython struct
+cdef class CppTypeStruct(thrift.py3.types.Struct)
+
+cdef class CppTypeStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cCppTypeStruct] _cpp_obj
+    cdef std_list_int32_t__List__i32 __fieldA
+
+    @staticmethod
+    cdef unique_ptr[cCppTypeStruct] _make_instance(
+        cCppTypeStruct* base_instance,
+        object fieldA
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cCppTypeStruct])
 
 # Forward Definition of the cython struct
 cdef class VirtualStruct(thrift.py3.types.Struct)
@@ -493,6 +556,15 @@ cdef class folly_sorted_vector_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *
 
+cdef class std_list_int32_t__List__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[std_list_int32_t] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[std_list_int32_t])
+    @staticmethod
+    cdef unique_ptr[std_list_int32_t] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move(unique_ptr[std_unordered_map[int32_t,string]])
     cdef unique_ptr[std_unordered_map[int32_t,string]] move_unique "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
@@ -510,6 +582,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[folly_sorted_vector_set[int32_t]] move_unique "std::move"(unique_ptr[folly_sorted_vector_set[int32_t]])
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] move(unique_ptr[folly_sorted_vector_map[int32_t,string]])
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int32_t,string]])
+    cdef shared_ptr[std_list_int32_t] move(unique_ptr[std_list_int32_t])
+    cdef unique_ptr[std_list_int32_t] move_unique "std::move"(unique_ptr[std_list_int32_t])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
 
@@ -526,4 +600,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_set[int32_t]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<int32_t>>"(shared_ptr[folly_sorted_vector_set[int32_t]])
 
     cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
+
+    cdef shared_ptr[const std_list_int32_t] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list_int32_t])
 

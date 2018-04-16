@@ -268,6 +268,48 @@ class ContainerStruct implements \IThriftStruct {
 
 /**
  * Original thrift struct:-
+ * CppTypeStruct
+ */
+class CppTypeStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'fieldA',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'fieldA' => 1,
+  };
+  const int STRUCTURAL_ID = 9369458949141941;
+  /**
+   * Original thrift field:-
+   * 1: list<i32> fieldA
+   */
+  public Vector<int> $fieldA;
+
+  public function __construct(?Vector<int> $fieldA = null  ) {
+    if ($fieldA === null) {
+      $this->fieldA = Vector {};
+    } else {
+      $this->fieldA = $fieldA;
+    }
+  }
+
+  public function getName(): string {
+    return 'CppTypeStruct';
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * VirtualStruct
  */
 class VirtualStruct implements \IThriftStruct {

@@ -133,6 +133,25 @@ void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Sc
   reflectionInitializer_673983474151144843(schema);  // map<i32, string>
 }
 
+static void  reflectionInitializer_12058391220869880681(::apache::thrift::reflection::Schema&);  // list<i32>
+// Reflection initializer for struct module.CppTypeStruct
+void reflectionInitializer_15199837033647160364(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15199837033647160364U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.CppTypeStruct";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldA";
+    f.order = 0;
+  }
+  reflectionInitializer_12058391220869880681(schema);  // list<i32>
+}
+
 // Reflection initializer for struct module.VirtualStruct
 void reflectionInitializer_6433147857901895308(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 6433147857901895308U;

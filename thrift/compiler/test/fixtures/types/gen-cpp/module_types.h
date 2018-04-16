@@ -107,6 +107,8 @@ class decorated_struct;
 
 class ContainerStruct;
 
+class CppTypeStruct;
+
 class VirtualStruct;
 
 class MyStructWithForwardRefEnum;
@@ -353,6 +355,64 @@ class ContainerStruct final : public apache::thrift::TStructType<ContainerStruct
 class ContainerStruct;
 void merge(const ContainerStruct& from, ContainerStruct& to);
 void merge(ContainerStruct&& from, ContainerStruct& to);
+void swap(CppTypeStruct &a, CppTypeStruct &b);
+
+class CppTypeStruct final : public apache::thrift::TStructType<CppTypeStruct> {
+ public:
+
+  static const uint64_t _reflection_id = 15199837033647160364U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  CppTypeStruct() {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit CppTypeStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    CppTypeStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldA = arg.move();
+    __isset.fieldA = true;
+  }
+
+  CppTypeStruct(const CppTypeStruct&) = default;
+  CppTypeStruct& operator=(const CppTypeStruct& src)= default;
+  CppTypeStruct(CppTypeStruct&&) = default;
+  CppTypeStruct& operator=(CppTypeStruct&&) = default;
+
+  void __clear();
+  std::list<int32_t> fieldA;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      fieldA = false;
+    }
+    bool fieldA;
+  } __isset;
+
+  bool operator == (const CppTypeStruct &) const;
+  bool operator != (const CppTypeStruct& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const CppTypeStruct & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+class CppTypeStruct;
+void merge(const CppTypeStruct& from, CppTypeStruct& to);
+void merge(CppTypeStruct&& from, CppTypeStruct& to);
 void swap(VirtualStruct &a, VirtualStruct &b);
 
 class VirtualStruct : public apache::thrift::TStructType<VirtualStruct> {

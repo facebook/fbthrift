@@ -18,6 +18,10 @@ struct ContainerStruct {
   8: include.SomeMap fieldH
 }
 
+struct CppTypeStruct {
+  1: list<i32> (cpp.type = "std::list<int32_t>") fieldA
+}
+
 enum has_bitwise_ops {
   none = 0,
   zero = 1,

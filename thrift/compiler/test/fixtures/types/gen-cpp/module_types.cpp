@@ -702,6 +702,139 @@ void merge(ContainerStruct&& from, ContainerStruct& to) {
   to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
 }
 
+const uint64_t CppTypeStruct::_reflection_id;
+void CppTypeStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_15199837033647160364(schema);
+}
+
+bool CppTypeStruct::operator == (const CppTypeStruct & rhs) const {
+  if (!(this->fieldA == rhs.fieldA))
+    return false;
+  return true;
+}
+
+void CppTypeStruct::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+uint32_t CppTypeStruct::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_15199837033647160364(*schema);
+    iprot->setNextStructType(CppTypeStruct::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_LIST) {
+          {
+            this->fieldA.clear();
+            uint32_t _size86;
+            bool _sizeUnknown87;
+            apache::thrift::protocol::TType _etype90;
+            xfer += iprot->readListBegin(_etype90, _size86, _sizeUnknown87);
+            if (!_sizeUnknown87) {
+              uint32_t _i92;
+              for (_i92 = 0; _i92 < _size86; ++_i92)
+              {
+                int32_t _elem93;
+                xfer += iprot->readI32(_elem93);
+                this->fieldA.push_back(_elem93);
+              }
+            } else {
+              while (iprot->peekList())
+              {
+                int32_t _elem94;
+                xfer += iprot->readI32(_elem94);
+                this->fieldA.push_back(_elem94);
+              }
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.fieldA = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void CppTypeStruct::__clear() {
+  fieldA.clear();
+  __isset.__clear();
+}
+uint32_t CppTypeStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("CppTypeStruct");
+  xfer += oprot->writeFieldBegin("fieldA", apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
+    for (auto _iter95 = this->fieldA.cbegin(); _iter95 != this->fieldA.cend(); ++_iter95)
+    {
+      xfer += oprot->writeI32((*_iter95));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(CppTypeStruct &a, CppTypeStruct &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.fieldA, b.fieldA);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const CppTypeStruct& from, CppTypeStruct& to) {
+  using apache::thrift::merge;
+  merge(from.fieldA, to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+}
+
+void merge(CppTypeStruct&& from, CppTypeStruct& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.fieldA), to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+}
+
 const uint64_t VirtualStruct::_reflection_id;
 void VirtualStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_6433147857901895308(schema);
@@ -861,9 +994,9 @@ uint32_t MyStructWithForwardRefEnum::read(apache::thrift::protocol::TProtocol* i
     {
       case 1:
         if (_ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast87;
-          xfer += iprot->readI32(ecast87);
-          this->a = (MyForwardRefEnum)ecast87;
+          int32_t ecast98;
+          xfer += iprot->readI32(ecast98);
+          this->a = (MyForwardRefEnum)ecast98;
           this->__isset.a = true;
         } else {
           xfer += iprot->skip(_ftype);
@@ -871,9 +1004,9 @@ uint32_t MyStructWithForwardRefEnum::read(apache::thrift::protocol::TProtocol* i
         break;
       case 2:
         if (_ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast88;
-          xfer += iprot->readI32(ecast88);
-          this->b = (MyForwardRefEnum)ecast88;
+          int32_t ecast99;
+          xfer += iprot->readI32(ecast99);
+          this->b = (MyForwardRefEnum)ecast99;
           this->__isset.b = true;
         } else {
           xfer += iprot->skip(_ftype);

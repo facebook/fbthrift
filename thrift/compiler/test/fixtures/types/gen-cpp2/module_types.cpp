@@ -323,6 +323,58 @@ template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactPro
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg) :
+    fieldA(std::move(fieldA__arg)) {
+  __isset.fieldA = true;
+}
+
+void CppTypeStruct::__clear() {
+  // clear all fields
+  fieldA.clear();
+  __isset = {};
+}
+
+bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
+  if (!((fieldA == rhs.fieldA))) {
+    return false;
+  }
+  return true;
+}
+
+const std::vector<int32_t>& CppTypeStruct::get_fieldA() const& {
+  return fieldA;
+}
+
+std::vector<int32_t> CppTypeStruct::get_fieldA() && {
+  return std::move(fieldA);
+}
+
+void CppTypeStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+
+void swap(CppTypeStruct& a, CppTypeStruct& b) {
+  using ::std::swap;
+  swap(a.fieldA, b.fieldA);
+  swap(a.__isset, b.__isset);
+}
+
+template void CppTypeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t CppTypeStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t CppTypeStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void CppTypeStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t CppTypeStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t CppTypeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg) :
     MyIntField(std::move(MyIntField__arg)) {
   __isset.MyIntField = true;

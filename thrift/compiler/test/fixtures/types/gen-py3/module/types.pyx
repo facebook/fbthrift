@@ -554,6 +554,137 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return (deserialize, (ContainerStruct, serialize(self)))
 
 
+cdef cCppTypeStruct _CppTypeStruct_defaults = cCppTypeStruct()
+
+cdef class CppTypeStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        CppTypeStruct self, *,
+        fieldA=None
+    ):
+        self._cpp_obj = move(CppTypeStruct._make_instance(
+          NULL,
+          fieldA,
+        ))
+
+    def __call__(
+        CppTypeStruct self,
+        fieldA=__NOTSET
+    ):
+        changes = any((
+            fieldA is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
+        inst._cpp_obj = move(CppTypeStruct._make_instance(
+          self._cpp_obj.get(),
+          fieldA,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cCppTypeStruct] _make_instance(
+        cCppTypeStruct* base_instance,
+        object fieldA
+    ) except *:
+        cdef unique_ptr[cCppTypeStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cCppTypeStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cCppTypeStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if fieldA is None:
+                deref(c_inst).fieldA = _CppTypeStruct_defaults.fieldA
+                deref(c_inst).__isset.fieldA = False
+                pass
+            elif fieldA is __NOTSET:
+                fieldA = None
+
+        if fieldA is not None:
+            deref(c_inst).fieldA = deref(std_list_int32_t__List__i32(fieldA)._cpp_obj)
+            deref(c_inst).__isset.fieldA = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'fieldA', self.fieldA
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cCppTypeStruct] cpp_obj):
+        inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def fieldA(self):
+
+        if self.__fieldA is None:
+            self.__fieldA = std_list_int32_t__List__i32.create(make_shared[std_list_int32_t](deref(self._cpp_obj).fieldA))
+        return self.__fieldA
+
+
+    def __hash__(CppTypeStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.fieldA,
+            ))
+        return self.__hash
+
+    def __repr__(CppTypeStruct self):
+        return f'CppTypeStruct(fieldA={repr(self.fieldA)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, CppTypeStruct) and
+                isinstance(other, CppTypeStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cCppTypeStruct cself = deref((<CppTypeStruct>self)._cpp_obj)
+        cdef cCppTypeStruct cother = deref((<CppTypeStruct>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef bytes _serialize(CppTypeStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cCppTypeStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cCppTypeStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cCppTypeStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(CppTypeStruct self, const IOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cCppTypeStruct]()
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cCppTypeStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cCppTypeStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cCppTypeStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (CppTypeStruct, serialize(self)))
+
+
 cdef cVirtualStruct _VirtualStruct_defaults = cVirtualStruct()
 
 cdef class VirtualStruct(thrift.py3.types.Struct):
@@ -2076,4 +2207,158 @@ cdef class folly_sorted_vector_map__Map__i32_string:
 
 
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
+
+cdef class std_list_int32_t__List__i32:
+    def __init__(self, items=None):
+        if isinstance(items, std_list_int32_t__List__i32):
+            self._cpp_obj = (<std_list_int32_t__List__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(std_list_int32_t__List__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[std_list_int32_t] c_items):
+        inst = <std_list_int32_t__List__i32>std_list_int32_t__List__i32.__new__(std_list_int32_t__List__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[std_list_int32_t] _make_instance(object items) except *:
+        cdef unique_ptr[std_list_int32_t] c_inst = make_unique[std_list_int32_t]()
+        if items is not None:
+            for item in items:
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                <int32_t> item
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[std_list_int32_t] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[std_list_int32_t]()
+            sz = deref(self._cpp_obj).size()
+            for index in range(*index_obj.indices(sz)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+            return std_list_int32_t__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        if not isinstance(item, int):
+            return False
+        cdef int32_t citem = item
+        cdef std_list_int32_t vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef std_list_int32_t vec = deref(
+            self._cpp_obj.get())
+        cdef std_list_int32_t.reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        if not isinstance(item, int):
+            raise err
+        cdef int32_t citem = item
+        cdef std_list_int32_t vec = deref(self._cpp_obj.get())
+        cdef std_list_int32_t.iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef std_list_int32_t.iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise err
+
+    def count(self, item):
+        if not self or item is None:
+            return 0
+        if not isinstance(item, int):
+            return 0
+        cdef int32_t citem = item
+        cdef std_list_int32_t vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(std_list_int32_t__List__i32)
 
