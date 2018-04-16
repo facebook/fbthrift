@@ -765,7 +765,7 @@ cdef class Map__i16_double:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int16_t> key
+                key = <int16_t> key
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
@@ -892,7 +892,7 @@ cdef class Map__i16_float:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int16_t> key
+                key = <int16_t> key
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
@@ -1192,7 +1192,7 @@ cdef class Map__i16_Map__i16_float:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int16_t> key
+                key = <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i16_float):
@@ -1522,7 +1522,7 @@ cdef class Map__i64_double:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int64_t> key
+                key = <int64_t> key
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
@@ -1649,7 +1649,7 @@ cdef class Map__i16_Map__i64_double:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int16_t> key
+                key = <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i64_double):
@@ -1781,7 +1781,7 @@ cdef class Map__i32_Map__i64_double:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Mapping[int, float]")
                 if not isinstance(item, Map__i64_double):
@@ -2066,7 +2066,7 @@ cdef class Map__i16_List__float:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int16_t> key
+                key = <int16_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[float]")
                 if not isinstance(item, List__float):
@@ -2198,7 +2198,7 @@ cdef class Map__i32_List__float:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[float]")
                 if not isinstance(item, List__float):

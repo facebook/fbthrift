@@ -54,7 +54,7 @@ cdef class std_unordered_map__Map__i32_string:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

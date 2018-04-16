@@ -66,7 +66,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         if FieldA is not None:
             if not isinstance(FieldA, int):
                 raise TypeError(f'FieldA is not a { int !r}.')
-            <int32_t> FieldA
+            FieldA = <int32_t> FieldA
 
         self._cpp_obj = move(AStruct._make_instance(
           NULL,
@@ -87,7 +87,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         if None is not FieldA is not __NOTSET:
             if not isinstance(FieldA, int):
                 raise TypeError(f'FieldA is not a { int !r}.')
-            <int32_t> FieldA
+            FieldA = <int32_t> FieldA
 
         inst = <AStruct>AStruct.__new__(AStruct)
         inst._cpp_obj = move(AStruct._make_instance(

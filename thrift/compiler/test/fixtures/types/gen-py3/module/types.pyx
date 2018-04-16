@@ -565,7 +565,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
-            <int64_t> MyIntField
+            MyIntField = <int64_t> MyIntField
 
         self._cpp_obj = move(VirtualStruct._make_instance(
           NULL,
@@ -586,7 +586,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if None is not MyIntField is not __NOTSET:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
-            <int64_t> MyIntField
+            MyIntField = <int64_t> MyIntField
 
         inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
         inst._cpp_obj = move(VirtualStruct._make_instance(
@@ -882,7 +882,7 @@ cdef class std_unordered_map__Map__i32_string:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
@@ -1009,7 +1009,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1163,7 +1163,7 @@ cdef class std_list__List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1317,7 +1317,7 @@ cdef class std_deque__List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1471,7 +1471,7 @@ cdef class folly_fbvector__List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1625,7 +1625,7 @@ cdef class folly_small_vector__List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1779,7 +1779,7 @@ cdef class folly_sorted_vector_set__Set__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -1970,7 +1970,7 @@ cdef class folly_sorted_vector_map__Map__i32_string:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

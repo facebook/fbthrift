@@ -561,17 +561,17 @@ cdef class Person(thrift.py3.types.Struct):
         if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            <int64_t> id
+            id = <int64_t> id
 
         if age is not None:
             if not isinstance(age, int):
                 raise TypeError(f'age is not a { int !r}.')
-            <int16_t> age
+            age = <int16_t> age
 
         if bestFriend is not None:
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
-            <int64_t> bestFriend
+            bestFriend = <int64_t> bestFriend
 
         if afraidOfAnimal is not None:
             if not isinstance(afraidOfAnimal, Animal):
@@ -632,7 +632,7 @@ cdef class Person(thrift.py3.types.Struct):
         if None is not id is not __NOTSET:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
-            <int64_t> id
+            id = <int64_t> id
 
         if None is not name is not __NOTSET:
             if not isinstance(name, str):
@@ -641,7 +641,7 @@ cdef class Person(thrift.py3.types.Struct):
         if None is not age is not __NOTSET:
             if not isinstance(age, int):
                 raise TypeError(f'age is not a { int !r}.')
-            <int16_t> age
+            age = <int16_t> age
 
         if None is not address is not __NOTSET:
             if not isinstance(address, str):
@@ -654,7 +654,7 @@ cdef class Person(thrift.py3.types.Struct):
         if None is not bestFriend is not __NOTSET:
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
-            <int64_t> bestFriend
+            bestFriend = <int64_t> bestFriend
 
         if None is not afraidOfAnimal is not __NOTSET:
             if not isinstance(afraidOfAnimal, Animal):
@@ -972,7 +972,7 @@ cdef class Set__i64:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int64_t> item
+                item = <int64_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 

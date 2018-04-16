@@ -117,7 +117,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if weeks is not None:
             if not isinstance(weeks, int):
                 raise TypeError(f'weeks is not a { int !r}.')
-            <int32_t> weeks
+            weeks = <int32_t> weeks
 
         if employer is not None:
             if not isinstance(employer, Company):
@@ -152,7 +152,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if None is not weeks is not __NOTSET:
             if not isinstance(weeks, int):
                 raise TypeError(f'weeks is not a { int !r}.')
-            <int32_t> weeks
+            weeks = <int32_t> weeks
 
         if None is not title is not __NOTSET:
             if not isinstance(title, str):
@@ -452,12 +452,12 @@ cdef class Range(thrift.py3.types.Struct):
         if min is not None:
             if not isinstance(min, int):
                 raise TypeError(f'min is not a { int !r}.')
-            <int32_t> min
+            min = <int32_t> min
 
         if max is not None:
             if not isinstance(max, int):
                 raise TypeError(f'max is not a { int !r}.')
-            <int32_t> max
+            max = <int32_t> max
 
         self._cpp_obj = move(Range._make_instance(
           NULL,
@@ -484,14 +484,14 @@ cdef class Range(thrift.py3.types.Struct):
         if None is not min is not __NOTSET:
             if not isinstance(min, int):
                 raise TypeError(f'min is not a { int !r}.')
-            <int32_t> min
+            min = <int32_t> min
 
         if max is None:
             raise TypeError('field max is required and has no default, it can not be unset')
         if None is not max is not __NOTSET:
             if not isinstance(max, int):
                 raise TypeError(f'max is not a { int !r}.')
-            <int32_t> max
+            max = <int32_t> max
 
         inst = <Range>Range.__new__(Range)
         inst._cpp_obj = move(Range._make_instance(
@@ -623,7 +623,7 @@ cdef class struct1(thrift.py3.types.Struct):
         if a is not None:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
-            <int32_t> a
+            a = <int32_t> a
 
         self._cpp_obj = move(struct1._make_instance(
           NULL,
@@ -648,7 +648,7 @@ cdef class struct1(thrift.py3.types.Struct):
         if None is not a is not __NOTSET:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
-            <int32_t> a
+            a = <int32_t> a
 
         if None is not b is not __NOTSET:
             if not isinstance(b, str):
@@ -792,7 +792,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if a is not None:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
-            <int32_t> a
+            a = <int32_t> a
 
         self._cpp_obj = move(struct2._make_instance(
           NULL,
@@ -825,7 +825,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if None is not a is not __NOTSET:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
-            <int32_t> a
+            a = <int32_t> a
 
         if None is not b is not __NOTSET:
             if not isinstance(b, str):
@@ -1014,7 +1014,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if b is not None:
             if not isinstance(b, int):
                 raise TypeError(f'b is not a { int !r}.')
-            <int32_t> b
+            b = <int32_t> b
 
         self._cpp_obj = move(struct3._make_instance(
           NULL,
@@ -1047,7 +1047,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if None is not b is not __NOTSET:
             if not isinstance(b, int):
                 raise TypeError(f'b is not a { int !r}.')
-            <int32_t> b
+            b = <int32_t> b
 
         if None is not c is not __NOTSET:
             if not isinstance(c, struct2):
@@ -1215,7 +1215,7 @@ cdef class union1(thrift.py3.types.Union):
         if i is not None:
             if not isinstance(i, int):
                 raise TypeError(f'i is not a { int !r}.')
-            <int32_t> i
+            i = <int32_t> i
 
         if d is not None:
             if not isinstance(d, (float, int)):
@@ -1388,7 +1388,7 @@ cdef class union2(thrift.py3.types.Union):
         if i is not None:
             if not isinstance(i, int):
                 raise TypeError(f'i is not a { int !r}.')
-            <int32_t> i
+            i = <int32_t> i
 
         if d is not None:
             if not isinstance(d, (float, int)):
@@ -1594,7 +1594,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1750,7 +1750,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
 
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -2507,7 +2507,7 @@ cdef class Set__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -2888,10 +2888,10 @@ cdef class Map__i32_i32:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
 
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)
@@ -3016,7 +3016,7 @@ cdef class Map__i32_string:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 

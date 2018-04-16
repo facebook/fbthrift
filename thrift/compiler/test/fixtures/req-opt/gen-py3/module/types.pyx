@@ -48,7 +48,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if myInteger is not None:
             if not isinstance(myInteger, int):
                 raise TypeError(f'myInteger is not a { int !r}.')
-            <int32_t> myInteger
+            myInteger = <int32_t> myInteger
 
         self._cpp_obj = move(Foo._make_instance(
           NULL,
@@ -83,7 +83,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if None is not myInteger is not __NOTSET:
             if not isinstance(myInteger, int):
                 raise TypeError(f'myInteger is not a { int !r}.')
-            <int32_t> myInteger
+            myInteger = <int32_t> myInteger
 
         if None is not myString is not __NOTSET:
             if not isinstance(myString, str):
@@ -425,7 +425,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 

@@ -170,7 +170,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
             {{#type:integer?}}
             {{! inject cython int overflow checks }}
-            <{{> types/CythonPythonType}}> {{field:name}}
+            {{field:name}} = <{{> types/CythonPythonType}}> {{field:name}}
             {{/type:integer?}}
             {{/type:number?}}
 
@@ -218,7 +218,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
             {{#type:integer?}}
             {{! inject cython int overflow checks }}
-            <{{> types/CythonPythonType}}> {{field:name}}
+            {{field:name}} = <{{> types/CythonPythonType}}> {{field:name}}
             {{/type:integer?}}
             {{/type:enum?}}
 
@@ -403,7 +403,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
                 raise TypeError(f'{{field:name}} is not a { {{> types/PythonType}} !r}.')
             {{#type:integer?}}
             {{! inject cython int overflow checks }}
-            <{{> types/CythonPythonType}}> {{field:name}}
+            {{field:name}} = <{{> types/CythonPythonType}}> {{field:name}}
             {{/type:integer?}}
             {{/type:cythonTypeNoneable?}}
 
@@ -617,7 +617,7 @@ cdef class {{type:flat_name}}:
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
                 {{#type:integer?}}
                 {{! inject cython int overflow checks }}
-                <{{> types/CythonPythonType}}> item
+                item = <{{> types/CythonPythonType}}> item
                 {{/type:integer?}}
                 {{/type:container?}}
                 deref(c_inst).push_back({{> CythonPythonToCppItem}})
@@ -812,7 +812,7 @@ Sequence.register({{type:flat_name}})
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
                 {{#type:integer?}}
                 {{! inject cython int overflow checks }}
-                <{{> types/CythonPythonType}}> item
+                item = <{{> types/CythonPythonType}}> item
                 {{/type:integer?}}
                 {{/type:container?}}
                 deref(c_inst).insert({{> CythonPythonToCppItem}})
@@ -1015,7 +1015,7 @@ Set.register({{type:flat_name}})
                     raise TypeError(f"{key!r} is not of type {{> types/PEP484Type}}")
                 {{#type:integer?}}
                 {{! inject cython int overflow checks }}
-                <{{> types/CythonPythonType}}> key
+                key = <{{> types/CythonPythonType}}> key
                 {{/type:integer?}}
                 {{/type:container?}}
                 {{/type:keyType}}
@@ -1031,7 +1031,7 @@ Set.register({{type:flat_name}})
                     raise TypeError(f"{item!r} is not of type {{> types/PEP484Type}}")
                 {{#type:integer?}}
                 {{! inject cython int overflow checks }}
-                <{{> types/CythonPythonType}}> item
+                item = <{{> types/CythonPythonType}}> item
                 {{/type:integer?}}
                 {{/type:container?}}
                 {{/type:valueType}}

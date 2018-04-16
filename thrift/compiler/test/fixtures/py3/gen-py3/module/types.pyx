@@ -92,7 +92,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         if err_code is not None:
             if not isinstance(err_code, int):
                 raise TypeError(f'err_code is not a { int !r}.')
-            <int16_t> err_code
+            err_code = <int16_t> err_code
 
         self._cpp_obj = move(SimpleException._make_instance(
           NULL,
@@ -181,22 +181,22 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if tiny_int is not None:
             if not isinstance(tiny_int, int):
                 raise TypeError(f'tiny_int is not a { int !r}.')
-            <int8_t> tiny_int
+            tiny_int = <int8_t> tiny_int
 
         if small_int is not None:
             if not isinstance(small_int, int):
                 raise TypeError(f'small_int is not a { int !r}.')
-            <int16_t> small_int
+            small_int = <int16_t> small_int
 
         if nice_sized_int is not None:
             if not isinstance(nice_sized_int, int):
                 raise TypeError(f'nice_sized_int is not a { int !r}.')
-            <int32_t> nice_sized_int
+            nice_sized_int = <int32_t> nice_sized_int
 
         if big_int is not None:
             if not isinstance(big_int, int):
                 raise TypeError(f'big_int is not a { int !r}.')
-            <int64_t> big_int
+            big_int = <int64_t> big_int
 
         if real is not None:
             if not isinstance(real, (float, int)):
@@ -253,22 +253,22 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if None is not tiny_int is not __NOTSET:
             if not isinstance(tiny_int, int):
                 raise TypeError(f'tiny_int is not a { int !r}.')
-            <int8_t> tiny_int
+            tiny_int = <int8_t> tiny_int
 
         if None is not small_int is not __NOTSET:
             if not isinstance(small_int, int):
                 raise TypeError(f'small_int is not a { int !r}.')
-            <int16_t> small_int
+            small_int = <int16_t> small_int
 
         if None is not nice_sized_int is not __NOTSET:
             if not isinstance(nice_sized_int, int):
                 raise TypeError(f'nice_sized_int is not a { int !r}.')
-            <int32_t> nice_sized_int
+            nice_sized_int = <int32_t> nice_sized_int
 
         if None is not big_int is not __NOTSET:
             if not isinstance(big_int, int):
                 raise TypeError(f'big_int is not a { int !r}.')
-            <int64_t> big_int
+            big_int = <int64_t> big_int
 
         if None is not real is not __NOTSET:
             if not isinstance(real, (float, int)):
@@ -515,7 +515,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if an_integer is not None:
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
-            <int32_t> an_integer
+            an_integer = <int32_t> an_integer
 
         if an_enum is not None:
             if not isinstance(an_enum, AnEnum):
@@ -576,7 +576,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if None is not an_integer is not __NOTSET:
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
-            <int32_t> an_integer
+            an_integer = <int32_t> an_integer
 
         if None is not name is not __NOTSET:
             if not isinstance(name, str):
@@ -860,7 +860,7 @@ cdef class List__i16:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int16_t> item
+                item = <int16_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1014,7 +1014,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1168,7 +1168,7 @@ cdef class List__i64:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int64_t> item
+                item = <int64_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1628,7 +1628,7 @@ cdef class Set__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -2263,7 +2263,7 @@ cdef class Map__string_i16:
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int16_t> item
+                item = <int16_t> item
 
                 deref(c_inst).insert(cpair[string,int16_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -2563,7 +2563,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
 
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -4138,7 +4138,7 @@ cdef class Map__i32_double:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 

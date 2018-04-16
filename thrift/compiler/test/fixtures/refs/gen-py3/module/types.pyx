@@ -72,7 +72,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         if anInteger is not None:
             if not isinstance(anInteger, int):
                 raise TypeError(f'anInteger is not a { int !r}.')
-            <int32_t> anInteger
+            anInteger = <int32_t> anInteger
 
         self._cpp_obj = move(MyUnion._make_instance(
           NULL,
@@ -223,17 +223,17 @@ cdef class MyField(thrift.py3.types.Struct):
         if opt_value is not None:
             if not isinstance(opt_value, int):
                 raise TypeError(f'opt_value is not a { int !r}.')
-            <int64_t> opt_value
+            opt_value = <int64_t> opt_value
 
         if value is not None:
             if not isinstance(value, int):
                 raise TypeError(f'value is not a { int !r}.')
-            <int64_t> value
+            value = <int64_t> value
 
         if req_value is not None:
             if not isinstance(req_value, int):
                 raise TypeError(f'req_value is not a { int !r}.')
-            <int64_t> req_value
+            req_value = <int64_t> req_value
 
         self._cpp_obj = move(MyField._make_instance(
           NULL,
@@ -262,19 +262,19 @@ cdef class MyField(thrift.py3.types.Struct):
         if None is not opt_value is not __NOTSET:
             if not isinstance(opt_value, int):
                 raise TypeError(f'opt_value is not a { int !r}.')
-            <int64_t> opt_value
+            opt_value = <int64_t> opt_value
 
         if None is not value is not __NOTSET:
             if not isinstance(value, int):
                 raise TypeError(f'value is not a { int !r}.')
-            <int64_t> value
+            value = <int64_t> value
 
         if req_value is None:
             raise TypeError('field req_value is required and has no default, it can not be unset')
         if None is not req_value is not __NOTSET:
             if not isinstance(req_value, int):
                 raise TypeError(f'req_value is not a { int !r}.')
-            <int64_t> req_value
+            req_value = <int64_t> req_value
 
         inst = <MyField>MyField.__new__(MyField)
         inst._cpp_obj = move(MyField._make_instance(
@@ -2469,7 +2469,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -2623,7 +2623,7 @@ cdef class Set__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -2814,10 +2814,10 @@ cdef class Map__i32_i32:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int32_t> key
+                key = <int32_t> key
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
 
                 deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
         return move_unique(c_inst)

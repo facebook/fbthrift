@@ -70,7 +70,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         if small_B is not None:
             if not isinstance(small_B, int):
                 raise TypeError(f'small_B is not a { int !r}.')
-            <int32_t> small_B
+            small_B = <int32_t> small_B
 
         self._cpp_obj = move(SmallStruct._make_instance(
           NULL,
@@ -99,7 +99,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         if None is not small_B is not __NOTSET:
             if not isinstance(small_B, int):
                 raise TypeError(f'small_B is not a { int !r}.')
-            <int32_t> small_B
+            small_B = <int32_t> small_B
 
         inst = <SmallStruct>SmallStruct.__new__(SmallStruct)
         inst._cpp_obj = move(SmallStruct._make_instance(
@@ -1078,7 +1078,7 @@ cdef class Set__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).insert(item)
         return move_unique(c_inst)
 
@@ -1269,7 +1269,7 @@ cdef class List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -1771,7 +1771,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
 
                 deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
         return move_unique(c_inst)
@@ -4065,7 +4065,7 @@ cdef class List__Foo__i64:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int64_t> item
+                item = <int64_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -4372,7 +4372,7 @@ cdef class List__Baz__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 

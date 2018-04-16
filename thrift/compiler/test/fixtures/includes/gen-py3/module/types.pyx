@@ -49,7 +49,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyIncludedInt is not None:
             if not isinstance(MyIncludedInt, int):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            <int64_t> MyIncludedInt
+            MyIncludedInt = <int64_t> MyIncludedInt
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -86,7 +86,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if None is not MyIncludedInt is not __NOTSET:
             if not isinstance(MyIncludedInt, int):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            <int64_t> MyIncludedInt
+            MyIncludedInt = <int64_t> MyIncludedInt
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(

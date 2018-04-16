@@ -70,7 +70,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if first is not None:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
-            <int32_t> first
+            first = <int32_t> first
 
         self._cpp_obj = move(Struct._make_instance(
           NULL,
@@ -95,7 +95,7 @@ cdef class Struct(thrift.py3.types.Struct):
         if None is not first is not __NOTSET:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
-            <int32_t> first
+            first = <int32_t> first
 
         if None is not second is not __NOTSET:
             if not isinstance(second, str):

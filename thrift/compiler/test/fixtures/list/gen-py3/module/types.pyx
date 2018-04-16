@@ -207,7 +207,7 @@ cdef class Map__i64_List__string:
             for key, item in items.items():
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
-                <int64_t> key
+                key = <int64_t> key
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[str]")
                 if not isinstance(item, List__string):
