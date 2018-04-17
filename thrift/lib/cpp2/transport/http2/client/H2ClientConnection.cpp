@@ -87,6 +87,7 @@ H2ClientConnection::H2ClientConnection(
         std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)},
        {proxygen::SettingsId::THRIFT_CHANNEL_ID,
         std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)}});
+  httpSession_->startNow();
 }
 
 H2ClientConnection::~H2ClientConnection() {
