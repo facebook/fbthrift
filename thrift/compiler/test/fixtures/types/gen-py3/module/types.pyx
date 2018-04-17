@@ -2228,7 +2228,7 @@ cdef class std_list_int32_t__List__i32:
             for item in items:
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
-                <int32_t> item
+                item = <int32_t> item
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
