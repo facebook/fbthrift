@@ -120,7 +120,8 @@ void Empty::__clear() {
   // clear all fields
 }
 
-bool Empty::operator==(const Empty& /* rhs */) const {
+bool Empty::operator==(const Empty& rhs) const {
+  (void)rhs;
   return true;
 }
 
@@ -162,6 +163,7 @@ void ASimpleStruct::__clear() {
 }
 
 bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
+  (void)rhs;
   if (!((boolField == rhs.boolField))) {
     return false;
   }
@@ -210,6 +212,7 @@ void ASimpleStructNoexcept::__clear() {
 }
 
 bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
+  (void)rhs;
   if (!((boolField == rhs.boolField))) {
     return false;
   }
@@ -302,6 +305,7 @@ void MyStruct::__clear() {
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
+  (void)rhs;
   if (!((MyBoolField == rhs.MyBoolField))) {
     return false;
   }
@@ -1049,6 +1053,7 @@ void AnException::__clear() {
 }
 
 bool AnException::operator==(const AnException& rhs) const {
+  (void)rhs;
   if (!((code == rhs.code))) {
     return false;
   }
@@ -1294,6 +1299,7 @@ void AnotherException::__clear() {
 }
 
 bool AnotherException::operator==(const AnotherException& rhs) const {
+  (void)rhs;
   if (!((code == rhs.code))) {
     return false;
   }
@@ -1539,6 +1545,7 @@ void containerStruct::__clear() {
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
+  (void)rhs;
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }
@@ -2222,6 +2229,7 @@ void MyIncludedStruct::__clear() {
 }
 
 bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
+  (void)rhs;
   if (!((MyIncludedInt == rhs.MyIncludedInt))) {
     return false;
   }
@@ -2466,6 +2474,7 @@ void AnnotatedStruct::__clear() {
 }
 
 bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
+  (void)rhs;
   if (!((no_annotation == rhs.no_annotation))) {
     return false;
   }
@@ -2957,6 +2966,7 @@ void FloatStruct::__clear() {
 }
 
 bool FloatStruct::operator==(const FloatStruct& rhs) const {
+  (void)rhs;
   if (!((floatField == rhs.floatField))) {
     return false;
   }
@@ -3084,6 +3094,7 @@ void AllRequiredNoExceptMoveCtrStruct::__clear() {
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
+  (void)rhs;
   if (!((intField == rhs.intField))) {
     return false;
   }

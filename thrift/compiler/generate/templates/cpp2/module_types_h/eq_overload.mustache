@@ -15,11 +15,4 @@
   limitations under the License.
 
 %><%!
-%>  bool operator==(const <%struct:name%>& <%!
-  %><%#struct:fields?%><%!
-    %>rhs<%!
-  %><%/struct:fields?%><%!
-  %><%^struct:fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:fields?%><%!
-%>) const<% > common/semicolon_newline%>
+%>  bool operator==(const <%struct:name%>& rhs) const<% > common/semicolon_newline%>

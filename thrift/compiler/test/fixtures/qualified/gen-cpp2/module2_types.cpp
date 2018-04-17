@@ -29,6 +29,7 @@ void Struct::__clear() {
 }
 
 bool Struct::operator==(const Struct& rhs) const {
+  (void)rhs;
   if (!((first == rhs.first))) {
     return false;
   }
@@ -100,6 +101,7 @@ void BigStruct::__clear() {
 }
 
 bool BigStruct::operator==(const BigStruct& rhs) const {
+  (void)rhs;
   if (!((s == rhs.s))) {
     return false;
   }

@@ -126,6 +126,7 @@ void MyField::__clear() {
 }
 
 bool MyField::operator==(const MyField& rhs) const {
+  (void)rhs;
   if (__isset.opt_value != rhs.__isset.opt_value) {
     return false;
   }
@@ -203,6 +204,7 @@ void MyStruct::__clear() {
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
+  (void)rhs;
   if (!(((opt_ref && rhs.opt_ref && *opt_ref == *rhs.opt_ref) ||(!opt_ref && !rhs.opt_ref)))) {
     return false;
   }
@@ -282,6 +284,7 @@ void StructWithUnion::__clear() {
 }
 
 bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
+  (void)rhs;
   if (!(((u && rhs.u && *u == *rhs.u) ||(!u && !rhs.u)))) {
     return false;
   }
@@ -350,6 +353,7 @@ void RecursiveStruct::__clear() {
 }
 
 bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
+  (void)rhs;
   if (__isset.mes != rhs.__isset.mes) {
     return false;
   }
@@ -439,6 +443,7 @@ void StructWithContainers::__clear() {
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
+  (void)rhs;
   if (!(((list_ref && rhs.list_ref && *list_ref == *rhs.list_ref) ||(!list_ref && !rhs.list_ref)))) {
     return false;
   }
@@ -525,6 +530,7 @@ void StructWithSharedConst::__clear() {
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
+  (void)rhs;
   if (!(((opt_shared_const && rhs.opt_shared_const && *opt_shared_const == *rhs.opt_shared_const) ||(!opt_shared_const && !rhs.opt_shared_const)))) {
     return false;
   }
@@ -579,7 +585,8 @@ void Empty::__clear() {
   // clear all fields
 }
 
-bool Empty::operator==(const Empty& /* rhs */) const {
+bool Empty::operator==(const Empty& rhs) const {
+  (void)rhs;
   return true;
 }
 
@@ -628,6 +635,7 @@ void StructWithRef::__clear() {
 }
 
 bool StructWithRef::operator==(const StructWithRef& rhs) const {
+  (void)rhs;
   if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
     return false;
   }
@@ -699,6 +707,7 @@ void StructWithRefTypeUnique::__clear() {
 }
 
 bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
+  (void)rhs;
   if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
     return false;
   }
@@ -758,6 +767,7 @@ void StructWithRefTypeShared::__clear() {
 }
 
 bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
+  (void)rhs;
   if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
     return false;
   }
@@ -817,6 +827,7 @@ void StructWithRefTypeSharedConst::__clear() {
 }
 
 bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {
+  (void)rhs;
   if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
     return false;
   }

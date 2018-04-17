@@ -16,12 +16,7 @@
 
 %>
 
-<%#struct:fields?%>
 bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
-<%/struct:fields?%>
-<%^struct:fields?%>
-bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
-<%/struct:fields?%>
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
 <%#struct:fields%>

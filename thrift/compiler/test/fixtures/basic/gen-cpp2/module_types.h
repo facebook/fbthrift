@@ -235,7 +235,7 @@ class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators
 
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
-  bool operator==(const MyDataItem& /* rhs */) const;
+  bool operator==(const MyDataItem& rhs) const;
 
   bool operator < (const MyDataItem& rhs) const {
     (void)rhs;

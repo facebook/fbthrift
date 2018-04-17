@@ -54,6 +54,7 @@ void Color::__clear() {
 }
 
 bool Color::operator==(const Color& rhs) const {
+  (void)rhs;
   if (!((red == rhs.red))) {
     return false;
   }
@@ -131,6 +132,7 @@ void Vehicle::__clear() {
 }
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
+  (void)rhs;
   if (!((color == rhs.color))) {
     return false;
   }
@@ -227,6 +229,7 @@ void Person::__clear() {
 }
 
 bool Person::operator==(const Person& rhs) const {
+  (void)rhs;
   if (!((id == rhs.id))) {
     return false;
   }

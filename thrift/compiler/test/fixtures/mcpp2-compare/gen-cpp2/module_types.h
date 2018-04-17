@@ -397,7 +397,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-  bool operator==(const Empty& /* rhs */) const;
+  bool operator==(const Empty& rhs) const;
 
   bool operator < (const Empty& rhs) const {
     (void)rhs;

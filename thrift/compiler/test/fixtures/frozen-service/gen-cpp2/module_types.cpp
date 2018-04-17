@@ -35,6 +35,7 @@ void ModuleA::__clear() {
 }
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
+  (void)rhs;
   if (!((i32Field == rhs.i32Field))) {
     return false;
   }
@@ -119,6 +120,7 @@ void ModuleB::__clear() {
 }
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
+  (void)rhs;
   if (!((i32Field == rhs.i32Field))) {
     return false;
   }
@@ -166,6 +168,7 @@ void ExceptionA::__clear() {
 }
 
 bool ExceptionA::operator==(const ExceptionA& rhs) const {
+  (void)rhs;
   if (!((code == rhs.code))) {
     return false;
   }
@@ -221,6 +224,7 @@ void ExceptionB::__clear() {
 }
 
 bool ExceptionB::operator==(const ExceptionB& rhs) const {
+  (void)rhs;
   if (!((code == rhs.code))) {
     return false;
   }

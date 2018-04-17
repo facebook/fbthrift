@@ -44,7 +44,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
 
   Banal& operator=(const Banal&) = default;
   void __clear();
-  bool operator==(const Banal& /* rhs */) const;
+  bool operator==(const Banal& rhs) const;
 
   bool operator < (const Banal& rhs) const {
     (void)rhs;

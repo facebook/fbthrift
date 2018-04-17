@@ -56,6 +56,7 @@ void MyStruct::__clear() {
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
+  (void)rhs;
   if (!((MyIntField == rhs.MyIntField))) {
     return false;
   }
@@ -118,7 +119,8 @@ void MyDataItem::__clear() {
   // clear all fields
 }
 
-bool MyDataItem::operator==(const MyDataItem& /* rhs */) const {
+bool MyDataItem::operator==(const MyDataItem& rhs) const {
+  (void)rhs;
   return true;
 }
 

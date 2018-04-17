@@ -29,6 +29,7 @@ void Included::__clear() {
 }
 
 bool Included::operator==(const Included& rhs) const {
+  (void)rhs;
   if (!((MyIntField == rhs.MyIntField))) {
     return false;
   }

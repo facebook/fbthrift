@@ -101,6 +101,7 @@ void decorated_struct::__clear() {
 }
 
 bool decorated_struct::operator==(const decorated_struct& rhs) const {
+  (void)rhs;
   if (!((field == rhs.field))) {
     return false;
   }
@@ -171,6 +172,7 @@ void ContainerStruct::__clear() {
 }
 
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
+  (void)rhs;
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }
@@ -335,6 +337,7 @@ void CppTypeStruct::__clear() {
 }
 
 bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
+  (void)rhs;
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }
@@ -387,6 +390,7 @@ void VirtualStruct::__clear() {
 }
 
 bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
+  (void)rhs;
   if (!((MyIntField == rhs.MyIntField))) {
     return false;
   }
@@ -434,6 +438,7 @@ void MyStructWithForwardRefEnum::__clear() {
 }
 
 bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
+  (void)rhs;
   if (!((a == rhs.a))) {
     return false;
   }

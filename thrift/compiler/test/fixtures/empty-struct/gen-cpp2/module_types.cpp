@@ -20,7 +20,8 @@ void Empty::__clear() {
   // clear all fields
 }
 
-bool Empty::operator==(const Empty& /* rhs */) const {
+bool Empty::operator==(const Empty& rhs) const {
+  (void)rhs;
   return true;
 }
 
@@ -59,7 +60,7 @@ void Nada::__clear() {
   type_ = Type::__EMPTY__;
 }
 
-bool Nada::operator==(const Nada& /* rhs */) const {
+bool Nada::operator==(const Nada& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     default:

@@ -44,7 +44,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty& operator=(const Empty&) = default;
   void __clear();
-  bool operator==(const Empty& /* rhs */) const;
+  bool operator==(const Empty& rhs) const;
 
   bool operator < (const Empty& rhs) const {
     (void)rhs;
@@ -189,7 +189,7 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const Nada& /* rhs */) const;
+  bool operator==(const Nada& rhs) const;
 
   bool operator < (const Nada& rhs) const {
     if (type_ != rhs.type_) { return type_ < rhs.type_; }

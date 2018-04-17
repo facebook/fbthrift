@@ -20,7 +20,8 @@ void Banal::__clear() {
   // clear all fields
 }
 
-bool Banal::operator==(const Banal& /* rhs */) const {
+bool Banal::operator==(const Banal& rhs) const {
+  (void)rhs;
   return true;
 }
 
@@ -55,6 +56,7 @@ void Fiery::__clear() {
 }
 
 bool Fiery::operator==(const Fiery& rhs) const {
+  (void)rhs;
   if (!((message == rhs.message))) {
     return false;
   }

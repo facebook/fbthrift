@@ -20,7 +20,8 @@ void FooEx::__clear() {
   // clear all fields
 }
 
-bool FooEx::operator==(const FooEx& /* rhs */) const {
+bool FooEx::operator==(const FooEx& rhs) const {
+  (void)rhs;
   return true;
 }
 

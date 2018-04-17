@@ -64,6 +64,7 @@ void containerStruct2::__clear() {
 }
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
+  (void)rhs;
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }

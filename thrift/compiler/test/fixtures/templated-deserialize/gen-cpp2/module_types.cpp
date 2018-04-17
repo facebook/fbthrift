@@ -54,6 +54,7 @@ void SmallStruct::__clear() {
 }
 
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
+  (void)rhs;
   if (!((small_A == rhs.small_A))) {
     return false;
   }
@@ -234,6 +235,7 @@ void containerStruct::__clear() {
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
+  (void)rhs;
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }

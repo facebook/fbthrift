@@ -29,6 +29,7 @@ void IncludedB::__clear() {
 }
 
 bool IncludedB::operator==(const IncludedB& rhs) const {
+  (void)rhs;
   if (!((i32Field == rhs.i32Field))) {
     return false;
   }

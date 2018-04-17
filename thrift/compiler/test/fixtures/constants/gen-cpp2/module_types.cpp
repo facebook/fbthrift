@@ -106,6 +106,7 @@ void Internship::__clear() {
 }
 
 bool Internship::operator==(const Internship& rhs) const {
+  (void)rhs;
   if (!((weeks == rhs.weeks))) {
     return false;
   }
@@ -169,6 +170,7 @@ void UnEnumStruct::__clear() {
 }
 
 bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
+  (void)rhs;
   if (!((city == rhs.city))) {
     return false;
   }
@@ -212,6 +214,7 @@ void Range::__clear() {
 }
 
 bool Range::operator==(const Range& rhs) const {
+  (void)rhs;
   if (!((min == rhs.min))) {
     return false;
   }
@@ -266,6 +269,7 @@ void struct1::__clear() {
 }
 
 bool struct1::operator==(const struct1& rhs) const {
+  (void)rhs;
   if (!((a == rhs.a))) {
     return false;
   }
@@ -327,6 +331,7 @@ void struct2::__clear() {
 }
 
 bool struct2::operator==(const struct2& rhs) const {
+  (void)rhs;
   if (!((a == rhs.a))) {
     return false;
   }
@@ -417,6 +422,7 @@ void struct3::__clear() {
 }
 
 bool struct3::operator==(const struct3& rhs) const {
+  (void)rhs;
   if (!((a == rhs.a))) {
     return false;
   }
