@@ -323,7 +323,7 @@ template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactPro
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg) :
+CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }
@@ -341,11 +341,11 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   return true;
 }
 
-const std::vector<int32_t>& CppTypeStruct::get_fieldA() const& {
+const std::list<int32_t>& CppTypeStruct::get_fieldA() const& {
   return fieldA;
 }
 
-std::vector<int32_t> CppTypeStruct::get_fieldA() && {
+std::list<int32_t> CppTypeStruct::get_fieldA() && {
   return std::move(fieldA);
 }
 

@@ -14,54 +14,59 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:typedef?%><%!
-  %><%#type:cpp_type%><%type:cpp_type%><%/type:cpp_type%><%^type:cpp_type%><% > common/type_namespace_cpp2%><%type:name%><%/type:cpp_type%><%!
-%><%/type:typedef?%><%!
-%><%^type:typedef?%><%!
-  %><%#type:void?%>void<%/type:void?%><%!
-  %><%#type:string?%>std::string<%/type:string?%><%!
-  %><%#type:binary?%>std::string<%/type:binary?%><%!
-  %><%#type:bool?%>bool<%/type:bool?%><%!
-  %><%#type:byte?%>int8_t<%/type:byte?%><%!
-  %><%#type:i16?%>int16_t<%/type:i16?%><%!
-  %><%#type:i32?%>int32_t<%/type:i32?%><%!
-  %><%#type:i64?%>int64_t<%/type:i64?%><%!
-  %><%#type:double?%>double<%/type:double?%><%!
-  %><%#type:float?%>float<%/type:float?%><%!
+%><%#type:cpp_type%><%!
+  %><%type:cpp_type%><%!
+%><%/type:cpp_type%><%!
+%><%^type:cpp_type%><%!
+  %><%#type:typedef?%><%!
+    %><% > common/type_namespace_cpp2%><%type:name%><%!
+  %><%/type:typedef?%><%!
+  %><%^type:typedef?%><%!
+    %><%#type:void?%>void<%/type:void?%><%!
+    %><%#type:string?%>std::string<%/type:string?%><%!
+    %><%#type:binary?%>std::string<%/type:binary?%><%!
+    %><%#type:bool?%>bool<%/type:bool?%><%!
+    %><%#type:byte?%>int8_t<%/type:byte?%><%!
+    %><%#type:i16?%>int16_t<%/type:i16?%><%!
+    %><%#type:i32?%>int32_t<%/type:i32?%><%!
+    %><%#type:i64?%>int64_t<%/type:i64?%><%!
+    %><%#type:double?%>double<%/type:double?%><%!
+    %><%#type:float?%>float<%/type:float?%><%!
 
-  %><%#type:map?%><%!
-    %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::map<%/type:cpp_template%><<%#type:keyType%><% > types/type%><%/type:keyType%>, <%#type:valueType%><% > types/type%><%/type:valueType%>><%!
-  %><%/type:map?%><%!
+    %><%#type:map?%><%!
+      %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::map<%/type:cpp_template%><<%#type:keyType%><% > types/type%><%/type:keyType%>, <%#type:valueType%><% > types/type%><%/type:valueType%>><%!
+    %><%/type:map?%><%!
 
-  %><%#type:list?%><%!
-    %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::vector<%/type:cpp_template%><<%#type:listElemType%><% > types/type%><%/type:listElemType%>><%!
-  %><%/type:list?%><%!
+    %><%#type:list?%><%!
+      %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::vector<%/type:cpp_template%><<%#type:listElemType%><% > types/type%><%/type:listElemType%>><%!
+    %><%/type:list?%><%!
 
-  %><%#type:set?%><%!
-    %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::set<%/type:cpp_template%><<%#type:setElemType%><% > types/type%><%/type:setElemType%>><%!
-  %><%/type:set?%><%!
+    %><%#type:set?%><%!
+      %><%#type:cpp_template%><%type:cpp_template%><%/type:cpp_template%><%^type:cpp_template%>std::set<%/type:cpp_template%><<%#type:setElemType%><% > types/type%><%/type:setElemType%>><%!
+    %><%/type:set?%><%!
 
-  %><%#type:struct?%><%#type:struct%><%!
-    %><% > common/type_namespace_cpp2%><%struct:name%><%!
-  %><%/type:struct%><%/type:struct?%><%!
+    %><%#type:struct?%><%#type:struct%><%!
+      %><% > common/type_namespace_cpp2%><%struct:name%><%!
+    %><%/type:struct%><%/type:struct?%><%!
 
-  %><%#type:enum?%><%#type:enum%><%!
-    %><% > common/type_namespace_cpp2%><%enum:name%><%!
-  %><%/type:enum%><%/type:enum?%><%!
+    %><%#type:enum?%><%#type:enum%><%!
+      %><% > common/type_namespace_cpp2%><%enum:name%><%!
+    %><%/type:enum%><%/type:enum?%><%!
 
-  %><%#type:stream?%><%!
-    %><%#type:streamresponse?%><%!
-      %><%#type:extratype?%>apache::thrift::ResponseAndStream<<%!
-      %><%#type:streamResponseType%><% >types/type%><%/type:streamResponseType%>,<%!
-      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-      %><%/type:extratype?%><%!
-      %><%^type:extratype?%>apache::thrift::Stream<<%!
-      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-      %><%/type:extratype?%><%!
+    %><%#type:stream?%><%!
+      %><%#type:streamresponse?%><%!
+        %><%#type:extratype?%>apache::thrift::ResponseAndStream<<%!
+        %><%#type:streamResponseType%><% >types/type%><%/type:streamResponseType%>,<%!
+        %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+        %><%/type:extratype?%><%!
+        %><%^type:extratype?%>apache::thrift::Stream<<%!
+        %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+        %><%/type:extratype?%><%!
+        %><%/type:streamresponse?%><%!
+
+      %><%^type:streamresponse?%><%!
+        %>apache::thrift::Stream<<%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
       %><%/type:streamresponse?%><%!
-
-    %><%^type:streamresponse?%><%!
-      %>apache::thrift::Stream<<%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-    %><%/type:streamresponse?%><%!
-  %><%/type:stream?%><%!
-%><%/type:typedef?%>
+    %><%/type:stream?%><%!
+  %><%/type:typedef?%><%!
+%><%/type:cpp_type%>

@@ -461,8 +461,8 @@ void CppTypeStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_fieldA:
   {
-    this->fieldA = std::vector<int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->fieldA);
+    this->fieldA = std::list<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldA);
     this->__isset.fieldA = true;
   }
 
@@ -512,7 +512,7 @@ uint32_t CppTypeStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CppTypeStruct");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_LIST, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -522,7 +522,7 @@ uint32_t CppTypeStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CppTypeStruct");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_LIST, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -532,7 +532,7 @@ uint32_t CppTypeStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("CppTypeStruct");
   xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_LIST, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, this->fieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::write(*prot_, this->fieldA);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

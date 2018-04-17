@@ -560,7 +560,7 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   CppTypeStruct() {}
   // FragileConstructor for use in initialization lists only.
-  CppTypeStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg);
+  CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   CppTypeStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     CppTypeStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -577,7 +577,7 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   CppTypeStruct& operator=(const CppTypeStruct&) = default;
   void __clear();
-  std::vector<int32_t> fieldA;
+  std::list<int32_t> fieldA;
 
   struct __isset {
     bool fieldA;
@@ -591,11 +591,11 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
     (void)rhs;
     return false;
   }
-  const std::vector<int32_t>& get_fieldA() const&;
-  std::vector<int32_t> get_fieldA() &&;
+  const std::list<int32_t>& get_fieldA() const&;
+  std::list<int32_t> get_fieldA() &&;
 
-  template <typename T_CppTypeStruct_fieldA_struct_setter = std::vector<int32_t>>
-  std::vector<int32_t>& set_fieldA(T_CppTypeStruct_fieldA_struct_setter&& fieldA_) {
+  template <typename T_CppTypeStruct_fieldA_struct_setter = std::list<int32_t>>
+  std::list<int32_t>& set_fieldA(T_CppTypeStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_CppTypeStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
     return fieldA;
