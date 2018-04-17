@@ -208,23 +208,7 @@ struct StringTraits<folly::IOBuf> {
   }
 
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
-    auto llink = &lhs;
-    auto rlink = &rhs;
-    while (llink != nullptr && rlink != nullptr) {
-      if (rlink->length() != llink->length() ||
-          0 != memcmp(llink->data(), rlink->data(), llink->length())) {
-        return false;
-      }
-
-      // Advance
-      llink = llink->next();
-      rlink = rlink->next();
-      if (llink == &lhs) {
-        break;
-      }
-    }
-
-    return true;
+    return folly::IOBufEqualTo{}(lhs, rhs);
   }
 };
 
@@ -243,7 +227,7 @@ struct StringTraits<std::unique_ptr<folly::IOBuf>> {
   static bool isEqual(
       const std::unique_ptr<folly::IOBuf>& lhs,
       const std::unique_ptr<folly::IOBuf>& rhs) {
-    return StringTraits<folly::IOBuf>::isEqual(*lhs, *rhs);
+    return folly::IOBufEqualTo{}(lhs, rhs);
   }
 };
 
