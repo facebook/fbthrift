@@ -14,14 +14,14 @@ import simple.dependent_asyncio.ttypes
 UTF8STRINGS: bool
 
 
-class AnEnum:
-    ONE: int
-    TWO: int
-    THREE: int
-    FOUR: int
+class AnEnum(int):
+    ONE: AnEnum
+    TWO: AnEnum
+    THREE: AnEnum
+    FOUR: AnEnum
 
-    _VALUES_TO_NAMES: t.Dict[int, str]
-    _NAMES_TO_VALUES: t.Dict[str, int]
+    _VALUES_TO_NAMES: t.Dict[AnEnum, str]
+    _NAMES_TO_VALUES: t.Dict[str, AnEnum]
 
 
 class SimpleException(Thrift.TException):

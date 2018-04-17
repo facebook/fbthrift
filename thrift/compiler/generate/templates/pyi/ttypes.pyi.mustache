@@ -35,13 +35,13 @@ UTF8STRINGS: bool
 {{#program:enums}}
 
 
-class {{enum:name}}:
+class {{enum:name}}(int):
     {{#enum:values}}
-    {{enumValue:name}}: int
+    {{enumValue:name}}: {{enum:name}}
     {{/enum:values}}
 
-    _VALUES_TO_NAMES: t.Dict[int, str]
-    _NAMES_TO_VALUES: t.Dict[str, int]
+    _VALUES_TO_NAMES: t.Dict[{{enum:name}}, str]
+    _NAMES_TO_VALUES: t.Dict[str, {{enum:name}}]
 {{/program:enums}}
 {{#program:structs}}
 

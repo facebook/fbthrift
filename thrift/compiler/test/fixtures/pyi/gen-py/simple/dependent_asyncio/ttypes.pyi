@@ -13,6 +13,14 @@ from thrift.protocol.TProtocol import TProtocolBase
 UTF8STRINGS: bool
 
 
+class ItemEnum(int):
+    OPTION_ONE: ItemEnum
+    OPTION_TWO: ItemEnum
+
+    _VALUES_TO_NAMES: t.Dict[ItemEnum, str]
+    _NAMES_TO_VALUES: t.Dict[str, ItemEnum]
+
+
 class Item:
     thrift_spec: t.Tuple[t.Optional[t.Tuple[int, int, str, t.Any, t.Optional[int], int]]]
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]

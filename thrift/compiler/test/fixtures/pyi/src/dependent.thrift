@@ -8,3 +8,9 @@ struct Item {
     1: string key
     2: optional binary value
 }
+
+
+enum ItemEnum {
+  OPTION_ONE = 1
+  OPTION_TWO = 2
+}
