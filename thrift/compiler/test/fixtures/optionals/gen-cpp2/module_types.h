@@ -127,23 +127,7 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
   double blue;
   double alpha;
   bool operator==(const Color& rhs) const;
-
-  bool operator < (const Color& rhs) const {
-    if (!(red == rhs.red)) {
-      return red < rhs.red;
-    }
-    if (!(green == rhs.green)) {
-      return green < rhs.green;
-    }
-    if (!(blue == rhs.blue)) {
-      return blue < rhs.blue;
-    }
-    if (!(alpha == rhs.alpha)) {
-      return alpha < rhs.alpha;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Color& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -264,7 +248,7 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
   folly::Optional<std::string> name;
   folly::Optional<bool> hasAC;
   bool operator==(const Vehicle& rhs) const;
-  bool operator < (const Vehicle& rhs) const;
+  bool operator<(const Vehicle& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -420,7 +404,7 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
   folly::Optional< ::cpp2::Animal> afraidOfAnimal;
   folly::Optional<std::vector< ::cpp2::Vehicle>> vehicles;
   bool operator==(const Person& rhs) const;
-  bool operator < (const Person& rhs) const;
+  bool operator<(const Person& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

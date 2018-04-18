@@ -58,6 +58,14 @@ bool AStruct::operator==(const AStruct& rhs) const {
   return true;
 }
 
+bool AStruct::operator<(const AStruct& rhs) const {
+  (void)rhs;
+  if (!(FieldA == rhs.FieldA)) {
+    return FieldA < rhs.FieldA;
+  }
+  return false;
+}
+
 void AStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "FieldA") {
@@ -103,6 +111,14 @@ bool AStructB::operator==(const AStructB& rhs) const {
     return false;
   }
   return true;
+}
+
+bool AStructB::operator<(const AStructB& rhs) const {
+  (void)rhs;
+  if (!(FieldA == rhs.FieldA)) {
+    return FieldA < rhs.FieldA;
+  }
+  return false;
 }
 
 void AStructB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

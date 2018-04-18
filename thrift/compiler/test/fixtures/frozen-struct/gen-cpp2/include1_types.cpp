@@ -39,6 +39,17 @@ bool IncludedA::operator==(const IncludedA& rhs) const {
   return true;
 }
 
+bool IncludedA::operator<(const IncludedA& rhs) const {
+  (void)rhs;
+  if (!(i32Field == rhs.i32Field)) {
+    return i32Field < rhs.i32Field;
+  }
+  if (!(strField == rhs.strField)) {
+    return strField < rhs.strField;
+  }
+  return false;
+}
+
 void IncludedA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "i32Field") {

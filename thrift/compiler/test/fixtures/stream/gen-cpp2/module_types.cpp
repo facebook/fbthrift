@@ -25,6 +25,11 @@ bool FooEx::operator==(const FooEx& rhs) const {
   return true;
 }
 
+bool FooEx::operator<(const FooEx& rhs) const {
+  (void)rhs;
+  return false;
+}
+
 void FooEx::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }

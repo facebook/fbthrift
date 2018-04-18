@@ -94,6 +94,29 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
   return true;
 }
 
+bool ModuleA::operator<(const ModuleA& rhs) const {
+  (void)rhs;
+  if (!(i32Field == rhs.i32Field)) {
+    return i32Field < rhs.i32Field;
+  }
+  if (!(strField == rhs.strField)) {
+    return strField < rhs.strField;
+  }
+  if (!(listField == rhs.listField)) {
+    return listField < rhs.listField;
+  }
+  if (!(mapField == rhs.mapField)) {
+    return mapField < rhs.mapField;
+  }
+  if (!(inclAField == rhs.inclAField)) {
+    return inclAField < rhs.inclAField;
+  }
+  if (!(inclBField == rhs.inclBField)) {
+    return inclBField < rhs.inclBField;
+  }
+  return false;
+}
+
 const std::vector<int16_t>& ModuleA::get_listField() const& {
   return listField;
 }
@@ -200,6 +223,17 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
     return false;
   }
   return true;
+}
+
+bool ModuleB::operator<(const ModuleB& rhs) const {
+  (void)rhs;
+  if (!(i32Field == rhs.i32Field)) {
+    return i32Field < rhs.i32Field;
+  }
+  if (!(inclEnumB == rhs.inclEnumB)) {
+    return inclEnumB < rhs.inclEnumB;
+  }
+  return false;
 }
 
 void ModuleB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

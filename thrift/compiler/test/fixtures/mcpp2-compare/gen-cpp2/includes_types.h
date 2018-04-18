@@ -106,14 +106,7 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
     bool FieldA;
   } __isset = {};
   bool operator==(const AStruct& rhs) const;
-
-  bool operator < (const AStruct& rhs) const {
-    if (!(FieldA == rhs.FieldA)) {
-      return FieldA < rhs.FieldA;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const AStruct& rhs) const;
 
   int32_t get_FieldA() const {
     return FieldA;
@@ -219,14 +212,7 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   struct __isset {
   } __isset = {};
   bool operator==(const AStructB& rhs) const;
-
-  bool operator < (const AStructB& rhs) const {
-    if (!(FieldA == rhs.FieldA)) {
-      return FieldA < rhs.FieldA;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const AStructB& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

@@ -72,17 +72,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
     bool MyTransitiveField;
   } __isset = {};
   bool operator==(const Included& rhs) const;
-
-  bool operator < (const Included& rhs) const {
-    if (!(MyIntField == rhs.MyIntField)) {
-      return MyIntField < rhs.MyIntField;
-    }
-    if (!(MyTransitiveField == rhs.MyTransitiveField)) {
-      return MyTransitiveField < rhs.MyTransitiveField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Included& rhs) const;
 
   int64_t get_MyIntField() const {
     return MyIntField;

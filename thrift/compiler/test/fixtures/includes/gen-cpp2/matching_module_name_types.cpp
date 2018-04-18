@@ -33,6 +33,14 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
+bool MyStruct::operator<(const MyStruct& rhs) const {
+  (void)rhs;
+  if (!(OtherStructField == rhs.OtherStructField)) {
+    return OtherStructField < rhs.OtherStructField;
+  }
+  return false;
+}
+
 const  ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() const& {
   return OtherStructField;
 }

@@ -158,6 +158,14 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
   return true;
 }
 
+bool SomeStruct::operator<(const SomeStruct& rhs) const {
+  (void)rhs;
+  if (!(fieldA == rhs.fieldA)) {
+    return fieldA < rhs.fieldA;
+  }
+  return false;
+}
+
 void SomeStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "fieldA") {

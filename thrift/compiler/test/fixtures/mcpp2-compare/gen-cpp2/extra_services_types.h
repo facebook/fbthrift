@@ -141,7 +141,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   std::string req_fieldE;
   folly::Optional<std::string> opt_fieldE;
   bool operator==(const containerStruct2& rhs) const;
-  bool operator < (const containerStruct2& rhs) const;
+  bool operator<(const containerStruct2& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

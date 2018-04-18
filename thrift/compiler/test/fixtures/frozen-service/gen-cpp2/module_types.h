@@ -87,23 +87,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
     bool mapField;
   } __isset = {};
   bool operator==(const ModuleA& rhs) const;
-
-  bool operator < (const ModuleA& rhs) const {
-    if (!(i32Field == rhs.i32Field)) {
-      return i32Field < rhs.i32Field;
-    }
-    if (!(strField == rhs.strField)) {
-      return strField < rhs.strField;
-    }
-    if (!(listField == rhs.listField)) {
-      return listField < rhs.listField;
-    }
-    if (!(mapField == rhs.mapField)) {
-      return mapField < rhs.mapField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ModuleA& rhs) const;
 
   int32_t get_i32Field() const {
     return i32Field;
@@ -241,14 +225,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
     bool i32Field;
   } __isset = {};
   bool operator==(const ModuleB& rhs) const;
-
-  bool operator < (const ModuleB& rhs) const {
-    if (!(i32Field == rhs.i32Field)) {
-      return i32Field < rhs.i32Field;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ModuleB& rhs) const;
 
   int32_t get_i32Field() const {
     return i32Field;
@@ -362,17 +339,7 @@ class ExceptionA final : private apache::thrift::detail::st::ComparisonOperators
     bool msg;
   } __isset = {};
   bool operator==(const ExceptionA& rhs) const;
-
-  bool operator < (const ExceptionA& rhs) const {
-    if (!(code == rhs.code)) {
-      return code < rhs.code;
-    }
-    if (!(msg == rhs.msg)) {
-      return msg < rhs.msg;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ExceptionA& rhs) const;
 
   int32_t get_code() const {
     return code;
@@ -505,17 +472,7 @@ class ExceptionB final : private apache::thrift::detail::st::ComparisonOperators
     bool msg;
   } __isset = {};
   bool operator==(const ExceptionB& rhs) const;
-
-  bool operator < (const ExceptionB& rhs) const {
-    if (!(code == rhs.code)) {
-      return code < rhs.code;
-    }
-    if (!(msg == rhs.msg)) {
-      return msg < rhs.msg;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ExceptionB& rhs) const;
 
   int32_t get_code() const {
     return code;

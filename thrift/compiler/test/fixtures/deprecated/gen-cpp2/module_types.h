@@ -71,7 +71,7 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   std::string houseName;
   folly::Optional<std::set< ::cpp2::ColorID>> houseColors;
   bool operator==(const House& rhs) const;
-  bool operator < (const House& rhs) const;
+  bool operator<(const House& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -169,7 +169,7 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
    ::cpp2::ColorID id;
   int32_t fieldType;
   bool operator==(const Field& rhs) const;
-  bool operator < (const Field& rhs) const;
+  bool operator<(const Field& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

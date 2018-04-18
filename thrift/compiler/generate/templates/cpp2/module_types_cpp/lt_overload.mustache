@@ -15,6 +15,12 @@
   limitations under the License.
 
 %>
-  bool operator<(const <%struct:name%>& rhs) const;
-<%!
-%>
+bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
+  (void)rhs;
+<%#struct:fields%>
+  if (!(<%field:name%> == rhs.<%field:name%>)) {
+    return <%field:name%> < rhs.<%field:name%>;
+  }
+<%/struct:fields%>
+  return false;
+}

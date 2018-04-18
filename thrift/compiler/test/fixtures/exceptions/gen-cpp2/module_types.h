@@ -45,11 +45,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
   Banal& operator=(const Banal&) = default;
   void __clear();
   bool operator==(const Banal& rhs) const;
-
-  bool operator < (const Banal& rhs) const {
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Banal& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -142,14 +138,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   void __clear();
   std::string message;
   bool operator==(const Fiery& rhs) const;
-
-  bool operator < (const Fiery& rhs) const {
-    if (!(message == rhs.message)) {
-      return message < rhs.message;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Fiery& rhs) const;
 
   const std::string& get_message() const& {
     return message;

@@ -234,14 +234,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
     bool field;
   } __isset = {};
   bool operator==(const decorated_struct& rhs) const;
-
-  bool operator < (const decorated_struct& rhs) const {
-    if (!(field == rhs.field)) {
-      return field < rhs.field;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const decorated_struct& rhs) const;
 
   const std::string& get_field() const& {
     return field;
@@ -417,7 +410,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
     bool fieldH;
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
-  bool operator < (const ContainerStruct& rhs) const;
+  bool operator<(const ContainerStruct& rhs) const;
   const std::vector<int32_t>& get_fieldA() const&;
   std::vector<int32_t> get_fieldA() &&;
 
@@ -583,14 +576,7 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
     bool fieldA;
   } __isset = {};
   bool operator==(const CppTypeStruct& rhs) const;
-
-  bool operator < (const CppTypeStruct& rhs) const {
-    if (!(fieldA == rhs.fieldA)) {
-      return fieldA < rhs.fieldA;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const CppTypeStruct& rhs) const;
   const std::list<int32_t>& get_fieldA() const&;
   std::list<int32_t> get_fieldA() &&;
 
@@ -697,14 +683,7 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
     bool MyIntField;
   } __isset = {};
   bool operator==(const VirtualStruct& rhs) const;
-
-  bool operator < (const VirtualStruct& rhs) const {
-    if (!(MyIntField == rhs.MyIntField)) {
-      return MyIntField < rhs.MyIntField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const VirtualStruct& rhs) const;
 
   int64_t get_MyIntField() const {
     return MyIntField;
@@ -819,7 +798,7 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
     bool b;
   } __isset = {};
   bool operator==(const MyStructWithForwardRefEnum& rhs) const;
-  bool operator < (const MyStructWithForwardRefEnum& rhs) const;
+  bool operator<(const MyStructWithForwardRefEnum& rhs) const;
 
    ::apache::thrift::fixtures::types::MyForwardRefEnum get_a() const {
     return a;

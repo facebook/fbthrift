@@ -177,6 +177,14 @@ bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
   return true;
 }
 
+bool UnEnumStruct::operator<(const UnEnumStruct& rhs) const {
+  (void)rhs;
+  if (!(city == rhs.city)) {
+    return city < rhs.city;
+  }
+  return false;
+}
+
 void UnEnumStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "city") {
@@ -222,6 +230,17 @@ bool Range::operator==(const Range& rhs) const {
     return false;
   }
   return true;
+}
+
+bool Range::operator<(const Range& rhs) const {
+  (void)rhs;
+  if (!(min == rhs.min)) {
+    return min < rhs.min;
+  }
+  if (!(max == rhs.max)) {
+    return max < rhs.max;
+  }
+  return false;
 }
 
 void Range::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -277,6 +296,17 @@ bool struct1::operator==(const struct1& rhs) const {
     return false;
   }
   return true;
+}
+
+bool struct1::operator<(const struct1& rhs) const {
+  (void)rhs;
+  if (!(a == rhs.a)) {
+    return a < rhs.a;
+  }
+  if (!(b == rhs.b)) {
+    return b < rhs.b;
+  }
+  return false;
 }
 
 void struct1::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -345,6 +375,23 @@ bool struct2::operator==(const struct2& rhs) const {
     return false;
   }
   return true;
+}
+
+bool struct2::operator<(const struct2& rhs) const {
+  (void)rhs;
+  if (!(a == rhs.a)) {
+    return a < rhs.a;
+  }
+  if (!(b == rhs.b)) {
+    return b < rhs.b;
+  }
+  if (!(c == rhs.c)) {
+    return c < rhs.c;
+  }
+  if (!(d == rhs.d)) {
+    return d < rhs.d;
+  }
+  return false;
 }
 
 const  ::cpp2::struct1& struct2::get_c() const& {
@@ -433,6 +480,20 @@ bool struct3::operator==(const struct3& rhs) const {
     return false;
   }
   return true;
+}
+
+bool struct3::operator<(const struct3& rhs) const {
+  (void)rhs;
+  if (!(a == rhs.a)) {
+    return a < rhs.a;
+  }
+  if (!(b == rhs.b)) {
+    return b < rhs.b;
+  }
+  if (!(c == rhs.c)) {
+    return c < rhs.c;
+  }
+  return false;
 }
 
 const  ::cpp2::struct2& struct3::get_c() const& {

@@ -77,7 +77,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool MyIncludedInt;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-  bool operator < (const MyStruct& rhs) const;
+  bool operator<(const MyStruct& rhs) const;
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;
 

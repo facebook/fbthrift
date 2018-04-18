@@ -150,17 +150,7 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
     bool small_B;
   } __isset = {};
   bool operator==(const SmallStruct& rhs) const;
-
-  bool operator < (const SmallStruct& rhs) const {
-    if (!(small_A == rhs.small_A)) {
-      return small_A < rhs.small_A;
-    }
-    if (!(small_B == rhs.small_B)) {
-      return small_B < rhs.small_B;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const SmallStruct& rhs) const;
 
   bool get_small_A() const {
     return small_A;
@@ -455,7 +445,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     bool fieldQ;
   } __isset = {};
   bool operator==(const containerStruct& rhs) const;
-  bool operator < (const containerStruct& rhs) const;
+  bool operator<(const containerStruct& rhs) const;
 
   bool get_fieldA() const {
     return fieldA;

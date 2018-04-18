@@ -124,6 +124,11 @@ bool MyDataItem::operator==(const MyDataItem& rhs) const {
   return true;
 }
 
+bool MyDataItem::operator<(const MyDataItem& rhs) const {
+  (void)rhs;
+  return false;
+}
+
 void MyDataItem::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }

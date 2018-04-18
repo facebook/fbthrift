@@ -120,7 +120,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool MyDataField;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-  bool operator < (const MyStruct& rhs) const;
+  bool operator<(const MyStruct& rhs) const;
 
   int64_t get_MyIntField() const {
     return MyIntField;
@@ -236,11 +236,7 @@ class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators
   MyDataItem& operator=(const MyDataItem&) = default;
   void __clear();
   bool operator==(const MyDataItem& rhs) const;
-
-  bool operator < (const MyDataItem& rhs) const {
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const MyDataItem& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

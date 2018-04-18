@@ -68,14 +68,7 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
     bool features;
   } __isset = {};
   bool operator==(const OldStructure& rhs) const;
-
-  bool operator < (const OldStructure& rhs) const {
-    if (!(features == rhs.features)) {
-      return features < rhs.features;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const OldStructure& rhs) const;
   const std::map<int16_t, double>& get_features() const&;
   std::map<int16_t, double> get_features() &&;
 
@@ -182,14 +175,7 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
     bool features;
   } __isset = {};
   bool operator==(const NewStructure& rhs) const;
-
-  bool operator < (const NewStructure& rhs) const {
-    if (!(features == rhs.features)) {
-      return features < rhs.features;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const NewStructure& rhs) const;
   const std::map<int16_t, double>& get_features() const&;
   std::map<int16_t, double> get_features() &&;
 
@@ -296,7 +282,7 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
     bool features;
   } __isset = {};
   bool operator==(const NewStructure2& rhs) const;
-  bool operator < (const NewStructure2& rhs) const;
+  bool operator<(const NewStructure2& rhs) const;
   const  ::cpp2::FloatFeatures& get_features() const&;
    ::cpp2::FloatFeatures get_features() &&;
 
@@ -421,7 +407,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
     bool s;
   } __isset = {};
   bool operator==(const NewStructureNested& rhs) const;
-  bool operator < (const NewStructureNested& rhs) const;
+  bool operator<(const NewStructureNested& rhs) const;
   const std::vector< ::cpp2::FloatFeatures>& get_lst() const&;
   std::vector< ::cpp2::FloatFeatures> get_lst() &&;
 
@@ -546,7 +532,7 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
     bool f;
   } __isset = {};
   bool operator==(const NewStructureNestedField& rhs) const;
-  bool operator < (const NewStructureNestedField& rhs) const;
+  bool operator<(const NewStructureNestedField& rhs) const;
   const  ::cpp2::NewStructureNested& get_f() const&;
    ::cpp2::NewStructureNested get_f() &&;
 

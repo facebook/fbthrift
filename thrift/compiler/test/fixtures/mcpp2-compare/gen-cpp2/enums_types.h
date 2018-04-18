@@ -221,14 +221,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
     bool fieldA;
   } __isset = {};
   bool operator==(const SomeStruct& rhs) const;
-
-  bool operator < (const SomeStruct& rhs) const {
-    if (!(fieldA == rhs.fieldA)) {
-      return fieldA < rhs.fieldA;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const SomeStruct& rhs) const;
 
   int32_t get_fieldA() const {
     return fieldA;

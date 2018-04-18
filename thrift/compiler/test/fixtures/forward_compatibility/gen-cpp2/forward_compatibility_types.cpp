@@ -33,6 +33,14 @@ bool OldStructure::operator==(const OldStructure& rhs) const {
   return true;
 }
 
+bool OldStructure::operator<(const OldStructure& rhs) const {
+  (void)rhs;
+  if (!(features == rhs.features)) {
+    return features < rhs.features;
+  }
+  return false;
+}
+
 const std::map<int16_t, double>& OldStructure::get_features() const& {
   return features;
 }
@@ -88,6 +96,14 @@ bool NewStructure::operator==(const NewStructure& rhs) const {
     return false;
   }
   return true;
+}
+
+bool NewStructure::operator<(const NewStructure& rhs) const {
+  (void)rhs;
+  if (!(features == rhs.features)) {
+    return features < rhs.features;
+  }
+  return false;
 }
 
 const std::map<int16_t, double>& NewStructure::get_features() const& {

@@ -64,6 +64,17 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
   return true;
 }
 
+bool SmallStruct::operator<(const SmallStruct& rhs) const {
+  (void)rhs;
+  if (!(small_A == rhs.small_A)) {
+    return small_A < rhs.small_A;
+  }
+  if (!(small_B == rhs.small_B)) {
+    return small_B < rhs.small_B;
+  }
+  return false;
+}
+
 void SmallStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "small_A") {

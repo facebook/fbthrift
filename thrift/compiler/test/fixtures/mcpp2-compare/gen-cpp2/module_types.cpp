@@ -125,6 +125,11 @@ bool Empty::operator==(const Empty& rhs) const {
   return true;
 }
 
+bool Empty::operator<(const Empty& rhs) const {
+  (void)rhs;
+  return false;
+}
+
 void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }
@@ -217,6 +222,14 @@ bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
     return false;
   }
   return true;
+}
+
+bool ASimpleStructNoexcept::operator<(const ASimpleStructNoexcept& rhs) const {
+  (void)rhs;
+  if (!(boolField == rhs.boolField)) {
+    return boolField < rhs.boolField;
+  }
+  return false;
 }
 
 void ASimpleStructNoexcept::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -1310,6 +1323,20 @@ bool AnotherException::operator==(const AnotherException& rhs) const {
     return false;
   }
   return true;
+}
+
+bool AnotherException::operator<(const AnotherException& rhs) const {
+  (void)rhs;
+  if (!(code == rhs.code)) {
+    return code < rhs.code;
+  }
+  if (!(req_code == rhs.req_code)) {
+    return req_code < rhs.req_code;
+  }
+  if (!(message == rhs.message)) {
+    return message < rhs.message;
+  }
+  return false;
 }
 
 void AnotherException::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -2976,6 +3003,17 @@ bool FloatStruct::operator==(const FloatStruct& rhs) const {
   return true;
 }
 
+bool FloatStruct::operator<(const FloatStruct& rhs) const {
+  (void)rhs;
+  if (!(floatField == rhs.floatField)) {
+    return floatField < rhs.floatField;
+  }
+  if (!(doubleField == rhs.doubleField)) {
+    return doubleField < rhs.doubleField;
+  }
+  return false;
+}
+
 void FloatStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "floatField") {
@@ -3099,6 +3137,14 @@ bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveC
     return false;
   }
   return true;
+}
+
+bool AllRequiredNoExceptMoveCtrStruct::operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
+  (void)rhs;
+  if (!(intField == rhs.intField)) {
+    return intField < rhs.intField;
+  }
+  return false;
 }
 
 void AllRequiredNoExceptMoveCtrStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

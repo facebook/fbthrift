@@ -465,6 +465,29 @@ bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   return true;
 }
 
+bool StructWithContainers::operator<(const StructWithContainers& rhs) const {
+  (void)rhs;
+  if (!(list_ref == rhs.list_ref)) {
+    return list_ref < rhs.list_ref;
+  }
+  if (!(set_ref == rhs.set_ref)) {
+    return set_ref < rhs.set_ref;
+  }
+  if (!(map_ref == rhs.map_ref)) {
+    return map_ref < rhs.map_ref;
+  }
+  if (!(list_ref_unique == rhs.list_ref_unique)) {
+    return list_ref_unique < rhs.list_ref_unique;
+  }
+  if (!(set_ref_shared == rhs.set_ref_shared)) {
+    return set_ref_shared < rhs.set_ref_shared;
+  }
+  if (!(list_ref_shared_const == rhs.list_ref_shared_const)) {
+    return list_ref_shared_const < rhs.list_ref_shared_const;
+  }
+  return false;
+}
+
 void StructWithContainers::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "list_ref") {
@@ -588,6 +611,11 @@ void Empty::__clear() {
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   return true;
+}
+
+bool Empty::operator<(const Empty& rhs) const {
+  (void)rhs;
+  return false;
 }
 
 void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

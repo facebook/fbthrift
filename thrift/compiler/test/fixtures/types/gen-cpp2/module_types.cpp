@@ -108,6 +108,14 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
   return true;
 }
 
+bool decorated_struct::operator<(const decorated_struct& rhs) const {
+  (void)rhs;
+  if (!(field == rhs.field)) {
+    return field < rhs.field;
+  }
+  return false;
+}
+
 void decorated_struct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "field") {
@@ -344,6 +352,14 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   return true;
 }
 
+bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
+  (void)rhs;
+  if (!(fieldA == rhs.fieldA)) {
+    return fieldA < rhs.fieldA;
+  }
+  return false;
+}
+
 const std::list<int32_t>& CppTypeStruct::get_fieldA() const& {
   return fieldA;
 }
@@ -395,6 +411,14 @@ bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
     return false;
   }
   return true;
+}
+
+bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
+  (void)rhs;
+  if (!(MyIntField == rhs.MyIntField)) {
+    return MyIntField < rhs.MyIntField;
+  }
+  return false;
 }
 
 void VirtualStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

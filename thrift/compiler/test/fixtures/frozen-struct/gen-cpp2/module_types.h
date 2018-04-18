@@ -151,29 +151,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
     bool inclBField;
   } __isset = {};
   bool operator==(const ModuleA& rhs) const;
-
-  bool operator < (const ModuleA& rhs) const {
-    if (!(i32Field == rhs.i32Field)) {
-      return i32Field < rhs.i32Field;
-    }
-    if (!(strField == rhs.strField)) {
-      return strField < rhs.strField;
-    }
-    if (!(listField == rhs.listField)) {
-      return listField < rhs.listField;
-    }
-    if (!(mapField == rhs.mapField)) {
-      return mapField < rhs.mapField;
-    }
-    if (!(inclAField == rhs.inclAField)) {
-      return inclAField < rhs.inclAField;
-    }
-    if (!(inclBField == rhs.inclBField)) {
-      return inclBField < rhs.inclBField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ModuleA& rhs) const;
 
   int32_t get_i32Field() const {
     return i32Field;
@@ -339,17 +317,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
     bool inclEnumB;
   } __isset = {};
   bool operator==(const ModuleB& rhs) const;
-
-  bool operator < (const ModuleB& rhs) const {
-    if (!(i32Field == rhs.i32Field)) {
-      return i32Field < rhs.i32Field;
-    }
-    if (!(inclEnumB == rhs.inclEnumB)) {
-      return inclEnumB < rhs.inclEnumB;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ModuleB& rhs) const;
 
   int32_t get_i32Field() const {
     return i32Field;

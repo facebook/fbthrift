@@ -44,11 +44,7 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
   FooEx& operator=(const FooEx&) = default;
   void __clear();
   bool operator==(const FooEx& rhs) const;
-
-  bool operator < (const FooEx& rhs) const {
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const FooEx& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

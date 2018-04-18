@@ -68,17 +68,7 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
     bool second;
   } __isset = {};
   bool operator==(const Struct& rhs) const;
-
-  bool operator < (const Struct& rhs) const {
-    if (!(first == rhs.first)) {
-      return first < rhs.first;
-    }
-    if (!(second == rhs.second)) {
-      return second < rhs.second;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Struct& rhs) const;
   const  ::module0::Struct& get_first() const&;
    ::module0::Struct get_first() &&;
 
@@ -200,17 +190,7 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
     bool id;
   } __isset = {};
   bool operator==(const BigStruct& rhs) const;
-
-  bool operator < (const BigStruct& rhs) const {
-    if (!(s == rhs.s)) {
-      return s < rhs.s;
-    }
-    if (!(id == rhs.id)) {
-      return id < rhs.id;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const BigStruct& rhs) const;
   const  ::module2::Struct& get_s() const&;
    ::module2::Struct get_s() &&;
 

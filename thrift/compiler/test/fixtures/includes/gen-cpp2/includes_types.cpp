@@ -39,6 +39,17 @@ bool Included::operator==(const Included& rhs) const {
   return true;
 }
 
+bool Included::operator<(const Included& rhs) const {
+  (void)rhs;
+  if (!(MyIntField == rhs.MyIntField)) {
+    return MyIntField < rhs.MyIntField;
+  }
+  if (!(MyTransitiveField == rhs.MyTransitiveField)) {
+    return MyTransitiveField < rhs.MyTransitiveField;
+  }
+  return false;
+}
+
 const  ::cpp2::Foo& Included::get_MyTransitiveField() const& {
   return MyTransitiveField;
 }

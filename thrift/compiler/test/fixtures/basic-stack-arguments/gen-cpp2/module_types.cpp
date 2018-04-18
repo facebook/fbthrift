@@ -64,6 +64,17 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
+bool MyStruct::operator<(const MyStruct& rhs) const {
+  (void)rhs;
+  if (!(MyIntField == rhs.MyIntField)) {
+    return MyIntField < rhs.MyIntField;
+  }
+  if (!(MyStringField == rhs.MyStringField)) {
+    return MyStringField < rhs.MyStringField;
+  }
+  return false;
+}
+
 void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "MyIntField") {

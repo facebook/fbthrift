@@ -70,6 +70,23 @@ bool Color::operator==(const Color& rhs) const {
   return true;
 }
 
+bool Color::operator<(const Color& rhs) const {
+  (void)rhs;
+  if (!(red == rhs.red)) {
+    return red < rhs.red;
+  }
+  if (!(green == rhs.green)) {
+    return green < rhs.green;
+  }
+  if (!(blue == rhs.blue)) {
+    return blue < rhs.blue;
+  }
+  if (!(alpha == rhs.alpha)) {
+    return alpha < rhs.alpha;
+  }
+  return false;
+}
+
 void Color::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "red") {

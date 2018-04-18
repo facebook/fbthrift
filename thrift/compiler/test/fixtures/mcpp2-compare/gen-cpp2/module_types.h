@@ -398,11 +398,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
   Empty& operator=(const Empty&) = default;
   void __clear();
   bool operator==(const Empty& rhs) const;
-
-  bool operator < (const Empty& rhs) const {
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Empty& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -501,7 +497,7 @@ class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperat
     bool boolField;
   } __isset = {};
   bool operator==(const ASimpleStruct& rhs) const;
-  bool operator < (const ASimpleStruct& rhs) const;
+  bool operator<(const ASimpleStruct& rhs) const;
 
   int64_t get_boolField() const {
     return boolField;
@@ -610,14 +606,7 @@ class ASimpleStructNoexcept final : private apache::thrift::detail::st::Comparis
     bool boolField;
   } __isset = {};
   bool operator==(const ASimpleStructNoexcept& rhs) const;
-
-  bool operator < (const ASimpleStructNoexcept& rhs) const {
-    if (!(boolField == rhs.boolField)) {
-      return boolField < rhs.boolField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const ASimpleStructNoexcept& rhs) const;
 
   int64_t get_boolField() const {
     return boolField;
@@ -798,7 +787,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool MyMapEnumAndInt;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-  bool operator < (const MyStruct& rhs) const;
+  bool operator<(const MyStruct& rhs) const;
 
   bool get_MyBoolField() const {
     return MyBoolField;
@@ -3483,7 +3472,7 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
     bool a_union_typedef_list;
   } __isset = {};
   bool operator==(const AnException& rhs) const;
-  bool operator < (const AnException& rhs) const;
+  bool operator<(const AnException& rhs) const;
 
   int32_t get_code() const {
     return code;
@@ -3753,20 +3742,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
     bool message;
   } __isset = {};
   bool operator==(const AnotherException& rhs) const;
-
-  bool operator < (const AnotherException& rhs) const {
-    if (!(code == rhs.code)) {
-      return code < rhs.code;
-    }
-    if (!(req_code == rhs.req_code)) {
-      return req_code < rhs.req_code;
-    }
-    if (!(message == rhs.message)) {
-      return message < rhs.message;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const AnotherException& rhs) const;
 
   int32_t get_code() const {
     return code;
@@ -4293,7 +4269,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     bool fieldSD;
   } __isset = {};
   bool operator==(const containerStruct& rhs) const;
-  bool operator < (const containerStruct& rhs) const;
+  bool operator<(const containerStruct& rhs) const;
 
   bool get_fieldA() const {
     return fieldA;
@@ -4879,7 +4855,7 @@ class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOpe
     bool MyIncludedStruct;
   } __isset = {};
   bool operator==(const MyIncludedStruct& rhs) const;
-  bool operator < (const MyIncludedStruct& rhs) const;
+  bool operator<(const MyIncludedStruct& rhs) const;
 
    ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;
@@ -5318,7 +5294,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool struct_struct;
   } __isset = {};
   bool operator==(const AnnotatedStruct& rhs) const;
-  bool operator < (const AnnotatedStruct& rhs) const;
+  bool operator<(const AnnotatedStruct& rhs) const;
   const  ::some::valid::ns::containerStruct& get_no_annotation() const&;
    ::some::valid::ns::containerStruct get_no_annotation() &&;
 
@@ -5653,17 +5629,7 @@ class FloatStruct final : private apache::thrift::detail::st::ComparisonOperator
     bool doubleField;
   } __isset = {};
   bool operator==(const FloatStruct& rhs) const;
-
-  bool operator < (const FloatStruct& rhs) const {
-    if (!(floatField == rhs.floatField)) {
-      return floatField < rhs.floatField;
-    }
-    if (!(doubleField == rhs.doubleField)) {
-      return doubleField < rhs.doubleField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const FloatStruct& rhs) const;
 
   float get_floatField() const {
     return floatField;
@@ -6049,14 +6015,7 @@ class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::s
   void __clear();
   int64_t intField;
   bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
-
-  bool operator < (const AllRequiredNoExceptMoveCtrStruct& rhs) const {
-    if (!(intField == rhs.intField)) {
-      return intField < rhs.intField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
 
   int64_t get_intField() const {
     return intField;

@@ -66,17 +66,7 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
     bool strField;
   } __isset = {};
   bool operator==(const IncludedA& rhs) const;
-
-  bool operator < (const IncludedA& rhs) const {
-    if (!(i32Field == rhs.i32Field)) {
-      return i32Field < rhs.i32Field;
-    }
-    if (!(strField == rhs.strField)) {
-      return strField < rhs.strField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const IncludedA& rhs) const;
 
   int32_t get_i32Field() const {
     return i32Field;

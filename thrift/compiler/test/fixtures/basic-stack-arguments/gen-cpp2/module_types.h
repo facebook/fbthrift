@@ -110,17 +110,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool MyStringField;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-
-  bool operator < (const MyStruct& rhs) const {
-    if (!(MyIntField == rhs.MyIntField)) {
-      return MyIntField < rhs.MyIntField;
-    }
-    if (!(MyStringField == rhs.MyStringField)) {
-      return MyStringField < rhs.MyStringField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const MyStruct& rhs) const;
 
   int64_t get_MyIntField() const {
     return MyIntField;

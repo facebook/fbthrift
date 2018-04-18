@@ -51,6 +51,23 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
   return true;
 }
 
+bool ModuleA::operator<(const ModuleA& rhs) const {
+  (void)rhs;
+  if (!(i32Field == rhs.i32Field)) {
+    return i32Field < rhs.i32Field;
+  }
+  if (!(strField == rhs.strField)) {
+    return strField < rhs.strField;
+  }
+  if (!(listField == rhs.listField)) {
+    return listField < rhs.listField;
+  }
+  if (!(mapField == rhs.mapField)) {
+    return mapField < rhs.mapField;
+  }
+  return false;
+}
+
 const std::vector<int16_t>& ModuleA::get_listField() const& {
   return listField;
 }
@@ -127,6 +144,14 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
   return true;
 }
 
+bool ModuleB::operator<(const ModuleB& rhs) const {
+  (void)rhs;
+  if (!(i32Field == rhs.i32Field)) {
+    return i32Field < rhs.i32Field;
+  }
+  return false;
+}
+
 void ModuleB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "i32Field") {
@@ -176,6 +201,17 @@ bool ExceptionA::operator==(const ExceptionA& rhs) const {
     return false;
   }
   return true;
+}
+
+bool ExceptionA::operator<(const ExceptionA& rhs) const {
+  (void)rhs;
+  if (!(code == rhs.code)) {
+    return code < rhs.code;
+  }
+  if (!(msg == rhs.msg)) {
+    return msg < rhs.msg;
+  }
+  return false;
 }
 
 void ExceptionA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -232,6 +268,17 @@ bool ExceptionB::operator==(const ExceptionB& rhs) const {
     return false;
   }
   return true;
+}
+
+bool ExceptionB::operator<(const ExceptionB& rhs) const {
+  (void)rhs;
+  if (!(code == rhs.code)) {
+    return code < rhs.code;
+  }
+  if (!(msg == rhs.msg)) {
+    return msg < rhs.msg;
+  }
+  return false;
 }
 
 void ExceptionB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

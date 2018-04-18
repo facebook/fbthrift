@@ -412,7 +412,7 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
     bool value;
   } __isset = {};
   bool operator==(const MyField& rhs) const;
-  bool operator < (const MyField& rhs) const;
+  bool operator<(const MyField& rhs) const;
 
   const int64_t* get_opt_value() const& {
     return __isset.opt_value ? std::addressof(opt_value) : nullptr;
@@ -550,7 +550,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   struct __isset {
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-  bool operator < (const MyStruct& rhs) const;
+  bool operator<(const MyStruct& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -659,7 +659,7 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
     bool f;
   } __isset = {};
   bool operator==(const StructWithUnion& rhs) const;
-  bool operator < (const StructWithUnion& rhs) const;
+  bool operator<(const StructWithUnion& rhs) const;
 
   double get_aDouble() const {
     return aDouble;
@@ -772,7 +772,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
     bool mes;
   } __isset = {};
   bool operator==(const RecursiveStruct& rhs) const;
-  bool operator < (const RecursiveStruct& rhs) const;
+  bool operator<(const RecursiveStruct& rhs) const;
   const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
@@ -911,29 +911,7 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithContainers& rhs) const;
-
-  bool operator < (const StructWithContainers& rhs) const {
-    if (!(list_ref == rhs.list_ref)) {
-      return list_ref < rhs.list_ref;
-    }
-    if (!(set_ref == rhs.set_ref)) {
-      return set_ref < rhs.set_ref;
-    }
-    if (!(map_ref == rhs.map_ref)) {
-      return map_ref < rhs.map_ref;
-    }
-    if (!(list_ref_unique == rhs.list_ref_unique)) {
-      return list_ref_unique < rhs.list_ref_unique;
-    }
-    if (!(set_ref_shared == rhs.set_ref_shared)) {
-      return set_ref_shared < rhs.set_ref_shared;
-    }
-    if (!(list_ref_shared_const == rhs.list_ref_shared_const)) {
-      return list_ref_shared_const < rhs.list_ref_shared_const;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const StructWithContainers& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1039,7 +1017,7 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithSharedConst& rhs) const;
-  bool operator < (const StructWithSharedConst& rhs) const;
+  bool operator<(const StructWithSharedConst& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1121,11 +1099,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
   Empty& operator=(const Empty&) = default;
   void __clear();
   bool operator==(const Empty& rhs) const;
-
-  bool operator < (const Empty& rhs) const {
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Empty& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1229,7 +1203,7 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithRef& rhs) const;
-  bool operator < (const StructWithRef& rhs) const;
+  bool operator<(const StructWithRef& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1333,7 +1307,7 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithRefTypeUnique& rhs) const;
-  bool operator < (const StructWithRefTypeUnique& rhs) const;
+  bool operator<(const StructWithRefTypeUnique& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1439,7 +1413,7 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithRefTypeShared& rhs) const;
-  bool operator < (const StructWithRefTypeShared& rhs) const;
+  bool operator<(const StructWithRefTypeShared& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1545,7 +1519,7 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
   struct __isset {
   } __isset = {};
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
-  bool operator < (const StructWithRefTypeSharedConst& rhs) const;
+  bool operator<(const StructWithRefTypeSharedConst& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

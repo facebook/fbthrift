@@ -39,6 +39,17 @@ bool Struct::operator==(const Struct& rhs) const {
   return true;
 }
 
+bool Struct::operator<(const Struct& rhs) const {
+  (void)rhs;
+  if (!(first == rhs.first)) {
+    return first < rhs.first;
+  }
+  if (!(second == rhs.second)) {
+    return second < rhs.second;
+  }
+  return false;
+}
+
 const  ::module0::Struct& Struct::get_first() const& {
   return first;
 }
@@ -109,6 +120,17 @@ bool BigStruct::operator==(const BigStruct& rhs) const {
     return false;
   }
   return true;
+}
+
+bool BigStruct::operator<(const BigStruct& rhs) const {
+  (void)rhs;
+  if (!(s == rhs.s)) {
+    return s < rhs.s;
+  }
+  if (!(id == rhs.id)) {
+    return id < rhs.id;
+  }
+  return false;
 }
 
 const  ::module2::Struct& BigStruct::get_s() const& {

@@ -25,6 +25,11 @@ bool Empty::operator==(const Empty& rhs) const {
   return true;
 }
 
+bool Empty::operator<(const Empty& rhs) const {
+  (void)rhs;
+  return false;
+}
+
 void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }

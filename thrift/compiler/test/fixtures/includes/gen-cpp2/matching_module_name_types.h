@@ -57,14 +57,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool OtherStructField;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
-
-  bool operator < (const MyStruct& rhs) const {
-    if (!(OtherStructField == rhs.OtherStructField)) {
-      return OtherStructField < rhs.OtherStructField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const MyStruct& rhs) const;
   const  ::matching_module_name::OtherStruct& get_OtherStructField() const&;
    ::matching_module_name::OtherStruct get_OtherStructField() &&;
 

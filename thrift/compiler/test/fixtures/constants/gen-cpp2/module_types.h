@@ -181,7 +181,7 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
     bool employer;
   } __isset = {};
   bool operator==(const Internship& rhs) const;
-  bool operator < (const Internship& rhs) const;
+  bool operator<(const Internship& rhs) const;
 
   int32_t get_weeks() const {
     return weeks;
@@ -315,14 +315,7 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
     bool city;
   } __isset = {};
   bool operator==(const UnEnumStruct& rhs) const;
-
-  bool operator < (const UnEnumStruct& rhs) const {
-    if (!(city == rhs.city)) {
-      return city < rhs.city;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const UnEnumStruct& rhs) const;
 
    ::cpp2::City get_city() const {
     return city;
@@ -430,17 +423,7 @@ class Range final : private apache::thrift::detail::st::ComparisonOperators<Rang
   int32_t min;
   int32_t max;
   bool operator==(const Range& rhs) const;
-
-  bool operator < (const Range& rhs) const {
-    if (!(min == rhs.min)) {
-      return min < rhs.min;
-    }
-    if (!(max == rhs.max)) {
-      return max < rhs.max;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const Range& rhs) const;
 
   int32_t get_min() const {
     return min;
@@ -563,17 +546,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
     bool b;
   } __isset = {};
   bool operator==(const struct1& rhs) const;
-
-  bool operator < (const struct1& rhs) const {
-    if (!(a == rhs.a)) {
-      return a < rhs.a;
-    }
-    if (!(b == rhs.b)) {
-      return b < rhs.b;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const struct1& rhs) const;
 
   int32_t get_a() const {
     return a;
@@ -720,23 +693,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
     bool d;
   } __isset = {};
   bool operator==(const struct2& rhs) const;
-
-  bool operator < (const struct2& rhs) const {
-    if (!(a == rhs.a)) {
-      return a < rhs.a;
-    }
-    if (!(b == rhs.b)) {
-      return b < rhs.b;
-    }
-    if (!(c == rhs.c)) {
-      return c < rhs.c;
-    }
-    if (!(d == rhs.d)) {
-      return d < rhs.d;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const struct2& rhs) const;
 
   int32_t get_a() const {
     return a;
@@ -892,20 +849,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
     bool c;
   } __isset = {};
   bool operator==(const struct3& rhs) const;
-
-  bool operator < (const struct3& rhs) const {
-    if (!(a == rhs.a)) {
-      return a < rhs.a;
-    }
-    if (!(b == rhs.b)) {
-      return b < rhs.b;
-    }
-    if (!(c == rhs.c)) {
-      return c < rhs.c;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator<(const struct3& rhs) const;
 
   const std::string& get_a() const& {
     return a;
