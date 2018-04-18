@@ -130,13 +130,13 @@ bool MyField::operator==(const MyField& rhs) const {
   if (__isset.opt_value != rhs.__isset.opt_value) {
     return false;
   }
-  else if (__isset.opt_value && !((opt_value == rhs.opt_value))) {
+  else if (__isset.opt_value && !(opt_value == rhs.opt_value)) {
     return false;
   }
-  if (!((value == rhs.value))) {
+  if (!(value == rhs.value)) {
     return false;
   }
-  if (!((req_value == rhs.req_value))) {
+  if (!(req_value == rhs.req_value)) {
     return false;
   }
   return true;
@@ -205,13 +205,13 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!(((opt_ref && rhs.opt_ref && *opt_ref == *rhs.opt_ref) ||(!opt_ref && !rhs.opt_ref)))) {
+  if (!((opt_ref && rhs.opt_ref && *opt_ref == *rhs.opt_ref) ||(!opt_ref && !rhs.opt_ref))) {
     return false;
   }
-  if (!(((ref && rhs.ref && *ref == *rhs.ref) ||(!ref && !rhs.ref)))) {
+  if (!((ref && rhs.ref && *ref == *rhs.ref) ||(!ref && !rhs.ref))) {
     return false;
   }
-  if (!(((req_ref && rhs.req_ref && *req_ref == *rhs.req_ref) ||(!req_ref && !rhs.req_ref)))) {
+  if (!((req_ref && rhs.req_ref && *req_ref == *rhs.req_ref) ||(!req_ref && !rhs.req_ref))) {
     return false;
   }
   return true;
@@ -285,13 +285,13 @@ void StructWithUnion::__clear() {
 
 bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
   (void)rhs;
-  if (!(((u && rhs.u && *u == *rhs.u) ||(!u && !rhs.u)))) {
+  if (!((u && rhs.u && *u == *rhs.u) ||(!u && !rhs.u))) {
     return false;
   }
-  if (!((aDouble == rhs.aDouble))) {
+  if (!(aDouble == rhs.aDouble)) {
     return false;
   }
-  if (!((f == rhs.f))) {
+  if (!(f == rhs.f)) {
     return false;
   }
   return true;
@@ -357,7 +357,7 @@ bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
   if (__isset.mes != rhs.__isset.mes) {
     return false;
   }
-  else if (__isset.mes && !((mes == rhs.mes))) {
+  else if (__isset.mes && !(mes == rhs.mes)) {
     return false;
   }
   return true;
@@ -444,22 +444,22 @@ void StructWithContainers::__clear() {
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   (void)rhs;
-  if (!(((list_ref && rhs.list_ref && *list_ref == *rhs.list_ref) ||(!list_ref && !rhs.list_ref)))) {
+  if (!((list_ref && rhs.list_ref && *list_ref == *rhs.list_ref) ||(!list_ref && !rhs.list_ref))) {
     return false;
   }
-  if (!(((set_ref && rhs.set_ref && *set_ref == *rhs.set_ref) ||(!set_ref && !rhs.set_ref)))) {
+  if (!((set_ref && rhs.set_ref && *set_ref == *rhs.set_ref) ||(!set_ref && !rhs.set_ref))) {
     return false;
   }
-  if (!(((map_ref && rhs.map_ref && *map_ref == *rhs.map_ref) ||(!map_ref && !rhs.map_ref)))) {
+  if (!((map_ref && rhs.map_ref && *map_ref == *rhs.map_ref) ||(!map_ref && !rhs.map_ref))) {
     return false;
   }
-  if (!(((list_ref_unique && rhs.list_ref_unique && *list_ref_unique == *rhs.list_ref_unique) ||(!list_ref_unique && !rhs.list_ref_unique)))) {
+  if (!((list_ref_unique && rhs.list_ref_unique && *list_ref_unique == *rhs.list_ref_unique) ||(!list_ref_unique && !rhs.list_ref_unique))) {
     return false;
   }
-  if (!(((set_ref_shared && rhs.set_ref_shared && *set_ref_shared == *rhs.set_ref_shared) ||(!set_ref_shared && !rhs.set_ref_shared)))) {
+  if (!((set_ref_shared && rhs.set_ref_shared && *set_ref_shared == *rhs.set_ref_shared) ||(!set_ref_shared && !rhs.set_ref_shared))) {
     return false;
   }
-  if (!(((list_ref_shared_const && rhs.list_ref_shared_const && *list_ref_shared_const == *rhs.list_ref_shared_const) ||(!list_ref_shared_const && !rhs.list_ref_shared_const)))) {
+  if (!((list_ref_shared_const && rhs.list_ref_shared_const && *list_ref_shared_const == *rhs.list_ref_shared_const) ||(!list_ref_shared_const && !rhs.list_ref_shared_const))) {
     return false;
   }
   return true;
@@ -554,13 +554,13 @@ void StructWithSharedConst::__clear() {
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
   (void)rhs;
-  if (!(((opt_shared_const && rhs.opt_shared_const && *opt_shared_const == *rhs.opt_shared_const) ||(!opt_shared_const && !rhs.opt_shared_const)))) {
+  if (!((opt_shared_const && rhs.opt_shared_const && *opt_shared_const == *rhs.opt_shared_const) ||(!opt_shared_const && !rhs.opt_shared_const))) {
     return false;
   }
-  if (!(((shared_const && rhs.shared_const && *shared_const == *rhs.shared_const) ||(!shared_const && !rhs.shared_const)))) {
+  if (!((shared_const && rhs.shared_const && *shared_const == *rhs.shared_const) ||(!shared_const && !rhs.shared_const))) {
     return false;
   }
-  if (!(((req_shared_const && rhs.req_shared_const && *req_shared_const == *rhs.req_shared_const) ||(!req_shared_const && !rhs.req_shared_const)))) {
+  if (!((req_shared_const && rhs.req_shared_const && *req_shared_const == *rhs.req_shared_const) ||(!req_shared_const && !rhs.req_shared_const))) {
     return false;
   }
   return true;
@@ -664,13 +664,13 @@ void StructWithRef::__clear() {
 
 bool StructWithRef::operator==(const StructWithRef& rhs) const {
   (void)rhs;
-  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+  if (!((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field))) {
     return false;
   }
-  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+  if (!((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field))) {
     return false;
   }
-  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+  if (!((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field))) {
     return false;
   }
   return true;
@@ -736,13 +736,13 @@ void StructWithRefTypeUnique::__clear() {
 
 bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
   (void)rhs;
-  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+  if (!((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field))) {
     return false;
   }
-  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+  if (!((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field))) {
     return false;
   }
-  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+  if (!((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field))) {
     return false;
   }
   return true;
@@ -796,13 +796,13 @@ void StructWithRefTypeShared::__clear() {
 
 bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
   (void)rhs;
-  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+  if (!((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field))) {
     return false;
   }
-  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+  if (!((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field))) {
     return false;
   }
-  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+  if (!((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field))) {
     return false;
   }
   return true;
@@ -856,13 +856,13 @@ void StructWithRefTypeSharedConst::__clear() {
 
 bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {
   (void)rhs;
-  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+  if (!((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field))) {
     return false;
   }
-  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+  if (!((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field))) {
     return false;
   }
-  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+  if (!((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field))) {
     return false;
   }
   return true;

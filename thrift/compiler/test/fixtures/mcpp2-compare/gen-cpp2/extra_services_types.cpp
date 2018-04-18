@@ -65,43 +65,43 @@ void containerStruct2::__clear() {
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
   (void)rhs;
-  if (!((fieldA == rhs.fieldA))) {
+  if (!(fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!((req_fieldA == rhs.req_fieldA))) {
+  if (!(req_fieldA == rhs.req_fieldA)) {
     return false;
   }
-  if (!((opt_fieldA == rhs.opt_fieldA))) {
+  if (!(opt_fieldA == rhs.opt_fieldA)) {
     return false;
   }
-  if (!((fieldB == rhs.fieldB))) {
+  if (!(fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!((req_fieldB == rhs.req_fieldB))) {
+  if (!(req_fieldB == rhs.req_fieldB)) {
     return false;
   }
-  if (!((opt_fieldB == rhs.opt_fieldB))) {
+  if (!(opt_fieldB == rhs.opt_fieldB)) {
     return false;
   }
-  if (!((fieldC == rhs.fieldC))) {
+  if (!(fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!((req_fieldC == rhs.req_fieldC))) {
+  if (!(req_fieldC == rhs.req_fieldC)) {
     return false;
   }
-  if (!((opt_fieldC == rhs.opt_fieldC))) {
+  if (!(opt_fieldC == rhs.opt_fieldC)) {
     return false;
   }
-  if (!((fieldD == rhs.fieldD))) {
+  if (!(fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!((fieldE == rhs.fieldE))) {
+  if (!(fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!((req_fieldE == rhs.req_fieldE))) {
+  if (!(req_fieldE == rhs.req_fieldE)) {
     return false;
   }
-  if (!((opt_fieldE == rhs.opt_fieldE))) {
+  if (!(opt_fieldE == rhs.opt_fieldE)) {
     return false;
   }
   return true;

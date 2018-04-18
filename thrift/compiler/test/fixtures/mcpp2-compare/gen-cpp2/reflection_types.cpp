@@ -27,7 +27,7 @@ void ReflectionStruct::__clear() {
 
 bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {
   (void)rhs;
-  if (!((fieldA == rhs.fieldA))) {
+  if (!(fieldA == rhs.fieldA)) {
     return false;
   }
   return true;

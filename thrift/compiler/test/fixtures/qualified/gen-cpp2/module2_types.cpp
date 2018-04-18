@@ -30,10 +30,10 @@ void Struct::__clear() {
 
 bool Struct::operator==(const Struct& rhs) const {
   (void)rhs;
-  if (!((first == rhs.first))) {
+  if (!(first == rhs.first)) {
     return false;
   }
-  if (!((second == rhs.second))) {
+  if (!(second == rhs.second)) {
     return false;
   }
   return true;
@@ -113,10 +113,10 @@ void BigStruct::__clear() {
 
 bool BigStruct::operator==(const BigStruct& rhs) const {
   (void)rhs;
-  if (!((s == rhs.s))) {
+  if (!(s == rhs.s)) {
     return false;
   }
-  if (!((id == rhs.id))) {
+  if (!(id == rhs.id)) {
     return false;
   }
   return true;

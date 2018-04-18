@@ -55,10 +55,10 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!((MyIntField == rhs.MyIntField))) {
+  if (!(MyIntField == rhs.MyIntField)) {
     return false;
   }
-  if (!((MyStringField == rhs.MyStringField))) {
+  if (!(MyStringField == rhs.MyStringField)) {
     return false;
   }
   return true;

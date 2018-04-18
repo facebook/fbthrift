@@ -62,7 +62,7 @@ void Fiery::__clear() {
 
 bool Fiery::operator==(const Fiery& rhs) const {
   (void)rhs;
-  if (!((message == rhs.message))) {
+  if (!(message == rhs.message)) {
     return false;
   }
   return true;

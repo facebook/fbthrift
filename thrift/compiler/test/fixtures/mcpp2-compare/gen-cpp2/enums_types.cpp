@@ -152,7 +152,7 @@ void SomeStruct::__clear() {
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
   (void)rhs;
-  if (!((fieldA == rhs.fieldA))) {
+  if (!(fieldA == rhs.fieldA)) {
     return false;
   }
   return true;

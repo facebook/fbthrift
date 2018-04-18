@@ -30,10 +30,10 @@ void Included::__clear() {
 
 bool Included::operator==(const Included& rhs) const {
   (void)rhs;
-  if (!((MyIntField == rhs.MyIntField))) {
+  if (!(MyIntField == rhs.MyIntField)) {
     return false;
   }
-  if (!((MyTransitiveField == rhs.MyTransitiveField))) {
+  if (!(MyTransitiveField == rhs.MyTransitiveField)) {
     return false;
   }
   return true;

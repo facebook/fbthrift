@@ -107,16 +107,16 @@ void Internship::__clear() {
 
 bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
-  if (!((weeks == rhs.weeks))) {
+  if (!(weeks == rhs.weeks)) {
     return false;
   }
-  if (!((title == rhs.title))) {
+  if (!(title == rhs.title)) {
     return false;
   }
   if (__isset.employer != rhs.__isset.employer) {
     return false;
   }
-  else if (__isset.employer && !((employer == rhs.employer))) {
+  else if (__isset.employer && !(employer == rhs.employer)) {
     return false;
   }
   return true;
@@ -171,7 +171,7 @@ void UnEnumStruct::__clear() {
 
 bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
   (void)rhs;
-  if (!((city == rhs.city))) {
+  if (!(city == rhs.city)) {
     return false;
   }
   return true;
@@ -223,10 +223,10 @@ void Range::__clear() {
 
 bool Range::operator==(const Range& rhs) const {
   (void)rhs;
-  if (!((min == rhs.min))) {
+  if (!(min == rhs.min)) {
     return false;
   }
-  if (!((max == rhs.max))) {
+  if (!(max == rhs.max)) {
     return false;
   }
   return true;
@@ -289,10 +289,10 @@ void struct1::__clear() {
 
 bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
-  if (!((a == rhs.a))) {
+  if (!(a == rhs.a)) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!(b == rhs.b)) {
     return false;
   }
   return true;
@@ -362,16 +362,16 @@ void struct2::__clear() {
 
 bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
-  if (!((a == rhs.a))) {
+  if (!(a == rhs.a)) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!(b == rhs.b)) {
     return false;
   }
-  if (!((c == rhs.c))) {
+  if (!(c == rhs.c)) {
     return false;
   }
-  if (!((d == rhs.d))) {
+  if (!(d == rhs.d)) {
     return false;
   }
   return true;
@@ -470,13 +470,13 @@ void struct3::__clear() {
 
 bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
-  if (!((a == rhs.a))) {
+  if (!(a == rhs.a)) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!(b == rhs.b)) {
     return false;
   }
-  if (!((c == rhs.c))) {
+  if (!(c == rhs.c)) {
     return false;
   }
   return true;

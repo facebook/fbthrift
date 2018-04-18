@@ -27,7 +27,7 @@ void OldStructure::__clear() {
 
 bool OldStructure::operator==(const OldStructure& rhs) const {
   (void)rhs;
-  if (!((features == rhs.features))) {
+  if (!(features == rhs.features)) {
     return false;
   }
   return true;
@@ -92,7 +92,7 @@ void NewStructure::__clear() {
 
 bool NewStructure::operator==(const NewStructure& rhs) const {
   (void)rhs;
-  if (!((features == rhs.features))) {
+  if (!(features == rhs.features)) {
     return false;
   }
   return true;
@@ -157,7 +157,7 @@ void NewStructure2::__clear() {
 
 bool NewStructure2::operator==(const NewStructure2& rhs) const {
   (void)rhs;
-  if (!((features == rhs.features))) {
+  if (!(features == rhs.features)) {
     return false;
   }
   return true;
@@ -220,13 +220,13 @@ void NewStructureNested::__clear() {
 
 bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
   (void)rhs;
-  if (!((lst == rhs.lst))) {
+  if (!(lst == rhs.lst)) {
     return false;
   }
-  if (!((mp == rhs.mp))) {
+  if (!(mp == rhs.mp)) {
     return false;
   }
-  if (!((s == rhs.s))) {
+  if (!(s == rhs.s)) {
     return false;
   }
   return true;
@@ -309,7 +309,7 @@ void NewStructureNestedField::__clear() {
 
 bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) const {
   (void)rhs;
-  if (!((f == rhs.f))) {
+  if (!(f == rhs.f)) {
     return false;
   }
   return true;

@@ -73,22 +73,22 @@ void ModuleA::__clear() {
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
-  if (!((i32Field == rhs.i32Field))) {
+  if (!(i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!((strField == rhs.strField))) {
+  if (!(strField == rhs.strField)) {
     return false;
   }
-  if (!((listField == rhs.listField))) {
+  if (!(listField == rhs.listField)) {
     return false;
   }
-  if (!((mapField == rhs.mapField))) {
+  if (!(mapField == rhs.mapField)) {
     return false;
   }
-  if (!((inclAField == rhs.inclAField))) {
+  if (!(inclAField == rhs.inclAField)) {
     return false;
   }
-  if (!((inclBField == rhs.inclBField))) {
+  if (!(inclBField == rhs.inclBField)) {
     return false;
   }
   return true;
@@ -216,10 +216,10 @@ void ModuleB::__clear() {
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
   (void)rhs;
-  if (!((i32Field == rhs.i32Field))) {
+  if (!(i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!((inclEnumB == rhs.inclEnumB))) {
+  if (!(inclEnumB == rhs.inclEnumB)) {
     return false;
   }
   return true;

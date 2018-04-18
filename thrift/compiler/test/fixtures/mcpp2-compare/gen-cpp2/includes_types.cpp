@@ -52,7 +52,7 @@ void AStruct::__clear() {
 
 bool AStruct::operator==(const AStruct& rhs) const {
   (void)rhs;
-  if (!((FieldA == rhs.FieldA))) {
+  if (!(FieldA == rhs.FieldA)) {
     return false;
   }
   return true;
@@ -107,7 +107,7 @@ void AStructB::__clear() {
 
 bool AStructB::operator==(const AStructB& rhs) const {
   (void)rhs;
-  if (!(((FieldA && rhs.FieldA && *FieldA == *rhs.FieldA) ||(!FieldA && !rhs.FieldA)))) {
+  if (!((FieldA && rhs.FieldA && *FieldA == *rhs.FieldA) ||(!FieldA && !rhs.FieldA))) {
     return false;
   }
   return true;

@@ -30,10 +30,10 @@ void IncludedA::__clear() {
 
 bool IncludedA::operator==(const IncludedA& rhs) const {
   (void)rhs;
-  if (!((i32Field == rhs.i32Field))) {
+  if (!(i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!((strField == rhs.strField))) {
+  if (!(strField == rhs.strField)) {
     return false;
   }
   return true;

@@ -55,16 +55,16 @@ void Color::__clear() {
 
 bool Color::operator==(const Color& rhs) const {
   (void)rhs;
-  if (!((red == rhs.red))) {
+  if (!(red == rhs.red)) {
     return false;
   }
-  if (!((green == rhs.green))) {
+  if (!(green == rhs.green)) {
     return false;
   }
-  if (!((blue == rhs.blue))) {
+  if (!(blue == rhs.blue)) {
     return false;
   }
-  if (!((alpha == rhs.alpha))) {
+  if (!(alpha == rhs.alpha)) {
     return false;
   }
   return true;
@@ -150,19 +150,19 @@ void Vehicle::__clear() {
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
   (void)rhs;
-  if (!((color == rhs.color))) {
+  if (!(color == rhs.color)) {
     return false;
   }
-  if (!((licensePlate == rhs.licensePlate))) {
+  if (!(licensePlate == rhs.licensePlate)) {
     return false;
   }
-  if (!((description == rhs.description))) {
+  if (!(description == rhs.description)) {
     return false;
   }
-  if (!((name == rhs.name))) {
+  if (!(name == rhs.name)) {
     return false;
   }
-  if (!((hasAC == rhs.hasAC))) {
+  if (!(hasAC == rhs.hasAC)) {
     return false;
   }
   return true;
@@ -247,34 +247,34 @@ void Person::__clear() {
 
 bool Person::operator==(const Person& rhs) const {
   (void)rhs;
-  if (!((id == rhs.id))) {
+  if (!(id == rhs.id)) {
     return false;
   }
-  if (!((name == rhs.name))) {
+  if (!(name == rhs.name)) {
     return false;
   }
-  if (!((age == rhs.age))) {
+  if (!(age == rhs.age)) {
     return false;
   }
-  if (!((address == rhs.address))) {
+  if (!(address == rhs.address)) {
     return false;
   }
-  if (!((favoriteColor == rhs.favoriteColor))) {
+  if (!(favoriteColor == rhs.favoriteColor)) {
     return false;
   }
-  if (!((friends == rhs.friends))) {
+  if (!(friends == rhs.friends)) {
     return false;
   }
-  if (!((bestFriend == rhs.bestFriend))) {
+  if (!(bestFriend == rhs.bestFriend)) {
     return false;
   }
-  if (!((petNames == rhs.petNames))) {
+  if (!(petNames == rhs.petNames)) {
     return false;
   }
-  if (!((afraidOfAnimal == rhs.afraidOfAnimal))) {
+  if (!(afraidOfAnimal == rhs.afraidOfAnimal)) {
     return false;
   }
-  if (!((vehicles == rhs.vehicles))) {
+  if (!(vehicles == rhs.vehicles)) {
     return false;
   }
   return true;

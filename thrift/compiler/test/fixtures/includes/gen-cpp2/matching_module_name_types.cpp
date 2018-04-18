@@ -27,7 +27,7 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!((OtherStructField == rhs.OtherStructField))) {
+  if (!(OtherStructField == rhs.OtherStructField)) {
     return false;
   }
   return true;

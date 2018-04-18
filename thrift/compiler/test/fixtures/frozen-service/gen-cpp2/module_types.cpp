@@ -36,16 +36,16 @@ void ModuleA::__clear() {
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
-  if (!((i32Field == rhs.i32Field))) {
+  if (!(i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!((strField == rhs.strField))) {
+  if (!(strField == rhs.strField)) {
     return false;
   }
-  if (!((listField == rhs.listField))) {
+  if (!(listField == rhs.listField)) {
     return false;
   }
-  if (!((mapField == rhs.mapField))) {
+  if (!(mapField == rhs.mapField)) {
     return false;
   }
   return true;
@@ -138,7 +138,7 @@ void ModuleB::__clear() {
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
   (void)rhs;
-  if (!((i32Field == rhs.i32Field))) {
+  if (!(i32Field == rhs.i32Field)) {
     return false;
   }
   return true;
@@ -194,10 +194,10 @@ void ExceptionA::__clear() {
 
 bool ExceptionA::operator==(const ExceptionA& rhs) const {
   (void)rhs;
-  if (!((code == rhs.code))) {
+  if (!(code == rhs.code)) {
     return false;
   }
-  if (!((msg == rhs.msg))) {
+  if (!(msg == rhs.msg)) {
     return false;
   }
   return true;
@@ -261,10 +261,10 @@ void ExceptionB::__clear() {
 
 bool ExceptionB::operator==(const ExceptionB& rhs) const {
   (void)rhs;
-  if (!((code == rhs.code))) {
+  if (!(code == rhs.code)) {
     return false;
   }
-  if (!((msg == rhs.msg))) {
+  if (!(msg == rhs.msg)) {
     return false;
   }
   return true;
