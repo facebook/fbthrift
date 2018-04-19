@@ -43,8 +43,8 @@ func TestExceptionTimeout(t *testing.T) {
 		t.Fatalf("Error did not match: expected %q, got %q", timeout.Error(), exception.Error())
 	}
 
-	if exception.TypeId() != TIMED_OUT {
-		t.Fatalf("TypeId was not TIMED_OUT: expected %v, got %v", TIMED_OUT, exception.TypeId())
+	if exception.TypeID() != TIMED_OUT {
+		t.Fatalf("TypeID was not TIMED_OUT: expected %v, got %v", TIMED_OUT, exception.TypeID())
 	}
 }
 
@@ -54,7 +54,7 @@ func TestExceptionEOF(t *testing.T) {
 		t.Fatalf("Error did not match: expected %q, got %q", io.EOF.Error(), exception.Error())
 	}
 
-	if exception.TypeId() != END_OF_FILE {
-		t.Fatalf("TypeId was not END_OF_FILE: expected %v, got %v", END_OF_FILE, exception.TypeId())
+	if exception.TypeID() != END_OF_FILE {
+		t.Fatalf("TypeID was not END_OF_FILE: expected %v, got %v", END_OF_FILE, exception.TypeID())
 	}
 }

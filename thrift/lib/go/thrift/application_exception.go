@@ -30,39 +30,42 @@ const (
 	PROTOCOL_ERROR                 = 7
 )
 
-// Application level Thrift exception
+// ApplicationException is an application level Thrift exception
 type ApplicationException interface {
 	Exception
-	TypeId() int32
+	TypeID() int32
 	Read(iprot Protocol) (ApplicationException, error)
 	Write(oprot Protocol) error
 }
 
 type applicationException struct {
-	message string
-	type_   int32
+	message       string
+	exceptionType int32
 }
 
 func (e applicationException) Error() string {
 	return e.message
 }
 
-func NewApplicationException(type_ int32, message string) ApplicationException {
-	return &applicationException{message, type_}
+// NewApplicationException creates a new ApplicationException
+func NewApplicationException(exceptionType int32, message string) ApplicationException {
+	return &applicationException{message, exceptionType}
 }
 
-func (p *applicationException) TypeId() int32 {
-	return p.type_
+// TypeID returns the exception type
+func (e *applicationException) TypeID() int32 {
+	return e.exceptionType
 }
 
-func (p *applicationException) Read(iprot Protocol) (ApplicationException, error) {
+// Read reads an ApplicationException from the protocol
+func (e *applicationException) Read(iprot Protocol) (ApplicationException, error) {
 	_, err := iprot.ReadStructBegin()
 	if err != nil {
 		return nil, err
 	}
 
 	message := ""
-	type_ := int32(UNKNOWN_APPLICATION_EXCEPTION)
+	exceptionType := int32(UNKNOWN_APPLICATION_EXCEPTION)
 
 	for {
 		_, ttype, id, err := iprot.ReadFieldBegin()
@@ -85,7 +88,7 @@ func (p *applicationException) Read(iprot Protocol) (ApplicationException, error
 			}
 		case 2:
 			if ttype == I32 {
-				if type_, err = iprot.ReadI32(); err != nil {
+				if exceptionType, err = iprot.ReadI32(); err != nil {
 					return nil, err
 				}
 			} else {
@@ -102,17 +105,18 @@ func (p *applicationException) Read(iprot Protocol) (ApplicationException, error
 			return nil, err
 		}
 	}
-	return NewApplicationException(type_, message), iprot.ReadStructEnd()
+	return NewApplicationException(exceptionType, message), iprot.ReadStructEnd()
 }
 
-func (p *applicationException) Write(oprot Protocol) (err error) {
+// Write writes an exception to the protocol
+func (e *applicationException) Write(oprot Protocol) (err error) {
 	err = oprot.WriteStructBegin("TApplicationException")
-	if len(p.Error()) > 0 {
+	if len(e.Error()) > 0 {
 		err = oprot.WriteFieldBegin("message", STRING, 1)
 		if err != nil {
 			return
 		}
-		err = oprot.WriteString(p.Error())
+		err = oprot.WriteString(e.Error())
 		if err != nil {
 			return
 		}
@@ -125,7 +129,7 @@ func (p *applicationException) Write(oprot Protocol) (err error) {
 	if err != nil {
 		return
 	}
-	err = oprot.WriteI32(p.type_)
+	err = oprot.WriteI32(e.exceptionType)
 	if err != nil {
 		return
 	}

@@ -19,7 +19,7 @@
 
 package thrift
 
-// Factory class used to create wrapped instance of Transports.
+// TransportFactory is used to create wrapped instance of Transports.
 // This is used primarily in servers, which get Transports from
 // a ServerTransport and then may want to mutate them (i.e. create
 // a BufferedTransport from the underlying base transport)
@@ -34,6 +34,7 @@ func (p *transportFactory) GetTransport(trans Transport) Transport {
 	return trans
 }
 
+// NewTransportFactory returns a new TransportFactory
 func NewTransportFactory() TransportFactory {
 	return &transportFactory{}
 }

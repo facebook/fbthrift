@@ -33,7 +33,7 @@ func TestPrependError(t *testing.T) {
 	if err2.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")
 	}
-	if err2.TypeId() != INTERNAL_ERROR {
+	if err2.TypeID() != INTERNAL_ERROR {
 		t.Fatal("Unexpected type error")
 	}
 
@@ -45,7 +45,7 @@ func TestPrependError(t *testing.T) {
 	if err4.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")
 	}
-	if err4.TypeId() != INVALID_DATA {
+	if err4.TypeID() != INVALID_DATA {
 		t.Fatal("Unexpected type error")
 	}
 
@@ -57,7 +57,7 @@ func TestPrependError(t *testing.T) {
 	if err6.Error() != "Prepend: original error" {
 		t.Fatal("Unexpected error string")
 	}
-	if err6.TypeId() != TIMED_OUT {
+	if err6.TypeID() != TIMED_OUT {
 		t.Fatal("Unexpected type error")
 	}
 

@@ -28,10 +28,10 @@ type timeoutable interface {
 	Timeout() bool
 }
 
-// Thrift Transport exception
+// TransportException is the interface for transport exceptions
 type TransportException interface {
 	Exception
-	TypeId() int
+	TypeID() int
 	Err() error
 }
 
@@ -54,12 +54,12 @@ const (
 )
 
 type transportException struct {
-	typeId int
+	typeID int
 	err    error
 }
 
-func (p *transportException) TypeId() int {
-	return p.typeId
+func (p *transportException) TypeID() int {
+	return p.typeID
 }
 
 func (p *transportException) Error() string {
@@ -70,10 +70,12 @@ func (p *transportException) Err() error {
 	return p.err
 }
 
+// NewTransportException creates a new TransportException
 func NewTransportException(t int, e string) TransportException {
-	return &transportException{typeId: t, err: errors.New(e)}
+	return &transportException{typeID: t, err: errors.New(e)}
 }
 
+// NewTransportExceptionFromError creates a TransportException from an error
 func NewTransportExceptionFromError(e error) TransportException {
 	if e == nil {
 		return nil
@@ -88,13 +90,13 @@ func NewTransportExceptionFromError(e error) TransportException {
 		return v
 	case timeoutable:
 		if v.Timeout() {
-			return &transportException{typeId: TIMED_OUT, err: e}
+			return &transportException{typeID: TIMED_OUT, err: e}
 		}
 	}
 
 	if e == io.EOF {
-		return &transportException{typeId: END_OF_FILE, err: e}
+		return &transportException{typeID: END_OF_FILE, err: e}
 	}
 
-	return &transportException{typeId: UNKNOWN_TRANSPORT_EXCEPTION, err: e}
+	return &transportException{typeID: UNKNOWN_TRANSPORT_EXCEPTION, err: e}
 }

@@ -224,7 +224,7 @@ func (p *SimpleServer) processRequests(client Transport) error {
 	}
 	for {
 		ok, err := processor.Process(inputProtocol, outputProtocol)
-		if err, ok := err.(TransportException); ok && err.TypeId() == END_OF_FILE {
+		if err, ok := err.(TransportException); ok && err.TypeID() == END_OF_FILE {
 			return nil
 		} else if err != nil {
 			p.log.Printf("error processing request: %s", err)

@@ -23,10 +23,10 @@ import (
 	"encoding/base64"
 )
 
-// Thrift Protocol exception
+// ProtocolException is the thrift protocol exception
 type ProtocolException interface {
 	Exception
-	TypeId() int
+	TypeID() int
 }
 
 const (
@@ -40,12 +40,12 @@ const (
 )
 
 type protocolException struct {
-	typeId  int
+	typeID  int
 	message string
 }
 
-func (p *protocolException) TypeId() int {
-	return p.typeId
+func (p *protocolException) TypeID() int {
+	return p.typeID
 }
 
 func (p *protocolException) String() string {
@@ -56,6 +56,7 @@ func (p *protocolException) Error() string {
 	return p.message
 }
 
+// NewProtocolException creates a new ProtocolException
 func NewProtocolException(err error) ProtocolException {
 	if err == nil {
 		return nil
@@ -69,6 +70,7 @@ func NewProtocolException(err error) ProtocolException {
 	return &protocolException{UNKNOWN_PROTOCOL_EXCEPTION, err.Error()}
 }
 
+// NewProtocolExceptionWithType create a new ProtocolException with an error type
 func NewProtocolExceptionWithType(errType int, err error) ProtocolException {
 	if err == nil {
 		return nil

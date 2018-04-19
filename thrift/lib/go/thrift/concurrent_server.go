@@ -228,7 +228,7 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 	mut := sync.Mutex{}
 	for {
 		ok, err := processor.ProcessConcurrent(inputProtocol, outputProtocol, &mut)
-		if err, ok := err.(TransportException); ok && err.TypeId() == END_OF_FILE {
+		if err, ok := err.(TransportException); ok && err.TypeID() == END_OF_FILE {
 			return nil
 		} else if err != nil {
 			log.Printf("error processing request: %s", err)
