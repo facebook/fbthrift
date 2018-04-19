@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -347,10 +347,9 @@ void ProxygenThriftServer::serve() {
 
   std::vector<HTTPServer::IPConfig> IPs;
   if (port_ != -1) {
-    IPs.emplace_back(
-        SocketAddress("::", port_, true), HTTPServer::Protocol::HTTP2);
+    IPs.emplace_back(SocketAddress("::", port_, true), httpProtocol_);
   } else {
-    IPs.emplace_back(address_, HTTPServer::Protocol::HTTP2);
+    IPs.emplace_back(address_, httpProtocol_);
   }
 
   HTTPServerOptions options;

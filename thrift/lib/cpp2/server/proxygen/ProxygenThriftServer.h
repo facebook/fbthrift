@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <memory>
@@ -270,6 +271,8 @@ class ProxygenThriftServer : public BaseThriftServer,
     connectionMap_.erase(itr);
   }
 
+  proxygen::HTTPServer::Protocol httpProtocol_{
+      proxygen::HTTPServer::Protocol::HTTP2};
   std::unique_ptr<proxygen::HTTPServer> server_;
 
   size_t initialReceiveWindow_{65536};
@@ -297,6 +300,10 @@ class ProxygenThriftServer : public BaseThriftServer,
   // still letting the established connections to be
   // processed on the server.
   void stopListening() override;
+
+  void setHTTPServerProtocol(proxygen::HTTPServer::Protocol proto) {
+    httpProtocol_ = proto;
+  }
 };
 } // namespace thrift
 } // namespace apache
