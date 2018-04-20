@@ -680,8 +680,7 @@ while the processor deals with RPC. The only code written by the application
 developer lives in the definitional Thrift file and the interface
 implementation.
 
-Facebook has deployed multiple \texttt{TServer} implementations, including
-the single-threaded \texttt{TSimpleServer}, and thread-pooling \texttt{TThreadPoolServer}.
+Facebook has deployed multiple \texttt{TServer} implementations.
 
 The \texttt{TProcessor} interface is very general by design. There is no
 requirement that a \texttt{TServer} take a generated \texttt{TProcessor}
