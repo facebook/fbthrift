@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLServerSocket.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
@@ -371,24 +370,14 @@ int main(int argc, char **argv) {
   folly::init(&argc, &argv, false);
 
   int port = 9090;
-  string serverType = "threaded";
-  string protocolType = "binary";
-  size_t workerCount = 4;
   bool   ssl = false;
   bool header = false;
 
   ostringstream usage;
 
-  usage <<
-    argv[0] << " [--port=<port number>] [--server-type=<server-type>] " <<
-    "[--protocol-type=<protocol-type>] [--workers=<worker-count>] " <<
-    "[--processor-events]" << endl <<
-    "\t\tserver-type\t\ttype of server, " <<
-    "\"threaded\"  Default is " << serverType << endl <<
-    "\t\tprotocol-type\t\ttype of protocol, \"binary\", \"header\", " <<
-    "\"ascii\", or \"xml\".  Default is " << protocolType << endl <<
-    "\t\tworkers\t\tNumber of thread pools workers.  Only valid for " <<
-    "thread-pool server type.  Default is " << workerCount << endl;
+  usage << argv[0] << " [--port=<port number>] "
+        << "[--protocol-type=<protocol-type>] [--workers=<worker-count>] "
+        << "[--processor-events]" << endl;
 
   map<string, string>  args;
 
@@ -410,32 +399,6 @@ int main(int argc, char **argv) {
 
     if (!args["port"].empty()) {
       port = atoi(args["port"].c_str());
-    }
-
-    if (!args["server-type"].empty()) {
-      serverType = args["server-type"];
-      if (serverType == "threaded") {
-      } else {
-        throw invalid_argument("Unknown server type "+serverType);
-      }
-    }
-
-    if (!args["protocol-type"].empty()) {
-      protocolType = args["protocol-type"];
-      if (protocolType == "binary") {
-      } else if (protocolType == "header") {
-        header = true;
-      } else if (protocolType == "ascii") {
-        throw invalid_argument("ASCII protocol not supported");
-      } else if (protocolType == "xml") {
-        throw invalid_argument("XML protocol not supported");
-      } else {
-        throw invalid_argument("Unknown protocol type "+protocolType);
-      }
-    }
-
-    if (!args["workers"].empty()) {
-      workerCount = atoi(args["workers"].c_str());
     }
   } catch (std::exception& e) {
     cerr << e.what() << endl;

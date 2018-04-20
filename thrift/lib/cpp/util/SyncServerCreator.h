@@ -1,4 +1,6 @@
 /*
+ * Copyright 2010-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -36,7 +38,7 @@ class TServerSocket;
 namespace util {
 
 /**
- * Helper class for the standard synchronous server types (TThreadedServer)
+ * Helper class for the standard synchronous server types
  */
 class SyncServerCreator : public ServerCreatorBase {
  public:
