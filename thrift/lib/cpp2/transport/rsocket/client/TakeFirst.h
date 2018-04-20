@@ -91,13 +91,24 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
     void init(
         std::shared_ptr<yarpl::flowable::Subscriber<T>> subscriber) override {
       SuperSubscription::init(std::move(subscriber));
+      hasSubscriber_ = true;
       if (onSubscribe_) {
         SuperSubscription::onSubscribeImpl();
+      }
+      if (onComplete_) {
+        SuperSubscription::onCompleteImpl();
+      }
+      if (error_) {
+        SuperSubscription::onErrorImpl(std::move(error_));
       }
     }
 
     void onSubscribeImpl() override {
-      onSubscribe_ = true;
+      if (hasSubscriber_) {
+        SuperSubscription::onSubscribeImpl();
+      } else {
+        onSubscribe_ = true;
+      }
     }
 
     void onCompleteImpl() {
@@ -105,8 +116,10 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
         if (auto flowable = std::exchange(flowable_, nullptr)) {
           flowable->setError(std::runtime_error("no initial response"));
         }
-      } else {
+      } else if (hasSubscriber_) {
         SuperSubscription::onCompleteImpl();
+      } else {
+        onComplete_ = true;
       }
     }
 
@@ -115,8 +128,10 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
         if (auto flowable = std::exchange(flowable_, nullptr)) {
           flowable->setError(std::move(ew));
         }
-      } else {
+      } else if (hasSubscriber_) {
         SuperSubscription::onErrorImpl(std::move(ew));
+      } else {
+        error_ = std::move(ew);
       }
     }
 
@@ -133,6 +148,9 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
    private:
     std::shared_ptr<TakeFirst<T>> flowable_;
     bool isFirstResponse_{true};
+    bool hasSubscriber_{false};
+    bool onComplete_{false};
+    folly::exception_wrapper error_;
     bool onSubscribe_{false};
 
     friend class TakeFirst<T>;

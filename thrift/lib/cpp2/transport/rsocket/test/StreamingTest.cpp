@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <folly/executors/SerialExecutor.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <gflags/gflags.h>
 #include <gmock/gmock.h>
@@ -72,7 +71,7 @@ class StreamingTest : public testing::Test {
   };
 
  public:
-  StreamingTest() : executor_() {
+  StreamingTest() {
     // override the default
     FLAGS_transport = "rsocket"; // client's transport
 
@@ -134,7 +133,7 @@ class StreamingTest : public testing::Test {
   int numWorkerThreads_{10};
 
   folly::ScopedEventBaseThread evbThread_;
-  folly::SerialExecutor executor_;
+  folly::ScopedEventBaseThread executor_;
 };
 
 TEST_F(StreamingTest, SimpleStream) {
@@ -213,24 +212,36 @@ TEST_F(StreamingTest, ThrowsWithResponse) {
 
 TEST_F(StreamingTest, LifeTimeTesting) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto waitNoLeak = [&] {
+      auto deadline =
+          std::chrono::steady_clock::now() + std::chrono::milliseconds{100};
+      do {
+        std::this_thread::yield();
+        if (client->sync_instanceCount() == 0) {
+          return;
+        }
+      } while (std::chrono::steady_clock::now() < deadline);
+      CHECK(false);
+    };
+
     CHECK_EQ(0, client->sync_instanceCount());
 
     { // Never subscribe
       auto result = client->sync_leakCheck(0, 100);
       CHECK_EQ(1, client->sync_instanceCount());
     }
-    CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+    waitNoLeak();
 
     { // Never subscribe to the flowable
       auto result =
           toFlowable((client->sync_leakCheck(0, 100).stream).via(&executor_));
       CHECK_EQ(1, client->sync_instanceCount());
     }
-    CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+    waitNoLeak();
 
     { // Drop the result stream
       client->sync_leakCheck(0, 100);
-      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+      waitNoLeak();
     }
 
     { // Regular usage
@@ -256,7 +267,7 @@ TEST_F(StreamingTest, LifeTimeTesting) {
       }
       CHECK_EQ(1, client->sync_instanceCount());
       subscriber->cancel();
-      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+      waitNoLeak();
     }
 
     { // Always alive

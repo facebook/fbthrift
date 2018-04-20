@@ -23,6 +23,205 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+template <typename T>
+class EagerSubscribeOnOperator
+    : public yarpl::flowable::FlowableOperator<T, T> {
+  using Super = yarpl::flowable::FlowableOperator<T, T>;
+
+ public:
+  EagerSubscribeOnOperator(
+      std::shared_ptr<yarpl::flowable::Flowable<T>> upstream,
+      folly::SequencedExecutor& executor)
+      : subscription_(std::make_shared<Subscription>(executor)) {
+    executor.add(
+        [upstream = std::move(upstream), subscription = subscription_] {
+          upstream->subscribe(subscription);
+        });
+  }
+
+  void subscribe(
+      std::shared_ptr<yarpl::flowable::Subscriber<T>> subscriber) override {
+    auto subscription = std::move(subscription_);
+    subscription->setSubscriber(std::move(subscriber));
+  }
+
+  ~EagerSubscribeOnOperator() {
+    if (auto subscription = std::move(subscription_)) {
+      class CancellingSubscriber : public yarpl::flowable::Subscriber<T> {
+       public:
+        void onSubscribe(std::shared_ptr<yarpl::flowable::Subscription>
+                             subscription) override {
+          subscription->cancel();
+        }
+        void onNext(T) override {}
+        void onComplete() override {}
+        void onError(folly::exception_wrapper) override {}
+      };
+      subscription->setSubscriber(std::make_shared<CancellingSubscriber>());
+    }
+  }
+
+ private:
+  using SuperSubscription = typename Super::Subscription;
+  class Subscription : public SuperSubscription {
+   public:
+    explicit Subscription(folly::SequencedExecutor& executor)
+        : executor_(&executor) {}
+
+    void request(int64_t delta) override {
+      auto rExecutor = executor_.rlock();
+      if (auto executorPtr = *rExecutor) {
+        executorPtr->add([delta, this, self = this->ref_from_this(this)] {
+          this->callSuperRequest(delta);
+        });
+      }
+    }
+
+    void cancel() override {
+      auto rExecutor = executor_.rlock();
+      if (auto executorPtr = *rExecutor) {
+        executorPtr->add([this, self = this->ref_from_this(this)] {
+          this->callSuperCancel();
+        });
+      }
+    }
+
+    void onNextImpl(T value) override {
+      DCHECK(state_ == State::HAS_SUBSCRIBER);
+      SuperSubscription::subscriberOnNext(std::move(value));
+    }
+
+    void onCompleteImpl() override {
+      *executor_.wlock() = nullptr;
+      auto state = state_.load();
+      switch (state) {
+        case State::SUBSCRIBED:
+          if (state_.compare_exchange_strong(
+                  state,
+                  State::COMPLETED,
+                  std::memory_order_release,
+                  std::memory_order_acquire)) {
+            return;
+          }
+          DCHECK(state == State::HAS_SUBSCRIBER);
+        case State::HAS_SUBSCRIBER:
+          SuperSubscription::onCompleteImpl();
+          return;
+        case State::EMPTY:
+        case State::COMPLETED:
+        case State::HAS_ERROR:
+          LOG(FATAL) << "Invalid state";
+      }
+    }
+
+    void onErrorImpl(folly::exception_wrapper error) override {
+      *executor_.wlock() = nullptr;
+      error_ = std::move(error);
+      auto state = state_.load();
+      switch (state) {
+        case State::SUBSCRIBED:
+          if (state_.compare_exchange_strong(
+                  state,
+                  State::HAS_ERROR,
+                  std::memory_order_release,
+                  std::memory_order_acquire)) {
+            return;
+          }
+          DCHECK(state == State::HAS_SUBSCRIBER);
+        case State::HAS_SUBSCRIBER:
+          SuperSubscription::onErrorImpl(std::move(error_));
+          return;
+        case State::EMPTY:
+        case State::COMPLETED:
+        case State::HAS_ERROR:
+          LOG(FATAL) << "Invalid state";
+      }
+    }
+
+    void onSubscribeImpl() override {
+      auto state = state_.load();
+      switch (state) {
+        case State::EMPTY:
+          if (state_.compare_exchange_strong(
+                  state,
+                  State::SUBSCRIBED,
+                  std::memory_order_release,
+                  std::memory_order_acquire)) {
+            return;
+          }
+          DCHECK(state == State::HAS_SUBSCRIBER);
+        case State::HAS_SUBSCRIBER:
+          SuperSubscription::onSubscribeImpl();
+          return;
+        case State::SUBSCRIBED:
+        case State::COMPLETED:
+        case State::HAS_ERROR:
+          LOG(FATAL) << "Invalid state";
+      }
+    }
+
+    void setSubscriber(
+        std::shared_ptr<yarpl::flowable::Subscriber<T>> subscriber) {
+      this->init(std::move(subscriber));
+      auto state = state_.load();
+      bool subscribed = false;
+      do {
+        switch (state) {
+          case State::EMPTY:
+            break;
+          case State::SUBSCRIBED:
+            SuperSubscription::onSubscribeImpl();
+            subscribed = true;
+            break;
+          case State::COMPLETED:
+            if (!subscribed) {
+              SuperSubscription::onSubscribeImpl();
+            }
+            SuperSubscription::onCompleteImpl();
+            return;
+          case State::HAS_ERROR:
+            if (!subscribed) {
+              SuperSubscription::onSubscribeImpl();
+            }
+            SuperSubscription::onErrorImpl(std::move(error_));
+            return;
+          case State::HAS_SUBSCRIBER:
+            LOG(FATAL) << "Invalid state";
+        }
+      } while (!state_.compare_exchange_weak(
+          state,
+          State::HAS_SUBSCRIBER,
+          std::memory_order_release,
+          std::memory_order_acquire));
+    }
+
+   private:
+    // Trampoline to call superclass method; gcc bug 58972.
+    void callSuperRequest(int64_t delta) {
+      SuperSubscription::request(delta);
+    }
+
+    // Trampoline to call superclass method; gcc bug 58972.
+    void callSuperCancel() {
+      SuperSubscription::cancel();
+    }
+
+    enum class State {
+      EMPTY,
+      SUBSCRIBED,
+      HAS_SUBSCRIBER,
+      HAS_ERROR,
+      COMPLETED
+    };
+
+    std::atomic<State> state_{State::EMPTY};
+    folly::Synchronized<folly::Executor*> executor_;
+    folly::exception_wrapper error_;
+  };
+
+  std::shared_ptr<Subscription> subscription_;
+};
+
 class YarplStreamImpl : public StreamImplIf {
  public:
   explicit YarplStreamImpl(
@@ -40,7 +239,9 @@ class YarplStreamImpl : public StreamImplIf {
   }
   std::unique_ptr<StreamImplIf>
       subscribeVia(folly::SequencedExecutor* executor) && override {
-    return std::make_unique<YarplStreamImpl>(flowable_->subscribeOn(*executor));
+    return std::make_unique<YarplStreamImpl>(
+        std::make_shared<EagerSubscribeOnOperator<Value>>(
+            std::move(flowable_), *executor));
   }
 
   void subscribe(std::unique_ptr<SubscriberIf<Value>> subscriber) && override {

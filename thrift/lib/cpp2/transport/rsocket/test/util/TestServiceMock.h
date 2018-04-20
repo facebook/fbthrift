@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include <folly/executors/SerialExecutor.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 
@@ -37,7 +37,7 @@ class TestServiceMock : public StreamServiceSvIf {
   int32_t instanceCount() override;
 
  protected:
-  folly::SerialExecutor executor_;
+  folly::ScopedEventBaseThread executor_;
 };
 
 } // namespace testservice
