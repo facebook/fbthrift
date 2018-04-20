@@ -9,6 +9,8 @@ import typing as t
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
+__property__ = property  # sometimes `property` is used as a field name
+
 
 UTF8STRINGS: bool
 
@@ -26,15 +28,22 @@ class Item:
     thrift_field_annotations: t.Dict[int, t.Dict[str, str]]
     thrift_struct_annotations: t.Dict[str, str]
 
-    key: t.Optional[str]
-    value: t.Optional[bytes]
-
     def __init__(
         self,
         key: t.Optional[str] = ...,
         value: t.Optional[bytes] = ...
     ) -> None:
         ...
+
+    @__property__
+    def key(self) -> str: ...
+    @key.setter
+    def key(self, value: t.Optional[str]) -> None: ...
+    @__property__
+    def value(self) -> bytes: ...
+    @value.setter
+    def value(self, value: t.Optional[bytes]) -> None: ...
+
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...

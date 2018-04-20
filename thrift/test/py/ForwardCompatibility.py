@@ -22,6 +22,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import unittest
+if False:
+    import typing as t  # noqa
 
 from thrift.protocol import TBinaryProtocol, \
     TCompactProtocol, TSimpleJSONProtocol
@@ -32,7 +34,9 @@ from ForwardCompatibility.ForwardCompatibility.ttypes import \
     NewStructureNested, OldStructureNested
 
 
-class AbstractTest():
+class AbstractTest(object):
+    protocol_factory = None
+
     def _serialize(self, obj):
         return Serializer.serialize(self.protocol_factory, obj)
 
@@ -40,15 +44,31 @@ class AbstractTest():
         return Serializer.deserialize(self.protocol_factory, data, objtype())
 
 
-class TestForwardCompatibilityAbstract(AbstractTest):
+def dummy(features):
+    # type: (t.Dict[int, float]) -> bool
+    return 0 in features
+
+
+def dummynested(features):
+    # type: (t.List[t.Dict[int, float]]) -> bool
+    return bool(len(features)) and 0 in features[0]
+
+
+class TestForwardCompatibilityAbstract(AbstractTest, unittest.TestCase):
     def assertFeaturesAlmostEqual(self, a, b):
+        # type: (float, float) -> None
         self.assertTrue(abs(a - b) < 1e-3)
 
     def testPrimitiveType(self):
+        # type: () -> None
+        if self.protocol_factory is None:
+            self.skipTest("abstract class")
         old = OldStructure()
+        old.features = None
         old.features = {}
         old.features[1] = 100.1
         old.features[217] = 314.5
+        self.assertFalse(dummy(old.features))
         sOld = self._serialize(old)
         new = self._deserialize(NewStructure, sOld)
         self.assertFeaturesAlmostEqual(new.features[1], 100.1)
@@ -59,10 +79,15 @@ class TestForwardCompatibilityAbstract(AbstractTest):
         self.assertFeaturesAlmostEqual(new2.features[217], 314.5)
 
     def testNested(self):
+        # type: () -> None
+        if self.protocol_factory is None:
+            self.skipTest("abstract class")
         old = OldStructureNested()
+        old.features = None
         old.features = [{}]
         old.features[0][1] = 100.1
         old.features[0][217] = 314.5
+        self.assertFalse(dummynested(old.features))
         sOld = self._serialize(old)
         new = self._deserialize(NewStructureNested, sOld)
         self.assertFeaturesAlmostEqual(new.features[0][1], 100.1)
@@ -73,28 +98,23 @@ class TestForwardCompatibilityAbstract(AbstractTest):
         self.assertFeaturesAlmostEqual(new2.features[0][217], 314.5)
 
 
-class TestForwardCompatibilityBinary(TestForwardCompatibilityAbstract,
-                                     unittest.TestCase):
+class TestForwardCompatibilityBinary(TestForwardCompatibilityAbstract):
     protocol_factory = TBinaryProtocol.TBinaryProtocolFactory()
 
 
-class TestForwardCompatibilityCompact(TestForwardCompatibilityAbstract,
-                                      unittest.TestCase):
+class TestForwardCompatibilityCompact(TestForwardCompatibilityAbstract):
     protocol_factory = TCompactProtocol.TCompactProtocolFactory()
 
 
-class TestForwardCompatibilityBinaryAccelerated(TestForwardCompatibilityAbstract,
-                                                unittest.TestCase):
+class TestForwardCompatibilityBinaryAccelerated(TestForwardCompatibilityAbstract):
     protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
 
 
-class TestForwardCompatibilityCompactAccelerated(TestForwardCompatibilityAbstract,
-                                                 unittest.TestCase):
+class TestForwardCompatibilityCompactAccelerated(TestForwardCompatibilityAbstract):
     protocol_factory = TCompactProtocol.TCompactProtocolAcceleratedFactory()
 
 
-class TestForwardCompatibilityJSON(TestForwardCompatibilityAbstract,
-                                   unittest.TestCase):
+class TestForwardCompatibilityJSON(TestForwardCompatibilityAbstract):
     protocol_factory = TSimpleJSONProtocol.TSimpleJSONProtocolFactory()
 
 
