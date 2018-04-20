@@ -287,5 +287,35 @@ TEST_F(StreamingTest, LifeTimeTesting) {
   });
 }
 
+TEST_F(StreamingTest, ChannelKeepAliveSync) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto result = toFlowable(client->sync_range(0, 10).via(&executor_));
+    client.reset();
+    int j = 0;
+    folly::Baton<> done;
+    result->subscribe(
+        [&j](auto i) mutable { EXPECT_EQ(j++, i); },
+        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
+        [&done]() { done.post(); });
+    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+    EXPECT_EQ(10, j);
+  });
+}
+
+TEST_F(StreamingTest, ChannelKeepAliveFuture) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto result = toFlowable(client->future_range(0, 10).get().via(&executor_));
+    client.reset();
+    int j = 0;
+    folly::Baton<> done;
+    result->subscribe(
+        [&j](auto i) mutable { EXPECT_EQ(j++, i); },
+        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
+        [&done]() { done.post(); });
+    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+    EXPECT_EQ(10, j);
+  });
+}
+
 } // namespace thrift
 } // namespace apache

@@ -16,6 +16,7 @@
 #pragma once
 
 #include <folly/futures/Future.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {
@@ -64,6 +65,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
     if (ew) {
       this->promise_.setException(ew);
     } else {
+      detail::ac::attachChannel(result, this->channel_);
       this->promise_.setValue(std::move(result));
     }
   }

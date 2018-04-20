@@ -76,7 +76,9 @@ void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOpti
   recv_<%function:name%>(_returnState);
 <%/type:void?%>
 <%^type:void?%>
-  return recv_<%function:name%>(_returnState);
+  auto result = recv_<%function:name%>(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
