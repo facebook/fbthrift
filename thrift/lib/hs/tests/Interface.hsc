@@ -71,7 +71,7 @@ instance Storable TestStruct where
   peek ptr = alloca $ \cStructPtr -> do
     c_readStruct cStructPtr ptr
 
-    -- Get Primatives
+    -- Get Primitives
     CSChar  bool    <- (#peek CTestStruct, f_bool)   cStructPtr
     CSChar  byte    <- (#peek CTestStruct, f_byte)   cStructPtr
     CShort  i16     <- (#peek CTestStruct, f_i16)    cStructPtr
@@ -166,100 +166,89 @@ instance Storable TestStruct where
       c_fillStruct ptr cStructPtr
 
 --------------------------------------------------------------------------------
-#include <common/hs/hsc.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "thrift/lib/hs/tests/cpp/hs_test.h"
 
 foreign import ccall
-  #{ mangled apache::thrift::transport::TMemoryBuffer* newMB() }
+  "newMB"
   c_openMB :: IO (Ptr MemoryBuffer)
 
 foreign import ccall
-  #{ mangled uint32_t readMB(apache::thrift::transport::TMemoryBuffer*,
-                             uint8_t*, uint32_t) }
+  "readMB"
   c_readMB :: Ptr MemoryBuffer -> Ptr CChar -> CUInt -> IO CUInt
 
 foreign import ccall
-  #{ mangled void writeMB(apache::thrift::transport::TMemoryBuffer*,
-                          const uint8_t*, uint32_t) }
+  "writeMB"
   c_writeMB :: Ptr MemoryBuffer -> Ptr CChar -> CUInt -> IO ()
 
 foreign import ccall
-  #{ mangled void deleteMB(apache::thrift::transport::TMemoryBuffer*) }
+  "deleteMB"
   c_deleteMB :: Ptr MemoryBuffer -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* getStructPtr() }
+  "getStructPtr"
   c_newStructPtr :: IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled Foo *getFooPtr() }
+  "getFooPtr"
   c_newFoo :: IO (Ptr Foo)
 
 foreign import ccall
-  #{ mangled int getFooBar(Foo*) }
+  "getFooBar"
   c_getFooBar :: Ptr Foo -> IO CInt
 
 foreign import ccall
-  #{ mangled int getFooBaz(Foo*) }
+  "getFooBaz"
   c_getFooBaz :: Ptr Foo -> IO CInt
 
 foreign import ccall
-  #{ mangled void fillFoo(Foo*, int, int) }
+  "fillFoo"
   c_fillFoo :: Ptr Foo -> CInt -> CInt -> IO ()
 
 foreign import ccall
-  #{ mangled void fillStruct(TestStruct*, CTestStruct*) }
-    c_fillStruct :: Ptr TestStruct -> Ptr CTestStruct -> IO ()
+  "fillStruct"
+  c_fillStruct :: Ptr TestStruct -> Ptr CTestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void freeBuffers(CTestStruct*) }
-    c_freeBuffers :: Ptr CTestStruct -> IO ()
+  "freeBuffers"
+  c_freeBuffers :: Ptr CTestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void freeTestStruct(TestStruct*) }
-    c_freeTestStruct :: Ptr TestStruct -> IO ()
+  "freeTestStruct"
+  c_freeTestStruct :: Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void readStruct(CTestStruct*, TestStruct*) }
-    c_readStruct :: Ptr CTestStruct -> Ptr TestStruct -> IO ()
+  "readStruct"
+  c_readStruct :: Ptr CTestStruct -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void serializeBinary(apache::thrift::transport::TMemoryBuffer*,
-                                  TestStruct*) }
+  "serializeBinary"
   c_serializeBinary :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeBinary(
-        apache::thrift::transport::TMemoryBuffer*) }
+  "deserializeBinary"
   c_deserializeBinary :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeCompact(apache::thrift::transport::TMemoryBuffer*,
-                                   TestStruct*) }
+  "serializeCompact"
   c_serializeCompact :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeCompact(
-        apache::thrift::transport::TMemoryBuffer*) }
+  "deserializeCompact"
   c_deserializeCompact :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeJSON(apache::thrift::transport::TMemoryBuffer*,
-                                TestStruct*) }
+  "serializeJSON"
   c_serializeJSON :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeJSON(
-        apache::thrift::transport::TMemoryBuffer*) }
+  "deserializeJSON"
   c_deserializeJSON :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*,
-                                      TestStruct*) }
+  "serializeSimpleJSON"
   c_serializeSimpleJSON :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeSimpleJSON(
-        apache::thrift::transport::TMemoryBuffer*) }
+  "deserializeSimpleJSON"
   c_deserializeSimpleJSON :: Ptr MemoryBuffer -> IO (Ptr TestStruct)

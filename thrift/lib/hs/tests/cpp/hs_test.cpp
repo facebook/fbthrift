@@ -30,6 +30,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::transport;
 using namespace std;
 
+extern "C" {
+
 TMemoryBuffer* newMB() {
   return new TMemoryBuffer();
 }
@@ -45,7 +47,6 @@ void writeMB(TMemoryBuffer* mb, const uint8_t* buf, uint32_t len) {
 void deleteMB(TMemoryBuffer* mb) {
   delete mb;
 }
-
 
 // Allocate a new TestStruct object from Haskell
 TestStruct* getStructPtr() {
@@ -191,3 +192,5 @@ TestStruct* deserializeSimpleJSON(TMemoryBuffer *mb) {
   protocol::TSimpleJSONProtocol oprot(mb);
   return deserializeStruct(oprot);
 }
+
+} // extern "C"

@@ -20,6 +20,8 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/hs/tests/if/gen-cpp/hs_test_types.h>
 
+extern "C" {
+
 struct CTestStruct {
   bool        f_bool;
   int8_t      f_byte;
@@ -72,5 +74,6 @@ void serializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*,
                          TestStruct*);
 TestStruct* deserializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*);
 
+}
 
 #endif
