@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/async/HTTPClientChannel.h>
+
 #include <gtest/gtest.h>
 
+#include <proxygen/httpserver/HTTPServer.h>
+#include <proxygen/httpserver/ResponseBuilder.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/transport/THttpServer.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/util/TThreadedServerCreator.h>
-
-#include <thrift/lib/cpp2/async/HTTPClientChannel.h>
-#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
+#include <thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/channel/AsyncSocketHandler.h>
 #include <wangle/channel/Handler.h>
@@ -34,14 +33,14 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;
+using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
-using namespace apache::thrift::test;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::util;
 using std::string;
 
-class TestServiceHandler : public TestServiceIf {
+class TestServiceHandler : public TestServiceSvIf {
  public:
   void sendResponse(string& _return, int64_t size) override {
     if (size >= 0) {
@@ -53,8 +52,8 @@ class TestServiceHandler : public TestServiceIf {
 
   void noResponse(int64_t size) override { usleep(size); }
 
-  void echoRequest(string& _return, const string& req) override {
-    _return = req + "ccccccccccccccccccccccccccccccccccccccccccccc";
+  void echoRequest(string& _return, std::unique_ptr<string> req) override {
+    _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
   }
 
   void serializationTest(string& _return, bool /* inEventBase */) override {
@@ -66,7 +65,9 @@ class TestServiceHandler : public TestServiceIf {
   void notCalledBack() override {}
   void voidResponse() override {}
   int32_t processHeader() override { return 1; }
-  void echoIOBuf(string& /*_return*/, const string& /*buf*/) override {}
+  void echoIOBuf(
+      std::unique_ptr<folly::IOBuf>& /*_return*/,
+      std::unique_ptr<folly::IOBuf> /*buf*/) override {}
 };
 
 /**
@@ -134,24 +135,26 @@ class ScopedPresetResponseServer {
   std::unique_ptr<folly::IOBuf> resp_;
 };
 
-std::unique_ptr<ScopedServerThread> createHttpServer() {
+std::shared_ptr<BaseThriftServer> createHttpServer() {
   auto handler = std::make_shared<TestServiceHandler>();
-  auto processor = std::make_shared<TestServiceProcessor>(handler);
-  std::shared_ptr<TTransportFactory> transportFactory =
-      std::make_shared<THttpServerTransportFactory>();
-  std::shared_ptr<TProtocolFactory> protocolFactory =
-      std::make_shared<TBinaryProtocolFactoryT<THttpServer>>();
-  TThreadedServerCreator serverCreator(
-      processor, 0, transportFactory, protocolFactory);
-  return std::make_unique<ScopedServerThread>(&serverCreator);
+  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
+  tm->threadFactory(std::make_shared<PosixThreadFactory>());
+  tm->start();
+  auto server = std::make_shared<ProxygenThriftServer>();
+  server->setAddress({"::1", 0});
+  server->setHTTPServerProtocol(proxygen::HTTPServer::Protocol::HTTP);
+  server->setInterface(handler);
+  server->setNumIOWorkerThreads(1);
+  server->setThreadManager(tm);
+  return server;
 }
 
 TEST(HTTPClientChannelTest, SimpleTestAsync) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -177,11 +180,11 @@ TEST(HTTPClientChannelTest, SimpleTestAsync) {
 }
 
 TEST(HTTPClientChannelTest, SimpleTestSync) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -194,11 +197,11 @@ TEST(HTTPClientChannelTest, SimpleTestSync) {
 }
 
 TEST(HTTPClientChannelTest, LongResponse) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -216,11 +219,11 @@ TEST(HTTPClientChannelTest, LongResponse) {
 }
 
 TEST(HTTPClientChannelTest, ClientTimeout) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   channel->setTimeout(1);
@@ -259,11 +262,11 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
 }
 
 TEST(HTTPClientChannelTest, NoGoodChannel) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
 
   auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
 
@@ -275,11 +278,11 @@ TEST(HTTPClientChannelTest, NoGoodChannel) {
 }
 
 TEST(HTTPClientChannelTest, NoGoodChannel2) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  const folly::SocketAddress* addr = serverThread->getAddress();
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
 
   auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
 
@@ -291,15 +294,15 @@ TEST(HTTPClientChannelTest, NoGoodChannel2) {
 }
 
 TEST(HTTPClientChannelTest, EarlyShutdown) {
-  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+  ScopedServerInterfaceThread runner(createHttpServer());
+  auto const addr = runner.getAddress();
 
   // send 2 requests on the channel, both will hang for a little while,
   // then we destruct the client / channel object, we are expecting a
   // smooth shutdown
   {
     folly::EventBase eb;
-    const folly::SocketAddress* addr = serverThread->getAddress();
-    TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+    TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
     auto channel = HTTPClientChannel::newHTTP1xChannel(
         std::move(socket), "127.0.0.1", "/foobar");
     TestServiceAsyncClient client(std::move(channel));
