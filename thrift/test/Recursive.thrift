@@ -36,10 +36,3 @@ struct MyStruct {
 struct StructUsingOtherNamespace {
   1: optional Recursive2.OtherStruct other (cpp.ref = "true", cpp2.ref = "true")
 }
-
-service TestService
-{
-  RecTree echoTree(1:RecTree tree)
-  RecList echoList(1:RecList lst)
-  CoRec echoCoRec(1:CoRec item)
-}
