@@ -1,4 +1,3 @@
-namespace cpp apache.thrift.test
 namespace cpp2 apache.thrift.test
 
 struct Empty {}
