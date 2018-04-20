@@ -1,7 +1,6 @@
 include "Recursive2.thrift"
 
-namespace cpp cpp1
-namespace cpp2 cpp2
+namespace cpp2 apache.thrift.test
 
 struct RecTree {
   1: list<RecTree> children
