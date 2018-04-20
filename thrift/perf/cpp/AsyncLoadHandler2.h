@@ -26,7 +26,7 @@
 
 namespace apache { namespace thrift {
 
-class AsyncLoadHandler2 : public LoadTestSvIf {
+class AsyncLoadHandler2 : public test::LoadTestSvIf {
  public:
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;
   void async_eb_onewayNoop(
@@ -72,13 +72,12 @@ class AsyncLoadHandler2 : public LoadTestSvIf {
                     int64_t b) override;
   void async_eb_largeContainer(
       std::unique_ptr<HandlerCallback<void>> callback,
-      std::unique_ptr<std::vector<BigStruct>> items) override;
+      std::unique_ptr<std::vector<test::BigStruct>> items) override;
 
   void async_eb_iterAllFields(
-    std::unique_ptr<HandlerCallback<std::unique_ptr<std::vector<BigStruct>>>>
-      callback,
-    std::unique_ptr<std::vector<BigStruct>> items) override;
-
+      std::unique_ptr<HandlerCallback<
+          std::unique_ptr<std::vector<test::BigStruct>>>> callback,
+      std::unique_ptr<std::vector<test::BigStruct>> items) override;
 };
 
 }} // apache::thrift

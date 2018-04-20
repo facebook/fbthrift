@@ -25,6 +25,8 @@
 #include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
+using namespace apache::thrift::test;
+
 using folly::EventBase;
 using apache::thrift::concurrency::Util;
 

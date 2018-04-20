@@ -41,9 +41,8 @@ namespace apache { namespace thrift {
 // TBinaryProtocolT<TBufferBase>, but in practice it didn't seem to
 // affect the timing.
 
-class AsyncClientWorker2 : public Worker<
-    LoadTestAsyncClient,
-    ClientLoadConfig> {
+class AsyncClientWorker2
+    : public Worker<test::LoadTestAsyncClient, ClientLoadConfig> {
  public:
 
   AsyncClientWorker2() :
@@ -59,7 +58,7 @@ class AsyncClientWorker2 : public Worker<
     setupSSLContext();
   }
 
-  typedef LoadTestAsyncClient Client;
+  typedef test::LoadTestAsyncClient Client;
   typedef Worker<Client, ClientLoadConfig> Parent;
 
   std::shared_ptr<Client> createConnection() override;

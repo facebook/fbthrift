@@ -1,5 +1,4 @@
-namespace cpp apache.thrift.test
-namespace cpp2 apache.thrift
+namespace cpp2 apache.thrift.test
 namespace py apache.thrift.test.load
 namespace py3 thrift.perf
 namespace py.asyncio apache.thrift.test.asyncio.load

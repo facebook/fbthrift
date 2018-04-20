@@ -36,12 +36,10 @@ class ClientLoadConfig;
 // TBinaryProtocolT<TBufferBase>, but in practice it didn't seem to
 // affect the timing.
 
-class ClientWorker2 : public loadgen::Worker<
-    apache::thrift::LoadTestAsyncClient,
-    ClientLoadConfig> {
+class ClientWorker2
+    : public loadgen::Worker<LoadTestAsyncClient, ClientLoadConfig> {
  public:
-  typedef apache::thrift::LoadTestAsyncClient
-    Client;
+  typedef LoadTestAsyncClient Client;
   typedef loadgen::Worker<Client, ClientLoadConfig> Parent;
 
   std::shared_ptr<Client> createConnection() override;
