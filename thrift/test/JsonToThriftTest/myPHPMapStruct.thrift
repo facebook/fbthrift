@@ -1,3 +1,5 @@
+namespace cpp2 apache.thrift.test
+
 enum Gender {
   MALE = 1,
   FEMALE = 2,
