@@ -25,10 +25,9 @@
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
 
-using namespace thrift::test::debug::cpp2;
-using namespace apache::thrift;
 using namespace std;
-
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 
 // Globals so that the read test can read the write test data.
 OneOfEach ooe;

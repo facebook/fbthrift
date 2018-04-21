@@ -18,37 +18,21 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 #include <thrift/test/gen-cpp2/DebugProtoTest_types.h>
-#include <thrift/test/gen-cpp2/DebugProtoTest_types.tcc>
-#include <thrift/test/gen-cpp/DebugProtoTest_types.h>
+#include <thrift/test/gen-cpp2/DebugProtoTest_types_custom_protocol.h>
 
 #include <math.h>
 
 #include <gflags/gflags.h>
 #include <gtest/gtest.h>
 
-using namespace thrift::test::debug;
-using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
 using namespace std;
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 
-namespace thrift { namespace test { namespace debug {
-
-bool Empty::operator<(Empty const& /* other */) const {
-  // It is empty, so all are equal.
-  return false;
-}
-
-}}}
-
-cpp2::OneOfEach ooe;
-cpp2::Nested nested;
+OneOfEach ooe;
+Nested nested;
 
 map<string, vector<set<map<int, int>>>> nested_foo = {
   {"foo",
@@ -96,19 +80,16 @@ void testNested(Object& obj) {
   ASSERT_EQ(42, obj.bar);
 }
 
-void testObj(cpp2::OneOfEach& obj) { testOoe(obj); }
 void testObj(OneOfEach& obj) { testOoe(obj); }
-void testObj(cpp2::Nested& obj) { testNested(obj); }
 void testObj(Nested& obj) { testNested(obj); }
 
-template <typename Cpp2Writer, typename Cpp2Reader, typename CppProtocol,
-          typename CppType, typename Cpp2Type>
+template <typename Cpp2Writer, typename Cpp2Reader, typename Cpp2Type>
 void runTest(Cpp2Type& obj) {
   Cpp2Type obj2;
   Cpp2Writer prot;
   Cpp2Reader protReader;
 
-  // Verify writing with cpp2
+  // Verify writing
   size_t bufSize = obj.serializedSize(&prot);
   IOBufQueue queue(IOBufQueue::cacheChainLength());
 
@@ -118,30 +99,8 @@ void runTest(Cpp2Type& obj) {
   bufSize = queue.chainLength();
   auto buf = queue.move();
 
-  // Try deserialize with cpp2
+  // Try deserialize
   protReader.setInput(buf.get());
-  obj2.read(&protReader);
-  testObj(obj2);
-
-  // Try deserialize with cpp
-  std::shared_ptr<TTransport> buf2(
-    new TMemoryBuffer(buf->writableData(), bufSize));
-  CppProtocol cppProt(buf2);
-  CppType cppObj;
-  cppObj.read(&cppProt);
-  testObj(cppObj);
-
-  // Try to serialize with cpp
-  buf2.reset(new TMemoryBuffer());
-  CppProtocol cppProt2(buf2);
-  cppObj.write(&cppProt2);
-
-  std::string buffer = dynamic_pointer_cast<TMemoryBuffer>(
-    buf2)->getBufferAsString();
-  std::unique_ptr<folly::IOBuf> buf3(
-    folly::IOBuf::wrapBuffer(buffer.data(), buffer.size()));
-
-  protReader.setInput(buf3.get());
   obj2.read(&protReader);
   testObj(obj2);
 }
@@ -158,14 +117,14 @@ void runSkipTest() {
   bufSize = queue.chainLength();
   auto buf = queue.move();
   protReader.setInput(buf.get());
-  cpp2::NotNested notNested;
+  NotNested notNested;
   notNested.read(&protReader);
   ASSERT_EQ(42, notNested.bar);
 }
 
 template <typename Cpp2Writer, typename Cpp2Reader>
 void runDoubleTest() {
-  cpp2::Doubles dbls;
+  Doubles dbls;
   dbls.inf = HUGE_VAL;
   dbls.neginf = -HUGE_VAL;
   dbls.nan = NAN;
@@ -185,7 +144,7 @@ void runDoubleTest() {
   bufSize = queue.chainLength();
   auto buf = queue.move();
   protReader.setInput(buf.get());
-  cpp2::Doubles dbls2;
+  Doubles dbls2;
   dbls2.read(&protReader);
 
   ASSERT_EQ(std::numeric_limits<double>::infinity(), dbls2.inf);
@@ -199,10 +158,8 @@ void runDoubleTest() {
 }
 
 TEST(protocol2, binary) {
-  runTest<BinaryProtocolWriter, BinaryProtocolReader, TBinaryProtocol,
-          OneOfEach>(ooe);
-  runTest<BinaryProtocolWriter, BinaryProtocolReader, TBinaryProtocol,
-          Nested>(nested);
+  runTest<BinaryProtocolWriter, BinaryProtocolReader, OneOfEach>(ooe);
+  runTest<BinaryProtocolWriter, BinaryProtocolReader, Nested>(nested);
 }
 
 TEST(protocol2, binarySkipping) {
@@ -214,10 +171,8 @@ TEST(protocol2, binaryDoubles) {
 }
 
 TEST(protocol2, compact) {
-  runTest<CompactProtocolWriter, CompactProtocolReader, TCompactProtocol,
-          OneOfEach>(ooe);
-  runTest<CompactProtocolWriter, CompactProtocolReader, TCompactProtocol,
-          Nested>(nested);
+  runTest<CompactProtocolWriter, CompactProtocolReader, OneOfEach>(ooe);
+  runTest<CompactProtocolWriter, CompactProtocolReader, Nested>(nested);
 }
 
 TEST(protocol2, compactSkipping) {
@@ -229,10 +184,8 @@ TEST(protocol2, compactDoubles) {
 }
 
 TEST(protocol2, simpleJson) {
-  runTest<SimpleJSONProtocolWriter,
-          SimpleJSONProtocolReader, TSimpleJSONProtocol, OneOfEach>(ooe);
-  runTest<SimpleJSONProtocolWriter,
-          SimpleJSONProtocolReader, TSimpleJSONProtocol, Nested>(nested);
+  runTest<SimpleJSONProtocolWriter, SimpleJSONProtocolReader, OneOfEach>(ooe);
+  runTest<SimpleJSONProtocolWriter, SimpleJSONProtocolReader, Nested>(nested);
 }
 
 TEST(protocol2, simpleJsonSkipping) {
@@ -248,7 +201,7 @@ TEST(protocol2, simpleJsonNullField) {
   auto buf = folly::IOBuf::copyBuffer(json);
   SimpleJSONProtocolReader protReader;
   protReader.setInput(buf.get());
-  cpp2::Doubles dbls;
+  Doubles dbls;
   auto nchars = dbls.read(&protReader);
 
   ASSERT_EQ(dbls.big, 10.0);
@@ -262,7 +215,7 @@ TEST(protocol2, simpleJsonExceptions) {
     auto buf = folly::IOBuf::copyBuffer(json);
     SimpleJSONProtocolReader protReader;
     protReader.setInput(buf.get());
-    cpp2::OneOfEach ooe;
+    OneOfEach ooe;
     auto nchars = ooe.read(&protReader);
   };
 
@@ -300,7 +253,7 @@ template <typename Cpp2Reader, typename Cpp2Writer>
 void testCustomBuffers() {
     Cpp2Reader reader;
     Cpp2Writer writer;
-    cpp2::BufferStruct a;
+    BufferStruct a;
 
     IOBufQueue buf;
     writer.setOutput(&buf, 1024);
@@ -314,7 +267,7 @@ void testCustomBuffers() {
     auto underlying = buf.move();
 
     reader.setInput(underlying.get());
-    cpp2::BufferStruct b;
+    BufferStruct b;
     b.read(&reader);
 
     ASSERT_EQ(b.bin_field, binString);

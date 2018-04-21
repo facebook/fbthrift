@@ -21,18 +21,15 @@
 
 #include <iostream>
 #include <cmath>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
-#include <thrift/test/gen-cpp/DebugProtoTest_types.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/test/gen-cpp2/DebugProtoTest_types_custom_protocol.h>
+
+using namespace std;
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 
 int main() {
-  using std::cout;
-  using std::endl;
-  using namespace thrift::test::debug;
-  using apache::thrift::transport::TMemoryBuffer;
-  using apache::thrift::protocol::TJSONProtocol;
-
   OneOfEach ooe;
   ooe.im_true   = true;
   ooe.im_false  = false;
@@ -44,8 +41,7 @@ int main() {
   ooe.some_characters  = "JSON THIS! \"\1";
   ooe.zomg_unicode     = "\xd7\n\a\t";
   ooe.base64 = "\1\2\3\255";
-  cout << apache::thrift::ThriftJSONString(ooe) << endl << endl;
-
+  cout << JSONSerializer::serialize<string>(ooe) << endl << endl;
 
   Nesting n;
   n.my_ooe = ooe;
@@ -60,8 +56,7 @@ int main() {
   n.my_bonk.type    = 31337;
   n.my_bonk.message = "I am a bonk... xor!";
 
-  cout << apache::thrift::ThriftJSONString(n) << endl << endl;
-
+  cout << JSONSerializer::serialize<string>(n) << endl << endl;
 
   HolyMoley hm;
 
@@ -103,26 +98,22 @@ int main() {
   stage2.back().message = "nevermore";
   hm.bonks["poe"] = stage2;
 
-  cout << apache::thrift::ThriftJSONString(hm) << endl << endl;
+  cout << JSONSerializer::serialize<string>(hm) << endl << endl;
 
-  std::shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer());
-  std::shared_ptr<TJSONProtocol> proto(new TJSONProtocol(buffer));
-
+  string serialized;
 
   cout << "Testing ooe" << endl;
 
-  ooe.write(proto.get());
-  OneOfEach ooe2;
-  ooe2.read(proto.get());
+  serialized = JSONSerializer::serialize<string>(ooe);
+  auto ooe2 = JSONSerializer::deserialize<OneOfEach>(serialized);
 
   assert(ooe == ooe2);
 
 
   cout << "Testing hm" << endl;
 
-  hm.write(proto.get());
-  HolyMoley hm2;
-  hm2.read(proto.get());
+  serialized = JSONSerializer::serialize<string>(hm);
+  auto hm2 = JSONSerializer::deserialize<HolyMoley>(serialized);
 
   assert(hm == hm2);
 
@@ -139,7 +130,7 @@ int main() {
   dub.small = 1E-305;
   dub.zero = 0.0;
   dub.negzero = -0.0;
-  cout << apache::thrift::ThriftJSONString(dub) << endl << endl;
+  cout << JSONSerializer::serialize<string>(dub) << endl << endl;
 
   Floats flt;
   flt.nan = HUGE_VAL/HUGE_VAL;
@@ -150,7 +141,7 @@ int main() {
   flt.small = 3E-38;
   flt.zero = 0.0;
   flt.negzero = -0.0;
-  cout << apache::thrift::ThriftJSONString(flt) << endl << endl;
+  cout << JSONSerializer::serialize<string>(flt) << endl << endl;
 
   cout << "Testing base" << endl;
 
@@ -163,9 +154,8 @@ int main() {
   base.b5 = "12345";
   base.b6 = "123456";
 
-  base.write(proto.get());
-  Base64 base2;
-  base2.read(proto.get());
+  serialized = JSONSerializer::serialize<string>(base);
+  auto base2 = JSONSerializer::deserialize<Base64>(serialized);
 
   assert(base == base2);
 
