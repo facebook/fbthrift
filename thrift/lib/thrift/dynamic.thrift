@@ -4,7 +4,7 @@
 // See accompanying file LICENSE or visit the Thrift site at:
 // http://developers.facebook.com/thrift/
 
-namespace cpp apache.thrift
+namespace cpp2 apache.thrift
 namespace php thrift
 namespace py apache.thrift.dynamic
 namespace py.asyncio apache.asyncio.thrift.dynamic
