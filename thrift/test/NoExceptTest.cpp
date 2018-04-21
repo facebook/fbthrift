@@ -19,54 +19,34 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/NoExcept_types.h>
-#include <thrift/test/gen-cpp2/NoExcept_types.h>
+#include <type_traits>
 
-#include <glog/logging.h>
 #include <gtest/gtest.h>
 
-namespace thrift { namespace test { namespace no_except {
+#include <thrift/test/gen-cpp2/NoExcept_types.h>
 
-#define TEST_NOEXCEPT_CTOR_1(Type) \
-  do { \
-    Type a; \
-    EXPECT_TRUE(noexcept(Type(std::move(a)))) << #Type; \
-  } while (false)
-
-#define TEST_NOEXCEPT_ASSIGN_1(Type) \
-  do { \
-    Type a; \
-    Type b; \
-    EXPECT_TRUE(noexcept(b = std::move(a))) << #Type; \
-  } while (false)
-
-#define TEST_NOEXCEPT_CTOR(Type) \
-  do { \
-    TEST_NOEXCEPT_CTOR_1(Type); \
-    TEST_NOEXCEPT_CTOR_1(cpp2::Type); \
-  } while (false)
-
-#define TEST_NOEXCEPT_ALL(Type) \
-  do { \
-    TEST_NOEXCEPT_CTOR_1(Type); \
-    TEST_NOEXCEPT_ASSIGN_1(Type); \
-    TEST_NOEXCEPT_CTOR_1(cpp2::Type); \
-    TEST_NOEXCEPT_ASSIGN_1(cpp2::Type); \
-  } while (false)
+using namespace apache::thrift::test;
 
 TEST(NoExcept, noexcept) {
-  TEST_NOEXCEPT_ALL(Simple);
-  TEST_NOEXCEPT_CTOR(SimpleWithString);
-  TEST_NOEXCEPT_ALL(List);
-  TEST_NOEXCEPT_CTOR(Set);
-  TEST_NOEXCEPT_CTOR(Map);
-  TEST_NOEXCEPT_ALL(Complex);
-  TEST_NOEXCEPT_CTOR(ComplexWithStringAndMap);
+  EXPECT_TRUE(std::is_nothrow_move_constructible<Simple>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<Simple>::value);
+
+  EXPECT_TRUE(std::is_nothrow_move_constructible<SimpleWithString>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<SimpleWithString>::value);
+
+  EXPECT_TRUE(std::is_nothrow_move_constructible<List>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<List>::value);
+
+  EXPECT_TRUE(std::is_nothrow_move_constructible<Set>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<Set>::value);
+
+  EXPECT_TRUE(std::is_nothrow_move_constructible<Map>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<Map>::value);
+
+  EXPECT_TRUE(std::is_nothrow_move_constructible<Complex>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<Complex>::value);
+
+  EXPECT_TRUE(
+      std::is_nothrow_move_constructible<ComplexWithStringAndMap>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<ComplexWithStringAndMap>::value);
 }
-
-#undef TEST_NOEXCEPT_ALL
-#undef TEST_NOEXCEPT_CTOR
-#undef TEST_NOEXCEPT_ASSIGN_1
-#undef TEST_NOEXCEPT_CTOR_1
-
-}}}  // namespaces

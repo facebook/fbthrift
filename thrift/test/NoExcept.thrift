@@ -1,5 +1,4 @@
-namespace cpp thrift.test.no_except
-namespace cpp2 thrift.test.no_except.cpp2
+namespace cpp2 apache.thrift.test
 
 struct Simple {
   1: i32 a,
