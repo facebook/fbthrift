@@ -22,13 +22,9 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/test/gen-cpp2/DebugProtoTest_types.h>
 
-#include <math.h>
-
 #include <folly/Benchmark.h>
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include <folly/init/Init.h>
 
-using namespace thrift::test::debug;
 using namespace thrift::test::debug::cpp2;
 using namespace apache::thrift;
 using namespace std;
@@ -37,20 +33,6 @@ using namespace std;
 // Globals so that the read test can read the write test data.
 OneOfEach ooe;
 unique_ptr<IOBuf> buf;
-
-template <typename TBufferType_>
-void runTestRead(int iters) {
-  OneOfEach ooe2;
-  TBufferType_ prot;
-  for (int i = 0; i < iters; i ++) {
-    prot.setInput(buf.get());
-    ooe2.read(&prot);
-  }
-}
-
-BENCHMARK(runTestRead_BinaryProtocolReader, iters) {
-  runTestRead<BinaryProtocolReader>(iters);
-}
 
 template <typename TBufferType_>
 void runTestWrite(int iters)
@@ -72,13 +54,22 @@ BENCHMARK(runTestWrite_BinaryProtocolWriter, iters) {
   runTestWrite<BinaryProtocolWriter>(iters);
 }
 
-TEST(protocol2, readwrite) {
-  runTestWrite<BinaryProtocolWriter>(1);
-  runTestRead<BinaryProtocolReader>(1);
+template <typename TBufferType_>
+void runTestRead(int iters) {
+  OneOfEach ooe2;
+  TBufferType_ prot;
+  for (int i = 0; i < iters; i++) {
+    prot.setInput(buf.get());
+    ooe2.read(&prot);
+  }
+}
+
+BENCHMARK(runTestRead_BinaryProtocolReader, iters) {
+  runTestRead<BinaryProtocolReader>(iters);
 }
 
 int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
+  folly::Init init(&argc, &argv);
 
   ooe.im_true   = true;
   ooe.im_false  = false;
@@ -96,10 +87,7 @@ int main(int argc, char** argv) {
   ooe.rank_map[567419810] = (float)0.211184;
   ooe.rank_map[507959914] = (float)0.080382;
 
-  auto ret = RUN_ALL_TESTS();
-  if (!ret) {
-    folly::runBenchmarksOnFlag();
-  }
+  folly::runBenchmarks();
 
   return 0;
 }
