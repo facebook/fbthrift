@@ -1,3 +1,5 @@
+namespace cpp2 apache.thrift.test
+
 struct Foo {
   5: i32 bar,
   1: i32 baz,

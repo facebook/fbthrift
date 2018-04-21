@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "hs_test.h"
 
 #include <map>
@@ -21,12 +20,11 @@
 #include <vector>
 
 #include <thrift/lib/cpp/transport/TTransport.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
-#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/hs/tests/if/gen-cpp2/hs_test_types_custom_protocol.h>
 
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using namespace std;
 
@@ -138,59 +136,64 @@ void freeBuffers(CTestStruct* obj) {
   free(obj->f_set);
 }
 
-// Deserialize a TestStruct using the given Protocol
-TestStruct* deserializeStruct(protocol::TProtocol &prot) {
-  TestStruct *ts = new TestStruct();
-  ts->read(&prot);
-  return ts;
-}
-
 // Serialize a TestStruct using TBinaryProtocol
 void serializeBinary(TMemoryBuffer *mt, TestStruct *obj) {
-  protocol::TBinaryProtocol oprot(mt);
-  obj->write(&oprot);
+  auto buf = BinarySerializer::serialize<IOBufQueue>(*obj).move();
+  auto range = buf->coalesce();
+  mt->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TBinaryProtocol
 TestStruct* deserializeBinary(TMemoryBuffer *mt) {
-  protocol::TBinaryProtocol oprot(mt);
-  return deserializeStruct(oprot);
+  auto buf = mt->wrapBufferAsIOBuf();
+  auto res = std::make_unique<TestStruct>();
+  BinarySerializer::deserialize(buf.get(), *res);
+  return res.release();
 }
 
 // Serialize a TestStruct using TCompactProtocol
 void serializeCompact(TMemoryBuffer *mt, TestStruct *obj) {
-  protocol::TCompactProtocol oprot(mt);
-  obj->write(&oprot);
+  auto buf = CompactSerializer::serialize<IOBufQueue>(*obj).move();
+  auto range = buf->coalesce();
+  mt->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TCompactProtocol
 TestStruct* deserializeCompact(TMemoryBuffer *mt) {
-  protocol::TCompactProtocol oprot(mt);
-  return deserializeStruct(oprot);
+  auto buf = mt->wrapBufferAsIOBuf();
+  auto res = std::make_unique<TestStruct>();
+  CompactSerializer::deserialize(buf.get(), *res);
+  return res.release();
 }
 
 // Serialize a TestStruct using TJSONProtocol
 void serializeJSON(TMemoryBuffer *mb, TestStruct *obj) {
-  protocol::TJSONProtocol oprot(mb);
-  obj->write(&oprot);
+  auto buf = JSONSerializer::serialize<IOBufQueue>(*obj).move();
+  auto range = buf->coalesce();
+  mb->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TJSONProtocol
 TestStruct* deserializeJSON(TMemoryBuffer *mb) {
-  protocol::TJSONProtocol oprot(mb);
-  return deserializeStruct(oprot);
+  auto buf = mb->wrapBufferAsIOBuf();
+  auto res = std::make_unique<TestStruct>();
+  JSONSerializer::deserialize(buf.get(), *res);
+  return res.release();
 }
 
 // Serialize a TestStruct using TSimpleJSONProtocol
 void serializeSimpleJSON(TMemoryBuffer *mb, TestStruct *obj) {
-  protocol::TSimpleJSONProtocol oprot(mb);
-  obj->write(&oprot);
+  auto buf = SimpleJSONSerializer::serialize<IOBufQueue>(*obj).move();
+  auto range = buf->coalesce();
+  mb->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TSimpleJSONProtocol
 TestStruct* deserializeSimpleJSON(TMemoryBuffer *mb) {
-  protocol::TSimpleJSONProtocol oprot(mb);
-  return deserializeStruct(oprot);
+  auto buf = mb->wrapBufferAsIOBuf();
+  auto res = std::make_unique<TestStruct>();
+  SimpleJSONSerializer::deserialize(buf.get(), *res);
+  return res.release();
 }
 
 } // extern "C"

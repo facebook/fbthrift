@@ -51,7 +51,7 @@ instance Transport (Ptr MemoryBuffer) where
     c_writeMB mt str (CUInt $ fromIntegral len)
 
 instance Storable Foo where
-  sizeOf _ = (#size Foo)
+  sizeOf _ = (#size apache::thrift::test::Foo)
   alignment = sizeOf
   peek fPtr = do
     CInt bar <- c_getFooBar fPtr
@@ -66,7 +66,7 @@ instance Storable CTestStruct where
   poke _ _ = return ()
 
 instance Storable TestStruct where
-  sizeOf _ = (#size TestStruct)
+  sizeOf _ = (#size apache::thrift::test::TestStruct)
   alignment = sizeOf
   peek ptr = alloca $ \cStructPtr -> do
     c_readStruct cStructPtr ptr
