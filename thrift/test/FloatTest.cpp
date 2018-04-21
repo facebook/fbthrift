@@ -19,9 +19,11 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/FloatTest_types.h>
+#include <thrift/test/gen-cpp2/FloatTest_types.h>
 
 #include <gtest/gtest.h>
+
+using namespace apache::thrift::test;
 
 TEST(FloatTest, example) {
   foo f;

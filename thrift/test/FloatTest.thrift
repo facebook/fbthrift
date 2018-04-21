@@ -17,6 +17,8 @@
  * under the License.
  */
 
+namespace cpp2 apache.thrift.test
+
 struct foo {
   1: float bar;
   2: float baz = 1;
