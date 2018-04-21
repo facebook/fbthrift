@@ -18,24 +18,46 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #pragma once
 
-// Implement opaque typedef similar to BOOST_STRONG_TYPEDEF or Boost.Units.
+#include <type_traits>
+
+// Implement basic opaque typedef suitable for testing
+//
 // In real life it would have operators defined that access underlying value in
 // a type-safe manner
 
-#define OPAQUE_TYPEDEF_FOR_TEST(RawType, NewType)                           \
-struct NewType {                                                            \
-  typedef RawType raw_type;                                                 \
-  RawType val_;                                                             \
-  explicit NewType(const RawType val) : val_(val) {}                        \
-  NewType() {}                                                              \
-  RawType& __value() { return val_; }                                       \
-  const RawType& __value() const { return val_; }                           \
-  explicit operator RawType() const { return val_; }                        \
-  bool operator==(const NewType & rhs) const { return val_ == rhs.val_; }   \
+namespace apache {
+namespace thrift {
+namespace test {
+
+template <typename RawType, typename Tag>
+class Opaque {
+ private:
+  RawType val_;
+
+ public:
+  explicit Opaque(const RawType& val) : val_(val) {}
+  Opaque() {}
+  RawType& __value() {
+    return val_;
+  }
+  const RawType& __value() const {
+    return val_;
+  }
+  explicit operator RawType() const {
+    return val_;
+  }
+  bool operator==(const Opaque& rhs) const {
+    return val_ == rhs.val_;
+  }
 };
 
-OPAQUE_TYPEDEF_FOR_TEST(double, OpaqueDouble1)
-OPAQUE_TYPEDEF_FOR_TEST(double, OpaqueDouble2)
-OPAQUE_TYPEDEF_FOR_TEST(int64_t, NonConvertibleId)
+using OpaqueDouble1 = Opaque<double, std::integral_constant<int, 1>>;
+using OpaqueDouble2 = Opaque<double, std::integral_constant<int, 2>>;
+using NonConvertibleId = Opaque<int64_t, void>;
+
+} // namespace test
+} // namespace thrift
+} // namespace apache

@@ -22,10 +22,10 @@
 #include <string>
 #include <unordered_map>
 #include <gtest/gtest.h>
-#include <thrift/test/gen-cpp/OpaqueTest_types.h>
 #include <thrift/test/gen-cpp2/OpaqueTest_types.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+
+using namespace apache::thrift::test;
 
 template<class T>
 T getTestStruct() {
@@ -41,12 +41,8 @@ T getTestStruct() {
   return a;
 }
 
-OpaqueTestStruct getTestStructV1() {
+OpaqueTestStruct getTestStruct() {
   return getTestStruct<OpaqueTestStruct>();
-}
-
-cpp2::OpaqueTestStruct getTestStructV2() {
-  return getTestStruct<cpp2::OpaqueTestStruct>();
 }
 
 template<typename T>
@@ -62,26 +58,12 @@ void checkTypedefs() {
 
 TEST(Opaque, Typedefs) {
   checkTypedefs<OpaqueTestStruct>();
-  checkTypedefs<cpp2::OpaqueTestStruct>();
 }
 
-TEST(Opaque, SerializeV1) {
-  using namespace apache::thrift::util;
-
-  OpaqueTestStruct a = getTestStructV1();
-  ThriftSerializerBinary<> ser;
-  std::string s;
-  ser.serialize(a, &s);
-
-  OpaqueTestStruct a2;
-  ser.deserialize(s, &a2);
-  EXPECT_EQ(getTestStructV1(), a2);
-}
-
-TEST(Opaque, SerializeV2) {
+TEST(Opaque, Serialize) {
   using namespace apache::thrift;
 
-  cpp2::OpaqueTestStruct a = getTestStructV2();
+  OpaqueTestStruct a = getTestStruct();
   BinaryProtocolWriter protWriter;
   size_t bufSize = a.serializedSize(&protWriter);
   folly::IOBufQueue queue;
@@ -91,7 +73,7 @@ TEST(Opaque, SerializeV2) {
   auto buf = queue.move();
   BinaryProtocolReader protReader;
   protReader.setInput(buf.get());
-  cpp2::OpaqueTestStruct a2;
+  OpaqueTestStruct a2;
   a2.read(&protReader);
-  EXPECT_EQ(getTestStructV2(), a2);
+  EXPECT_EQ(getTestStruct(), a2);
 }

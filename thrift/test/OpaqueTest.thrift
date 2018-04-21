@@ -3,6 +3,8 @@
  * @author Dmytro Dzhulgakov (dzhulgakov@fb.com)
  */
 
+namespace cpp2 apache.thrift.test
+
 cpp_include "<unordered_map>"
 cpp_include "thrift/test/OpaqueTest.h"
 
