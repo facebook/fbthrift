@@ -106,8 +106,8 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
   bool isOneway() override {
-    return kind_ != RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE &&
-        kind_ != RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE;
+    return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
+        kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
   }
 
   protocol::PROTOCOL_TYPES getProtoId() {
