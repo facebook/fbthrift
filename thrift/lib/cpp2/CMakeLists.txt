@@ -28,8 +28,7 @@ add_dependencies(thriftfrozen2 frozen-cpp2-target)
 target_link_libraries(
   thriftfrozen2
   PUBLIC
-    ${DOUBLE_CONVERSION_LIBRARY}
-    ${FOLLY_LIBRARY}
+    Folly::folly
     ${GLOG_LIBRARIES}
     ${GFLAGS_LIBRARIES}
 )
@@ -51,9 +50,8 @@ target_link_libraries(
   thriftprotocol
   PUBLIC
     thrift
-    ${FOLLY_LIBRARY}
+    Folly::folly
     ${WANGLE_LIBRARIES}
-    ${DOUBLE_CONVERSION_LIBRARY}
 )
 
 thrift_generate(

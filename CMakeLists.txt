@@ -74,8 +74,7 @@ endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
-  find_package(DoubleConversion REQUIRED)
-  find_package(Folly REQUIRED)
+  find_package(folly CONFIG REQUIRED)
   find_package(GFlags REQUIRED)
   find_package(Glog REQUIRED)
   find_package(Krb5 REQUIRED gssapi)
@@ -87,8 +86,6 @@ if(lib_only OR build_all)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(Threads)
   include_directories(
-    ${DOUBLE_CONVERSION_INCLUDE_DIR}
-    ${FOLLY_INCLUDE_DIR}
     ${GFLAGS_INCLUDE_DIRS}
     ${GLOG_INCLUDE_DIRS}
     ${KRB5_INCLUDE_DIRS}
