@@ -18,7 +18,7 @@ A_REAL_NUMBER: float
 A_FAKE_NUMBER: float
 A_WORD: str
 A_STRUCT: SimpleStruct
-AN_ENUM_VALUE: int
+AN_ENUM_VALUE: AnEnum
 WORD_LIST: t.List[str]
 DIGITS: t.Set[int]
 A_CONST_MAP: t.Dict[str, SimpleStruct]

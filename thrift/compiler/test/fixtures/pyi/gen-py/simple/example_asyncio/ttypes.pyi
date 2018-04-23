@@ -157,7 +157,7 @@ class ComplexStruct:
         structTwo: t.Optional[SimpleStruct] = ...,
         an_integer: t.Optional[int] = ...,
         name: t.Optional[str] = ...,
-        an_enum: t.Optional[int] = ...,
+        an_enum: t.Optional[AnEnum] = ...,
         values: t.Optional[t.List[int]] = ...,
         structs: t.Optional[t.List[SimpleStruct]] = ...,
         amap: t.Optional[t.Dict[str, str]] = ...,
@@ -183,9 +183,9 @@ class ComplexStruct:
     @name.setter
     def name(self, value: t.Optional[str]) -> None: ...
     @__property__
-    def an_enum(self) -> int: ...
+    def an_enum(self) -> AnEnum: ...
     @an_enum.setter
-    def an_enum(self, value: t.Optional[int]) -> None: ...
+    def an_enum(self, value: t.Optional[AnEnum]) -> None: ...
     @__property__
     def values(self) -> t.List[int]: ...
     @values.setter

@@ -543,7 +543,9 @@ bool ReturnServiceAsyncClient::sync_boolReturn(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_boolReturn(_returnState);
+  auto result = recv_boolReturn(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ReturnServiceAsyncClient::future_boolReturn() {
@@ -680,7 +682,9 @@ int16_t ReturnServiceAsyncClient::sync_i16Return(apache::thrift::RpcOptions& rpc
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i16Return(_returnState);
+  auto result = recv_i16Return(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int16_t> ReturnServiceAsyncClient::future_i16Return() {
@@ -817,7 +821,9 @@ int32_t ReturnServiceAsyncClient::sync_i32Return(apache::thrift::RpcOptions& rpc
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i32Return(_returnState);
+  auto result = recv_i32Return(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int32_t> ReturnServiceAsyncClient::future_i32Return() {
@@ -954,7 +960,9 @@ int64_t ReturnServiceAsyncClient::sync_i64Return(apache::thrift::RpcOptions& rpc
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i64Return(_returnState);
+  auto result = recv_i64Return(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int64_t> ReturnServiceAsyncClient::future_i64Return() {
@@ -1091,7 +1099,9 @@ float ReturnServiceAsyncClient::sync_floatReturn(apache::thrift::RpcOptions& rpc
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_floatReturn(_returnState);
+  auto result = recv_floatReturn(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<float> ReturnServiceAsyncClient::future_floatReturn() {
@@ -1228,7 +1238,9 @@ double ReturnServiceAsyncClient::sync_doubleReturn(apache::thrift::RpcOptions& r
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_doubleReturn(_returnState);
+  auto result = recv_doubleReturn(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<double> ReturnServiceAsyncClient::future_doubleReturn() {
@@ -1770,7 +1782,9 @@ void ReturnServiceAsyncClient::simpleTypedefReturnImpl(bool useSync, apache::thr
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_simpleTypedefReturn(_returnState);
+  auto result = recv_simpleTypedefReturn(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceAsyncClient::future_simpleTypedefReturn() {
@@ -2177,7 +2191,9 @@ void ReturnServiceAsyncClient::enumReturnImpl(bool useSync, apache::thrift::RpcO
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_enumReturn(_returnState);
+  auto result = recv_enumReturn(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceAsyncClient::future_enumReturn() {

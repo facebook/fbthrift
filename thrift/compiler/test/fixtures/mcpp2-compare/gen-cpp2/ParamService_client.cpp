@@ -1655,7 +1655,9 @@ bool ParamServiceAsyncClient::sync_bool_ret_i32_i64_param(apache::thrift::RpcOpt
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_bool_ret_i32_i64_param(_returnState);
+  auto result = recv_bool_ret_i32_i64_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ParamServiceAsyncClient::future_bool_ret_i32_i64_param(int32_t param1, int64_t param2) {
@@ -1792,7 +1794,9 @@ bool ParamServiceAsyncClient::sync_bool_ret_map_param(apache::thrift::RpcOptions
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_bool_ret_map_param(_returnState);
+  auto result = recv_bool_ret_map_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ParamServiceAsyncClient::future_bool_ret_map_param(const std::map<std::string, int64_t>& param1) {
@@ -1929,7 +1933,9 @@ bool ParamServiceAsyncClient::sync_bool_ret_union_param(apache::thrift::RpcOptio
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_bool_ret_union_param(_returnState);
+  auto result = recv_bool_ret_union_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ParamServiceAsyncClient::future_bool_ret_union_param(const  ::some::valid::ns::ComplexUnion& param1) {
@@ -2066,7 +2072,9 @@ int64_t ParamServiceAsyncClient::sync_i64_ret_float_double_param(apache::thrift:
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i64_ret_float_double_param(_returnState);
+  auto result = recv_i64_ret_float_double_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int64_t> ParamServiceAsyncClient::future_i64_ret_float_double_param(float param1, double param2) {
@@ -2203,7 +2211,9 @@ int64_t ParamServiceAsyncClient::sync_i64_ret_string_typedef_param(apache::thrif
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i64_ret_string_typedef_param(_returnState);
+  auto result = recv_i64_ret_string_typedef_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int64_t> ParamServiceAsyncClient::future_i64_ret_string_typedef_param(const std::string& param1, const std::set< ::some::valid::ns::mostComplexTypeDef>& param2) {
@@ -2340,7 +2350,9 @@ int64_t ParamServiceAsyncClient::sync_i64_ret_i32_i32_i32_i32_i32_param(apache::
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_i64_ret_i32_i32_i32_i32_i32_param(_returnState);
+  auto result = recv_i64_ret_i32_i32_i32_i32_i32_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int64_t> ParamServiceAsyncClient::future_i64_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
@@ -2477,7 +2489,9 @@ double ParamServiceAsyncClient::sync_double_ret_setstruct_param(apache::thrift::
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_double_ret_setstruct_param(_returnState);
+  auto result = recv_double_ret_setstruct_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<double> ParamServiceAsyncClient::future_double_ret_setstruct_param(const std::set< ::some::valid::ns::MyStruct>& param1) {
@@ -3289,7 +3303,9 @@ void ParamServiceAsyncClient::typedef_ret_i32_paramImpl(bool useSync, apache::th
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_typedef_ret_i32_param(_returnState);
+  auto result = recv_typedef_ret_i32_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future< ::some::valid::ns::simpleTypeDef> ParamServiceAsyncClient::future_typedef_ret_i32_param(int32_t param1) {
@@ -3561,7 +3577,9 @@ void ParamServiceAsyncClient::enum_ret_double_paramImpl(bool useSync, apache::th
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_enum_ret_double_param(_returnState);
+  auto result = recv_enum_ret_double_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future< ::some::valid::ns::MyEnumA> ParamServiceAsyncClient::future_enum_ret_double_param(double param1) {
@@ -3698,7 +3716,9 @@ void ParamServiceAsyncClient::enum_ret_double_enum_paramImpl(bool useSync, apach
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_enum_ret_double_enum_param(_returnState);
+  auto result = recv_enum_ret_double_enum_param(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future< ::some::valid::ns::MyEnumA> ParamServiceAsyncClient::future_enum_ret_double_enum_param(double param1,  ::some::valid::ns::MyEnumA param2) {

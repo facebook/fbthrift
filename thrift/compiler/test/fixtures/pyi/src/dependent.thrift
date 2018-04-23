@@ -7,6 +7,7 @@ namespace py3 simple.dependent
 struct Item {
     1: string key
     2: optional binary value
+    3: ItemEnum enum_value
 }
 
 

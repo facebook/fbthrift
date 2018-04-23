@@ -221,7 +221,9 @@ bool ExtraServiceAsyncClient::sync_simple_function(apache::thrift::RpcOptions& r
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_simple_function(_returnState);
+  auto result = recv_simple_function(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ExtraServiceAsyncClient::future_simple_function() {
@@ -493,7 +495,9 @@ bool ExtraServiceAsyncClient::sync_throws_function2(apache::thrift::RpcOptions& 
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_throws_function2(_returnState);
+  auto result = recv_throws_function2(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<bool> ExtraServiceAsyncClient::future_throws_function2(bool param1) {

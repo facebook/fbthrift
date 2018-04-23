@@ -623,7 +623,9 @@ apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_retu
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_returnstream(_returnState);
+  auto result = recv_returnstream(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<apache::thrift::SemiStream<int32_t>> PubSubStreamingServiceAsyncClient::future_returnstream(int32_t i32_from, int32_t i32_to) {
@@ -1030,7 +1032,9 @@ apache::thrift::SemiStream<std::string> PubSubStreamingServiceAsyncClient::sync_
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_different(_returnState);
+  auto result = recv_different(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<apache::thrift::SemiStream<std::string>> PubSubStreamingServiceAsyncClient::future_different(apache::thrift::Stream<int32_t> foo, int64_t firstparam) {

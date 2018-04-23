@@ -854,7 +854,9 @@ int32_t ServiceAAsyncClient::sync_retI32Method(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_retI32Method(_returnState);
+  auto result = recv_retI32Method(_returnState);
+  ::apache::thrift::detail::ac::attachChannel(result, channel_);
+  return result;
 }
 
 folly::Future<int32_t> ServiceAAsyncClient::future_retI32Method() {

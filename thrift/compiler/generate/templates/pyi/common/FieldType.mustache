@@ -38,5 +38,5 @@ Recursive.
 }}{{#type:set?}}t.Set[{{#type:setElemType}}{{> common/FieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}t.Dict[{{#type:keyType}}{{> common/FieldType}}{{/type:keyType}},{{!
 }} {{#type:valueType}}{{> common/FieldType}}{{/type:valueType}}]{{/type:map?}}{{!
-}}{{#type:enum}}int{{/type:enum}}{{!
+}}{{#type:enum}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}{{/type:enum}}{{!
 }}{{#type:typedef?}}{{#type:typedefType}}{{> common/FieldType}}{{/type:typedefType}}{{/type:typedef?}}
