@@ -15,7 +15,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include <sys/types.h>
@@ -64,10 +64,10 @@ const int INVALID_DATA = 1;
 const int BAD_VERSION = 4;
 const int MISSING_REQUIRED_FIELD = 6;
 
-#include "php.h"
-#include "zend_interfaces.h"
-#include "zend_exceptions.h"
-#include "php_thrift_protocol.h"
+#include <php.h>
+#include <thrift/lib/php/ext/thrift_protocol/php_thrift_protocol.h>
+#include <zend_exceptions.h>
+#include <zend_interfaces.h>
 
 static function_entry thrift_protocol_functions[] = {
   PHP_FE(thrift_protocol_write_binary, nullptr)

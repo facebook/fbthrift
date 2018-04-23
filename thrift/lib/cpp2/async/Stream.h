@@ -124,4 +124,4 @@ struct ResponseAndStream {
 } // namespace thrift
 } // namespace apache
 
-#include "thrift/lib/cpp2/async/Stream-inl.h"
+#include <thrift/lib/cpp2/async/Stream-inl.h>

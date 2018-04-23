@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/compiler/parse/t_program.h"
+#include <thrift/compiler/parse/t_program.h>
 
 /**
  * t_program functions are protected so we need

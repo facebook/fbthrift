@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h"
+#include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>

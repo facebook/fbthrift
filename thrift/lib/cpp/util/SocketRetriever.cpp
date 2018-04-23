@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "SocketRetriever.h"
+#include <thrift/lib/cpp/util/SocketRetriever.h>
 
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/THeaderTransport.h>

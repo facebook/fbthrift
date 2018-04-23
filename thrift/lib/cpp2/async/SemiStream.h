@@ -62,4 +62,4 @@ struct ResponseAndSemiStream {
 } // namespace thrift
 } // namespace apache
 
-#include "thrift/lib/cpp2/async/SemiStream-inl.h"
+#include <thrift/lib/cpp2/async/SemiStream-inl.h>

@@ -20,9 +20,9 @@
 #include <ruby.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "constants.h"
-#include "struct.h"
-#include "macros.h"
+#include <thrift/lib/rb/ext/constants.h>
+#include <thrift/lib/rb/ext/macros.h>
+#include <thrift/lib/rb/ext/struct.h>
 
 #define LAST_ID(obj) FIX2INT(rb_ary_pop(rb_ivar_get(obj, last_field_id)))
 #define SET_LAST_ID(obj, val) rb_ary_push(rb_ivar_get(obj, last_field_id), val)

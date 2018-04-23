@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "ThreadManager.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>

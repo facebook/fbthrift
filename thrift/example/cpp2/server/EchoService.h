@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "thrift/example/if/gen-cpp2/Echo.h"
+#include <thrift/example/if/gen-cpp2/Echo.h>
 
 namespace example {
 namespace chatroom {

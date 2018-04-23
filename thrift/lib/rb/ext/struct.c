@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "struct.h"
-#include "constants.h"
-#include "macros.h"
+#include <thrift/lib/rb/ext/struct.h>
+#include <thrift/lib/rb/ext/constants.h>
+#include <thrift/lib/rb/ext/macros.h>
 
 #ifndef HAVE_STRLCPY
 

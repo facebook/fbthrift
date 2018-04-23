@@ -20,8 +20,8 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/compiler/parse/t_program.h"
-#include "thrift/compiler/parse/t_type.h"
+#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/parse/t_type.h>
 
 /**
  * Inherit from t_type to access protected declarations

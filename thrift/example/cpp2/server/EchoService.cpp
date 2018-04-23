@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/example/cpp2/server/EchoService.h"
+#include <thrift/example/cpp2/server/EchoService.h>
 
 namespace example {
 namespace chatroom {

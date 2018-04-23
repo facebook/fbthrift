@@ -75,6 +75,6 @@ bool t_const_operatorNe(const t_const* self, const t_const* rhs);
 
 // the Boost::Python module named "frontend" which exposes all the types and
 // the process() function
-#include "thrift/compiler/py/py_frontend.tcc"
+#include <thrift/compiler/py/py_frontend.tcc>
 
 #endif // THRIFT_PY_COMPILER_H

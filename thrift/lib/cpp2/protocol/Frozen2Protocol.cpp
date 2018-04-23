@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "Frozen2Protocol.h"
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 
 namespace apache {
 namespace thrift {

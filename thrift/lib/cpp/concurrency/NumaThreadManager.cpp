@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "NumaThreadManager.h"
+#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
 #include <glog/logging.h>
 #include <numa.h>

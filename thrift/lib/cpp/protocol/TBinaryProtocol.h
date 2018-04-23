@@ -292,6 +292,6 @@ typedef TBinaryProtocolFactoryT<transport::TTransport> TBinaryProtocolFactory;
 
 }}} // apache::thrift::protocol
 
-#include "TBinaryProtocol.tcc"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.tcc>
 
 #endif // #ifndef THRIFT_PROTOCOL_TBINARYPROTOCOL_H_

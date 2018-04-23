@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "GenericHelpers.h"
+#include <thrift/test/GenericHelpers.h>
 
 #define ERR_LEN 512
 extern char errorMessage[ERR_LEN];

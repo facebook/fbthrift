@@ -36,11 +36,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
+#include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/platform.h>
 #include <algorithm>
 #include <clocale>
 #include <sstream>
-#include "t_generator.h"
 
 using std::map;
 using std::ofstream;

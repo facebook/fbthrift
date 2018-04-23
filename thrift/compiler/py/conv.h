@@ -62,6 +62,6 @@ const T& TO(const U& from);
 } // namespace compiler
 } // namespace thrift
 
-#include "thrift/compiler/py/conv.tcc"
+#include <thrift/compiler/py/conv.tcc>
 
 #endif // THRIFT_COMPILER_PY_CONV_H

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h"
+#include <thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h>
 
 #include <gtest/gtest.h>
 

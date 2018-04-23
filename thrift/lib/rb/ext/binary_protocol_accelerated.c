@@ -17,12 +17,12 @@
  * under the License.
  */
 
+#include <constants.h>
 #include <ruby.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <constants.h>
 #include <struct.h>
-#include "macros.h"
+#include <thrift/lib/rb/ext/macros.h>
 
 VALUE rb_thrift_binary_proto_native_qmark(VALUE self) {
   return Qtrue;

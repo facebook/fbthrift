@@ -19,7 +19,7 @@
  * under the License.
  */
 
-#include "CompactProtocol.h"
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache {
 namespace thrift {

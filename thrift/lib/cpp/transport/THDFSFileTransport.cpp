@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "THDFSFileTransport.h"
+#include <thrift/lib/cpp/transport/THDFSFileTransport.h>
 #include <hdfs.h>
 
 using namespace std;

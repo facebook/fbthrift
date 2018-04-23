@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "HDFS.h"
+#include <thrift/lib/cpp/transport/HDFS.h>
 
-#include "hdfs.h"
+#include <hdfs.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 using namespace std;

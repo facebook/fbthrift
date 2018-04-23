@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include <ruby.h>
 #include <constants.h>
-#include "macros.h"
+#include <ruby.h>
+#include <thrift/lib/rb/ext/macros.h>
 
 ID buf_ivar_id;
 ID index_ivar_id;

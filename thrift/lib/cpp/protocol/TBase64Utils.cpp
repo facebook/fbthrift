@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "TBase64Utils.h"
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 
 using std::string;
 

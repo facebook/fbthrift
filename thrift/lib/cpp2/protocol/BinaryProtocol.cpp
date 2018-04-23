@@ -19,7 +19,7 @@
  * under the License.
  */
 
-#include "BinaryProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 #include <folly/Conv.h>
 #include <folly/portability/GFlags.h>

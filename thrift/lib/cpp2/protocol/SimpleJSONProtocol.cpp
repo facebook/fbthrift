@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-#include "SimpleJSONProtocol.h"
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>

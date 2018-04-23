@@ -23,12 +23,12 @@
 
 #include <folly/init/Init.h>
 
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include "AllProtocolTests.tcc"
+#include <thrift/test/AllProtocolTests.tcc>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;

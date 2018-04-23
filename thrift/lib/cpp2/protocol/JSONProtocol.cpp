@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "JSONProtocol.h"
+#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 
 #include <folly/Conv.h>
 

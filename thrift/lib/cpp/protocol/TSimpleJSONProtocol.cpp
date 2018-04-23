@@ -19,7 +19,7 @@
  * under the License.
  */
 
-#include "TSimpleJSONProtocol.h"
+#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 
 using namespace apache::thrift::transport;
 using namespace apache::thrift::reflection;
