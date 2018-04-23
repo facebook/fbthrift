@@ -39,11 +39,11 @@ UTF8STRINGS: bool
 
 class {{enum:name}}(int):
     {{#enum:values}}
-    {{enumValue:name}}: {{enum:name}}
+    {{enumValue:name}}: t.ClassVar[{{enum:name}}]
     {{/enum:values}}
 
-    _VALUES_TO_NAMES: t.Dict[{{enum:name}}, str]
-    _NAMES_TO_VALUES: t.Dict[str, {{enum:name}}]
+    _VALUES_TO_NAMES: t.ClassVar[t.Dict[{{enum:name}}, str]]
+    _NAMES_TO_VALUES: t.ClassVar[t.Dict[str, {{enum:name}}]]
 {{/program:enums}}
 {{#program:structs}}
 

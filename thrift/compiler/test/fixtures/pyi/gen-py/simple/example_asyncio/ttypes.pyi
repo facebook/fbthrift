@@ -17,13 +17,13 @@ UTF8STRINGS: bool
 
 
 class AnEnum(int):
-    ONE: AnEnum
-    TWO: AnEnum
-    THREE: AnEnum
-    FOUR: AnEnum
+    ONE: t.ClassVar[AnEnum]
+    TWO: t.ClassVar[AnEnum]
+    THREE: t.ClassVar[AnEnum]
+    FOUR: t.ClassVar[AnEnum]
 
-    _VALUES_TO_NAMES: t.Dict[AnEnum, str]
-    _NAMES_TO_VALUES: t.Dict[str, AnEnum]
+    _VALUES_TO_NAMES: t.ClassVar[t.Dict[AnEnum, str]]
+    _NAMES_TO_VALUES: t.ClassVar[t.Dict[str, AnEnum]]
 
 
 class SimpleException(Thrift.TException):

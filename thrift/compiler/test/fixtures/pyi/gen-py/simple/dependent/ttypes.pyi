@@ -16,11 +16,11 @@ UTF8STRINGS: bool
 
 
 class ItemEnum(int):
-    OPTION_ONE: ItemEnum
-    OPTION_TWO: ItemEnum
+    OPTION_ONE: t.ClassVar[ItemEnum]
+    OPTION_TWO: t.ClassVar[ItemEnum]
 
-    _VALUES_TO_NAMES: t.Dict[ItemEnum, str]
-    _NAMES_TO_VALUES: t.Dict[str, ItemEnum]
+    _VALUES_TO_NAMES: t.ClassVar[t.Dict[ItemEnum, str]]
+    _NAMES_TO_VALUES: t.ClassVar[t.Dict[str, ItemEnum]]
 
 
 class Item:
