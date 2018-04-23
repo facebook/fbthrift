@@ -51,7 +51,7 @@ target_link_libraries(
   PUBLIC
     thrift
     Folly::folly
-    ${WANGLE_LIBRARIES}
+    wangle::wangle
 )
 
 thrift_generate(

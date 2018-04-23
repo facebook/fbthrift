@@ -79,7 +79,7 @@ if(lib_only OR build_all)
   find_package(Glog REQUIRED)
   find_package(Krb5 REQUIRED gssapi)
   find_package(Yarpl)
-  find_package(Wangle REQUIRED)
+  find_package(wangle CONFIG REQUIRED)
   find_package(Zlib REQUIRED)
   find_package(Zstd REQUIRED)
   # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
@@ -90,7 +90,6 @@ if(lib_only OR build_all)
     ${GLOG_INCLUDE_DIRS}
     ${KRB5_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
-    ${WANGLE_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
   )
