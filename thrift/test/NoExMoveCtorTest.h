@@ -24,7 +24,9 @@
 #include <string>
 #include <unordered_map>
 
-namespace thrift { namespace test { namespace noexcept_move_ctor {
+namespace apache {
+namespace thrift {
+namespace test {
 
 class s2sumap : public std::unordered_map<std::string, std::string> {
  public:
@@ -57,4 +59,6 @@ class ThrowCtorType : public std::string {
   }
 };
 
-}}} // namespaces
+} // namespace test
+} // namespace thrift
+} // namespace apache

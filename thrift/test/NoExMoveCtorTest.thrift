@@ -1,4 +1,4 @@
-namespace cpp thrift.test.noexcept_move_ctor
+namespace cpp2 apache.thrift.test
 
 cpp_include "thrift/test/NoExMoveCtorTest.h"
 
