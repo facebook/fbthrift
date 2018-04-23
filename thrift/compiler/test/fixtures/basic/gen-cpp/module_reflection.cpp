@@ -49,6 +49,13 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
     f.name = "MyDataField";
     f.order = 2;
   }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 6U;
+    f.name = "major";
+    f.order = 3;
+  }
   reflectionInitializer_4790436723586763884(schema);  // struct module.MyDataItem
 }
 

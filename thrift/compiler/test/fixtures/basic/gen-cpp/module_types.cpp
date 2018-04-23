@@ -49,7 +49,8 @@ size_t Freezer< ::MyStruct, void>::extraSizeImpl(
   return 0
     + extraSize(src.MyIntField)
     + extraSize(src.MyStringField)
-    + extraSize(src.MyDataField);
+    + extraSize(src.MyDataField)
+    + extraSize(src.major);
 }
 
 template<>
@@ -64,6 +65,8 @@ void Freezer< ::MyStruct, void>::freezeImpl(
   dst.__isset.MyStringField = src.__isset.MyStringField;
   freeze(src.MyDataField, dst.MyDataField, buffer);
   dst.__isset.MyDataField = src.__isset.MyDataField;
+  freeze(src.major, dst.major, buffer);
+  dst.__isset.major = src.__isset.major;
 }
 
 template<>
@@ -76,6 +79,8 @@ void Freezer< ::MyStruct, void>::thawImpl(
   dst.__isset.MyStringField = src.__isset.MyStringField;
   thaw(src.MyDataField, dst.MyDataField);
   dst.__isset.MyDataField = src.__isset.MyDataField;
+  thaw(src.major, dst.major);
+  dst.__isset.major = src.__isset.major;
 }
 }} // apache::thrift 
 
@@ -91,6 +96,8 @@ bool MyStruct::operator == (const MyStruct & rhs) const {
   if (!(this->MyStringField == rhs.MyStringField))
     return false;
   if (!(this->MyDataField == rhs.MyDataField))
+    return false;
+  if (!(this->major == rhs.major))
     return false;
   return true;
 }
@@ -111,6 +118,10 @@ void MyStruct::translateFieldName(
   else if (_fname == "MyDataField") {
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "major") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I64;
   }
 }
 
@@ -164,6 +175,14 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(_ftype);
         }
         break;
+      case 4:
+        if (_ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->major);
+          this->__isset.major = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(_ftype);
         break;
@@ -180,6 +199,7 @@ void MyStruct::__clear() {
   MyIntField = 0;
   MyStringField = "";
   MyDataField.__clear();
+  major = 0;
   __isset.__clear();
 }
 uint32_t MyStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
@@ -194,6 +214,9 @@ uint32_t MyStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += this->MyDataField.write(oprot);
   xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("major", apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeI64(this->major);
+  xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -206,6 +229,7 @@ void swap(MyStruct &a, MyStruct &b) {
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
+  swap(a.major, b.major);
   swap(a.__isset, b.__isset);
 }
 
@@ -217,6 +241,8 @@ void merge(const MyStruct& from, MyStruct& to) {
   to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
   merge(from.MyDataField, to.MyDataField);
   to.__isset.MyDataField = to.__isset.MyDataField || from.__isset.MyDataField;
+  merge(from.major, to.major);
+  to.__isset.major = to.__isset.major || from.__isset.major;
 }
 
 void merge(MyStruct&& from, MyStruct& to) {
@@ -227,6 +253,8 @@ void merge(MyStruct&& from, MyStruct& to) {
   to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
   merge(std::move(from.MyDataField), to.MyDataField);
   to.__isset.MyDataField = to.__isset.MyDataField || from.__isset.MyDataField;
+  merge(std::move(from.major), to.major);
+  to.__isset.major = to.__isset.major || from.__isset.major;
 }
 
 

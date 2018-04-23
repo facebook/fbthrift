@@ -63,25 +63,33 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self, *,
         MyIntField=None,
         str MyStringField=None,
-        MyDataItem MyDataField=None
+        MyDataItem MyDataField=None,
+        major=None
     ):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
 
+        if major is not None:
+            if not isinstance(major, int):
+                raise TypeError(f'major is not a { int !r}.')
+            major = <int64_t> major
+
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           MyIntField,
           MyStringField,
           MyDataField,
+          major,
         ))
 
     def __call__(
         MyStruct self,
         MyIntField=__NOTSET,
         MyStringField=__NOTSET,
-        MyDataField=__NOTSET
+        MyDataField=__NOTSET,
+        major=__NOTSET
     ):
         changes = any((
             MyIntField is not __NOTSET,
@@ -89,6 +97,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             MyStringField is not __NOTSET,
 
             MyDataField is not __NOTSET,
+
+            major is not __NOTSET,
         ))
 
         if not changes:
@@ -107,12 +117,18 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(MyDataField, MyDataItem):
                 raise TypeError(f'MyDataField is not a { MyDataItem !r}.')
 
+        if None is not major is not __NOTSET:
+            if not isinstance(major, int):
+                raise TypeError(f'major is not a { int !r}.')
+            major = <int64_t> major
+
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
           MyIntField,
           MyStringField,
           MyDataField,
+          major,
         ))
         return inst
 
@@ -121,7 +137,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cMyStruct* base_instance,
         object MyIntField,
         object MyStringField,
-        object MyDataField
+        object MyDataField,
+        object major
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -152,6 +169,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             elif MyDataField is __NOTSET:
                 MyDataField = None
 
+            if major is None:
+                deref(c_inst).major = _MyStruct_defaults.major
+                deref(c_inst).__isset.major = False
+                pass
+            elif major is __NOTSET:
+                major = None
+
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
@@ -161,6 +185,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyDataField is not None:
             deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
             deref(c_inst).__isset.MyDataField = True
+        if major is not None:
+            deref(c_inst).major = major
+            deref(c_inst).__isset.major = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -169,9 +196,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField
         yield 'MyDataField', self.MyDataField
+        yield 'major', self.major
 
     def __bool__(self):
-        return True or True or True
+        return True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -196,6 +224,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.__MyDataField = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).MyDataField))
         return self.__MyDataField
 
+    @property
+    def major(self):
+
+        return self._cpp_obj.get().major
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
@@ -203,11 +236,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.MyIntField,
             self.MyStringField,
             self.MyDataField,
+            self.major,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

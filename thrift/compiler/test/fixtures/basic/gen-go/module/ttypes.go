@@ -55,10 +55,12 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - MyIntField
 //  - MyStringField
 //  - MyDataField
+//  - Major
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
   MyDataField *MyDataItem `thrift:"MyDataField,3" db:"MyDataField" json:"MyDataField"`
+  Major int64 `thrift:"major,4" db:"major" json:"major"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -79,6 +81,10 @@ func (p *MyStruct) GetMyDataField() *MyDataItem {
     return MyStruct_MyDataField_DEFAULT
   }
 return p.MyDataField
+}
+
+func (p *MyStruct) GetMajor() int64 {
+  return p.Major
 }
 func (p *MyStruct) IsSetMyDataField() bool {
   return p.MyDataField != nil
@@ -107,6 +113,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 3:
       if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
         return err
       }
     default:
@@ -150,12 +160,22 @@ func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.Major = v
+}
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -191,6 +211,16 @@ func (p *MyStruct) writeField3(oprot thrift.Protocol) (err error) {
   }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 3:MyDataField: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("major", thrift.I64, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:major: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Major)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.major (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:major: ", p), err) }
   return err
 }
 

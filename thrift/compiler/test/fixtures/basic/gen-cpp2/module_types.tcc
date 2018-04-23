@@ -76,6 +76,19 @@ _readField_MyDataField:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           3,
+          4,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_major:
+  {
+    iprot->readI64(this->major);
+    this->__isset.major = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -119,6 +132,14 @@ _loop:
         goto _skip;
       }
     }
+    case 4:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+        goto _readField_major;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -140,6 +161,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSize(prot_, &this->MyDataField);
+  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
+  xfer += prot_->serializedSizeI64(this->major);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -154,6 +177,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSizeZC(prot_, &this->MyDataField);
+  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
+  xfer += prot_->serializedSizeI64(this->major);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -170,6 +195,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::write(prot_, &this->MyDataField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 4);
+  xfer += prot_->writeI64(this->major);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -16,18 +16,22 @@ FROZEN_TYPE( ::MyStruct,
   FROZEN_FIELD(MyIntField, 1, int64_t)
   FROZEN_FIELD(MyStringField, 2, std::string)
   FROZEN_FIELD(MyDataField, 3,  ::MyDataItem)
+  FROZEN_FIELD(major, 4, int64_t)
   FROZEN_VIEW(
     FROZEN_VIEW_FIELD(MyIntField, int64_t)
     FROZEN_VIEW_FIELD(MyStringField, std::string)
-    FROZEN_VIEW_FIELD(MyDataField,  ::MyDataItem))
+    FROZEN_VIEW_FIELD(MyDataField,  ::MyDataItem)
+    FROZEN_VIEW_FIELD(major, int64_t))
   FROZEN_SAVE_INLINE(
     FROZEN_SAVE_FIELD(MyIntField)
     FROZEN_SAVE_FIELD(MyStringField)
-    FROZEN_SAVE_FIELD(MyDataField))
+    FROZEN_SAVE_FIELD(MyDataField)
+    FROZEN_SAVE_FIELD(major))
   FROZEN_LOAD_INLINE(
     FROZEN_LOAD_FIELD(MyIntField, 1)
     FROZEN_LOAD_FIELD(MyStringField, 2)
-    FROZEN_LOAD_FIELD(MyDataField, 3)));
+    FROZEN_LOAD_FIELD(MyDataField, 3)
+    FROZEN_LOAD_FIELD(major, 4)));
 
 FROZEN_TYPE( ::MyDataItem,
   FROZEN_VIEW()

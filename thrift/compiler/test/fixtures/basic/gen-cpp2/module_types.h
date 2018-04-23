@@ -77,9 +77,10 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
  public:
 
   MyStruct() :
-      MyIntField(0) {}
+      MyIntField(0),
+      major(0) {}
   // FragileConstructor for use in initialization lists only.
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -101,6 +102,13 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     MyDataField = arg.move();
     __isset.MyDataField = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    major = arg.move();
+    __isset.major = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -113,11 +121,13 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   int64_t MyIntField;
   std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
+  int64_t major;
 
   struct __isset {
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
+    bool major;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -154,6 +164,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     __isset.MyDataField = true;
     return MyDataField;
+  }
+
+  int64_t get_major() const {
+    return major;
+  }
+
+  int64_t& set_major(int64_t major_) {
+    major = major_;
+    __isset.major = true;
+    return major;
   }
 
   template <class Protocol_>

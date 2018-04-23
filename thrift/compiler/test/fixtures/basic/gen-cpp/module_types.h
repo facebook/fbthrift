@@ -58,7 +58,7 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
 
   static const uint64_t _reflection_id = 7958971832214294220U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
-  MyStruct() : MyIntField(0) {
+  MyStruct() : MyIntField(0), major(0) {
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -99,6 +99,19 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
     MyDataField = arg.move();
     __isset.MyDataField = true;
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    major = arg.move();
+    __isset.major = true;
+  }
 
   MyStruct(const MyStruct&) = default;
   MyStruct& operator=(const MyStruct& src)= default;
@@ -109,6 +122,7 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
   int64_t MyIntField;
   std::string MyStringField;
   MyDataItem MyDataField;
+  int64_t major;
 
   struct __isset {
     __isset() { __clear(); } 
@@ -116,10 +130,12 @@ class MyStruct final : public apache::thrift::TStructType<MyStruct> {
       MyIntField = false;
       MyStringField = false;
       MyDataField = false;
+      major = false;
     }
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
+    bool major;
   } __isset;
 
   bool operator == (const MyStruct &) const;
@@ -149,6 +165,7 @@ struct Frozen< ::MyStruct, void> {
   typename Freezer<int64_t>::FrozenType MyIntField;
   typename Freezer<std::string>::FrozenType MyStringField;
   typename Freezer< ::MyDataItem>::FrozenType MyDataField;
+  typename Freezer<int64_t>::FrozenType major;
 
   struct __isset {
     __isset() { __clear(); } 
@@ -156,10 +173,12 @@ struct Frozen< ::MyStruct, void> {
       MyIntField = false;
       MyStringField = false;
       MyDataField = false;
+      major = false;
     }
     bool MyIntField : 1;
     bool MyStringField : 1;
     bool MyDataField : 1;
+    bool major : 1;
   } __isset;
 };
 }} // apache::thrift 

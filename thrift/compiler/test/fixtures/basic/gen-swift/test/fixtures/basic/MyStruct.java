@@ -21,11 +21,13 @@ public final class MyStruct
     public MyStruct(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField
+        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
+        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
         this.myDataField = myDataField;
+        this.major = major;
     }
 
     public static class Builder {
@@ -47,19 +49,27 @@ public final class MyStruct
             this.myDataField = myDataField;
             return this;
         }
+        private long major;
+
+        public Builder setMajor(long major) {
+            this.major = major;
+            return this;
+        }
 
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
             this.myStringField = other.myStringField;
             this.myDataField = other.myDataField;
+            this.major = other.major;
         }
 
         public MyStruct build() {
             return new MyStruct (
                 this.myIntField,
                 this.myStringField,
-                this.myDataField
+                this.myDataField,
+                this.major
             );
         }
     }
@@ -79,6 +89,11 @@ public final class MyStruct
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
 
+    private final long major;
+
+    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
+    public long getMajor() { return major; }
+
     @Override
     public String toString()
     {
@@ -86,6 +101,7 @@ public final class MyStruct
             .add("myIntField", myIntField)
             .add("myStringField", myStringField)
             .add("myDataField", myDataField)
+            .add("major", major)
             .toString();
     }
 
@@ -103,7 +119,8 @@ public final class MyStruct
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
-            Objects.equals(myDataField, other.myDataField);
+            Objects.equals(myDataField, other.myDataField) &&
+            Objects.equals(major, other.major);
     }
 
     @Override
@@ -111,7 +128,8 @@ public final class MyStruct
         return Arrays.deepHashCode(new Object[] {
             myIntField,
             myStringField,
-            myDataField
+            myDataField,
+            major
         });
     }
 }

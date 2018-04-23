@@ -29,18 +29,22 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
   private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
+  private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);
 
   public long MyIntField;
   public String MyStringField;
   public MyDataItem MyDataField;
+  public long major;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
+  public static final int MAJOR = 4;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __MAJOR_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
@@ -51,6 +55,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(MYDATAFIELD, new FieldMetaData("MyDataField", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyDataItem.class)));
+    tmpMetaDataMap.put(MAJOR, new FieldMetaData("major", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -64,13 +70,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public MyStruct(
     long MyIntField,
     String MyStringField,
-    MyDataItem MyDataField)
+    MyDataItem MyDataField,
+    long major)
   {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
+    this.major = major;
+    setMajorIsSet(true);
   }
 
   /**
@@ -86,6 +95,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (other.isSetMyDataField()) {
       this.MyDataField = TBaseHelper.deepCopy(other.MyDataField);
     }
+    this.major = TBaseHelper.deepCopy(other.major);
   }
 
   public MyStruct deepCopy() {
@@ -168,6 +178,29 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public long  getMajor() {
+    return this.major;
+  }
+
+  public MyStruct setMajor(long major) {
+    this.major = major;
+    setMajorIsSet(true);
+    return this;
+  }
+
+  public void unsetMajor() {
+    __isset_bit_vector.clear(__MAJOR_ISSET_ID);
+  }
+
+  // Returns true if field major is set (has been assigned a value) and false otherwise
+  public boolean isSetMajor() {
+    return __isset_bit_vector.get(__MAJOR_ISSET_ID);
+  }
+
+  public void setMajorIsSet(boolean value) {
+    __isset_bit_vector.set(__MAJOR_ISSET_ID, value);
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -194,6 +227,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case MAJOR:
+      if (value == null) {
+        unsetMajor();
+      } else {
+        setMajor((Long)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -210,6 +251,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case MYDATAFIELD:
       return getMyDataField();
 
+    case MAJOR:
+      return new Long(getMajor());
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -224,6 +268,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetMyStringField();
     case MYDATAFIELD:
       return isSetMyDataField();
+    case MAJOR:
+      return isSetMajor();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -271,6 +317,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
+    boolean this_present_major = true;
+    boolean that_present_major = true;
+    if (this_present_major || that_present_major) {
+      if (!(this_present_major && that_present_major))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.major, that.major))
+        return false;
+    }
+
     return true;
   }
 
@@ -315,6 +370,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetMajor()).compareTo(other.isSetMajor());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(major, other.major);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -352,6 +415,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case MAJOR:
+          if (field.type == TType.I64) {
+            this.major = iprot.readI64();
+            setMajorIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
           break;
@@ -382,6 +453,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       this.MyDataField.write(oprot);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(MAJOR_FIELD_DESC);
+    oprot.writeI64(this.major);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -434,6 +508,13 @@ String space = prettyPrint ? " " : "";
     } else {
       sb.append(TBaseHelper.toString(this. getMyDataField(), indent + 1, prettyPrint));
     }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("major");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this. getMajor(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

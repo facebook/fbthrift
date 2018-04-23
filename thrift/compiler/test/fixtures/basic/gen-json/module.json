@@ -29,11 +29,16 @@
           "type_enum" : "STRUCT",
           "spec_args" : "MyDataItem",
           "required" : true
+        },
+        "major" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
         }
       }
     },
     "MyDataItem" : {
-      "lineno" : 15,
+      "lineno" : 17,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -43,7 +48,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 17,
+      "lineno" : 19,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -124,7 +129,7 @@
       }
     },
     "MyServiceFast" : {
-      "lineno" : 26,
+      "lineno" : 28,
       "functions" : {
         "MyServiceFast.ping" : {
           "return_type" : {
@@ -205,13 +210,13 @@
       }
     },
     "MyServiceEmpty" : {
-      "lineno" : 35,
+      "lineno" : 37,
       "functions" : {
 
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 38,
+      "lineno" : 40,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -236,7 +241,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 43,
+      "lineno" : 45,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

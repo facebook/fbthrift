@@ -39,19 +39,22 @@ template <> bool TEnumTraits< ::cpp2::MyEnum>::findValue(const char* name,  ::cp
 }} // apache::thrift
 namespace cpp2 {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
-    MyDataField(std::move(MyDataField__arg)) {
+    MyDataField(std::move(MyDataField__arg)),
+    major(std::move(major__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
+  __isset.major = true;
 }
 
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  major = 0;
   __isset = {};
 }
 
@@ -64,6 +67,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
     return false;
   }
   if (!(MyDataField == rhs.MyDataField)) {
+    return false;
+  }
+  if (!(major == rhs.major)) {
     return false;
   }
   return true;
@@ -91,6 +97,10 @@ void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, 
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
+  else if (_fname == "major") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
 }
 
 void swap(MyStruct& a, MyStruct& b) {
@@ -98,6 +108,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
+  swap(a.major, b.major);
   swap(a.__isset, b.__isset);
 }
 
