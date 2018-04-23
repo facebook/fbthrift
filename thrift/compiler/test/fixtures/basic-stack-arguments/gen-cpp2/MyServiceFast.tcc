@@ -164,7 +164,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
   MyServiceFast_putDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<std::string> uarg_data(new std::string());
+  auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.putDataById", ctx));
   try {
@@ -233,7 +233,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
   MyServiceFast_lobDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<std::string> uarg_data(new std::string());
+  auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.lobDataById", ctx));
   try {
@@ -243,7 +243,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
     LOG(ERROR) << ex.what() << " in function lobDataById";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }

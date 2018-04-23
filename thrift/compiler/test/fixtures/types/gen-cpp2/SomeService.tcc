@@ -30,7 +30,7 @@ void SomeServiceAsyncProcessor::process_bounce_map(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   SomeService_bounce_map_pargs args;
-  std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> uarg_m(new  ::apache::thrift::fixtures::types::SomeMap());
+  auto uarg_m = std::make_unique< ::apache::thrift::fixtures::types::SomeMap>();
   args.get<0>().value = uarg_m.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
   try {

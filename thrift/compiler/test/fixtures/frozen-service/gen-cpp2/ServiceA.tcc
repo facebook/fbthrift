@@ -50,7 +50,7 @@ void ServiceAAsyncProcessor::process_moduleAMethod(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_moduleAMethod_pargs args;
-  std::unique_ptr< ::some::ns::ModuleA> uarg_modArg(new  ::some::ns::ModuleA());
+  auto uarg_modArg = std::make_unique< ::some::ns::ModuleA>();
   args.get<0>().value = uarg_modArg.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleAMethod", ctx));
   try {
@@ -123,7 +123,7 @@ void ServiceAAsyncProcessor::process_moduleBMethod(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_moduleBMethod_pargs args;
-  std::unique_ptr< ::some::ns::ModuleB> uarg_modArg(new  ::some::ns::ModuleB());
+  auto uarg_modArg = std::make_unique< ::some::ns::ModuleB>();
   args.get<0>().value = uarg_modArg.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleBMethod", ctx));
   try {
@@ -198,7 +198,7 @@ void ServiceAAsyncProcessor::process_i32StrDoubleMethod(std::unique_ptr<apache::
   ServiceA_i32StrDoubleMethod_pargs args;
   int32_t uarg_i32Arg{0};
   args.get<0>().value = &uarg_i32Arg;
-  std::unique_ptr<std::string> uarg_strArg(new std::string());
+  auto uarg_strArg = std::make_unique<std::string>();
   args.get<1>().value = uarg_strArg.get();
   double uarg_doubleArg{0};
   args.get<2>().value = &uarg_doubleArg;
@@ -275,7 +275,7 @@ void ServiceAAsyncProcessor::process_versioningMethod(std::unique_ptr<apache::th
   ServiceA_versioningMethod_pargs args;
   int32_t uarg_i32Arg{0};
   args.get<0>().value = &uarg_i32Arg;
-  std::unique_ptr<std::string> uarg_strArg(new std::string());
+  auto uarg_strArg = std::make_unique<std::string>();
   args.get<1>().value = uarg_strArg.get();
   double uarg_doubleArg{0};
   args.get<2>().value = &uarg_doubleArg;
@@ -747,7 +747,7 @@ void ServiceAAsyncProcessor::process_moduleAThrowMethod(std::unique_ptr<apache::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_moduleAThrowMethod_pargs args;
-  std::unique_ptr< ::some::ns::ModuleA> uarg_modArg(new  ::some::ns::ModuleA());
+  auto uarg_modArg = std::make_unique< ::some::ns::ModuleA>();
   args.get<0>().value = uarg_modArg.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.moduleAThrowMethod", ctx));
   try {
@@ -830,11 +830,11 @@ void ServiceAAsyncProcessor::process_mixedMethod(std::unique_ptr<apache::thrift:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ServiceA_mixedMethod_pargs args;
-  std::unique_ptr<std::string> uarg_strArg(new std::string());
+  auto uarg_strArg = std::make_unique<std::string>();
   args.get<0>().value = uarg_strArg.get();
   int32_t uarg_i32Arg{0};
   args.get<1>().value = &uarg_i32Arg;
-  std::unique_ptr< ::some::ns::ModuleB> uarg_modArg(new  ::some::ns::ModuleB());
+  auto uarg_modArg = std::make_unique< ::some::ns::ModuleB>();
   args.get<2>().value = uarg_modArg.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ServiceA.mixedMethod", ctx));
   try {

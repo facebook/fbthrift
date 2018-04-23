@@ -225,7 +225,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_void_ret_map_param_pargs args;
-  std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
+  auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
   try {
@@ -298,9 +298,9 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(std::unique_
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_void_ret_map_setlist_param_pargs args;
-  std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
+  auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<std::set<std::vector<std::string>>> uarg_param2(new std::set<std::vector<std::string>>());
+  auto uarg_param2 = std::make_unique<std::set<std::vector<std::string>>>();
   args.get<1>().value = uarg_param2.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_setlist_param", ctx));
   try {
@@ -519,7 +519,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_void_ret_struct_param_pargs args;
-  std::unique_ptr< ::some::valid::ns::MyStruct> uarg_param1(new  ::some::valid::ns::MyStruct());
+  auto uarg_param1 = std::make_unique< ::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
   try {
@@ -592,7 +592,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(std::unique_pt
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_void_ret_listunion_param_pargs args;
-  std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> uarg_param1(new std::vector< ::some::valid::ns::ComplexUnion>());
+  auto uarg_param1 = std::make_unique<std::vector< ::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
   try {
@@ -742,7 +742,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_bool_ret_map_param_pargs args;
-  std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
+  auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
   try {
@@ -817,7 +817,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_bool_ret_union_param_pargs args;
-  std::unique_ptr< ::some::valid::ns::ComplexUnion> uarg_param1(new  ::some::valid::ns::ComplexUnion());
+  auto uarg_param1 = std::make_unique< ::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
   try {
@@ -969,9 +969,9 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(std::uniqu
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_i64_ret_string_typedef_param_pargs args;
-  std::unique_ptr<std::string> uarg_param1(new std::string());
+  auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> uarg_param2(new std::set< ::some::valid::ns::mostComplexTypeDef>());
+  auto uarg_param2 = std::make_unique<std::set< ::some::valid::ns::mostComplexTypeDef>>();
   args.get<1>().value = uarg_param2.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", ctx));
   try {
@@ -1120,7 +1120,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(std::unique_
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_double_ret_setstruct_param_pargs args;
-  std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> uarg_param1(new std::set< ::some::valid::ns::MyStruct>());
+  auto uarg_param1 = std::make_unique<std::set< ::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
   try {
@@ -1195,7 +1195,7 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(std::unique_ptr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_string_ret_string_param_pargs args;
-  std::unique_ptr<std::string> uarg_param1(new std::string());
+  auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", ctx));
   try {
@@ -1270,7 +1270,7 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(std::unique_ptr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_binary_ret_binary_param_pargs args;
-  std::unique_ptr<std::string> uarg_param1(new std::string());
+  auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", ctx));
   try {
@@ -1420,9 +1420,9 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(std::unique_
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_list_ret_map_setlist_param_pargs args;
-  std::unique_ptr<std::map<int32_t, std::vector<std::string>>> uarg_param1(new std::map<int32_t, std::vector<std::string>>());
+  auto uarg_param1 = std::make_unique<std::map<int32_t, std::vector<std::string>>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<std::vector<std::string>> uarg_param2(new std::vector<std::string>());
+  auto uarg_param2 = std::make_unique<std::vector<std::string>>();
   args.get<1>().value = uarg_param2.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.list_ret_map_setlist_param", ctx));
   try {
@@ -1497,7 +1497,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
-  std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> uarg_param1(new std::vector<std::vector<std::vector<std::vector<int32_t>>>>());
+  auto uarg_param1 = std::make_unique<std::vector<std::vector<std::vector<std::vector<int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
   try {
@@ -1642,7 +1642,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::uniq
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_listtypedef_ret_typedef_param_pargs args;
-  std::unique_ptr< ::some::valid::ns::complexStructTypeDef> uarg_param1(new  ::some::valid::ns::complexStructTypeDef());
+  auto uarg_param1 = std::make_unique< ::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
   try {
@@ -1865,7 +1865,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_listenum_ret_map_param_pargs args;
-  std::unique_ptr<std::map<std::string, int64_t>> uarg_param1(new std::map<std::string, int64_t>());
+  auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
   try {
@@ -2006,7 +2006,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(std::unique_ptr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_setstruct_ret_set_param_pargs args;
-  std::unique_ptr<std::set<std::string>> uarg_param1(new std::set<std::string>());
+  auto uarg_param1 = std::make_unique<std::set<std::string>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", ctx));
   try {
@@ -2158,7 +2158,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ParamService_listunion_string_param_pargs args;
-  std::unique_ptr<std::string> uarg_param1(new std::string());
+  auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", ctx));
   try {

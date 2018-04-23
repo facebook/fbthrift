@@ -22,11 +22,10 @@ wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable
 
 wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   auto _subj = std::make_shared<wangle::Subject<<% > types/type%>>>();
-  <%function:name%>(rpcOptions, std::unique_ptr<apache::thrift::RequestCallback>(
-      new apache::thrift::FunctionReplyCallback(
+  <%function:name%>(rpcOptions, std::make_unique<apache::thrift::FunctionReplyCallback>(
         [_subj](apache::thrift::ClientReceiveState&& state) mutable {
           apache::thrift::clientCallbackToObservable(state, recv_wrapped_<%function:name%>, _subj);
-        }))<%function:comma%><% > service_common/param_list%>);
+        })<%function:comma%><% > service_common/param_list%>);
   return _subj;
 }
 <%/type:streamElemType%><%/type:deprecated_stream?%>

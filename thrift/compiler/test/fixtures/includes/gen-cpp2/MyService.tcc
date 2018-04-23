@@ -32,9 +32,9 @@ void MyServiceAsyncProcessor::process_query(std::unique_ptr<apache::thrift::Resp
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyService_query_pargs args;
-  std::unique_ptr< ::cpp2::MyStruct> uarg_s(new  ::cpp2::MyStruct());
+  auto uarg_s = std::make_unique< ::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
-  std::unique_ptr< ::cpp2::Included> uarg_i(new  ::cpp2::Included());
+  auto uarg_i = std::make_unique< ::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.query", ctx));
   try {
@@ -107,9 +107,9 @@ void MyServiceAsyncProcessor::process_has_arg_docs(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyService_has_arg_docs_pargs args;
-  std::unique_ptr< ::cpp2::MyStruct> uarg_s(new  ::cpp2::MyStruct());
+  auto uarg_s = std::make_unique< ::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
-  std::unique_ptr< ::cpp2::Included> uarg_i(new  ::cpp2::Included());
+  auto uarg_i = std::make_unique< ::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", ctx));
   try {

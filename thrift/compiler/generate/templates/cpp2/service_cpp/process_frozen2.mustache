@@ -47,7 +47,7 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
 <%/function:oneway?%>
 <%^function:oneway?%>
     apache::thrift::Frozen2ProtocolWriter prot;

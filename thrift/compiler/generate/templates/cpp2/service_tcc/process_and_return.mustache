@@ -54,7 +54,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   args.get<<%field:index%>>().value = &uarg_<%field:name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  std::unique_ptr<<% > types/type%>> uarg_<%field:name%>(new <% > types/type%>());
+  auto uarg_<%field:name%> = std::make_unique<<% > types/type%>>();
   args.get<<%field:index%>>().value = uarg_<%field:name%>.get();
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%>
@@ -67,7 +67,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     LOG(ERROR) << ex.what() << " in function <%function:name%>";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
 <%/function:oneway?%>
 <%^function:oneway?%>
     ProtocolOut_ prot;

@@ -187,7 +187,7 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
   MyService_putDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<std::string> uarg_data(new std::string());
+  auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.putDataById", ctx));
   try {
@@ -262,7 +262,7 @@ void MyServiceAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift
   MyService_lobDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<std::string> uarg_data(new std::string());
+  auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.lobDataById", ctx));
   try {
@@ -272,7 +272,7 @@ void MyServiceAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift
     LOG(ERROR) << ex.what() << " in function lobDataById";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx));
+  auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }

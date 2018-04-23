@@ -38,7 +38,7 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   NestedContainers_mapList_pargs args;
-  std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> uarg_foo(new std::map<int32_t, std::vector<int32_t>>());
+  auto uarg_foo = std::make_unique<std::map<int32_t, std::vector<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
   try {
@@ -111,7 +111,7 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   NestedContainers_mapSet_pargs args;
-  std::unique_ptr<std::map<int32_t, std::set<int32_t>>> uarg_foo(new std::map<int32_t, std::set<int32_t>>());
+  auto uarg_foo = std::make_unique<std::map<int32_t, std::set<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
   try {
@@ -184,7 +184,7 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   NestedContainers_listMap_pargs args;
-  std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> uarg_foo(new std::vector<std::map<int32_t, int32_t>>());
+  auto uarg_foo = std::make_unique<std::vector<std::map<int32_t, int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
   try {
@@ -257,7 +257,7 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   NestedContainers_listSet_pargs args;
-  std::unique_ptr<std::vector<std::set<int32_t>>> uarg_foo(new std::vector<std::set<int32_t>>());
+  auto uarg_foo = std::make_unique<std::vector<std::set<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
   try {
@@ -330,7 +330,7 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   NestedContainers_turtles_pargs args;
-  std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> uarg_foo(new std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>());
+  auto uarg_foo = std::make_unique<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
   try {
