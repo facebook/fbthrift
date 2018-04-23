@@ -9,6 +9,10 @@
 
 #include <folly/Indestructible.h>
 
+#pragma push_macro("major")
+#undef major
+
 namespace cpp2 {
 
 } // cpp2
+#pragma pop_macro("major")

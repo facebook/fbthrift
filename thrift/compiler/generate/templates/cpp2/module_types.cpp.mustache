@@ -23,6 +23,7 @@
 
 #include "<%program:include_prefix%><%program:name%>_data.h"
 
+<% > common/push_and_undef_colliding_macros%>
 <% > module_types_cpp/declare_enums%>
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
@@ -86,3 +87,4 @@ template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::SimpleJSON
 
 <% > module_types_cpp/frozen%>
 <%/program:structs%>
+<% > common/pop_colliding_macros%>

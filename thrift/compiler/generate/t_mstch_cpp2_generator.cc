@@ -23,6 +23,19 @@
 
 namespace {
 
+bool is_reserved_macro_name(const std::string& name) {
+  static const std::unordered_set<std::string> kReservedMacros({
+      // The following 3 macros are pulled from 'sys/sysmacros.h' that is
+      // transitively included via '<iterator>' from libstdc++
+      // https://bugzilla.redhat.com/show_bug.cgi?id=130601
+      "major",
+      "minor",
+      "makedev",
+  });
+
+  return kReservedMacros.find(name) != kReservedMacros.end();
+}
+
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
     std::initializer_list<char const*> keys) {
@@ -915,6 +928,8 @@ class mstch_cpp2_program : public mstch_program {
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
             {"program:optionals?", &mstch_cpp2_program::optionals},
+            {"program:colliding_macro_names",
+             &mstch_cpp2_program::colliding_macro_names},
         });
   }
   virtual std::string get_program_namespace(t_program const* program) override {
@@ -991,6 +1006,41 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
   }
+  mstch::node colliding_macro_names() {
+    if (colliding_macro_names_) {
+      return *colliding_macro_names_;
+    }
+
+    std::set<std::string> names;
+    for (const auto* s : program_->get_structs()) {
+      if (is_reserved_macro_name(s->get_name())) {
+        names.emplace(s->get_name());
+      }
+
+      for (const auto* field : s->get_members()) {
+        if (is_reserved_macro_name(field->get_name())) {
+          names.emplace(field->get_name());
+        }
+      }
+    }
+
+    for (const auto* t : program_->get_typedefs()) {
+      if (is_reserved_macro_name(t->get_symbolic())) {
+        names.emplace(t->get_symbolic());
+      }
+    }
+
+    colliding_macro_names_ = std::make_unique<mstch::array>();
+    for (const auto& name : names) {
+      mstch::map m;
+      m.emplace("macro_name", name);
+      colliding_macro_names_->emplace_back(std::move(m));
+    }
+    return *colliding_macro_names_;
+  }
+
+ private:
+  std::unique_ptr<mstch::array> colliding_macro_names_;
 };
 
 class enum_cpp2_generator : public enum_generator {

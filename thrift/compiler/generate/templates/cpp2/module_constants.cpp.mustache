@@ -27,6 +27,7 @@
 <%/program:constants?%>
 #include <folly/Indestructible.h>
 
+<% > common/push_and_undef_colliding_macros%>
 <% > common/namespace_cpp2_begin%>
 
 
@@ -52,3 +53,4 @@ constexpr <% > types/type%> const <%program:name%>_constants::<%constant:name%>_
   <%/type:resolves_to_container_or_struct?%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 <% > common/namespace_cpp2_end%>
+<% > common/pop_colliding_macros%>

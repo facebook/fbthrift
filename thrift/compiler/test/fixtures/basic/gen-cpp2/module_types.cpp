@@ -12,6 +12,9 @@
 
 #include "src/gen-cpp2/module_data.h"
 
+#pragma push_macro("major")
+#undef major
+
 namespace cpp2 {
 
 const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _MyEnum_EnumMapFactory::makeValuesToNamesMap();
@@ -160,3 +163,5 @@ template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
+
+#pragma pop_macro("major")

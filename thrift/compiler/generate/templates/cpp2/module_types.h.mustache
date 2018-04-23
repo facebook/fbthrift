@@ -33,6 +33,7 @@
 <%#program:cpp_includes%>
 #include <%cpp_include%>
 <%/program:cpp_includes%>
+<% > common/push_and_undef_colliding_macros%>
 
 <% > module_types_h/declare_enums%>
 
@@ -276,3 +277,4 @@ template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp
 <% > module_types_h/frozen%>
 }} // apache::thrift
 <%/program:structs%>
+<% > common/pop_colliding_macros%>

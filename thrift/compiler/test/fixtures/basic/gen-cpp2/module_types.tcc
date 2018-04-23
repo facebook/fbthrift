@@ -14,6 +14,9 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 
+#pragma push_macro("major")
+#undef major
+
 namespace cpp2 {
 
 } // cpp2
@@ -274,3 +277,5 @@ uint32_t MyDataItem::write(Protocol_* prot_) const {
 }
 
 } // cpp2
+
+#pragma pop_macro("major")

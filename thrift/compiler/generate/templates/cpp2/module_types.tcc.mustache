@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 <%/program:json?%>
 
+<% > common/push_and_undef_colliding_macros%>
 <% > module_types_tcc/declare_enums%>
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
@@ -49,3 +50,4 @@
 <% > common/namespace_cpp2_end%>
 
 <%/program:structs%>
+<% > common/pop_colliding_macros%>

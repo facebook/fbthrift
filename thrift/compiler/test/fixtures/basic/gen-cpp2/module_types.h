@@ -10,6 +10,9 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
+#pragma push_macro("major")
+#undef major
+
 
 // BEGIN declare_enums
 namespace cpp2 {
@@ -321,3 +324,5 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyDataItem>::ser
 }
 
 }} // apache::thrift
+
+#pragma pop_macro("major")
