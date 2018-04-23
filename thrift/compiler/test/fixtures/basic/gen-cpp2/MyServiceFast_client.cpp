@@ -441,9 +441,7 @@ bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcO
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  auto result = recv_hasDataById(_returnState);
-  ::apache::thrift::detail::ac::attachChannel(result, channel_);
-  return result;
+  return recv_hasDataById(_returnState);
 }
 
 folly::Future<bool> MyServiceFastAsyncClient::future_hasDataById(int64_t id) {
