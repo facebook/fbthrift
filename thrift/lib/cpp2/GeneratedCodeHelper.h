@@ -835,23 +835,6 @@ folly::exception_wrapper recv_wrapped(
 }
 
 [[noreturn]] void throw_app_exn(char const* msg);
-
-template <typename T>
-void attachChannel(T&, const std::shared_ptr<apache::thrift::RequestChannel>&) {
-}
-template <typename T>
-void attachChannel(
-    SemiStream<T>& stream,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) {
-  stream = std::move(stream).map(
-      [channel = std::move(channel)](T&& value) { return std::move(value); });
-}
-template <typename T, typename U>
-void attachChannel(
-    ResponseAndSemiStream<T, U>& result,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) {
-  attachChannel(result.stream, std::move(channel));
-}
 } // namespace ac
 } // namespace detail
 
