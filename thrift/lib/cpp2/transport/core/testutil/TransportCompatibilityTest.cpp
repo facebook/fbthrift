@@ -207,9 +207,9 @@ void SampleServer<Service>::connectToServer(
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.
     auto executor = std::make_shared<folly::ScopedEventBaseThread>();
-    auto executorPtr = executor.get();
+    auto eventBase = executor->getEventBase();
     auto channel = PooledRequestChannel::newChannel(
-        executorPtr,
+        eventBase,
         std::move(executor),
         [port = std::move(port_)](folly::EventBase& evb) {
           TAsyncSocket::UniquePtr socket(
