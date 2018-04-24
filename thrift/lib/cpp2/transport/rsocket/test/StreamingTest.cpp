@@ -109,14 +109,20 @@ class StreamingTest : public testing::Test {
   }
 
   void connectToServer(
-      folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe) {
+      folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
+      folly::Function<void()> onDetachable = nullptr) {
     CHECK_GT(port_, 0) << "Check if the server has started already";
     auto channel = PooledRequestChannel::newChannel(
         evbThread_.getEventBase(),
         std::make_shared<folly::ScopedEventBaseThread>(),
-        [port = port_](folly::EventBase& evb) {
-          return RSocketClientChannel::newChannel(
+        [port = port_, onDetachable = std::move(onDetachable)](
+            folly::EventBase& evb) mutable {
+          auto rsocketChannel = RSocketClientChannel::newChannel(
               TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port)));
+          if (onDetachable) {
+            rsocketChannel->setOnDetachable(std::move(onDetachable));
+          }
+          return rsocketChannel;
         });
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
@@ -330,6 +336,31 @@ TEST_F(StreamingTest, RequestTimeout) {
   connectToServer(test);
   EXPECT_EQ(6, observer_->taskTimeout_);
   EXPECT_EQ(0, observer_->queueTimeout_);
+}
+
+TEST_F(StreamingTest, OnDetachable) {
+  folly::Promise<folly::Unit> detachablePromise;
+  auto detachableFuture = detachablePromise.getSemiFuture();
+  connectToServer(
+      [&](std::unique_ptr<StreamServiceAsyncClient> client) {
+        const auto timeout = std::chrono::milliseconds{100};
+        auto stream = client->sync_range(0, 10);
+        EXPECT_FALSE(detachableFuture.wait(timeout).isReady());
+
+        folly::Baton<> done;
+
+        toFlowable(std::move(stream).via(&executor_))
+            ->subscribe(
+                [](int) {},
+                [](auto ex) { FAIL() << "Should not call onError: " << ex; },
+                [&done]() { done.post(); });
+
+        EXPECT_TRUE(done.try_wait_for(timeout));
+        EXPECT_TRUE(detachableFuture.wait(timeout).isReady());
+      },
+      [promise = std::move(detachablePromise)]() mutable {
+        promise.setValue(folly::unit);
+      });
 }
 
 } // namespace thrift

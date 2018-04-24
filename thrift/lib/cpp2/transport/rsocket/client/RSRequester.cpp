@@ -100,8 +100,6 @@ RSRequester::requestChannel(
 
 std::shared_ptr<yarpl::flowable::Flowable<Payload>> RSRequester::requestStream(
     Payload request) {
-  isDetachable_ = false;
-
   return RSocketRequester::requestStream(std::move(request));
 }
 

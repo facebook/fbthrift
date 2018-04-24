@@ -256,7 +256,11 @@ RSocketClientChannel::RSocketClientChannel(
     : evb_(socket->getEventBase()),
       isSecure_(isSecure),
       connectionStatus_(std::make_shared<detail::RSConnectionStatus>()),
-      channelCounters_(std::make_unique<ChannelCounters>()) {
+      channelCounters_([&]() {
+        if (isDetachable()) {
+          notifyDetachable();
+        }
+      }) {
   rsRequester_ =
       std::make_shared<RSRequester>(std::move(socket), evb_, connectionStatus_);
 }
@@ -481,9 +485,9 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
     OnewayCallback* callback) noexcept {
   DCHECK(metadata);
 
-  if (channelCounters_->incPendingRequests()) {
+  if (channelCounters_.incPendingRequests()) {
     auto guard =
-        folly::makeGuard([&] { channelCounters_->decPendingRequests(); });
+        folly::makeGuard([&] { channelCounters_.decPendingRequests(); });
 
     rsRequester_
         ->fireAndForget(Payload(std::move(buf), serializeMetadata(*metadata)))
@@ -506,10 +510,10 @@ void RSocketClientChannel::sendSingleRequestResponse(
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(metadata);
-  bool canExecute = channelCounters_->incPendingRequests();
+  bool canExecute = channelCounters_.incPendingRequests();
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
-      std::move(callback), canExecute ? channelCounters_.get() : nullptr);
+      std::move(callback), canExecute ? &channelCounters_ : nullptr);
 
   if (!canExecute) {
     TTransportException ex(
@@ -536,7 +540,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  bool canExecute = channelCounters_->incPendingRequests();
+  bool canExecute = channelCounters_.incPendingRequests();
   if (!canExecute) {
     TTransportException ex(
         TTransportException::NETWORK_ERROR,
@@ -548,7 +552,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
   }
 
   auto countedStream = std::make_shared<CountedStream>(
-      std::move(callback), channelCounters_.get(), evb_);
+      std::move(callback), &channelCounters_, evb_);
 
   auto result = rsRequester_->requestStream(
       Payload(std::move(buf), serializeMetadata(*metadata)));
@@ -560,7 +564,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
 
 void RSocketClientChannel::setMaxPendingRequests(uint32_t count) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  channelCounters_->setMaxPendingRequests(count);
+  channelCounters_.setMaxPendingRequests(count);
 }
 
 folly::EventBase* RSocketClientChannel::getEventBase() const {
@@ -599,8 +603,8 @@ bool RSocketClientChannel::good() {
 ClientChannel::SaturationStatus RSocketClientChannel::getSaturationStatus() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   return ClientChannel::SaturationStatus(
-      channelCounters_->getPendingRequests(),
-      channelCounters_->getMaxPendingRequests());
+      channelCounters_.getPendingRequests(),
+      channelCounters_.getMaxPendingRequests());
 }
 
 void RSocketClientChannel::attachEventBase(folly::EventBase* evb) {
@@ -632,7 +636,7 @@ bool RSocketClientChannel::isDetachable() {
   auto transport = getTransport();
   bool result = evb_ == nullptr || transport == nullptr ||
       rsRequester_ == nullptr ||
-      (channelCounters_->getPendingRequests() == 0 &&
+      (channelCounters_.getPendingRequests() == 0 &&
        transport->isDetachable() && rsRequester_->isDetachable());
   return result;
 }
@@ -678,7 +682,9 @@ namespace detail {
 
 static constexpr uint32_t kMaxPendingRequests =
     std::numeric_limits<uint32_t>::max();
-ChannelCounters::ChannelCounters() : maxPendingRequests_(kMaxPendingRequests) {}
+ChannelCounters::ChannelCounters(folly::Function<void()> onDetachable)
+    : maxPendingRequests_(kMaxPendingRequests),
+      onDetachable_(std::move(onDetachable)) {}
 
 void ChannelCounters::setMaxPendingRequests(uint32_t count) {
   maxPendingRequests_ = count;
@@ -702,6 +708,9 @@ bool ChannelCounters::incPendingRequests() {
 
 void ChannelCounters::decPendingRequests() {
   --pendingRequests_;
+  if (pendingRequests_ == 0) {
+    onDetachable_();
+  }
 }
 } // namespace detail
 
