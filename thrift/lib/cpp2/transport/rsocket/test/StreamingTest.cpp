@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
+#include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
@@ -108,9 +109,7 @@ class StreamingTest : public testing::Test {
   }
 
   void connectToServer(
-      folly::Function<void(
-          std::unique_ptr<testutil::testservice::StreamServiceAsyncClient>)>
-          callMe) {
+      folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe) {
     CHECK_GT(port_, 0) << "Check if the server has started already";
     auto channel = PooledRequestChannel::newChannel(
         evbThread_.getEventBase(),
@@ -120,6 +119,22 @@ class StreamingTest : public testing::Test {
               TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port)));
         });
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
+  }
+
+  void callSleep(
+      StreamServiceAsyncClient* client,
+      int32_t timeoutMs,
+      int32_t sleepMs,
+      bool withResponse) {
+    auto cb = std::make_unique<MockCallback>(false, timeoutMs < sleepMs);
+    RpcOptions opts;
+    opts.setTimeout(std::chrono::milliseconds(timeoutMs));
+    opts.setQueueTimeout(std::chrono::milliseconds(5000));
+    if (withResponse) {
+      client->sleepWithResponse(opts, std::move(cb), sleepMs);
+    } else {
+      client->sleepWithoutResponse(opts, std::move(cb), sleepMs);
+    }
   }
 
  public:
@@ -228,14 +243,14 @@ TEST_F(StreamingTest, LifeTimeTesting) {
 
     { // Never subscribe
       auto result = client->sync_leakCheck(0, 100);
-      CHECK_EQ(1, client->sync_instanceCount());
+      EXPECT_EQ(1, client->sync_instanceCount());
     }
     waitNoLeak();
 
     { // Never subscribe to the flowable
       auto result =
           toFlowable((client->sync_leakCheck(0, 100).stream).via(&executor_));
-      CHECK_EQ(1, client->sync_instanceCount());
+      EXPECT_EQ(1, client->sync_instanceCount());
     }
     waitNoLeak();
 
@@ -250,11 +265,11 @@ TEST_F(StreamingTest, LifeTimeTesting) {
         auto result = toFlowable(
             std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
         result->subscribe(subscriber);
-        CHECK_EQ(1, client->sync_instanceCount());
+        EXPECT_EQ(1, client->sync_instanceCount());
       }
       subscriber->request(100);
       subscriber->awaitTerminalEvent();
-      CHECK_EQ(0, client->sync_instanceCount()); // no leak!
+      EXPECT_EQ(0, client->sync_instanceCount()); // no leak!
     }
 
     { // Early cancel
@@ -263,9 +278,9 @@ TEST_F(StreamingTest, LifeTimeTesting) {
         auto result = toFlowable(
             std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
         result->subscribe(subscriber);
-        CHECK_EQ(1, client->sync_instanceCount());
+        EXPECT_EQ(1, client->sync_instanceCount());
       }
-      CHECK_EQ(1, client->sync_instanceCount());
+      EXPECT_EQ(1, client->sync_instanceCount());
       subscriber->cancel();
       waitNoLeak();
     }
@@ -277,14 +292,44 @@ TEST_F(StreamingTest, LifeTimeTesting) {
           auto result = toFlowable(
               std::move(client->sync_leakCheck(0, 100).stream).via(&executor_));
           result->subscribe(subscriber);
-          CHECK_EQ(1, client->sync_instanceCount());
+          EXPECT_EQ(1, client->sync_instanceCount());
         }
-        CHECK_EQ(1, client->sync_instanceCount());
+        EXPECT_EQ(1, client->sync_instanceCount());
       }
       // Subscriber is still alive!
-      CHECK_EQ(1, client->sync_instanceCount());
+      EXPECT_EQ(1, client->sync_instanceCount());
     }
   });
+}
+
+TEST_F(StreamingTest, RequestTimeout) {
+  bool withResponse = false;
+  auto test = [this,
+               withResponse](std::unique_ptr<StreamServiceAsyncClient> client) {
+    // This test focuses on timeout for the initial response. We will have
+    // another test for timeout of each onNext calls.
+    callSleep(client.get(), 1, 100, withResponse);
+    callSleep(client.get(), 100, 0, withResponse);
+    callSleep(client.get(), 1, 100, withResponse);
+    callSleep(client.get(), 100, 0, withResponse);
+    callSleep(client.get(), 2000, 500, withResponse);
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    callSleep(client.get(), 100, 1000, withResponse);
+    callSleep(client.get(), 200, 0, withResponse);
+    /* Sleep to give time for all callbacks to be completed */
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+  };
+
+  connectToServer(test);
+  EXPECT_EQ(3, observer_->taskTimeout_);
+  EXPECT_EQ(0, observer_->queueTimeout_);
+
+  withResponse = true;
+  connectToServer(test);
+  EXPECT_EQ(6, observer_->taskTimeout_);
+  EXPECT_EQ(0, observer_->queueTimeout_);
 }
 
 } // namespace thrift

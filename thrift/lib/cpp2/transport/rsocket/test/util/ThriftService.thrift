@@ -26,4 +26,7 @@ service StreamService {
 
   i32, stream i32 leakCheck(1: i32 from, 2: i32 to);
   i32 instanceCount();
+
+  i32, stream i32 sleepWithResponse(1: i32 timeMs);
+  stream i32 sleepWithoutResponse(1: i32 timeMs);
 }

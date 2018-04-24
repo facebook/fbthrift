@@ -87,5 +87,20 @@ ResponseAndStream<int, Message> TestServiceMock::throwError() {
   throw Error();
 }
 
+apache::thrift::ResponseAndStream<int32_t, int32_t>
+TestServiceMock::sleepWithResponse(int32_t timeMs) {
+  /* sleep override */
+  std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
+  return {1,
+          toStream(
+              Flowable<>::range(1, 1)->map([](auto i) { return (int32_t)i; }),
+              &executor_)};
+}
+
+apache::thrift::Stream<int32_t> TestServiceMock::sleepWithoutResponse(
+    int32_t timeMs) {
+  return std::move(sleepWithResponse(timeMs).stream);
+}
+
 } // namespace testservice
 } // namespace testutil

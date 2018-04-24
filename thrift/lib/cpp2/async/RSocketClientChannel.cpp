@@ -135,6 +135,8 @@ class CountedStream
 
   // Returns the initial result payload
   void setResult(std::shared_ptr<Flowable<Payload>> upstream) {
+    callback_->onThriftRequestSent();
+
     auto takeFirst = std::make_shared<TakeFirst<Payload>>(upstream);
     takeFirst->get()
         .via(ioEvb_)

@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
@@ -232,48 +233,6 @@ void SampleServer<Service>::connectToServer(
     callMe(std::move(channel), std::move(connection));
   }
 }
-
-class MockCallback : public RequestCallback {
- public:
-  MockCallback(bool clientError, bool serverError)
-      : clientError_(clientError), serverError_(serverError) {}
-  virtual ~MockCallback() {
-    EXPECT_TRUE(callbackReceived_);
-  }
-  void requestSent() override {
-    EXPECT_FALSE(requestSentCalled_);
-    requestSentCalled_ = true;
-  }
-  void replyReceived(ClientReceiveState&& crs) override {
-    EXPECT_FALSE(crs.isException());
-    EXPECT_TRUE(requestSentCalled_);
-    EXPECT_FALSE(callbackReceived_);
-    EXPECT_FALSE(clientError_);
-    auto reply = crs.buf()->cloneAsValue().moveToFbString();
-    bool expired = (reply.find("Task expired") != folly::fbstring::npos) ||
-        (reply.find("Queue Timeout") != folly::fbstring::npos);
-    EXPECT_EQ(serverError_, expired);
-    callbackReceived_ = true;
-  }
-  void requestError(ClientReceiveState&& crs) override {
-    // If clientError_ is expected, then request should not be send!
-    EXPECT_NE(clientError_, requestSentCalled_);
-    EXPECT_TRUE(crs.isException());
-    EXPECT_TRUE(crs.exception().is_compatible_with<TTransportException>());
-    EXPECT_FALSE(callbackReceived_);
-    EXPECT_TRUE(clientError_ || serverError_);
-    callbackReceived_ = true;
-  }
-  bool callbackReceived() {
-    return callbackReceived_;
-  }
-
- private:
-  bool clientError_;
-  bool serverError_;
-  bool requestSentCalled_{false};
-  bool callbackReceived_{false};
-};
 
 void TransportCompatibilityTest::callSleep(
     TestServiceAsyncClient* client,

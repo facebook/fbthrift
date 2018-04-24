@@ -36,6 +36,11 @@ class TestServiceMock : public StreamServiceSvIf {
       int32_t to) override;
   int32_t instanceCount() override;
 
+  apache::thrift::ResponseAndStream<int32_t, int32_t> sleepWithResponse(
+      int32_t timeMs) override;
+
+  apache::thrift::Stream<int32_t> sleepWithoutResponse(int32_t timeMs) override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
 };
