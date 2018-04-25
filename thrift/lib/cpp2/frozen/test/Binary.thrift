@@ -1,5 +1,4 @@
-namespace cpp binary1
-namespace cpp2 binary2
+namespace cpp2 apache.thrift.test
 
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 

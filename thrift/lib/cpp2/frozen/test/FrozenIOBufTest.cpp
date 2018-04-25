@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <gtest/gtest.h>
-#include <folly/Memory.h>
+
 #include <thrift/lib/cpp2/frozen/Frozen.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Binary_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Binary_layouts.h>
-#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
 using namespace folly;
 
 namespace {
@@ -32,18 +32,8 @@ byte test2[]{0xFA, 0xCE, 0xB0, 0x0C};
 ByteRange test2Range(test2, sizeof(test2));
 }
 
-TEST(FrozenIOBuf, Thrift1) {
-  binary1::Binaries b1;
-  b1.normal = testString.str();
-  b1.iobuf = testString.str();
-
-  auto fb1 = freeze(b1);
-  EXPECT_EQ(testString, fb1.normal());
-  EXPECT_EQ(testString, fb1.iobuf());
-}
-
 TEST(FrozenIOBuf, Thrift2) {
-  binary2::Binaries b2;
+  Binaries b2;
   b2.normal = testString.str();
   b2.iobuf = IOBuf::copyBuffer(testRange.data(), testRange.size());
 
@@ -53,7 +43,7 @@ TEST(FrozenIOBuf, Thrift2) {
 }
 
 TEST(FrozenIOBuf, IOBufChain) {
-  binary2::Binaries b2;
+  Binaries b2;
   auto buf1 = IOBuf::copyBuffer(testRange.data(), testRange.size());
   auto buf2 = IOBuf::copyBuffer(test2Range.data(), test2Range.size());
   buf1->appendChain(std::move(buf2));
