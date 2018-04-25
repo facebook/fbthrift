@@ -17,6 +17,8 @@
  * under the License.
  */
 
+namespace cpp2 apache.thrift.test
+
 struct foo {
   1: set<i32> (cpp.template = 'std::unordered_set') bar;
   2: set<string> (cpp.template = 'std::unordered_set') baz;

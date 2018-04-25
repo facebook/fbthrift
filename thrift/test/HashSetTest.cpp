@@ -19,9 +19,11 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/HashSetTest_types.h>
+#include <thrift/test/gen-cpp2/HashSetTest_types.h>
 
 #include <gtest/gtest.h>
+
+using namespace apache::thrift::test;
 
 TEST(HashSetTest, example) {
   foo f;
