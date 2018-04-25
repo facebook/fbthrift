@@ -17,9 +17,7 @@
  * under the License.
  */
 
-namespace cpp thrift.test
-namespace java thrift.test
-namespace json thrift.test.optional
+namespace cpp2 apache.thrift.test
 
 struct OldSchool {
   1: i16    im_int;

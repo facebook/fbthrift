@@ -19,7 +19,7 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/OptionalRequiredTest_types.h>
+#include <thrift/test/gen-cpp2/OptionalRequiredTest_types.h>
 #include <thrift/test/gen-cpp2/ThriftTest_types.h>
 
 #include <gtest/gtest.h>
@@ -63,8 +63,8 @@ TEST(SwapTest, test_swap_xtruct2) {
   EXPECT_EQ(a.i32_thing, 0xdeadbeef);
 }
 
-void check_simple(const thrift::test::Simple &s1,
-                  const thrift::test::Simple &s2) {
+void check_simple(const apache::thrift::test::Simple &s1,
+                  const apache::thrift::test::Simple &s2) {
   // Explicitly compare the fields, since the generated == operator
   // ignores optional fields that are marked as not set.  Also,
   // this allows us to use the EXPECT_EQ, so the values are printed
@@ -77,8 +77,8 @@ void check_simple(const thrift::test::Simple &s1,
 }
 
 TEST(SwapTest, test_swap_optional) {
-  using thrift::test::Complex;
-  using thrift::test::Simple;
+  using apache::thrift::test::Complex;
+  using apache::thrift::test::Simple;
 
   Complex comp1;
   Complex comp2;
