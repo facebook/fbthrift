@@ -3,7 +3,7 @@
  * @author Tudor Bosman (tudorb@fb.com)
  */
 
-namespace cpp thrift.test
+namespace cpp2 apache.thrift.test
 
 struct ReflectionTestStruct1 {
   3: i32 c,
@@ -25,4 +25,3 @@ struct ReflectionTestStruct2 {
   3: list<i64> c,
   4: ReflectionTestEnum d,
 }
-

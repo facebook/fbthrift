@@ -19,22 +19,26 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/ReflectionTest_types.h>
 #include <thrift/lib/cpp/Reflection.h>
+#include <thrift/lib/cpp2/fatal/legacy_reflection.h>
+#include <thrift/test/gen-cpp2/ReflectionTest_fatal_types.h>
 
 #include <gtest/gtest.h>
 
+using namespace apache::thrift;
 using namespace apache::thrift::reflection;
-using namespace thrift::test;
+using namespace apache::thrift::test;
+
+template <typename T>
+using refl = legacy_reflection<T>;
 
 TEST(Reflection, Basic) {
-  Schema schema;
-  ReflectionTestStruct1::_reflection_register(schema);
-  EXPECT_EQ(Type::TYPE_STRUCT, getType(ReflectionTestStruct1::_reflection_id));
+  auto schema = refl<ReflectionTestStruct1>::schema();
+  EXPECT_EQ(Type::TYPE_STRUCT, getType(refl<ReflectionTestStruct1>::id()));
 
-  auto& s1 = schema.dataTypes.at(ReflectionTestStruct1::_reflection_id);
+  auto& s1 = schema.dataTypes.at(refl<ReflectionTestStruct1>::id());
   EXPECT_EQ("struct ReflectionTest.ReflectionTestStruct1", s1.name);
-  EXPECT_EQ(ReflectionTestStruct1::_reflection_id, schema.names.at(s1.name));
+  EXPECT_EQ(refl<ReflectionTestStruct1>::id(), schema.names.at(s1.name));
   EXPECT_TRUE(s1.__isset.fields);
   EXPECT_EQ(4, s1.fields.size());
 
@@ -81,13 +85,12 @@ TEST(Reflection, Basic) {
 }
 
 TEST(Reflection, Complex) {
-  Schema schema;
-  ReflectionTestStruct2::_reflection_register(schema);
-  EXPECT_EQ(Type::TYPE_STRUCT, getType(ReflectionTestStruct2::_reflection_id));
+  auto schema = refl<ReflectionTestStruct2>::schema();
+  EXPECT_EQ(Type::TYPE_STRUCT, getType(refl<ReflectionTestStruct2>::id()));
 
-  auto& s2 = schema.dataTypes.at(ReflectionTestStruct2::_reflection_id);
+  auto& s2 = schema.dataTypes.at(refl<ReflectionTestStruct2>::id());
   EXPECT_EQ("struct ReflectionTest.ReflectionTestStruct2", s2.name);
-  EXPECT_EQ(ReflectionTestStruct2::_reflection_id, schema.names.at(s2.name));
+  EXPECT_EQ(refl<ReflectionTestStruct2>::id(), schema.names.at(s2.name));
   EXPECT_TRUE(s2.__isset.fields);
   EXPECT_EQ(4, s2.fields.size());
 
@@ -103,7 +106,7 @@ TEST(Reflection, Complex) {
     EXPECT_TRUE(m.__isset.mapKeyType);
     EXPECT_EQ(int(Type::TYPE_BYTE), m.mapKeyType);
     EXPECT_TRUE(m.__isset.valueType);
-    EXPECT_EQ(ReflectionTestStruct1::_reflection_id, m.valueType);
+    EXPECT_EQ(refl<ReflectionTestStruct1>::id(), m.valueType);
   }
 
   {
