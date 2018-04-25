@@ -1,4 +1,4 @@
-namespace cpp apache.thrift.test
+namespace cpp2 apache.thrift.test
 
 // get periodic updates service
 service DuplexService {

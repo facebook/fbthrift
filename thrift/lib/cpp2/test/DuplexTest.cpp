@@ -18,7 +18,6 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
-#include <thrift/lib/cpp2/test/gen-cpp/DuplexService.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
@@ -36,7 +35,7 @@
 #include <atomic>
 
 using namespace apache::thrift;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly;
@@ -165,29 +164,28 @@ TEST(Duplex, DuplexTest) {
   EXPECT_TRUE(success);
 }
 
-template <typename Transport>
-void testNonHeader() {
-  using apache::thrift::transport::TSocket;
-  using apache::thrift::protocol::TBinaryProtocol;
-
+void testNonHeader(CLIENT_TYPE type) {
   apache::thrift::TestThriftServerFactory<DuplexServiceInterface> factory;
   factory.duplex(true);
   ScopedServerThread sst(factory.create());
-  auto socket = make_shared<TSocket>(*sst.getAddress());
-  auto transport = make_shared<Transport>(socket);
-  auto protocol = make_shared<TBinaryProtocol>(transport);
+  EventBase base;
 
-  apache::thrift::test::DuplexServiceClient client(protocol);
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  socket->open();
-  int res = client.regularMethod(5);
-  EXPECT_EQ(res, 10);
+  auto duplexChannel =
+      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
+  duplexChannel->getClientChannel()->setClientType(type);
+  DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
+
+  int res = client.sync_regularMethod(5);
+  EXPECT_EQ(10, res);
 }
 
 TEST(Duplex, TestFramed) {
-  testNonHeader<apache::thrift::transport::TFramedTransport>();
+  testNonHeader(THRIFT_FRAMED_DEPRECATED);
 }
 
 TEST(Duplex, TestUnframed) {
-  testNonHeader<apache::thrift::transport::TBufferedTransport>();
+  testNonHeader(THRIFT_UNFRAMED_DEPRECATED);
 }
