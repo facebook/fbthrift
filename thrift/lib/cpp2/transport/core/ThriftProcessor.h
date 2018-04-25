@@ -41,7 +41,6 @@ namespace thrift {
 class ThriftProcessor {
  public:
   explicit ThriftProcessor(
-      std::unique_ptr<AsyncProcessor> cpp2Processor,
       const apache::thrift::server::ServerConfigs& serverConfigs);
 
   virtual ~ThriftProcessor() = default;
@@ -67,6 +66,9 @@ class ThriftProcessor {
   // to the thread manager used to manage the server
   void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
     tm_ = tm;
+  }
+  void setCpp2Processor(std::unique_ptr<AsyncProcessor> cpp2Processor) {
+    cpp2Processor_ = std::move(cpp2Processor);
   }
 
  private:

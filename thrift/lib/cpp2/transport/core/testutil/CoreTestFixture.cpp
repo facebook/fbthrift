@@ -27,9 +27,10 @@ using namespace testutil::testservice;
 
 CoreTestFixture::CoreTestFixture()
     : threadManager_(std::make_shared<FakeThreadManager>()),
-      processor_(service_.getProcessor(), serverConfigs_) {
+      processor_(serverConfigs_) {
   threadManager_->start();
   processor_.setThreadManager(threadManager_.get());
+  processor_.setCpp2Processor(service_.getProcessor());
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
 }
 

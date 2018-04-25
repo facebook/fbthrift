@@ -32,8 +32,8 @@ class RSResponderTestFixture : public testing::Test {
     threadManager_->start();
 
     auto cpp2Processor = service_.getProcessor();
-    processor_ = std::make_unique<ThriftProcessor>(
-        std::move(cpp2Processor), serverConfigs_);
+    processor_ = std::make_unique<ThriftProcessor>(serverConfigs_);
+    processor_->setCpp2Processor(std::move(cpp2Processor));
     processor_->setThreadManager(threadManager_.get());
 
     responder_ =

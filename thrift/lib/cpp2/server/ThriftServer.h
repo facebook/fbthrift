@@ -880,7 +880,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       std::shared_ptr<AsyncProcessorFactory> pFac) override {
     CHECK(configMutable());
     BaseThriftServer::setProcessorFactory(pFac);
-    thriftProcessor_.reset(new ThriftProcessor(getCpp2Processor(), *this));
+    thriftProcessor_.reset(new ThriftProcessor(*this));
   }
 
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's

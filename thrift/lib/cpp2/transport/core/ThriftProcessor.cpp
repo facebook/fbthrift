@@ -30,9 +30,8 @@ using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
 ThriftProcessor::ThriftProcessor(
-    std::unique_ptr<AsyncProcessor> cpp2Processor,
     const apache::thrift::server::ServerConfigs& serverConfigs)
-    : cpp2Processor_(std::move(cpp2Processor)), serverConfigs_(serverConfigs) {}
+    : serverConfigs_(serverConfigs) {}
 
 void ThriftProcessor::onThriftRequest(
     std::unique_ptr<RequestRpcMetadata> metadata,
@@ -43,6 +42,7 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(payload);
   DCHECK(channel);
   DCHECK(tm_);
+  DCHECK(cpp2Processor_);
 
   bool invalidMetadata =
       !(metadata->__isset.protocol && metadata->__isset.name &&

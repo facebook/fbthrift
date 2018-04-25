@@ -32,8 +32,8 @@ InMemoryConnection::InMemoryConnection(
   threadManager_ = PriorityThreadManager::newPriorityThreadManager(
       FLAGS_thrift_num_cpu_threads);
   threadManager_->start();
-  processor_ =
-      std::make_unique<ThriftProcessor>(pFac->getProcessor(), serverConfigs);
+  processor_ = std::make_unique<ThriftProcessor>(serverConfigs);
+  processor_->setCpp2Processor(pFac->getProcessor());
   processor_->setThreadManager(threadManager_.get());
   pFac_ = pFac;
 }

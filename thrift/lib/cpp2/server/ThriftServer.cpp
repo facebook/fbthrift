@@ -363,6 +363,7 @@ void ThriftServer::setup() {
     });
     if (thriftProcessor_) {
       thriftProcessor_->setThreadManager(threadManager_.get());
+      thriftProcessor_->setCpp2Processor(getCpp2Processor());
     }
 
     if (!serverChannel_) {

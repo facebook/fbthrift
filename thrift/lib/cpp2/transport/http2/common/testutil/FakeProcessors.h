@@ -42,7 +42,7 @@ class EchoProcessor : public ThriftProcessor {
       const std::string& value,
       const std::string& trailer,
       folly::EventBase* evb)
-      : ThriftProcessor(std::unique_ptr<AsyncProcessor>(), serverConfigs),
+      : ThriftProcessor(serverConfigs),
         key_(key),
         value_(value),
         trailer_(trailer),
