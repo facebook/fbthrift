@@ -20,10 +20,11 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
-using namespace frozen;
+using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
 
-example2::EveryLayout stressValue2 = [] {
-  example2::EveryLayout x;
+EveryLayout stressValue2 = [] {
+  EveryLayout x;
   x.aBool = true;
   x.aInt = 2;
   x.aList = {3, 5};
@@ -53,7 +54,7 @@ BENCHMARK(CompactSerialize, iters) {
 BENCHMARK_RELATIVE(FrozenFreeze, iters) {
   size_t s = 0;
   folly::BenchmarkSuspender setup;
-  Layout<example2::EveryLayout> layout;
+  Layout<EveryLayout> layout;
   LayoutRoot::layout(stressValue2, layout);
   setup.dismiss();
   while (iters--) {
@@ -66,7 +67,7 @@ BENCHMARK_RELATIVE(FrozenFreeze, iters) {
 BENCHMARK_RELATIVE(FrozenFreezePreallocate, iters) {
   size_t s = 0;
   folly::BenchmarkSuspender setup;
-  Layout<example2::EveryLayout> layout;
+  Layout<EveryLayout> layout;
   LayoutRoot::layout(stressValue2, layout);
   setup.dismiss();
   while (iters--) {
@@ -88,7 +89,7 @@ BENCHMARK(CompactDeserialize, iters) {
   setup.dismiss();
 
   while (iters--) {
-    example2::EveryLayout copy;
+    EveryLayout copy;
     CompactSerializer::deserialize(out, copy);
     s += out.size();
   }
@@ -98,12 +99,12 @@ BENCHMARK(CompactDeserialize, iters) {
 BENCHMARK_RELATIVE(FrozenThaw, iters) {
   size_t s = 0;
   folly::BenchmarkSuspender setup;
-  Layout<example2::EveryLayout> layout;
+  Layout<EveryLayout> layout;
   LayoutRoot::layout(stressValue2, layout);
   std::string out = freezeDataToString(stressValue2, layout);
   setup.dismiss();
   while (iters--) {
-    example2::EveryLayout copy;
+    EveryLayout copy;
     layout.thaw(ViewPosition{reinterpret_cast<byte*>(&out[0]), 0}, copy);
     s += out.size();
   }

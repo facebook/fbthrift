@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
 #include <thrift/lib/cpp2/frozen/VectorAssociative.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types_custom_protocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
-using namespace frozen;
-using namespace util;
+using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
+using namespace apache::thrift::util;
 
 TEST(FrozenVectorTypes, VectorAsMap) {
   VectorAsMap<int, int> dm;
@@ -149,77 +148,15 @@ void populate(TestType& x) {
   x.aHashMap[6] = 7;
 }
 
-bool areEqual(const example1::VectorTest& v1, const example2::VectorTest& v2){
-  return v1.aList == v2.aList && v1.aMap == v2.aMap && v1.aSet == v2.aSet &&
-      v1.aHashMap == v2.aHashMap && v1.aHashSet == v2.aHashSet;
-}
-
-namespace {
-
-template <typename T>
-typename std::enable_if<
-    std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type
-serializeCompact(const T& obj, std::string* out) {
-  // cpp1
-  ThriftSerializerCompact<>().serialize(obj, out);
-}
-
-template <typename T>
-typename std::enable_if<
-    !std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type
-serializeCompact(const T& obj, std::string* out) {
-  // cpp2
-  folly::IOBufQueue bq(folly::IOBufQueue::cacheChainLength());
-  CompactSerializer::serialize(obj, &bq);
-  bq.appendToString(*out);
-}
-
-template <typename T>
-typename std::enable_if<
-    std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type
-deserializeCompact(const std::string& in, T* out) {
-  // cpp1
-  ThriftSerializerCompact<>().deserialize(in, out);
-}
-
-template <typename T>
-typename std::enable_if<
-    !std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type
-deserializeCompact(const std::string& in, T* out) {
-  // cpp2
-  CompactSerializer::deserialize(in, *out);
-}
-}
-
-TEST(FrozenVectorTypes, CrossVersions) {
-  example1::VectorTest input1, output1;
-  example2::VectorTest input2, output2;
-
-  populate(input1);
-  populate(input2);
-
-  std::string serialized1, serialized2;
-
-  serializeCompact(input1, &serialized1);
-  deserializeCompact(serialized1, &output2);
-
-  serializeCompact(input2, &serialized2);
-  deserializeCompact(serialized2, &output1);
-
-  EXPECT_EQ(input1, output1);
-  EXPECT_EQ(input2, output2);
-}
-
 template <class T>
 class FrozenStructsWithVectors : public ::testing::Test {};
 TYPED_TEST_CASE_P(FrozenStructsWithVectors);
 
 TYPED_TEST_P(FrozenStructsWithVectors, Serializable) {
-  TypeParam input, output;
+  TypeParam input;
   populate(input);
-  std::string serialized;
-  serializeCompact(input, &serialized);
-  deserializeCompact(serialized, &output);
+  auto serialized = CompactSerializer::serialize<std::string>(input);
+  auto output = CompactSerializer::deserialize<TypeParam>(serialized);
   EXPECT_EQ(input, output);
 }
 
@@ -239,5 +176,5 @@ TYPED_TEST_P(FrozenStructsWithVectors, Freezable) {
 }
 
 REGISTER_TYPED_TEST_CASE_P(FrozenStructsWithVectors, Freezable, Serializable);
-typedef ::testing::Types<example1::VectorTest, example2::VectorTest> MyTypes;
+typedef ::testing::Types<VectorTest> MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(CppVerions, FrozenStructsWithVectors, MyTypes);

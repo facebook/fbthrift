@@ -13,41 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types_custom_protocol.h>
 
 using namespace apache::thrift;
-using namespace frozen;
-using namespace util;
+using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
+using namespace apache::thrift::util;
 
-example1::EveryLayout stressValue1 = [] {
-  example1::EveryLayout x;
-  x.aBool = true;
-  x.aInt = 2;
-  x.aList = {3, 5};
-  x.aSet = {7, 11};
-  x.aHashSet = {13, 17};
-  x.aMap = {{19, 23}, {29, 31}};
-  x.aHashMap = {{37, 41}, {43, 47}};
-  x.optInt = 53;
-  x.__isset.optInt = true;
-  x.aFloat = 59.61;
-  x.optMap = {{2, 4}, {3, 9}};
-  x.__isset.optMap = true;
-  return x;
-}();
-
-example2::EveryLayout stressValue2 = [] {
-  example2::EveryLayout x;
+EveryLayout stressValue2 = [] {
+  EveryLayout x;
   x.aBool = true;
   x.aInt = 2;
   x.aList = {3, 5};
@@ -77,11 +59,11 @@ Layout<T> layout(const T& x, size_t& size) {
 }
 
 auto tom1 = [] {
-  example2::Pet1 max;
+  Pet1 max;
   max.name = "max";
-  example2::Pet1 ed;
+  Pet1 ed;
   ed.name = "ed";
-  example2::Person1 tom;
+  Person1 tom;
   tom.name = "tom";
   tom.height = 1.82f;
   tom.age = 30;
@@ -91,11 +73,11 @@ auto tom1 = [] {
   return tom;
 }();
 auto tom2 = [] {
-  example2::Pet2 max;
+  Pet2 max;
   max.name = "max";
-  example2::Pet2 ed;
+  Pet2 ed;
   ed.name = "ed";
-  example2::Person2 tom;
+  Person2 tom;
   tom.name = "tom";
   tom.weight = 169;
   tom.age = 30;
@@ -118,7 +100,7 @@ TEST(Frozen, EndToEnd) {
   for (size_t i = 0; i < tom1.pets.size(); ++i) {
     EXPECT_EQ(pets[i].name, fpets[i].name());
   }
-  Layout<example2::Person1> layout;
+  Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
   LOG(INFO) << layout;
   LOG(INFO) << apache::thrift::debugString(tom1);
@@ -142,24 +124,24 @@ TEST(Frozen, Comparison) {
 }
 
 TEST(Frozen, Compatibility) {
-  // Make sure Thrft2 Person1 works well with Thrift1 Person2
+  // Make sure Person1 works well with Person2
   schema::MemorySchema schema;
-  Layout<example2::Person1> person1cpp2;
-  Layout<example1::Person2> person2cpp1;
+  Layout<Person1> person1;
+  Layout<Person2> person2;
 
-  size_t size = LayoutRoot::layout(tom1, person1cpp2);
+  size_t size = LayoutRoot::layout(tom1, person1);
 
-  saveRoot(person1cpp2, schema);
-  loadRoot(person2cpp1, schema);
+  saveRoot(person1, schema);
+  loadRoot(person2, schema);
 
   std::string storage(size, 'X');
   folly::MutableStringPiece charRange(&storage.front(), size);
   const folly::MutableByteRange bytes(charRange);
   folly::MutableByteRange freezeRange = bytes;
 
-  ByteRangeFreezer::freeze(person1cpp2, tom1, freezeRange);
-  auto view12 = person1cpp2.view({bytes.begin(), 0});
-  auto view21 = person2cpp1.view({bytes.begin(), 0});
+  ByteRangeFreezer::freeze(person1, tom1, freezeRange);
+  auto view12 = person1.view({bytes.begin(), 0});
+  auto view21 = person2.view({bytes.begin(), 0});
   EXPECT_EQ(view12.name(), view21.name());
   EXPECT_EQ(view12.age(), view21.age());
   EXPECT_TRUE(view12.height());
@@ -175,7 +157,7 @@ TEST(Frozen, EmbeddedSchema) {
     schema::Schema schema;
     schema::MemorySchema memSchema;
 
-    Layout<example2::Person1> person1a;
+    Layout<Person1> person1a;
 
     size_t size;
     size = LayoutRoot::layout(tom1, person1a);
@@ -194,7 +176,7 @@ TEST(Frozen, EmbeddedSchema) {
   {
     schema::Schema schema;
     schema::MemorySchema memSchema;
-    Layout<example2::Person2> person2;
+    Layout<Person2> person2;
 
     size_t start = CompactSerializer::deserialize(storage, schema);
 
@@ -222,14 +204,13 @@ TEST(Frozen, NoLayout) {
   EXPECT_EQ(folly::Optional<int>(), Layout<folly::Optional<int>>().view(null));
   EXPECT_EQ(std::string(), Layout<std::string>().view(null));
   EXPECT_EQ(std::vector<int>(), Layout<std::vector<int>>().view(null).thaw());
-  EXPECT_EQ(example2::Person1(),
-            Layout<example2::Person1>().view(null).thaw());
-  EXPECT_EQ(example2::Pet1(), Layout<example2::Pet1>().view(null).thaw());
+  EXPECT_EQ(Person1(), Layout<Person1>().view(null).thaw());
+  EXPECT_EQ(Pet1(), Layout<Pet1>().view(null).thaw());
   EXPECT_EQ(std::set<int>(), Layout<std::set<int>>().view(null).thaw());
   EXPECT_EQ((std::map<int, int>()),
             (Layout<std::map<int, int>>().view(null).thaw()));
 
-  Layout<example2::Person1> emptyPersonLayout;
+  Layout<Person1> emptyPersonLayout;
   std::array<uint8_t, 100> storage;
   folly::MutableByteRange bytes(storage.begin(), storage.end());
   EXPECT_THROW(
@@ -271,7 +252,6 @@ TEST(Frozen, MaxLayoutPairTree) {
 }
 
 TEST(Frozen, MaxLayoutStress) {
-  testMaxLayout(stressValue1);
   testMaxLayout(stressValue2);
 }
 
@@ -292,7 +272,7 @@ TEST(Frozen, VectorString) {
 }
 
 TEST(Frozen, BigMap) {
-  example2::PlaceTest t;
+  PlaceTest t;
   for (int i = 0; i < 1000; ++i) {
     auto& place = t.places[i * i * i % 757368944];
     place.name = folly::to<std::string>(i);
@@ -307,19 +287,19 @@ TEST(Frozen, BigMap) {
   EXPECT_EQ(t, freeze(t).thaw());
   EXPECT_LT(frozenSize, compactSize * 0.7);
 }
-example2::Tiny tiny1 = [] {
-  example2::Tiny obj;
+Tiny tiny1 = [] {
+  Tiny obj;
   obj.a = "just a";
   return obj;
 }();
-example2::Tiny tiny2 = [] {
-  example2::Tiny obj;
+Tiny tiny2 = [] {
+  Tiny obj;
   obj.a = "two";
   obj.b = "set";
   return obj;
 }();
-example2::Tiny tiny4 = [] {
-  example2::Tiny obj;
+Tiny tiny4 = [] {
+  Tiny obj;
   obj.a = "four";
   obj.b = "itty";
   obj.c = "bitty";
@@ -343,7 +323,7 @@ std::string toString(const T& x) {
 
 TEST(Frozen, SchemaSaving) {
   // calculate a layout
-  Layout<example2::EveryLayout> stressLayoutCalculated;
+  Layout<EveryLayout> stressLayoutCalculated;
   CHECK(LayoutRoot::layout(stressValue2, stressLayoutCalculated));
 
   // save it
@@ -351,7 +331,7 @@ TEST(Frozen, SchemaSaving) {
   saveRoot(stressLayoutCalculated, schemaSaved);
 
   // reload it
-  Layout<example2::EveryLayout> stressLayoutLoaded;
+  Layout<EveryLayout> stressLayoutLoaded;
   loadRoot(stressLayoutLoaded, schemaSaved);
 
   // make sure the two layouts are identical (via printing)
@@ -364,9 +344,9 @@ TEST(Frozen, SchemaSaving) {
 }
 
 TEST(Frozen, Enum) {
-  example2::Person1 he, she;
-  he.gender = example2::Gender::Male;
-  she.gender = example2::Gender::Female;
+  Person1 he, she;
+  he.gender = Gender::Male;
+  she.gender = Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
 }
@@ -375,7 +355,7 @@ TEST(Frozen, SchemaConversion) {
   schema::MemorySchema memSchema;
   schema::Schema schema;
 
-  Layout<example2::EveryLayout> stressLayoutCalculated;
+  Layout<EveryLayout> stressLayoutCalculated;
   CHECK(LayoutRoot::layout(stressValue2, stressLayoutCalculated));
 
   schema::MemorySchema schemaSaved;
@@ -419,7 +399,7 @@ TEST(Frozen, DedupedSchema) {
 
 TEST(Frozen, TypeHelpers) {
   auto f = freeze(tom1);
-  View<example2::Pet1> m = f.pets()[0];
+  View<Pet1> m = f.pets()[0];
   EXPECT_EQ(m.name(), "max");
 }
 

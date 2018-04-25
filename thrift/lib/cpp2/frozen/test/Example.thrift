@@ -1,7 +1,6 @@
 include "thrift/lib/cpp2/frozen/test/Helper.thrift"
 
-namespace cpp2 example2
-namespace cpp example1
+namespace cpp2 apache.thrift.test
 
 cpp_include "<unordered_set>"
 cpp_include "thrift/lib/cpp2/frozen/VectorAssociative.h"
