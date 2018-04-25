@@ -489,9 +489,8 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
     auto guard =
         folly::makeGuard([&] { channelCounters_.decPendingRequests(); });
 
-    rsRequester_
-        ->fireAndForget(Payload(std::move(buf), serializeMetadata(*metadata)))
-        ->subscribe([] {});
+    rsRequester_->fireAndForget(
+        Payload(std::move(buf), serializeMetadata(*metadata)));
 
     callback->messageSent();
   } else {

@@ -62,10 +62,17 @@ RSRequester::RSRequester(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
     folly::EventBase* evb,
     std::shared_ptr<RSocketConnectionEvents> status)
-    : RSocketRequester(createStateMachine(std::move(socket), status), *evb) {}
+    : eventBase_(evb),
+      stateMachine_(createStateMachine(std::move(socket), status)),
+      requester_{std::make_unique<RSocketRequester>(stateMachine_, *evb)} {}
 
 RSRequester::~RSRequester() {
   closeNow();
+}
+
+DuplexConnection* RSRequester::getConnection() {
+  // TODO - stateMachine_ is always there!
+  return stateMachine_ ? stateMachine_->getConnection() : nullptr;
 }
 
 void RSRequester::closeNow() {
@@ -94,12 +101,16 @@ std::shared_ptr<Flowable<Payload>> RSRequester::requestChannel(
     std::shared_ptr<Flowable<Payload>> requestStream) {
   isDetachable_ = false;
 
-  return RSocketRequester::requestChannel(
+  return requester_->requestChannel(
       std::move(request), std::move(requestStream));
 }
 
 std::shared_ptr<Flowable<Payload>> RSRequester::requestStream(Payload request) {
-  return RSocketRequester::requestStream(std::move(request));
+  return requester_->requestStream(std::move(request));
+}
+
+void RSRequester::fireAndForget(Payload request) {
+  stateMachine_->fireAndForget(std::move(request));
 }
 
 void RSRequester::requestResponse(

@@ -24,7 +24,7 @@ namespace apache {
 namespace thrift {
 
 // Decorates RSocketRequester to enable EventBase switching.
-class RSRequester : public rsocket::RSocketRequester {
+class RSRequester {
  public:
   RSRequester(
       apache::thrift::async::TAsyncTransport::UniquePtr socket,
@@ -33,10 +33,13 @@ class RSRequester : public rsocket::RSocketRequester {
 
   virtual ~RSRequester();
 
+  virtual rsocket::DuplexConnection* getConnection();
   virtual void closeNow();
   virtual void attachEventBase(folly::EventBase* evb);
   virtual void detachEventBase();
   virtual bool isDetachable();
+
+  void fireAndForget(rsocket::Payload);
 
   void requestResponse(
       rsocket::Payload payload,
@@ -47,18 +50,16 @@ class RSRequester : public rsocket::RSocketRequester {
   // We need to do better implementation to support eventbase switching for
   // Stream RPC calls.
   std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
-      rsocket::Payload request) override;
+      rsocket::Payload request);
 
   std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestChannel(
       rsocket::Payload request,
-      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requests)
-      override;
+      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requests);
 
  private:
-  // Call closeNow instead of closeSocket
-  using rsocket::RSocketRequester::closeSocket;
-  using rsocket::RSocketRequester::requestResponse;
-
+  folly::EventBase* eventBase_;
+  std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
+  std::unique_ptr<rsocket::RSocketRequester> requester_;
   std::shared_ptr<rsocket::RSocketConnectionEvents> connectionStatus_;
 
   bool isDetachable_{true};
