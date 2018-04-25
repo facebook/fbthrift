@@ -29,19 +29,19 @@ exception MessageException {
 typedef list<SimpleStruct> ListOfSimpleStructs
 
 struct SimpleStruct {
-  1: bool is_on
-  2: byte tiny_int = 5
-  3: i16 small_int
-  4: i32 nice_sized_int
+  1: required bool is_on
+  2: required byte tiny_int = 5
+  3: optional i16 small_int
+  4: optional i32 nice_sized_int
   5: i64 big_int
-  6: float coarse_real
+  6: float coarse_real = 0.0
   7: double precise_real
   8: string a_str ( yo_dawg="I herd u like annotations" )
   8000: optional binary a_bytes ( so_I_put="some Thrift annotations here" )
 } ( so_you_can="Thrift annotate"; while_you="type annotate"; empty; some_int=1 )
 
 struct ComplexStruct {
-  1: SimpleStruct structOne
+  1: required SimpleStruct structOne
   2: optional SimpleStruct structTwo
   3: i32 an_integer
   4: string name

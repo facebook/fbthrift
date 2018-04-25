@@ -35,6 +35,7 @@ class t_mstch_pyi_generator : public t_mstch_generator {
 
   void generate_program() override;
   mstch::map extend_program(const t_program&) override;
+  mstch::map extend_field(const t_field&) override;
   mstch::map extend_type(const t_type&) override;
   mstch::map extend_service(const t_service&) override;
 
@@ -86,6 +87,24 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
       {"asyncio?", asyncio},
   };
   add_container_types(program, result);
+  return result;
+}
+
+mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
+  auto req = field.get_req();
+  const auto required = req == t_field::e_req::T_REQUIRED;
+  const auto optional = req == t_field::e_req::T_OPTIONAL;
+  const auto unqualified = !required && !optional;
+  const auto hasValue = field.get_value() != nullptr;
+  const auto hasDefaultValue = hasValue || unqualified;
+  const auto requireValue = required && !hasDefaultValue;
+  // For typing, can a property getter return None, if so it needs to Optional[]
+  const auto isPEP484Optional = (optional || (!hasDefaultValue && !required));
+
+  mstch::map result{
+      {"requireValue?", requireValue},
+      {"PEP484Optional?", isPEP484Optional},
+  };
   return result;
 }
 
