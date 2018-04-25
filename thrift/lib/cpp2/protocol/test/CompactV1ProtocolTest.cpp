@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,14 @@
 
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/protocol/CompactV1Protocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp/Module_types.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types_custom_protocol.h>
 
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
+using namespace apache::thrift::test;
 
 namespace {
 
@@ -61,27 +56,28 @@ class CompactV1ProtocolTest : public testing::Test {};
 
 } // namespace
 
-TEST_F(CompactV1ProtocolTest, double_write_cpp1_read_cpp2) {
-  util::ThriftSerializerCompactDeprecated<> cpp1_serializer;
-  const auto orig = cpp1::OneOfEach{};
-  const auto serialized =
-      returning([&](string& _) { cpp1_serializer.serialize(orig, &_); });
-  const auto deserialized_size =
-      returning([&](tuple<cpp2::OneOfEach, uint32_t>& _) {
-        get<1>(_) = CompactV1Serializer::deserialize(serialized, get<0>(_));
-      });
+TEST_F(CompactV1ProtocolTest, roundtrip) {
+  const auto orig = OneOfEach{};
+  const auto serialized = CompactV1Serializer::serialize<std::string>(orig);
+  const auto deserialized_size = returning([&](tuple<OneOfEach, uint32_t>& _) {
+    get<1>(_) = CompactV1Serializer::deserialize(serialized, get<0>(_));
+  });
   EXPECT_EQ(serialized.size(), get<1>(deserialized_size));
-  EXPECT_EQ(orig.myDouble, get<0>(deserialized_size).myDouble);
+  EXPECT_EQ(orig, get<0>(deserialized_size));
 }
 
-TEST_F(CompactV1ProtocolTest, double_write_cpp2_read_cpp1) {
-  util::ThriftSerializerCompactDeprecated<> cpp1_serializer;
-  const auto orig = cpp2::OneOfEach{};
+TEST_F(CompactV1ProtocolTest, double_byteswap) {
+  const auto orig = OneOfEach{};
   const auto serialized = CompactV1Serializer::serialize<std::string>(orig);
-  const auto deserialized_size =
-      returning([&](tuple<cpp1::OneOfEach, uint32_t>& _) {
-        get<1>(_) = cpp1_serializer.deserialize(serialized, &get<0>(_));
-      });
+  auto deserialized_size = returning([&](tuple<OneOfEach, uint32_t>& _) {
+    get<1>(_) = CompactSerializer::deserialize(serialized, get<0>(_));
+  });
   EXPECT_EQ(serialized.size(), get<1>(deserialized_size));
-  EXPECT_EQ(orig.myDouble, get<0>(deserialized_size).myDouble);
+  uint64_t double_rep;
+  std::memcpy(
+      &double_rep, &get<0>(deserialized_size).myDouble, sizeof(double_rep));
+  double_rep = folly::Endian::swap(double_rep);
+  std::memcpy(
+      &get<0>(deserialized_size).myDouble, &double_rep, sizeof(double_rep));
+  EXPECT_EQ(orig, get<0>(deserialized_size));
 }

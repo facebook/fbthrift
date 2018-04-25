@@ -1,5 +1,4 @@
-namespace cpp apache.thrift.cpp1
-namespace cpp2 apache.thrift.cpp2
+namespace cpp2 apache.thrift.test
 
 struct StructWithEmptyMap {
   1: map<string, i64> myMap,
