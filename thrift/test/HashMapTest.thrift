@@ -17,6 +17,8 @@
  * under the License.
  */
 
+namespace cpp2 apache.thrift.test
+
 struct foo {
   1: map<i32, i32> (cpp.template = 'std::unordered_map') bar;
   2: map<string, i32> (cpp.template = 'std::unordered_map') baz;

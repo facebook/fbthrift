@@ -19,9 +19,11 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/HashMapTest_types.h>
+#include <thrift/test/gen-cpp2/HashMapTest_types.h>
 
 #include <gtest/gtest.h>
+
+using namespace apache::thrift::test;
 
 TEST(HashMapTest, example) {
   foo f;
