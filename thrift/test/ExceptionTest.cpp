@@ -19,10 +19,11 @@
  * under the License.
  */
 
-#include <thrift/test/gen-cpp/ExceptionTest_types.h>
 #include <thrift/test/gen-cpp2/ExceptionTest_types.h>
 
 #include <gtest/gtest.h>
+
+using namespace apache::thrift::test;
 
 TEST(ExceptionTest, test_default_constructor) {
   try {
@@ -37,14 +38,6 @@ TEST(ExceptionTest, test_default_constructor) {
 TEST(ExceptionTest, test_constructor_with_param) {
   try {
     throw MyException("what!!!");
-  } catch (const std::exception& ex) {
-    EXPECT_EQ(ex.what(), std::string{"what!!!"});
-  }
-}
-
-TEST(ExceptionTest, test_cpp2_constructor_with_param) {
-  try {
-    throw cpp2::MyException("what!!!");
   } catch (const std::exception& ex) {
     EXPECT_EQ(ex.what(), std::string{"what!!!"});
   }
