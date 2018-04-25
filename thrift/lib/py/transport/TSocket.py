@@ -266,15 +266,17 @@ class TSocket(TSocketBase):
         return self.handle.getpeername()
 
     def open(self):
+        address = None
         try:
             res0 = self._resolveAddr(self.family)
             for res in res0:
+                address = res[4]
                 handle = socket.socket(res[0], res[1])
                 self.setHandle(handle)
                 handle.settimeout(self._timeout)
                 self.setCloseOnExec(self.close_on_exec)
                 try:
-                    handle.connect(res[4])
+                    handle.connect(address)
                 except socket.error as e:
                     self.close()
                     if res is not res0[-1]:
@@ -284,12 +286,12 @@ class TSocket(TSocketBase):
                 break
         except socket.error as e:
             if self._unix_socket:
-                message = 'socket error connecting to path %s: %s' % (
+                msg = 'socket error connecting to path %s: %s' % (
                     self._unix_socket, repr(e))
             else:
-                message = 'socket error connecting to host %s, port %s: %s' % (
-                    self.host, self.port, repr(e))
-            raise TTransportException(TTransportException.NOT_OPEN, message)
+                msg = 'socket error connecting to host %s, port %s (%s): %s' % (
+                    self.host, self.port, repr(address), repr(e))
+            raise TTransportException(TTransportException.NOT_OPEN, msg)
 
     def read(self, sz):
         try:
