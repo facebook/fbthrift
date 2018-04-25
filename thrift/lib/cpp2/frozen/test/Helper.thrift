@@ -1,5 +1,4 @@
-namespace cpp helper1
-namespace cpp2 helper2
+namespace cpp2 apache.thrift.test
 
 struct Ratio {
   1 : i32 num,
