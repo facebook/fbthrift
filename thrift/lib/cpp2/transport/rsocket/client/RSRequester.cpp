@@ -23,6 +23,8 @@ namespace apache {
 namespace thrift {
 
 using namespace rsocket;
+using namespace yarpl::flowable;
+using namespace yarpl::single;
 
 static std::shared_ptr<RSocketStateMachine> createStateMachine(
     apache::thrift::async::TAsyncTransport::UniquePtr socket,
@@ -87,20 +89,23 @@ bool RSRequester::isDetachable() {
   return isDetachable_;
 }
 
-std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
-RSRequester::requestChannel(
-    rsocket::Payload request,
-    std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
-        requestStream) {
+std::shared_ptr<Flowable<Payload>> RSRequester::requestChannel(
+    Payload request,
+    std::shared_ptr<Flowable<Payload>> requestStream) {
   isDetachable_ = false;
 
   return RSocketRequester::requestChannel(
       std::move(request), std::move(requestStream));
 }
 
-std::shared_ptr<yarpl::flowable::Flowable<Payload>> RSRequester::requestStream(
-    Payload request) {
+std::shared_ptr<Flowable<Payload>> RSRequester::requestStream(Payload request) {
   return RSocketRequester::requestStream(std::move(request));
+}
+
+void RSRequester::requestResponse(
+    Payload request,
+    std::shared_ptr<SingleObserver<Payload>> responseSink) {
+  stateMachine_->requestResponse(std::move(request), std::move(responseSink));
 }
 
 } // namespace thrift

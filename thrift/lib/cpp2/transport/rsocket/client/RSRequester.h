@@ -38,6 +38,11 @@ class RSRequester : public rsocket::RSocketRequester {
   virtual void detachEventBase();
   virtual bool isDetachable();
 
+  void requestResponse(
+      rsocket::Payload payload,
+      std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
+          responseSink);
+
   // If we observe any Stream call, then disable eventbase switching
   // We need to do better implementation to support eventbase switching for
   // Stream RPC calls.
@@ -52,6 +57,7 @@ class RSRequester : public rsocket::RSocketRequester {
  private:
   // Call closeNow instead of closeSocket
   using rsocket::RSocketRequester::closeSocket;
+  using rsocket::RSocketRequester::requestResponse;
 
   std::shared_ptr<rsocket::RSocketConnectionEvents> connectionStatus_;
 

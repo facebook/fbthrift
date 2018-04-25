@@ -531,9 +531,9 @@ void RSocketClientChannel::sendSingleRequestResponse(
   // RequestRpcMetadata object, there is no need for RSocket to put them to
   // metadata->otherMetadata map.
 
-  rsRequester_
-      ->requestResponse(Payload(std::move(buf), serializeMetadata(*metadata)))
-      ->subscribe(std::move(singleObserver));
+  rsRequester_->requestResponse(
+      Payload(std::move(buf), serializeMetadata(*metadata)),
+      std::move(singleObserver));
 }
 
 void RSocketClientChannel::sendSingleRequestStreamResponse(
