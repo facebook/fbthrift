@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 extern const std::string kEchoSuffix;
 
-class TestInterface : public apache::thrift::test::cpp2::TestServiceSvIf {
+class TestInterface : public apache::thrift::test::TestServiceSvIf {
   void sendResponse(std::string& _return, int64_t size) override;
   void noResponse(int64_t size) override;
   void voidResponse() override;

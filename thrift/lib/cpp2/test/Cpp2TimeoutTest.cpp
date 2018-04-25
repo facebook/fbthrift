@@ -36,7 +36,7 @@
 #include <memory>
 
 using namespace apache::thrift;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 

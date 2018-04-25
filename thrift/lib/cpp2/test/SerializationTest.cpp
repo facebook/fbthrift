@@ -23,7 +23,7 @@
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 
 TestStruct makeTestStruct() {
   TestStruct s;

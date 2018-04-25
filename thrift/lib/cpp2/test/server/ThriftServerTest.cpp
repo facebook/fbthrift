@@ -41,7 +41,6 @@
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
@@ -50,26 +49,12 @@
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
-using apache::thrift::protocol::TBinaryProtocolT;
-using apache::thrift::test::TestServiceClient;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
-
-std::shared_ptr<TestServiceClient> getThrift1Client(
-    const folly::SocketAddress& address) {
-  // Create Thrift1 clients
-  std::shared_ptr<TSocket> socket = std::make_shared<TSocket>(address);
-  socket->open();
-  std::shared_ptr<TFramedTransport> transport =
-      std::make_shared<TFramedTransport>(socket);
-  std::shared_ptr<TBinaryProtocolT<TBufferBase>> protocol =
-      std::make_shared<TBinaryProtocolT<TBufferBase>>(transport);
-  return std::make_shared<TestServiceClient>(protocol);
-}
 
 std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
     ThriftServer& server) {
@@ -531,33 +516,6 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   client.sync_sendResponse(response, 200);
   EXPECT_EQ(response, "test200");
   base.loop();
-}
-
-TEST(ThriftServer, Thrift1OnewayRequestTest) {
-  TestThriftServerFactory<TestInterface> factory;
-  auto cpp2Server = factory.create();
-  cpp2Server->setNumIOWorkerThreads(1);
-  cpp2Server->setIsOverloaded([](const THeader*) { return true; });
-  apache::thrift::util::ScopedServerThread st(cpp2Server);
-
-  std::shared_ptr<TestServiceClient> client =
-      getThrift1Client(*st.getAddress());
-  std::string response;
-  // Send a oneway request. Server doesn't send error back
-  client->noResponse(1);
-  // Send a twoway request. Server sends overloading error back
-  try {
-    client->sendResponse(response, 0);
-  } catch (apache::thrift::TApplicationException& ex) {
-    EXPECT_STREQ(ex.what(), "loadshedding request");
-  } catch (...) {
-    ADD_FAILURE();
-  }
-
-  cpp2Server->setIsOverloaded([](const THeader*) { return false; });
-  // Send another twoway request. Client should receive a response
-  // with correct seqId
-  client->sendResponse(response, 0);
 }
 
 namespace {

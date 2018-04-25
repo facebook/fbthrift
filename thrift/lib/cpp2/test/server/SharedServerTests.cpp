@@ -16,7 +16,6 @@
 
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -46,12 +45,11 @@
 #include <boost/thread.hpp>
 
 using namespace apache::thrift;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
-using apache::thrift::test::TestServiceClient;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 

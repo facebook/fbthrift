@@ -35,7 +35,7 @@ using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
-using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::util;
 using std::string;
