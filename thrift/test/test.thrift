@@ -1,5 +1,4 @@
-namespace cpp test_cpp
-namespace cpp2 test_cpp2
+namespace cpp2 apache.thrift.test
 
 enum enum1 {
   field0 = 0,
