@@ -1,5 +1,4 @@
-namespace cpp compatibility1
-namespace cpp2 compatibility2
+namespace cpp2 apache.thrift.test
 
 struct Person {
   3: optional double dob,

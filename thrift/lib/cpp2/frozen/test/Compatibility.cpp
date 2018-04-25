@@ -17,16 +17,15 @@
 #include <glog/logging.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Compatibility_layouts.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Compatibility_constants.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Compatibility_constants.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Compatibility_layouts.h>
 
 DEFINE_bool(write_test_cases, false, "Write files, too");
 
 using namespace apache::thrift;
-using namespace frozen;
-using namespace util;
-
-using namespace compatibility1;
+using namespace apache::thrift::frozen;
+using namespace apache::thrift::test;
+using namespace apache::thrift::util;
 
 class CompatibilityTest : public ::testing::TestWithParam<Case> {
  public:
