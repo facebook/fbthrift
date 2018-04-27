@@ -5,6 +5,7 @@ from enum import Enum
 import pathlib
 import os
 from typing import Callable, NamedTuple, Union, Optional, TypeVar, Mapping, ClassVar
+from thrift.py3.common import Priority, Headers
 
 mT = TypeVar('mT', bound=Callable)
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
@@ -55,6 +56,10 @@ class ThriftServer:
     def set_listen_backlog(self, listen_backlog: int) -> None: ...
 
 
+class ReadHeaders(Headers): ...
+class WriteHeaders(Headers): ...
+
+
 class ConnectionContext:
     peer_address: SocketAddress
     is_tls: bool
@@ -64,3 +69,10 @@ class ConnectionContext:
 
 class RequestContext:
     connection_context: ConnectionContext
+    @property
+    def priority(self) -> Priority: ...
+    @property
+    def read_headers(self) -> ReadHeaders: ...
+    @property
+    def write_headers(self) -> WriteHeaders: ...
+    def set_header(self, key: str, value: str) -> None: ...

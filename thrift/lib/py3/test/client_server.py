@@ -8,14 +8,17 @@ import unittest
 from testing.services import TestingServiceInterface
 from testing.types import easy, Color
 from testing.clients import TestingService
-from thrift.py3 import ThriftServer, get_client, TransportError
+from thrift.py3 import ThriftServer, get_client, TransportError, RequestContext, RpcOptions
 from typing import Sequence, Optional
 import thrift.py3.server
 
 
 class Handler(TestingServiceInterface):
 
-    async def invert(self, value: bool) -> bool:
+    @TestingServiceInterface.pass_context_invert
+    async def invert(self, ctx: RequestContext, value: bool) -> bool:
+        if 'from client' in ctx.read_headers:
+            ctx.set_header('from server', 'with love')
         return not value
 
     async def getName(self) -> str:
@@ -64,6 +67,21 @@ class ClientServerTests(unittest.TestCase):
     """
     These are tests where a client and server talk to each other
     """
+    def test_rpc_headers(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip='::1') as sa:
+                assert sa.ip and sa.port
+                async with get_client(
+                    TestingService, host=sa.ip, port=sa.port
+                ) as client:
+                    options = RpcOptions()
+                    options.set_header('from client', 'with love')
+                    self.assertFalse(await client.invert(True, rpc_options=options))
+                    self.assertIn('from server', options.read_headers)
+
+        loop.run_until_complete(inner_test())
 
     def test_client_resolve(self) -> None:
         loop = asyncio.get_event_loop()

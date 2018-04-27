@@ -1,10 +1,12 @@
 from libc.stdint cimport uint16_t, int32_t, uint32_t
 from libcpp.string cimport string
+from libcpp.map cimport map
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport IOBuf
 from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
+from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers
 
 cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
     cdef cppclass cfollySocketAddress "folly::SocketAddress":
@@ -70,6 +72,12 @@ cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl::OpenSSLCertUtils":
     unique_ptr[IOBuf] derEncode(X509& cert)
 
+cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift":
+    cdef cppclass THeader:
+        const map[string, string]& getWriteHeaders()
+        const map[string, string]& getHeaders()
+        void setHeader(string& key, string& value)
+
 cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         namespace "apache::thrift":
 
@@ -81,6 +89,8 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
 
     cdef cppclass Cpp2RequestContext:
         Cpp2ConnContext* getConnectionContext()
+        cPriority getCallPriority()
+        THeader* getHeader()
 
 
 cdef class ServiceInterface:
@@ -105,6 +115,20 @@ cdef class ConnectionContext:
 cdef class RequestContext:
     cdef ConnectionContext _c_ctx
     cdef Cpp2RequestContext* _ctx
+    cdef object _readheaders
+    cdef object _writeheaders
 
     @staticmethod
     cdef RequestContext create(Cpp2RequestContext* ctx)
+
+
+cdef class ReadHeaders(Headers):
+    cdef RequestContext _parent
+    @staticmethod
+    cdef create(RequestContext ctx)
+
+
+cdef class WriteHeaders(Headers):
+    cdef RequestContext _parent
+    @staticmethod
+    cdef create(RequestContext ctx)

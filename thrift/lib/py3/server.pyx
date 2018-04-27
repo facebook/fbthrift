@@ -15,7 +15,7 @@ from pathlib import Path
 import os
 
 from enum import Enum
-
+from thrift.py3.common import Priority, Headers
 
 SocketAddress = collections.namedtuple('SocketAddress', 'ip port path')
 
@@ -97,7 +97,7 @@ cdef class ThriftServer:
         except Exception as e:
             self.server.get().stop()
             # If somebody is waiting on get_address and the server died
-            # then we should forward this exception over to that future. 
+            # then we should forward this exception over to that future.
             if not self.address_future.done():
                 self.address_future.set_exception(e)
             raise
@@ -175,6 +175,28 @@ cdef class ConnectionContext:
         return None
 
 
+cdef class ReadHeaders(Headers):
+    @staticmethod
+    cdef create(RequestContext ctx):
+        inst = <ReadHeaders>ReadHeaders.__new__(ReadHeaders)
+        inst._parent = ctx
+        return inst
+
+    cdef const map[string, string]* _getMap(self):
+        return &self._parent._ctx.getHeader().getHeaders()
+
+
+cdef class WriteHeaders(Headers):
+    @staticmethod
+    cdef create(RequestContext ctx):
+        inst = <WriteHeaders>WriteHeaders.__new__(WriteHeaders)
+        inst._parent = ctx
+        return inst
+
+    cdef const map[string, string]* _getMap(self):
+        return &self._parent._ctx.getHeader().getWriteHeaders()
+
+
 cdef class RequestContext:
     @staticmethod
     cdef RequestContext create(Cpp2RequestContext* ctx):
@@ -186,3 +208,23 @@ cdef class RequestContext:
     @property
     def connection_context(self):
         return self._c_ctx
+
+    @property
+    def read_headers(self):
+        if not self._readheaders:
+            self._readheaders = ReadHeaders.create(self)
+        return self._readheaders
+
+    @property
+    def write_headers(self):
+        # So we don't create a cycle
+        if not self._writeheaders:
+            self._writeheaders = WriteHeaders.create(self)
+        return self._writeheaders
+
+    @property
+    def priority(self):
+        return Priority(<int>self._ctx.getCallPriority())
+
+    def set_header(self, str key not None, str value not None):
+        self._ctx.getHeader().setHeader(key.encode('utf-8'), value.encode('utf-8'))
