@@ -22,11 +22,11 @@
 #include <random>
 
 #include <folly/Conv.h>
-#include <folly/Logging.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
+#include <glog/logging.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/GssSaslServer.h>

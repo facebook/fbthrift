@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <folly/Logging.h>
+#include <folly/GLog.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>

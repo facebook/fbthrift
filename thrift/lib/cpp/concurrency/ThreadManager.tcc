@@ -27,7 +27,7 @@
 #endif //defined(DEBUG)
 
 #include <folly/Conv.h>
-#include <folly/Logging.h>
+#include <folly/GLog.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Memory.h>
 #include <folly/String.h>

@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <folly/Logging.h>
+#include <folly/GLog.h>
 #include <folly/system/ThreadName.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>

@@ -23,12 +23,12 @@
 #include <random>
 
 #include <folly/Conv.h>
-#include <folly/Logging.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/portability/Sockets.h>
+#include <glog/logging.h>
 #include <proxygen/httpserver/ResponseBuilder.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>

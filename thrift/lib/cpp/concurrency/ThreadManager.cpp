@@ -19,8 +19,8 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 #include <folly/Conv.h>
-#include <folly/Logging.h>
 #include <folly/portability/GFlags.h>
+#include <glog/logging.h>
 
 #include <assert.h>
 #include <atomic>

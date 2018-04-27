@@ -22,7 +22,7 @@
 #include <thread>
 
 #include <folly/Conv.h>
-#include <folly/Logging.h>
+#include <folly/GLog.h>
 #include <folly/Memory.h>
 #include <folly/Random.h>
 #include <folly/ScopeGuard.h>

@@ -15,7 +15,7 @@
  */
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 
-#include <folly/Logging.h>
+#include <folly/GLog.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
