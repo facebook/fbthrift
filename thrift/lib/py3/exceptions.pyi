@@ -40,6 +40,15 @@ class ApplicationErrorType(Enum):
     INJECTED_FAILURE: int
     value: int
 
+class ProtocolErrorType(Enum):
+    UNKNOWN: int
+    INVALID_DATA: int
+    NEGATIVE_SIZE: int
+    BAD_VERSION: int
+    NOT_IMPLEMENTED: int
+    MISSING_REQUIRED_FIELD: int
+    value: int
+
 
 class Error(Exception): ...
 
@@ -51,6 +60,11 @@ class ApplicationError(Error):
 
 
 class LibraryError(Error): ...
+
+
+class ProtocolError(LibraryError):
+    type: ProtocolErrorType
+    message: str
 
 
 class TransportError(LibraryError):

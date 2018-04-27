@@ -14,6 +14,19 @@ cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
     cdef cppclass cTLibraryException "apache::thrift::TLibraryException"(cTException):
         pass
 
+cdef extern from "thrift/lib/cpp/protocol/TProtocolException.h":
+    enum cTProtocolExceptionType "apache::thrift::protocol::TProtocolException::TProtocolExceptionType":
+        cTProtocolExceptionType__UNKNOWN "apache::thrift::protocol::TProtocolException::UNKNOWN"
+        cTProtocolExceptionType__INVALID_DATA "apache::thrift::protocol::TProtocolException::INVALID_DATA"
+        cTProtocolExceptionType__NEGATIVE_SIZE "apache::thrift::protocol::TProtocolException::NEGATIVE_SIZE"
+        cTProtocolExceptionType__SIZE_LIMIT "apache::thrift::protocol::TProtocolException::SIZE_LIMIT"
+        cTProtocolExceptionType__BAD_VERSION "apache::thrift::protocol::TProtocolException::BAD_VERSION"
+        cTProtocolExceptionType__NOT_IMPLEMENTED "apache::thrift::protocol::TProtocolException::NOT_IMPLEMENTED"
+        cTProtocolExceptionType__MISSING_REQUIRED_FIELD "apache::thrift::protocol::TProtocolException::MISSING_REQUIRED_FIELD"
+
+    cdef cppclass cTProtocolException "apache::thrift::protocol::TProtocolException"(cTLibraryException):
+        cTProtocolExceptionType getType()
+
 cdef extern from "thrift/lib/cpp/TApplicationException.h" \
         namespace "apache::thrift":
 
@@ -89,12 +102,16 @@ cdef object create_Error(shared_ptr[cTException] ex)
 cdef object create_ApplicationError(shared_ptr[cTApplicationException] ex)
 cdef object create_LibraryError(shared_ptr[cTLibraryException] ex)
 cdef object create_TransportError(shared_ptr[cTTransportException] ex)
+cdef object create_ProtocolError(shared_ptr[cTProtocolException] ex)
 
 
 cdef class Error(Exception):
     pass
 
 cdef class LibraryError(Error):
+    pass
+
+cdef class ProtocolError(LibraryError):
     pass
 
 cdef class ApplicationError(Error):

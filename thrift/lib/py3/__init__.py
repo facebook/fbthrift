@@ -24,8 +24,8 @@ except ImportError:
     pass
 
 try:
-    from thrift.py3.exceptions import Error, ApplicationError, TransportError
-    __all__.extend(['Error', 'ApplicationError', 'TransportError'])
+    from thrift.py3.exceptions import Error, ApplicationError, TransportError, ProtocolError
+    __all__.extend(['Error', 'ApplicationError', 'TransportError', 'ProtocolError'])
 except ImportError:
     pass
 

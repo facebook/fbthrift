@@ -44,6 +44,16 @@ class ApplicationErrorType(Enum):
     INJECTED_FAILURE = cTApplicationExceptionType__INJECTED_FAILURE
 
 
+class ProtocolErrorType(Enum):
+    UNKNOWN = cTProtocolExceptionType__UNKNOWN
+    INVALID_DATA = cTProtocolExceptionType__INVALID_DATA
+    NEGATIVE_SIZE = cTProtocolExceptionType__NEGATIVE_SIZE
+    SIZE_LIMIT = cTProtocolExceptionType__SIZE_LIMIT
+    BAD_VERSION = cTProtocolExceptionType__BAD_VERSION
+    NOT_IMPLEMENTED = cTProtocolExceptionType__NOT_IMPLEMENTED
+    MISSING_REQUIRED_FIELD = cTProtocolExceptionType__MISSING_REQUIRED_FIELD
+
+
 cdef class Error(Exception):
     """base class for all thrift exceptions (TException)"""
     def __init__(self, *args):
@@ -100,6 +110,29 @@ cdef create_LibraryError(shared_ptr[cTLibraryException] ex):
         return
     message = (<bytes>deref(ex).what()).decode('utf-8')
     inst = <LibraryError>LibraryError.__new__(LibraryError, message)
+    return inst
+
+
+cdef class ProtocolError(LibraryError):
+    """Equivalent of a C++ TProtocolException"""
+    def __init__(self, *args):
+        raise TypeError('Creating ProtocolError from python')
+
+    @property
+    def type(self):
+        return self.args[0]
+
+    @property
+    def message(self):
+        return self.args[1]
+
+
+cdef create_ProtocolError(shared_ptr[cTProtocolException] ex):
+    if not ex:
+        return
+    type = ProtocolErrorType(deref(ex).getType())
+    message = (<bytes>deref(ex).what()).decode('utf-8')
+    inst = <ProtocolError>ProtocolError.__new__(ProtocolError, type, message)
     return inst
 
 
@@ -174,6 +207,10 @@ cdef object create_py_exception(const cFollyExceptionWrapper& ex):
     if pyex:
         return pyex
 
+    pyex = create_ProtocolError(try_make_shared_exception[cTProtocolException](ex))
+    if pyex:
+        return pyex
+
     pyex = create_LibraryError(try_make_shared_exception[cTLibraryException](ex))
     if pyex:
         return pyex
@@ -187,5 +224,5 @@ cdef object create_py_exception(const cFollyExceptionWrapper& ex):
         ex.throw_exception()
     except Exception as pyex:
         # We don't try to shorten the traceback because this is Unknown
-        # it will be helpful to know the most information possible. 
+        # it will be helpful to know the most information possible.
         return pyex
