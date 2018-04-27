@@ -31,6 +31,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 
@@ -67,15 +68,13 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     }}{{service:programName}}_clients_wrapper.{{!
     }}{{/service:externalProgram?}}c{{service:name}}ClientWrapper{{!
   }}){{/service:extends}}:
-    c{{service:name}}ClientWrapper(
-      shared_ptr[c{{service:name}}AsyncClient] async_client)
     {{^service:extends?}}
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
     {{/service:extends?}}
 
     {{#service:functions}}
-    cFollyFuture[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}] {{function:name}}({{#function:args}}
+    cFollyFuture[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:name}},{{/function:args}})
     {{/service:functions}}
 

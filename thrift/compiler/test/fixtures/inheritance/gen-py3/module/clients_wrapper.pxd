@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
 
@@ -42,24 +43,18 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyRootClientWrapper "cpp2::MyRootClientWrapper":
-    cMyRootClientWrapper(
-      shared_ptr[cMyRootAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] do_root()
+    cFollyFuture[cFollyUnit] do_root(cRpcOptions, )
 
 
   cdef cppclass cMyNodeClientWrapper "cpp2::MyNodeClientWrapper"(cMyRootClientWrapper):
-    cMyNodeClientWrapper(
-      shared_ptr[cMyNodeAsyncClient] async_client)
 
-    cFollyFuture[cFollyUnit] do_mid()
+    cFollyFuture[cFollyUnit] do_mid(cRpcOptions, )
 
 
   cdef cppclass cMyLeafClientWrapper "cpp2::MyLeafClientWrapper"(cMyNodeClientWrapper):
-    cMyLeafClientWrapper(
-      shared_ptr[cMyLeafAsyncClient] async_client)
 
-    cFollyFuture[cFollyUnit] do_leaf()
+    cFollyFuture[cFollyUnit] do_leaf(cRpcOptions, )
 

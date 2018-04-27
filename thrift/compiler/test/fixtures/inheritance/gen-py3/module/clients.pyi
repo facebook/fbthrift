@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -29,7 +30,8 @@ class MyRoot(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def do_root(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
 
@@ -50,7 +52,8 @@ class MyNode(MyRoot):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def do_mid(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
 
@@ -71,6 +74,7 @@ class MyLeaf(MyNode):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def do_leaf(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 

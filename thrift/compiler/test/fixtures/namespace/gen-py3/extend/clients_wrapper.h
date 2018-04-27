@@ -12,6 +12,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 
 #include <cstdint>
 #include <functional>
@@ -25,14 +26,17 @@ namespace cpp2 {
 class ExtendTestServiceClientWrapper : public cpp2::HsTestServiceClientWrapper {
   protected:
     std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client;
+    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit ExtendTestServiceClientWrapper(
-      std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client);
+      std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client,
+      std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
 
     folly::Future<bool> check(
+      apache::thrift::RpcOptions& rpcOptions,
       cpp2::HsFoo arg_struct1);
 };
 

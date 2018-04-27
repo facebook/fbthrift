@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython

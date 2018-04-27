@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -42,7 +45,7 @@ cdef void MyRoot_do_root_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -55,7 +58,7 @@ cdef void MyNode_do_mid_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -68,7 +71,7 @@ cdef void MyLeaf_do_leaf_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -157,15 +160,18 @@ cdef class MyRoot(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def do_root(
-            MyRoot self
+            MyRoot self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyRoot_client).do_root(
+            deref(self._module_MyRoot_client).do_root(rpc_options._cpp_obj, 
             ),
             MyRoot_do_root_callback,
             <PyObject *> __userdata
@@ -261,15 +267,18 @@ cdef class MyNode(MyRoot):
 
     @cython.always_allow_keywords(True)
     def do_mid(
-            MyNode self
+            MyNode self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyNode_client).do_mid(
+            deref(self._module_MyNode_client).do_mid(rpc_options._cpp_obj, 
             ),
             MyNode_do_mid_callback,
             <PyObject *> __userdata
@@ -365,15 +374,18 @@ cdef class MyLeaf(MyNode):
 
     @cython.always_allow_keywords(True)
     def do_leaf(
-            MyLeaf self
+            MyLeaf self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyLeaf_client).do_leaf(
+            deref(self._module_MyLeaf_client).do_leaf(rpc_options._cpp_obj, 
             ),
             MyLeaf_do_leaf_callback,
             <PyObject *> __userdata

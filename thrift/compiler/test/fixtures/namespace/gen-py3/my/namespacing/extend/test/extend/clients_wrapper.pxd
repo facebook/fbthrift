@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types
 
@@ -30,9 +31,7 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(_hsmodule_clients_wrapper.cHsTestServiceClientWrapper):
-    cExtendTestServiceClientWrapper(
-      shared_ptr[cExtendTestServiceAsyncClient] async_client)
 
-    cFollyFuture[cbool] check(
+    cFollyFuture[cbool] check(cRpcOptions, 
       _hsmodule_types.cHsFoo arg_struct1,)
 

@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
 
@@ -28,19 +29,17 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cNestedContainersClientWrapper "cpp2::NestedContainersClientWrapper":
-    cNestedContainersClientWrapper(
-      shared_ptr[cNestedContainersAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] mapList(
+    cFollyFuture[cFollyUnit] mapList(cRpcOptions, 
       cmap[int32_t,vector[int32_t]] arg_foo,)
-    cFollyFuture[cFollyUnit] mapSet(
+    cFollyFuture[cFollyUnit] mapSet(cRpcOptions, 
       cmap[int32_t,cset[int32_t]] arg_foo,)
-    cFollyFuture[cFollyUnit] listMap(
+    cFollyFuture[cFollyUnit] listMap(cRpcOptions, 
       vector[cmap[int32_t,int32_t]] arg_foo,)
-    cFollyFuture[cFollyUnit] listSet(
+    cFollyFuture[cFollyUnit] listSet(cRpcOptions, 
       vector[cset[int32_t]] arg_foo,)
-    cFollyFuture[cFollyUnit] turtles(
+    cFollyFuture[cFollyUnit] turtles(cRpcOptions, 
       vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] arg_foo,)
 

@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -47,89 +48,110 @@ class ReturnService(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def noReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def boolReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def i16Return(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def i32Return(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def i64Return(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def floatReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> float: ...
 
     async def doubleReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> float: ...
 
     async def stringReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def binaryReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bytes: ...
 
     async def mapReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Mapping[str, int]: ...
 
     async def simpleTypedefReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def complexTypedefReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]: ...
 
     async def list_mostComplexTypedefReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]: ...
 
     async def enumReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.MyEnumA: ...
 
     async def list_EnumReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
     async def structReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.MyStruct: ...
 
     async def set_StructReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
     async def unionReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.ComplexUnion: ...
 
     async def list_UnionReturn(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 
     async def readDataEb(
         self,
-        size: int
+        size: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bytes: ...
 
     async def readData(
         self,
-        size: int
+        size: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bytes: ...
 
 
@@ -151,72 +173,85 @@ class ParamService(thrift.py3.client.Client):
 
     async def void_ret_i16_param(
         self,
-        param1: int
+        param1: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_byte_i16_param(
         self,
         param1: int,
-        param2: int
+        param2: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_map_param(
         self,
-        param1: _typing.Mapping[str, int]
+        param1: _typing.Mapping[str, int],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_map_setlist_param(
         self,
         param1: _typing.Mapping[str, int],
-        param2: _typing.AbstractSet[_typing.Sequence[str]]
+        param2: _typing.AbstractSet[_typing.Sequence[str]],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_map_typedef_param(
         self,
-        param1: int
+        param1: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_enum_param(
         self,
-        param1: _module_types.MyEnumA
+        param1: _module_types.MyEnumA,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_struct_param(
         self,
-        param1: _module_types.MyStruct
+        param1: _module_types.MyStruct,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_listunion_param(
         self,
-        param1: _typing.Sequence[_module_types.ComplexUnion]
+        param1: _typing.Sequence[_module_types.ComplexUnion],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def bool_ret_i32_i64_param(
         self,
         param1: int,
-        param2: int
+        param2: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def bool_ret_map_param(
         self,
-        param1: _typing.Mapping[str, int]
+        param1: _typing.Mapping[str, int],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def bool_ret_union_param(
         self,
-        param1: _module_types.ComplexUnion
+        param1: _module_types.ComplexUnion,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def i64_ret_float_double_param(
         self,
         param1: float,
-        param2: float
+        param2: float,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def i64_ret_string_typedef_param(
         self,
         param1: str,
-        param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]
+        param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def i64_ret_i32_i32_i32_i32_i32_param(
@@ -225,84 +260,100 @@ class ParamService(thrift.py3.client.Client):
         param2: int,
         param3: int,
         param4: int,
-        param5: int
+        param5: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def double_ret_setstruct_param(
         self,
-        param1: _typing.AbstractSet[_module_types.MyStruct]
+        param1: _typing.AbstractSet[_module_types.MyStruct],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> float: ...
 
     async def string_ret_string_param(
         self,
-        param1: str
+        param1: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def binary_ret_binary_param(
         self,
-        param1: bytes
+        param1: bytes,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bytes: ...
 
     async def map_ret_bool_param(
         self,
-        param1: bool
+        param1: bool,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Mapping[str, int]: ...
 
     async def list_ret_map_setlist_param(
         self,
         param1: _typing.Mapping[int, _typing.Sequence[str]],
-        param2: _typing.Sequence[str]
+        param2: _typing.Sequence[str],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[bool]: ...
 
     async def mapsetlistmapliststring_ret_listlistlist_param(
         self,
-        param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]
+        param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]: ...
 
     async def typedef_ret_i32_param(
         self,
-        param1: int
+        param1: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def listtypedef_ret_typedef_param(
         self,
-        param1: _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]
+        param1: _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[int]: ...
 
     async def enum_ret_double_param(
         self,
-        param1: float
+        param1: float,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.MyEnumA: ...
 
     async def enum_ret_double_enum_param(
         self,
         param1: float,
-        param2: _module_types.MyEnumA
+        param2: _module_types.MyEnumA,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.MyEnumA: ...
 
     async def listenum_ret_map_param(
         self,
-        param1: _typing.Mapping[str, int]
+        param1: _typing.Mapping[str, int],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
     async def struct_ret_i16_param(
         self,
-        param1: int
+        param1: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.MyStruct: ...
 
     async def setstruct_ret_set_param(
         self,
-        param1: _typing.AbstractSet[str]
+        param1: _typing.AbstractSet[str],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
     async def union_ret_i32_i32_param(
         self,
         param1: int,
-        param2: int
+        param2: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _module_types.ComplexUnion: ...
 
     async def listunion_string_param(
         self,
-        param1: str
+        param1: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 

@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport empty.types as _empty_types
 
@@ -28,8 +29,6 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/empty/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cNullServiceClientWrapper "cpp2::NullServiceClientWrapper":
-    cNullServiceClientWrapper(
-      shared_ptr[cNullServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

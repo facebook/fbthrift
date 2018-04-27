@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
@@ -28,11 +29,9 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cTestServiceClientWrapper "cpp2::TestServiceClientWrapper":
-    cTestServiceClientWrapper(
-      shared_ptr[cTestServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[int64_t] init(
+    cFollyFuture[int64_t] init(cRpcOptions, 
       int64_t arg_int1,)
 

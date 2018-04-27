@@ -8,9 +8,13 @@
 #include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
+
+
 RaiserClientWrapper::RaiserClientWrapper(
-    std::shared_ptr<cpp2::RaiserAsyncClient> async_client) : 
-    async_client(async_client) {}
+    std::shared_ptr<cpp2::RaiserAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    async_client(async_client),
+      channel_(channel) {}
 
 RaiserClientWrapper::~RaiserClientWrapper() {}
 
@@ -21,6 +25,7 @@ folly::Future<folly::Unit> RaiserClientWrapper::disconnect() {
 }
 
 void RaiserClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
 }
 
@@ -33,27 +38,59 @@ void RaiserClientWrapper::setPersistentHeader(const std::string& key, const std:
 
 
 folly::Future<folly::Unit>
-RaiserClientWrapper::doBland() {
- return async_client->future_doBland(
- );
+RaiserClientWrapper::doBland(
+    apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_doBland, channel_);
+  async_client->doBland(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
 }
 
 folly::Future<folly::Unit>
-RaiserClientWrapper::doRaise() {
- return async_client->future_doRaise(
- );
+RaiserClientWrapper::doRaise(
+    apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_doRaise, channel_);
+  async_client->doRaise(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
 }
 
 folly::Future<std::string>
-RaiserClientWrapper::get200() {
- return async_client->future_get200(
- );
+RaiserClientWrapper::get200(
+    apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::string> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_get200, channel_);
+  async_client->get200(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
 }
 
 folly::Future<std::string>
-RaiserClientWrapper::get500() {
- return async_client->future_get500(
- );
+RaiserClientWrapper::get500(
+    apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::string> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_get500, channel_);
+  async_client->get500(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
 }
 
 

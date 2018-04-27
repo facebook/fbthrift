@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -31,6 +32,7 @@ class SomeService(thrift.py3.client.Client):
 
     async def bounce_map(
         self,
-        m: _typing.Mapping[int, str]
+        m: _typing.Mapping[int, str],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Mapping[int, str]: ...
 

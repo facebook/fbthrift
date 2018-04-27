@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 

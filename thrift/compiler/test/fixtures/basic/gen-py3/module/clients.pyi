@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -29,33 +30,39 @@ class MyService(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def ping(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def getRandomData(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def hasDataById(
         self,
-        id: int
+        id: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def getDataById(
         self,
-        id: int
+        id: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: str
+        data: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: str
+        data: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
 
@@ -76,33 +83,39 @@ class MyServiceFast(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def ping(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def getRandomData(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def hasDataById(
         self,
-        id: int
+        id: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def getDataById(
         self,
-        id: int
+        id: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: str
+        data: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: str
+        data: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
 
@@ -140,11 +153,13 @@ class MyServicePrioParent(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def ping(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def pong(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
 
@@ -165,6 +180,7 @@ class MyServicePrioChild(MyServicePrioParent):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def pang(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 

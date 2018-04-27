@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -30,6 +31,7 @@ class HsTestService(thrift.py3.client.Client):
 
     async def init(
         self,
-        int1: int
+        int1: int,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 

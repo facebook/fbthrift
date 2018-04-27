@@ -150,6 +150,8 @@ union ReservedUnion {
 }
 
 service TestingService {
+    string getName()
+    oneway void shutdown()
     bool invert(1: bool value)
     i32 complex_action(
         1: string first, 2: string second, 3: i64 third, 4: string fourth

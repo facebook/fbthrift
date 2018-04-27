@@ -41,6 +41,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -177,8 +180,11 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
             {{#field:type}}{{!
                 }}{{#type:hasCythonType?}}{{^type:integer?}}{{> types/CythonPythonType}} {{/type:integer?}}{{/type:hasCythonType?}}{{!
                 }}{{field:name}}{{#type:integer?}} not None{{/type:integer?}}{{^type:number?}} not None{{/type:number?}}{{!
-            }}{{/field:type}}{{/function:args}}
+            }}{{/field:type}}{{/function:args}},
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         {{#function:args}}
         {{#field:type}}
         {{#type:container?}}
@@ -201,10 +207,10 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}](
             self._executor,
-            deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
+            deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}(rpc_options._cpp_obj, {{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             ),
             {{service:name}}_{{function:name}}_callback,

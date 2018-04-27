@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -40,7 +43,7 @@ cdef void NestedContainers_mapList_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -53,7 +56,7 @@ cdef void NestedContainers_mapSet_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -66,7 +69,7 @@ cdef void NestedContainers_listMap_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -79,7 +82,7 @@ cdef void NestedContainers_listSet_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -92,7 +95,7 @@ cdef void NestedContainers_turtles_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -182,17 +185,20 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def mapList(
             NestedContainers self,
-            foo not None
+            foo not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(foo, _module_types.Map__i32_List__i32):
             foo = _module_types.Map__i32_List__i32(foo)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_NestedContainers_client).mapList(
+            deref(self._module_NestedContainers_client).mapList(rpc_options._cpp_obj, 
                 cmap[int32_t,vector[int32_t]](deref(_module_types.Map__i32_List__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapList_callback,
@@ -203,17 +209,20 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def mapSet(
             NestedContainers self,
-            foo not None
+            foo not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(foo, _module_types.Map__i32_Set__i32):
             foo = _module_types.Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_NestedContainers_client).mapSet(
+            deref(self._module_NestedContainers_client).mapSet(rpc_options._cpp_obj, 
                 cmap[int32_t,cset[int32_t]](deref(_module_types.Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_mapSet_callback,
@@ -224,17 +233,20 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def listMap(
             NestedContainers self,
-            foo not None
+            foo not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(foo, _module_types.List__Map__i32_i32):
             foo = _module_types.List__Map__i32_i32(foo)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_NestedContainers_client).listMap(
+            deref(self._module_NestedContainers_client).listMap(rpc_options._cpp_obj, 
                 vector[cmap[int32_t,int32_t]](deref(_module_types.List__Map__i32_i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listMap_callback,
@@ -245,17 +257,20 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def listSet(
             NestedContainers self,
-            foo not None
+            foo not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(foo, _module_types.List__Set__i32):
             foo = _module_types.List__Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_NestedContainers_client).listSet(
+            deref(self._module_NestedContainers_client).listSet(rpc_options._cpp_obj, 
                 vector[cset[int32_t]](deref(_module_types.List__Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_listSet_callback,
@@ -266,17 +281,20 @@ cdef class NestedContainers(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def turtles(
             NestedContainers self,
-            foo not None
+            foo not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(foo, _module_types.List__List__Map__i32_Map__i32_Set__i32):
             foo = _module_types.List__List__Map__i32_Map__i32_Set__i32(foo)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_NestedContainers_client).turtles(
+            deref(self._module_NestedContainers_client).turtles(rpc_options._cpp_obj, 
                 vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(_module_types.List__List__Map__i32_Map__i32_Set__i32(foo)._cpp_obj.get())),
             ),
             NestedContainers_turtles_callback,

@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -33,12 +34,14 @@ class MyService(thrift.py3.client.Client):
     async def query(
         self,
         s: _module_types.MyStruct,
-        i: _includes_types.Included
+        i: _includes_types.Included,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def has_arg_docs(
         self,
         s: _module_types.MyStruct,
-        i: _includes_types.Included
+        i: _includes_types.Included,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 

@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
 
@@ -28,13 +29,11 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cRaiserClientWrapper "cpp2::RaiserClientWrapper":
-    cRaiserClientWrapper(
-      shared_ptr[cRaiserAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] doBland()
-    cFollyFuture[cFollyUnit] doRaise()
-    cFollyFuture[string] get200()
-    cFollyFuture[string] get500()
+    cFollyFuture[cFollyUnit] doBland(cRpcOptions, )
+    cFollyFuture[cFollyUnit] doRaise(cRpcOptions, )
+    cFollyFuture[string] get200(cRpcOptions, )
+    cFollyFuture[string] get500(cRpcOptions, )
 

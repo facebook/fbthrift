@@ -8,10 +8,14 @@
 #include <src/gen-py3/extend/clients_wrapper.h>
 
 namespace cpp2 {
+
+
 ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
-    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client) : 
-    HsTestServiceClientWrapper(async_client),
-    async_client(async_client) {}
+    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    HsTestServiceClientWrapper(async_client, channel),
+    async_client(async_client),
+      channel_(channel) {}
 
 
 folly::Future<folly::Unit> ExtendTestServiceClientWrapper::disconnect() {
@@ -21,6 +25,7 @@ folly::Future<folly::Unit> ExtendTestServiceClientWrapper::disconnect() {
 }
 
 void ExtendTestServiceClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
     cpp2::HsTestServiceClientWrapper::disconnectInLoop();
 }
@@ -29,10 +34,18 @@ void ExtendTestServiceClientWrapper::disconnectInLoop() {
 
 folly::Future<bool>
 ExtendTestServiceClientWrapper::check(
+    apache::thrift::RpcOptions& rpcOptions,
     cpp2::HsFoo arg_struct1) {
- return async_client->future_check(
-   arg_struct1
- );
+  folly::Promise<bool> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_check, channel_);
+  async_client->check(
+    rpcOptions,
+    std::move(callback),
+    arg_struct1
+  );
+  return _future;
 }
 
 

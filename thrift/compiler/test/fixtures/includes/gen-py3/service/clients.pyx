@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -44,7 +47,7 @@ cdef void MyService_query_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -57,7 +60,7 @@ cdef void MyService_has_arg_docs_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -148,15 +151,18 @@ cdef class MyService(thrift.py3.client.Client):
     def query(
             MyService self,
             _module_types.MyStruct s not None,
-            _includes_types.Included i not None
+            _includes_types.Included i not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._service_MyService_client).query(
+            deref(self._service_MyService_client).query(rpc_options._cpp_obj, 
                 deref((<_module_types.MyStruct>s)._cpp_obj),
                 deref((<_includes_types.Included>i)._cpp_obj),
             ),
@@ -169,15 +175,18 @@ cdef class MyService(thrift.py3.client.Client):
     def has_arg_docs(
             MyService self,
             _module_types.MyStruct s not None,
-            _includes_types.Included i not None
+            _includes_types.Included i not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._service_MyService_client).has_arg_docs(
+            deref(self._service_MyService_client).has_arg_docs(rpc_options._cpp_obj, 
                 deref((<_module_types.MyStruct>s)._cpp_obj),
                 deref((<_includes_types.Included>i)._cpp_obj),
             ),

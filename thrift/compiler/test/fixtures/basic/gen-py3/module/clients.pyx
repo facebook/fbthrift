@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -44,7 +47,7 @@ cdef void MyService_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -57,7 +60,7 @@ cdef void MyService_getRandomData_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -70,7 +73,7 @@ cdef void MyService_hasDataById_callback(
     cFollyTry[cbool]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -83,7 +86,7 @@ cdef void MyService_getDataById_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -96,7 +99,7 @@ cdef void MyService_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -109,7 +112,7 @@ cdef void MyService_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -122,7 +125,7 @@ cdef void MyServiceFast_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -135,7 +138,7 @@ cdef void MyServiceFast_getRandomData_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -148,7 +151,7 @@ cdef void MyServiceFast_hasDataById_callback(
     cFollyTry[cbool]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -161,7 +164,7 @@ cdef void MyServiceFast_getDataById_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -174,7 +177,7 @@ cdef void MyServiceFast_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -187,7 +190,7 @@ cdef void MyServiceFast_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -200,7 +203,7 @@ cdef void MyServicePrioParent_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -213,7 +216,7 @@ cdef void MyServicePrioParent_pong_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -226,7 +229,7 @@ cdef void MyServicePrioChild_pang_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -315,15 +318,18 @@ cdef class MyService(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def ping(
-            MyService self
+            MyService self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyService_client).ping(
+            deref(self._module_MyService_client).ping(rpc_options._cpp_obj, 
             ),
             MyService_ping_callback,
             <PyObject *> __userdata
@@ -332,15 +338,18 @@ cdef class MyService(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def getRandomData(
-            MyService self
+            MyService self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_MyService_client).getRandomData(
+            deref(self._module_MyService_client).getRandomData(rpc_options._cpp_obj, 
             ),
             MyService_getRandomData_callback,
             <PyObject *> __userdata
@@ -350,8 +359,11 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def hasDataById(
             MyService self,
-            id not None
+            id not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -359,10 +371,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cbool](
             self._executor,
-            deref(self._module_MyService_client).hasDataById(
+            deref(self._module_MyService_client).hasDataById(rpc_options._cpp_obj, 
                 id,
             ),
             MyService_hasDataById_callback,
@@ -373,8 +385,11 @@ cdef class MyService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def getDataById(
             MyService self,
-            id not None
+            id not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -382,10 +397,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_MyService_client).getDataById(
+            deref(self._module_MyService_client).getDataById(rpc_options._cpp_obj, 
                 id,
             ),
             MyService_getDataById_callback,
@@ -397,8 +412,11 @@ cdef class MyService(thrift.py3.client.Client):
     def putDataById(
             MyService self,
             id not None,
-            str data not None
+            str data not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -406,10 +424,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyService_client).putDataById(
+            deref(self._module_MyService_client).putDataById(rpc_options._cpp_obj, 
                 id,
                 data.encode('UTF-8'),
             ),
@@ -422,8 +440,11 @@ cdef class MyService(thrift.py3.client.Client):
     def lobDataById(
             MyService self,
             id not None,
-            str data not None
+            str data not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -431,10 +452,10 @@ cdef class MyService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyService_client).lobDataById(
+            deref(self._module_MyService_client).lobDataById(rpc_options._cpp_obj, 
                 id,
                 data.encode('UTF-8'),
             ),
@@ -530,15 +551,18 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def ping(
-            MyServiceFast self
+            MyServiceFast self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServiceFast_client).ping(
+            deref(self._module_MyServiceFast_client).ping(rpc_options._cpp_obj, 
             ),
             MyServiceFast_ping_callback,
             <PyObject *> __userdata
@@ -547,15 +571,18 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def getRandomData(
-            MyServiceFast self
+            MyServiceFast self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_MyServiceFast_client).getRandomData(
+            deref(self._module_MyServiceFast_client).getRandomData(rpc_options._cpp_obj, 
             ),
             MyServiceFast_getRandomData_callback,
             <PyObject *> __userdata
@@ -565,8 +592,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def hasDataById(
             MyServiceFast self,
-            id not None
+            id not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -574,10 +604,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cbool](
             self._executor,
-            deref(self._module_MyServiceFast_client).hasDataById(
+            deref(self._module_MyServiceFast_client).hasDataById(rpc_options._cpp_obj, 
                 id,
             ),
             MyServiceFast_hasDataById_callback,
@@ -588,8 +618,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def getDataById(
             MyServiceFast self,
-            id not None
+            id not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -597,10 +630,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_MyServiceFast_client).getDataById(
+            deref(self._module_MyServiceFast_client).getDataById(rpc_options._cpp_obj, 
                 id,
             ),
             MyServiceFast_getDataById_callback,
@@ -612,8 +645,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     def putDataById(
             MyServiceFast self,
             id not None,
-            str data not None
+            str data not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -621,10 +657,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServiceFast_client).putDataById(
+            deref(self._module_MyServiceFast_client).putDataById(rpc_options._cpp_obj, 
                 id,
                 data.encode('UTF-8'),
             ),
@@ -637,8 +673,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     def lobDataById(
             MyServiceFast self,
             id not None,
-            str data not None
+            str data not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
@@ -646,10 +685,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServiceFast_client).lobDataById(
+            deref(self._module_MyServiceFast_client).lobDataById(rpc_options._cpp_obj, 
                 id,
                 data.encode('UTF-8'),
             ),
@@ -831,15 +870,18 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def ping(
-            MyServicePrioParent self
+            MyServicePrioParent self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServicePrioParent_client).ping(
+            deref(self._module_MyServicePrioParent_client).ping(rpc_options._cpp_obj, 
             ),
             MyServicePrioParent_ping_callback,
             <PyObject *> __userdata
@@ -848,15 +890,18 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def pong(
-            MyServicePrioParent self
+            MyServicePrioParent self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServicePrioParent_client).pong(
+            deref(self._module_MyServicePrioParent_client).pong(rpc_options._cpp_obj, 
             ),
             MyServicePrioParent_pong_callback,
             <PyObject *> __userdata
@@ -952,15 +997,18 @@ cdef class MyServicePrioChild(MyServicePrioParent):
 
     @cython.always_allow_keywords(True)
     def pang(
-            MyServicePrioChild self
+            MyServicePrioChild self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_MyServicePrioChild_client).pang(
+            deref(self._module_MyServicePrioChild_client).pang(rpc_options._cpp_obj, 
             ),
             MyServicePrioChild_pang_callback,
             <PyObject *> __userdata

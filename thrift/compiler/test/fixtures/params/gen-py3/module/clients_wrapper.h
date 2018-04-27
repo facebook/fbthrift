@@ -11,6 +11,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 
 #include <cstdint>
 #include <functional>
@@ -24,9 +25,11 @@ namespace cpp2 {
 class NestedContainersClientWrapper {
   protected:
     std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client;
+    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit NestedContainersClientWrapper(
-      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client);
+      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client,
+      std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~NestedContainersClientWrapper();
 
     folly::Future<folly::Unit> disconnect();
@@ -34,14 +37,19 @@ class NestedContainersClientWrapper {
     void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> mapList(
+      apache::thrift::RpcOptions& rpcOptions,
       std::map<int32_t,std::vector<int32_t>> arg_foo);
     folly::Future<folly::Unit> mapSet(
+      apache::thrift::RpcOptions& rpcOptions,
       std::map<int32_t,std::set<int32_t>> arg_foo);
     folly::Future<folly::Unit> listMap(
+      apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::map<int32_t,int32_t>> arg_foo);
     folly::Future<folly::Unit> listSet(
+      apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::set<int32_t>> arg_foo);
     folly::Future<folly::Unit> turtles(
+      apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo);
 };
 

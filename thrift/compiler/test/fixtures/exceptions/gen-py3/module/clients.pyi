@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -29,18 +30,22 @@ class Raiser(thrift.py3.client.Client):
     def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def doBland(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def doRaise(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def get200(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 
     async def get500(
-        self
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> str: ...
 

@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -42,7 +45,7 @@ cdef void SomeService_bounce_map_callback(
     cFollyTry[_module_types.std_unordered_map[int32_t,string]]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -132,17 +135,20 @@ cdef class SomeService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def bounce_map(
             SomeService self,
-            m not None
+            m not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(m, _module_types.std_unordered_map__Map__i32_string):
             m = _module_types.std_unordered_map__Map__i32_string(m)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[_module_types.std_unordered_map[int32_t,string]](
             self._executor,
-            deref(self._module_SomeService_client).bounce_map(
+            deref(self._module_SomeService_client).bounce_map(rpc_options._cpp_obj, 
                 _module_types.std_unordered_map[int32_t,string](deref(_module_types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
             ),
             SomeService_bounce_map_callback,

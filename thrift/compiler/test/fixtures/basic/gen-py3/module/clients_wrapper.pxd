@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
 
@@ -56,66 +57,56 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
-    cMyServiceClientWrapper(
-      shared_ptr[cMyServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] ping()
-    cFollyFuture[string] getRandomData()
-    cFollyFuture[cbool] hasDataById(
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[string] getRandomData(cRpcOptions, )
+    cFollyFuture[cbool] hasDataById(cRpcOptions, 
       int64_t arg_id,)
-    cFollyFuture[string] getDataById(
+    cFollyFuture[string] getDataById(cRpcOptions, 
       int64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(
+    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
       int64_t arg_id,
       string arg_data,)
-    cFollyFuture[cFollyUnit] lobDataById(
+    cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       int64_t arg_id,
       string arg_data,)
 
 
   cdef cppclass cMyServiceFastClientWrapper "cpp2::MyServiceFastClientWrapper":
-    cMyServiceFastClientWrapper(
-      shared_ptr[cMyServiceFastAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] ping()
-    cFollyFuture[string] getRandomData()
-    cFollyFuture[cbool] hasDataById(
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[string] getRandomData(cRpcOptions, )
+    cFollyFuture[cbool] hasDataById(cRpcOptions, 
       int64_t arg_id,)
-    cFollyFuture[string] getDataById(
+    cFollyFuture[string] getDataById(cRpcOptions, 
       int64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(
+    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
       int64_t arg_id,
       string arg_data,)
-    cFollyFuture[cFollyUnit] lobDataById(
+    cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       int64_t arg_id,
       string arg_data,)
 
 
   cdef cppclass cMyServiceEmptyClientWrapper "cpp2::MyServiceEmptyClientWrapper":
-    cMyServiceEmptyClientWrapper(
-      shared_ptr[cMyServiceEmptyAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "cpp2::MyServicePrioParentClientWrapper":
-    cMyServicePrioParentClientWrapper(
-      shared_ptr[cMyServicePrioParentAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] ping()
-    cFollyFuture[cFollyUnit] pong()
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[cFollyUnit] pong(cRpcOptions, )
 
 
   cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(cMyServicePrioParentClientWrapper):
-    cMyServicePrioChildClientWrapper(
-      shared_ptr[cMyServicePrioChildAsyncClient] async_client)
 
-    cFollyFuture[cFollyUnit] pang()
+    cFollyFuture[cFollyUnit] pang(cRpcOptions, )
 

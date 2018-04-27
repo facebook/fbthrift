@@ -19,7 +19,7 @@ from asyncio import InvalidStateError as asyncio_InvalidStateError
 cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
     # The custome deleter is hard, so instead make cython treat it as class
     cdef cppclass cRequestChannel_ptr "thrift::py3::RequestChannel_ptr":
-        bool operator bool()
+        pass
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         cFollyFuture[string] fut,

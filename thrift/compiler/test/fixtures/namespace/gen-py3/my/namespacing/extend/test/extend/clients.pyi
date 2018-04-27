@@ -7,6 +7,7 @@
 
 import thrift.py3.types
 import thrift.py3.client
+import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
@@ -32,6 +33,7 @@ class ExtendTestService(_hsmodule_clients.HsTestService):
 
     async def check(
         self,
-        struct1: _hsmodule_types.HsFoo
+        struct1: _hsmodule_types.HsFoo,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 

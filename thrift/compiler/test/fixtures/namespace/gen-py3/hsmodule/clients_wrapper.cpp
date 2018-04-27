@@ -8,9 +8,13 @@
 #include <gen-py3/hsmodule/clients_wrapper.h>
 
 namespace cpp2 {
+
+
 HsTestServiceClientWrapper::HsTestServiceClientWrapper(
-    std::shared_ptr<cpp2::HsTestServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
+    std::shared_ptr<cpp2::HsTestServiceAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    async_client(async_client),
+      channel_(channel) {}
 
 HsTestServiceClientWrapper::~HsTestServiceClientWrapper() {}
 
@@ -21,6 +25,7 @@ folly::Future<folly::Unit> HsTestServiceClientWrapper::disconnect() {
 }
 
 void HsTestServiceClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
 }
 
@@ -34,10 +39,18 @@ void HsTestServiceClientWrapper::setPersistentHeader(const std::string& key, con
 
 folly::Future<int64_t>
 HsTestServiceClientWrapper::init(
+    apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_int1) {
- return async_client->future_init(
-   arg_int1
- );
+  folly::Promise<int64_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_init, channel_);
+  async_client->init(
+    rpcOptions,
+    std::move(callback),
+    arg_int1
+  );
+  return _future;
 }
 
 

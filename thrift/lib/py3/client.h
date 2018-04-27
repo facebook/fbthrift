@@ -41,8 +41,9 @@ typedef std::unique_ptr<
  */
 template <class T, class U>
 std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr&& channel) {
-  auto client = std::make_shared<T>(move(channel));
-  return std::make_shared<U>(client);
+  std::shared_ptr<apache::thrift::RequestChannel> channel_ = std::move(channel);
+  auto client = std::make_shared<T>(channel_);
+  return std::make_shared<U>(std::move(client), std::move(channel_));
 }
 
 void destroyInEventBaseThread(RequestChannel_ptr&& ptr) {

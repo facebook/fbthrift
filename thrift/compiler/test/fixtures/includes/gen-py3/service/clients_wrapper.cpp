@@ -8,9 +8,13 @@
 #include <src/gen-py3/service/clients_wrapper.h>
 
 namespace cpp2 {
+
+
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
+    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    async_client(async_client),
+      channel_(channel) {}
 
 MyServiceClientWrapper::~MyServiceClientWrapper() {}
 
@@ -21,6 +25,7 @@ folly::Future<folly::Unit> MyServiceClientWrapper::disconnect() {
 }
 
 void MyServiceClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
 }
 
@@ -34,22 +39,38 @@ void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const s
 
 folly::Future<folly::Unit>
 MyServiceClientWrapper::query(
-    cpp2::MyStruct arg_s, 
+    apache::thrift::RpcOptions& rpcOptions,
+    cpp2::MyStruct arg_s,
     cpp2::Included arg_i) {
- return async_client->future_query(
-   arg_s,
-   arg_i
- );
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_query, channel_);
+  async_client->query(
+    rpcOptions,
+    std::move(callback),
+    arg_s,
+    arg_i
+  );
+  return _future;
 }
 
 folly::Future<folly::Unit>
 MyServiceClientWrapper::has_arg_docs(
-    cpp2::MyStruct arg_s, 
+    apache::thrift::RpcOptions& rpcOptions,
+    cpp2::MyStruct arg_s,
     cpp2::Included arg_i) {
- return async_client->future_has_arg_docs(
-   arg_s,
-   arg_i
- );
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_has_arg_docs, channel_);
+  async_client->has_arg_docs(
+    rpcOptions,
+    std::move(callback),
+    arg_s,
+    arg_i
+  );
+  return _future;
 }
 
 

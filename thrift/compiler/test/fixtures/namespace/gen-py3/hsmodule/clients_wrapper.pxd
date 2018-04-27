@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport hsmodule.types as _hsmodule_types
 
@@ -28,11 +29,9 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cHsTestServiceClientWrapper "cpp2::HsTestServiceClientWrapper":
-    cHsTestServiceClientWrapper(
-      shared_ptr[cHsTestServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[int64_t] init(
+    cFollyFuture[int64_t] init(cRpcOptions, 
       int64_t arg_int1,)
 

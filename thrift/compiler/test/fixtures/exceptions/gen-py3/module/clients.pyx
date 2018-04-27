@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -40,7 +43,7 @@ cdef void Raiser_doBland_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -53,7 +56,7 @@ cdef void Raiser_doRaise_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException[_module_types.cBanal]():
         pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
     elif result.hasException[_module_types.cFiery]():
@@ -70,7 +73,7 @@ cdef void Raiser_get200_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -83,7 +86,7 @@ cdef void Raiser_get500_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException[_module_types.cFiery]():
         pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
     elif result.hasException[_module_types.cBanal]():
@@ -176,15 +179,18 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def doBland(
-            Raiser self
+            Raiser self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_Raiser_client).doBland(
+            deref(self._module_Raiser_client).doBland(rpc_options._cpp_obj, 
             ),
             Raiser_doBland_callback,
             <PyObject *> __userdata
@@ -193,15 +199,18 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def doRaise(
-            Raiser self
+            Raiser self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            deref(self._module_Raiser_client).doRaise(
+            deref(self._module_Raiser_client).doRaise(rpc_options._cpp_obj, 
             ),
             Raiser_doRaise_callback,
             <PyObject *> __userdata
@@ -210,15 +219,18 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def get200(
-            Raiser self
+            Raiser self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_Raiser_client).get200(
+            deref(self._module_Raiser_client).get200(rpc_options._cpp_obj, 
             ),
             Raiser_get200_callback,
             <PyObject *> __userdata
@@ -227,15 +239,18 @@ cdef class Raiser(thrift.py3.client.Client):
 
     @cython.always_allow_keywords(True)
     def get500(
-            Raiser self
+            Raiser self,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[string](
             self._executor,
-            deref(self._module_Raiser_client).get500(
+            deref(self._module_Raiser_client).get500(rpc_options._cpp_obj, 
             ),
             Raiser_get500_callback,
             <PyObject *> __userdata

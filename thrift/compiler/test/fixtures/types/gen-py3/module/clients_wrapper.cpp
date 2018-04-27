@@ -11,9 +11,13 @@ namespace apache {
 namespace thrift {
 namespace fixtures {
 namespace types {
+
+
 SomeServiceClientWrapper::SomeServiceClientWrapper(
-    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
+    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    async_client(async_client),
+      channel_(channel) {}
 
 SomeServiceClientWrapper::~SomeServiceClientWrapper() {}
 
@@ -24,6 +28,7 @@ folly::Future<folly::Unit> SomeServiceClientWrapper::disconnect() {
 }
 
 void SomeServiceClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
 }
 
@@ -37,10 +42,18 @@ void SomeServiceClientWrapper::setPersistentHeader(const std::string& key, const
 
 folly::Future<std::unordered_map<int32_t,std::string>>
 SomeServiceClientWrapper::bounce_map(
+    apache::thrift::RpcOptions& rpcOptions,
     std::unordered_map<int32_t,std::string> arg_m) {
- return async_client->future_bounce_map(
-   arg_m
- );
+  folly::Promise<std::unordered_map<int32_t,std::string>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::unordered_map<int32_t,std::string>>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_bounce_map, channel_);
+  async_client->bounce_map(
+    rpcOptions,
+    std::move(callback),
+    arg_m
+  );
+  return _future;
 }
 
 

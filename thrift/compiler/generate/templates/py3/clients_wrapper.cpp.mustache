@@ -27,13 +27,17 @@ thread that will pass data to the cython callback.
 
 {{#program:cppNamespaces}}namespace {{value}} {
 {{/program:cppNamespaces}}
+
+
 {{#program:services}}
 {{service:name}}ClientWrapper::{{service:name}}ClientWrapper(
-    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client) : {{!
+    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : {{!
     }}
-    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(async_client),
+    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(async_client, channel),
     {{/service:extends}}{{/service:extends?}}{{!
-    }}async_client(async_client) {}
+    }}async_client(async_client),
+      channel_(channel) {}
 
 {{^service:extends?}}
 {{service:name}}ClientWrapper::~{{service:name}}ClientWrapper() {}
@@ -47,6 +51,7 @@ folly::Future<folly::Unit> {{service:name}}ClientWrapper::disconnect() {
 }
 
 void {{service:name}}ClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
     {{#service:extends}}
     {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
@@ -65,11 +70,26 @@ void {{service:name}}ClientWrapper::setPersistentHeader(const std::string& key, 
 
 {{#service:functions}}
 folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}>
-{{service:name}}ClientWrapper::{{function:name}}({{#function:args}}
-    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:name}}{{^last?}}, {{/last?}}{{/function:args}}) {
- return async_client->future_{{function:name}}({{#function:args}}
-   arg_{{field:name}}{{^last?}},{{/last?}}{{/function:args}}
- );
+{{service:name}}ClientWrapper::{{function:name}}(
+    apache::thrift::RpcOptions& rpcOptions{{#function:args}},
+    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:name}}{{/function:args}}) {
+  folly::Promise<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}> _promise;
+  auto _future = _promise.getFuture();
+  {{^function:oneway?}}
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_{{function:name}}, channel_);
+  {{/function:oneway?}}
+  {{#function:oneway?}}
+  {{! oneway functions have no recv they are special cased}}
+  auto callback = std::make_unique<::apache::thrift::OneWayFutureCallback>(
+    std::move(_promise), channel_);
+  {{/function:oneway?}}
+  async_client->{{function:name}}(
+    rpcOptions,
+    std::move(callback){{#function:args}},
+    arg_{{field:name}}{{/function:args}}
+  );
+  return _future;
 }
 
 {{/service:functions}}

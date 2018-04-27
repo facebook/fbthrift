@@ -22,6 +22,9 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
+from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common import RpcOptions as __RpcOptions
+
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport cython
@@ -40,7 +43,7 @@ cdef void HsTestService_init_callback(
     cFollyTry[int64_t]&& result,
     PyObject* userdata
 ):
-    client, pyfuture = <object> userdata  
+    client, pyfuture, _ = <object> userdata  
     if result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception()))
     else:
@@ -130,8 +133,11 @@ cdef class HsTestService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def init(
             HsTestService self,
-            int1 not None
+            int1 not None,
+            __RpcOptions rpc_options=None
     ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         if not isinstance(int1, int):
             raise TypeError(f'int1 is not a {int !r}.')
         else:
@@ -139,10 +145,10 @@ cdef class HsTestService(thrift.py3.client.Client):
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
-        __userdata = (self, __future)
+        __userdata = (self, __future, rpc_options)
         bridgeFutureWith[int64_t](
             self._executor,
-            deref(self._hsmodule_HsTestService_client).init(
+            deref(self._hsmodule_HsTestService_client).init(rpc_options._cpp_obj, 
                 int1,
             ),
             HsTestService_init_callback,

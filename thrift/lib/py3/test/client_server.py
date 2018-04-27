@@ -18,6 +18,12 @@ class Handler(TestingServiceInterface):
     async def invert(self, value: bool) -> bool:
         return not value
 
+    async def getName(self) -> str:
+        return "Testing"
+
+    async def shutdown(self) -> None:
+        pass
+
     async def complex_action(
         self, first: str, second: str, third: int, fourth: str
     ) -> int:

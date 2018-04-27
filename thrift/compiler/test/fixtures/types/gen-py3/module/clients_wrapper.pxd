@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
 
@@ -29,11 +30,9 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrift::fixtures::types":
   cdef cppclass cSomeServiceClientWrapper "apache::thrift::fixtures::types::SomeServiceClientWrapper":
-    cSomeServiceClientWrapper(
-      shared_ptr[cSomeServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(
+    cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(cRpcOptions, 
       _module_types.std_unordered_map[int32_t,string] arg_m,)
 

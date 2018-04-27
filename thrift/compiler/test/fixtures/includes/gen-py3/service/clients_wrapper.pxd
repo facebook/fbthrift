@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from thrift.py3.common cimport cRpcOptions
 
 cimport service.types as _service_types
 
@@ -30,15 +31,13 @@ cdef extern from "<utility>" namespace "std":
 
 cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
-    cMyServiceClientWrapper(
-      shared_ptr[cMyServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
-    cFollyFuture[cFollyUnit] query(
+    cFollyFuture[cFollyUnit] query(cRpcOptions, 
       _module_types.cMyStruct arg_s,
       _includes_types.cIncluded arg_i,)
-    cFollyFuture[cFollyUnit] has_arg_docs(
+    cFollyFuture[cFollyUnit] has_arg_docs(cRpcOptions, 
       _module_types.cMyStruct arg_s,
       _includes_types.cIncluded arg_i,)
 

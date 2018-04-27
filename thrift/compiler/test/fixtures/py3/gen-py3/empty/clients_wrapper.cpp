@@ -8,9 +8,13 @@
 #include <src/gen-py3/empty/clients_wrapper.h>
 
 namespace cpp2 {
+
+
 NullServiceClientWrapper::NullServiceClientWrapper(
-    std::shared_ptr<cpp2::NullServiceAsyncClient> async_client) : 
-    async_client(async_client) {}
+    std::shared_ptr<cpp2::NullServiceAsyncClient> async_client,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
+    async_client(async_client),
+      channel_(channel) {}
 
 NullServiceClientWrapper::~NullServiceClientWrapper() {}
 
@@ -21,6 +25,7 @@ folly::Future<folly::Unit> NullServiceClientWrapper::disconnect() {
 }
 
 void NullServiceClientWrapper::disconnectInLoop() {
+    channel_.reset();
     async_client.reset();
 }
 
