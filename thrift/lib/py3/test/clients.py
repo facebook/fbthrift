@@ -7,8 +7,8 @@ import unittest
 
 from testing.clients import TestingService
 from testing.types import I32List, Color, easy
-from thrift.py3 import TransportError, get_client
-
+from thrift.py3 import TransportError, get_client, Priority, RpcOptions
+from thrift.py3.common import WriteHeaders
 
 async def bad_client_connect() -> None:
     async with get_client(TestingService, port=1) as client:
@@ -140,3 +140,35 @@ class ClientTests(unittest.TestCase):
 
         with self.assertRaises(OverflowError):
             loop.run_until_complete(client.int_sizes(one, two, three, four * 10))
+
+
+class RpcOptionsTests(unittest.TestCase):
+
+    def test_write_headers(self) -> None:
+        options = RpcOptions()
+        headers = options.write_headers
+        self.assertIsInstance(headers, WriteHeaders)
+        options.set_header('test', 'test')
+        self.assertTrue(options.write_headers is headers)
+        self.assertIn('test', headers)
+        self.assertEqual(headers['test'], 'test')
+        with self.assertRaises(TypeError):
+            options.set_header('count', 1)  # type: ignore
+
+    def test_timeout(self) -> None:
+        options = RpcOptions()
+        self.assertEqual(0, options.timeout)
+        options.timeout = 0.05
+        self.assertEqual(0.05, options.timeout)
+        options.chunk_timeout = options.queue_timeout = options.timeout
+        self.assertEqual(options.chunk_timeout, options.queue_timeout)
+        with self.assertRaises(TypeError):
+            options.timeout = "1"  # type: ignore
+
+    def test_priority(self) -> None:
+        options = RpcOptions()
+        self.assertIsInstance(options.priority, Priority)
+        options.priority = Priority.HIGH
+        self.assertEquals(options.priority, Priority.HIGH)
+        with self.assertRaises(TypeError):
+            options.priority = 1  # type: ignore

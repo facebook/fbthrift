@@ -5,12 +5,14 @@ from folly cimport (
     cFollyTry
 )
 from folly.range cimport StringPiece
-from libc.stdint cimport uint16_t, uint32_t
+from libc.stdint cimport uint16_t, uint32_t, int64_t
 from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
 from libcpp.typeinfo cimport type_info
+from libcpp.map cimport map
 from cpython.ref cimport PyObject
 from libcpp cimport bool
+
 # This is just here to make the cython compile happy.
 from asyncio import InvalidStateError as asyncio_InvalidStateError
 

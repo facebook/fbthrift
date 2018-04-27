@@ -1,55 +1,42 @@
 #!/usr/bin/env python3
-__all__ = [
-    'get_client',
-    'Client',
-    'ThriftServer',
-    'Struct',
-    'BadEnum',
-    'Error',
-    'ApplicationError',
-    'TransportError',
-    'SSLPolicy',
-    'pass_context',
-    'Protocol',
-    'serialize',
-    'deserialize',
-    'RequestContext',
-    'Union',
-]
+from typing import List
+
+__all__ = []  # type: List[str]
 
 try:
     from thrift.py3.client import get_client, Client
+    __all__.extend(['Client', 'get_client'])
 except ImportError:
-    __all__.remove('Client')
-    __all__.remove('get_client')
+    pass
 
 try:
     from thrift.py3.server import (
         ThriftServer, SSLPolicy, pass_context, RequestContext
     )
+    __all__.extend(['ThriftServer', 'pass_context', 'SSLPolicy', 'RequestContext'])
 except ImportError:
-    __all__.remove('ThriftServer')
-    __all__.remove('pass_context')
-    __all__.remove('SSLPolicy')
-    __all__.remove('RequestContext')
+    pass
 
 try:
     from thrift.py3.types import Struct, BadEnum, Union
+    __all__.extend(['Struct', 'BadEnum', 'Union'])
 except ImportError:
-    __all__.remove('Struct')
-    __all__.remove('BadEnum')
-    __all__.remove('Union')
+    pass
 
 try:
     from thrift.py3.exceptions import Error, ApplicationError, TransportError
+    __all__.extend(['Error', 'ApplicationError', 'TransportError'])
 except ImportError:
-    __all__.remove('Error')
-    __all__.remove('ApplicationError')
-    __all__.remove('TransportError')
+    pass
 
 try:
     from thrift.py3.serializer import Protocol, serialize, deserialize
+    __all__.extend(['Protocol', 'serialize', 'deserialize'])
 except ImportError:
-    __all__.remove('Protocol')
-    __all__.remove('serialize')
-    __all__.remove('deserialize')
+    pass
+
+try:
+    from thrift.py3.common import Priority, RpcOptions
+    __all__.extend(['Priority', 'RpcOptions'])
+except ImportError:
+    pass

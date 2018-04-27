@@ -2,6 +2,7 @@ from types import TracebackType
 from typing import TypeVar, Optional, Type, Dict, Callable, Any, Mapping, ClassVar, Union
 import ipaddress
 import os
+from thrift.py3.common import Headers, Priority
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]

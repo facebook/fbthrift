@@ -2,6 +2,11 @@
 from libc.stdint cimport int64_t
 from libcpp cimport bool as cbool
 
+cdef extern from "<chrono>" namespace "std::chrono" nogil:
+    cdef cppclass milliseconds:
+        milliseconds(int64_t) except +
+        int64_t count()
+
 cdef extern from "<iterator>" namespace "std" nogil:
     cdef cppclass iterator_traits[T]:
         cppclass difference_type:

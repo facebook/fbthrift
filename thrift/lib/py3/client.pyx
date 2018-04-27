@@ -17,7 +17,6 @@ import asyncio
 import os
 from socket import SocketKind
 
-
 cdef object proxy_factory = None
 
 
