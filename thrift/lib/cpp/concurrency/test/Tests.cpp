@@ -39,10 +39,9 @@ int main(int argc, char** argv) {
     args[ix - 1] = std::string(argv[ix]);
   }
 
-  bool runAll = args[0].compare("all") == 0;
+  bool runAll = args[0] == "all";
 
-  if (runAll || args[0].compare("thread-factory") == 0) {
-
+  if (runAll || args[0] == "thread-factory") {
     ThreadFactoryTests threadFactoryTests;
 
     std::cout << "ThreadFactory tests..." << std::endl;
@@ -71,8 +70,7 @@ int main(int argc, char** argv) {
     assert(threadFactoryTests.monitorTimeoutTest());
   }
 
-  if (runAll || args[0].compare("util") == 0) {
-
+  if (runAll || args[0] == "util") {
     std::cout << "Util tests..." << std::endl;
 
     std::cout << "\t\tUtil minimum time" << std::endl;
@@ -94,9 +92,7 @@ int main(int argc, char** argv) {
     std::cout << "\t\t\tscall per ms: " << count / (time01 - time00) << std::endl;
   }
 
-
-  if (runAll || args[0].compare("timer-manager") == 0) {
-
+  if (runAll || args[0] == "timer-manager") {
     std::cout << "TimerManager tests..." << std::endl;
 
     std::cout << "\t\tTimerManager test00" << std::endl;
