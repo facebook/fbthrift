@@ -77,5 +77,15 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     cFollyFuture[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:name}},{{/function:args}})
     {{/service:functions}}
+    {{!
+      If this is an empty service definition that extends another service
+      Then we need to put pass, otherwise cython will complain about the
+      empty cppclass body
+    }}
+    {{^service:functions}}
+    {{#service:extends?}}
+    pass
+    {{/service:extends?}}
+    {{/service:functions}}
 
 {{/program:services}}
