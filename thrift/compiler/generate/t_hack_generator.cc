@@ -994,7 +994,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
              << endl;
   } else if (oldenum_) {
     typehint = hack_name(tenum, true) + "Type";
-    f_types_ << "newtype " << typehint << " = int;" << endl;
+    f_types_ << "newtype " << typehint << " as arraykey = int;" << endl;
     string attributes = get_attributes(tenum);
     if (!attributes.empty()) {
       f_types_ << "<<" << attributes << ">>" << endl;

@@ -12,7 +12,7 @@ namespace test\fixtures\jsenum;
  * Original thrift enum:-
  * MyThriftEnum
  */
-newtype MyThriftEnumType = int;
+newtype MyThriftEnumType as arraykey = int;
 <<JSEnum('MyJSThriftEnum')>>
 final class MyThriftEnum extends Enum<MyThriftEnumType> {
   const MyThriftEnumType   foo = 1;
