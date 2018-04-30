@@ -168,6 +168,26 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
   return true;
 }
 
+bool Vehicle::operator<(const Vehicle& rhs) const {
+  (void)rhs;
+  if (!(color == rhs.color)) {
+    return color < rhs.color;
+  }
+  if (!(licensePlate == rhs.licensePlate)) {
+    return licensePlate < rhs.licensePlate;
+  }
+  if (!(description == rhs.description)) {
+    return description < rhs.description;
+  }
+  if (!(name == rhs.name)) {
+    return name < rhs.name;
+  }
+  if (!(hasAC == rhs.hasAC)) {
+    return hasAC < rhs.hasAC;
+  }
+  return false;
+}
+
 void Vehicle::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "color") {

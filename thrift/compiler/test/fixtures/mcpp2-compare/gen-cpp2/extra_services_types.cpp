@@ -107,6 +107,50 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   return true;
 }
 
+bool containerStruct2::operator<(const containerStruct2& rhs) const {
+  (void)rhs;
+  if (!(fieldA == rhs.fieldA)) {
+    return fieldA < rhs.fieldA;
+  }
+  if (!(req_fieldA == rhs.req_fieldA)) {
+    return req_fieldA < rhs.req_fieldA;
+  }
+  if (!(opt_fieldA == rhs.opt_fieldA)) {
+    return opt_fieldA < rhs.opt_fieldA;
+  }
+  if (!(fieldB == rhs.fieldB)) {
+    return fieldB < rhs.fieldB;
+  }
+  if (!(req_fieldB == rhs.req_fieldB)) {
+    return req_fieldB < rhs.req_fieldB;
+  }
+  if (!(opt_fieldB == rhs.opt_fieldB)) {
+    return opt_fieldB < rhs.opt_fieldB;
+  }
+  if (!(fieldC == rhs.fieldC)) {
+    return fieldC < rhs.fieldC;
+  }
+  if (!(req_fieldC == rhs.req_fieldC)) {
+    return req_fieldC < rhs.req_fieldC;
+  }
+  if (!(opt_fieldC == rhs.opt_fieldC)) {
+    return opt_fieldC < rhs.opt_fieldC;
+  }
+  if (!(fieldD == rhs.fieldD)) {
+    return fieldD < rhs.fieldD;
+  }
+  if (!(fieldE == rhs.fieldE)) {
+    return fieldE < rhs.fieldE;
+  }
+  if (!(req_fieldE == rhs.req_fieldE)) {
+    return req_fieldE < rhs.req_fieldE;
+  }
+  if (!(opt_fieldE == rhs.opt_fieldE)) {
+    return opt_fieldE < rhs.opt_fieldE;
+  }
+  return false;
+}
+
 void containerStruct2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "fieldA") {

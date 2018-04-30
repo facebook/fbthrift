@@ -120,8 +120,13 @@ bool AStructB::operator==(const AStructB& rhs) const {
 
 bool AStructB::operator<(const AStructB& rhs) const {
   (void)rhs;
-  if (!(FieldA == rhs.FieldA)) {
-    return FieldA < rhs.FieldA;
+  if (!!FieldA != !!rhs.FieldA) {
+    return !!FieldA < !!rhs.FieldA;
+  }
+  if (!!FieldA) {
+    if (!(*FieldA == *rhs.FieldA)) {
+      return *FieldA < *rhs.FieldA;
+    }
   }
   return false;
 }

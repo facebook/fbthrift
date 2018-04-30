@@ -354,6 +354,43 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
+bool MyStruct::operator<(const MyStruct& rhs) const {
+  (void)rhs;
+  if (!(MyBoolField == rhs.MyBoolField)) {
+    return MyBoolField < rhs.MyBoolField;
+  }
+  if (!(MyIntField == rhs.MyIntField)) {
+    return MyIntField < rhs.MyIntField;
+  }
+  if (!(MyStringField == rhs.MyStringField)) {
+    return MyStringField < rhs.MyStringField;
+  }
+  if (!(MyStringField2 == rhs.MyStringField2)) {
+    return MyStringField2 < rhs.MyStringField2;
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField, rhs.MyBinaryField)) {
+    return apache::thrift::StringTraits<std::string>::isLess(MyBinaryField, rhs.MyBinaryField);
+  }
+  if (__isset.MyBinaryField2 != rhs.__isset.MyBinaryField2) {
+    return __isset.MyBinaryField2 < rhs.__isset.MyBinaryField2;
+  }
+  if (__isset.MyBinaryField2) {
+    if (!apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField2, rhs.MyBinaryField2)) {
+      return apache::thrift::StringTraits<std::string>::isLess(MyBinaryField2, rhs.MyBinaryField2);
+    }
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField3, rhs.MyBinaryField3)) {
+    return apache::thrift::StringTraits<std::string>::isLess(MyBinaryField3, rhs.MyBinaryField3);
+  }
+  if (!(MyBinaryListField4 == rhs.MyBinaryListField4)) {
+    return MyBinaryListField4 < rhs.MyBinaryListField4;
+  }
+  if (!(MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+    return MyMapEnumAndInt < rhs.MyMapEnumAndInt;
+  }
+  return false;
+}
+
 const std::vector<std::string>& MyStruct::get_MyBinaryListField4() const& {
   return MyBinaryListField4;
 }

@@ -194,6 +194,10 @@ struct StringTraits {
   static bool isEqual(const StrType& lhs, const StrType& rhs) {
     return lhs == rhs;
   }
+
+  static bool isLess(const StrType& lhs, const StrType& rhs) {
+    return lhs < rhs;
+  }
 };
 
 template <>
@@ -209,6 +213,10 @@ struct StringTraits<folly::IOBuf> {
 
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     return folly::IOBufEqualTo{}(lhs, rhs);
+  }
+
+  static bool isLess(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
+    return folly::IOBufLess{}(lhs, rhs);
   }
 };
 
@@ -228,6 +236,12 @@ struct StringTraits<std::unique_ptr<folly::IOBuf>> {
       const std::unique_ptr<folly::IOBuf>& lhs,
       const std::unique_ptr<folly::IOBuf>& rhs) {
     return folly::IOBufEqualTo{}(lhs, rhs);
+  }
+
+  static bool isLess(
+      const std::unique_ptr<folly::IOBuf>& lhs,
+      const std::unique_ptr<folly::IOBuf>& rhs) {
+    return folly::IOBufLess{}(lhs, rhs);
   }
 };
 

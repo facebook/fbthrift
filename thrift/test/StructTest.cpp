@@ -197,3 +197,178 @@ TEST_F(StructTest, equal_to_refs) {
     EXPECT_TRUE(op(b, a));
   }
 }
+
+TEST_F(StructTest, less) {
+  std::less<Basic> op;
+
+  {
+    Basic a;
+    Basic b;
+
+    b.def_field = 3;
+    a.def_field = 3;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.__isset.def_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.__isset.def_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.def_field = 4;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.def_field = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+  {
+    Basic a;
+    Basic b;
+
+    b.opt_field = 3;
+    a.opt_field = 3;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.__isset.opt_field = true;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.__isset.opt_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.opt_field = 4;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.opt_field = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+  {
+    Basic a;
+    Basic b;
+
+    b.req_field = 3;
+    a.req_field = 3;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field = 4;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.req_field = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+}
+
+// currently, binary fields are handled specially, so they get their own tests
+TEST_F(StructTest, less_binary) {
+  std::less<BasicBinaries> op;
+
+  {
+    BasicBinaries a;
+    BasicBinaries b;
+
+    b.def_field = "hello";
+    a.def_field = "hello";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.__isset.def_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.__isset.def_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.def_field = "world";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.def_field = "world";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+  {
+    BasicBinaries a;
+    BasicBinaries b;
+
+    b.opt_field = "hello";
+    a.opt_field = "hello";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.__isset.opt_field = true;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.__isset.opt_field = true;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.opt_field = "world";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.opt_field = "world";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+  {
+    BasicBinaries a;
+    BasicBinaries b;
+
+    b.req_field = "hello";
+    a.req_field = "hello";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.req_field = "world";
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.req_field = "world";
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+}
+
+// current less codegen implements def/opt/req ref fields with a single
+// code path, so no need to test the different cases separately
+TEST_F(StructTest, less_refs) {
+  std::less<BasicRefs> op;
+
+  {
+    BasicRefs a;
+    BasicRefs b;
+
+    b.def_field = nullptr;
+    a.def_field = nullptr;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    b.def_field = std::make_unique<HasInt>();
+    b.def_field->field = 3;
+    EXPECT_TRUE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+
+    a.def_field = std::make_unique<HasInt>();
+    a.def_field->field = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_TRUE(op(b, a));
+
+    b.def_field->field = 4;
+    EXPECT_FALSE(op(a, b));
+    EXPECT_FALSE(op(b, a));
+  }
+}

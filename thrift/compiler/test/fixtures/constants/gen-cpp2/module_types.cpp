@@ -124,6 +124,25 @@ bool Internship::operator==(const Internship& rhs) const {
   return true;
 }
 
+bool Internship::operator<(const Internship& rhs) const {
+  (void)rhs;
+  if (!(weeks == rhs.weeks)) {
+    return weeks < rhs.weeks;
+  }
+  if (!(title == rhs.title)) {
+    return title < rhs.title;
+  }
+  if (__isset.employer != rhs.__isset.employer) {
+    return __isset.employer < rhs.__isset.employer;
+  }
+  if (__isset.employer) {
+    if (!(employer == rhs.employer)) {
+      return employer < rhs.employer;
+    }
+  }
+  return false;
+}
+
 void Internship::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "weeks") {
