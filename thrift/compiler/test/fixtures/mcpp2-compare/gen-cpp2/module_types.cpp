@@ -337,8 +337,10 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (__isset.MyBinaryField2 != rhs.__isset.MyBinaryField2) {
     return false;
   }
-  else if (__isset.MyBinaryField2 && !apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField2, rhs.MyBinaryField2)) {
-    return false;
+  if (__isset.MyBinaryField2) {
+    if (!apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField2, rhs.MyBinaryField2)) {
+      return false;
+    }
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField3, rhs.MyBinaryField3)) {
     return false;
@@ -1582,8 +1584,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldA != rhs.__isset.opt_fieldA) {
     return false;
   }
-  else if (__isset.opt_fieldA && !(opt_fieldA == rhs.opt_fieldA)) {
-    return false;
+  if (__isset.opt_fieldA) {
+    if (!(opt_fieldA == rhs.opt_fieldA)) {
+      return false;
+    }
   }
   if (!(fieldB == rhs.fieldB)) {
     return false;
@@ -1594,8 +1598,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldB != rhs.__isset.opt_fieldB) {
     return false;
   }
-  else if (__isset.opt_fieldB && !(opt_fieldB == rhs.opt_fieldB)) {
-    return false;
+  if (__isset.opt_fieldB) {
+    if (!(opt_fieldB == rhs.opt_fieldB)) {
+      return false;
+    }
   }
   if (!(fieldC == rhs.fieldC)) {
     return false;
@@ -1606,8 +1612,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldC != rhs.__isset.opt_fieldC) {
     return false;
   }
-  else if (__isset.opt_fieldC && !(opt_fieldC == rhs.opt_fieldC)) {
-    return false;
+  if (__isset.opt_fieldC) {
+    if (!(opt_fieldC == rhs.opt_fieldC)) {
+      return false;
+    }
   }
   if (!(fieldD == rhs.fieldD)) {
     return false;
@@ -1621,8 +1629,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldE != rhs.__isset.opt_fieldE) {
     return false;
   }
-  else if (__isset.opt_fieldE && !(opt_fieldE == rhs.opt_fieldE)) {
-    return false;
+  if (__isset.opt_fieldE) {
+    if (!(opt_fieldE == rhs.opt_fieldE)) {
+      return false;
+    }
   }
   if (!(fieldF == rhs.fieldF)) {
     return false;
@@ -1669,8 +1679,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldR != rhs.__isset.opt_fieldR) {
     return false;
   }
-  else if (__isset.opt_fieldR && !(opt_fieldR == rhs.opt_fieldR)) {
-    return false;
+  if (__isset.opt_fieldR) {
+    if (!(opt_fieldR == rhs.opt_fieldR)) {
+      return false;
+    }
   }
   if (!(fieldS == rhs.fieldS)) {
     return false;
@@ -1690,8 +1702,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldV != rhs.__isset.opt_fieldV) {
     return false;
   }
-  else if (__isset.opt_fieldV && !(opt_fieldV == rhs.opt_fieldV)) {
-    return false;
+  if (__isset.opt_fieldV) {
+    if (!(opt_fieldV == rhs.opt_fieldV)) {
+      return false;
+    }
   }
   if (!(fieldW == rhs.fieldW)) {
     return false;
@@ -1705,8 +1719,10 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (__isset.opt_fieldX != rhs.__isset.opt_fieldX) {
     return false;
   }
-  else if (__isset.opt_fieldX && !(opt_fieldX == rhs.opt_fieldX)) {
-    return false;
+  if (__isset.opt_fieldX) {
+    if (!(opt_fieldX == rhs.opt_fieldX)) {
+      return false;
+    }
   }
   if (!(fieldY == rhs.fieldY)) {
     return false;
@@ -2263,8 +2279,13 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   if (!(MyIncludedStruct == rhs.MyIncludedStruct)) {
     return false;
   }
-  if (!((ARefField && rhs.ARefField && *ARefField == *rhs.ARefField) ||(!ARefField && !rhs.ARefField))) {
+  if (!!ARefField != !!rhs.ARefField) {
     return false;
+  }
+  if (!!ARefField) {
+    if (!(*ARefField == *rhs.ARefField)) {
+      return false;
+    }
   }
   if (!(ARequiredField == rhs.ARequiredField)) {
     return false;
@@ -2505,59 +2526,149 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!(no_annotation == rhs.no_annotation)) {
     return false;
   }
-  if (!((cpp_unique_ref && rhs.cpp_unique_ref && *cpp_unique_ref == *rhs.cpp_unique_ref) ||(!cpp_unique_ref && !rhs.cpp_unique_ref))) {
+  if (!!cpp_unique_ref != !!rhs.cpp_unique_ref) {
     return false;
   }
-  if (!((cpp2_unique_ref && rhs.cpp2_unique_ref && *cpp2_unique_ref == *rhs.cpp2_unique_ref) ||(!cpp2_unique_ref && !rhs.cpp2_unique_ref))) {
+  if (!!cpp_unique_ref) {
+    if (!(*cpp_unique_ref == *rhs.cpp_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!cpp2_unique_ref != !!rhs.cpp2_unique_ref) {
     return false;
   }
-  if (!((container_with_ref && rhs.container_with_ref && *container_with_ref == *rhs.container_with_ref) ||(!container_with_ref && !rhs.container_with_ref))) {
+  if (!!cpp2_unique_ref) {
+    if (!(*cpp2_unique_ref == *rhs.cpp2_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!container_with_ref != !!rhs.container_with_ref) {
     return false;
   }
-  if (!((req_cpp_unique_ref && rhs.req_cpp_unique_ref && *req_cpp_unique_ref == *rhs.req_cpp_unique_ref) ||(!req_cpp_unique_ref && !rhs.req_cpp_unique_ref))) {
+  if (!!container_with_ref) {
+    if (!(*container_with_ref == *rhs.container_with_ref)) {
+      return false;
+    }
+  }
+  if (!!req_cpp_unique_ref != !!rhs.req_cpp_unique_ref) {
     return false;
   }
-  if (!((req_cpp2_unique_ref && rhs.req_cpp2_unique_ref && *req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref) ||(!req_cpp2_unique_ref && !rhs.req_cpp2_unique_ref))) {
+  if (!!req_cpp_unique_ref) {
+    if (!(*req_cpp_unique_ref == *rhs.req_cpp_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!req_cpp2_unique_ref != !!rhs.req_cpp2_unique_ref) {
     return false;
   }
-  if (!((req_container_with_ref && rhs.req_container_with_ref && *req_container_with_ref == *rhs.req_container_with_ref) ||(!req_container_with_ref && !rhs.req_container_with_ref))) {
+  if (!!req_cpp2_unique_ref) {
+    if (!(*req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!req_container_with_ref != !!rhs.req_container_with_ref) {
     return false;
   }
-  if (!((opt_cpp_unique_ref && rhs.opt_cpp_unique_ref && *opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref) ||(!opt_cpp_unique_ref && !rhs.opt_cpp_unique_ref))) {
+  if (!!req_container_with_ref) {
+    if (!(*req_container_with_ref == *rhs.req_container_with_ref)) {
+      return false;
+    }
+  }
+  if (!!opt_cpp_unique_ref != !!rhs.opt_cpp_unique_ref) {
     return false;
   }
-  if (!((opt_cpp2_unique_ref && rhs.opt_cpp2_unique_ref && *opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref) ||(!opt_cpp2_unique_ref && !rhs.opt_cpp2_unique_ref))) {
+  if (!!opt_cpp_unique_ref) {
+    if (!(*opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!opt_cpp2_unique_ref != !!rhs.opt_cpp2_unique_ref) {
     return false;
   }
-  if (!((opt_container_with_ref && rhs.opt_container_with_ref && *opt_container_with_ref == *rhs.opt_container_with_ref) ||(!opt_container_with_ref && !rhs.opt_container_with_ref))) {
+  if (!!opt_cpp2_unique_ref) {
+    if (!(*opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref)) {
+      return false;
+    }
+  }
+  if (!!opt_container_with_ref != !!rhs.opt_container_with_ref) {
     return false;
   }
-  if (!((ref_type_unique && rhs.ref_type_unique && *ref_type_unique == *rhs.ref_type_unique) ||(!ref_type_unique && !rhs.ref_type_unique))) {
+  if (!!opt_container_with_ref) {
+    if (!(*opt_container_with_ref == *rhs.opt_container_with_ref)) {
+      return false;
+    }
+  }
+  if (!!ref_type_unique != !!rhs.ref_type_unique) {
     return false;
   }
-  if (!((ref_type_shared && rhs.ref_type_shared && *ref_type_shared == *rhs.ref_type_shared) ||(!ref_type_shared && !rhs.ref_type_shared))) {
+  if (!!ref_type_unique) {
+    if (!(*ref_type_unique == *rhs.ref_type_unique)) {
+      return false;
+    }
+  }
+  if (!!ref_type_shared != !!rhs.ref_type_shared) {
     return false;
   }
-  if (!((ref_type_const && rhs.ref_type_const && *ref_type_const == *rhs.ref_type_const) ||(!ref_type_const && !rhs.ref_type_const))) {
+  if (!!ref_type_shared) {
+    if (!(*ref_type_shared == *rhs.ref_type_shared)) {
+      return false;
+    }
+  }
+  if (!!ref_type_const != !!rhs.ref_type_const) {
     return false;
   }
-  if (!((req_ref_type_shared && rhs.req_ref_type_shared && *req_ref_type_shared == *rhs.req_ref_type_shared) ||(!req_ref_type_shared && !rhs.req_ref_type_shared))) {
+  if (!!ref_type_const) {
+    if (!(*ref_type_const == *rhs.ref_type_const)) {
+      return false;
+    }
+  }
+  if (!!req_ref_type_shared != !!rhs.req_ref_type_shared) {
     return false;
   }
-  if (!((req_ref_type_const && rhs.req_ref_type_const && *req_ref_type_const == *rhs.req_ref_type_const) ||(!req_ref_type_const && !rhs.req_ref_type_const))) {
+  if (!!req_ref_type_shared) {
+    if (!(*req_ref_type_shared == *rhs.req_ref_type_shared)) {
+      return false;
+    }
+  }
+  if (!!req_ref_type_const != !!rhs.req_ref_type_const) {
     return false;
   }
-  if (!((req_ref_type_unique && rhs.req_ref_type_unique && *req_ref_type_unique == *rhs.req_ref_type_unique) ||(!req_ref_type_unique && !rhs.req_ref_type_unique))) {
+  if (!!req_ref_type_const) {
+    if (!(*req_ref_type_const == *rhs.req_ref_type_const)) {
+      return false;
+    }
+  }
+  if (!!req_ref_type_unique != !!rhs.req_ref_type_unique) {
     return false;
   }
-  if (!((opt_ref_type_const && rhs.opt_ref_type_const && *opt_ref_type_const == *rhs.opt_ref_type_const) ||(!opt_ref_type_const && !rhs.opt_ref_type_const))) {
+  if (!!req_ref_type_unique) {
+    if (!(*req_ref_type_unique == *rhs.req_ref_type_unique)) {
+      return false;
+    }
+  }
+  if (!!opt_ref_type_const != !!rhs.opt_ref_type_const) {
     return false;
   }
-  if (!((opt_ref_type_unique && rhs.opt_ref_type_unique && *opt_ref_type_unique == *rhs.opt_ref_type_unique) ||(!opt_ref_type_unique && !rhs.opt_ref_type_unique))) {
+  if (!!opt_ref_type_const) {
+    if (!(*opt_ref_type_const == *rhs.opt_ref_type_const)) {
+      return false;
+    }
+  }
+  if (!!opt_ref_type_unique != !!rhs.opt_ref_type_unique) {
     return false;
   }
-  if (!((opt_ref_type_shared && rhs.opt_ref_type_shared && *opt_ref_type_shared == *rhs.opt_ref_type_shared) ||(!opt_ref_type_shared && !rhs.opt_ref_type_shared))) {
+  if (!!opt_ref_type_unique) {
+    if (!(*opt_ref_type_unique == *rhs.opt_ref_type_unique)) {
+      return false;
+    }
+  }
+  if (!!opt_ref_type_shared != !!rhs.opt_ref_type_shared) {
     return false;
+  }
+  if (!!opt_ref_type_shared) {
+    if (!(*opt_ref_type_shared == *rhs.opt_ref_type_shared)) {
+      return false;
+    }
   }
   if (!(base_type == rhs.base_type)) {
     return false;

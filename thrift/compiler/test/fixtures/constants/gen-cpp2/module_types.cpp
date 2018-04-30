@@ -116,8 +116,10 @@ bool Internship::operator==(const Internship& rhs) const {
   if (__isset.employer != rhs.__isset.employer) {
     return false;
   }
-  else if (__isset.employer && !(employer == rhs.employer)) {
-    return false;
+  if (__isset.employer) {
+    if (!(employer == rhs.employer)) {
+      return false;
+    }
   }
   return true;
 }
