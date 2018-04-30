@@ -31,7 +31,7 @@ cdef void {{service:name}}_{{function:name}}_callback(
     cFollyTry[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  {{! so client lives on until we exit }}
+    client, pyfuture, options = <object> userdata  {{! so client lives on until we exit }}
     if {{#function:exceptions}}{{!
     }}result.hasException[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}]():
         {{#field:type}}pyfuture.set_exception({{!
@@ -40,7 +40,7 @@ cdef void {{service:name}}_{{function:name}}_callback(
         }})){{/field:type}}
     elif {{/function:exceptions}}{{!
     }}result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})

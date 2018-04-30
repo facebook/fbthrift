@@ -45,9 +45,9 @@ cdef void SomeService_bounce_map_callback(
     cFollyTry[_module_types.std_unordered_map[int32_t,string]]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(_module_types.std_unordered_map__Map__i32_string.create(make_shared[_module_types.std_unordered_map[int32_t,string]](result.value())))

@@ -47,9 +47,9 @@ cdef void MyService_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -60,9 +60,9 @@ cdef void MyService_getRandomData_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
@@ -73,9 +73,9 @@ cdef void MyService_hasDataById_callback(
     cFollyTry[cbool]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
@@ -86,9 +86,9 @@ cdef void MyService_getDataById_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
@@ -99,9 +99,9 @@ cdef void MyService_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -112,9 +112,9 @@ cdef void MyService_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -125,9 +125,9 @@ cdef void MyServiceFast_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -138,9 +138,9 @@ cdef void MyServiceFast_getRandomData_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
@@ -151,9 +151,9 @@ cdef void MyServiceFast_hasDataById_callback(
     cFollyTry[cbool]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(<bint>result.value())
@@ -164,9 +164,9 @@ cdef void MyServiceFast_getDataById_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(result.value().decode('UTF-8'))
@@ -177,9 +177,9 @@ cdef void MyServiceFast_putDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -190,9 +190,9 @@ cdef void MyServiceFast_lobDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -203,9 +203,9 @@ cdef void MyServicePrioParent_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -216,9 +216,9 @@ cdef void MyServicePrioParent_pong_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -229,9 +229,9 @@ cdef void MyServicePrioChild_pang_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)

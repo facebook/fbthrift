@@ -43,9 +43,9 @@ cdef void NestedContainers_mapList_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -56,9 +56,9 @@ cdef void NestedContainers_mapSet_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -69,9 +69,9 @@ cdef void NestedContainers_listMap_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -82,9 +82,9 @@ cdef void NestedContainers_listSet_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)
@@ -95,9 +95,9 @@ cdef void NestedContainers_turtles_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(None)

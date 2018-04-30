@@ -43,9 +43,9 @@ cdef void TestService_init_callback(
     cFollyTry[int64_t]&& result,
     PyObject* userdata
 ):
-    client, pyfuture, _ = <object> userdata  
+    client, pyfuture, options = <object> userdata  
     if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception()))
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
             pyfuture.set_result(result.value())

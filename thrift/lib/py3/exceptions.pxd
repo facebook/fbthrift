@@ -2,6 +2,7 @@ from libcpp.string cimport string
 from cpython.ref cimport PyObject
 from folly cimport cFollyExceptionWrapper
 from libcpp.memory cimport shared_ptr
+from thrift.py3.common cimport RpcOptions
 
 cdef extern from * namespace "std":
     cdef cppclass cException "std:Exception":
@@ -92,10 +93,10 @@ cdef extern from "thrift/lib/py3/exceptions.h" namespace "thrift::py3::exception
         const cFollyExceptionWrapper& excepton)
 
 
-ctypedef object(*Handler)(const cFollyExceptionWrapper& ex)
+ctypedef object(*Handler)(const cFollyExceptionWrapper& ex, PyObject* user_data)
 cdef void addHandler(Handler handler)
-cdef object runHandlers(const cFollyExceptionWrapper& ex)
-cdef object create_py_exception(const cFollyExceptionWrapper& ex)
+cdef object runHandlers(const cFollyExceptionWrapper& ex, RpcOptions options)
+cdef object create_py_exception(const cFollyExceptionWrapper& ex, RpcOptions options)
 
 # cdef Inheritence sucks in cython
 cdef object create_Error(shared_ptr[cTException] ex)

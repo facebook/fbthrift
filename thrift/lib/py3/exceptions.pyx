@@ -1,6 +1,7 @@
 from cython.operator cimport dereference as deref
 from cpython.exc cimport PyErr_Occurred
 from libcpp.vector cimport vector
+from thrift.py3.common import RpcOptions
 
 from enum import Enum, Flag
 
@@ -186,16 +187,16 @@ cdef void addHandler(Handler handler):
     handlers.push_back(handler)
 
 
-cdef object runHandlers(const cFollyExceptionWrapper& ex):
+cdef object runHandlers(const cFollyExceptionWrapper& ex, RpcOptions options):
     for handler in handlers:
-        pyex = handler(ex)
+        pyex = handler(ex, <PyObject *> options)
         if pyex:
             return pyex
 
 
-cdef object create_py_exception(const cFollyExceptionWrapper& ex):
+cdef object create_py_exception(const cFollyExceptionWrapper& ex, RpcOptions options):
     # This will raise an exception if a handler raised one
-    pyex = runHandlers(ex)
+    pyex = runHandlers(ex, options)
     if pyex:
         return pyex
 

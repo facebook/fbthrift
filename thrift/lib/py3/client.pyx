@@ -113,7 +113,7 @@ cdef void requestchannel_callback(
     cdef Client client = <object> userData
     future = client._connect_future
     if result.hasException():
-        future.set_exception(create_py_exception(result.exception()))
+        future.set_exception(create_py_exception(result.exception(), None))
     else:
         client.bind_client(move(result.value()))
         future.set_result(None)
