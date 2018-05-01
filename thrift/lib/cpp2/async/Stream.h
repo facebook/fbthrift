@@ -19,6 +19,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/executors/SequencedExecutor.h>
+#include <folly/futures/Future.h>
 
 namespace apache {
 namespace thrift {
@@ -74,9 +75,53 @@ class StreamImplIf {
 template <typename T>
 class SemiStream;
 
+class Subscription {
+ public:
+  Subscription(Subscription&&) = default;
+  ~Subscription() {
+    if (joinFuture_) {
+      LOG(FATAL) << "Subscription has to be joined/detached";
+    }
+  }
+
+  void detach() && {
+    joinFuture_.clear();
+  }
+
+  void join() && {
+    std::move(*this).futureJoin().get();
+  }
+
+  folly::Future<folly::Unit> futureJoin() && {
+    auto joinFuture = std::move(*joinFuture_);
+    joinFuture_.clear();
+    return joinFuture;
+  }
+
+  void cancel() {
+    if (auto cancel = std::exchange(cancel_, nullptr)) {
+      cancel();
+    }
+  }
+
+ private:
+  Subscription(
+      folly::Function<void()> cancel,
+      folly::Future<folly::Unit> joinFuture)
+      : cancel_(std::move(cancel)), joinFuture_(std::move(joinFuture)) {}
+
+  template <typename T>
+  friend class Stream;
+
+  folly::Function<void()> cancel_;
+  folly::Optional<folly::Future<folly::Unit>> joinFuture_;
+};
+
 template <typename T>
 class Stream {
  public:
+  static constexpr auto kNoFlowControl = std::numeric_limits<int64_t>::max();
+
   Stream() {}
 
   static Stream create(
@@ -96,6 +141,55 @@ class Stream {
 
   template <typename F>
   Stream<folly::invoke_result_t<F, T&&>> map(F&&) &&;
+
+  template <
+      typename OnNext,
+      typename = typename std::enable_if<
+          folly::is_invocable<OnNext, T&&>::value>::type>
+  Subscription subscribe(OnNext&& onNext, int64_t batch = kNoFlowControl) &&;
+
+  template <
+      typename OnNext,
+      typename OnError,
+      typename = typename std::enable_if<
+          folly::is_invocable<OnNext, T&&>::value &&
+          folly::is_invocable<OnError, folly::exception_wrapper>::value>::type>
+  Subscription subscribe(
+      OnNext&& onNext,
+      OnError&& onError,
+      int64_t batch = kNoFlowControl) &&;
+
+  template <
+      typename OnNext,
+      typename OnError,
+      typename OnComplete,
+      typename = typename std::enable_if<
+          folly::is_invocable<OnNext, T&&>::value &&
+          folly::is_invocable<OnError, folly::exception_wrapper>::value &&
+          folly::is_invocable<OnComplete>::value>::type>
+  Subscription subscribe(
+      OnNext&& onNext,
+      OnError&& onError,
+      OnComplete&& onComplete,
+      int64_t batch = kNoFlowControl) &&;
+
+  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onNextInvokeTraits, onNext);
+  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onErrorInvokeTraits, onError);
+  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onCompleteInvokeTraits, onComplete);
+
+  template <
+      typename Subscriber,
+      typename = typename std::enable_if<
+          onNextInvokeTraits::template is_invocable<Subscriber, T&&>::value &&
+          onErrorInvokeTraits::template is_invocable<
+              Subscriber,
+              folly::exception_wrapper>::value &&
+          onCompleteInvokeTraits::template is_invocable<Subscriber>::value>::
+          type,
+      typename = void>
+  Subscription subscribe(
+      Subscriber&& subscriber,
+      int64_t batch = kNoFlowControl) &&;
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 

@@ -159,14 +159,12 @@ class StreamingTest : public testing::Test {
 
 TEST_F(StreamingTest, SimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto result = toFlowable(client->sync_range(0, 10).via(&executor_));
+    auto result = client->sync_range(0, 10).via(&executor_);
     int j = 0;
-    folly::Baton<> done;
-    result->subscribe(
+    auto subscription = std::move(result).subscribe(
         [&j](auto i) mutable { EXPECT_EQ(j++, i); },
-        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
-        [&done]() { done.post(); });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
+    std::move(subscription).join();
     EXPECT_EQ(10, j);
   });
 }
@@ -175,14 +173,12 @@ TEST_F(StreamingTest, FutureSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto futureRange = client->future_range(0, 10);
     auto stream = futureRange.get();
-    auto result = toFlowable(std::move(stream).via(&executor_));
+    auto result = std::move(stream).via(&executor_);
     int j = 0;
-    folly::Baton<> done;
-    result->subscribe(
+    auto subscription = std::move(result).subscribe(
         [&j](auto i) mutable { EXPECT_EQ(j++, i); },
-        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
-        [&done]() { done.post(); });
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
+        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
+    std::move(subscription).join();
     EXPECT_EQ(10, j);
   });
 }
@@ -195,11 +191,15 @@ TEST_F(StreamingTest, CallbackSimpleStream) {
                         ::apache::thrift::ClientReceiveState&& receiveState) {
       ASSERT_FALSE(receiveState.isException());
       auto stream = receiveState.extractStream();
-      auto result = toFlowable(std::move(stream).via(&executor_));
-      result->subscribe(
-          [&j](const std::unique_ptr<folly::IOBuf>) mutable { ++j; },
-          [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); },
-          [&done]() { done.post(); });
+      auto result = std::move(stream).via(&executor_);
+      std::move(result)
+          .subscribe(
+              [&j](const std::unique_ptr<folly::IOBuf>) mutable { ++j; },
+              [](auto ex) {
+                FAIL() << "Should not call onError: " << ex.what();
+              },
+              [&done]() { done.post(); })
+          .detach();
     };
 
     client->range(std::move(callback), 0, 10);
