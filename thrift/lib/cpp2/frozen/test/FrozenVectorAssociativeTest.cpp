@@ -16,7 +16,6 @@
 
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
 #include <thrift/lib/cpp2/frozen/VectorAssociative.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>

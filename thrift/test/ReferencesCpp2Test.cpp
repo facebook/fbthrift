@@ -16,7 +16,6 @@
 
 #include <thrift/test/gen-cpp2/References_types.h>
 #include <thrift/test/gen-cpp2/References_types.tcc>
-// #include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <gtest/gtest.h>
 
