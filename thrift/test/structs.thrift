@@ -40,3 +40,7 @@ struct HasInt {
 struct BasicRefs {
   1: HasInt def_field (cpp.ref),
 }
+
+struct BasicRefsShared {
+  1: HasInt def_field (cpp.ref_type = "shared"),
+}

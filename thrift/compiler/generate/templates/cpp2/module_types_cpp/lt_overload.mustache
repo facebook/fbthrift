@@ -23,7 +23,7 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
     return !!<%field:name%> < !!rhs.<%field:name%>;
   }
   if (!!<%field:name%>) {
-    if (!(*<%field:name%> == *rhs.<%field:name%>)) {
+    if (<%field:name%> != rhs.<%field:name%> && !(*<%field:name%> == *rhs.<%field:name%>)) {
       return *<%field:name%> < *rhs.<%field:name%>;
     }
   }

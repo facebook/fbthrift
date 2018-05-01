@@ -2320,7 +2320,7 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
     return false;
   }
   if (!!ARefField) {
-    if (!(*ARefField == *rhs.ARefField)) {
+    if (ARefField != rhs.ARefField && !(*ARefField == *rhs.ARefField)) {
       return false;
     }
   }
@@ -2567,7 +2567,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!cpp_unique_ref) {
-    if (!(*cpp_unique_ref == *rhs.cpp_unique_ref)) {
+    if (cpp_unique_ref != rhs.cpp_unique_ref && !(*cpp_unique_ref == *rhs.cpp_unique_ref)) {
       return false;
     }
   }
@@ -2575,7 +2575,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!cpp2_unique_ref) {
-    if (!(*cpp2_unique_ref == *rhs.cpp2_unique_ref)) {
+    if (cpp2_unique_ref != rhs.cpp2_unique_ref && !(*cpp2_unique_ref == *rhs.cpp2_unique_ref)) {
       return false;
     }
   }
@@ -2583,7 +2583,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!container_with_ref) {
-    if (!(*container_with_ref == *rhs.container_with_ref)) {
+    if (container_with_ref != rhs.container_with_ref && !(*container_with_ref == *rhs.container_with_ref)) {
       return false;
     }
   }
@@ -2591,7 +2591,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_cpp_unique_ref) {
-    if (!(*req_cpp_unique_ref == *rhs.req_cpp_unique_ref)) {
+    if (req_cpp_unique_ref != rhs.req_cpp_unique_ref && !(*req_cpp_unique_ref == *rhs.req_cpp_unique_ref)) {
       return false;
     }
   }
@@ -2599,7 +2599,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_cpp2_unique_ref) {
-    if (!(*req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref)) {
+    if (req_cpp2_unique_ref != rhs.req_cpp2_unique_ref && !(*req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref)) {
       return false;
     }
   }
@@ -2607,7 +2607,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_container_with_ref) {
-    if (!(*req_container_with_ref == *rhs.req_container_with_ref)) {
+    if (req_container_with_ref != rhs.req_container_with_ref && !(*req_container_with_ref == *rhs.req_container_with_ref)) {
       return false;
     }
   }
@@ -2615,7 +2615,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_cpp_unique_ref) {
-    if (!(*opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref)) {
+    if (opt_cpp_unique_ref != rhs.opt_cpp_unique_ref && !(*opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref)) {
       return false;
     }
   }
@@ -2623,7 +2623,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_cpp2_unique_ref) {
-    if (!(*opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref)) {
+    if (opt_cpp2_unique_ref != rhs.opt_cpp2_unique_ref && !(*opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref)) {
       return false;
     }
   }
@@ -2631,7 +2631,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_container_with_ref) {
-    if (!(*opt_container_with_ref == *rhs.opt_container_with_ref)) {
+    if (opt_container_with_ref != rhs.opt_container_with_ref && !(*opt_container_with_ref == *rhs.opt_container_with_ref)) {
       return false;
     }
   }
@@ -2639,7 +2639,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!ref_type_unique) {
-    if (!(*ref_type_unique == *rhs.ref_type_unique)) {
+    if (ref_type_unique != rhs.ref_type_unique && !(*ref_type_unique == *rhs.ref_type_unique)) {
       return false;
     }
   }
@@ -2647,7 +2647,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!ref_type_shared) {
-    if (!(*ref_type_shared == *rhs.ref_type_shared)) {
+    if (ref_type_shared != rhs.ref_type_shared && !(*ref_type_shared == *rhs.ref_type_shared)) {
       return false;
     }
   }
@@ -2655,7 +2655,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!ref_type_const) {
-    if (!(*ref_type_const == *rhs.ref_type_const)) {
+    if (ref_type_const != rhs.ref_type_const && !(*ref_type_const == *rhs.ref_type_const)) {
       return false;
     }
   }
@@ -2663,7 +2663,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_ref_type_shared) {
-    if (!(*req_ref_type_shared == *rhs.req_ref_type_shared)) {
+    if (req_ref_type_shared != rhs.req_ref_type_shared && !(*req_ref_type_shared == *rhs.req_ref_type_shared)) {
       return false;
     }
   }
@@ -2671,7 +2671,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_ref_type_const) {
-    if (!(*req_ref_type_const == *rhs.req_ref_type_const)) {
+    if (req_ref_type_const != rhs.req_ref_type_const && !(*req_ref_type_const == *rhs.req_ref_type_const)) {
       return false;
     }
   }
@@ -2679,7 +2679,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!req_ref_type_unique) {
-    if (!(*req_ref_type_unique == *rhs.req_ref_type_unique)) {
+    if (req_ref_type_unique != rhs.req_ref_type_unique && !(*req_ref_type_unique == *rhs.req_ref_type_unique)) {
       return false;
     }
   }
@@ -2687,7 +2687,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_ref_type_const) {
-    if (!(*opt_ref_type_const == *rhs.opt_ref_type_const)) {
+    if (opt_ref_type_const != rhs.opt_ref_type_const && !(*opt_ref_type_const == *rhs.opt_ref_type_const)) {
       return false;
     }
   }
@@ -2695,7 +2695,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_ref_type_unique) {
-    if (!(*opt_ref_type_unique == *rhs.opt_ref_type_unique)) {
+    if (opt_ref_type_unique != rhs.opt_ref_type_unique && !(*opt_ref_type_unique == *rhs.opt_ref_type_unique)) {
       return false;
     }
   }
@@ -2703,7 +2703,7 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!!opt_ref_type_shared) {
-    if (!(*opt_ref_type_shared == *rhs.opt_ref_type_shared)) {
+    if (opt_ref_type_shared != rhs.opt_ref_type_shared && !(*opt_ref_type_shared == *rhs.opt_ref_type_shared)) {
       return false;
     }
   }

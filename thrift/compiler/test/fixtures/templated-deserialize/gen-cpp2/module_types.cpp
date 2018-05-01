@@ -302,7 +302,7 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!!fieldR) {
-    if (!(*fieldR == *rhs.fieldR)) {
+    if (fieldR != rhs.fieldR && !(*fieldR == *rhs.fieldR)) {
       return false;
     }
   }
@@ -310,7 +310,7 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!!fieldS) {
-    if (!(*fieldS == *rhs.fieldS)) {
+    if (fieldS != rhs.fieldS && !(*fieldS == *rhs.fieldS)) {
       return false;
     }
   }
@@ -318,7 +318,7 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!!fieldT) {
-    if (!(*fieldT == *rhs.fieldT)) {
+    if (fieldT != rhs.fieldT && !(*fieldT == *rhs.fieldT)) {
       return false;
     }
   }
@@ -326,7 +326,7 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!!fieldU) {
-    if (!(*fieldU == *rhs.fieldU)) {
+    if (fieldU != rhs.fieldU && !(*fieldU == *rhs.fieldU)) {
       return false;
     }
   }
@@ -334,7 +334,7 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!!fieldX) {
-    if (!(*fieldX == *rhs.fieldX)) {
+    if (fieldX != rhs.fieldX && !(*fieldX == *rhs.fieldX)) {
       return false;
     }
   }

@@ -111,7 +111,7 @@ bool AStructB::operator==(const AStructB& rhs) const {
     return false;
   }
   if (!!FieldA) {
-    if (!(*FieldA == *rhs.FieldA)) {
+    if (FieldA != rhs.FieldA && !(*FieldA == *rhs.FieldA)) {
       return false;
     }
   }
@@ -124,7 +124,7 @@ bool AStructB::operator<(const AStructB& rhs) const {
     return !!FieldA < !!rhs.FieldA;
   }
   if (!!FieldA) {
-    if (!(*FieldA == *rhs.FieldA)) {
+    if (FieldA != rhs.FieldA && !(*FieldA == *rhs.FieldA)) {
       return *FieldA < *rhs.FieldA;
     }
   }
