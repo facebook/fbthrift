@@ -28,13 +28,14 @@ void House::__clear() {
 
 bool House::operator==(const House& rhs) const {
   (void)rhs;
-  if (!(id == rhs.id)) {
+  auto& lhs = *this;
+  if (!(lhs.id == rhs.id)) {
     return false;
   }
-  if (!(houseName == rhs.houseName)) {
+  if (!(lhs.houseName == rhs.houseName)) {
     return false;
   }
-  if (!(houseColors == rhs.houseColors)) {
+  if (!(lhs.houseColors == rhs.houseColors)) {
     return false;
   }
   return true;
@@ -87,10 +88,11 @@ void Field::__clear() {
 
 bool Field::operator==(const Field& rhs) const {
   (void)rhs;
-  if (!(id == rhs.id)) {
+  auto& lhs = *this;
+  if (!(lhs.id == rhs.id)) {
     return false;
   }
-  if (!(fieldType == rhs.fieldType)) {
+  if (!(lhs.fieldType == rhs.fieldType)) {
     return false;
   }
   return true;

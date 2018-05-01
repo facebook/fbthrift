@@ -22,11 +22,13 @@ void Empty::__clear() {
 
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return true;
 }
 
 bool Empty::operator<(const Empty& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return false;
 }
 

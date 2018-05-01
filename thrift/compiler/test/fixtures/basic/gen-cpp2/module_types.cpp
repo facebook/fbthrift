@@ -63,16 +63,17 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
-  if (!(MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
     return false;
   }
-  if (!(MyDataField == rhs.MyDataField)) {
+  if (!(lhs.MyDataField == rhs.MyDataField)) {
     return false;
   }
-  if (!(major == rhs.major)) {
+  if (!(lhs.major == rhs.major)) {
     return false;
   }
   return true;
@@ -135,11 +136,13 @@ void MyDataItem::__clear() {
 
 bool MyDataItem::operator==(const MyDataItem& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return true;
 }
 
 bool MyDataItem::operator<(const MyDataItem& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return false;
 }
 

@@ -33,13 +33,14 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!(MyIncludedField == rhs.MyIncludedField)) {
+  auto& lhs = *this;
+  if (!(lhs.MyIncludedField == rhs.MyIncludedField)) {
     return false;
   }
-  if (!(MyOtherIncludedField == rhs.MyOtherIncludedField)) {
+  if (!(lhs.MyOtherIncludedField == rhs.MyOtherIncludedField)) {
     return false;
   }
-  if (!(MyIncludedInt == rhs.MyIncludedInt)) {
+  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
     return false;
   }
   return true;

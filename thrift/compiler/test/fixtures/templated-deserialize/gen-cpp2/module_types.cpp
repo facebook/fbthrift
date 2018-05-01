@@ -55,10 +55,11 @@ void SmallStruct::__clear() {
 
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
   (void)rhs;
-  if (!(small_A == rhs.small_A)) {
+  auto& lhs = *this;
+  if (!(lhs.small_A == rhs.small_A)) {
     return false;
   }
-  if (!(small_B == rhs.small_B)) {
+  if (!(lhs.small_B == rhs.small_B)) {
     return false;
   }
   return true;
@@ -66,11 +67,12 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
 
 bool SmallStruct::operator<(const SmallStruct& rhs) const {
   (void)rhs;
-  if (!(small_A == rhs.small_A)) {
-    return small_A < rhs.small_A;
+  auto& lhs = *this;
+  if (!(lhs.small_A == rhs.small_A)) {
+    return lhs.small_A < rhs.small_A;
   }
-  if (!(small_B == rhs.small_B)) {
-    return small_B < rhs.small_B;
+  if (!(lhs.small_B == rhs.small_B)) {
+    return lhs.small_B < rhs.small_B;
   }
   return false;
 }
@@ -247,94 +249,95 @@ void containerStruct::__clear() {
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!(fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!(fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!(fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!(fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!(fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF == rhs.fieldF)) {
     return false;
   }
-  if (!(fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG == rhs.fieldG)) {
     return false;
   }
-  if (!(fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH == rhs.fieldH)) {
     return false;
   }
-  if (!(fieldI == rhs.fieldI)) {
+  if (!(lhs.fieldI == rhs.fieldI)) {
     return false;
   }
-  if (!(fieldJ == rhs.fieldJ)) {
+  if (!(lhs.fieldJ == rhs.fieldJ)) {
     return false;
   }
-  if (!(fieldK == rhs.fieldK)) {
+  if (!(lhs.fieldK == rhs.fieldK)) {
     return false;
   }
-  if (!(fieldL == rhs.fieldL)) {
+  if (!(lhs.fieldL == rhs.fieldL)) {
     return false;
   }
-  if (!(fieldM == rhs.fieldM)) {
+  if (!(lhs.fieldM == rhs.fieldM)) {
     return false;
   }
-  if (!(fieldN == rhs.fieldN)) {
+  if (!(lhs.fieldN == rhs.fieldN)) {
     return false;
   }
-  if (!(fieldO == rhs.fieldO)) {
+  if (!(lhs.fieldO == rhs.fieldO)) {
     return false;
   }
-  if (!(fieldP == rhs.fieldP)) {
+  if (!(lhs.fieldP == rhs.fieldP)) {
     return false;
   }
-  if (!(fieldQ == rhs.fieldQ)) {
+  if (!(lhs.fieldQ == rhs.fieldQ)) {
     return false;
   }
-  if (!!fieldR != !!rhs.fieldR) {
+  if (!!lhs.fieldR != !!rhs.fieldR) {
     return false;
   }
-  if (!!fieldR) {
-    if (fieldR != rhs.fieldR && !(*fieldR == *rhs.fieldR)) {
+  if (!!lhs.fieldR) {
+    if (lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR)) {
       return false;
     }
   }
-  if (!!fieldS != !!rhs.fieldS) {
+  if (!!lhs.fieldS != !!rhs.fieldS) {
     return false;
   }
-  if (!!fieldS) {
-    if (fieldS != rhs.fieldS && !(*fieldS == *rhs.fieldS)) {
+  if (!!lhs.fieldS) {
+    if (lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS)) {
       return false;
     }
   }
-  if (!!fieldT != !!rhs.fieldT) {
+  if (!!lhs.fieldT != !!rhs.fieldT) {
     return false;
   }
-  if (!!fieldT) {
-    if (fieldT != rhs.fieldT && !(*fieldT == *rhs.fieldT)) {
+  if (!!lhs.fieldT) {
+    if (lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT)) {
       return false;
     }
   }
-  if (!!fieldU != !!rhs.fieldU) {
+  if (!!lhs.fieldU != !!rhs.fieldU) {
     return false;
   }
-  if (!!fieldU) {
-    if (fieldU != rhs.fieldU && !(*fieldU == *rhs.fieldU)) {
+  if (!!lhs.fieldU) {
+    if (lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU)) {
       return false;
     }
   }
-  if (!!fieldX != !!rhs.fieldX) {
+  if (!!lhs.fieldX != !!rhs.fieldX) {
     return false;
   }
-  if (!!fieldX) {
-    if (fieldX != rhs.fieldX && !(*fieldX == *rhs.fieldX)) {
+  if (!!lhs.fieldX) {
+    if (lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX)) {
       return false;
     }
   }

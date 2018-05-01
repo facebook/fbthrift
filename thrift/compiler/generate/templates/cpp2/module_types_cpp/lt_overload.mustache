@@ -17,49 +17,50 @@
 %>
 bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
 <%#struct:fields%><%#field:type%>
 <%#field:cpp_ref?%>
-  if (!!<%field:name%> != !!rhs.<%field:name%>) {
-    return !!<%field:name%> < !!rhs.<%field:name%>;
+  if (!!lhs.<%field:name%> != !!rhs.<%field:name%>) {
+    return !!lhs.<%field:name%> < !!rhs.<%field:name%>;
   }
-  if (!!<%field:name%>) {
-    if (<%field:name%> != rhs.<%field:name%> && !(*<%field:name%> == *rhs.<%field:name%>)) {
-      return *<%field:name%> < *rhs.<%field:name%>;
+  if (!!lhs.<%field:name%>) {
+    if (lhs.<%field:name%> != rhs.<%field:name%> && !(*lhs.<%field:name%> == *rhs.<%field:name%>)) {
+      return *lhs.<%field:name%> < *rhs.<%field:name%>;
     }
   }
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
 <%#field:optional?%><%^field:optionals?%>
-  if (__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
-    return __isset.<%field:name%> < rhs.__isset.<%field:name%>;
+  if (lhs.__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
+    return lhs.__isset.<%field:name%> < rhs.__isset.<%field:name%>;
   }
-  if (__isset.<%field:name%>) {
+  if (lhs.__isset.<%field:name%>) {
 <%#type:binary?%>
-    if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(<%field:name%><%type:cpp_indirection%>, rhs.<%field:name%><%type:cpp_indirection%>)) {
-      return apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isLess(<%field:name%><%type:cpp_indirection%>, rhs.<%field:name%><%type:cpp_indirection%>);
+    if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(lhs.<%field:name%><%type:cpp_indirection%>, rhs.<%field:name%><%type:cpp_indirection%>)) {
+      return apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isLess(lhs.<%field:name%><%type:cpp_indirection%>, rhs.<%field:name%><%type:cpp_indirection%>);
     }
 <%/type:binary?%>
 <%^type:binary?%>
-    if (!(<%field:name%> == rhs.<%field:name%>)) {
-      return <%field:name%> < rhs.<%field:name%>;
+    if (!(lhs.<%field:name%> == rhs.<%field:name%>)) {
+      return lhs.<%field:name%> < rhs.<%field:name%>;
     }
 <%/type:binary?%>
   }
 <%/field:optionals?%><%/field:optional?%>
 <%#field:optionals?%>
-  if (!(<%field:name%> == rhs.<%field:name%>)) {
-    return <%field:name%> < rhs.<%field:name%>;
+  if (!(lhs.<%field:name%> == rhs.<%field:name%>)) {
+    return lhs.<%field:name%> < rhs.<%field:name%>;
   }
 <%/field:optionals?%>
 <%^field:optional?%>
 <%#type:binary?%>
-  if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(<%field:name%>, rhs.<%field:name%>)) {
-    return apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isLess(<%field:name%>, rhs.<%field:name%>);
+  if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(lhs.<%field:name%>, rhs.<%field:name%>)) {
+    return apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isLess(lhs.<%field:name%>, rhs.<%field:name%>);
   }
 <%/type:binary?%>
 <%^type:binary?%>
-  if (!(<%field:name%> == rhs.<%field:name%>)) {
-    return <%field:name%> < rhs.<%field:name%>;
+  if (!(lhs.<%field:name%> == rhs.<%field:name%>)) {
+    return lhs.<%field:name%> < rhs.<%field:name%>;
   }
 <%/type:binary?%>
 <%/field:optional?%>

@@ -55,16 +55,17 @@ void Color::__clear() {
 
 bool Color::operator==(const Color& rhs) const {
   (void)rhs;
-  if (!(red == rhs.red)) {
+  auto& lhs = *this;
+  if (!(lhs.red == rhs.red)) {
     return false;
   }
-  if (!(green == rhs.green)) {
+  if (!(lhs.green == rhs.green)) {
     return false;
   }
-  if (!(blue == rhs.blue)) {
+  if (!(lhs.blue == rhs.blue)) {
     return false;
   }
-  if (!(alpha == rhs.alpha)) {
+  if (!(lhs.alpha == rhs.alpha)) {
     return false;
   }
   return true;
@@ -72,17 +73,18 @@ bool Color::operator==(const Color& rhs) const {
 
 bool Color::operator<(const Color& rhs) const {
   (void)rhs;
-  if (!(red == rhs.red)) {
-    return red < rhs.red;
+  auto& lhs = *this;
+  if (!(lhs.red == rhs.red)) {
+    return lhs.red < rhs.red;
   }
-  if (!(green == rhs.green)) {
-    return green < rhs.green;
+  if (!(lhs.green == rhs.green)) {
+    return lhs.green < rhs.green;
   }
-  if (!(blue == rhs.blue)) {
-    return blue < rhs.blue;
+  if (!(lhs.blue == rhs.blue)) {
+    return lhs.blue < rhs.blue;
   }
-  if (!(alpha == rhs.alpha)) {
-    return alpha < rhs.alpha;
+  if (!(lhs.alpha == rhs.alpha)) {
+    return lhs.alpha < rhs.alpha;
   }
   return false;
 }
@@ -150,19 +152,20 @@ void Vehicle::__clear() {
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
   (void)rhs;
-  if (!(color == rhs.color)) {
+  auto& lhs = *this;
+  if (!(lhs.color == rhs.color)) {
     return false;
   }
-  if (!(licensePlate == rhs.licensePlate)) {
+  if (!(lhs.licensePlate == rhs.licensePlate)) {
     return false;
   }
-  if (!(description == rhs.description)) {
+  if (!(lhs.description == rhs.description)) {
     return false;
   }
-  if (!(name == rhs.name)) {
+  if (!(lhs.name == rhs.name)) {
     return false;
   }
-  if (!(hasAC == rhs.hasAC)) {
+  if (!(lhs.hasAC == rhs.hasAC)) {
     return false;
   }
   return true;
@@ -170,20 +173,21 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
 
 bool Vehicle::operator<(const Vehicle& rhs) const {
   (void)rhs;
-  if (!(color == rhs.color)) {
-    return color < rhs.color;
+  auto& lhs = *this;
+  if (!(lhs.color == rhs.color)) {
+    return lhs.color < rhs.color;
   }
-  if (!(licensePlate == rhs.licensePlate)) {
-    return licensePlate < rhs.licensePlate;
+  if (!(lhs.licensePlate == rhs.licensePlate)) {
+    return lhs.licensePlate < rhs.licensePlate;
   }
-  if (!(description == rhs.description)) {
-    return description < rhs.description;
+  if (!(lhs.description == rhs.description)) {
+    return lhs.description < rhs.description;
   }
-  if (!(name == rhs.name)) {
-    return name < rhs.name;
+  if (!(lhs.name == rhs.name)) {
+    return lhs.name < rhs.name;
   }
-  if (!(hasAC == rhs.hasAC)) {
-    return hasAC < rhs.hasAC;
+  if (!(lhs.hasAC == rhs.hasAC)) {
+    return lhs.hasAC < rhs.hasAC;
   }
   return false;
 }
@@ -267,34 +271,35 @@ void Person::__clear() {
 
 bool Person::operator==(const Person& rhs) const {
   (void)rhs;
-  if (!(id == rhs.id)) {
+  auto& lhs = *this;
+  if (!(lhs.id == rhs.id)) {
     return false;
   }
-  if (!(name == rhs.name)) {
+  if (!(lhs.name == rhs.name)) {
     return false;
   }
-  if (!(age == rhs.age)) {
+  if (!(lhs.age == rhs.age)) {
     return false;
   }
-  if (!(address == rhs.address)) {
+  if (!(lhs.address == rhs.address)) {
     return false;
   }
-  if (!(favoriteColor == rhs.favoriteColor)) {
+  if (!(lhs.favoriteColor == rhs.favoriteColor)) {
     return false;
   }
-  if (!(friends == rhs.friends)) {
+  if (!(lhs.friends == rhs.friends)) {
     return false;
   }
-  if (!(bestFriend == rhs.bestFriend)) {
+  if (!(lhs.bestFriend == rhs.bestFriend)) {
     return false;
   }
-  if (!(petNames == rhs.petNames)) {
+  if (!(lhs.petNames == rhs.petNames)) {
     return false;
   }
-  if (!(afraidOfAnimal == rhs.afraidOfAnimal)) {
+  if (!(lhs.afraidOfAnimal == rhs.afraidOfAnimal)) {
     return false;
   }
-  if (!(vehicles == rhs.vehicles)) {
+  if (!(lhs.vehicles == rhs.vehicles)) {
     return false;
   }
   return true;

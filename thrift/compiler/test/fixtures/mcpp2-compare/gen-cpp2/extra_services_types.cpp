@@ -65,43 +65,44 @@ void containerStruct2::__clear() {
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!(req_fieldA == rhs.req_fieldA)) {
+  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
     return false;
   }
-  if (!(opt_fieldA == rhs.opt_fieldA)) {
+  if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
     return false;
   }
-  if (!(fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!(req_fieldB == rhs.req_fieldB)) {
+  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
     return false;
   }
-  if (!(opt_fieldB == rhs.opt_fieldB)) {
+  if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
     return false;
   }
-  if (!(fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!(req_fieldC == rhs.req_fieldC)) {
+  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
     return false;
   }
-  if (!(opt_fieldC == rhs.opt_fieldC)) {
+  if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
     return false;
   }
-  if (!(fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!(fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!(req_fieldE == rhs.req_fieldE)) {
+  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
     return false;
   }
-  if (!(opt_fieldE == rhs.opt_fieldE)) {
+  if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
     return false;
   }
   return true;
@@ -109,44 +110,45 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
 
 bool containerStruct2::operator<(const containerStruct2& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
-    return fieldA < rhs.fieldA;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
   }
-  if (!(req_fieldA == rhs.req_fieldA)) {
-    return req_fieldA < rhs.req_fieldA;
+  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
+    return lhs.req_fieldA < rhs.req_fieldA;
   }
-  if (!(opt_fieldA == rhs.opt_fieldA)) {
-    return opt_fieldA < rhs.opt_fieldA;
+  if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
+    return lhs.opt_fieldA < rhs.opt_fieldA;
   }
-  if (!(fieldB == rhs.fieldB)) {
-    return fieldB < rhs.fieldB;
+  if (!(lhs.fieldB == rhs.fieldB)) {
+    return lhs.fieldB < rhs.fieldB;
   }
-  if (!(req_fieldB == rhs.req_fieldB)) {
-    return req_fieldB < rhs.req_fieldB;
+  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
+    return lhs.req_fieldB < rhs.req_fieldB;
   }
-  if (!(opt_fieldB == rhs.opt_fieldB)) {
-    return opt_fieldB < rhs.opt_fieldB;
+  if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
+    return lhs.opt_fieldB < rhs.opt_fieldB;
   }
-  if (!(fieldC == rhs.fieldC)) {
-    return fieldC < rhs.fieldC;
+  if (!(lhs.fieldC == rhs.fieldC)) {
+    return lhs.fieldC < rhs.fieldC;
   }
-  if (!(req_fieldC == rhs.req_fieldC)) {
-    return req_fieldC < rhs.req_fieldC;
+  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
+    return lhs.req_fieldC < rhs.req_fieldC;
   }
-  if (!(opt_fieldC == rhs.opt_fieldC)) {
-    return opt_fieldC < rhs.opt_fieldC;
+  if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
+    return lhs.opt_fieldC < rhs.opt_fieldC;
   }
-  if (!(fieldD == rhs.fieldD)) {
-    return fieldD < rhs.fieldD;
+  if (!(lhs.fieldD == rhs.fieldD)) {
+    return lhs.fieldD < rhs.fieldD;
   }
-  if (!(fieldE == rhs.fieldE)) {
-    return fieldE < rhs.fieldE;
+  if (!(lhs.fieldE == rhs.fieldE)) {
+    return lhs.fieldE < rhs.fieldE;
   }
-  if (!(req_fieldE == rhs.req_fieldE)) {
-    return req_fieldE < rhs.req_fieldE;
+  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
+    return lhs.req_fieldE < rhs.req_fieldE;
   }
-  if (!(opt_fieldE == rhs.opt_fieldE)) {
-    return opt_fieldE < rhs.opt_fieldE;
+  if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
+    return lhs.opt_fieldE < rhs.opt_fieldE;
   }
   return false;
 }

@@ -30,10 +30,11 @@ void Included::__clear() {
 
 bool Included::operator==(const Included& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
-  if (!(MyTransitiveField == rhs.MyTransitiveField)) {
+  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
     return false;
   }
   return true;
@@ -41,11 +42,12 @@ bool Included::operator==(const Included& rhs) const {
 
 bool Included::operator<(const Included& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
-    return MyIntField < rhs.MyIntField;
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return lhs.MyIntField < rhs.MyIntField;
   }
-  if (!(MyTransitiveField == rhs.MyTransitiveField)) {
-    return MyTransitiveField < rhs.MyTransitiveField;
+  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
+    return lhs.MyTransitiveField < rhs.MyTransitiveField;
   }
   return false;
 }

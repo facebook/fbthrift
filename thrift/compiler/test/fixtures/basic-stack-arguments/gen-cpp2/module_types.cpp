@@ -55,10 +55,11 @@ void MyStruct::__clear() {
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
-  if (!(MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
     return false;
   }
   return true;
@@ -66,11 +67,12 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
 
 bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
-    return MyIntField < rhs.MyIntField;
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return lhs.MyIntField < rhs.MyIntField;
   }
-  if (!(MyStringField == rhs.MyStringField)) {
-    return MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
+    return lhs.MyStringField < rhs.MyStringField;
   }
   return false;
 }

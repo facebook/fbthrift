@@ -102,7 +102,8 @@ void decorated_struct::__clear() {
 
 bool decorated_struct::operator==(const decorated_struct& rhs) const {
   (void)rhs;
-  if (!(field == rhs.field)) {
+  auto& lhs = *this;
+  if (!(lhs.field == rhs.field)) {
     return false;
   }
   return true;
@@ -110,8 +111,9 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
 
 bool decorated_struct::operator<(const decorated_struct& rhs) const {
   (void)rhs;
-  if (!(field == rhs.field)) {
-    return field < rhs.field;
+  auto& lhs = *this;
+  if (!(lhs.field == rhs.field)) {
+    return lhs.field < rhs.field;
   }
   return false;
 }
@@ -181,28 +183,29 @@ void ContainerStruct::__clear() {
 
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!(fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!(fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!(fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!(fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!(fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF == rhs.fieldF)) {
     return false;
   }
-  if (!(fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG == rhs.fieldG)) {
     return false;
   }
-  if (!(fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH == rhs.fieldH)) {
     return false;
   }
   return true;
@@ -346,7 +349,8 @@ void CppTypeStruct::__clear() {
 
 bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
   return true;
@@ -354,8 +358,9 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
 
 bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
-    return fieldA < rhs.fieldA;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
   }
   return false;
 }
@@ -407,7 +412,8 @@ void VirtualStruct::__clear() {
 
 bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
   return true;
@@ -415,8 +421,9 @@ bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
 
 bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
   (void)rhs;
-  if (!(MyIntField == rhs.MyIntField)) {
-    return MyIntField < rhs.MyIntField;
+  auto& lhs = *this;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return lhs.MyIntField < rhs.MyIntField;
   }
   return false;
 }
@@ -463,10 +470,11 @@ void MyStructWithForwardRefEnum::__clear() {
 
 bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!(b == rhs.b)) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
   return true;

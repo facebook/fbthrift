@@ -30,10 +30,11 @@ void IncludedB::__clear() {
 
 bool IncludedB::operator==(const IncludedB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!(strField == rhs.strField)) {
+  if (!(lhs.strField == rhs.strField)) {
     return false;
   }
   return true;
@@ -41,11 +42,12 @@ bool IncludedB::operator==(const IncludedB& rhs) const {
 
 bool IncludedB::operator<(const IncludedB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
-    return i32Field < rhs.i32Field;
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
+    return lhs.i32Field < rhs.i32Field;
   }
-  if (!(strField == rhs.strField)) {
-    return strField < rhs.strField;
+  if (!(lhs.strField == rhs.strField)) {
+    return lhs.strField < rhs.strField;
   }
   return false;
 }

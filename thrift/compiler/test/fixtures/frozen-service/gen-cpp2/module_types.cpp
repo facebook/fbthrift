@@ -36,16 +36,17 @@ void ModuleA::__clear() {
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!(strField == rhs.strField)) {
+  if (!(lhs.strField == rhs.strField)) {
     return false;
   }
-  if (!(listField == rhs.listField)) {
+  if (!(lhs.listField == rhs.listField)) {
     return false;
   }
-  if (!(mapField == rhs.mapField)) {
+  if (!(lhs.mapField == rhs.mapField)) {
     return false;
   }
   return true;
@@ -53,17 +54,18 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
 
 bool ModuleA::operator<(const ModuleA& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
-    return i32Field < rhs.i32Field;
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
+    return lhs.i32Field < rhs.i32Field;
   }
-  if (!(strField == rhs.strField)) {
-    return strField < rhs.strField;
+  if (!(lhs.strField == rhs.strField)) {
+    return lhs.strField < rhs.strField;
   }
-  if (!(listField == rhs.listField)) {
-    return listField < rhs.listField;
+  if (!(lhs.listField == rhs.listField)) {
+    return lhs.listField < rhs.listField;
   }
-  if (!(mapField == rhs.mapField)) {
-    return mapField < rhs.mapField;
+  if (!(lhs.mapField == rhs.mapField)) {
+    return lhs.mapField < rhs.mapField;
   }
   return false;
 }
@@ -138,7 +140,8 @@ void ModuleB::__clear() {
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
   return true;
@@ -146,8 +149,9 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
 
 bool ModuleB::operator<(const ModuleB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
-    return i32Field < rhs.i32Field;
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
+    return lhs.i32Field < rhs.i32Field;
   }
   return false;
 }
@@ -194,10 +198,11 @@ void ExceptionA::__clear() {
 
 bool ExceptionA::operator==(const ExceptionA& rhs) const {
   (void)rhs;
-  if (!(code == rhs.code)) {
+  auto& lhs = *this;
+  if (!(lhs.code == rhs.code)) {
     return false;
   }
-  if (!(msg == rhs.msg)) {
+  if (!(lhs.msg == rhs.msg)) {
     return false;
   }
   return true;
@@ -205,11 +210,12 @@ bool ExceptionA::operator==(const ExceptionA& rhs) const {
 
 bool ExceptionA::operator<(const ExceptionA& rhs) const {
   (void)rhs;
-  if (!(code == rhs.code)) {
-    return code < rhs.code;
+  auto& lhs = *this;
+  if (!(lhs.code == rhs.code)) {
+    return lhs.code < rhs.code;
   }
-  if (!(msg == rhs.msg)) {
-    return msg < rhs.msg;
+  if (!(lhs.msg == rhs.msg)) {
+    return lhs.msg < rhs.msg;
   }
   return false;
 }
@@ -261,10 +267,11 @@ void ExceptionB::__clear() {
 
 bool ExceptionB::operator==(const ExceptionB& rhs) const {
   (void)rhs;
-  if (!(code == rhs.code)) {
+  auto& lhs = *this;
+  if (!(lhs.code == rhs.code)) {
     return false;
   }
-  if (!(msg == rhs.msg)) {
+  if (!(lhs.msg == rhs.msg)) {
     return false;
   }
   return true;
@@ -272,11 +279,12 @@ bool ExceptionB::operator==(const ExceptionB& rhs) const {
 
 bool ExceptionB::operator<(const ExceptionB& rhs) const {
   (void)rhs;
-  if (!(code == rhs.code)) {
-    return code < rhs.code;
+  auto& lhs = *this;
+  if (!(lhs.code == rhs.code)) {
+    return lhs.code < rhs.code;
   }
-  if (!(msg == rhs.msg)) {
-    return msg < rhs.msg;
+  if (!(lhs.msg == rhs.msg)) {
+    return lhs.msg < rhs.msg;
   }
   return false;
 }

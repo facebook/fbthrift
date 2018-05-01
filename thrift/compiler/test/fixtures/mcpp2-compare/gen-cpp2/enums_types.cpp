@@ -152,7 +152,8 @@ void SomeStruct::__clear() {
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
   return true;
@@ -160,8 +161,9 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
 
 bool SomeStruct::operator<(const SomeStruct& rhs) const {
   (void)rhs;
-  if (!(fieldA == rhs.fieldA)) {
-    return fieldA < rhs.fieldA;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
   }
   return false;
 }

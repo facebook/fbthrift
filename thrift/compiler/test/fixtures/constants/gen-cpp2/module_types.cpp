@@ -107,17 +107,18 @@ void Internship::__clear() {
 
 bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
-  if (!(weeks == rhs.weeks)) {
+  auto& lhs = *this;
+  if (!(lhs.weeks == rhs.weeks)) {
     return false;
   }
-  if (!(title == rhs.title)) {
+  if (!(lhs.title == rhs.title)) {
     return false;
   }
-  if (__isset.employer != rhs.__isset.employer) {
+  if (lhs.__isset.employer != rhs.__isset.employer) {
     return false;
   }
-  if (__isset.employer) {
-    if (!(employer == rhs.employer)) {
+  if (lhs.__isset.employer) {
+    if (!(lhs.employer == rhs.employer)) {
       return false;
     }
   }
@@ -126,18 +127,19 @@ bool Internship::operator==(const Internship& rhs) const {
 
 bool Internship::operator<(const Internship& rhs) const {
   (void)rhs;
-  if (!(weeks == rhs.weeks)) {
-    return weeks < rhs.weeks;
+  auto& lhs = *this;
+  if (!(lhs.weeks == rhs.weeks)) {
+    return lhs.weeks < rhs.weeks;
   }
-  if (!(title == rhs.title)) {
-    return title < rhs.title;
+  if (!(lhs.title == rhs.title)) {
+    return lhs.title < rhs.title;
   }
-  if (__isset.employer != rhs.__isset.employer) {
-    return __isset.employer < rhs.__isset.employer;
+  if (lhs.__isset.employer != rhs.__isset.employer) {
+    return lhs.__isset.employer < rhs.__isset.employer;
   }
-  if (__isset.employer) {
-    if (!(employer == rhs.employer)) {
-      return employer < rhs.employer;
+  if (lhs.__isset.employer) {
+    if (!(lhs.employer == rhs.employer)) {
+      return lhs.employer < rhs.employer;
     }
   }
   return false;
@@ -192,7 +194,8 @@ void UnEnumStruct::__clear() {
 
 bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
   (void)rhs;
-  if (!(city == rhs.city)) {
+  auto& lhs = *this;
+  if (!(lhs.city == rhs.city)) {
     return false;
   }
   return true;
@@ -200,8 +203,9 @@ bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
 
 bool UnEnumStruct::operator<(const UnEnumStruct& rhs) const {
   (void)rhs;
-  if (!(city == rhs.city)) {
-    return city < rhs.city;
+  auto& lhs = *this;
+  if (!(lhs.city == rhs.city)) {
+    return lhs.city < rhs.city;
   }
   return false;
 }
@@ -244,10 +248,11 @@ void Range::__clear() {
 
 bool Range::operator==(const Range& rhs) const {
   (void)rhs;
-  if (!(min == rhs.min)) {
+  auto& lhs = *this;
+  if (!(lhs.min == rhs.min)) {
     return false;
   }
-  if (!(max == rhs.max)) {
+  if (!(lhs.max == rhs.max)) {
     return false;
   }
   return true;
@@ -255,11 +260,12 @@ bool Range::operator==(const Range& rhs) const {
 
 bool Range::operator<(const Range& rhs) const {
   (void)rhs;
-  if (!(min == rhs.min)) {
-    return min < rhs.min;
+  auto& lhs = *this;
+  if (!(lhs.min == rhs.min)) {
+    return lhs.min < rhs.min;
   }
-  if (!(max == rhs.max)) {
-    return max < rhs.max;
+  if (!(lhs.max == rhs.max)) {
+    return lhs.max < rhs.max;
   }
   return false;
 }
@@ -310,10 +316,11 @@ void struct1::__clear() {
 
 bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!(b == rhs.b)) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
   return true;
@@ -321,11 +328,12 @@ bool struct1::operator==(const struct1& rhs) const {
 
 bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
-    return a < rhs.a;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
   }
-  if (!(b == rhs.b)) {
-    return b < rhs.b;
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
   }
   return false;
 }
@@ -383,16 +391,17 @@ void struct2::__clear() {
 
 bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!(b == rhs.b)) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
-  if (!(c == rhs.c)) {
+  if (!(lhs.c == rhs.c)) {
     return false;
   }
-  if (!(d == rhs.d)) {
+  if (!(lhs.d == rhs.d)) {
     return false;
   }
   return true;
@@ -400,17 +409,18 @@ bool struct2::operator==(const struct2& rhs) const {
 
 bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
-    return a < rhs.a;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
   }
-  if (!(b == rhs.b)) {
-    return b < rhs.b;
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
   }
-  if (!(c == rhs.c)) {
-    return c < rhs.c;
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
   }
-  if (!(d == rhs.d)) {
-    return d < rhs.d;
+  if (!(lhs.d == rhs.d)) {
+    return lhs.d < rhs.d;
   }
   return false;
 }
@@ -491,13 +501,14 @@ void struct3::__clear() {
 
 bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!(b == rhs.b)) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
-  if (!(c == rhs.c)) {
+  if (!(lhs.c == rhs.c)) {
     return false;
   }
   return true;
@@ -505,14 +516,15 @@ bool struct3::operator==(const struct3& rhs) const {
 
 bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
-  if (!(a == rhs.a)) {
-    return a < rhs.a;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
   }
-  if (!(b == rhs.b)) {
-    return b < rhs.b;
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
   }
-  if (!(c == rhs.c)) {
-    return c < rhs.c;
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
   }
   return false;
 }

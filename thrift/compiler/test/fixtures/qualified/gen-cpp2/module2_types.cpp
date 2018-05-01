@@ -30,10 +30,11 @@ void Struct::__clear() {
 
 bool Struct::operator==(const Struct& rhs) const {
   (void)rhs;
-  if (!(first == rhs.first)) {
+  auto& lhs = *this;
+  if (!(lhs.first == rhs.first)) {
     return false;
   }
-  if (!(second == rhs.second)) {
+  if (!(lhs.second == rhs.second)) {
     return false;
   }
   return true;
@@ -41,11 +42,12 @@ bool Struct::operator==(const Struct& rhs) const {
 
 bool Struct::operator<(const Struct& rhs) const {
   (void)rhs;
-  if (!(first == rhs.first)) {
-    return first < rhs.first;
+  auto& lhs = *this;
+  if (!(lhs.first == rhs.first)) {
+    return lhs.first < rhs.first;
   }
-  if (!(second == rhs.second)) {
-    return second < rhs.second;
+  if (!(lhs.second == rhs.second)) {
+    return lhs.second < rhs.second;
   }
   return false;
 }
@@ -113,10 +115,11 @@ void BigStruct::__clear() {
 
 bool BigStruct::operator==(const BigStruct& rhs) const {
   (void)rhs;
-  if (!(s == rhs.s)) {
+  auto& lhs = *this;
+  if (!(lhs.s == rhs.s)) {
     return false;
   }
-  if (!(id == rhs.id)) {
+  if (!(lhs.id == rhs.id)) {
     return false;
   }
   return true;
@@ -124,11 +127,12 @@ bool BigStruct::operator==(const BigStruct& rhs) const {
 
 bool BigStruct::operator<(const BigStruct& rhs) const {
   (void)rhs;
-  if (!(s == rhs.s)) {
-    return s < rhs.s;
+  auto& lhs = *this;
+  if (!(lhs.s == rhs.s)) {
+    return lhs.s < rhs.s;
   }
-  if (!(id == rhs.id)) {
-    return id < rhs.id;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
   }
   return false;
 }

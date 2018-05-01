@@ -73,22 +73,23 @@ void ModuleA::__clear() {
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!(strField == rhs.strField)) {
+  if (!(lhs.strField == rhs.strField)) {
     return false;
   }
-  if (!(listField == rhs.listField)) {
+  if (!(lhs.listField == rhs.listField)) {
     return false;
   }
-  if (!(mapField == rhs.mapField)) {
+  if (!(lhs.mapField == rhs.mapField)) {
     return false;
   }
-  if (!(inclAField == rhs.inclAField)) {
+  if (!(lhs.inclAField == rhs.inclAField)) {
     return false;
   }
-  if (!(inclBField == rhs.inclBField)) {
+  if (!(lhs.inclBField == rhs.inclBField)) {
     return false;
   }
   return true;
@@ -96,23 +97,24 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
 
 bool ModuleA::operator<(const ModuleA& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
-    return i32Field < rhs.i32Field;
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
+    return lhs.i32Field < rhs.i32Field;
   }
-  if (!(strField == rhs.strField)) {
-    return strField < rhs.strField;
+  if (!(lhs.strField == rhs.strField)) {
+    return lhs.strField < rhs.strField;
   }
-  if (!(listField == rhs.listField)) {
-    return listField < rhs.listField;
+  if (!(lhs.listField == rhs.listField)) {
+    return lhs.listField < rhs.listField;
   }
-  if (!(mapField == rhs.mapField)) {
-    return mapField < rhs.mapField;
+  if (!(lhs.mapField == rhs.mapField)) {
+    return lhs.mapField < rhs.mapField;
   }
-  if (!(inclAField == rhs.inclAField)) {
-    return inclAField < rhs.inclAField;
+  if (!(lhs.inclAField == rhs.inclAField)) {
+    return lhs.inclAField < rhs.inclAField;
   }
-  if (!(inclBField == rhs.inclBField)) {
-    return inclBField < rhs.inclBField;
+  if (!(lhs.inclBField == rhs.inclBField)) {
+    return lhs.inclBField < rhs.inclBField;
   }
   return false;
 }
@@ -216,10 +218,11 @@ void ModuleB::__clear() {
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
-  if (!(inclEnumB == rhs.inclEnumB)) {
+  if (!(lhs.inclEnumB == rhs.inclEnumB)) {
     return false;
   }
   return true;
@@ -227,11 +230,12 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
 
 bool ModuleB::operator<(const ModuleB& rhs) const {
   (void)rhs;
-  if (!(i32Field == rhs.i32Field)) {
-    return i32Field < rhs.i32Field;
+  auto& lhs = *this;
+  if (!(lhs.i32Field == rhs.i32Field)) {
+    return lhs.i32Field < rhs.i32Field;
   }
-  if (!(inclEnumB == rhs.inclEnumB)) {
-    return inclEnumB < rhs.inclEnumB;
+  if (!(lhs.inclEnumB == rhs.inclEnumB)) {
+    return lhs.inclEnumB < rhs.inclEnumB;
   }
   return false;
 }

@@ -22,11 +22,13 @@ void Banal::__clear() {
 
 bool Banal::operator==(const Banal& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return true;
 }
 
 bool Banal::operator<(const Banal& rhs) const {
   (void)rhs;
+  auto& lhs = *this;
   return false;
 }
 
@@ -62,7 +64,8 @@ void Fiery::__clear() {
 
 bool Fiery::operator==(const Fiery& rhs) const {
   (void)rhs;
-  if (!(message == rhs.message)) {
+  auto& lhs = *this;
+  if (!(lhs.message == rhs.message)) {
     return false;
   }
   return true;
@@ -70,8 +73,9 @@ bool Fiery::operator==(const Fiery& rhs) const {
 
 bool Fiery::operator<(const Fiery& rhs) const {
   (void)rhs;
-  if (!(message == rhs.message)) {
-    return message < rhs.message;
+  auto& lhs = *this;
+  if (!(lhs.message == rhs.message)) {
+    return lhs.message < rhs.message;
   }
   return false;
 }

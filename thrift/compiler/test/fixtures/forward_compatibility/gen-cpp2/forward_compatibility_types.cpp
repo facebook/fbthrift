@@ -27,7 +27,8 @@ void OldStructure::__clear() {
 
 bool OldStructure::operator==(const OldStructure& rhs) const {
   (void)rhs;
-  if (!(features == rhs.features)) {
+  auto& lhs = *this;
+  if (!(lhs.features == rhs.features)) {
     return false;
   }
   return true;
@@ -35,8 +36,9 @@ bool OldStructure::operator==(const OldStructure& rhs) const {
 
 bool OldStructure::operator<(const OldStructure& rhs) const {
   (void)rhs;
-  if (!(features == rhs.features)) {
-    return features < rhs.features;
+  auto& lhs = *this;
+  if (!(lhs.features == rhs.features)) {
+    return lhs.features < rhs.features;
   }
   return false;
 }
@@ -92,7 +94,8 @@ void NewStructure::__clear() {
 
 bool NewStructure::operator==(const NewStructure& rhs) const {
   (void)rhs;
-  if (!(features == rhs.features)) {
+  auto& lhs = *this;
+  if (!(lhs.features == rhs.features)) {
     return false;
   }
   return true;
@@ -100,8 +103,9 @@ bool NewStructure::operator==(const NewStructure& rhs) const {
 
 bool NewStructure::operator<(const NewStructure& rhs) const {
   (void)rhs;
-  if (!(features == rhs.features)) {
-    return features < rhs.features;
+  auto& lhs = *this;
+  if (!(lhs.features == rhs.features)) {
+    return lhs.features < rhs.features;
   }
   return false;
 }
@@ -157,7 +161,8 @@ void NewStructure2::__clear() {
 
 bool NewStructure2::operator==(const NewStructure2& rhs) const {
   (void)rhs;
-  if (!(features == rhs.features)) {
+  auto& lhs = *this;
+  if (!(lhs.features == rhs.features)) {
     return false;
   }
   return true;
@@ -220,13 +225,14 @@ void NewStructureNested::__clear() {
 
 bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
   (void)rhs;
-  if (!(lst == rhs.lst)) {
+  auto& lhs = *this;
+  if (!(lhs.lst == rhs.lst)) {
     return false;
   }
-  if (!(mp == rhs.mp)) {
+  if (!(lhs.mp == rhs.mp)) {
     return false;
   }
-  if (!(s == rhs.s)) {
+  if (!(lhs.s == rhs.s)) {
     return false;
   }
   return true;
@@ -309,7 +315,8 @@ void NewStructureNestedField::__clear() {
 
 bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) const {
   (void)rhs;
-  if (!(f == rhs.f)) {
+  auto& lhs = *this;
+  if (!(lhs.f == rhs.f)) {
     return false;
   }
   return true;

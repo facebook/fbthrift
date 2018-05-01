@@ -52,7 +52,8 @@ void AStruct::__clear() {
 
 bool AStruct::operator==(const AStruct& rhs) const {
   (void)rhs;
-  if (!(FieldA == rhs.FieldA)) {
+  auto& lhs = *this;
+  if (!(lhs.FieldA == rhs.FieldA)) {
     return false;
   }
   return true;
@@ -60,8 +61,9 @@ bool AStruct::operator==(const AStruct& rhs) const {
 
 bool AStruct::operator<(const AStruct& rhs) const {
   (void)rhs;
-  if (!(FieldA == rhs.FieldA)) {
-    return FieldA < rhs.FieldA;
+  auto& lhs = *this;
+  if (!(lhs.FieldA == rhs.FieldA)) {
+    return lhs.FieldA < rhs.FieldA;
   }
   return false;
 }
@@ -107,11 +109,12 @@ void AStructB::__clear() {
 
 bool AStructB::operator==(const AStructB& rhs) const {
   (void)rhs;
-  if (!!FieldA != !!rhs.FieldA) {
+  auto& lhs = *this;
+  if (!!lhs.FieldA != !!rhs.FieldA) {
     return false;
   }
-  if (!!FieldA) {
-    if (FieldA != rhs.FieldA && !(*FieldA == *rhs.FieldA)) {
+  if (!!lhs.FieldA) {
+    if (lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA)) {
       return false;
     }
   }
@@ -120,12 +123,13 @@ bool AStructB::operator==(const AStructB& rhs) const {
 
 bool AStructB::operator<(const AStructB& rhs) const {
   (void)rhs;
-  if (!!FieldA != !!rhs.FieldA) {
-    return !!FieldA < !!rhs.FieldA;
+  auto& lhs = *this;
+  if (!!lhs.FieldA != !!rhs.FieldA) {
+    return !!lhs.FieldA < !!rhs.FieldA;
   }
-  if (!!FieldA) {
-    if (FieldA != rhs.FieldA && !(*FieldA == *rhs.FieldA)) {
-      return *FieldA < *rhs.FieldA;
+  if (!!lhs.FieldA) {
+    if (lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA)) {
+      return *lhs.FieldA < *rhs.FieldA;
     }
   }
   return false;
