@@ -5,7 +5,7 @@ eT = TypeVar('eT', bound=Enum)
 
 
 class NOTSETTYPE(Enum):
-    token = 0
+    token: NOTSETTYPE = ...
 
 
 NOTSET = NOTSETTYPE.token
