@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <thread>
 
 #include <folly/Conv.h>
