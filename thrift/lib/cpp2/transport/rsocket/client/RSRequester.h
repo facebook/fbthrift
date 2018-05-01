@@ -52,17 +52,11 @@ class RSRequester {
   std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
       rsocket::Payload request);
 
-  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestChannel(
-      rsocket::Payload request,
-      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requests);
-
  private:
   folly::EventBase* eventBase_;
   std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
   std::unique_ptr<rsocket::RSocketRequester> requester_;
   std::shared_ptr<rsocket::RSocketConnectionEvents> connectionStatus_;
-
-  bool isDetachable_{true};
 };
 } // namespace thrift
 } // namespace apache

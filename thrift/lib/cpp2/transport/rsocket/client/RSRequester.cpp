@@ -93,16 +93,7 @@ void RSRequester::detachEventBase() {
 }
 
 bool RSRequester::isDetachable() {
-  return isDetachable_;
-}
-
-std::shared_ptr<Flowable<Payload>> RSRequester::requestChannel(
-    Payload request,
-    std::shared_ptr<Flowable<Payload>> requestStream) {
-  isDetachable_ = false;
-
-  return requester_->requestChannel(
-      std::move(request), std::move(requestStream));
+  return true;
 }
 
 std::shared_ptr<Flowable<Payload>> RSRequester::requestStream(Payload request) {
