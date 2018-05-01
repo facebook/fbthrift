@@ -1,3 +1,5 @@
+namespace cpp2 apache.thrift.test
+
 struct Point {
   1: i32 x;
   2: i32 y;

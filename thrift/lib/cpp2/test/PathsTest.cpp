@@ -1,4 +1,6 @@
 /*
+ * Copyright 2013-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,24 +18,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include <cmath>
 #include <iostream>
 #include <string>
 
-#include <folly/init/Init.h>
+#include <gtest/gtest.h>
 
-#include <thrift/lib/cpp/test/gen-cpp/Paths_types.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Paths_types.h>
 
-int main(int argc, char **argv) {
-  folly::init(&argc, &argv);
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 
+TEST(PathsDemo, example) {
   Path1 p1; // list of pairs, 5005 bytes
   Path2 p2; // pair of lists, 2009 bytes
 
   for (int i = 0; i < 1000; ++i) {
-    int x = 60 * cos(i * 0.01);
-    int y = 60 * sin(i * 0.01);
+    int x = 60 * std::cos(i * 0.01);
+    int y = 60 * std::sin(i * 0.01);
     Point p;
     p.x = x;
     p.y = y;
@@ -42,12 +46,9 @@ int main(int argc, char **argv) {
     p2.ys.push_back(y);
   }
 
-  apache::thrift::util::ThriftSerializerCompact<> serializer;
-  std::string serialized;
+  auto s1 = CompactSerializer::serialize<std::string>(p1);
+  auto s2 = CompactSerializer::serialize<std::string>(p2);
 
-  serializer.serialize(p1, &serialized);
-  LOG(INFO) << "Path1: " << serialized.size() << " bytes";
-
-  serializer.serialize(p2, &serialized);
-  LOG(INFO) << "Path2 " << serialized.size() << " bytes";
+  EXPECT_EQ(5005, s1.size());
+  EXPECT_EQ(2009, s2.size());
 }
