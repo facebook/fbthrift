@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,24 +30,24 @@ protected:
 
  void TearDown() override {}
 
-  static uint count_creds(Krb5CCache& cc) {
-    uint count = 0;
-    for (const auto& creds : cc) {
-      ++count;
-    }
-    return count;
+ static uint32_t count_creds(Krb5CCache& cc) {
+   uint32_t count = 0;
+   for (const auto& creds : cc) {
+     ++count;
+   }
+   return count;
   }
 
-  static uint count_all_creds(Krb5CCache& cc) {
-    uint count = 0;
+  static uint32_t count_all_creds(Krb5CCache& cc) {
+    uint32_t count = 0;
     for (auto it = cc.begin(true); it != cc.end(); ++it) {
       ++count;
     }
     return count;
   }
 
-  static uint count_ktentries(Krb5Keytab& kt) {
-    uint count = 0;
+  static uint32_t count_ktentries(Krb5Keytab& kt) {
+    uint32_t count = 0;
     for (const auto& kte : kt) {
       ++count;
     }

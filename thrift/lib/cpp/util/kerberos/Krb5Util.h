@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,12 +136,14 @@ public:
 
   krb5_principal get() const { return principal_; }
 
-  uint size() const { return krb5_princ_size(context_, principal_); }
+  uint32_t size() const {
+    return krb5_princ_size(context_, principal_);
+  }
   std::string getRealm() const {
     krb5_data* d = krb5_princ_realm(context_, principal_);
     return std::string(d->data, d->length);
   }
-  std::string getComponent(uint nth) const {
+  std::string getComponent(uint32_t nth) const {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
     krb5_data* d = krb5_princ_component(context_, principal_, nth);
