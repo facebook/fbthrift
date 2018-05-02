@@ -144,8 +144,7 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
       apache::thrift::ProtocolId protocolId,
       transport::THeader* header);
 
-  template <typename Callback>
-  uint32_t sendRequestHelper(
+  void sendThriftRequest(
       RpcOptions& rpcOptions,
       RpcKind kind,
       std::unique_ptr<RequestCallback> cb,
@@ -153,41 +152,23 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) noexcept;
 
-  void sendThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> buf,
-      OnewayCallback* callback) noexcept;
-
-  void sendThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ThriftClientCallback> callback) noexcept;
-
-  template <typename Callback>
-  Callback createCallback(
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
-      std::chrono::milliseconds clientTimeoutMs);
-
   void sendSingleRequestNoResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      OnewayCallback* callback) noexcept;
+      std::unique_ptr<RequestCallback> cb) noexcept;
 
-  void sendSingleRequestResponse(
+  void sendSingleRequestSingleResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ThriftClientCallback> callback) noexcept;
-
-  void sendStreamRequestStreamResponse(
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ThriftClientCallback> callback) noexcept;
+      std::unique_ptr<RequestCallback> cb) noexcept;
 
   void sendSingleRequestStreamResponse(
       std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ThriftClientCallback> callback) noexcept;
+      std::unique_ptr<RequestCallback> cb) noexcept;
 
   std::shared_ptr<RSRequester> getRequester();
 
@@ -204,7 +185,7 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
 
   std::shared_ptr<detail::RSConnectionStatus> connectionStatus_;
   std::shared_ptr<RSRequester> rsRequester_;
-  std::chrono::milliseconds timeout_{ThriftClientCallback::kDefaultTimeout};
+  std::chrono::milliseconds timeout_{RSocketClientChannel::kDefaultRpcTimeout};
 
   apache::thrift::detail::ChannelCounters channelCounters_;
 };

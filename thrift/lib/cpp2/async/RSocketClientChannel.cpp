@@ -33,18 +33,6 @@ namespace thrift {
 
 namespace detail {
 
-void onError(
-    std::unique_ptr<ThriftClientCallback> callback,
-    folly::exception_wrapper ew) noexcept {
-  callback->onError(std::move(ew));
-}
-
-void onError(
-    RSocketClientChannel::OnewayCallback* callback,
-    folly::exception_wrapper ew) noexcept {
-  callback->messageSendError(std::move(ew));
-}
-
 void RSConnectionStatus::setCloseCallback(CloseCallback* ccb) {
   closeCallback_ = ccb;
 }
@@ -102,7 +90,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
   void onError(folly::exception_wrapper ew) override {
     if (auto callback = std::move(callback_)) {
-      detail::onError(std::move(callback), std::move(ew));
+      callback->onError(std::move(ew));
       // TODO: Inspect the cases where might we end up in this function.
       // 1- server closes the stream before all the messages are
       // delievered.
@@ -127,10 +115,6 @@ class CountedStream
 
   virtual ~CountedStream() {
     releaseCounter();
-  }
-
-  ThriftClientCallback& callback() {
-    return *callback_;
   }
 
   // Returns the initial result payload
@@ -290,13 +274,14 @@ uint32_t RSocketClientChannel::sendRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<THeader> header) {
-  return sendRequestHelper<std::unique_ptr<ThriftClientCallback>>(
+  sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       std::move(cb),
       std::move(ctx),
       std::move(buf),
       std::move(header));
+  return 0;
 }
 
 uint32_t RSocketClientChannel::sendOnewayRequest(
@@ -305,7 +290,7 @@ uint32_t RSocketClientChannel::sendOnewayRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<THeader> header) {
-  sendRequestHelper<OnewayCallback*>(
+  sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       std::move(cb),
@@ -321,13 +306,14 @@ uint32_t RSocketClientChannel::sendStreamRequest(
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header) {
-  return sendRequestHelper<std::unique_ptr<ThriftClientCallback>>(
+  sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       std::move(cb),
       std::move(ctx),
       std::move(buf),
       std::move(header));
+  return 0;
 }
 
 std::unique_ptr<RequestRpcMetadata>
@@ -377,60 +363,6 @@ RSocketClientChannel::createRequestRpcMetadata(
 }
 
 void RSocketClientChannel::sendThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  DCHECK(
-      metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-      metadata->kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
-
-  switch (metadata->kind) {
-    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-      sendSingleRequestResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
-    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      sendSingleRequestStreamResponse(
-          std::move(metadata), std::move(buf), std::move(callback));
-      break;
-    default:
-      folly::assume_unreachable();
-  }
-}
-
-void RSocketClientChannel::sendThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<folly::IOBuf> buf,
-    OnewayCallback* callback) noexcept {
-  DCHECK(metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
-  sendSingleRequestNoResponse(
-      std::move(metadata), std::move(buf), std::move(callback));
-}
-
-template <>
-std::unique_ptr<ThriftClientCallback> RSocketClientChannel::createCallback(
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::chrono::milliseconds clientTimeoutMs) {
-  return std::make_unique<ThriftClientCallback>(
-      evb_,
-      std::move(cb),
-      std::move(ctx),
-      isSecurityActive(),
-      protocolId_,
-      clientTimeoutMs);
-}
-
-template <>
-RSocketClientChannel::OnewayCallback* RSocketClientChannel::createCallback(
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::chrono::milliseconds) {
-  return new OnewayCallback(std::move(cb), std::move(ctx), isSecurityActive());
-}
-
-template <typename Callback>
-uint32_t RSocketClientChannel::sendRequestHelper(
     RpcOptions& rpcOptions,
     RpcKind kind,
     std::unique_ptr<RequestCallback> cb,
@@ -446,33 +378,65 @@ uint32_t RSocketClientChannel::sendRequestHelper(
       static_cast<apache::thrift::ProtocolId>(protocolId_),
       header.get());
 
-  auto callback = createCallback<Callback>(
-      std::move(cb),
-      std::move(ctx),
-      std::chrono::milliseconds(metadata->clientTimeoutMs));
-
-  if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf)) {
-    detail::onError(
-        std::move(callback),
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf) ||
+      !(metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
+        metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+        metadata->kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
+    folly::RequestContextScopeGuard rctx(cb->context_);
+    cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::CORRUPTED_DATA,
-            "Unexpected problem stripping envelope"));
-    return 0;
+            "Unexpected problem stripping envelope"),
+        std::move(ctx),
+        isSecurityActive()));
+    return;
   }
   metadata->seqId = 0;
   metadata->__isset.seqId = true;
   DCHECK(metadata->__isset.kind);
 
   if (!connectionStatus_->isConnected()) {
-    detail::onError(
-        std::move(callback),
+    folly::RequestContextScopeGuard rctx(cb->context_);
+    cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN, "Connection is not open"));
-    return 0;
+            TTransportException::NOT_OPEN, "Connection is not open"),
+        std::move(ctx),
+        isSecurityActive()));
+    return;
   }
 
-  sendThriftRequest(std::move(metadata), std::move(buf), std::move(callback));
-  return 0;
+  if (!channelCounters_.incPendingRequests()) {
+    LOG_EVERY_N(ERROR, 100)
+        << "max number of pending requests is exceeded x100";
+
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+
+    folly::RequestContextScopeGuard rctx(cb->context_);
+    cb->requestError(
+        ClientReceiveState(std::move(ex), std::move(ctx), isSecurityActive()));
+    return;
+  }
+
+  switch (metadata->kind) {
+    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+      sendSingleRequestNoResponse(
+          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+      break;
+    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+      sendSingleRequestSingleResponse(
+          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+      break;
+    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      sendSingleRequestStreamResponse(
+          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+      break;
+    default:
+      folly::assume_unreachable();
+  }
 }
 
 uint16_t RSocketClientChannel::getProtocolId() {
@@ -481,55 +445,41 @@ uint16_t RSocketClientChannel::getProtocolId() {
 
 void RSocketClientChannel::sendSingleRequestNoResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    OnewayCallback* callback) noexcept {
-  DCHECK(metadata);
+    std::unique_ptr<RequestCallback> cb) noexcept {
+  auto callback = new RSocketClientChannel::OnewayCallback(
+      std::move(cb), std::move(ctx), isSecurityActive());
 
-  if (channelCounters_.incPendingRequests()) {
-    auto guard =
-        folly::makeGuard([&] { channelCounters_.decPendingRequests(); });
+  callback->sendQueued();
 
-    rsRequester_->fireAndForget(
-        Payload(std::move(buf), serializeMetadata(*metadata)));
+  rsRequester_->fireAndForget(
+      Payload(std::move(buf), serializeMetadata(*metadata)));
 
-    callback->messageSent();
-  } else {
-    LOG_EVERY_N(ERROR, 100)
-        << "max number of pending requests is exceeded x100";
-    detail::onError(
-        std::move(callback),
-        folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NETWORK_ERROR,
-            "Too many active requests on connection"));
-  }
+  callback->messageSent();
+
+  channelCounters_.decPendingRequests();
 }
 
-void RSocketClientChannel::sendSingleRequestResponse(
+void RSocketClientChannel::sendSingleRequestSingleResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  DCHECK(metadata);
-  bool canExecute = channelCounters_.incPendingRequests();
+    std::unique_ptr<RequestCallback> cb) noexcept {
+  auto callback = std::make_unique<ThriftClientCallback>(
+      evb_,
+      std::move(cb),
+      std::move(ctx),
+      isSecurityActive(),
+      protocolId_,
+      std::chrono::milliseconds(metadata->clientTimeoutMs));
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
-      std::move(callback), canExecute ? &channelCounters_ : nullptr);
-
-  if (!canExecute) {
-    TTransportException ex(
-        TTransportException::NETWORK_ERROR,
-        "Too many active requests on connection");
-    // Might be able to create another transaction soon
-    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    yarpl::single::Singles::error<Payload>(
-        folly::make_exception_wrapper<TTransportException>(std::move(ex)))
-        ->subscribe(std::move(singleObserver));
-    return;
-  }
+      std::move(callback), &channelCounters_);
 
   // As we send clientTimeoutMs, queueTimeoutMs and priority values using
   // RequestRpcMetadata object, there is no need for RSocket to put them to
   // metadata->otherMetadata map.
-
   rsRequester_->requestResponse(
       Payload(std::move(buf), serializeMetadata(*metadata)),
       std::move(singleObserver));
@@ -537,18 +487,16 @@ void RSocketClientChannel::sendSingleRequestResponse(
 
 void RSocketClientChannel::sendSingleRequestStreamResponse(
     std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<ThriftClientCallback> callback) noexcept {
-  bool canExecute = channelCounters_.incPendingRequests();
-  if (!canExecute) {
-    TTransportException ex(
-        TTransportException::NETWORK_ERROR,
-        "Too many active requests on connection");
-    // Might be able to create another transaction soon
-    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    detail::onError(std::move(callback), std::move(ex));
-    return;
-  }
+    std::unique_ptr<RequestCallback> cb) noexcept {
+  auto callback = std::make_unique<ThriftClientCallback>(
+      evb_,
+      std::move(cb),
+      std::move(ctx),
+      isSecurityActive(),
+      protocolId_,
+      std::chrono::milliseconds(metadata->clientTimeoutMs));
 
   auto countedStream = std::make_shared<CountedStream>(
       std::move(callback), &channelCounters_, evb_);
