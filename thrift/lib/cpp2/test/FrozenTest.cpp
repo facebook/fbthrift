@@ -19,11 +19,11 @@
 #include <folly/Conv.h>
 #include <folly/MapUtil.h>
 #include <folly/hash/Hash.h>
-#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
-#include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/FrozenTypes_types.h>
 
 using namespace apache::thrift;
-using namespace FrozenTypes;
+using namespace apache::thrift::test;
 using std::string;
 using std::unordered_map;
 using std::vector;

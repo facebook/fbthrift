@@ -16,16 +16,15 @@
 #include <folly/File.h>
 #include <folly/system/MemoryMapping.h>
 
-#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
-#include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
-#include <thrift/lib/cpp/util/FrozenUtil.h>
 #include <thrift/lib/cpp/util/FrozenTestUtil.h>
+#include <thrift/lib/cpp/util/FrozenUtil.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/FrozenTypes_types.h>
 
 #include <gtest/gtest.h>
 
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 using namespace apache::thrift::util;
-using namespace FrozenTypes;
 using folly::File;
 using folly::MemoryMapping;
 

@@ -1,5 +1,4 @@
-
-namespace cpp "FrozenTypes"
+namespace cpp2 apache.thrift.test
 
 struct Pod {
   3: i32 a;

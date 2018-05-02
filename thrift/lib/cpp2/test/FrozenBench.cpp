@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define BOOST_TEST_MODULE FrozenTest
 
 #include <folly/Benchmark.h>
 #include <folly/Conv.h>
 #include <folly/hash/Hash.h>
-#include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/FrozenTypes_types.h>
 
-using namespace FrozenTypes;
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 using std::string;
 using std::vector;
 using folly::fbstring;
 using folly::StringPiece;
-using namespace apache::thrift;
 
 Team testValue() {
   Team team;
@@ -75,22 +74,20 @@ BENCHMARK_RELATIVE(FreezePreallocated, iters) {
   }
 }
 
-template <template <class> class SerializerTemplate>
+template <class Serializer>
 void benchmarkSerializer(int iters) {
-  SerializerTemplate<Team> serde;
-  string serialized;
-
   while (iters--) {
-    serde.serialize(team, &serialized);
+    string serialized;
+    Serializer::serialize(team, &serialized);
   }
 }
 
 BENCHMARK_RELATIVE(SerializerCompact, iters) {
-  benchmarkSerializer<apache::thrift::util::ThriftSerializerCompact>(iters);
+  benchmarkSerializer<apache::thrift::CompactSerializer>(iters);
 }
 
 BENCHMARK_RELATIVE(SerializerBinary, iters) {
-  benchmarkSerializer<apache::thrift::util::ThriftSerializerBinary>(iters);
+  benchmarkSerializer<apache::thrift::BinarySerializer>(iters);
 }
 
 BENCHMARK_DRAW_LINE();
@@ -102,24 +99,23 @@ BENCHMARK(Thaw, iters) {
   }
 }
 
-template <template <class> class SerializerTemplate>
+template <class Serializer>
 void benchmarkDeserializer(int iters) {
-  SerializerTemplate<Team> serde;
   string serialized;
-  Team obj;
-  serde.serialize(team, &serialized);
+  Serializer::serialize(team, &serialized);
 
   while (iters--) {
-    serde.deserialize(serialized, &obj);
+    Team obj;
+    Serializer::deserialize(serialized, obj);
   }
 }
 
 BENCHMARK_RELATIVE(DeserializerCompact, iters) {
-  benchmarkDeserializer<apache::thrift::util::ThriftSerializerCompact>(iters);
+  benchmarkDeserializer<apache::thrift::CompactSerializer>(iters);
 }
 
 BENCHMARK_RELATIVE(DeserializerBinary, iters) {
-  benchmarkDeserializer<apache::thrift::util::ThriftSerializerBinary>(iters);
+  benchmarkDeserializer<apache::thrift::BinarySerializer>(iters);
 }
 
 BENCHMARK_DRAW_LINE();
