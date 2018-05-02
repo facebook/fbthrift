@@ -23,24 +23,24 @@
 using namespace apache::thrift::util;
 
 TEST(EnumStrict, ShortEnumName) {
-  EXPECT_EQ(strcmp(enumName((EnumStrict)0), "UNKNOWN"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)1), "VALUE"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)2), "FOO"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)3), "BAR"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)42, "Universe"), "Universe"), 0);
+  EXPECT_STREQ(enumName((EnumStrict)0), "UNKNOWN");
+  EXPECT_STREQ(enumName((EnumStrict)1), "VALUE");
+  EXPECT_STREQ(enumName((EnumStrict)2), "FOO");
+  EXPECT_STREQ(enumName((EnumStrict)3), "BAR");
+  EXPECT_STREQ(enumName((EnumStrict)3, "NOTBAR"), "BAR");
+  EXPECT_STREQ(enumName((EnumStrict)42, "Universe"), "Universe");
   EXPECT_EQ(enumName((EnumStrict)42), nullptr);
   EXPECT_EQ(enumName((EnumStrict)-1), nullptr);
 }
 
 TEST(EnumNonStrict, ShortEnumName) {
-  EXPECT_EQ(strcmp(enumName((EnumNonStrict)0), "UNKNOWN"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumNonStrict)1), "VALUE"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumNonStrict)2), "FOO"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumNonStrict)3), "BAR"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumNonStrict)6), "NEW_VALUE"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
-  EXPECT_EQ(strcmp(enumName((EnumStrict)42, "Universe"), "Universe"), 0);
+  EXPECT_STREQ(enumName((EnumNonStrict)0), "UNKNOWN");
+  EXPECT_STREQ(enumName((EnumNonStrict)1), "VALUE");
+  EXPECT_STREQ(enumName((EnumNonStrict)2), "FOO");
+  EXPECT_STREQ(enumName((EnumNonStrict)3), "BAR");
+  EXPECT_STREQ(enumName((EnumNonStrict)6), "NEW_VALUE");
+  EXPECT_STREQ(enumName((EnumStrict)3, "NOTBAR"), "BAR");
+  EXPECT_STREQ(enumName((EnumStrict)42, "Universe"), "Universe");
   EXPECT_EQ(enumName((EnumNonStrict)4), nullptr);
   EXPECT_EQ(enumName((EnumNonStrict)5), nullptr);
 }
