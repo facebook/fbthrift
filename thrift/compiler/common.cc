@@ -106,11 +106,6 @@ int g_warn = 1;
 int g_verbose = 0;
 
 /**
- * Global time string
- */
-char* g_time_str;
-
-/**
  * The last parsed doctext comment.
  */
 char* g_doctext;

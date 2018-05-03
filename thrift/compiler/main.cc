@@ -330,10 +330,6 @@ int main(int argc, char** argv) {
   bool out_path_is_absolute = false;
   std::vector<std::string> arguments(argv, argv + argc);
 
-  // Setup time string
-  time_t now = time(nullptr);
-  g_time_str = ctime(&now);
-
   // Check for necessary arguments, you gotta have at least a filename and
   // an output language flag
   if (argc < 2) {

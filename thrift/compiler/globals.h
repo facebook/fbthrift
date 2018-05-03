@@ -104,11 +104,6 @@ extern t_scope* g_scope_cache;
 extern PARSE_MODE g_parse_mode;
 
 /**
- * Global time string, used in formatting error messages etc.
- */
-extern char* g_time_str;
-
-/**
  * The last parsed doctext comment.
  */
 extern char* g_doctext;
