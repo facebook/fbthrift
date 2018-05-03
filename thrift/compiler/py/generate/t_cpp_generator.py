@@ -90,7 +90,6 @@ class CppGenerator(t_generator.Generator):
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'bootstrap': '',
         'compatibility': 'Use thrift1 structs instead of generating new ones',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'stack_arguments': 'Pass arguments on stack instead of heap',
@@ -807,8 +806,7 @@ class CppGenerator(t_generator.Generator):
         s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
         s('#include <thrift/lib/cpp2/async/AsyncClient.h>')
         s('#include <thrift/lib/cpp2/async/HeaderChannel.h>')
-        if not self.flag_bootstrap:
-            s('#include <thrift/lib/cpp/TApplicationException.h>')
+        s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
         s('#include <folly/futures/Future.h>')
         print >>self._custom_protocol_h, \
@@ -5608,8 +5606,7 @@ class CppGenerator(t_generator.Generator):
         # Include base types
         s('#include <thrift/lib/cpp2/Thrift.h>')
         s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
-        if not self.flag_bootstrap:
-            s('#include <thrift/lib/cpp/TApplicationException.h>')
+        s('#include <thrift/lib/cpp/TApplicationException.h>')
 
         if self.flag_optionals:
             s('#include <folly/Optional.h>')
