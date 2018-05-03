@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef CPP_CONTEXT_DATA_H
-#define CPP_CONTEXT_DATA_H
-
+#pragma once
 
 #include <boost/python/object.hpp>
 #include <boost/python/str.hpp>
@@ -24,13 +22,14 @@
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class Cpp2ConnContext;
 
 boost::python::object makePythonAddress(const folly::SocketAddress& sa) {
   if (!sa.isInitialized()) {
-    return boost::python::object();  // None
+    return boost::python::object(); // None
   }
 
   // This constructs a tuple in the same form as socket.getpeername()
@@ -45,32 +44,36 @@ boost::python::object makePythonAddress(const folly::SocketAddress& sa) {
 }
 
 class CppContextData {
-public:
-  CppContextData()
-      : ctx_(nullptr) {}
+ public:
+  CppContextData() : requestCtx_(nullptr), connCtx_(nullptr) {}
 
-  void copyContextContents(Cpp2ConnContext* ctx) {
-    if (!ctx) {
+  void copyContextContents(Cpp2RequestContext* reqCtx) {
+    requestCtx_ = reqCtx;
+    copyContextContents(requestCtx_->getConnectionContext());
+  }
+
+  void copyContextContents(Cpp2ConnContext* connCtx) {
+    if (!connCtx) {
       return;
     }
-    ctx_ = ctx;
+    connCtx_ = connCtx;
 
-    clientIdentity_ = ctx->getPeerCommonName();
+    clientIdentity_ = connCtx->getPeerCommonName();
     if (clientIdentity_.empty()) {
-    auto ss = ctx->getSaslServer();
+      auto ss = connCtx->getSaslServer();
       if (ss) {
         clientIdentity_ = ss->getClientIdentity();
       }
     }
 
-    auto pa = ctx->getPeerAddress();
+    auto pa = connCtx->getPeerAddress();
     if (pa) {
       peerAddress_ = *pa;
     } else {
       peerAddress_.reset();
     }
 
-    auto la = ctx->getLocalAddress();
+    auto la = connCtx->getLocalAddress();
     if (la) {
       localAddress_ = *la;
     } else {
@@ -90,8 +93,11 @@ public:
   boost::python::object getLocalAddress() const {
     return makePythonAddress(localAddress_);
   }
-  const Cpp2ConnContext * getCtx() const {
-    return ctx_;
+  const Cpp2ConnContext* getConnCtx() const {
+    return connCtx_;
+  }
+  Cpp2RequestContext* getReqCtx() const {
+    return requestCtx_;
   }
   const std::string& getHeaderEx() {
     return headerEx_;
@@ -106,14 +112,14 @@ public:
     headerExWhat_ = headerExWhat;
   }
 
-private:
-  const apache::thrift::Cpp2ConnContext* ctx_;
+ private:
+  apache::thrift::Cpp2RequestContext* requestCtx_;
+  const apache::thrift::Cpp2ConnContext* connCtx_;
   std::string clientIdentity_;
   folly::SocketAddress peerAddress_;
   folly::SocketAddress localAddress_;
   std::string headerEx_;
   std::string headerExWhat_;
 };
-}}
-
-#endif
+} // namespace thrift
+} // namespace apache

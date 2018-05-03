@@ -270,7 +270,7 @@ public:
               auto cd_ctor = adapter_->attr("CONTEXT_DATA");
               object contextData = cd_ctor();
               extract<CppContextData&>(contextData)().copyContextContents(
-                  context->getConnectionContext());
+                  context);
 
               auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
               object callbackWrapper = cb_ctor();
