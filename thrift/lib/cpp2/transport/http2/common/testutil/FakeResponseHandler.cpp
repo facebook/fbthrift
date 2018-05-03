@@ -48,7 +48,7 @@ void FakeResponseHandler::sendEOM() noexcept {
   EXPECT_TRUE(evb_->inRunningEventBaseThread());
   eomReceived_ = true;
   // Tests that use this class are expected to be done at this point.
-  keepAliveToken_.reset();
+  evb_.reset();
 }
 
 unordered_map<string, string>* FakeResponseHandler::getHeaders() {

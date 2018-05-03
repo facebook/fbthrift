@@ -31,8 +31,7 @@ namespace thrift {
  */
 class FakeChannel : public ThriftChannelIf {
  public:
-  explicit FakeChannel(folly::EventBase* evb)
-      : evb_(evb), keepAliveToken_(evb_->getKeepAliveToken()) {}
+  explicit FakeChannel(folly::EventBase* evb) : evb_(getKeepAliveToken(evb)) {}
   ~FakeChannel() override = default;
 
   void sendThriftResponse(
@@ -42,7 +41,7 @@ class FakeChannel : public ThriftChannelIf {
     payload_ = std::move(payload);
     // Tests that use this class are expected to be done at this point.
     // So we shut down the event base.
-    keepAliveToken_.reset();
+    evb_.reset();
   }
 
   void sendThriftRequest(
@@ -61,7 +60,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
   folly::EventBase* getEventBase() noexcept override {
-    return evb_;
+    return evb_.get();
   }
 
   ResponseRpcMetadata* getMetadata() {
@@ -75,8 +74,7 @@ class FakeChannel : public ThriftChannelIf {
  private:
   std::unique_ptr<ResponseRpcMetadata> metadata_;
   std::unique_ptr<folly::IOBuf> payload_;
-  folly::EventBase* evb_;
-  folly::Executor::KeepAlive keepAliveToken_;
+  folly::Executor::KeepAlive<folly::EventBase> evb_;
 };
 
 } // namespace thrift

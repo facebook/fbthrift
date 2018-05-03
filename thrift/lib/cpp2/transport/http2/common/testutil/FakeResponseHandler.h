@@ -36,8 +36,7 @@ class FakeResponseHandler : public proxygen::ResponseHandler {
  public:
   explicit FakeResponseHandler(folly::EventBase* evb)
       : proxygen::ResponseHandler(&dummyRequestHandler_),
-        evb_(evb),
-        keepAliveToken_(evb_->getKeepAliveToken()) {}
+        evb_(getKeepAliveToken(evb)) {}
 
   ~FakeResponseHandler() override = default;
 
@@ -109,8 +108,7 @@ class FakeResponseHandler : public proxygen::ResponseHandler {
   proxygen::MockRequestHandler dummyRequestHandler_;
   wangle::TransportInfo dummyTransportInfo_;
 
-  folly::EventBase* evb_;
-  folly::Executor::KeepAlive keepAliveToken_;
+  folly::Executor::KeepAlive<folly::EventBase> evb_;
 
   std::unordered_map<std::string, std::string> headers_;
   std::unique_ptr<folly::IOBuf> body_;
