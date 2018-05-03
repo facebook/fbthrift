@@ -150,6 +150,3 @@ const service3AsyncProcessor::CompactProtocolProcessMap service3AsyncProcessor::
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

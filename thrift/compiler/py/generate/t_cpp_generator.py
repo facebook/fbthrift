@@ -90,7 +90,6 @@ class CppGenerator(t_generator.Generator):
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'compatibility': 'Use thrift1 structs instead of generating new ones',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'stack_arguments': 'Pass arguments on stack instead of heap',
         'process_in_event_base': 'Process request in event base thread',
@@ -105,7 +104,6 @@ class CppGenerator(t_generator.Generator):
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
     }
     _out_dir_base = 'gen-cpp2'
-    _compatibility_dir_base = 'gen-cpp'
 
     _base_to_cpp_typename = {
         t_base.void: 'void',
@@ -146,10 +144,6 @@ class CppGenerator(t_generator.Generator):
     def _cpp_annotation(self, type, key, default=None):
         t = _map_get(type.annotations, 'cpp2.' + key)
         if t:
-            if self.flag_compatibility:
-                raise CompilerError(
-                    'cpp2.{0} annotation not allowed in compatibility mode: '
-                    '{1}'.format(key, type))
             return t
         t = _map_get(type.annotations, 'cpp.' + key)
         if t:
@@ -264,12 +258,7 @@ class CppGenerator(t_generator.Generator):
 
         if in_typedef and (ttype.is_struct or ttype.is_xception) and \
                 ttype.program == self._program:
-            if self.flag_compatibility:
-                scope('typedef ' + self._namespace_prefix(
-                        self._program.get_namespace('cpp')) + ttype.name + \
-                          ' ' + ttype.name + ';')
-            else:
-                scope('class ' + ttype.name + ';')
+            scope('class ' + ttype.name + ';')
 
         tname = self._cpp_type_name(ttype)
         if not tname:
@@ -406,8 +395,7 @@ class CppGenerator(t_generator.Generator):
         return self._cpp_annotation(ttype.as_typedef.type, 'indirection', '')
 
     def _gen_forward_declaration(self, tstruct):
-        if not self.flag_compatibility:
-            out("class {0};".format(tstruct.name))
+        out("class {0};".format(tstruct.name))
 
     def _get_handler_callback_class(self, function):
         if self._is_complex_type(function.returntype) and \
@@ -421,43 +409,22 @@ class CppGenerator(t_generator.Generator):
         return 'apache::thrift::{0}<{1}>'.format(cb, rettype)
 
     def _get_presult_success(self):
-        if self.flag_compatibility:
-            return 'result.success'
-        else:
-            return 'result.get<0>().value'
+        return 'result.get<0>().value'
     def _get_presult_success_isset(self, value_if_set=None):
-        if self.flag_compatibility:
-            if value_if_set is None:
-                return 'result.__isset.success'
-            else:
-                return 'result.__isset.success = {0}'.format(value_if_set)
+        if value_if_set is None:
+            return 'result.getIsSet(0)'
         else:
-            if value_if_set is None:
-                return 'result.getIsSet(0)'
-            else:
-                return 'result.setIsSet(0, {0})'.format(value_if_set)
+            return 'result.setIsSet(0, {0})'.format(value_if_set)
     def _get_presult_exception(self, ex_idx, e):
-        if self.flag_compatibility:
-            return 'result.{0}'.format(e.name)
-        else:
-            return 'result.get<{0}>().ref()'.format(ex_idx)
+        return 'result.get<{0}>().ref()'.format(ex_idx)
     def _get_presult_exception_isset(self, ex_idx, e, value_if_set=None):
-        if self.flag_compatibility:
-            if value_if_set is None:
-                return 'result.__isset.{0}'.format(e.name)
-            else:
-                return 'result.__isset.{0} = {1}'.format(e.name, value_if_set)
+        if value_if_set is None:
+            return 'result.getIsSet({0})'.format(ex_idx)
         else:
-            if value_if_set is None:
-                return 'result.getIsSet({0})'.format(ex_idx)
-            else:
-                return 'result.setIsSet({0}, {1})'.format(ex_idx, value_if_set)
+            return 'result.setIsSet({0}, {1})'.format(ex_idx, value_if_set)
     def _get_pargs_field(self, idx, f, pointer=True):
-        if self.flag_compatibility:
-            return '{0}args.{1}'.format('' if pointer else '*', f.name)
-        else:
-            return 'args.get<{0}>().{1}'.format(idx,
-                    'value' if pointer else 'ref()')
+        return 'args.get<{0}>().{1}'.format(idx,
+                'value' if pointer else 'ref()')
 
     def _generate_enum_constant_list(self, enum, constants, quote_names,
                                       include_values):
@@ -480,11 +447,6 @@ class CppGenerator(t_generator.Generator):
         constants = tenum.constants
         # get the scope inside the namespace definitions
         s = self._types_scope
-        if self.flag_compatibility:
-            s('typedef {0} {1};'.format(self._namespace_prefix(
-                        self._program.get_namespace('cpp')) + tenum.name,
-                                        tenum.name))
-            return
         enum_type = self._cpp_annotation(tenum, "enum_type")
         enum_type_s = "" if enum_type is None else " : " + enum_type
         primitive = s.defn('enum class {0.name}{1}'.format(tenum, enum_type_s),
@@ -714,12 +676,6 @@ class CppGenerator(t_generator.Generator):
             self._program.name + '_data',
             is_types_context=True)
         sg = get_global_scope(CppPrimitiveFactory, context)
-        if self.flag_compatibility:
-            # Delegate to cpp1 data
-            sg('#include "{0}"'.format(self._with_compatibility_include_prefix(
-                self._program, self._program.name + '_data.h')))
-            sg()
-            return
         sg('#include <array>')
         sg('#include <cstddef>')
         sg()
@@ -821,11 +777,6 @@ class CppGenerator(t_generator.Generator):
             print >>context.impl, \
                     '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
         s()
-        if self.flag_compatibility:
-            # Transform the cpp2 include prefix path into a cpp prefix path.
-            s('#include "{0}.h"'
-              .format(self._with_compatibility_include_prefix(self._program,
-                                                    service.name)))
         # Include other Thrift includes
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
@@ -885,8 +836,6 @@ class CppGenerator(t_generator.Generator):
         # make sure that the main types namespace is closed
         ns.release()
 
-        self._generate_service_helpers_serializers(service, s)
-
         if self.flag_implicit_templates:
             # Include the types.tcc file from the types header file
             s()
@@ -895,23 +844,6 @@ class CppGenerator(t_generator.Generator):
             s('#include "{0}.tcc"'.format(
                 self._with_include_prefix(self._program, service.name)))
         # Make sure file scope is closed.
-        s.release()
-
-    def _generate_service_helpers_serializers(self, service, s):
-        s = s.namespace('apache.thrift').scope
-        s.acquire()
-        for function in service.functions:
-            arglist = function.arglist
-            if self.flag_compatibility:
-                if self.flag_stack_arguments:
-                    arglist.name = "{0}_{1}_args".format(service.name, function.name)
-                    self._generate_cpp2ops(True, arglist, s)
-                arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
-                self._generate_cpp2ops(True, arglist, s)
-
-                if not function.oneway:
-                    result = self._get_presult_object(service, function)
-                    self._generate_cpp2ops(True, result, s)
         s.release()
 
     def _get_presult_object(self, service, function):
@@ -931,92 +863,42 @@ class CppGenerator(t_generator.Generator):
     def _generate_service_helpers(self, service, s):
         for function in service.functions:
             arglist = function.arglist
-            if self.flag_compatibility:
-                name_orig = arglist.name
-                if self.flag_stack_arguments:
-                    arglist.name = "{0}_{1}_args".format(service.name, function.name)
-                    self._generate_struct_complete(s, arglist,
-                                                   is_exception=False,
-                                                   pointers=False,
-                                                   read=True,
-                                                   write=True,
-                                                   swap=False,
-                                                   result=False,
-                                                   to_additional=True,
-                                                   simplejson=False,
-                                                   is_service_helper=True)
-                arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
-                self._generate_struct_complete(s, arglist,
-                                               is_exception=False,
-                                               pointers=True,
-                                               read=True,
-                                               write=True,
-                                               swap=False,
-                                               result=False,
-                                               has_isset=False,
-                                               to_additional=True,
-                                               simplejson=False,
-                                               is_service_helper=True)
-                arglist.name = name_orig
-            else:
-                def generate_pargs(suffix, pargs):
-                    flist = ['apache::thrift::FieldData<{0}, {1}, {2}{3}>'.format(
-                                arg.key,
-                                self._type_to_enum(arg.type),
-                                self._type_name(arg.type),
-                                suffix)
-                                    for arg in arglist.members]
-                    pargs = "{0}_{1}_{2}".format(service.name, function.name, pargs)
-                    flist.insert(0, 'false')
-                    fstr = ", ".join(flist)
-                    print >>self._out_tcc, \
-                        'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
-                            fstr, pargs)
-                if self.flag_stack_arguments:
-                    generate_pargs('', 'args')
-                generate_pargs('*', 'pargs')
+            def generate_pargs(suffix, pargs):
+                flist = ['apache::thrift::FieldData<{0}, {1}, {2}{3}>'.format(
+                            arg.key,
+                            self._type_to_enum(arg.type),
+                            self._type_name(arg.type),
+                            suffix)
+                                for arg in arglist.members]
+                pargs = "{0}_{1}_{2}".format(service.name, function.name, pargs)
+                flist.insert(0, 'false')
+                fstr = ", ".join(flist)
+                print >>self._out_tcc, \
+                    'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
+                        fstr, pargs)
+            if self.flag_stack_arguments:
+                generate_pargs('', 'args')
+            generate_pargs('*', 'pargs')
 
 
             if not function.oneway:
-                if self.flag_compatibility:
-                    # WTF Using _get_presult_object causes a segmentation fault?
-                    result = frontend.t_struct(
-                         self.program,
-                         "{0}_{1}_presult".format(service.name, function.name))
-                    success = frontend.t_field(function.returntype, "success", 0)
-                    if not function.returntype.is_void:
-                        result.append(success)
-                    xs = function.xceptions
-                    for field in xs.members:
-                        result.append(field)
-                    self._generate_struct_complete(s, result,
-                                                   is_exception=False,
-                                                   pointers=True,
-                                                   read=True,
-                                                   write=True,
-                                                   swap=False,
-                                                   result=True,
-                                                   to_additional=True,
-                                                   simplejson=False,
-                                                   is_service_helper=True)
-                else:
-                    flist = ['apache::thrift::FieldData<{0}, '
-                             'apache::thrift::protocol::T_STRUCT, {1}>'.format(
-                                field.key, self._type_name(field.type))
-                                    for field in function.xceptions.members]
-                    if not function.returntype.is_void:
-                        type = self._type_name(function.returntype)
-                        ttype = self._type_to_enum(function.returntype)
-                        flist.insert(0, 'apache::thrift::FieldData<0, {0}, {1}*>'
-                            .format(ttype, type))
+                flist = ['apache::thrift::FieldData<{0}, '
+                         'apache::thrift::protocol::T_STRUCT, {1}>'.format(
+                            field.key, self._type_name(field.type))
+                                for field in function.xceptions.members]
+                if not function.returntype.is_void:
+                    type = self._type_name(function.returntype)
+                    ttype = self._type_to_enum(function.returntype)
+                    flist.insert(0, 'apache::thrift::FieldData<0, {0}, {1}*>'
+                        .format(ttype, type))
 
-                    presult = "{0}_{1}_presult".format(service.name, function.name)
-                    flist.insert(0, 'true')
-                    fstr = ", ".join(flist)
+                presult = "{0}_{1}_presult".format(service.name, function.name)
+                flist.insert(0, 'true')
+                fstr = ", ".join(flist)
 
-                    print >>self._out_tcc, \
-                        'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
-                            fstr, presult)
+                print >>self._out_tcc, \
+                    'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
+                        fstr, presult)
 
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
@@ -2022,16 +1904,10 @@ class CppGenerator(t_generator.Generator):
                         self._get_pargs_field(idx, field),
                         field.name))
 
-            if self.flag_compatibility:
-                sizer = 'auto sizer = [&](Protocol_* p) ' \
-                        '{{ return {0}_serializedSizeZC(p, &args); }};'
-                writer = 'auto writer = [&](Protocol_* p) ' \
-                         '{{ {0}_write(p, &args); }};'
-            else:
-                sizer = 'auto sizer = [&](Protocol_* p) ' \
-                        '{{ return args.serializedSizeZC(p); }};'
-                writer = 'auto writer = [&](Protocol_* p) ' \
-                         '{{ args.write(p); }};'
+            sizer = 'auto sizer = [&](Protocol_* p) ' \
+                    '{{ return args.serializedSizeZC(p); }};'
+            writer = 'auto writer = [&](Protocol_* p) ' \
+                     '{{ args.write(p); }};'
             out(sizer.format(pargs_class))
             out(writer.format(pargs_class))
 
@@ -2260,11 +2136,7 @@ class CppGenerator(t_generator.Generator):
                     out("{0} = &_return;".format(
                         self._get_presult_success()))
 
-                if self.flag_compatibility:
-                    out("{0}_{1}_presult_read(prot, &result);".format(
-                            service.name, function.name))
-                else:
-                    out("result.read(prot);")
+                out("result.read(prot);")
 
                 out("prot->readMessageEnd();")
                 out('ctx->postRead(state.header(), state.buf()->length());')
@@ -2513,54 +2385,19 @@ class CppGenerator(t_generator.Generator):
                 for a,b,c in self.protocols:
                     if a == 'simple_json' and not simplejson:
                         continue
-                    if not self.flag_compatibility:
-                        output(("template uint32_t {1}::read<>"
-                                "(apache::thrift::{0}Reader*)").format(
-                                        b, obj.name))
+                    output(("template uint32_t {1}::read<>"
+                            "(apache::thrift::{0}Reader*)").format(
+                                    b, obj.name))
 
-                        output(("template uint32_t {1}::write<>"
-                                "(apache::thrift::{0}Writer*) const").format(
-                                        b, obj.name))
-                        output(("template uint32_t {1}::serializedSize<>"
-                                "(apache::thrift::{0}Writer const*)"
-                                " const").format(b, obj.name))
-                        output(("template uint32_t {1}::serializedSizeZC<>"
-                                "(apache::thrift::{0}Writer const*) const").
-                                    format(b, obj.name))
-                    else:
-                        output(("template uint32_t {1}_read<>"
-                                "(apache::thrift::{0}Reader*, {1}*)").format(
-                                        b, obj.name))
-                        output(("template uint32_t {1}_write<>"
-                                "(apache::thrift::{0}Writer*, const {1}*)").
-                                    format(b, obj.name))
-                        output(("template uint32_t {1}_serializedSize<>"
-                                "(apache::thrift::{0}Writer const*, "
-                                "const {1}*)").format(
-                                        b, obj.name))
-                        output(("template uint32_t {1}_serializedSizeZC<>"
-                                "(apache::thrift::{0}Writer const*, "
-                                "const {1}*)").format(b, obj.name))
-
-        if self.flag_compatibility:
-            base = self._namespace_prefix(
-                    self._program.get_namespace('cpp')) + obj.name
-            s('typedef{0} {1};'.format(base, obj.name))
-
-            if read:
-                self._generate_struct_reader(
-                                         s, obj, pointers,
-                                         has_isset=has_isset,
-                                         is_service_helper=is_service_helper)
-            if write:
-                for zc in False, True:
-                    self._generate_struct_compute_length(
-                            s, obj, pointers, result, zero_copy=zc,
-                            is_service_helper=is_service_helper)
-                self._generate_struct_writer(s, obj, pointers, result,
-                    is_service_helper=is_service_helper)
-            write_extern_templates()
-            return
+                    output(("template uint32_t {1}::write<>"
+                            "(apache::thrift::{0}Writer*) const").format(
+                                    b, obj.name))
+                    output(("template uint32_t {1}::serializedSize<>"
+                            "(apache::thrift::{0}Writer const*)"
+                            " const").format(b, obj.name))
+                    output(("template uint32_t {1}::serializedSizeZC<>"
+                            "(apache::thrift::{0}Writer const*) const").
+                                format(b, obj.name))
 
         is_virtual = self._has_cpp_annotation(obj, 'virtual')
         extends = [
@@ -3292,18 +3129,9 @@ class CppGenerator(t_generator.Generator):
         if self.flag_optionals:
             has_isset = False
         this = 'this'
-        if self.flag_compatibility:
-            this = 'obj'
-            name = '{0}_read'.format(obj.name)
-            d = scope.defn('template <class Protocol_>\n' +
-                           'uint32_t {name}(Protocol_* iprot, ' + obj.name +
-                           '* obj)',
-                           name=name,
-                           output=self._out_tcc)
-        else:
-            d = scope.defn('template <class Protocol_>\n'
-                           'uint32_t {name}(Protocol_* iprot)', name='read',
-                           output=self._out_tcc)
+        d = scope.defn('template <class Protocol_>\n'
+                       'uint32_t {name}(Protocol_* iprot)', name='read',
+                       output=self._out_tcc)
         if obj.is_union:
             has_isset = False
 
@@ -3319,8 +3147,6 @@ class CppGenerator(t_generator.Generator):
         struct_options = self._get_serialized_fields_options(obj)
         # s = scope of the read() function
         s = d.scope
-        if self.flag_compatibility:
-            s('(void)obj;')
         # Declare stack tmp variables
         s('auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();')
         s('std::string _fname;')
@@ -3680,19 +3506,10 @@ class CppGenerator(t_generator.Generator):
                                         is_service_helper=False):
         method = "serializedSizeZC" if zero_copy else "serializedSize"
         this = 'this'
-        if self.flag_compatibility:
-            this = 'obj'
-            name = '{0}_{1}'.format(obj.name, method)
-            d = scope.defn('template <class Protocol_>\n' +
-                           'uint32_t {name}(Protocol_ const* prot_, const ' +
-                           obj.name + '* obj)',
-                           name=name,
-                           output=self._out_tcc)
-        else:
-            d = scope.defn('template <class Protocol_>\n'
-                        'uint32_t {name}(Protocol_ const* prot_) const',
-                        name=method,
-                        output=self._out_tcc)
+        d = scope.defn('template <class Protocol_>\n'
+                    'uint32_t {name}(Protocol_ const* prot_) const',
+                    name=method,
+                    output=self._out_tcc)
 
         struct_options = self._get_serialized_fields_options(obj)
 
@@ -3709,9 +3526,6 @@ class CppGenerator(t_generator.Generator):
                       'serializer_serialized_size(*{}, *prot_);'.format(
                         this))
             return
-
-        if self.flag_compatibility:
-            s('(void)obj;')
 
         if struct_options.has_serialized_fields:
             with s('if ({0}->{1} && '
@@ -3839,18 +3653,9 @@ class CppGenerator(t_generator.Generator):
                                 is_service_helper=False):
         'Generates the write function.'
         this = 'this'
-        if self.flag_compatibility:
-            this = 'obj'
-            name = '{0}_write'.format(obj.name)
-            d = scope.defn('template <class Protocol_>\n' +
-                           'uint32_t {name}(Protocol_* prot_, const ' +
-                           obj.name + '* obj)',
-                           name=name,
-                           output=self._out_tcc)
-        else:
-            d = scope.defn('template <class Protocol_>\nuint32_t {name}'
-                           '(Protocol_* prot_) const', name='write',
-                           output=self._out_tcc)
+        d = scope.defn('template <class Protocol_>\nuint32_t {name}'
+                       '(Protocol_* prot_) const', name='write',
+                       output=self._out_tcc)
 
         s = d.scope
         if self.flag_lean_mean_meta_machine and not is_service_helper:
@@ -3858,9 +3663,6 @@ class CppGenerator(t_generator.Generator):
                 s("return ::apache::thrift::serializer_write(*{}, *prot_);".
                     format(this))
             return
-
-        if self.flag_compatibility:
-            s('(void)obj;')
 
         name = obj.name
         fields = filter(self._should_generate_field, obj.members)
@@ -4112,11 +3914,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_cpp2ops(self, compat, obj, scope):
         ns = self._namespace_prefix(self._get_namespace())
-        if self.flag_compatibility and compat:
-            compat_ns = self._namespace_prefix(
-                self._program.get_namespace('cpp'))
-        else:
-            compat_ns = ns
+        compat_ns = ns
         compat_full_name = compat_ns + obj.name
         full_name = ns + obj.name
 
@@ -4150,12 +3948,8 @@ class CppGenerator(t_generator.Generator):
                  '{ret_type} Cpp2Ops<{compat_full_name}>::{method}('
                  'Protocol{prt_const}* proto, {full_name}{obj_const}* obj)'.
                  format(**locals())), name=method, in_header=True):
-                if self.flag_compatibility:
-                    out(('{return_statement}{full_name}_{method}(proto, obj);'.
-                        format(**locals())))
-                else:
-                    out('{return_statement}obj->{method}(proto);'.
-                        format(**locals()))
+                out('{return_statement}obj->{method}(proto);'.
+                    format(**locals()))
 
     def _generate_frozen_layout(self, obj, s):
         fields = sorted(obj.as_struct.members, key=lambda field: field.key)
@@ -4199,11 +3993,6 @@ class CppGenerator(t_generator.Generator):
 
 
     def _should_generate_hash_equal_to(self, obj):
-        # Don't generate these declarations if in compatibility mode since
-        # they're already declared for cpp.
-        if self.flag_compatibility:
-            return False
-
         annotated = obj.type if obj.is_typedef else obj
         is_enum = isinstance(obj, frontend.t_enum)
         gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
@@ -4211,11 +4000,6 @@ class CppGenerator(t_generator.Generator):
         return gen_hash or gen_equal_to
 
     def _generate_hash_equal_to(self, obj):
-        # Don't generate these declarations if in compatibility mode since
-        # they're already declared for cpp.
-        if self.flag_compatibility:
-            return
-
         annotated = obj.type if obj.is_typedef else obj
         is_enum = isinstance(obj, frontend.t_enum)
         gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
@@ -4434,21 +4218,16 @@ class CppGenerator(t_generator.Generator):
             return
         context = self._make_context(self._program.name + '_layouts')
         s = get_global_scope(CppPrimitiveFactory, context)
-        if self.flag_compatibility:
-            # Delegate to cpp1 layouts
-            s('#include "{0}"'.format(self._with_compatibility_include_prefix(
-                self._program, self._program.name + '_layouts.h')))
-        else:
-            s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
-            s('#include "{0}"'.format(self._with_include_prefix(self._program,
-                self._program.name + '_types.h')))
-            # Include other layouts
-            for inc in self._program.includes:
-                s('#include "{0}_layouts.h"'
-                 .format(self._with_include_prefix(inc, inc.name)))
-            with s.namespace('apache.thrift.frozen').scope:
-                for obj in objects:
-                    self._generate_frozen_layout(obj, out())
+        s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
+        s('#include "{0}"'.format(self._with_include_prefix(self._program,
+            self._program.name + '_types.h')))
+        # Include other layouts
+        for inc in self._program.includes:
+            s('#include "{0}_layouts.h"'
+             .format(self._with_include_prefix(inc, inc.name)))
+        with s.namespace('apache.thrift.frozen').scope:
+            for obj in objects:
+                self._generate_frozen_layout(obj, out())
         s.release()
 
     def _generate_consts(self, constants):
@@ -4462,11 +4241,6 @@ class CppGenerator(t_generator.Generator):
         sg('#include "{0}"'.format(self._with_include_prefix(self._program,
             self._program.name + '_types.h')))
         sg('#include <thrift/lib/cpp2/protocol/Protocol.h>')
-        # Include the thrift1 constants for compatibility mode
-        if self.flag_compatibility:
-            sg('#include "{0}_constants.h"'
-                .format(self._with_compatibility_include_prefix(self._program,
-                                                                name)))
         if constants:
             # Include other constant includes that might be required by
             # const values rendered with allow_references=True.
@@ -4479,15 +4253,6 @@ class CppGenerator(t_generator.Generator):
 
         # Open namespace
         sns = sg.namespace(self._get_namespace()).scope
-
-        # COMPATIBILITY MODE
-        if self.flag_compatibility:
-            cpp1_namespace = self._namespace_prefix(
-                self._program.get_namespace('cpp')).lstrip()
-            sns('using ' + cpp1_namespace + self._program.name + '_constants;')
-            sns.release()
-            sg.release()
-            return
 
         # DECLARATION
         s = sns.cls('struct {0}_constants'.format(name)).scope
@@ -4568,10 +4333,6 @@ class CppGenerator(t_generator.Generator):
                     self._generate_fatal_impl(sns, program)
             else:
                 self._generate_fatal_impl(sg, program)
-            if self.flag_compatibility:
-                with sg.namespace(self._get_namespace()).scope as sns:
-                    sns('using {0} = {1}::{0};'.format(
-                        self.fatal_tags_class, ns.replace('.', '::')))
             sg('#include "{0}_fatal_types.h"'.format(
                 self._with_include_prefix(self._program, name)))
 
@@ -4709,8 +4470,6 @@ class CppGenerator(t_generator.Generator):
         return self._get_fatal_string_id(s)
 
     def _get_original_namespace(self):
-        if self.flag_compatibility:
-            return self._program.get_namespace('cpp')
         return self._get_namespace()
 
     def _get_scoped_original_namespace(self):
@@ -5559,14 +5318,8 @@ class CppGenerator(t_generator.Generator):
             return os.path.join(ip, dir_base)
         return ""
 
-    def _compatibility_include_prefix(self, program):
-        return self._include_prefix(program, self._compatibility_dir_base)
-
     def _out_include_prefix(self, program):
         return self._include_prefix(program, self._out_dir_base)
-
-    def _with_compatibility_include_prefix(self, program, *args):
-        return os.path.join(self._compatibility_include_prefix(program), *args)
 
     def _with_include_prefix(self, program, *args):
         return os.path.join(self._out_include_prefix(program), *args)
@@ -5613,11 +5366,6 @@ class CppGenerator(t_generator.Generator):
         s('#include <folly/io/IOBuf.h>')
         s('#include <folly/io/Cursor.h>')
         s()
-        if self.flag_compatibility:
-            # Transform the cpp2 include prefix path into a cpp prefix path.
-            s('#include "{0}_types.h"'
-              .format(self._with_compatibility_include_prefix(self._program,
-                                                              name)))
         # Include other Thrift includes
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \

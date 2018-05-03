@@ -3317,6 +3317,3 @@ folly::exception_wrapper service_with_special_namesAsyncClient::recv_instance_wr
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

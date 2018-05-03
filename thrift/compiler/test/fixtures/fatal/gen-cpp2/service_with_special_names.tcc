@@ -4498,6 +4498,3 @@ int32_t service_with_special_namesAsyncClient::recv_fieldsT(Protocol_* prot, ::a
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

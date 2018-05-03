@@ -311,6 +311,3 @@ class service1AsyncClient : public apache::thrift::GeneratedAsyncClient {
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

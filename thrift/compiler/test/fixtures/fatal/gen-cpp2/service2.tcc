@@ -975,6 +975,3 @@ void service2AsyncClient::recv_methodFT(Protocol_* prot,  ::test_cpp2::cpp_refle
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

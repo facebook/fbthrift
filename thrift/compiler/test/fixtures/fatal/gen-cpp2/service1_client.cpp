@@ -713,6 +713,3 @@ folly::exception_wrapper service1AsyncClient::recv_instance_wrapped_method6( ::t
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
