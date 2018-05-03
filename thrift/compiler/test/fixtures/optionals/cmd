@@ -1,5 +1,4 @@
 android_lite:annotate src/module.thrift
-cpp src/module.thrift
 #cpp2:optionals src/module.thrift
 go src/module.thrift
 java src/module.thrift

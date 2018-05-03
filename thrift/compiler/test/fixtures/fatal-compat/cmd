@@ -1,3 +1,2 @@
-cpp:json src/module.thrift
 #cpp2:compatibility,fatal src/module.thrift
 mstch_cpp2:compatibility,fatal src/module.thrift
