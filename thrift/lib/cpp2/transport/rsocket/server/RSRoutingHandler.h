@@ -16,9 +16,6 @@
 
 #pragma once
 
-#include <rsocket/RSocketServer.h>
-#include <rsocket/RSocketServiceHandler.h>
-#include <rsocket/RSocketStats.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
@@ -38,7 +35,7 @@ class RSRoutingHandler : public TransportRoutingHandler {
   bool canAcceptConnection(const std::vector<uint8_t>& bytes) override;
   bool canAcceptEncryptedConnection(const std::string& protocolName) override;
   void handleConnection(
-      wangle::ConnectionManager*,
+      wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress const* peerAddress,
       wangle::TransportInfo const& tinfo) override;
@@ -46,13 +43,6 @@ class RSRoutingHandler : public TransportRoutingHandler {
  private:
   ThriftProcessor* thriftProcessor_;
   const apache::thrift::server::ServerConfigs& serverConfigs_;
-
-  // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
-  // as input, but it does not use it at all. We should get rid of it.
-  folly::EventBase dummyEventBase_;
-
-  std::shared_ptr<rsocket::RSocketServiceHandler> serviceHandler_;
-  std::shared_ptr<rsocket::RSocketServer> rsocketServer_;
 
   std::atomic<bool> listening_{true};
 };

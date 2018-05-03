@@ -17,8 +17,8 @@
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 #include <folly/io/async/EventBaseManager.h>
-#include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/ManagedRSocketConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 
 using namespace rsocket;
@@ -29,19 +29,7 @@ namespace thrift {
 RSRoutingHandler::RSRoutingHandler(
     apache::thrift::ThriftProcessor* thriftProcessor,
     const apache::thrift::server::ServerConfigs& serverConfigs)
-    : thriftProcessor_(thriftProcessor), serverConfigs_(serverConfigs) {
-  serviceHandler_ = RSocketServiceHandler::create([&](auto&) {
-    // RSResponder will be created per client connection. It will use the
-    // current Observer of the server.
-    return std::make_shared<RSResponder>(
-        thriftProcessor_,
-        folly::EventBaseManager::get()->getExistingEventBase(),
-        serverConfigs.getObserver());
-  });
-
-  rsocketServer_ = RSocket::createServer(nullptr);
-  rsocketServer_->setSingleThreadedResponder();
-}
+    : thriftProcessor_(thriftProcessor), serverConfigs_(serverConfigs) {}
 
 RSRoutingHandler::~RSRoutingHandler() {
   stopListening();
@@ -49,10 +37,6 @@ RSRoutingHandler::~RSRoutingHandler() {
 
 void RSRoutingHandler::stopListening() {
   listening_ = false;
-  if (rsocketServer_) {
-    rsocketServer_->shutdownAndWait();
-    rsocketServer_.reset();
-  }
 }
 
 bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
@@ -74,17 +58,15 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
 
        /*
         * SETUP frames have a frame type value of 0x01.
-        * RESUME frames have a frame type value of 0x0D.
         *
         * Since the frame type is specified in only 6 bits, the value is
-        * bitshifted by << 2 before stored. Thus, SETUP becomes 0x04, and
-        * RESUME becomes 0x34.
+        * bitshifted by << 2 before stored. Thus, SETUP becomes 0x04.
         *
         * For more, see:
         * https://github.com/rsocket/rsocket/blob/master/Protocol.md#frame-types
         */
-       // setupOrResumeFrame
-       && (bytes[7] == 0x04 || bytes[7] == 0x34));
+       // setupFrame
+       && bytes[7] == 0x04);
 }
 
 bool RSRoutingHandler::canAcceptEncryptedConnection(
@@ -93,35 +75,33 @@ bool RSRoutingHandler::canAcceptEncryptedConnection(
 }
 
 void RSRoutingHandler::handleConnection(
-    wangle::ConnectionManager*,
+    wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress const*,
     wangle::TransportInfo const&) {
-  auto server = rsocketServer_; // Destruction guard
   if (!listening_) {
     return;
   }
-  auto connection = std::make_unique<TcpDuplexConnection>(
-      std::
-          unique_ptr<folly::AsyncSocket, folly::DelayedDestruction::Destructor>(
-              dynamic_cast<folly::AsyncSocket*>(sock.release())));
+
+  auto managedConnection =
+      new ManagedRSocketConnection(std::move(sock), [&](auto&) {
+        // RSResponder will be created per client connection. It will use the
+        // current Observer of the server.
+        return std::make_shared<RSResponder>(
+            thriftProcessor_,
+            folly::EventBaseManager::get()->getExistingEventBase(),
+            serverConfigs_.getObserver());
+      });
+
+  connectionManager->addConnection(managedConnection);
 
   auto observer = serverConfigs_.getObserver();
   if (observer) {
     observer->connAccepted();
-    // RSocket increases the number of connected clients when the server
-    // receives the SETUP frame from the client. So we assume that the number of
-    // connected clients to the RSocket server to be 1 more than the count that
-    // RSocket server informs for the moment.
-    auto numConnections = server->getNumConnections() + 1;
     observer->activeConnections(
-        numConnections * serverConfigs_.getNumIOWorkerThreads());
+        connectionManager->getNumConnections() *
+        serverConfigs_.getNumIOWorkerThreads());
   }
-
-  // TODO T21601758: RSocketServer's acceptConnection method takes an eventBase
-  // as input, but it does not use it at all. We should get rid of it.
-  server->acceptConnection(
-      std::move(connection), dummyEventBase_, serviceHandler_);
 }
 } // namespace thrift
 } // namespace apache
