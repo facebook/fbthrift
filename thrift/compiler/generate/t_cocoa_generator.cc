@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -239,6 +240,7 @@ class t_cocoa_generator : public t_oop_generator {
   std::string call_field_setter(t_field* tfield, std::string fieldName);
   std::string containerize(t_type * ttype, std::string fieldName);
   std::string decontainerize(t_field * tfield, std::string fieldName);
+  std::string get_cocoa_property_name(t_field* tfield);
 
   bool type_can_be_null(t_type* ttype) {
     ttype = get_true_type(ttype);
@@ -676,14 +678,15 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_declarations(ofstre
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     // out << indent() << "#if !__has_feature(objc_arc)" << endl
     if (is_declare_getter) {
-      out << indent() << "- (" << type_name((*m_iter)->get_type()) << ") " << decapitalize((*m_iter)->get_name())
-              << ";" << endl;
+      out << indent() << "- (" << type_name((*m_iter)->get_type()) << ") "
+          << decapitalize(get_cocoa_property_name(*m_iter)) << ";" << endl;
     }
 
     if (is_declare_setter) {
-      out << indent() << "- (void) set" << capitalize((*m_iter)->get_name()) <<
-        ": (" << type_name((*m_iter)->get_type()) << ") " << (*m_iter)->get_name()
-              << ";" << endl;
+      out << indent() << "- (void) set"
+          << capitalize(get_cocoa_property_name(*m_iter)) << ": ("
+          << type_name((*m_iter)->get_type()) << ") " << (*m_iter)->get_name()
+          << ";" << endl;
     }
     // out << indent() << "#endif" << endl;
     if (is_declare_isset_getter) {
@@ -1288,12 +1291,13 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(ofs
     t_field* field = *f_iter;
     t_type* type = get_true_type(field->get_type());
     const std::string field_name = field->get_name();
-    std::string cap_name = field_name;
+    const std::string getter_selector = get_cocoa_property_name(field);
+    std::string cap_name = getter_selector;
     cap_name[0] = toupper(cap_name[0]);
 
     // Simple getter
     indent(out) << "- (" << type_name(type) << ") ";
-    out << field_name << " {" << endl;
+    out << getter_selector << " {" << endl;
     indent_up();
     if (!type_can_be_null(type)) {
       indent(out) << "return " << kFieldPrefix << field_name << ";" << endl;
@@ -2969,10 +2973,11 @@ string t_cocoa_generator::declare_property(t_field* tfield) {
     }
   }
   render
-         // << ", getter=" << decapitalize(tfield->get_name())
-         // << ", setter=set" << capitalize(tfield->get_name()) + ":"
-         << ")"
-         << " " << type_name(tfield->get_type()) << " " << tfield->get_name() << ";";
+      // << ", getter=" << decapitalize(get_cocoa_property_name(tfield))
+      // << ", setter=set" << capitalize(get_cocoa_property_name(tfield)) + ":"
+      << ")"
+      << " " << type_name(tfield->get_type()) << " "
+      << get_cocoa_property_name(tfield) << ";";
   return render.str();
 }
 
@@ -3109,9 +3114,20 @@ string t_cocoa_generator::format_string_for_type(t_type* type) {
  */
 
 string t_cocoa_generator::call_field_setter(t_field* tfield, string fieldName) {
-  return "[self set" + capitalize(tfield->get_name()) + ": " + fieldName + "];";
+  return "[self set" + capitalize(get_cocoa_property_name(tfield)) + ": " +
+      fieldName + "];";
 }
 
+string t_cocoa_generator::get_cocoa_property_name(t_field* tfield) {
+  const auto nameAnnotation = std::find_if(
+      std::begin(tfield->annotations_),
+      std::end(tfield->annotations_),
+      [](auto annotation) { return annotation.first == "cocoa.name"; });
+
+  return (nameAnnotation != std::end(tfield->annotations_))
+      ? nameAnnotation->second
+      : tfield->get_name();
+}
 
 THRIFT_REGISTER_GENERATOR(cocoa, "Cocoa",
 "    import_path=XYZ: Override thrift package import path\n"
