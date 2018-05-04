@@ -160,7 +160,7 @@ void ManagedRSocketConnection::onSetup(
       RSocketMode::SERVER,
       RSocketStats::noop(),
       nullptr, /* connectionEvents */
-      nullptr, /* resumeManager */
+      ResumeManager::makeEmpty(),
       nullptr /* coldResumeHandler */);
 
   stateMachine_->registerCloseCallback(this);

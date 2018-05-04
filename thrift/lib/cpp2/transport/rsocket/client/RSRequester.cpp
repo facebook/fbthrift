@@ -38,7 +38,7 @@ static std::shared_ptr<RSocketStateMachine> createStateMachine(
       RSocketMode::CLIENT,
       nullptr,
       std::move(events),
-      nullptr,
+      ResumeManager::makeEmpty(),
       nullptr);
 
   SetupParameters setupParameters;
