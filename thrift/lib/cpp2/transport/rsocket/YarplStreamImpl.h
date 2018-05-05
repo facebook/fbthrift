@@ -233,9 +233,11 @@ class YarplStreamImpl : public StreamImplIf {
     return std::make_unique<YarplStreamImpl>(
         flowable_->map(std::move(mapFunc)));
   }
-  std::unique_ptr<StreamImplIf>
-      observeVia(folly::SequencedExecutor* executor) && override {
-    return std::make_unique<YarplStreamImpl>(flowable_->observeOn(*executor));
+  std::unique_ptr<StreamImplIf> observeVia(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor) &&
+      override {
+    return std::make_unique<YarplStreamImpl>(
+        flowable_->observeOn(std::move(executor)));
   }
   std::unique_ptr<StreamImplIf>
       subscribeVia(folly::SequencedExecutor* executor) && override {

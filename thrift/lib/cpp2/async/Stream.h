@@ -19,6 +19,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/executors/SequencedExecutor.h>
+#include <folly/executors/SerialExecutor.h>
 #include <folly/futures/Future.h>
 
 namespace apache {
@@ -66,7 +67,7 @@ class StreamImplIf {
   virtual std::unique_ptr<StreamImplIf> subscribeVia(
       folly::SequencedExecutor*) && = 0;
   virtual std::unique_ptr<StreamImplIf> observeVia(
-      folly::SequencedExecutor*) && = 0;
+      folly::Executor::KeepAlive<folly::SequencedExecutor>) && = 0;
 
   virtual void subscribe(std::unique_ptr<SubscriberIf<Value>>) && = 0;
 };
@@ -126,9 +127,24 @@ class Stream {
 
   static Stream create(
       std::unique_ptr<detail::StreamImplIf> impl,
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+    auto executorPtr = executor.get();
+    return Stream(
+        std::move(*impl).observeVia(std::move(executor)), executorPtr);
+  }
+
+  static Stream create(
+      std::unique_ptr<detail::StreamImplIf> impl,
       folly::SequencedExecutor* executor) {
-    Stream stream(std::move(*impl).observeVia(executor), executor);
-    return stream;
+    return create(std::move(impl), folly::getKeepAliveToken(executor));
+  }
+
+  static Stream create(
+      std::unique_ptr<detail::StreamImplIf> impl,
+      folly::Executor* executor) {
+    return create(
+        std::move(impl),
+        folly::SerialExecutor::create(folly::getKeepAliveToken(executor)));
   }
 
   explicit operator bool() const {

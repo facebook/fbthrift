@@ -39,7 +39,9 @@ class SemiStream {
   template <typename F>
   SemiStream<folly::invoke_result_t<F, T&&>> map(F&&) &&;
 
+  Stream<T> via(folly::Executor::KeepAlive<folly::SequencedExecutor>) &&;
   Stream<T> via(folly::SequencedExecutor*) &&;
+  Stream<T> via(folly::Executor*) &&;
 
  private:
   template <typename U>

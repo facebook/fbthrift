@@ -18,6 +18,8 @@
 
 #include <cassert>
 
+#include <folly/executors/SerialExecutor.h>
+
 namespace apache {
 namespace thrift {
 
@@ -41,13 +43,26 @@ SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(F&& f) && {
 }
 
 template <typename T>
-Stream<T> SemiStream<T>::via(folly::SequencedExecutor* executor) && {
+Stream<T> SemiStream<T>::via(
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor) && {
   auto impl = std::move(impl_);
-  impl = std::move(*impl).observeVia(executor);
+  auto executorPtr = executor.get();
+  impl = std::move(*impl).observeVia(std::move(executor));
   for (auto& mapFunc : mapFuncs_) {
     impl = std::move(*impl).map(std::move(mapFunc));
   }
-  return Stream<T>(std::move(impl), executor);
+  return Stream<T>(std::move(impl), executorPtr);
+}
+
+template <typename T>
+Stream<T> SemiStream<T>::via(folly::SequencedExecutor* executor) && {
+  return std::move(*this).via(folly::getKeepAliveToken(executor));
+}
+
+template <typename T>
+Stream<T> SemiStream<T>::via(folly::Executor* executor) && {
+  return std::move(*this).via(
+      folly::SerialExecutor::create(folly::getKeepAliveToken(executor)));
 }
 } // namespace thrift
 } // namespace apache
