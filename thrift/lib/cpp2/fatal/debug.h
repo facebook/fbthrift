@@ -83,7 +83,11 @@ bool debug_equals(
  */
 template <typename Output>
 struct debug_output_callback {
-  explicit debug_output_callback(Output& out) : out_(out) {}
+  explicit debug_output_callback(
+      Output& out,
+      folly::StringPiece lhs,
+      folly::StringPiece rhs)
+      : out_(out), lhs_(lhs), rhs_(rhs) {}
 
   template <typename T>
   void operator()(
@@ -92,15 +96,21 @@ struct debug_output_callback {
       folly::StringPiece path,
       folly::StringPiece message) const {
     out_ << path << ": " << message;
-    out_ << std::endl << "  lhs:" << std::endl;
+    out_ << "\n"
+         << "  " << lhs_ << ":"
+         << "\n";
     pretty_print(out_, lhs, "  ", "    ");
-    out_ << std::endl << "  rhs:" << std::endl;
+    out_ << "\n"
+         << "  " << rhs_ << ":"
+         << "\n";
     pretty_print(out_, rhs, "  ", "    ");
-    out_ << std::endl;
+    out_ << "\n";
   }
 
  private:
   Output& out_;
+  folly::StringPiece lhs_;
+  folly::StringPiece rhs_;
 };
 
 /**
@@ -126,8 +136,11 @@ struct debug_output_callback {
  */
 
 template <typename Output>
-debug_output_callback<Output> make_debug_output_callback(Output& output) {
-  return debug_output_callback<Output>(output);
+debug_output_callback<Output> make_debug_output_callback(
+    Output& output,
+    folly::StringPiece lhs = "lhs",
+    folly::StringPiece rhs = "rhs") {
+  return debug_output_callback<Output>(output, lhs, rhs);
 }
 
 } // namespace thrift

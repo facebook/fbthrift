@@ -21,42 +21,11 @@
 namespace apache {
 namespace thrift {
 
-struct EqualHelperCallback {
-  explicit EqualHelperCallback(
-      const char* left,
-      const char* right,
-      ::testing::AssertionResult& result)
-      : left_(left), right_(right), result_(result) {}
-
-  template <typename T>
-  void operator()(
-      T const& a,
-      T const& b,
-      folly::StringPiece path,
-      folly::StringPiece message) const {
-    result_ << path << ": " << message;
-
-    result_ << '\n' << left_ << ":\n";
-    ::apache::thrift::pretty_print(result_, a, "  ", "    ");
-
-    result_ << '\n' << right_ << ":\n";
-    ::apache::thrift::pretty_print(result_, b, "  ", "    ");
-
-    result_ << '\n';
-  }
-
- private:
-  const char* left_;
-  const char* right_;
-  ::testing::AssertionResult& result_;
-};
-
 template <class T>
 ::testing::AssertionResult
 thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
   ::testing::AssertionResult result(false);
-  if (::apache::thrift::debug_equals(
-          a, b, EqualHelperCallback(left, right, result))) {
+  if (debug_equals(a, b, make_debug_output_callback(result, left, right))) {
     return ::testing::AssertionResult(true);
   } else {
     return result;
@@ -68,3 +37,6 @@ thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
 
 #define EXPECT_THRIFT_EQ(a, b) \
   EXPECT_PRED_FORMAT2(::apache::thrift::thriftEqualHelper, a, b)
+
+#define ASSERT_THRIFT_EQ(a, b) \
+  ASSERT_PRED_FORMAT2(::apache::thrift::thriftEqualHelper, a, b)

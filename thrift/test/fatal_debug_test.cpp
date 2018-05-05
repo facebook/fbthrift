@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/fatal/debug.h>
+#include <thrift/lib/cpp2/fatal/gmock_matching.h>
 #include <thrift/lib/cpp2/fatal/testing.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
@@ -144,6 +145,9 @@ TEST(Equal, Failure) {
   pod2.fieldR["b"].c = 2;
   pod2.fieldR["a"].c = 1;
   EXPECT_THRIFT_EQ(pod1, pod2);
+  // This is just to test that the ThriftEq matcher works:
+  using apache::thrift::ThriftEq;
+  EXPECT_THAT(pod2, ThriftEq(pod1));
 }
 
 TEST(fatal_debug, fieldA) {
