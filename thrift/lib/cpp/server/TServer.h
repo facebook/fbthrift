@@ -30,7 +30,6 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/transport/TServerTransport.h>
-#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 namespace folly {
 class SocketAddress;
@@ -155,97 +154,83 @@ class TServer : public concurrency::Runnable {
   }
 
 protected:
-  template<typename ProcessorFactory>
-  TServer(const std::shared_ptr<ProcessorFactory>& processorFactory,
-          THRIFT_OVERLOAD_IF(ProcessorFactory, TProcessorFactory)):
-    processorFactory_(processorFactory) {
+ TServer(const std::shared_ptr<TProcessorFactory>& processorFactory)
+     : processorFactory_(processorFactory) {
+   setTransportFactory(
+       std::shared_ptr<TTransportFactory>(new TTransportFactory()));
+   setProtocolFactory(
+       std::shared_ptr<TBinaryProtocolFactory>(new TBinaryProtocolFactory()));
+  }
+
+  TServer(const std::shared_ptr<TProcessor>& processor)
+      : processorFactory_(new TSingletonProcessorFactory(processor)) {
     setTransportFactory(std::shared_ptr<TTransportFactory>(
                           new TTransportFactory()));
     setProtocolFactory(std::shared_ptr<TBinaryProtocolFactory>(
                          new TBinaryProtocolFactory()));
   }
 
-  template<typename Processor>
-  TServer(const std::shared_ptr<Processor>& processor,
-          THRIFT_OVERLOAD_IF(Processor, TProcessor)):
-    processorFactory_(new TSingletonProcessorFactory(processor)) {
+  TServer(
+      const std::shared_ptr<TProcessorFactory>& processorFactory,
+      const std::shared_ptr<TServerTransport>& serverTransport)
+      : processorFactory_(processorFactory), serverTransport_(serverTransport) {
     setTransportFactory(std::shared_ptr<TTransportFactory>(
                           new TTransportFactory()));
     setProtocolFactory(std::shared_ptr<TBinaryProtocolFactory>(
                          new TBinaryProtocolFactory()));
   }
 
-  template<typename ProcessorFactory>
-  TServer(const std::shared_ptr<ProcessorFactory>& processorFactory,
-          const std::shared_ptr<TServerTransport>& serverTransport,
-          THRIFT_OVERLOAD_IF(ProcessorFactory, TProcessorFactory)):
-    processorFactory_(processorFactory),
-    serverTransport_(serverTransport) {
+  TServer(
+      const std::shared_ptr<TProcessor>& processor,
+      const std::shared_ptr<TServerTransport>& serverTransport)
+      : processorFactory_(new TSingletonProcessorFactory(processor)),
+        serverTransport_(serverTransport) {
     setTransportFactory(std::shared_ptr<TTransportFactory>(
                           new TTransportFactory()));
     setProtocolFactory(std::shared_ptr<TBinaryProtocolFactory>(
                          new TBinaryProtocolFactory()));
   }
 
-  template<typename Processor>
-  TServer(const std::shared_ptr<Processor>& processor,
-          const std::shared_ptr<TServerTransport>& serverTransport,
-          THRIFT_OVERLOAD_IF(Processor, TProcessor)):
-    processorFactory_(new TSingletonProcessorFactory(processor)),
-    serverTransport_(serverTransport) {
-    setTransportFactory(std::shared_ptr<TTransportFactory>(
-                          new TTransportFactory()));
-    setProtocolFactory(std::shared_ptr<TBinaryProtocolFactory>(
-                         new TBinaryProtocolFactory()));
-  }
-
-  template<typename ProcessorFactory>
-  TServer(const std::shared_ptr<ProcessorFactory>& processorFactory,
-          const std::shared_ptr<TServerTransport>& serverTransport,
-          const std::shared_ptr<TTransportFactory>& transportFactory,
-          const std::shared_ptr<TProtocolFactory>& protocolFactory,
-          THRIFT_OVERLOAD_IF(ProcessorFactory, TProcessorFactory)):
-    processorFactory_(processorFactory),
-    serverTransport_(serverTransport) {
+  TServer(
+      const std::shared_ptr<TProcessorFactory>& processorFactory,
+      const std::shared_ptr<TServerTransport>& serverTransport,
+      const std::shared_ptr<TTransportFactory>& transportFactory,
+      const std::shared_ptr<TProtocolFactory>& protocolFactory)
+      : processorFactory_(processorFactory), serverTransport_(serverTransport) {
     setTransportFactory(transportFactory);
     setProtocolFactory(protocolFactory);
   }
 
-  template<typename Processor>
-  TServer(const std::shared_ptr<Processor>& processor,
-          const std::shared_ptr<TServerTransport>& serverTransport,
-          const std::shared_ptr<TTransportFactory>& transportFactory,
-          const std::shared_ptr<TProtocolFactory>& protocolFactory,
-          THRIFT_OVERLOAD_IF(Processor, TProcessor)):
-    processorFactory_(new TSingletonProcessorFactory(processor)),
-    serverTransport_(serverTransport) {
+  TServer(
+      const std::shared_ptr<TProcessor>& processor,
+      const std::shared_ptr<TServerTransport>& serverTransport,
+      const std::shared_ptr<TTransportFactory>& transportFactory,
+      const std::shared_ptr<TProtocolFactory>& protocolFactory)
+      : processorFactory_(new TSingletonProcessorFactory(processor)),
+        serverTransport_(serverTransport) {
     setTransportFactory(transportFactory);
     setProtocolFactory(protocolFactory);
   }
 
-  template<typename ProcessorFactory>
   TServer(
-    const std::shared_ptr<ProcessorFactory>& processorFactory,
-    const std::shared_ptr<TServerTransport>& serverTransport,
-    const std::shared_ptr<TDuplexTransportFactory>& duplexTransportFactory,
-    const std::shared_ptr<TDuplexProtocolFactory>& duplexProtocolFactory,
-    THRIFT_OVERLOAD_IF(ProcessorFactory, TProcessorFactory)) :
-    processorFactory_(processorFactory),
-    serverTransport_(serverTransport),
-    duplexTransportFactory_(duplexTransportFactory),
-    duplexProtocolFactory_(duplexProtocolFactory) {}
+      const std::shared_ptr<TProcessorFactory>& processorFactory,
+      const std::shared_ptr<TServerTransport>& serverTransport,
+      const std::shared_ptr<TDuplexTransportFactory>& duplexTransportFactory,
+      const std::shared_ptr<TDuplexProtocolFactory>& duplexProtocolFactory)
+      : processorFactory_(processorFactory),
+        serverTransport_(serverTransport),
+        duplexTransportFactory_(duplexTransportFactory),
+        duplexProtocolFactory_(duplexProtocolFactory) {}
 
-  template<typename Processor>
   TServer(
-    const std::shared_ptr<Processor>& processor,
-    const std::shared_ptr<TServerTransport>& serverTransport,
-    const std::shared_ptr<TDuplexTransportFactory>& duplexTransportFactory,
-    const std::shared_ptr<TDuplexProtocolFactory>& duplexProtocolFactory,
-    THRIFT_OVERLOAD_IF(Processor, TProcessor)) :
-    processorFactory_(new TSingletonProcessorFactory(processor)),
-    serverTransport_(serverTransport),
-    duplexTransportFactory_(duplexTransportFactory),
-    duplexProtocolFactory_(duplexProtocolFactory) {}
+      const std::shared_ptr<TProcessor>& processor,
+      const std::shared_ptr<TServerTransport>& serverTransport,
+      const std::shared_ptr<TDuplexTransportFactory>& duplexTransportFactory,
+      const std::shared_ptr<TDuplexProtocolFactory>& duplexProtocolFactory)
+      : processorFactory_(new TSingletonProcessorFactory(processor)),
+        serverTransport_(serverTransport),
+        duplexTransportFactory_(duplexTransportFactory),
+        duplexProtocolFactory_(duplexProtocolFactory) {}
 
   /**
    * Get a TProcessor to handle calls on a particular connection.
