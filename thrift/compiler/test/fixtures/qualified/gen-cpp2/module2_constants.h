@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "module2_types.h"
+#include "src/gen-cpp2/module2_types.h"
 
 namespace module2 {
 

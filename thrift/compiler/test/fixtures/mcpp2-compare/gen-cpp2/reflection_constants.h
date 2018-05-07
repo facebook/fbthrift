@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "reflection_types.h"
+#include "src/gen-cpp2/reflection_types.h"
 
 namespace cpp2 {
 

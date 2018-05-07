@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "forward_compatibility_types.h"
+#include "src/gen-cpp2/forward_compatibility_types.h"
 
 namespace cpp2 {
 

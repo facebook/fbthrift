@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "service_types.h"
+#include "src/gen-cpp2/service_types.h"
 
 namespace cpp2 {
 

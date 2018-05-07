@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "includes_types.h"
+#include "src/gen-cpp2/includes_types.h"
 
 namespace a { namespace different { namespace ns {
 

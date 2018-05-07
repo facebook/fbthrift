@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "extra_services_types.h"
+#include "src/gen-cpp2/extra_services_types.h"
 
 namespace extra { namespace svc {
 
