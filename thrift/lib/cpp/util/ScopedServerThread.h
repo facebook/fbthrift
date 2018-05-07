@@ -38,8 +38,6 @@ class TServer;
 }
 namespace util {
 
-class ServerCreator;
-
 /**
  * ScopedServerThread spawns a thrift server in a new thread.
  *
@@ -56,23 +54,9 @@ class ScopedServerThread : public boost::noncopyable {
   /**
    * Create a ScopedServerThread object and automatically start it.
    */
-  explicit ScopedServerThread(ServerCreator* serverCreator);
-
-  /**
-   * Create a ScopedServerThread object and automatically start it.
-   */
   explicit ScopedServerThread(std::shared_ptr<server::TServer> server);
 
   virtual ~ScopedServerThread();
-
-  /**
-   * Start the server thread.
-   *
-   * This method does not return until the server has successfully started.
-   *
-   * @param serverCreator The ServerCreator object to use to create the server.
-   */
-  void start(ServerCreator* serverCreator);
 
   /**
    * Start the server thread.

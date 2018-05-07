@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/server/TServer.h>
-#include <thrift/lib/cpp/util/ServerCreator.h>
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 
@@ -257,20 +256,12 @@ void ScopedServerThread::Helper::EventHandler::preServe(
 ScopedServerThread::ScopedServerThread() {
 }
 
-ScopedServerThread::ScopedServerThread(ServerCreator* serverCreator) {
-  start(serverCreator);
-}
-
 ScopedServerThread::ScopedServerThread(shared_ptr<TServer> server) {
   start(std::move(server));
 }
 
 ScopedServerThread::~ScopedServerThread() {
   stop();
-}
-
-void ScopedServerThread::start(ServerCreator* serverCreator) {
-  start(serverCreator->createServer());
 }
 
 void ScopedServerThread::start(shared_ptr<TServer> server) {
