@@ -103,21 +103,6 @@ int main(int argc, char* argv[]) {
 
   auto handler = std::make_shared<AsyncLoadHandler2>();
 
-  folly::ssl::setLockTypes({
-#ifdef CRYPTO_LOCK_EVP_PKEY
-      {CRYPTO_LOCK_EVP_PKEY, folly::ssl::LockType::NONE},
-#endif
-#ifdef CRYPTO_LOCK_SSL_SESSION
-      {CRYPTO_LOCK_SSL_SESSION, folly::ssl::LockType::SPINLOCK},
-#endif
-#ifdef CRYPTO_LOCK_SSL_CTX
-      {CRYPTO_LOCK_SSL_CTX, folly::ssl::LockType::NONE},
-#endif
-#ifdef CRYPTO_LOCK_ERR
-      {CRYPTO_LOCK_ERR, folly::ssl::LockType::SPINLOCK}
-#endif
-  });
-
   std::shared_ptr<ThriftServer> server;
   server.reset(new ThriftServer());
   server->setInterface(handler);
