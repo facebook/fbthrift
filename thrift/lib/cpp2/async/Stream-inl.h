@@ -106,9 +106,9 @@ Subscription Stream<T>::subscribe(
   class Subscriber {
    public:
     Subscriber(OnNext&& onNext, OnError&& onError, OnComplete&& onComplete)
-        : onNext_(std::move(onNext)),
-          onError_(std::move(onError)),
-          onComplete_(std::move(onComplete)) {}
+        : onNext_(std::forward<OnNext>(onNext)),
+          onError_(std::forward<OnError>(onError)),
+          onComplete_(std::forward<OnComplete>(onComplete)) {}
 
     void onNext(T&& value) {
       onNext_(std::move(value));
@@ -123,9 +123,9 @@ Subscription Stream<T>::subscribe(
     }
 
    private:
-    OnNext onNext_;
-    OnError onError_;
-    OnComplete onComplete_;
+    std::decay_t<OnNext> onNext_;
+    std::decay_t<OnError> onError_;
+    std::decay_t<OnComplete> onComplete_;
   };
 
   return std::move(*this).subscribe(
@@ -146,7 +146,7 @@ Subscription Stream<T>::subscribe(Subscriber&& subscriber, int64_t batch) && {
         Subscriber&& subscriber,
         int64_t batch)
         : sharedState_(std::make_shared<SharedState>(executor)),
-          subscriber_(std::move(subscriber)),
+          subscriber_(std::forward<Subscriber>(subscriber)),
           batch_(batch) {
       sharedState_->executor = &executor;
     }
@@ -233,7 +233,7 @@ Subscription Stream<T>::subscribe(Subscriber&& subscriber, int64_t batch) && {
 
     std::shared_ptr<SharedState> sharedState_;
 
-    Subscriber subscriber_;
+    std::decay_t<Subscriber> subscriber_;
     const int64_t batch_;
     int64_t pending_{0};
     folly::Promise<folly::Unit> completePromise_;
