@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
+#include <yarpl/flowable/Flowable.h>
 
 namespace apache {
 namespace thrift {
@@ -40,15 +41,18 @@ TEST_F(RSResponderTestFixture, RequestResponse_Simple) {
         5, 10, false, &request, metadata.get());
     auto metaBuf = RSocketClientChannel::serializeMetadata(*metadata);
 
-    auto response = responder_->handleRequestResponse(
-        rsocket::Payload(request.move(), std::move(metaBuf)), 0);
-    response->subscribe(
-        [](auto payload) {
-          auto result =
-              CoreTestFixture::deserializeSumTwoNumbers(payload.data.get());
-          EXPECT_EQ(result, 15);
-        },
-        [](folly::exception_wrapper) { FAIL() << "No error is expected"; });
+    responder_->handleRequestResponse(
+        rsocket::Payload(request.move(), std::move(metaBuf)),
+        0,
+        yarpl::single::SingleObserver<rsocket::Payload>::create(
+            [](auto payload) {
+              auto result =
+                  CoreTestFixture::deserializeSumTwoNumbers(payload.data.get());
+              EXPECT_EQ(result, 15);
+            },
+            [](folly::exception_wrapper) {
+              FAIL() << "No error is expected";
+            }));
   });
 
   eventBase_.loop();
@@ -63,17 +67,20 @@ TEST_F(RSResponderTestFixture, RequestResponse_MissingRPCMethod) {
         5, 10, true, &request, metadata.get());
     auto metaBuf = RSocketClientChannel::serializeMetadata(*metadata);
 
-    auto response = responder_->handleRequestResponse(
-        rsocket::Payload(request.move(), std::move(metaBuf)), 0);
-    response->subscribe(
-        [](auto payload) {
-          EXPECT_THAT(
-              payload.data->cloneCoalescedAsValue()
-                  .moveToFbString()
-                  .toStdString(),
-              HasSubstr("not found"));
-        },
-        [](folly::exception_wrapper) { FAIL() << "No error is expected"; });
+    responder_->handleRequestResponse(
+        rsocket::Payload(request.move(), std::move(metaBuf)),
+        0,
+        yarpl::single::SingleObserver<rsocket::Payload>::create(
+            [](auto payload) {
+              EXPECT_THAT(
+                  payload.data->cloneCoalescedAsValue()
+                      .moveToFbString()
+                      .toStdString(),
+                  HasSubstr("not found"));
+            },
+            [](folly::exception_wrapper) {
+              FAIL() << "No error is expected";
+            }));
   });
 
   eventBase_.loop();

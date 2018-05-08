@@ -24,33 +24,29 @@
 namespace apache {
 namespace thrift {
 
+using namespace rsocket;
+
 RSResponder::RSResponder(
     ThriftProcessor* processor,
     folly::EventBase* evb,
     std::shared_ptr<apache::thrift::server::TServerObserver> observer)
     : processor_(processor), evb_(evb), observer_(std::move(observer)) {}
 
-std::shared_ptr<yarpl::single::Single<rsocket::Payload>>
-RSResponder::handleRequestResponse(
-    rsocket::Payload request,
-    rsocket::StreamId) {
-  // TODO: Where do we use this streamId value -> might make batching possible!
+void RSResponder::handleRequestResponse(
+    Payload request,
+    StreamId,
+    std::shared_ptr<yarpl::single::SingleObserver<Payload>> response) noexcept {
   DCHECK(request.metadata);
-  return yarpl::single::Single<rsocket::Payload>::create(
-      [this, request = std::move(request)](auto subscriber) mutable {
-        auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
-        DCHECK(metadata->__isset.kind);
-        DCHECK(metadata->__isset.seqId);
+  auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
+  DCHECK(metadata->__isset.kind);
+  DCHECK(metadata->__isset.seqId);
 
-        auto channel = std::make_shared<RequestResponse>(evb_, subscriber);
-        processor_->onThriftRequest(
-            std::move(metadata), std::move(request.data), channel);
-      });
+  auto channel = std::make_shared<RequestResponse>(evb_, std::move(response));
+  processor_->onThriftRequest(
+      std::move(metadata), std::move(request.data), channel);
 }
 
-void RSResponder::handleFireAndForget(
-    rsocket::Payload request,
-    rsocket::StreamId) {
+void RSResponder::handleFireAndForget(Payload request, StreamId) {
   auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
@@ -60,28 +56,22 @@ void RSResponder::handleFireAndForget(
       std::move(metadata), std::move(request.data), std::move(channel));
 }
 
-RSResponder::FlowableRef RSResponder::handleRequestStream(
-    rsocket::Payload request,
-    rsocket::StreamId streamId) {
-  (void)streamId;
-  // TODO This id is internally used by RSocketStateMachine but we need one more
-  // id that represents each RPC call - seqId.
+void RSResponder::handleRequestStream(
+    Payload request,
+    StreamId streamId,
+    std::shared_ptr<yarpl::flowable::Subscriber<Payload>> response) noexcept {
+  auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
+  DCHECK(metadata->__isset.kind);
+  DCHECK(metadata->__isset.seqId);
+  request.metadata.reset();
 
-  return yarpl::flowable::internal::flowableFromSubscriber<rsocket::Payload>(
-      [this, request = std::move(request), streamId](auto subscriber) mutable {
-        auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
-        DCHECK(metadata->__isset.kind);
-        DCHECK(metadata->__isset.seqId);
-        request.metadata.reset();
-
-        auto channel = std::make_shared<StreamOutput>(
-            evb_,
-            streamId,
-            std::make_shared<rsocket::ScheduledSubscriber<rsocket::Payload>>(
-                std::move(subscriber), *evb_));
-        processor_->onThriftRequest(
-            std::move(metadata), std::move(request.data), std::move(channel));
-      });
+  auto channel = std::make_shared<StreamOutput>(
+      evb_,
+      streamId,
+      std::make_shared<ScheduledSubscriber<Payload>>(
+          std::move(response), *evb_));
+  processor_->onThriftRequest(
+      std::move(metadata), std::move(request.data), std::move(channel));
 }
 
 } // namespace thrift
