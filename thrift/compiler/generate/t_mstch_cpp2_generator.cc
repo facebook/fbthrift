@@ -549,14 +549,21 @@ class mstch_cpp2_struct : public mstch_struct {
           (type->is_string() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr &&
            !field->get_value()->is_empty()) ||
-          (type->is_struct() && field->get_value() &&
-           !field->get_value()->is_empty()) ||
+          (type->is_struct() &&
+           (strct_ != dynamic_cast<t_struct const*>(type)) &&
+           ((field->get_value() && !field->get_value()->is_empty()) ||
+            ((has_annotation(field, "cpp.ref") ||
+              has_annotation(field, "cpp2.ref") ||
+              has_annotation(field, "cpp.ref_type") ||
+              has_annotation(field, "cpp2.ref_type")) &&
+             (field->get_req() != t_field::e_req::T_OPTIONAL)))) ||
           type->is_enum() ||
           (type->is_container() &&
            (has_annotation(field, "cpp.ref") ||
             has_annotation(field, "cpp2.ref") ||
             has_annotation(field, "cpp.ref_type") ||
-            has_annotation(field, "cpp2.ref_type")))) {
+            has_annotation(field, "cpp2.ref_type")) &&
+           (field->get_req() != t_field::e_req::T_OPTIONAL))) {
         filtered_fields.push_back(field);
       }
     }

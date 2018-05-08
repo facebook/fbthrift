@@ -2403,18 +2403,38 @@ template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::SimpleJSO
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-AnnotatedStruct::AnnotatedStruct() :
-      container_with_ref(std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
+AnnotatedStruct::AnnotatedStruct()
+    : cpp_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
+      cpp2_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
+      container_with_ref(
+          std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
+      req_cpp_unique_ref(
+          std::make_unique<::some::valid::ns::containerStruct>()),
+      req_cpp2_unique_ref(
+          std::make_unique<::some::valid::ns::containerStruct>()),
       req_container_with_ref(std::make_unique<std::vector<std::string>>()),
-      opt_container_with_ref(std::make_unique<std::set<int32_t>>()),
-      ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
+      ref_type_unique(std::make_unique<::some::valid::ns::containerStruct>()),
+      ref_type_shared(std::make_shared<::some::valid::ns::containerStruct>()),
+      ref_type_const(
+          std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
+      req_ref_type_shared(
+          std::make_shared<::some::valid::ns::containerStruct>()),
+      req_ref_type_const(
+          std::make_shared<::some::valid::ns::containerStruct>()),
       req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
-      opt_ref_type_shared(std::make_shared<std::set<int32_t>>()),
       base_type(0),
       indirection_a(0),
-      iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
-      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct( ::some::valid::ns::containerStruct(::apache::thrift::detail::wrap_argument<4>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_argument<9>(false))) {}
+      iobuf_type_val(
+          apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral(
+              "value")),
+      iobuf_ptr_val(
+          apache::thrift::StringTraits<
+              std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
+      struct_struct(::some::valid::ns::containerStruct(
+          ::apache::thrift::detail::wrap_argument<4>(
+              apache::thrift::StringTraits<std::string>::fromStringLiteral(
+                  "some string")),
+          ::apache::thrift::detail::wrap_argument<9>(false))) {}
 
 AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
     no_annotation(std::move(other.no_annotation)),
@@ -2534,18 +2554,20 @@ void AnnotatedStruct::__clear() {
   if (req_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp_unique_ref.get());
   if (req_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp2_unique_ref.get());
   req_container_with_ref.reset(new typename decltype(req_container_with_ref)::element_type());
-  if (opt_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp_unique_ref.get());
-  if (opt_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp2_unique_ref.get());
-  opt_container_with_ref.reset(new typename decltype(opt_container_with_ref)::element_type());
+  opt_cpp_unique_ref.reset();
+  opt_cpp2_unique_ref.reset();
+  opt_container_with_ref.reset();
   if (ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_unique.get());
   if (ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_shared.get());
   ref_type_const.reset(new typename decltype(ref_type_const)::element_type());
   if (req_ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_ref_type_shared.get());
-  req_ref_type_const.reset();
+  if (req_ref_type_const)
+    req_ref_type_const.reset(
+        new typename decltype(req_ref_type_const)::element_type());
   req_ref_type_unique.reset(new typename decltype(req_ref_type_unique)::element_type());
   opt_ref_type_const.reset();
-  if (opt_ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_ref_type_unique.get());
-  opt_ref_type_shared.reset(new typename decltype(opt_ref_type_shared)::element_type());
+  opt_ref_type_unique.reset();
+  opt_ref_type_shared.reset();
   base_type = 0;
   list_type.clear();
   set_type.clear();

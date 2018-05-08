@@ -4807,9 +4807,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::conta
 namespace some { namespace valid { namespace ns {
 class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
  public:
-
-  MyIncludedStruct() :
-      MyIncludedInt(42LL) {}
+  MyIncludedStruct()
+      : MyIncludedInt(42LL),
+        ARefField(std::make_unique<::some::valid::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>

@@ -220,7 +220,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::
 
 void MyStruct::__clear() {
   // clear all fields
-  if (opt_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(opt_ref.get());
+  opt_ref.reset();
   if (ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(ref.get());
   if (req_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(req_ref.get());
   __isset = {};
@@ -707,8 +707,11 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 void StructWithSharedConst::__clear() {
   // clear all fields
   opt_shared_const.reset();
-  shared_const.reset();
-  req_shared_const.reset();
+  if (shared_const)
+    shared_const.reset(new typename decltype(shared_const)::element_type());
+  if (req_shared_const)
+    req_shared_const.reset(new
+                           typename decltype(req_shared_const)::element_type());
   __isset = {};
 }
 

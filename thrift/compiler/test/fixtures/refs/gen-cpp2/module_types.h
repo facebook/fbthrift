@@ -514,8 +514,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyField>::serial
 namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
-
-  MyStruct() {}
+  MyStruct()
+      : ref(std::make_unique<::cpp2::MyField>()),
+        req_ref(std::make_unique<::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -618,9 +619,7 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyStruct>::seria
 namespace cpp2 {
 class StructWithUnion final : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
  public:
-
-  StructWithUnion() :
-      aDouble(0) {}
+  StructWithUnion() : u(std::make_unique<::cpp2::MyUnion>()), aDouble(0) {}
   // FragileConstructor for use in initialization lists only.
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -979,8 +978,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithContai
 namespace cpp2 {
 class StructWithSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
  public:
-
-  StructWithSharedConst() {}
+  StructWithSharedConst()
+      : shared_const(std::make_shared<::cpp2::MyField>()),
+        req_shared_const(std::make_shared<::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -1167,8 +1167,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Empty>::serializ
 namespace cpp2 {
 class StructWithRef final : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
  public:
-
-  StructWithRef() {}
+  StructWithRef()
+      : def_field(std::make_unique<::cpp2::Empty>()),
+        req_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -1271,8 +1272,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRef>::
 namespace cpp2 {
 class StructWithRefTypeUnique final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
  public:
-
-  StructWithRefTypeUnique() {}
+  StructWithRefTypeUnique()
+      : def_field(std::make_unique<::cpp2::Empty>()),
+        req_field(std::make_unique<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -1375,8 +1377,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 namespace cpp2 {
 class StructWithRefTypeShared final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
  public:
-
-  StructWithRefTypeShared() {}
+  StructWithRefTypeShared()
+      : def_field(std::make_shared<::cpp2::Empty>()),
+        req_field(std::make_shared<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -1481,8 +1484,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 namespace cpp2 {
 class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
  public:
-
-  StructWithRefTypeSharedConst() {}
+  StructWithRefTypeSharedConst()
+      : def_field(std::make_shared<::cpp2::Empty>()),
+        req_field(std::make_shared<::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>

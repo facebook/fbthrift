@@ -171,8 +171,8 @@ const NestedExample kNestedExample = {
 }
 
 struct NestedRefUnique {
-  1: Basic a (cpp.ref_type = "unique"),
-  2: Basic b (cpp.ref_type = "unique"),
+  1: optional Basic a (cpp.ref_type = "unique"),
+  2: optional Basic b (cpp.ref_type = "unique"),
   3: string c,
   4: string d,
 }
@@ -210,8 +210,8 @@ const NestedRefUniqueExample kNestedRefUniqueExample = {
 }
 
 struct NestedRefShared {
-  1: Basic a (cpp.ref_type = "shared"),
-  2: Basic b (cpp.ref_type = "shared"),
+  1: optional Basic a (cpp.ref_type = "shared"),
+  2: optional Basic b (cpp.ref_type = "shared"),
   3: string c,
   4: string d,
 }
@@ -249,8 +249,8 @@ const NestedRefSharedExample kNestedRefSharedExample = {
 }
 
 struct NestedRefSharedConst {
-  1: Basic a (cpp.ref_type = "shared_const"),
-  2: Basic b (cpp.ref_type = "shared_const"),
+  1: optional Basic a (cpp.ref_type = "shared_const"),
+  2: optional Basic b (cpp.ref_type = "shared_const"),
   3: string c,
   4: string d,
 }

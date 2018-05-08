@@ -58,7 +58,12 @@ void <%struct:name%>::__clear() {
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
+<%^field:optional?%>
   <%field:name%>.reset(new typename decltype(<%field:name%>)::element_type());
+<%/field:optional?%>
+<%#field:optional?%>
+  <%field:name%>.reset();
+<%/field:optional?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
   <%field:name%>.clear();
@@ -69,13 +74,28 @@ void <%struct:name%>::__clear() {
   ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(&<%field:name%>);
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
+<%^field:optional?%>
   if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:name%>.get());
+<%/field:optional?%>
+<%#field:optional?%>
+  <%field:name%>.reset();
+<%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
+<%^field:optional?%>
   if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:name%>.get());
+<%/field:optional?%>
+<%#field:optional?%>
+  <%field:name%>.reset();
+<%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
+<%^field:optional?%>
+  if (<%field:name%>) <%field:name%>.reset(new typename decltype(<%field:name%>)::element_type());
+<%/field:optional?%>
+<%#field:optional?%>
   <%field:name%>.reset();
+<%/field:optional?%>
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>
 <%/field:optionals?%>
