@@ -16,8 +16,9 @@
 #pragma once
 
 #include <folly/futures/Future.h>
-#include "yarpl/flowable/Flowable.h"
-#include "yarpl/flowable/Subscriber.h"
+#include <rsocket/Payload.h>
+#include <yarpl/flowable/Flowable.h>
+#include <yarpl/flowable/Subscriber.h>
 
 namespace apache {
 namespace thrift {
@@ -25,13 +26,18 @@ namespace thrift {
 /// This operator is optimized for a special case in Thrift.
 /// Neither the operator flowable nor the result flowable will support
 /// multi-subscribe
-template <typename T>
-class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
-  using Super = yarpl::flowable::FlowableOperator<T, T>;
+class TakeFirst
+    : public yarpl::flowable::
+          FlowableOperator<rsocket::Payload, std::unique_ptr<folly::IOBuf>> {
+  using T = rsocket::Payload;
+  using U = std::unique_ptr<folly::IOBuf>;
+  using Super = yarpl::flowable::FlowableOperator<T, U>;
 
  public:
-  TakeFirst(std::shared_ptr<yarpl::flowable::Flowable<T>> upstream)
-      : upstream_(std::move(upstream)) {}
+  TakeFirst(
+      std::shared_ptr<yarpl::flowable::Flowable<T>> upstream,
+      folly::Function<void()> onTerminal = nullptr)
+      : upstream_(std::move(upstream)), onTerminal_(std::move(onTerminal)) {}
 
   virtual ~TakeFirst() {
     if (auto subscription = std::exchange(subscription_, nullptr)) {
@@ -39,10 +45,11 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
     }
   }
 
-  folly::SemiFuture<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<T>>>>
+  folly::SemiFuture<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<U>>>>
   get() {
     if (auto upstream = std::exchange(upstream_, nullptr)) {
-      subscription_ = std::make_shared<Subscription>(this->ref_from_this(this));
+      subscription_ = std::make_shared<Subscription>(
+          this->ref_from_this(this), std::move(onTerminal_));
       upstream->subscribe(subscription_);
       subscription_->request(1);
       return std::move(future_);
@@ -60,7 +67,7 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
 
  protected:
   void subscribe(
-      std::shared_ptr<yarpl::flowable::Subscriber<T>> subscriber) override {
+      std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber) override {
     if (auto subscription = std::exchange(subscription_, nullptr)) {
       subscription->init(std::move(subscriber));
       return;
@@ -85,11 +92,17 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
   using SuperSubscription = typename Super::Subscription;
   class Subscription : public SuperSubscription {
    public:
-    Subscription(std::shared_ptr<TakeFirst<T>> flowable)
-        : flowable_(std::move(flowable)) {}
+    Subscription(
+        std::shared_ptr<TakeFirst> flowable,
+        folly::Function<void()> onTerminal)
+        : flowable_(std::move(flowable)), onTerminal_(std::move(onTerminal)) {}
+
+    virtual ~Subscription() {
+      onTerminal();
+    }
 
     void init(
-        std::shared_ptr<yarpl::flowable::Subscriber<T>> subscriber) override {
+        std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber) override {
       SuperSubscription::init(std::move(subscriber));
       hasSubscriber_ = true;
       if (onSubscribe_) {
@@ -116,10 +129,13 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
         if (auto flowable = std::exchange(flowable_, nullptr)) {
           flowable->setError(std::runtime_error("no initial response"));
         }
-      } else if (hasSubscriber_) {
-        SuperSubscription::onCompleteImpl();
       } else {
-        onComplete_ = true;
+        onTerminal();
+        if (hasSubscriber_) {
+          SuperSubscription::onCompleteImpl();
+        } else {
+          onComplete_ = true;
+        }
       }
     }
 
@@ -128,10 +144,13 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
         if (auto flowable = std::exchange(flowable_, nullptr)) {
           flowable->setError(std::move(ew));
         }
-      } else if (hasSubscriber_) {
-        SuperSubscription::onErrorImpl(std::move(ew));
       } else {
-        error_ = std::move(ew);
+        onTerminal();
+        if (hasSubscriber_) {
+          SuperSubscription::onErrorImpl(std::move(ew));
+        } else {
+          error_ = std::move(ew);
+        }
       }
     }
 
@@ -141,26 +160,37 @@ class TakeFirst : public yarpl::flowable::FlowableOperator<T, T> {
           flowable->setValue(std::move(value));
         }
       } else {
-        SuperSubscription::subscriberOnNext(std::move(value));
+        SuperSubscription::subscriberOnNext(std::move(value.data));
       }
     }
 
    private:
-    std::shared_ptr<TakeFirst<T>> flowable_;
+    void onTerminal() {
+      if (auto onTerminal = std::move(onTerminal_)) {
+        onTerminal();
+      }
+    }
+
+   private:
+    std::shared_ptr<TakeFirst> flowable_;
+    folly::Function<void()> onTerminal_;
+
     bool isFirstResponse_{true};
     bool hasSubscriber_{false};
     bool onComplete_{false};
     folly::exception_wrapper error_;
     bool onSubscribe_{false};
 
-    friend class TakeFirst<T>;
+    friend class TakeFirst;
   };
 
   std::shared_ptr<yarpl::flowable::Flowable<T>> upstream_;
+  folly::Function<void()> onTerminal_;
+
   std::shared_ptr<Subscription> subscription_;
-  folly::Promise<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<T>>>>
+  folly::Promise<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<U>>>>
       promise_;
-  folly::SemiFuture<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<T>>>>
+  folly::SemiFuture<std::pair<T, std::shared_ptr<yarpl::flowable::Flowable<U>>>>
       future_{promise_.getSemiFuture()};
 };
 

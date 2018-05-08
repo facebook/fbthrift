@@ -103,107 +103,6 @@ class CountedSingleObserver : public SingleObserver<Payload> {
   detail::ChannelCounters* counters_;
 };
 
-/// Take the first item from the stream as the response of the RPC call
-class CountedStream
-    : public FlowableOperator<Payload, std::unique_ptr<folly::IOBuf>> {
- public:
-  CountedStream(
-      std::unique_ptr<ThriftClientCallback> callback,
-      detail::ChannelCounters* counters,
-      folly::EventBase* ioEvb)
-      : callback_(std::move(callback)), counters_(counters), ioEvb_(ioEvb) {}
-
-  virtual ~CountedStream() {
-    releaseCounter();
-  }
-
-  // Returns the initial result payload
-  void setResult(std::shared_ptr<Flowable<Payload>> upstream) {
-    callback_->onThriftRequestSent();
-
-    auto takeFirst = std::make_shared<TakeFirst<Payload>>(upstream);
-    takeFirst->get()
-        .via(ioEvb_)
-        .then(
-            [ref = this->ref_from_this(this)](
-                std::pair<Payload, std::shared_ptr<Flowable<Payload>>> result) {
-              ref->setUpstream(std::move(result.second));
-              auto callback = std::move(ref->callback_);
-              callback->onThriftResponse(
-                  result.first.metadata
-                      ? RSocketClientChannel::deserializeMetadata(
-                            *result.first.metadata)
-                      : std::make_unique<ResponseRpcMetadata>(),
-                  std::move(result.first.data),
-                  toStream(
-                      std::static_pointer_cast<
-                          Flowable<std::unique_ptr<folly::IOBuf>>>(ref),
-                      ref->ioEvb_));
-            })
-        .onError(
-            [ref = this->ref_from_this(this)](folly::exception_wrapper ew) {
-              auto callback = std::move(ref->callback_);
-              callback->onError(std::move(ew));
-            });
-  }
-
-  void subscribe(std::shared_ptr<Subscriber<std::unique_ptr<folly::IOBuf>>>
-                     subscriber) override {
-    CHECK(upstream_) << "Verify that setUpstream method is called.";
-    upstream_->subscribe(std::make_shared<Subscription>(
-        this->ref_from_this(this), std::move(subscriber)));
-  }
-
- protected:
-  void setUpstream(std::shared_ptr<Flowable<Payload>> stream) {
-    upstream_ = std::move(stream);
-  }
-
-  void releaseCounter() {
-    if (auto counters = std::exchange(counters_, nullptr)) {
-      counters->decPendingRequests();
-    }
-  }
-
- private:
-  using SuperSubscription =
-      FlowableOperator<Payload, std::unique_ptr<folly::IOBuf>>::Subscription;
-  class Subscription : public SuperSubscription {
-   public:
-    Subscription(
-        std::shared_ptr<CountedStream> flowable,
-        std::shared_ptr<Subscriber<std::unique_ptr<folly::IOBuf>>> subscriber)
-        : SuperSubscription(std::move(subscriber)),
-          flowable_(std::move(flowable)) {}
-
-    void onNextImpl(Payload value) override {
-      try {
-        // TODO - don't drop the headers
-        this->subscriberOnNext(std::move(value.data));
-      } catch (const std::exception& exn) {
-        folly::exception_wrapper ew{std::current_exception(), exn};
-        this->terminateErr(std::move(ew));
-      }
-    }
-
-    void onTerminateImpl() override {
-      if (auto flowable = std::exchange(flowable_, nullptr)) {
-        flowable->releaseCounter();
-      }
-    }
-
-   private:
-    std::shared_ptr<CountedStream> flowable_;
-  };
-
-  std::unique_ptr<ThriftClientCallback> callback_;
-  std::shared_ptr<Flowable<Payload>> upstream_;
-  std::shared_ptr<Subscription> subscription_;
-
-  detail::ChannelCounters* counters_;
-  folly::EventBase* ioEvb_;
-};
-
 } // namespace
 
 const std::chrono::milliseconds RSocketClientChannel::kDefaultRpcTimeout =
@@ -490,7 +389,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
-  auto callback = std::make_unique<ThriftClientCallback>(
+  auto callback = std::make_shared<ThriftClientCallback>(
       evb_,
       std::move(cb),
       std::move(ctx),
@@ -498,15 +397,32 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
-  auto countedStream = std::make_shared<CountedStream>(
-      std::move(callback), &channelCounters_, evb_);
-
   auto result = rsRequester_->requestStream(
       Payload(std::move(buf), serializeMetadata(*metadata)));
 
-  // Whenever first response arrives, provide the first response and itself, as
-  // stream, to the callback
-  countedStream->setResult(result);
+  callback->onThriftRequestSent();
+
+  auto takeFirst = std::make_shared<TakeFirst>(
+      result, [this]() mutable { channelCounters_.decPendingRequests(); });
+  takeFirst->get()
+      .via(evb_)
+      .then([this, callback](std::pair<
+                             rsocket::Payload,
+                             std::shared_ptr<Flowable<std::unique_ptr<IOBuf>>>>
+                                 result) mutable {
+        auto cb = std::exchange(callback, nullptr);
+        cb->onThriftResponse(
+            result.first.metadata ? RSocketClientChannel::deserializeMetadata(
+                                        *result.first.metadata)
+                                  : std::make_unique<ResponseRpcMetadata>(),
+            std::move(result.first.data),
+            toStream(result.second, evb_));
+      })
+      .onError([this, callback](folly::exception_wrapper ew) mutable {
+        channelCounters_.decPendingRequests();
+        auto cb = std::exchange(callback, nullptr);
+        cb->onError(std::move(ew));
+      });
 }
 
 void RSocketClientChannel::setMaxPendingRequests(uint32_t count) {

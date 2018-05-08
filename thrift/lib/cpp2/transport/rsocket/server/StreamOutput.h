@@ -46,7 +46,7 @@ class StreamOutput : public RSServerThriftChannel {
     subscriber->onSubscribe(yarpl::flowable::Subscription::create());
     subscriber->onNext(rsocket::Payload(
         std::move(buf), RequestResponse::serializeMetadata(*metadata)));
-    subscriber->onComplete();
+    subscriber->onError(TApplicationException("stream response was expected"));
   }
 
   void sendStreamThriftResponse(

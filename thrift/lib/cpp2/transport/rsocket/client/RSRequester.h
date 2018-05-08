@@ -46,9 +46,6 @@ class RSRequester {
       std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
           responseSink);
 
-  // If we observe any Stream call, then disable eventbase switching
-  // We need to do better implementation to support eventbase switching for
-  // Stream RPC calls.
   std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
       rsocket::Payload request);
 

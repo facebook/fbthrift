@@ -71,7 +71,6 @@ RSRequester::~RSRequester() {
 }
 
 DuplexConnection* RSRequester::getConnection() {
-  // TODO - stateMachine_ is always there!
   return stateMachine_ ? stateMachine_->getConnection() : nullptr;
 }
 
