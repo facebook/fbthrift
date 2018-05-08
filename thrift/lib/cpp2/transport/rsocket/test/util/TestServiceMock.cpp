@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 
+#include <rsocket/Payload.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 namespace testutil {
@@ -100,6 +101,11 @@ TestServiceMock::sleepWithResponse(int32_t timeMs) {
 apache::thrift::Stream<int32_t> TestServiceMock::sleepWithoutResponse(
     int32_t timeMs) {
   return std::move(sleepWithResponse(timeMs).stream);
+}
+
+apache::thrift::ResponseAndStream<int32_t, int32_t>
+TestServiceMock::streamNever() {
+  return {1, toStream(Flowable<int32_t>::never(), &executor_)};
 }
 
 } // namespace testservice

@@ -331,7 +331,11 @@ void RSocketClientChannel::sendThriftRequest(
       break;
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
       sendSingleRequestStreamResponse(
-          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+          rpcOptions,
+          std::move(metadata),
+          std::move(ctx),
+          std::move(buf),
+          std::move(cb));
       break;
     default:
       folly::assume_unreachable();
@@ -385,6 +389,7 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
 }
 
 void RSocketClientChannel::sendSingleRequestStreamResponse(
+    RpcOptions& rpcOptions,
     std::unique_ptr<RequestRpcMetadata> metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
@@ -406,17 +411,30 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       result, [this]() mutable { channelCounters_.decPendingRequests(); });
   takeFirst->get()
       .via(evb_)
-      .then([this, callback](std::pair<
-                             rsocket::Payload,
-                             std::shared_ptr<Flowable<std::unique_ptr<IOBuf>>>>
-                                 result) mutable {
+      .then([this, callback, chunkTimeout = rpcOptions.getChunkTimeout()](
+                std::pair<
+                    rsocket::Payload,
+                    std::shared_ptr<Flowable<std::unique_ptr<IOBuf>>>>
+                    result) mutable {
         auto cb = std::exchange(callback, nullptr);
+        auto flowable = std::move(result.second);
+        if (chunkTimeout.count() > 0) {
+          flowable = flowable->timeout(
+              *evb_,
+              std::chrono::milliseconds(chunkTimeout),
+              std::chrono::milliseconds(chunkTimeout),
+              []() {
+                return transport::TTransportException(
+                    transport::TTransportException::TTransportExceptionType::
+                        TIMED_OUT);
+              });
+        }
         cb->onThriftResponse(
             result.first.metadata ? RSocketClientChannel::deserializeMetadata(
                                         *result.first.metadata)
                                   : std::make_unique<ResponseRpcMetadata>(),
             std::move(result.first.data),
-            toStream(result.second, evb_));
+            toStream(std::move(flowable), evb_));
       })
       .onError([this, callback](folly::exception_wrapper ew) mutable {
         channelCounters_.decPendingRequests();

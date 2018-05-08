@@ -187,20 +187,20 @@ TEST_F(StreamingTest, CallbackSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     folly::Baton<> done;
     int j = 0;
-    auto callback = [&done, &j, this](
-                        ::apache::thrift::ClientReceiveState&& receiveState) {
-      ASSERT_FALSE(receiveState.isException());
-      auto stream = receiveState.extractStream();
-      auto result = std::move(stream).via(&executor_);
-      std::move(result)
-          .subscribe(
-              [&j](const std::unique_ptr<folly::IOBuf>) mutable { ++j; },
-              [](auto ex) {
-                FAIL() << "Should not call onError: " << ex.what();
-              },
-              [&done]() { done.post(); })
-          .detach();
-    };
+    auto callback =
+        [&done, &j, this](::apache::thrift::ClientReceiveState&& receiveState) {
+          ASSERT_FALSE(receiveState.isException());
+          auto stream = receiveState.extractStream();
+          auto result = std::move(stream).via(&executor_);
+          std::move(result)
+              .subscribe(
+                  [&j](const std::unique_ptr<folly::IOBuf>) mutable { ++j; },
+                  [](auto ex) {
+                    FAIL() << "Should not call onError: " << ex.what();
+                  },
+                  [&done]() { done.post(); })
+              .detach();
+        };
 
     client->range(std::move(callback), 0, 10);
 
@@ -361,6 +361,31 @@ TEST_F(StreamingTest, OnDetachable) {
       [promise = std::move(detachablePromise)]() mutable {
         promise.setValue(folly::unit);
       });
+}
+
+TEST_F(StreamingTest, ChunkTimeout) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    RpcOptions options;
+    options.setChunkTimeout(std::chrono::milliseconds{10});
+    auto result = client->sync_streamNever(options);
+    bool failed{false};
+    auto subscription =
+        std::move(result.stream)
+            .via(&executor_)
+            .subscribe(
+                [](auto) { FAIL() << "Should have failed."; },
+                [&failed](auto ew) {
+                  ew.with_exception([&](TTransportException& tae) {
+                    CHECK_EQ(
+                        TTransportException::TTransportExceptionType::TIMED_OUT,
+                        tae.getType());
+                    failed = true;
+                  });
+                },
+                []() { FAIL() << "onError should be called"; });
+    std::move(subscription).join();
+    EXPECT_TRUE(failed);
+  });
 }
 
 } // namespace thrift

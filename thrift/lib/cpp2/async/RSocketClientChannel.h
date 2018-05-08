@@ -165,6 +165,7 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
       std::unique_ptr<RequestCallback> cb) noexcept;
 
   void sendSingleRequestStreamResponse(
+      RpcOptions& rpcOptions,
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
