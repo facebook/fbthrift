@@ -29,12 +29,12 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   using UniquePtr = std::unique_ptr<MockTAsyncSSLSocket, Destructor>;
 
   MockTAsyncSSLSocket(
-      const std::shared_ptr<transport::SSLContext> ctx,
+      const std::shared_ptr<folly::SSLContext> ctx,
       folly::EventBase* base)
       : AsyncSocket(base), TAsyncSSLSocket(ctx, base) {}
 
   static MockTAsyncSSLSocket::UniquePtr newSocket(
-      const std::shared_ptr<transport::SSLContext> ctx,
+      const std::shared_ptr<folly::SSLContext> ctx,
       folly::EventBase* base) {
     return MockTAsyncSSLSocket::UniquePtr(new MockTAsyncSSLSocket(ctx, base));
   }

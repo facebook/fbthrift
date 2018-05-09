@@ -21,8 +21,6 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp/transport/TSSLServerSocket.h>
-#include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/test/gen-cpp2/ThriftTest.h>

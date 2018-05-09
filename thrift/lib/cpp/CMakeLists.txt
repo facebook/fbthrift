@@ -64,9 +64,7 @@ add_library(
   transport/THttpClient.cpp
   transport/THttpServer.cpp
   transport/TSocket.cpp
-  transport/TSSLSocket.cpp
   transport/TServerSocket.cpp
-  transport/TSSLServerSocket.cpp
   transport/TBufferTransports.cpp
   transport/THeader.cpp
   transport/TZlibTransport.cpp
