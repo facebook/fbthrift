@@ -101,6 +101,7 @@ add_library(
   server/peeking/TLSHelper.cpp
   transport/core/ThriftProcessor.cpp
   util/ScopedServerInterfaceThread.cpp
+  util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}
   ${Sasl-cpp2-SOURCES}
 )

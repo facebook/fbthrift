@@ -20,7 +20,7 @@
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 #include <memory>
 
 namespace apache { namespace thrift {

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/test/gen-cpp2/PresultService.h>
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/PresultService.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 using namespace cpp2;
 using namespace apache::thrift;

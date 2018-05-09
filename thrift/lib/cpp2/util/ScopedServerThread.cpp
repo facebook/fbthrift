@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 #include <memory>
 #include <utility>

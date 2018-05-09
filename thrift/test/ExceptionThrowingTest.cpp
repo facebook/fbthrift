@@ -16,9 +16,9 @@
 #include <folly/ExceptionWrapper.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 #include <thrift/test/gen-cpp2/ExceptionThrowingService.h>
 

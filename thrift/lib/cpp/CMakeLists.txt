@@ -70,7 +70,6 @@ add_library(
   transport/TZlibTransport.cpp
   util/FdUtils.cpp
   util/PausableTimer.cpp
-  util/ScopedServerThread.cpp
   util/SocketRetriever.cpp
   util/THttpParser.cpp
   util/VarintUtils.cpp

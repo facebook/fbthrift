@@ -15,9 +15,9 @@
  */
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 #include <thrift/lib/cpp2/test/frozen2/inheritance/gen-cpp2/InheritanceNoSupportService.h>
 #include <thrift/lib/cpp2/test/frozen2/inheritance/gen-cpp2/InheritanceWithSupportService.h>
