@@ -219,7 +219,7 @@ class CompactProtocolWriter {
   } booleanField_;
 
   detail::compact::SimpleStack<int16_t, 10> lastField_;
-  int16_t lastFieldId_;
+  int16_t lastFieldId_{-1};
 };
 
 class CompactProtocolReader {
@@ -411,7 +411,7 @@ class CompactProtocolReader {
   Cursor in_;
 
   detail::compact::SimpleStack<int16_t, 10> lastField_;
-  int16_t lastFieldId_;
+  int16_t lastFieldId_{-1};
 
   struct {
     bool hasBoolValue;
