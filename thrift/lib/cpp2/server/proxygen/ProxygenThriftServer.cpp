@@ -31,6 +31,7 @@
 #include <glog/logging.h>
 #include <proxygen/httpserver/ResponseBuilder.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -39,6 +40,7 @@
 namespace apache {
 namespace thrift {
 
+using apache::thrift::concurrency::Runnable;
 using folly::SocketAddress;
 using proxygen::HTTPMessage;
 using proxygen::HTTPServer;

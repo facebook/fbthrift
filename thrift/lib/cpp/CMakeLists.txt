@@ -135,17 +135,6 @@ target_link_libraries(
 )
 
 add_library(
-  server
-
-  server/TServer.cpp
-)
-target_link_libraries(
-  server
-  PUBLIC
-    Folly::folly
-)
-
-add_library(
   thrift
 
   VirtualProfiling.cpp
@@ -183,7 +172,6 @@ install(
     transport
     async
     security
-    server
     thrift
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}

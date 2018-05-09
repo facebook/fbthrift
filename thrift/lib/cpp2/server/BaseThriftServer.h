@@ -26,8 +26,9 @@
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -67,8 +68,35 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  *   Base class for thrift servers using cpp2 style generated code.
  */
 
-class BaseThriftServer : public apache::thrift::server::TServer,
+class BaseThriftServer : public apache::thrift::concurrency::Runnable,
                          public apache::thrift::server::ServerConfigs {
+ public:
+  struct FailureInjection {
+    FailureInjection()
+        : errorFraction(0), dropFraction(0), disconnectFraction(0) {}
+
+    // Cause a fraction of requests to fail
+    float errorFraction;
+
+    // Cause a fraction of requests to be dropped (and presumably time out
+    // on the client)
+    float dropFraction;
+
+    // Cause a fraction of requests to cause the channel to be disconnected,
+    // possibly failing other requests as well.
+    float disconnectFraction;
+
+    bool operator==(const FailureInjection& other) const {
+      return errorFraction == other.errorFraction &&
+          dropFraction == other.dropFraction &&
+          disconnectFraction == other.disconnectFraction;
+    }
+
+    bool operator!=(const FailureInjection& other) const {
+      return !(*this == other);
+    }
+  };
+
  protected:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -83,6 +111,8 @@ class BaseThriftServer : public apache::thrift::server::TServer,
 
   /// Listen backlog
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
+
+  std::shared_ptr<server::TServerEventHandler> eventHandler_;
 
   //! Prefix for pool thread names
   std::string poolThreadName_;
@@ -210,13 +240,20 @@ class BaseThriftServer : public apache::thrift::server::TServer,
   // transformed response, headers not included. 0 (default) means no limit.
   uint64_t maxResponseSize_ = 0;
 
-  BaseThriftServer()
-      : apache::thrift::server::TServer(std::shared_ptr<server::TProcessor>()) {
-  }
+  BaseThriftServer() {}
 
   ~BaseThriftServer() override {}
 
  public:
+  std::shared_ptr<server::TServerEventHandler> getEventHandler() {
+    return eventHandler_;
+  }
+
+  void setServerEventHandler(
+      std::shared_ptr<server::TServerEventHandler> eventHandler) {
+    eventHandler_ = std::move(eventHandler);
+  }
+
   /**
    * Indicate whether it is safe to modify the server config through setters.
    * This roughly corresponds to whether the IO thread pool could be servicing
@@ -720,7 +757,7 @@ class BaseThriftServer : public apache::thrift::server::TServer,
   /**
    * Set failure injection parameters.
    */
-  void setFailureInjection(FailureInjection fi) override {
+  virtual void setFailureInjection(FailureInjection fi) {
     failureInjection_.set(fi);
   }
 
@@ -751,6 +788,21 @@ class BaseThriftServer : public apache::thrift::server::TServer,
 
   ClientIdentityHook getClientIdentityHook() {
     return clientIdentityHook_;
+  }
+
+  virtual void serve() = 0;
+
+  virtual void stop() = 0;
+
+  // This API is intended to stop listening on the server
+  // socket and stop accepting new connection first while
+  // still letting the established connections to be
+  // processed on the server.
+  virtual void stopListening() = 0;
+
+  // Allows running the server as a Runnable thread
+  void run() override {
+    serve();
   }
 };
 } // namespace thrift

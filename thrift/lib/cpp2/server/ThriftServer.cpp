@@ -28,6 +28,7 @@
 #include <folly/portability/Sockets.h>
 #include <glog/logging.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/GssSaslServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
@@ -64,6 +65,7 @@ using namespace apache::thrift::async;
 using namespace std;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::PriorityThreadManager;
+using apache::thrift::concurrency::Runnable;
 using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOThreadPoolExecutor;

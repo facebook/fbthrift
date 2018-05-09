@@ -19,7 +19,7 @@
 #include <folly/Executor.h>
 #include <folly/Function.h>
 #include <folly/ScopeGuard.h>
-#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/server/TServerEventHandler.h>
 
 namespace thrift {
 namespace py3 {
