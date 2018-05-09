@@ -18,7 +18,7 @@
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
-#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <iostream>

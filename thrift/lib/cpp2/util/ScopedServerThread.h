@@ -30,11 +30,10 @@ class SocketAddress;
 
 namespace apache { namespace thrift {
 
+class BaseThriftServer;
+
 namespace concurrency {
 class Thread;
-}
-namespace server {
-class TServer;
 }
 namespace util {
 
@@ -54,7 +53,7 @@ class ScopedServerThread : public boost::noncopyable {
   /**
    * Create a ScopedServerThread object and automatically start it.
    */
-  explicit ScopedServerThread(std::shared_ptr<server::TServer> server);
+  explicit ScopedServerThread(std::shared_ptr<BaseThriftServer> server);
 
   virtual ~ScopedServerThread();
 
@@ -65,7 +64,7 @@ class ScopedServerThread : public boost::noncopyable {
    *
    * @param server The server to run in the new thread.
    */
-  void start(std::shared_ptr<server::TServer> server);
+  void start(std::shared_ptr<BaseThriftServer> server);
 
   /**
    * Stop the server thread.
@@ -86,7 +85,7 @@ class ScopedServerThread : public boost::noncopyable {
   /**
    * Get the server.
    */
-  std::weak_ptr<server::TServer> getServer() const;
+  std::weak_ptr<BaseThriftServer> getServer() const;
 
   /**
    * Set name on the underlying server thread.
@@ -113,7 +112,7 @@ class ServerStartHelper {
   /*
    * Constructor. Should be called prior to starting the server
    */
-  explicit ServerStartHelper(std::shared_ptr<server::TServer> server);
+  explicit ServerStartHelper(std::shared_ptr<BaseThriftServer> server);
 
   /**
    * Wait until the server has started.

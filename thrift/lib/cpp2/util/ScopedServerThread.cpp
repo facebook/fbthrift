@@ -19,11 +19,11 @@
 #include <memory>
 #include <utility>
 
-#include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/server/TServer.h>
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
 using std::shared_ptr;
 using std::weak_ptr;
@@ -46,7 +46,7 @@ class ScopedServerThread::Helper : public Runnable,
 
   ~Helper() override;
 
-  void init(shared_ptr<TServer> server, shared_ptr<Helper> self);
+  void init(shared_ptr<BaseThriftServer> server, shared_ptr<Helper> self);
 
   void run() override;
 
@@ -75,7 +75,7 @@ class ScopedServerThread::Helper : public Runnable,
 
   void preServe(const folly::SocketAddress* address) override;
 
-  const shared_ptr<TServer>& getServer() const {
+  const shared_ptr<BaseThriftServer>& getServer() const {
     return server_;
   }
 
@@ -157,7 +157,7 @@ class ScopedServerThread::Helper : public Runnable,
   StateEnum state_;
   Monitor stateMonitor_;
 
-  shared_ptr<TServer> server_;
+  shared_ptr<BaseThriftServer> server_;
   // If the server event handler has been intercepted, then this field will be
   // set to the replaced event handler, which could be nullptr.
   folly::Optional<shared_ptr<TServerEventHandler>> eventHandler_;
@@ -171,7 +171,8 @@ ScopedServerThread::Helper::~Helper() {
   }
 }
 
-void ScopedServerThread::Helper::init(shared_ptr<TServer> server,
+void ScopedServerThread::Helper::init(
+    shared_ptr<BaseThriftServer> server,
     shared_ptr<Helper> self) {
   server_ = std::move(server);
 
@@ -256,7 +257,7 @@ void ScopedServerThread::Helper::EventHandler::preServe(
 ScopedServerThread::ScopedServerThread() {
 }
 
-ScopedServerThread::ScopedServerThread(shared_ptr<TServer> server) {
+ScopedServerThread::ScopedServerThread(shared_ptr<BaseThriftServer> server) {
   start(std::move(server));
 }
 
@@ -264,7 +265,7 @@ ScopedServerThread::~ScopedServerThread() {
   stop();
 }
 
-void ScopedServerThread::start(shared_ptr<TServer> server) {
+void ScopedServerThread::start(shared_ptr<BaseThriftServer> server) {
   if (helper_) {
     throw TLibraryException("ScopedServerThread is already running");
   }
@@ -320,9 +321,9 @@ const folly::SocketAddress* ScopedServerThread::getAddress() const {
   return helper_->getAddress();
 }
 
-weak_ptr<TServer> ScopedServerThread::getServer() const {
+weak_ptr<BaseThriftServer> ScopedServerThread::getServer() const {
   if (!helper_) {
-    return weak_ptr<server::TServer>();
+    return weak_ptr<BaseThriftServer>();
   }
   return helper_->getServer();
 }
@@ -331,7 +332,7 @@ bool ScopedServerThread::setServeThreadName(const std::string& name) {
   return thread_->setName(name);
 }
 
-ServerStartHelper::ServerStartHelper(shared_ptr<TServer> server) {
+ServerStartHelper::ServerStartHelper(shared_ptr<BaseThriftServer> server) {
   helper_ = std::make_shared<ScopedServerThread::Helper>();
   helper_->init(std::move(server), helper_);
 }
