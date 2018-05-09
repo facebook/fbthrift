@@ -35,5 +35,6 @@ class SomeServiceInterface(
         self,
         m: _typing.Mapping[int, str]
     ) -> _typing.Mapping[int, str]: ...
+    pass
 
 

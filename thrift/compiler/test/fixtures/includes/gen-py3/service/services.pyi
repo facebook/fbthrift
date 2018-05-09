@@ -55,5 +55,6 @@ class MyServiceInterface(
         s: _module_types.MyStruct,
         i: _includes_types.Included
     ) -> None: ...
+    pass
 
 

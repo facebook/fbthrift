@@ -67,6 +67,7 @@ class {{service:name}}Interface(
         {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
     ) -> {{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}: ...
     {{/service:functions}}
+    pass
 
 
 {{/program:services}}

@@ -707,11 +707,8 @@ StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor,
 void StructWithSharedConst::__clear() {
   // clear all fields
   opt_shared_const.reset();
-  if (shared_const)
-    shared_const.reset(new typename decltype(shared_const)::element_type());
-  if (req_shared_const)
-    req_shared_const.reset(new
-                           typename decltype(req_shared_const)::element_type());
+  if (shared_const) shared_const.reset(new typename decltype(shared_const)::element_type());
+  if (req_shared_const) req_shared_const.reset(new typename decltype(req_shared_const)::element_type());
   __isset = {};
 }
 

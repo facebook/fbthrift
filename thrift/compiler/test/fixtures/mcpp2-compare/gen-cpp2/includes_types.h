@@ -188,7 +188,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStr
 namespace a { namespace different { namespace ns {
 class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
  public:
-  AStructB() : FieldA(std::make_shared<::a::different::ns::AStruct>()) {}
+
+  AStructB() :
+      FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>

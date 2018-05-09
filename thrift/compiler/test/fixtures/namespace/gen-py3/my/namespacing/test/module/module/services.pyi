@@ -34,5 +34,6 @@ class TestServiceInterface(
         self,
         int1: int
     ) -> int: ...
+    pass
 
 

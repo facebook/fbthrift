@@ -102,5 +102,6 @@ class NestedContainersInterface(
         self,
         foo: _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]
     ) -> None: ...
+    pass
 
 

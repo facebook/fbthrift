@@ -119,6 +119,7 @@ class MyServiceInterface(
         id: int,
         data: str
     ) -> None: ...
+    pass
 
 
 _MyServiceFastInterfaceT = _typing.TypeVar('_MyServiceFastInterfaceT', bound='MyServiceFastInterface')
@@ -229,6 +230,7 @@ class MyServiceFastInterface(
         id: int,
         data: str
     ) -> None: ...
+    pass
 
 
 _MyServiceEmptyInterfaceT = _typing.TypeVar('_MyServiceEmptyInterfaceT', bound='MyServiceEmptyInterface')
@@ -237,6 +239,7 @@ _MyServiceEmptyInterfaceT = _typing.TypeVar('_MyServiceEmptyInterfaceT', bound='
 class MyServiceEmptyInterface(
     ServiceInterface
 ):
+    pass
 
 
 _MyServicePrioParentInterfaceT = _typing.TypeVar('_MyServicePrioParentInterfaceT', bound='MyServicePrioParentInterface')
@@ -277,6 +280,7 @@ class MyServicePrioParentInterface(
     async def pong(
         self
     ) -> None: ...
+    pass
 
 
 _MyServicePrioChildInterfaceT = _typing.TypeVar('_MyServicePrioChildInterfaceT', bound='MyServicePrioChildInterface')
@@ -301,5 +305,6 @@ MyServicePrioParentInterface
     async def pang(
         self
     ) -> None: ...
+    pass
 
 

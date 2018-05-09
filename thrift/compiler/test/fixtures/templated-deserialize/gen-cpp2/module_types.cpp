@@ -156,26 +156,29 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
   return *this;
 }
 
-containerStruct::containerStruct()
-    : fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1, 2, 3, 4}),
-      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral(
-          "somestring")),
+containerStruct::containerStruct() :
+      fieldA(0),
+      fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
+      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       fieldI(true),
-      fieldJ(std::initializer_list<
-             std::pair<const std::string, std::vector<int32_t>>>{
-          {apache::thrift::StringTraits<std::string>::fromStringLiteral(
-               "subfieldA"),
-           std::initializer_list<int32_t>{1, 4, 8, 12}},
-          {apache::thrift::StringTraits<std::string>::fromStringLiteral(
-               "subfieldB"),
-           std::initializer_list<int32_t>{2, 5, 9, 13}}}),
-      fieldQ(static_cast<::cpp2::MyEnumA>(0)),
+      fieldJ(std::initializer_list<std::pair<const std::string, std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
+  4,
+  8,
+  12}},
+  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
+  5,
+  9,
+  13}}}),
+      fieldQ(static_cast< ::cpp2::MyEnumA>(0)),
       fieldR(std::make_unique<std::map<std::string, bool>>()),
-      fieldS(std::make_unique<::cpp2::SmallStruct>()),
-      fieldT(std::make_shared<::cpp2::SmallStruct>()),
-      fieldU(std::make_shared<::cpp2::SmallStruct>()),
-      fieldX(std::make_unique<::cpp2::SmallStruct>()) {}
+      fieldS(std::make_unique< ::cpp2::SmallStruct>()),
+      fieldT(std::make_shared< ::cpp2::SmallStruct>()),
+      fieldU(std::make_shared< ::cpp2::SmallStruct>()),
+      fieldX(std::make_unique< ::cpp2::SmallStruct>()) {}
+
 
 containerStruct::~containerStruct() {}
 
@@ -243,8 +246,7 @@ void containerStruct::__clear() {
   fieldR.reset(new typename decltype(fieldR)::element_type());
   if (fieldS) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldS.get());
   if (fieldT) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldT.get());
-  if (fieldU)
-    fieldU.reset(new typename decltype(fieldU)::element_type());
+  if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
   if (fieldX) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldX.get());
   __isset = {};
 }

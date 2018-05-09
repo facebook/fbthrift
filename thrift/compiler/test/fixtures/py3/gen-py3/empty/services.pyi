@@ -17,5 +17,6 @@ _NullServiceInterfaceT = _typing.TypeVar('_NullServiceInterfaceT', bound='NullSe
 class NullServiceInterface(
     ServiceInterface
 ):
+    pass
 
 

@@ -36,5 +36,6 @@ class ExtendTestServiceInterface(
         self,
         struct1: _hsmodule_types.HsFoo
     ) -> bool: ...
+    pass
 
 

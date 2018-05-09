@@ -33,6 +33,7 @@ class MyRootInterface(
     async def do_root(
         self
     ) -> None: ...
+    pass
 
 
 _MyNodeInterfaceT = _typing.TypeVar('_MyNodeInterfaceT', bound='MyNodeInterface')
@@ -57,6 +58,7 @@ MyRootInterface
     async def do_mid(
         self
     ) -> None: ...
+    pass
 
 
 _MyLeafInterfaceT = _typing.TypeVar('_MyLeafInterfaceT', bound='MyLeafInterface')
@@ -81,5 +83,6 @@ MyNodeInterface
     async def do_leaf(
         self
     ) -> None: ...
+    pass
 
 

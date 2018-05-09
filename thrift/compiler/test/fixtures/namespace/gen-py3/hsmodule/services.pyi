@@ -34,5 +34,6 @@ class HsTestServiceInterface(
         self,
         int1: int
     ) -> int: ...
+    pass
 
 

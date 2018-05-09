@@ -103,8 +103,7 @@ AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::
 
 void AStructB::__clear() {
   // clear all fields
-  if (FieldA)
-    FieldA.reset(new typename decltype(FieldA)::element_type());
+  if (FieldA) FieldA.reset(new typename decltype(FieldA)::element_type());
   __isset = {};
 }
 

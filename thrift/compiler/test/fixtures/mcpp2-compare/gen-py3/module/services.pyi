@@ -18,6 +18,7 @@ _EmptyServiceInterfaceT = _typing.TypeVar('_EmptyServiceInterfaceT', bound='Empt
 class EmptyServiceInterface(
     ServiceInterface
 ):
+    pass
 
 
 _ReturnServiceInterfaceT = _typing.TypeVar('_ReturnServiceInterfaceT', bound='ReturnServiceInterface')
@@ -364,6 +365,7 @@ class ReturnServiceInterface(
         self,
         size: int
     ) -> bytes: ...
+    pass
 
 
 _ParamServiceInterfaceT = _typing.TypeVar('_ParamServiceInterfaceT', bound='ParamServiceInterface')
@@ -877,5 +879,6 @@ class ParamServiceInterface(
         self,
         param1: str
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
+    pass
 
 

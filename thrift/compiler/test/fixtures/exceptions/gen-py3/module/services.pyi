@@ -81,5 +81,6 @@ class RaiserInterface(
     async def get500(
         self
     ) -> str: ...
+    pass
 
 

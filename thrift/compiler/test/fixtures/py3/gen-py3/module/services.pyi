@@ -696,6 +696,7 @@ class SimpleServiceInterface(
         self,
         the_enum: _typing.Sequence[_module_types.AnEnum]
     ) -> _typing.Sequence[_module_types.AnEnum]: ...
+    pass
 
 
 _DerivedServiceInterfaceT = _typing.TypeVar('_DerivedServiceInterfaceT', bound='DerivedServiceInterface')
@@ -720,6 +721,7 @@ SimpleServiceInterface
     async def get_six(
         self
     ) -> int: ...
+    pass
 
 
 _RederivedServiceInterfaceT = _typing.TypeVar('_RederivedServiceInterfaceT', bound='RederivedServiceInterface')
@@ -744,5 +746,6 @@ DerivedServiceInterface
     async def get_seven(
         self
     ) -> int: ...
+    pass
 
 
