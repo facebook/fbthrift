@@ -96,33 +96,9 @@ class ScopedServerThread : public boost::noncopyable {
 
  private:
   class Helper;
-  friend class ServerStartHelper;
 
   std::shared_ptr<Helper> helper_;
   std::shared_ptr<concurrency::Thread> thread_;
-};
-
-/*
- * Encapsulates the synchronous start functionality of ScopedServerThread.
- * Used to wait for server to get up in those case when server is started
- * by a method other than ScopedServerThread.
- */
-class ServerStartHelper {
- public:
-  /*
-   * Constructor. Should be called prior to starting the server
-   */
-  explicit ServerStartHelper(std::shared_ptr<BaseThriftServer> server);
-
-  /**
-   * Wait until the server has started.
-   *
-   * Raises TException if the server failed to start.
-   */
-  void waitUntilStarted();
-
- private:
-  std::shared_ptr<ScopedServerThread::Helper> helper_;
 };
 
 }}} // apache::thrift::util

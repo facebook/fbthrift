@@ -332,13 +332,4 @@ bool ScopedServerThread::setServeThreadName(const std::string& name) {
   return thread_->setName(name);
 }
 
-ServerStartHelper::ServerStartHelper(shared_ptr<BaseThriftServer> server) {
-  helper_ = std::make_shared<ScopedServerThread::Helper>();
-  helper_->init(std::move(server), helper_);
-}
-
-void ServerStartHelper::waitUntilStarted() {
-  helper_->waitUntilStarted();
-}
-
 }}} // apache::thrift::util
