@@ -286,14 +286,6 @@ public:
 
 };
 
-/**
- * Helper function to increase the max file descriptors limit
- * for the current process and all of its children.
- * By default, tries to increase it to as much as 2^24.
- */
- int increase_max_fds(int max_fds=(1<<24));
-
-
 }}} // apache::thrift::server
 
 #endif // #ifndef THRIFT_SERVER_TSERVER_H
