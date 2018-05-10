@@ -480,6 +480,7 @@ class TJSONProtocol(TJSONProtocolBase):
 
 class TJSONProtocolFactory:
     def __init__(self):
+        # type: () -> None
         pass
 
     def getProtocol(self, trans):
