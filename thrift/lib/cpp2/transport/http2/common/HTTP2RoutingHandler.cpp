@@ -236,8 +236,11 @@ void HTTP2RoutingHandler::handleConnection(
       new HTTP2RoutingSessionManager(std::move(acceptor), processor_);
   // Get the HTTP2 Codec
   auto codecFactory = proxygen::HTTPDefaultSessionCodecFactory(acceptorConfig);
-  auto h2codec =
-      codecFactory.getCodec("h2", proxygen::TransportDirection::DOWNSTREAM);
+  auto h2codec = codecFactory.getCodec(
+      "h2",
+      proxygen::TransportDirection::DOWNSTREAM,
+      // a non empty security protocol is assumed to be TLS
+      !sock->getSecurityProtocol().empty());
   // Create the DownstreamSession
   // A const_cast is needed to match wangle and proxygen APIs
   auto session = sessionManager->createSession(
