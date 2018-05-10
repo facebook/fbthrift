@@ -1636,13 +1636,18 @@ void t_py_generator::generate_py_struct_definition(
   generate_py_struct_writer(out, tstruct);
   generate_json_reader(out, tstruct);
 
-  // For exceptions only, generate a __str__ method. This is
-  // because when raised exceptions are printed to the console, __repr__
-  // isn't used. See python bug #5882
+  // For exceptions only, generate a __str__ method. Use the message annotation
+  // if available, otherwise default to __repr__ explicitly. See python bug
+  // #5882
   if (is_exception) {
-    out << indent() << "def __str__(self):" << endl
-        << indent() << "  return repr(self)" << endl
-        << endl;
+    out << indent() << "def __str__(self):" << endl;
+    if (tstruct->annotations_.count("message")) {
+      out << indent() << "  return self." << tstruct->annotations_.at("message")
+          << endl;
+    } else {
+      out << indent() << "  return repr(self)" << endl;
+    }
+    out << endl;
   }
 
   if (!gen_slots_) {
