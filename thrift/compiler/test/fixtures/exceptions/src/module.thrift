@@ -3,7 +3,7 @@ namespace java.swift test.fixtures.exceptions
 exception Banal { }
 exception Fiery {
   1: required string message,
-}
+} (message = "message")
 
 service Raiser {
   void doBland(),

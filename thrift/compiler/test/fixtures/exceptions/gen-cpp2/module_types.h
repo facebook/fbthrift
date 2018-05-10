@@ -119,6 +119,12 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
  public:
 
   Fiery() {}
+
+  explicit Fiery(const std::string& __message) :
+      message(__message) {}
+
+  explicit Fiery(std::string&& __message) :
+      message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   Fiery(apache::thrift::FragileConstructor, std::string message__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -164,7 +170,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return " ::cpp2::Fiery";
+    return message.c_str();
   }
 
  private:
