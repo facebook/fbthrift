@@ -1642,8 +1642,12 @@ void t_py_generator::generate_py_struct_definition(
   if (is_exception) {
     out << indent() << "def __str__(self):" << endl;
     if (tstruct->annotations_.count("message")) {
-      out << indent() << "  return self." << tstruct->annotations_.at("message")
-          << endl;
+      out << indent() << "  if self." << tstruct->annotations_.at("message")
+          << ":" << endl
+          << indent() << "    return self."
+          << tstruct->annotations_.at("message") << endl
+          << indent() << "  else:" << endl
+          << indent() << "    return repr(self)" << endl;
     } else {
       out << indent() << "  return repr(self)" << endl;
     }

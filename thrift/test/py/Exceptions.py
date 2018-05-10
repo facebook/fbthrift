@@ -28,5 +28,5 @@ from ExceptionTest.ttypes import MyException
 
 class TestExceptions(unittest.TestCase):
     def test_exception(self):
-        e = MyException("foo")
-        self.assertEqual(str(e), "foo")
+        self.assertEqual(str(MyException()), repr(MyException()))
+        self.assertEqual(str(MyException("foo")), "foo")

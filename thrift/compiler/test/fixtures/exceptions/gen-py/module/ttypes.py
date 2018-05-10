@@ -160,7 +160,10 @@ class Fiery(TException):
     oprot.writeStructEnd()
 
   def __str__(self):
-    return self.message
+    if self.message:
+      return self.message
+    else:
+      return repr(self)
 
   def __repr__(self):
     L = []
