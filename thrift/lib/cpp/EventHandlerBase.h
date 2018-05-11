@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
 namespace apache {
@@ -41,8 +40,6 @@ namespace apache {
 namespace thrift {
 
 using server::TConnectionContext;
-
-extern std::shared_ptr<server::TServerObserverFactory> observerFactory_;
 
 class EventHandlerBase {
  public:

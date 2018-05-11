@@ -25,8 +25,6 @@ using std::shared_ptr;
 
 namespace apache { namespace thrift {
 
-std::shared_ptr<server::TServerObserverFactory> observerFactory_(nullptr);
-
 TProcessorBase::TProcessorBase() {
   concurrency::RWGuard lock(getRWMutex(), concurrency::RW_READ);
   for (auto factory: getFactories()) {

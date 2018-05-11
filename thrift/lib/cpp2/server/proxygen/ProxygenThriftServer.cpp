@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
@@ -316,8 +317,8 @@ uint64_t ProxygenThriftServer::getNumDroppedConnections() const {
 }
 
 void ProxygenThriftServer::serve() {
-  if (!observer_ && apache::thrift::observerFactory_) {
-    observer_ = apache::thrift::observerFactory_->getObserver();
+  if (!observer_ && apache::thrift::server::observerFactory_) {
+    observer_ = apache::thrift::server::observerFactory_->getObserver();
   }
 
   if (!threadManager_) {

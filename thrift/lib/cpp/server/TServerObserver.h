@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,13 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_SERVER_TSERVEROBSERVER_H_
 #define THRIFT_SERVER_TSERVEROBSERVER_H_ 1
 
 #include <stdint.h>
 #include <memory>
 
-namespace apache { namespace thrift { namespace server {
+namespace apache {
+namespace thrift {
+namespace server {
 
 class TServerObserver {
  public:
@@ -112,5 +117,10 @@ class TServerObserverFactory {
   virtual ~TServerObserverFactory() {}
 };
 
-}}} // apache::thrift::server
+extern std::shared_ptr<server::TServerObserverFactory> observerFactory_;
+
+} // namespace server
+} // namespace thrift
+} // namespace apache
+
 #endif
