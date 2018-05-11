@@ -208,36 +208,6 @@ class TClientBase : public EventHandlerBase {
     return s_.get();
   }
 
- protected:
-  class ConnContext : public TConnectionContext {
-   public:
-    ConnContext(
-        std::shared_ptr<protocol::TProtocol> inputProtocol,
-        std::shared_ptr<protocol::TProtocol> outputProtocol);
-
-    ConnContext(
-        std::shared_ptr<apache::thrift::async::TAsyncChannel> channel,
-        std::shared_ptr<protocol::TProtocol> inputProtocol,
-        std::shared_ptr<protocol::TProtocol> outputProtocol);
-
-    void init(
-        const folly::SocketAddress* address,
-        std::shared_ptr<protocol::TProtocol> inputProtocol,
-        std::shared_ptr<protocol::TProtocol> outputProtocol);
-
-    std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
-      return inputProtocol_;
-    }
-
-    std::shared_ptr<protocol::TProtocol> getOutputProtocol() const override {
-      return outputProtocol_;
-    }
-
-   private:
-    std::shared_ptr<protocol::TProtocol> inputProtocol_;
-    std::shared_ptr<protocol::TProtocol> outputProtocol_;
-  };
-
  private:
   static concurrency::ReadWriteMutex& getRWMutex();
 

@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp/TProcessor.h>
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <thrift/lib/cpp/util/SocketRetriever.h>
 #include <algorithm>
 
 using std::vector;
@@ -25,8 +24,6 @@ using std::remove;
 using std::shared_ptr;
 
 namespace apache { namespace thrift {
-
-using apache::thrift::util::SocketRetriever;
 
 std::shared_ptr<server::TServerObserverFactory> observerFactory_(nullptr);
 
@@ -122,49 +119,6 @@ TClientBase::getFactories() {
   static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
     new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
-}
-
-TClientBase::ConnContext::ConnContext(
-    std::shared_ptr<protocol::TProtocol> inputProtocol,
-    std::shared_ptr<protocol::TProtocol> outputProtocol) {
-  const folly::SocketAddress* address = nullptr;
-
-  if (outputProtocol) {
-    auto socket = SocketRetriever::getSocket(outputProtocol);
-    if (socket && socket->isOpen()) {
-      address = socket->getPeerAddress();
-    }
-  }
-
-  init(address, inputProtocol, outputProtocol);
-}
-
-TClientBase::ConnContext::ConnContext(
-    std::shared_ptr<apache::thrift::async::TAsyncChannel> channel,
-    std::shared_ptr<protocol::TProtocol> inputProtocol,
-    std::shared_ptr<protocol::TProtocol> outputProtocol) {
-  if (channel) {
-    auto transport = channel->getTransport();
-    if (transport) {
-      folly::SocketAddress address;
-      transport->getPeerAddress(&address);
-      init(&address, inputProtocol, outputProtocol);
-      return;
-    }
-  }
-
-  init(nullptr, inputProtocol, outputProtocol);
-}
-
-void TClientBase::ConnContext::init(
-    const folly::SocketAddress* address,
-    std::shared_ptr<protocol::TProtocol> inputProtocol,
-    std::shared_ptr<protocol::TProtocol> outputProtocol) {
-  if (address) {
-    peerAddress_ = localAddress_ = *address;
-  }
-  inputProtocol_ = inputProtocol;
-  outputProtocol_ = outputProtocol;
 }
 
 }} // apache::thrift
