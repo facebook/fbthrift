@@ -160,11 +160,6 @@ class TClientBase : public EventHandlerBase {
  public:
   TClientBase();
 
-  // Explicit copy constructor to skip copying the current client context stack
-  // (it's a unique pointer so it can't be copied, but it also wouldn't make
-  // sense to copy it).
-  TClientBase(const TClientBase& original) : EventHandlerBase(original), s_() {}
-
   virtual ~TClientBase() {}
 
   static void addClientEventHandlerFactory(
@@ -173,48 +168,11 @@ class TClientBase : public EventHandlerBase {
   static void removeClientEventHandlerFactory(
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
-  /**
-   * These functions are only used in the client handler
-   * implementation.  The server process functions maintain
-   * ContextStack on the stack and binds ctx in to the async calls.
-   *
-   * Clients are not thread safe, so using a member variable is okay.
-   * Client send_ and recv_ functions contain parameters based off of
-   * the function call, and adding a parameter there would change the
-   * function signature enough that other thrift users might break.
-   *
-   * The generated code should be the ONLY user of s_.  All other functions
-   * should just use the ContextStack parameter.
-   */
-  void generateClientContextStack(
-      const char* fn_name,
-      TConnectionContext* connectionContext) {
-    auto s = getContextStack("", fn_name, connectionContext);
-    s_ = std::move(s);
-  }
-  void generateClientContextStack(
-      const char* service_name,
-      const char* fn_name,
-      TConnectionContext* connectionContext) {
-    auto s = getContextStack(service_name, fn_name, connectionContext);
-    s_ = std::move(s);
-  }
-
-  void clearClientContextStack() {
-    s_.reset();
-  }
-
-  ContextStack* getClientContextStack() {
-    return s_.get();
-  }
-
  private:
   static concurrency::ReadWriteMutex& getRWMutex();
 
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
-
-  std::unique_ptr<ContextStack> s_;
 };
 
 } // namespace thrift
