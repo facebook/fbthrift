@@ -44,32 +44,6 @@ using server::TConnectionContext;
 
 extern std::shared_ptr<server::TServerObserverFactory> observerFactory_;
 
-/**
- * A helper class used by the generated code to free each context.
- */
-class TProcessorContextFreer {
- public:
-  TProcessorContextFreer(
-      std::shared_ptr<TProcessorEventHandler> handler,
-      void* context,
-      const char* method)
-      : handler_(handler), context_(context), method_(method) {}
-  ~TProcessorContextFreer() {
-    if (handler_ != nullptr) {
-      handler_->freeContext(context_, method_);
-    }
-  }
-
-  void unregister() {
-    handler_.reset();
-  }
-
- private:
-  std::shared_ptr<TProcessorEventHandler> handler_;
-  void* context_;
-  const char* method_;
-};
-
 class EventHandlerBase {
  public:
   EventHandlerBase()
