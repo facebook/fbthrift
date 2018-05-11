@@ -184,7 +184,7 @@ void SampleServer<Service>::connectToServer(
     folly::Function<void(
         std::shared_ptr<RequestChannel>,
         std::shared_ptr<ClientConnectionIf>)> callMe) {
-  CHECK_GT(port_, 0) << "Check if the server has started already";
+  ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
     auto addr = folly::SocketAddress(FLAGS_host, port_);
     TAsyncSocket::UniquePtr sock(
@@ -395,8 +395,8 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
-    CHECK_EQ(3, server_->observer_->taskTimeout_);
-    CHECK_EQ(0, server_->observer_->queueTimeout_);
+    EXPECT_EQ(3, server_->observer_->taskTimeout_);
+    EXPECT_EQ(0, server_->observer_->queueTimeout_);
   });
 }
 
@@ -469,7 +469,7 @@ void TransportCompatibilityTest::
                 executed.setValue();
               })));
       auto& waited = future.wait(folly::Duration(100));
-      CHECK(waited.isReady());
+      ASSERT_TRUE(waited.isReady());
     }
   });
 }
@@ -568,7 +568,7 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
           })) {
         ++taskTimeoutCount;
       } else {
-        CHECK(!triedFuture.hasException());
+        ASSERT_FALSE(triedFuture.hasException());
         ++successCount;
       }
     }
@@ -593,7 +593,7 @@ void TransportCompatibilityTest::TestRequestResponse_ServerQueueTimeout() {
           })) {
         ++taskTimeoutCount;
       } else {
-        CHECK(!triedFuture.hasException());
+        ASSERT_FALSE(triedFuture.hasException());
       }
     }
     EXPECT_EQ(callCount, taskTimeoutCount)

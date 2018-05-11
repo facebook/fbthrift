@@ -65,11 +65,8 @@ void RSResponder::handleRequestStream(
   DCHECK(metadata->__isset.seqId);
   request.metadata.reset();
 
-  auto channel = std::make_shared<StreamOutput>(
-      evb_,
-      streamId,
-      std::make_shared<ScheduledSubscriber<Payload>>(
-          std::move(response), *evb_));
+  auto channel =
+      std::make_shared<StreamOutput>(evb_, streamId, std::move(response));
   processor_->onThriftRequest(
       std::move(metadata), std::move(request.data), std::move(channel));
 }
