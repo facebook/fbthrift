@@ -21,11 +21,11 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/lib/cpp2/async/GssSaslClient.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
 using namespace boost;

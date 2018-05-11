@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
 
 #include <glog/logging.h>
 #include <memory>
@@ -24,7 +24,7 @@
 #include <folly/String.h>
 #include <folly/portability/GFlags.h>
 
-#include <thrift/lib/cpp/util/kerberos/FBKrb5GetCreds.h>
+#include <thrift/lib/cpp2/util/kerberos/FBKrb5GetCreds.h>
 
 DEFINE_string (thrift_krb5_user_instances, "admin,root,sudo",
        "List of possible instances(second component) of "

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/util/kerberos/Krb5Tgts.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5Tgts.h>
 
 #include <chrono>
 #include <glog/logging.h>

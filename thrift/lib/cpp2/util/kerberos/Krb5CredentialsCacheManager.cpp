@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
 
 #include <glog/logging.h>
 #include <memory>

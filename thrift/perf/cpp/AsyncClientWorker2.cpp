@@ -24,13 +24,13 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/lib/cpp2/async/GssSaslClient.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
 #include <queue>

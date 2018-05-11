@@ -64,6 +64,31 @@ thrift_generate(
   "thrift/lib/cpp2" #include_prefix
 )
 
+add_library(
+  security
+
+  util/kerberos/Krb5Util.cpp
+  util/kerberos/Krb5OlderVersionStubs.cpp
+  util/kerberos/Krb5CredentialsCacheManager.cpp
+  util/kerberos/Krb5CCacheStore.cpp
+  util/kerberos/Krb5Tgts.cpp
+  util/kerberos/FBKrb5GetCreds.cpp
+)
+target_include_directories(
+  security
+  PUBLIC
+    ${KRB5_INCLUDE_DIRS}
+)
+target_link_libraries(
+  security
+  PUBLIC
+    ${KRB5_LIBRARIES}
+    ${Boost_LIBRARIES}
+    Folly::folly
+    ${GFLAGS_LIBRARIES}
+    ${GLOG_LIBRARIES}
+)
+
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 bypass_source_check("${Sasl-cpp2-SOURCES}")
 add_library(
@@ -135,6 +160,7 @@ endforeach()
 
 install(
   TARGETS
+    security
     thriftfrozen2
     thriftprotocol
     thriftcpp2

@@ -19,7 +19,7 @@
 #include <gmock/gmock.h>
 #include <sstream>
 
-#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
 
 using namespace std;
 using namespace apache::thrift::krb5;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 
 #include <folly/experimental/TestUtil.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
 
 DECLARE_string(thrift_cc_manager_kill_switch_file);
 

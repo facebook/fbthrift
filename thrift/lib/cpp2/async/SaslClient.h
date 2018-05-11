@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
+#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
 
 namespace apache {
 namespace thrift {

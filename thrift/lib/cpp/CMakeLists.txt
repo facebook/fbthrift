@@ -109,31 +109,6 @@ target_link_libraries(
 )
 
 add_library(
-  security
-
-  util/kerberos/Krb5Util.cpp
-  util/kerberos/Krb5OlderVersionStubs.cpp
-  util/kerberos/Krb5CredentialsCacheManager.cpp
-  util/kerberos/Krb5CCacheStore.cpp
-  util/kerberos/Krb5Tgts.cpp
-  util/kerberos/FBKrb5GetCreds.cpp
-)
-target_include_directories(
-  security
-  PUBLIC
-    ${KRB5_INCLUDE_DIRS}
-)
-target_link_libraries(
-  security
-  PUBLIC
-    ${KRB5_LIBRARIES}
-    ${Boost_LIBRARIES}
-    Folly::folly
-    ${GFLAGS_LIBRARIES}
-    ${GLOG_LIBRARIES}
-)
-
-add_library(
   thrift
 
   VirtualProfiling.cpp
@@ -170,7 +145,6 @@ install(
     protocol
     transport
     async
-    security
     thrift
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}
