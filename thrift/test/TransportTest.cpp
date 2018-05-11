@@ -34,7 +34,6 @@
 #include <thrift/lib/cpp/transport/TFDTransport.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
-#include <thrift/lib/cpp/transport/TMemPagedTransport.tcc>
 
 #include <gtest/gtest.h>
 
@@ -146,25 +145,6 @@ class CoupledMemoryBuffers : public CoupledTransports<TMemoryBuffer> {
 
   shared_ptr<TMemoryBuffer> buf;
 };
-
-/**
- * Coupled TMemPagedTransports
- */
-class CoupledMemPagedTransports : public CoupledTransports<TMemPagedTransport> {
- public:
-  CoupledMemPagedTransports() :
-    buf(make_shared<TMemPagedTransport>(staticFactory)) {
-    in = buf;
-    out = buf;
-  }
-
-  static shared_ptr<FixedSizeMemoryPageFactory> staticFactory;
-  shared_ptr<TMemPagedTransport> buf;
-};
-
-shared_ptr<FixedSizeMemoryPageFactory>
-  CoupledMemPagedTransports::staticFactory;
-
 
 /**
  * Helper template class for creating coupled transports that wrap
@@ -727,8 +707,6 @@ class TransportTest : public testing::Test {
  public:
   TransportTest() {
     CHECK_GT(FLAGS_size_multiplier, 0);
-    CoupledMemPagedTransports::staticFactory =
-        make_shared<FixedSizeMemoryPageFactory>(1024*16, 1024*1024*16, 1024*64);
   }
 };
 
@@ -858,20 +836,6 @@ TEST_RW_6(CoupledMemoryBuffers, kConst256K, 167, 163, rand4k, rand4k)
 TEST_RW_6(CoupledMemoryBuffers, kConst16K, 1, 1, rand4k, rand4k)
 
 TEST_BLOCKING_BEHAVIOR(CoupledMemoryBuffers)
-
-// TMemPagedTransport tests
-TEST_RW_4(CoupledMemPagedTransports, kConst1024K, 0, 0)
-TEST_RW_4(CoupledMemPagedTransports, kConst256K, rand4k, rand4k)
-TEST_RW_4(CoupledMemPagedTransports, kConst256K, 167, 163)
-TEST_RW_4(CoupledMemPagedTransports, kConst16K, 1, 1)
-
-TEST_RW_6(CoupledMemPagedTransports, kConst256K, 0, 0, rand4k, rand4k)
-TEST_RW_6(CoupledMemPagedTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k)
-TEST_RW_6(CoupledMemPagedTransports, kConst256K, 167, 163, rand4k, rand4k)
-TEST_RW_6(CoupledMemPagedTransports, kConst16K, 1, 1, rand4k, rand4k)
-
-TEST_BLOCKING_BEHAVIOR(CoupledMemPagedTransports)
 
 // TFDTransport tests
 // Since CoupledFDTransports tests with a pipe, writes will block
