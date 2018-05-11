@@ -60,8 +60,7 @@ class ThreadManagerObserver;
  * policy issues. The simplest policy, StaticPolicy, does nothing other than
  * create a fixed number of threads.
  */
-class ThreadManager : public folly::Executor {
-
+class ThreadManager : public virtual folly::Executor {
  protected:
   ThreadManager() {}
 

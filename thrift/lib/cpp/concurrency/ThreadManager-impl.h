@@ -19,6 +19,7 @@
 #include <deque>
 #include <memory>
 
+#include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/PriorityMPMCQueue.h>
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
@@ -89,8 +90,8 @@ class ThreadManager::Task {
 };
 
 template <typename SemType>
-class ThreadManager::ImplT : public ThreadManager  {
-
+class ThreadManager::ImplT : public ThreadManager,
+                             public folly::DefaultKeepAliveExecutor {
   template <typename SemTypeT>
   class Worker;
 

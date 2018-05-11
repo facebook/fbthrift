@@ -27,6 +27,7 @@
 #endif //defined(DEBUG)
 
 #include <folly/Conv.h>
+#include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/GLog.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Memory.h>
@@ -258,7 +259,10 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
     // The thread manager was never started.  Just ignore the stop() call.
     // This will happen if the ThreadManager is destroyed without ever being
     // started.
+    joinKeepAlive();
+    state_ = ThreadManager::STOPPED;
   } else if (state_ == ThreadManager::STARTED) {
+    joinKeepAlive();
     if (joinArg) {
       state_ = ThreadManager::JOINING;
       removeWorkerImpl(intendedWorkerCount_, true);
@@ -822,7 +826,9 @@ shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
 }
 
 template <typename SemType>
-class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
+class PriorityThreadManager::PriorityImplT
+    : public PriorityThreadManager,
+      public folly::DefaultKeepAliveExecutor {
  public:
   PriorityImplT(const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
                                  N_PRIORITIES>& factories,
@@ -834,6 +840,12 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
       counts_[i] = factories[i].second;
+    }
+  }
+
+  ~PriorityImplT() {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
     }
   }
 
@@ -850,6 +862,7 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
 
   void stop() override {
     Guard g(mutex_);
+    joinKeepAliveOnce();
     for (auto& m : managers_) {
       m->stop();
     }
@@ -857,6 +870,7 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
 
   void join() override {
     Guard g(mutex_);
+    joinKeepAliveOnce();
     for (auto& m : managers_) {
       m->join();
     }
@@ -1058,10 +1072,17 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
     return managers_[priority]->getCodel();
   }
 
-private:
+ private:
+  void joinKeepAliveOnce() {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
+    }
+  }
+
   unique_ptr<ThreadManager> managers_[N_PRIORITIES];
   size_t counts_[N_PRIORITIES];
   Mutex mutex_;
+  bool keepAliveJoined_{false};
 };
 
 static const size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
