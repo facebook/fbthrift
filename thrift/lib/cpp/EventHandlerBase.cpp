@@ -15,8 +15,6 @@
  */
 
 #include <thrift/lib/cpp/TProcessor.h>
-#include <thrift/lib/cpp/async/TAsyncChannel.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <algorithm>
 
 using std::vector;

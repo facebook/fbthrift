@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp/SerializedMessage.h>
 #include <thrift/lib/cpp/TProcessorEventHandler.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>

@@ -17,29 +17,13 @@
 #define THRIFT_EVENTHANDLERBASE_H_ 1
 
 #include <memory>
-#include <string>
 #include <vector>
 
-#include <folly/ExceptionWrapper.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/ContextStack.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 
 namespace apache {
 namespace thrift {
-namespace async {
-class TAsyncChannel;
-}
-} // namespace thrift
-} // namespace apache
-
-namespace apache {
-namespace thrift {
-
-using server::TConnectionContext;
 
 class EventHandlerBase {
  public:
@@ -81,7 +65,7 @@ class EventHandlerBase {
   std::unique_ptr<ContextStack> getContextStack(
       const char* service_name,
       const char* fn_name,
-      TConnectionContext* connectionContext) {
+      server::TConnectionContext* connectionContext) {
     std::unique_ptr<ContextStack> ctx(
         new ContextStack(handlers_, service_name, fn_name, connectionContext));
     return ctx;
