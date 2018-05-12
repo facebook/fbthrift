@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -68,6 +69,10 @@ int main(int argc, char** argv) {
     std::cout << "\t\tThreadFactory monitor timeout test" << std::endl;
 
     assert(threadFactoryTests.monitorTimeoutTest());
+
+    std::cout << "\t\tInitThreadFactory test" << std::endl;
+
+    assert(threadFactoryTests.initThreadFactoryTest());
   }
 
   if (runAll || args[0] == "util") {

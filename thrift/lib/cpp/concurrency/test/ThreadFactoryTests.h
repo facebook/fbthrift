@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,16 +18,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-#include <thrift/lib/cpp/thrift_config.h>
-#include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/Util.h>
 #include <folly/portability/Unistd.h>
+#include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/thrift_config.h>
 
 #include <assert.h>
 #include <iostream>
+#include <memory>
 #include <set>
 
 namespace apache { namespace thrift { namespace concurrency { namespace test {
@@ -384,9 +387,24 @@ public:
 
     return success;
   }
+
+  bool initThreadFactoryTest() {
+    bool success = false;
+
+    auto threadFactory =
+        std::make_shared<apache::thrift::concurrency::InitThreadFactory>(
+            std::make_shared<apache::thrift::concurrency::PosixThreadFactory>(),
+            [&success] { success = true; });
+
+    auto thr =
+        threadFactory->newThread(std::make_shared<ThreadFactoryTests::Task>());
+    thr->start();
+    thr->join();
+
+    return success;
+  }
 };
 
 const double ThreadFactoryTests::ERROR = .20;
 
 }}}} // apache::thrift::concurrency::test
-
