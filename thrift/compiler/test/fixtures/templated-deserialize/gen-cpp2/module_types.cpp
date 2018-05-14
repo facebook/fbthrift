@@ -108,46 +108,46 @@ template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtoco
 } // cpp2
 namespace cpp2 {
 
-containerStruct::containerStruct(const containerStruct& src) {
-  fieldA = src.fieldA;
-  __isset.fieldA = src.__isset.fieldA;
-  fieldB = src.fieldB;
-  __isset.fieldB = src.__isset.fieldB;
-  fieldC = src.fieldC;
-  __isset.fieldC = src.__isset.fieldC;
-  fieldD = src.fieldD;
-  __isset.fieldD = src.__isset.fieldD;
-  fieldE = src.fieldE;
-  __isset.fieldE = src.__isset.fieldE;
-  fieldF = src.fieldF;
-  __isset.fieldF = src.__isset.fieldF;
-  fieldG = src.fieldG;
-  __isset.fieldG = src.__isset.fieldG;
-  fieldH = src.fieldH;
-  __isset.fieldH = src.__isset.fieldH;
-  fieldI = src.fieldI;
-  __isset.fieldI = src.__isset.fieldI;
-  fieldJ = src.fieldJ;
-  __isset.fieldJ = src.__isset.fieldJ;
-  fieldK = src.fieldK;
-  __isset.fieldK = src.__isset.fieldK;
-  fieldL = src.fieldL;
-  __isset.fieldL = src.__isset.fieldL;
-  fieldM = src.fieldM;
-  __isset.fieldM = src.__isset.fieldM;
-  fieldN = src.fieldN;
-  __isset.fieldN = src.__isset.fieldN;
-  fieldO = src.fieldO;
-  __isset.fieldO = src.__isset.fieldO;
-  fieldP = src.fieldP;
-  __isset.fieldP = src.__isset.fieldP;
-  fieldQ = src.fieldQ;
-  __isset.fieldQ = src.__isset.fieldQ;
-  if (src.fieldR) fieldR.reset(new std::map<std::string, bool>(*src.fieldR));
-  if (src.fieldS) fieldS.reset(new  ::cpp2::SmallStruct(*src.fieldS));
-  fieldT = src.fieldT;
-  fieldU = src.fieldU;
-  if (src.fieldX) fieldX.reset(new  ::cpp2::SmallStruct(*src.fieldX));
+containerStruct::containerStruct(const containerStruct& srcObj) {
+  fieldA = srcObj.fieldA;
+  __isset.fieldA = srcObj.__isset.fieldA;
+  fieldB = srcObj.fieldB;
+  __isset.fieldB = srcObj.__isset.fieldB;
+  fieldC = srcObj.fieldC;
+  __isset.fieldC = srcObj.__isset.fieldC;
+  fieldD = srcObj.fieldD;
+  __isset.fieldD = srcObj.__isset.fieldD;
+  fieldE = srcObj.fieldE;
+  __isset.fieldE = srcObj.__isset.fieldE;
+  fieldF = srcObj.fieldF;
+  __isset.fieldF = srcObj.__isset.fieldF;
+  fieldG = srcObj.fieldG;
+  __isset.fieldG = srcObj.__isset.fieldG;
+  fieldH = srcObj.fieldH;
+  __isset.fieldH = srcObj.__isset.fieldH;
+  fieldI = srcObj.fieldI;
+  __isset.fieldI = srcObj.__isset.fieldI;
+  fieldJ = srcObj.fieldJ;
+  __isset.fieldJ = srcObj.__isset.fieldJ;
+  fieldK = srcObj.fieldK;
+  __isset.fieldK = srcObj.__isset.fieldK;
+  fieldL = srcObj.fieldL;
+  __isset.fieldL = srcObj.__isset.fieldL;
+  fieldM = srcObj.fieldM;
+  __isset.fieldM = srcObj.__isset.fieldM;
+  fieldN = srcObj.fieldN;
+  __isset.fieldN = srcObj.__isset.fieldN;
+  fieldO = srcObj.fieldO;
+  __isset.fieldO = srcObj.__isset.fieldO;
+  fieldP = srcObj.fieldP;
+  __isset.fieldP = srcObj.__isset.fieldP;
+  fieldQ = srcObj.fieldQ;
+  __isset.fieldQ = srcObj.__isset.fieldQ;
+  if (srcObj.fieldR) fieldR.reset(new std::map<std::string, bool>(*srcObj.fieldR));
+  if (srcObj.fieldS) fieldS.reset(new  ::cpp2::SmallStruct(*srcObj.fieldS));
+  fieldT = srcObj.fieldT;
+  fieldU = srcObj.fieldU;
+  if (srcObj.fieldX) fieldX.reset(new  ::cpp2::SmallStruct(*srcObj.fieldX));
 }
 
 containerStruct& containerStruct::operator=(const containerStruct& src) {

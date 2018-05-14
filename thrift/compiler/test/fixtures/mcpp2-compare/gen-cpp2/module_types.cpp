@@ -2286,13 +2286,13 @@ template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::SimpleJSON
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& src) {
-  MyIncludedInt = src.MyIncludedInt;
-  __isset.MyIncludedInt = src.__isset.MyIncludedInt;
-  MyIncludedStruct = src.MyIncludedStruct;
-  __isset.MyIncludedStruct = src.__isset.MyIncludedStruct;
-  if (src.ARefField) ARefField.reset(new  ::some::valid::ns::AStruct(*src.ARefField));
-  ARequiredField = src.ARequiredField;
+MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
+  MyIncludedInt = srcObj.MyIncludedInt;
+  __isset.MyIncludedInt = srcObj.__isset.MyIncludedInt;
+  MyIncludedStruct = srcObj.MyIncludedStruct;
+  __isset.MyIncludedStruct = srcObj.__isset.MyIncludedStruct;
+  if (srcObj.ARefField) ARefField.reset(new  ::some::valid::ns::AStruct(*srcObj.ARefField));
+  ARequiredField = srcObj.ARequiredField;
 }
 
 MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {

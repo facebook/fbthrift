@@ -49,15 +49,6 @@ std::string const& map_find_first(
   return empty;
 }
 
-bool is_cpp_ref(const t_field* f) {
-  return f->annotations_.count("cpp.ref") ||
-      f->annotations_.count("cpp2.ref") ||
-      (f->annotations_.count("cpp.ref_type") &&
-       f->annotations_.at("cpp.ref_type") == "unique") ||
-      (f->annotations_.count("cpp2.ref_type") &&
-       f->annotations_.at("cpp2.ref_type") == "unique");
-}
-
 std::string const& get_cpp_type(const t_type* type) {
   return map_find_first(
       type->annotations_,
@@ -74,6 +65,23 @@ std::string const& get_cpp_template(const t_type* type) {
           "cpp.template",
           "cpp2.template",
       });
+}
+
+bool is_implicit_ref(const t_type* type) {
+  auto const* resolved_typedef = mstch_const::resolve_typedef(type);
+  return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
+      get_cpp_type(resolved_typedef).find("std::unique_ptr") != string::npos &&
+      get_cpp_type(resolved_typedef).find("folly::IOBuf") != string::npos;
+}
+
+bool is_cpp_ref(const t_field* f) {
+  return f->annotations_.count("cpp.ref") ||
+      f->annotations_.count("cpp2.ref") ||
+      (f->annotations_.count("cpp.ref_type") &&
+       f->annotations_.at("cpp.ref_type") == "unique") ||
+      (f->annotations_.count("cpp2.ref_type") &&
+       f->annotations_.at("cpp2.ref_type") == "unique") ||
+      is_implicit_ref(f->get_type());
 }
 
 bool same_types(const t_type* a, const t_type* b) {
@@ -410,6 +418,8 @@ class mstch_cpp2_field : public mstch_field {
         {
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
+            {"field:cpp_ref_unique_either?",
+             &mstch_cpp2_field::cpp_ref_unique_either},
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
@@ -426,6 +436,10 @@ class mstch_cpp2_field : public mstch_field {
     return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
         get_annotation("cpp.ref_type") == "unique" ||
         get_annotation("cpp2.ref_type") == "unique";
+  }
+  mstch::node cpp_ref_unique_either() {
+    return boost::get<bool>(cpp_ref_unique()) ||
+        is_implicit_ref(field_->get_type());
   }
   mstch::node cpp_ref_shared() {
     return get_annotation("cpp.ref_type") == "shared" ||

@@ -14,16 +14,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%struct:name%>::<%struct:name%>(const <%struct:name%>& src) {
+%><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
 <%#struct:fields%><%#field:type%>
-<%^field:cpp_ref_unique?%>
-  <%field:name%> = src.<%field:name%>;
+<%^field:cpp_ref_unique_either?%>
+  <%field:name%> = srcObj.<%field:name%>;
+<%/field:cpp_ref_unique_either?%>
+<%#field:cpp_ref_unique_either?%>
+  if (srcObj.<%field:name%>) <%#field:cpp_ref_unique?%><%!
+    %><%field:name%>.reset(new <% > types/type%>(*srcObj.<%field:name%>));
+<%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
+    %><%field:name%> = srcObj.<%field:name%><%#type:optionals?%>.value()<%/type:optionals?%>->clone();
 <%/field:cpp_ref_unique?%>
-<%#field:cpp_ref_unique?%>
-  if (src.<%field:name%>) <%field:name%>.reset(new <% > types/type%>(*src.<%field:name%>));
-<%/field:cpp_ref_unique?%>
-<%^field:cpp_ref?%><%^field:required?%>
-  __isset.<%field:name%> = src.__isset.<%field:name%>;
-<%/field:required?%><%/field:cpp_ref?%>
+<%/field:cpp_ref_unique_either?%>
+<%^type:optionals?%><%^field:cpp_ref?%><%^field:required?%>
+  __isset.<%field:name%> = srcObj.__isset.<%field:name%>;
+<%/field:required?%><%/field:cpp_ref?%><%/type:optionals?%>
 <%/field:type%><%/struct:fields%>
 }

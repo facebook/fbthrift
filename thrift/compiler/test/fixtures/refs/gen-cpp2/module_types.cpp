@@ -201,10 +201,10 @@ template uint32_t MyField::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
-MyStruct::MyStruct(const MyStruct& src) {
-  if (src.opt_ref) opt_ref.reset(new  ::cpp2::MyField(*src.opt_ref));
-  if (src.ref) ref.reset(new  ::cpp2::MyField(*src.ref));
-  if (src.req_ref) req_ref.reset(new  ::cpp2::MyField(*src.req_ref));
+MyStruct::MyStruct(const MyStruct& srcObj) {
+  if (srcObj.opt_ref) opt_ref.reset(new  ::cpp2::MyField(*srcObj.opt_ref));
+  if (srcObj.ref) ref.reset(new  ::cpp2::MyField(*srcObj.ref));
+  if (srcObj.req_ref) req_ref.reset(new  ::cpp2::MyField(*srcObj.req_ref));
 }
 
 MyStruct& MyStruct::operator=(const MyStruct& src) {
@@ -322,12 +322,12 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 } // cpp2
 namespace cpp2 {
 
-StructWithUnion::StructWithUnion(const StructWithUnion& src) {
-  if (src.u) u.reset(new  ::cpp2::MyUnion(*src.u));
-  aDouble = src.aDouble;
-  __isset.aDouble = src.__isset.aDouble;
-  f = src.f;
-  __isset.f = src.__isset.f;
+StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
+  if (srcObj.u) u.reset(new  ::cpp2::MyUnion(*srcObj.u));
+  aDouble = srcObj.aDouble;
+  __isset.aDouble = srcObj.__isset.aDouble;
+  f = srcObj.f;
+  __isset.f = srcObj.__isset.f;
 }
 
 StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
@@ -495,13 +495,13 @@ template uint32_t RecursiveStruct::serializedSizeZC<>(apache::thrift::CompactPro
 } // cpp2
 namespace cpp2 {
 
-StructWithContainers::StructWithContainers(const StructWithContainers& src) {
-  if (src.list_ref) list_ref.reset(new std::vector<int32_t>(*src.list_ref));
-  if (src.set_ref) set_ref.reset(new std::set<int32_t>(*src.set_ref));
-  if (src.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*src.map_ref));
-  if (src.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src.list_ref_unique));
-  set_ref_shared = src.set_ref_shared;
-  list_ref_shared_const = src.list_ref_shared_const;
+StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
+  if (srcObj.list_ref) list_ref.reset(new std::vector<int32_t>(*srcObj.list_ref));
+  if (srcObj.set_ref) set_ref.reset(new std::set<int32_t>(*srcObj.set_ref));
+  if (srcObj.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*srcObj.map_ref));
+  if (srcObj.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*srcObj.list_ref_unique));
+  set_ref_shared = srcObj.set_ref_shared;
+  list_ref_shared_const = srcObj.list_ref_shared_const;
 }
 
 StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src) {
@@ -848,10 +848,10 @@ template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
-StructWithRef::StructWithRef(const StructWithRef& src) {
-  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
-  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
-  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
+StructWithRef::StructWithRef(const StructWithRef& srcObj) {
+  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
+  if (srcObj.opt_field) opt_field.reset(new  ::cpp2::Empty(*srcObj.opt_field));
+  if (srcObj.req_field) req_field.reset(new  ::cpp2::Empty(*srcObj.req_field));
 }
 
 StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
@@ -966,10 +966,10 @@ template uint32_t StructWithRef::serializedSizeZC<>(apache::thrift::CompactProto
 } // cpp2
 namespace cpp2 {
 
-StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& src) {
-  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
-  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
-  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
+StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& srcObj) {
+  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
+  if (srcObj.opt_field) opt_field.reset(new  ::cpp2::Empty(*srcObj.opt_field));
+  if (srcObj.req_field) req_field.reset(new  ::cpp2::Empty(*srcObj.req_field));
 }
 
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& src) {
