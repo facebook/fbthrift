@@ -110,7 +110,7 @@ static Foo * ExampleFoo;
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setA: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;

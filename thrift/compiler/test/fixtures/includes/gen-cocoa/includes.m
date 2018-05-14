@@ -152,7 +152,7 @@ static int64_t IncludedConstant = 42;
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setMyIntField: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -162,7 +162,7 @@ static int64_t IncludedConstant = 42;
           [fieldValue read: inProtocol];
           [self setMyTransitiveField: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;

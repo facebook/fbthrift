@@ -172,7 +172,7 @@
           [fieldValue read: inProtocol];
           [self setMyIncludedField: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -182,7 +182,7 @@
           [fieldValue read: inProtocol];
           [self setMyOtherIncludedField: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -190,7 +190,7 @@
         if (fieldType == TType_I64) {
           int64_t fieldValue = [inProtocol readI64];
           [self setMyIncludedInt: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;

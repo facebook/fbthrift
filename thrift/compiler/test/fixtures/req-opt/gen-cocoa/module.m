@@ -190,7 +190,7 @@
         if (fieldType == TType_I32) {
           int32_t fieldValue = [inProtocol readI32];
           [self setMyInteger: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -198,7 +198,7 @@
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setMyString: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -216,7 +216,7 @@
           [inProtocol readListEnd];
           [self setMyBools: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -234,7 +234,7 @@
           [inProtocol readListEnd];
           [self setMyNumbers: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;

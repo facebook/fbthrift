@@ -156,7 +156,7 @@
           [fieldValue read: inProtocol];
           [self setS: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -166,7 +166,7 @@
           [fieldValue read: inProtocol];
           [self setI: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -462,7 +462,7 @@
           [fieldValue read: inProtocol];
           [self setS: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -472,7 +472,7 @@
           [fieldValue read: inProtocol];
           [self setI: fieldValue];
           [fieldValue release_stub];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;

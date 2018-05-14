@@ -1071,7 +1071,7 @@ void t_cocoa_generator::generate_cocoa_struct_reader(ofstream& out,
         }
 
         indent_down();
-        out << indent() << "} else { " << endl;
+        out << indent() << "} else {" << endl;
         if (log_unexpected_) {
           out << indent() << "  NSLog(@\"%s: field ID %i has unexpected type %i.  Skipping.\", __PRETTY_FUNCTION__, fieldID, fieldType);" << endl;
         }

@@ -131,7 +131,7 @@
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setName: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
@@ -139,7 +139,7 @@
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setXyz_description: fieldValue];
-        } else { 
+        } else {
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
