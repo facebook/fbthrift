@@ -229,7 +229,12 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      <%^function:returns_stream?%>
       req->sendReply(queue.move());
+      <%/function:returns_stream?%>
+      <%#function:returns_stream?%>
+      req->sendStreamReply({queue.move(), {}});
+      <%/function:returns_stream?%>
       return;
     }
     else {
@@ -239,12 +244,14 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
 <%#function:exceptions?%>
   <%^function:returns_stream?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  return req->sendReply(queue.move());
   <%/function:returns_stream?%>
   <%#function:returns_stream?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result.fields);
-  <%/function:returns_stream?%>
   queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
+  return req->sendStreamReply({queue.move(), {}});
+  <%/function:returns_stream?%>
 <%/function:exceptions?%>
 }
 

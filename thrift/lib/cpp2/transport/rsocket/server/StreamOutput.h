@@ -39,16 +39,6 @@ class StreamOutput : public RSServerThriftChannel {
         streamId_(streamId),
         subscriber_(std::move(subscriber)) {}
 
-  void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> buf) noexcept override {
-    auto subscriber = std::move(subscriber_);
-    subscriber->onSubscribe(yarpl::flowable::Subscription::create());
-    subscriber->onNext(rsocket::Payload(
-        std::move(buf), RequestResponse::serializeMetadata(*metadata)));
-    subscriber->onError(TApplicationException("stream response was expected"));
-  }
-
   void sendStreamThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf,
@@ -57,15 +47,22 @@ class StreamOutput : public RSServerThriftChannel {
     auto response =
         yarpl::flowable::Flowable<rsocket::Payload>::justOnce(rsocket::Payload(
             std::move(buf), RequestResponse::serializeMetadata(*metadata)));
-    auto mappedStream =
-        toFlowable(std::move(stream).via(evb_))->map([](auto buf) mutable {
-          return rsocket::Payload(std::move(buf));
-        });
+    if (stream) {
+      auto mappedStream =
+          toFlowable(std::move(stream).via(evb_))->map([](auto buf) mutable {
+            return rsocket::Payload(std::move(buf));
+          });
 
-    // We will not subscribe to the second stream till more than one item is
-    // requested from the client side. So we will first send the initial
-    // response and wait till the client subscribes to the resultant stream
-    response->concatWith(mappedStream)->subscribe(std::move(subscriber_));
+      // We will not subscribe to the second stream till more than one item is
+      // requested from the client side. So we will first send the initial
+      // response and wait till the client subscribes to the resultant stream
+      response->concatWith(mappedStream)->subscribe(std::move(subscriber_));
+    } else {
+      response
+          ->concatWith(yarpl::flowable::Flowable<rsocket::Payload>::error(
+              std::runtime_error("no stream")))
+          ->subscribe(std::move(subscriber_));
+    }
   }
 
  protected:

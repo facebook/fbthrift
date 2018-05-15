@@ -228,7 +228,11 @@ class ThriftRequest : public ResponseChannel::Request {
         LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                    << " what()=" << pe.what();
       }
-      sendReplyInternal(std::move(exbuf));
+      if (kind_ != RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
+        sendReplyInternal(std::move(exbuf));
+      } else {
+        sendReplyInternal(std::move(exbuf), {}, nullptr);
+      }
     });
   }
 

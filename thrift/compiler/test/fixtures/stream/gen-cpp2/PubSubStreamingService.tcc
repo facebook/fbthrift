@@ -366,7 +366,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(std::uniqu
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("returnstream", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
+      req->sendStreamReply({queue.move(), {}});
       return;
     }
     else {
@@ -595,7 +595,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_different(std::unique_p
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("different", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
+      req->sendStreamReply({queue.move(), {}});
       return;
     }
     else {
