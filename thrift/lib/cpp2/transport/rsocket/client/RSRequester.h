@@ -17,7 +17,6 @@
 #pragma once
 
 #include <rsocket/RSocket.h>
-#include <rsocket/RSocketRequester.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 
 namespace apache {
@@ -46,13 +45,14 @@ class RSRequester {
       std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
           responseSink);
 
-  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> requestStream(
-      rsocket::Payload request);
+  void requestStream(
+      rsocket::Payload request,
+      std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
+          responseSink);
 
  private:
   folly::EventBase* eventBase_;
   std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
-  std::unique_ptr<rsocket::RSocketRequester> requester_;
   std::shared_ptr<rsocket::RSocketConnectionEvents> connectionStatus_;
 };
 } // namespace thrift

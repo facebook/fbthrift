@@ -402,20 +402,18 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
-  auto result = rsRequester_->requestStream(
-      Payload(std::move(buf), serializeMetadata(*metadata)));
-
-  callback->onThriftRequestSent();
-
-  auto takeFirst = std::make_shared<TakeFirst>(
-      result, [this]() mutable { channelCounters_.decPendingRequests(); });
-  takeFirst->get()
-      .via(evb_)
-      .then([this, callback, chunkTimeout = rpcOptions.getChunkTimeout()](
-                std::pair<
-                    rsocket::Payload,
-                    std::shared_ptr<Flowable<std::unique_ptr<IOBuf>>>>
-                    result) mutable {
+  auto&& takeFirst = std::make_shared<TakeFirst>(
+      // onRequestSent
+      [callback]() mutable {
+        auto cb = std::exchange(callback, nullptr);
+        cb->onThriftRequestSent();
+      },
+      // onResponse
+      [this, callback, chunkTimeout = rpcOptions.getChunkTimeout()](
+          std::pair<
+              rsocket::Payload,
+              std::shared_ptr<Flowable<std::unique_ptr<IOBuf>>>>
+              result) mutable {
         auto cb = std::exchange(callback, nullptr);
         auto flowable = std::move(result.second);
         if (chunkTimeout.count() > 0) {
@@ -435,12 +433,19 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
                                   : std::make_unique<ResponseRpcMetadata>(),
             std::move(result.first.data),
             toStream(std::move(flowable), evb_));
-      })
-      .onError([this, callback](folly::exception_wrapper ew) mutable {
+      },
+      // onError
+      [this, callback](folly::exception_wrapper ew) mutable {
         channelCounters_.decPendingRequests();
         auto cb = std::exchange(callback, nullptr);
         cb->onError(std::move(ew));
-      });
+      },
+      // onTerminal
+      [this]() { channelCounters_.decPendingRequests(); });
+
+  rsRequester_->requestStream(
+      Payload(std::move(buf), serializeMetadata(*metadata)),
+      std::move(takeFirst));
 }
 
 void RSocketClientChannel::setMaxPendingRequests(uint32_t count) {

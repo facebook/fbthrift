@@ -63,8 +63,7 @@ RSRequester::RSRequester(
     folly::EventBase* evb,
     std::shared_ptr<RSocketConnectionEvents> status)
     : eventBase_(evb),
-      stateMachine_(createStateMachine(std::move(socket), status)),
-      requester_{std::make_unique<RSocketRequester>(stateMachine_, *evb)} {}
+      stateMachine_(createStateMachine(std::move(socket), status)) {}
 
 RSRequester::~RSRequester() {
   closeNow();
@@ -95,8 +94,11 @@ bool RSRequester::isDetachable() {
   return true;
 }
 
-std::shared_ptr<Flowable<Payload>> RSRequester::requestStream(Payload request) {
-  return requester_->requestStream(std::move(request));
+void RSRequester::requestStream(
+    Payload request,
+    std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
+        responseSink) {
+  stateMachine_->requestStream(std::move(request), std::move(responseSink));
 }
 
 void RSRequester::fireAndForget(Payload request) {

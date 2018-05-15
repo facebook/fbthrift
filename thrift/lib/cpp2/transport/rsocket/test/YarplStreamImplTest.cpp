@@ -130,41 +130,48 @@ TEST(YarplStreamImplTest, EncodeDecode) {
 }
 
 TEST(FlowableTest, TakeFirstNormal) {
-  folly::ScopedEventBaseThread evbThread;
-
   auto a = Flowable<Payload>::justOnce(Payload{"Hello"});
   auto b = Flowable<Payload>::justOnce(Payload{"World"});
   auto combined = a->concatWith(b);
 
   folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(std::move(combined));
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-    auto flowable = result.second->map(
-        [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
-    auto values = run(flowable);
-    EXPECT_EQ(1, values.size());
-    EXPECT_STREQ("World", values[0].c_str());
-    baton.post();
-  });
+  std::shared_ptr<Flowable<std::string>> flowable;
+  auto takeFirst = std::make_shared<TakeFirst>(
+      nullptr,
+      [&baton, &flowable](Pair&& result) {
+        EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
+        flowable = result.second->map(
+            [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
+        baton.post();
+      },
+      nullptr,
+      nullptr);
+
+  combined->subscribe(takeFirst);
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+  auto values = run(flowable);
+  EXPECT_EQ(1, values.size());
+  EXPECT_STREQ("World", values[0].c_str());
 }
 
 TEST(FlowableTest, TakeFirstDontSubscribe) {
-  folly::ScopedEventBaseThread evbThread;
-
   auto a = Flowable<Payload>::justOnce(Payload{"Hello"});
   auto b = Flowable<Payload>::justOnce(Payload{"World"});
   auto combined = a->concatWith(b);
 
   folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(std::move(combined));
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-    // Do not subscribe to the `result.second`
-    baton.post();
-  });
+  auto takeFirst = std::make_shared<TakeFirst>(
+      nullptr,
+      [&baton](Pair&& result) {
+        EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
+        // Do not subscribe to the `result.second`
+        baton.post();
+      },
+      nullptr,
+      nullptr);
+
+  combined->subscribe(std::move(takeFirst));
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
 }
@@ -172,15 +179,17 @@ TEST(FlowableTest, TakeFirstDontSubscribe) {
 TEST(FlowableTest, TakeFirstNoResponse) {
   folly::ScopedEventBaseThread evbThread;
   folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(Flowable<Payload>::never());
   bool timedOut = false;
-  takeFirst->get()
-      .via(evbThread.getEventBase())
-      .then([&baton](Pair&&) { baton.post(); })
-      .onError([&timedOut, &baton](folly::exception_wrapper) {
+  auto takeFirst = std::make_shared<TakeFirst>(
+      nullptr,
+      [&baton](Pair&&) { baton.post(); },
+      [&timedOut, &baton](folly::exception_wrapper) {
         timedOut = true;
         baton.post();
-      });
+      },
+      nullptr);
+
+  Flowable<Payload>::never()->subscribe(takeFirst);
 
   ASSERT_FALSE(baton.timed_wait(std::chrono::seconds(1)));
 
@@ -196,14 +205,15 @@ TEST(FlowableTest, TakeFirstErrorResponse) {
   folly::ScopedEventBaseThread evbThread;
   folly::Baton<> baton;
   auto takeFirst = std::make_shared<TakeFirst>(
-      Flowable<Payload>::error(std::runtime_error("error")));
-  takeFirst->get()
-      .via(evbThread.getEventBase())
-      .then([](auto&&) { ASSERT(false); })
-      .onError([&baton](folly::exception_wrapper ew) {
+      nullptr,
+      [](auto&&) { ASSERT(false); },
+      [&baton](folly::exception_wrapper ew) {
         ASSERT_STREQ(ew.what().c_str(), "std::runtime_error: error");
         baton.post();
-      });
+      },
+      nullptr);
+
+  Flowable<Payload>::error(std::runtime_error("error"))->subscribe(takeFirst);
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
 }
@@ -215,63 +225,26 @@ TEST(FlowableTest, TakeFirstStreamError) {
   auto first = Flowable<Payload>::justOnce(Payload{"Hello"});
   auto error = Flowable<Payload>::error(std::runtime_error("error"));
   auto combined = first->concatWith(error);
-  auto takeFirst = std::make_shared<TakeFirst>(combined);
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    auto flowable = result.second->map([](auto) { return 1; });
-    auto subscriber = std::make_shared<TestSubscriber<int32_t>>(1);
-    flowable->subscribe(subscriber);
 
-    EXPECT_TRUE(subscriber->isError());
-    EXPECT_EQ(subscriber->getErrorMsg(), "error");
-    baton.post();
-  });
-
-  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
-}
-
-TEST(FlowableTest, TakeFirstMultiSubscribe) {
-  folly::ScopedEventBaseThread evbThread;
-
-  auto a = Flowable<Payload>::fromGenerator([]() { return Payload{"Hello"}; })
-               ->take(1);
-  auto b = Flowable<Payload>::fromGenerator([]() { return Payload{"World"}; })
-               ->take(1);
-  auto combined = a->concatWith(b);
-
-  // First subscribe
-  folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(combined);
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-    auto flowable = result.second->map(
-        [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
-    auto values = run(flowable);
-    EXPECT_EQ(1, values.size());
-    EXPECT_STREQ("World", values[0].c_str());
-    baton.post();
-  });
-
-  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
-
-  // Second subscribe
-  baton.reset();
-  takeFirst = std::make_shared<TakeFirst>(combined);
-  takeFirst->get()
-      .via(evbThread.getEventBase())
-      .then([&baton](Pair&& result) {
-        EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-        auto flowable = result.second->map(
-            [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
-        auto values = run(flowable);
-        EXPECT_EQ(1, values.size());
-        EXPECT_STREQ("World", values[0].c_str());
+  std::shared_ptr<Flowable<int>> flowable;
+  auto takeFirst = std::make_shared<TakeFirst>(
+      nullptr,
+      [&baton, &flowable](Pair&& result) {
+        flowable = result.second->map([](auto) { return 1; });
         baton.post();
-      })
-      .onError([](folly::exception_wrapper ew) {
-        FAIL() << "Unexpected error: " << ew.what();
-      });
+      },
+      nullptr,
+      nullptr);
+
+  combined->subscribe(takeFirst);
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+
+  auto subscriber = std::make_shared<TestSubscriber<int32_t>>(1);
+  flowable->subscribe(subscriber);
+
+  EXPECT_TRUE(subscriber->isError());
+  EXPECT_EQ(subscriber->getErrorMsg(), "error");
 }
 
 TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
@@ -285,50 +258,30 @@ TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
 
   // First subscribe
   folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(combined);
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-    auto flowable = result.second->map(
-        [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
-    auto values = run(flowable);
-    EXPECT_EQ(1, values.size());
-    EXPECT_STREQ("World", values[0].c_str());
+  std::shared_ptr<Flowable<std::unique_ptr<folly::IOBuf>>> flowable;
+  auto takeFirst = std::make_shared<TakeFirst>(
+      nullptr,
+      [&baton, &flowable](Pair&& result) {
+        EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
+        flowable = result.second;
+        baton.post();
+      },
+      nullptr,
+      nullptr);
 
-    // Second subscribe
-    auto flowable2 = result.second->map([](auto) { return 1; });
-    auto subscriber = std::make_shared<TestSubscriber<int32_t>>(10);
-    EXPECT_THROW(flowable2->subscribe(subscriber), std::logic_error);
-
-    baton.post();
-  });
-
-  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
-}
-
-TEST(FlowableTest, TakeFirstMultiGet) {
-  folly::ScopedEventBaseThread evbThread;
-
-  auto a = Flowable<Payload>::justOnce(Payload{"Hello"});
-  auto b = Flowable<Payload>::justOnce(Payload{"World"});
-  auto combined = a->concatWith(b);
-
-  // First `get` call
-  folly::Baton<> baton;
-  auto takeFirst = std::make_shared<TakeFirst>(combined);
-  takeFirst->get().via(evbThread.getEventBase()).then([&baton](Pair&& result) {
-    EXPECT_STREQ("Hello", result.first.moveDataToString().c_str());
-    auto flowable = result.second->map(
-        [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
-    auto values = run(flowable);
-    EXPECT_EQ(1, values.size());
-    EXPECT_STREQ("World", values[0].c_str());
-    baton.post();
-  });
-
+  combined->subscribe(takeFirst);
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
 
-  // Second `get` call
-  EXPECT_THROW(takeFirst->get(), std::logic_error);
+  auto flowable1 = flowable->map(
+      [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
+  auto values = run(flowable1);
+  EXPECT_EQ(1, values.size());
+  EXPECT_STREQ("World", values[0].c_str());
+
+  // Second subscribe
+  auto flowable2 = flowable->map([](auto) { return 1; });
+  auto subscriber = std::make_shared<TestSubscriber<int32_t>>(10);
+  EXPECT_THROW(flowable2->subscribe(subscriber), std::logic_error);
 }
 
 } // namespace thrift
