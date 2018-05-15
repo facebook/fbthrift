@@ -22,6 +22,8 @@
 #define CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 
 #include <folly/Format.h>
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
@@ -120,7 +122,7 @@ class DebugProtocolWriter {
   void writeByteRange(folly::ByteRange v);
 
   void writeRaw(folly::StringPiece sp) {
-    out_->append(sp.data(), sp.size());
+    out_.push(reinterpret_cast<uint8_t const*>(sp.data()), sp.size());
   }
 
   template <class... Args>
@@ -159,7 +161,7 @@ class DebugProtocolWriter {
   void pushState(ItemType t);
   void popState();
 
-  folly::IOBufQueue* out_;
+  folly::io::QueueAppender out_;
   std::string indent_;
   std::vector<WriteState> writeState_;
 };

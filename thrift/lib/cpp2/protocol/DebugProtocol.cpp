@@ -28,7 +28,7 @@ namespace apache {
 namespace thrift {
 
 DebugProtocolWriter::DebugProtocolWriter(ExternalBufferSharing /*sharing*/)
-    : out_(nullptr) {}
+    : out_(nullptr, 0) {}
 
 namespace {
 
@@ -142,9 +142,11 @@ void DebugProtocolWriter::endItem() {
 }
 
 void DebugProtocolWriter::setOutput(
-    folly::IOBufQueue* out,
-    size_t /*maxGrowth*/) {
-  out_ = out;
+    folly::IOBufQueue* storage,
+    size_t maxGrowth) {
+  // Allocate 16KB at a time; leave some room for the IOBuf overhead
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  out_.reset(storage, std::min(kDesiredGrowth, maxGrowth));
 }
 
 uint32_t DebugProtocolWriter::writeMessageBegin(
