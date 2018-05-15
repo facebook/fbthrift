@@ -44,6 +44,7 @@ static const string kFieldPrefix = "__thrift_";
 static const string kStructInheritanceRootObjectName = "TBaseStruct";
 static const string kSetPostfix = "_set";
 static const string kToStringPostfix = "ToString";
+static const string kFromStringPostfix = "FromString";
 
 /**
  * Objective-C code generator.
@@ -101,6 +102,7 @@ class t_cocoa_generator : public t_oop_generator {
 
   void generate_typedef(t_typedef* ttypedef) override;
   void generate_enum(t_enum* tenum) override;
+  void generate_enum_from_string_function(t_enum* tenum);
   void generate_struct(t_struct* tstruct) override;
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
@@ -429,6 +431,7 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
     "};" << endl <<
     endl;
 
+  // toString
 
   const string toStringFunctionDeclaration =
         string("NSString* ")
@@ -456,6 +459,62 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
           << "%d\", (int)value];"
           << endl;
   indent_down();
+  f_impl_ << indent() << "}" << endl;
+  f_impl_ << endl;
+
+  // fromString
+
+  if (tenum->annotations_.count("cocoa.enum_conversion") != 0) {
+    generate_enum_from_string_function(tenum);
+  }
+}
+
+void t_cocoa_generator::generate_enum_from_string_function(t_enum* tenum) {
+  const string fromStringFunctionDeclaration = cocoa_prefix_ +
+      tenum->get_name() + " " + cocoa_prefix_ + tenum->get_name() +
+      kFromStringPostfix + "(NSString *str, int fallbackValue)";
+
+  f_header_ << indent() << fromStringFunctionDeclaration << ";" << endl << endl;
+
+  // implementation:
+  f_impl_ << indent() << fromStringFunctionDeclaration << endl << "{" << endl;
+
+  indent_up();
+
+  f_impl_ << indent()
+          << "static NSDictionary<NSString *, NSNumber *> *mapping = nil;"
+          << endl;
+  f_impl_ << indent() << "static dispatch_once_t onceToken;" << endl;
+  f_impl_ << indent() << "dispatch_once(&onceToken, ^{" << endl;
+
+  indent_up();
+
+  f_impl_ << indent() << "mapping = @{" << endl;
+
+  indent_up();
+
+  for (auto constant = tenum->get_constants().begin();
+       constant != tenum->get_constants().end();
+       ++constant) {
+    string namespacedConstantName =
+        cocoa_prefix_ + tenum->get_name() + "_" + (*constant)->get_name();
+    f_impl_ << indent() << "@\"" << namespacedConstantName << "\": @("
+            << namespacedConstantName << ")," << endl;
+  }
+
+  indent_down();
+
+  f_impl_ << indent() << "};" << endl;
+
+  indent_down();
+
+  f_impl_ << indent() << "});" << endl;
+  f_impl_ << indent()
+          << "return mapping[str] ? [mapping[str] intValue] : fallbackValue;"
+          << endl;
+
+  indent_down();
+
   f_impl_ << indent() << "}" << endl;
   f_impl_ << endl;
 }
