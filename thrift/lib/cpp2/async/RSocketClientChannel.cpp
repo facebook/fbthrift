@@ -16,7 +16,9 @@
 
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 
+#include <rsocket/RSocketResponder.h>
 #include <rsocket/framing/FramedDuplexConnection.h>
+#include <rsocket/transports/tcp/TcpConnectionFactory.h>
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
@@ -32,7 +34,6 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
-
 void RSConnectionStatus::setCloseCallback(CloseCallback* ccb) {
   closeCallback_ = ccb;
 }
@@ -144,13 +145,32 @@ RSocketClientChannel::RSocketClientChannel(
           notifyDetachable();
         }
       }) {
-  rsRequester_ =
-      std::make_shared<RSRequester>(std::move(socket), evb_, connectionStatus_);
+  stateMachine_ = std::make_shared<RSocketStateMachine>(
+      std::make_shared<RSocketResponder>(),
+      nullptr,
+      RSocketMode::CLIENT,
+      nullptr,
+      connectionStatus_,
+      ResumeManager::makeEmpty(),
+      nullptr);
+
+  SetupParameters setupParameters;
+  setupParameters.resumable = false; // Not resumable!
+
+  auto&& conn =
+      TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket));
+  DCHECK(!conn->isFramed());
+  auto&& framedConn = std::make_unique<FramedDuplexConnection>(
+      std::move(conn), setupParameters.protocolVersion);
+  auto transport = std::make_shared<FrameTransportImpl>(std::move(framedConn));
+
+  stateMachine_->connectClient(
+      std::move(transport), std::move(setupParameters));
 }
 
 RSocketClientChannel::~RSocketClientChannel() {
   connectionStatus_->setCloseCallback(nullptr);
-  if (rsRequester_) {
+  if (stateMachine_) {
     closeNow();
   }
 }
@@ -356,7 +376,7 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
 
   callback->sendQueued();
 
-  rsRequester_->fireAndForget(
+  stateMachine_->fireAndForget(
       Payload(std::move(buf), serializeMetadata(*metadata)));
 
   callback->messageSent();
@@ -383,7 +403,7 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
   // As we send clientTimeoutMs, queueTimeoutMs and priority values using
   // RequestRpcMetadata object, there is no need for RSocket to put them to
   // metadata->otherMetadata map.
-  rsRequester_->requestResponse(
+  stateMachine_->requestResponse(
       Payload(std::move(buf), serializeMetadata(*metadata)),
       std::move(singleObserver));
 }
@@ -443,7 +463,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       // onTerminal
       [this]() { channelCounters_.decPendingRequests(); });
 
-  rsRequester_->requestStream(
+  stateMachine_->requestStream(
       Payload(std::move(buf), serializeMetadata(*metadata)),
       std::move(takeFirst));
 }
@@ -460,12 +480,12 @@ folly::EventBase* RSocketClientChannel::getEventBase() const {
 apache::thrift::async::TAsyncTransport* FOLLY_NULLABLE
 RSocketClientChannel::getTransport() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  if (rsRequester_) {
-    DuplexConnection* connection = rsRequester_->getConnection();
+  if (stateMachine_) {
+    DuplexConnection* connection = stateMachine_->getConnection();
     if (!connection) {
       LOG_EVERY_N(ERROR, 100)
           << "Connection is already closed. May be protocol mismatch x 100";
-      rsRequester_.reset();
+      stateMachine_.reset();
       return nullptr;
     }
     if (auto framedConnection =
@@ -499,9 +519,6 @@ void RSocketClientChannel::attachEventBase(folly::EventBase* evb) {
   if (transport) {
     transport->attachEventBase(evb);
   }
-  if (rsRequester_) {
-    rsRequester_->attachEventBase(evb);
-  }
   evb_ = evb;
 }
 
@@ -511,9 +528,6 @@ void RSocketClientChannel::detachEventBase() {
   if (transport) {
     transport->detachEventBase();
   }
-  if (rsRequester_) {
-    rsRequester_->detachEventBase();
-  }
   evb_ = nullptr;
 }
 
@@ -521,9 +535,8 @@ bool RSocketClientChannel::isDetachable() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   auto transport = getTransport();
   bool result = evb_ == nullptr || transport == nullptr ||
-      rsRequester_ == nullptr ||
-      (channelCounters_.getPendingRequests() == 0 &&
-       transport->isDetachable() && rsRequester_->isDetachable());
+      stateMachine_ == nullptr ||
+      (channelCounters_.getPendingRequests() == 0 && transport->isDetachable());
   return result;
 }
 
@@ -543,14 +556,15 @@ void RSocketClientChannel::setTimeout(uint32_t timeoutMs) {
 
 void RSocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  if (rsRequester_) {
+  if (stateMachine_) {
     if (!evb_) {
       // Add current event base instead of the missing one.
       LOG(ERROR) << "Closing RSocketClientChannel with missing EventBase";
       attachEventBase(folly::EventBaseManager::get()->getEventBase());
     }
-    rsRequester_->closeNow();
-    rsRequester_.reset();
+    stateMachine_->close(
+        folly::exception_wrapper(), StreamCompletionSignal::SOCKET_CLOSED);
+    stateMachine_.reset();
   }
 }
 

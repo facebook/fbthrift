@@ -19,12 +19,13 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
+#include <rsocket/RSocketConnectionEvents.h>
+#include <rsocket/statemachine/RSocketStateMachine.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ChannelCallbacks.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/RSRequester.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -171,8 +172,6 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;
 
-  std::shared_ptr<RSRequester> getRequester();
-
  private:
   // The default timeout for a Thrift RPC.
   static const std::chrono::milliseconds kDefaultRpcTimeout;
@@ -185,7 +184,7 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
   uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
 
   std::shared_ptr<detail::RSConnectionStatus> connectionStatus_;
-  std::shared_ptr<RSRequester> rsRequester_;
+  std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
   std::chrono::milliseconds timeout_{RSocketClientChannel::kDefaultRpcTimeout};
 
   apache::thrift::detail::ChannelCounters channelCounters_;
