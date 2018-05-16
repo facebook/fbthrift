@@ -58,10 +58,7 @@ class StreamOutput : public RSServerThriftChannel {
       // response and wait till the client subscribes to the resultant stream
       response->concatWith(mappedStream)->subscribe(std::move(subscriber_));
     } else {
-      response
-          ->concatWith(yarpl::flowable::Flowable<rsocket::Payload>::error(
-              std::runtime_error("no stream")))
-          ->subscribe(std::move(subscriber_));
+      response->subscribe(std::move(subscriber_));
     }
   }
 

@@ -310,23 +310,23 @@ TEST_F(StreamingTest, LifeTimeTesting) {
 
 TEST_F(StreamingTest, RequestTimeout) {
   bool withResponse = false;
-  auto test = [this,
-               withResponse](std::unique_ptr<StreamServiceAsyncClient> client) {
-    // This test focuses on timeout for the initial response. We will have
-    // another test for timeout of each onNext calls.
-    callSleep(client.get(), 1, 100, withResponse);
-    callSleep(client.get(), 100, 0, withResponse);
-    callSleep(client.get(), 1, 100, withResponse);
-    callSleep(client.get(), 100, 0, withResponse);
-    callSleep(client.get(), 2000, 500, withResponse);
-    /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    callSleep(client.get(), 100, 1000, withResponse);
-    callSleep(client.get(), 200, 0, withResponse);
-    /* Sleep to give time for all callbacks to be completed */
-    /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-  };
+  auto test =
+      [this, &withResponse](std::unique_ptr<StreamServiceAsyncClient> client) {
+        // This test focuses on timeout for the initial response. We will have
+        // another test for timeout of each onNext calls.
+        callSleep(client.get(), 1, 100, withResponse);
+        callSleep(client.get(), 100, 0, withResponse);
+        callSleep(client.get(), 1, 100, withResponse);
+        callSleep(client.get(), 100, 0, withResponse);
+        callSleep(client.get(), 2000, 500, withResponse);
+        /* sleep override */
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        callSleep(client.get(), 100, 1000, withResponse);
+        callSleep(client.get(), 200, 0, withResponse);
+        /* Sleep to give time for all callbacks to be completed */
+        /* sleep override */
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+      };
 
   connectToServer(test);
   EXPECT_EQ(3, observer_->taskTimeout_);
