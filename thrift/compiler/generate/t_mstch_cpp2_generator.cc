@@ -310,6 +310,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:optionals?", &mstch_cpp2_type::optionals},
             {"type:forward_compatibility?",
              &mstch_cpp2_type::forward_compatibility},
+            {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -401,6 +402,9 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
+  }
+  mstch::node no_getters_setters() {
+    return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
 };
 
@@ -513,6 +517,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:optionals?", &mstch_cpp2_struct::optionals},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
+            {"struct:no_getters_setters?",
+             &mstch_cpp2_struct::no_getters_setters},
         });
   }
   mstch::node getters_setters() {
@@ -739,6 +745,9 @@ class mstch_cpp2_struct : public mstch_struct {
       }
     }
     return false;
+  }
+  mstch::node no_getters_setters() {
+    return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
 };
 

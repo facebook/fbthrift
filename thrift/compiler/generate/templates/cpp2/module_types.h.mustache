@@ -185,9 +185,9 @@ class <%struct:name%> <%!
 <% > module_types_h/eq_overload%>
 <% > module_types_h/lt_overload%>
 <%/struct:cpp_noncomparable%>
-<%#struct:fields?%><%^struct:optionals?%>
+<%#struct:fields?%><%^struct:optionals?%><%^struct:no_getters_setters?%>
 <% > module_types_h/getters_setters%>
-<%/struct:optionals?%><%/struct:fields?%>
+<%/struct:no_getters_setters?%><%/struct:optionals?%><%/struct:fields?%>
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
