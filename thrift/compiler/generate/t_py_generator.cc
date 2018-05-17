@@ -501,9 +501,10 @@ void t_py_generator::generate_json_enum(
   indent(out) << "if not " << prefix_thrift << " in " << type_name(tenum)
               << "._VALUES_TO_NAMES:" << endl;
   indent_up();
-  indent(out) << "raise TProtocolException(TProtocolException.INVALID_DATA,"
-              << " 'enum exceeds limit ''%s''' % " << prefix_thrift << ")"
-              << endl;
+  indent(out)
+      << "raise TProtocolException(TProtocolException.INVALID_DATA,"
+      << " 'Integer value ''%s'' is not a recognized value of enum type "
+      << type_name(tenum) << "' % " << prefix_thrift << ")" << endl;
   indent_down();
 }
 
