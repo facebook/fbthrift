@@ -36,6 +36,9 @@
 <%#service:cpp_includes%>
 #include <%cpp_include%>
 <%/service:cpp_includes%>
+<%#service:any_streams?%>
+#include <thrift/lib/cpp2/async/StreamPublisher.h>
+<%/service:any_streams?%>
 
 namespace folly {
   class IOBuf;

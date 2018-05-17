@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
 #include "src/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/StreamPublisher.h>
 
 namespace folly {
   class IOBuf;
@@ -73,6 +74,14 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   virtual apache::thrift::Stream<std::string> different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/);
   folly::Future<apache::thrift::Stream<std::string>> future_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
   void async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
+  template <typename T>
+  std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
+  createStreamPublisher(folly::Function<void()> onCanceled) {
+    return apache::thrift::StreamPublisher<T>::create(
+        folly::SerialExecutor::create(
+            folly::getKeepAliveToken(getThreadManager())),
+        std::move(onCanceled));
+  }
 };
 
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {

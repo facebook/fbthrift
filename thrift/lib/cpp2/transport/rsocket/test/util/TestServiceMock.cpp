@@ -61,9 +61,12 @@ class LeakDetector {
 };
 
 Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
-  return toStream(
-      Flowable<>::range(from, to)->map([](auto i) { return (int32_t)i; }),
-      &executor_);
+  auto streamAndPublisher = createStreamPublisher<int32_t>([] {});
+  for (auto value = from; value < to; ++value) {
+    streamAndPublisher.second.next(value);
+  }
+  std::move(streamAndPublisher.second).complete();
+  return std::move(streamAndPublisher.first);
 }
 
 ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(

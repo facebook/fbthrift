@@ -279,10 +279,10 @@ class YarplStreamImpl : public StreamImplIf {
       void onComplete() override {
         impl_->onComplete();
       }
-      void onError(folly::exception_wrapper e) {
+      void onError(folly::exception_wrapper e) override {
         impl_->onError(std::move(e));
       }
-      void onNext(std::unique_ptr<ValueIf> value) {
+      void onNext(std::unique_ptr<ValueIf> value) override {
         impl_->onNext(std::move(value));
       }
 
@@ -310,6 +310,18 @@ Stream<T> toStream(
             return std::make_unique<detail::Value<T>>(std::move(value));
           })),
       executor);
+}
+
+template <typename T>
+Stream<T> toStream(
+    std::shared_ptr<yarpl::flowable::Flowable<T>> flowable,
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+  return Stream<T>::create(
+      std::make_unique<detail::YarplStreamImpl>(
+          flowable->map([](T&& value) -> std::unique_ptr<detail::ValueIf> {
+            return std::make_unique<detail::Value<T>>(std::move(value));
+          })),
+      std::move(executor));
 }
 
 template <typename T>
