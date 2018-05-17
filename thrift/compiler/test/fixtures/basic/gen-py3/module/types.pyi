@@ -29,7 +29,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyIntField: _typing.Optional[int]=None,
         MyStringField: _typing.Optional[str]=None,
         MyDataField: _typing.Optional['MyDataItem']=None,
-        major: _typing.Optional[int]=None
+        major: _typing.Optional[int]=None,
+        myEnum: _typing.Optional[MyEnum]=None
     ) -> None: ...
 
     def __call__(
@@ -37,7 +38,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyIntField: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         MyStringField: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
         MyDataField: _typing.Union['MyDataItem', NOTSETTYPE, None]=NOTSET,
-        major: _typing.Union[int, NOTSETTYPE, None]=NOTSET
+        major: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        myEnum: _typing.Union[MyEnum, NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -55,6 +57,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def MyDataField(self) -> 'MyDataItem': ...
     @property
     def major(self) -> int: ...
+    @property
+    def myEnum(self) -> MyEnum: ...
 
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

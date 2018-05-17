@@ -22,12 +22,14 @@ public final class MyStruct
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
-        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major
+        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major,
+        @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
         this.myDataField = myDataField;
         this.major = major;
+        this.myEnum = myEnum;
     }
 
     public static class Builder {
@@ -55,6 +57,12 @@ public final class MyStruct
             this.major = major;
             return this;
         }
+        private test.fixtures.basic.MyEnum myEnum;
+
+        public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
+            this.myEnum = myEnum;
+            return this;
+        }
 
         public Builder() { }
         public Builder(MyStruct other) {
@@ -62,6 +70,7 @@ public final class MyStruct
             this.myStringField = other.myStringField;
             this.myDataField = other.myDataField;
             this.major = other.major;
+            this.myEnum = other.myEnum;
         }
 
         public MyStruct build() {
@@ -69,7 +78,8 @@ public final class MyStruct
                 this.myIntField,
                 this.myStringField,
                 this.myDataField,
-                this.major
+                this.major,
+                this.myEnum
             );
         }
     }
@@ -94,6 +104,11 @@ public final class MyStruct
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
 
+    private final test.fixtures.basic.MyEnum myEnum;
+
+    @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE)
+    public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
+
     @Override
     public String toString()
     {
@@ -102,6 +117,7 @@ public final class MyStruct
             .add("myStringField", myStringField)
             .add("myDataField", myDataField)
             .add("major", major)
+            .add("myEnum", myEnum)
             .toString();
     }
 
@@ -120,7 +136,8 @@ public final class MyStruct
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
             Objects.equals(myDataField, other.myDataField) &&
-            Objects.equals(major, other.major);
+            Objects.equals(major, other.major) &&
+            Objects.equals(myEnum, other.myEnum);
     }
 
     @Override
@@ -129,7 +146,8 @@ public final class MyStruct
             myIntField,
             myStringField,
             myDataField,
-            major
+            major,
+            myEnum
         });
     }
 }

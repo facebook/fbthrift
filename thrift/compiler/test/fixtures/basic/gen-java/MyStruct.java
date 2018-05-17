@@ -30,21 +30,29 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
   private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
   private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);
+  private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)5);
 
   public long MyIntField;
   public String MyStringField;
   public MyDataItem MyDataField;
   public long major;
+  /**
+   * 
+   * @see MyEnum
+   */
+  public int myEnum;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MAJOR = 4;
+  public static final int MYENUM = 5;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
   private static final int __MAJOR_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private static final int __MYENUM_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
@@ -57,6 +65,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new StructMetaData(TType.STRUCT, MyDataItem.class)));
     tmpMetaDataMap.put(MAJOR, new FieldMetaData("major", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I64)));
+    tmpMetaDataMap.put(MYENUM, new FieldMetaData("myEnum", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -71,7 +81,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     long MyIntField,
     String MyStringField,
     MyDataItem MyDataField,
-    long major)
+    long major,
+    int myEnum)
   {
     this();
     this.MyIntField = MyIntField;
@@ -80,6 +91,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.MyDataField = MyDataField;
     this.major = major;
     setMajorIsSet(true);
+    this.myEnum = myEnum;
+    setMyEnumIsSet(true);
   }
 
   /**
@@ -96,6 +109,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       this.MyDataField = TBaseHelper.deepCopy(other.MyDataField);
     }
     this.major = TBaseHelper.deepCopy(other.major);
+    this.myEnum = TBaseHelper.deepCopy(other.myEnum);
   }
 
   public MyStruct deepCopy() {
@@ -201,6 +215,37 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__MAJOR_ISSET_ID, value);
   }
 
+  /**
+   * 
+   * @see MyEnum
+   */
+  public int  getMyEnum() {
+    return this.myEnum;
+  }
+
+  /**
+   * 
+   * @see MyEnum
+   */
+  public MyStruct setMyEnum(int myEnum) {
+    this.myEnum = myEnum;
+    setMyEnumIsSet(true);
+    return this;
+  }
+
+  public void unsetMyEnum() {
+    __isset_bit_vector.clear(__MYENUM_ISSET_ID);
+  }
+
+  // Returns true if field myEnum is set (has been assigned a value) and false otherwise
+  public boolean isSetMyEnum() {
+    return __isset_bit_vector.get(__MYENUM_ISSET_ID);
+  }
+
+  public void setMyEnumIsSet(boolean value) {
+    __isset_bit_vector.set(__MYENUM_ISSET_ID, value);
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -235,6 +280,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case MYENUM:
+      if (value == null) {
+        unsetMyEnum();
+      } else {
+        setMyEnum((Integer)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -254,6 +307,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case MAJOR:
       return new Long(getMajor());
 
+    case MYENUM:
+      return getMyEnum();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -270,6 +326,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetMyDataField();
     case MAJOR:
       return isSetMajor();
+    case MYENUM:
+      return isSetMyEnum();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -326,6 +384,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
+    boolean this_present_myEnum = true;
+    boolean that_present_myEnum = true;
+    if (this_present_myEnum || that_present_myEnum) {
+      if (!(this_present_myEnum && that_present_myEnum))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.myEnum, that.myEnum))
+        return false;
+    }
+
     return true;
   }
 
@@ -378,6 +445,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetMyEnum()).compareTo(other.isSetMyEnum());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(myEnum, other.myEnum);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -423,6 +498,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case MYENUM:
+          if (field.type == TType.I32) {
+            this.myEnum = iprot.readI32();
+            setMyEnumIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
           break;
@@ -455,6 +538,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     oprot.writeFieldBegin(MAJOR_FIELD_DESC);
     oprot.writeI64(this.major);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+    oprot.writeI32(this.myEnum);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -516,6 +602,21 @@ String space = prettyPrint ? " " : "";
     sb.append(":").append(space);
     sb.append(TBaseHelper.toString(this. getMajor(), indent + 1, prettyPrint));
     first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("myEnum");
+    sb.append(space);
+    sb.append(":").append(space);
+    String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this. getMyEnum());
+    if (myEnum_name != null) {
+      sb.append(myEnum_name);
+      sb.append(" (");
+    }
+    sb.append(this. getMyEnum());
+    if (myEnum_name != null) {
+      sb.append(")");
+    }
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();
@@ -524,6 +625,9 @@ String space = prettyPrint ? " " : "";
   public void validate() throws TException {
     // check for required fields
     // check that fields of type enum have valid values
+    if (isSetMyEnum() && !MyEnum.VALID_VALUES.contains(myEnum)){
+      throw new TProtocolException("The field 'myEnum' has been assigned the invalid value " + myEnum);
+    }
   }
 
 }

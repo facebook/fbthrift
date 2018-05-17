@@ -12,6 +12,7 @@ struct MyStruct {
   3: MyDataItem MyDataField,
   # glibc has macros with this name, Thrift should properly push/pop the macro
   4: i64 major,
+  5: MyEnum myEnum,
 }
 
 struct MyDataItem {}

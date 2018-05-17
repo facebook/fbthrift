@@ -64,7 +64,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=None,
         str MyStringField=None,
         MyDataItem MyDataField=None,
-        major=None
+        major=None,
+        myEnum=None
     ):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
@@ -76,12 +77,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'major is not a { int !r}.')
             major = <int64_t> major
 
+        if myEnum is not None:
+            if not isinstance(myEnum, MyEnum):
+                raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
+
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           MyIntField,
           MyStringField,
           MyDataField,
           major,
+          myEnum,
         ))
 
     def __call__(
@@ -89,7 +95,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=__NOTSET,
         MyStringField=__NOTSET,
         MyDataField=__NOTSET,
-        major=__NOTSET
+        major=__NOTSET,
+        myEnum=__NOTSET
     ):
         changes = any((
             MyIntField is not __NOTSET,
@@ -99,6 +106,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             MyDataField is not __NOTSET,
 
             major is not __NOTSET,
+
+            myEnum is not __NOTSET,
         ))
 
         if not changes:
@@ -122,6 +131,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'major is not a { int !r}.')
             major = <int64_t> major
 
+        if None is not myEnum is not __NOTSET:
+            if not isinstance(myEnum, MyEnum):
+                raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
+
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
@@ -129,6 +142,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyStringField,
           MyDataField,
           major,
+          myEnum,
         ))
         return inst
 
@@ -138,7 +152,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         object MyIntField,
         object MyStringField,
         object MyDataField,
-        object major
+        object major,
+        object myEnum
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -176,6 +191,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             elif major is __NOTSET:
                 major = None
 
+            if myEnum is None:
+                deref(c_inst).myEnum = _MyStruct_defaults.myEnum
+                deref(c_inst).__isset.myEnum = False
+                pass
+            elif myEnum is __NOTSET:
+                myEnum = None
+
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
@@ -188,6 +210,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if major is not None:
             deref(c_inst).major = major
             deref(c_inst).__isset.major = True
+        if myEnum is not None:
+            deref(c_inst).myEnum = MyEnum_to_cpp(myEnum)
+            deref(c_inst).__isset.myEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -197,9 +222,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyStringField', self.MyStringField
         yield 'MyDataField', self.MyDataField
         yield 'major', self.major
+        yield 'myEnum', self.myEnum
 
     def __bool__(self):
-        return True or True or True or True
+        return True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -229,6 +255,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         return self._cpp_obj.get().major
 
+    @property
+    def myEnum(self):
+
+        return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum))
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
@@ -237,11 +268,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.MyStringField,
             self.MyDataField,
             self.major,
+            self.myEnum,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)}, myEnum={repr(self.myEnum)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

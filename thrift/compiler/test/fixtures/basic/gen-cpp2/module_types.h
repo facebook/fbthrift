@@ -79,11 +79,10 @@ namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
-  MyStruct() :
-      MyIntField(0),
-      major(0) {}
+  MyStruct();
+
   // FragileConstructor for use in initialization lists only.
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg,  ::cpp2::MyEnum myEnum__arg);
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -112,6 +111,13 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     major = arg.move();
     __isset.major = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    myEnum = arg.move();
+    __isset.myEnum = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -121,16 +127,21 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+
+  ~MyStruct();
+
   int64_t MyIntField;
   std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
   int64_t major;
+   ::cpp2::MyEnum myEnum;
 
   struct __isset {
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
     bool major;
+    bool myEnum;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -177,6 +188,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     major = major_;
     __isset.major = true;
     return major;
+  }
+
+   ::cpp2::MyEnum get_myEnum() const {
+    return myEnum;
+  }
+
+   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum myEnum_) {
+    myEnum = myEnum_;
+    __isset.myEnum = true;
+    return myEnum;
   }
 
   template <class Protocol_>

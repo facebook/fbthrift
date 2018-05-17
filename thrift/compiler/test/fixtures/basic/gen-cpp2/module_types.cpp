@@ -42,15 +42,25 @@ template <> bool TEnumTraits< ::cpp2::MyEnum>::findValue(const char* name,  ::cp
 }} // apache::thrift
 namespace cpp2 {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg) :
+MyStruct::MyStruct() :
+      MyIntField(0),
+      major(0),
+      myEnum( ::cpp2::MyEnum::MyValue1) {}
+
+
+MyStruct::~MyStruct() {}
+
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg,  ::cpp2::MyEnum myEnum__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
-    major(std::move(major__arg)) {
+    major(std::move(major__arg)),
+    myEnum(std::move(myEnum__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
   __isset.major = true;
+  __isset.myEnum = true;
 }
 
 void MyStruct::__clear() {
@@ -58,6 +68,7 @@ void MyStruct::__clear() {
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   major = 0;
+  myEnum =  ::cpp2::MyEnum::MyValue1;
   __isset = {};
 }
 
@@ -74,6 +85,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
     return false;
   }
   if (!(lhs.major == rhs.major)) {
+    return false;
+  }
+  if (!(lhs.myEnum == rhs.myEnum)) {
     return false;
   }
   return true;
@@ -105,6 +119,10 @@ void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, 
     fid = 4;
     _ftype = apache::thrift::protocol::T_I64;
   }
+  else if (_fname == "myEnum") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
 }
 
 void swap(MyStruct& a, MyStruct& b) {
@@ -113,6 +131,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
   swap(a.major, b.major);
+  swap(a.myEnum, b.myEnum);
   swap(a.__isset, b.__isset);
 }
 

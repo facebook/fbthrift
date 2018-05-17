@@ -34,11 +34,16 @@
           "type_enum" : "I64",
           "spec_args" : null,
           "required" : true
+        },
+        "myEnum" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "MyEnum",
+          "required" : true
         }
       }
     },
     "MyDataItem" : {
-      "lineno" : 17,
+      "lineno" : 18,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -48,7 +53,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 19,
+      "lineno" : 20,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -129,7 +134,7 @@
       }
     },
     "MyServiceFast" : {
-      "lineno" : 28,
+      "lineno" : 29,
       "functions" : {
         "MyServiceFast.ping" : {
           "return_type" : {
@@ -210,13 +215,13 @@
       }
     },
     "MyServiceEmpty" : {
-      "lineno" : 37,
+      "lineno" : 38,
       "functions" : {
 
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 40,
+      "lineno" : 41,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -241,7 +246,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 45,
+      "lineno" : 46,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
