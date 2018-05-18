@@ -30,7 +30,7 @@ target_link_libraries(
   PUBLIC
     Folly::folly
     ${GLOG_LIBRARIES}
-    ${GFLAGS_LIBRARIES}
+    ${LIBGFLAGS_LIBRARY}
 )
 
 add_library(
@@ -85,7 +85,7 @@ target_link_libraries(
     ${KRB5_LIBRARIES}
     ${Boost_LIBRARIES}
     Folly::folly
-    ${GFLAGS_LIBRARIES}
+    ${LIBGFLAGS_LIBRARY}
     ${GLOG_LIBRARIES}
 )
 

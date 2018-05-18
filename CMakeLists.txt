@@ -86,7 +86,7 @@ if(lib_only OR build_all)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(Threads)
   include_directories(
-    ${GFLAGS_INCLUDE_DIRS}
+    ${LIBGFLAGS_INCLUDE_DIR}
     ${GLOG_INCLUDE_DIRS}
     ${KRB5_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}

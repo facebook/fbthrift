@@ -13,7 +13,7 @@ target_link_libraries(
   example_server
   thriftcpp2
   chatroom-cpp2
-  ${GFLAGS_LIBRARIES}
+  ${LIBGFLAGS_LIBRARY}
   ${GLOG_LIBRARIES}
 )
 install(

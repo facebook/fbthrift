@@ -30,7 +30,7 @@ target_link_libraries(
   concurrency
   PUBLIC
     Folly::folly
-    ${GFLAGS_LIBRARIES}
+    ${LIBGFLAGS_LIBRARY}
     ${GLOG_LIBRARIES}
 )
 
