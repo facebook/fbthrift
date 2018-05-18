@@ -163,7 +163,7 @@ class MyStruct:
     if 'myEnum' in json_obj and json_obj['myEnum'] is not None:
       self.myEnum = json_obj['myEnum']
       if not self.myEnum in MyEnum._VALUES_TO_NAMES:
-        raise TProtocolException(TProtocolException.INVALID_DATA, 'enum exceeds limit ''%s''' % self.myEnum)
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.myEnum)
 
   def __repr__(self):
     L = []
