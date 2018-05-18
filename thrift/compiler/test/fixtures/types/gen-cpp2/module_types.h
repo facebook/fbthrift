@@ -128,9 +128,11 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
 template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::names;
+#endif
 template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName( ::apache::thrift::fixtures::types::has_bitwise_ops value);
 template <> bool TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(const char* name,  ::apache::thrift::fixtures::types::has_bitwise_ops* outValue);
 
@@ -144,9 +146,11 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops
 
 
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size;
 template <> const folly::Range<const  ::apache::thrift::fixtures::types::is_unscoped*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names;
+#endif
 template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findName( ::apache::thrift::fixtures::types::is_unscoped value);
 template <> bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(const char* name,  ::apache::thrift::fixtures::types::is_unscoped* outValue);
 
@@ -160,9 +164,11 @@ template <> inline constexpr  ::apache::thrift::fixtures::types::is_unscoped TEn
 
 
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::MyForwardRefEnum>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
 template <> const folly::Range<const  ::apache::thrift::fixtures::types::MyForwardRefEnum*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::names;
+#endif
 template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findName( ::apache::thrift::fixtures::types::MyForwardRefEnum value);
 template <> bool TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(const char* name,  ::apache::thrift::fixtures::types::MyForwardRefEnum* outValue);
 

@@ -70,18 +70,22 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::cpp2::EmptyEnum>::size;
 template <> const folly::Range<const  ::cpp2::EmptyEnum*> TEnumTraits< ::cpp2::EmptyEnum>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::EmptyEnum>::names;
+#endif
 template <> const char* TEnumTraits< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
 template <> bool TEnumTraits< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
 
 
 
 template <> struct TEnumDataStorage< ::cpp2::City>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::cpp2::City>::size;
 template <> const folly::Range<const  ::cpp2::City*> TEnumTraits< ::cpp2::City>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::City>::names;
+#endif
 template <> const char* TEnumTraits< ::cpp2::City>::findName( ::cpp2::City value);
 template <> bool TEnumTraits< ::cpp2::City>::findValue(const char* name,  ::cpp2::City* outValue);
 
@@ -95,9 +99,11 @@ template <> inline constexpr  ::cpp2::City TEnumTraits< ::cpp2::City>::max() {
 
 
 template <> struct TEnumDataStorage< ::cpp2::Company>;
+#ifndef _MSC_VER
 template <> const std::size_t TEnumTraits< ::cpp2::Company>::size;
 template <> const folly::Range<const  ::cpp2::Company*> TEnumTraits< ::cpp2::Company>::values;
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::Company>::names;
+#endif
 template <> const char* TEnumTraits< ::cpp2::Company>::findName( ::cpp2::Company value);
 template <> bool TEnumTraits< ::cpp2::Company>::findValue(const char* name,  ::cpp2::Company* outValue);
 
