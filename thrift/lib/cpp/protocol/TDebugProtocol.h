@@ -269,7 +269,7 @@ public:
   template<typename T>
   void write(const std::vector<T>& c) {
     writeListBegin(ThriftTypeTraits<T>::fieldType_, c.size());
-    __typeof__(c.begin()) it = c.begin();
+    auto it = c.begin();
     for (; it != c.end(); it++) {
       write(*it);
     }
@@ -298,7 +298,7 @@ public:
       ThriftTypeTraits<typename M::value_type>::fieldType_,
       c.size()
     );
-    __typeof__(c.begin()) it = c.begin();
+    auto it = c.begin();
     for (; it != c.end(); it++) {
       write(it->first);
       write(it->second);
@@ -313,7 +313,7 @@ public:
       ThriftTypeTraits<T>::fieldType_,
       c.size()
     );
-    __typeof__(c.begin()) it = c.begin();
+    auto it = c.begin();
     for (; it != c.end(); it++) {
       write(*it);
     }
